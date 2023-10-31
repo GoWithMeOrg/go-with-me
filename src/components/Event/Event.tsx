@@ -1,9 +1,5 @@
 const Event = () => {
-  return (
-    <div>Event</div>
-  )
-}
+    return <div>Event</div>;
+};
 
-export {
-  Event
-}
+export { Event };
