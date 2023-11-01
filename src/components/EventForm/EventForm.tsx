@@ -1,38 +1,48 @@
+import React, { FC } from "react";
 import classes from "./EventForm.module.css";
 
-const EventForm = () => {
+interface EventFormProps {
+    tripName: string;
+    description: string;
+    startDate: string;
+    endDate: string;
+    isPrivate: boolean;
+    bannerImage: string;
+}
+
+const EventForm: FC<EventFormProps> = ({tripName, description, startDate, endDate, isPrivate, bannerImage}) => {
     return <div className={classes.component}>
         <form>
             <h2>Registration form</h2>
 
             <label>
                 <span>Trip Name:</span>
-                <input type="text" name="tripName" required />
+                <input type="text" name="tripName" value={tripName} required />
             </label>
 
             <label>
                 <span>Description:</span>
-                <textarea name="description">enter text</textarea>
+                <textarea name="description">{description}</textarea>
             </label>
 
             <label>
                 <span>Start date:</span>
-                <input type="date" name="startDate" min="2023-01-01" max="2023-12-31" />
+                <input type="date" name="startDate" value={startDate} />
             </label>
 
             <label>
                 <span>End date:</span>
-                <input type="date" name="endDate" min="2023-01-01" max="2023-12-31" />
+                <input type="date" name="endDate" value={endDate} />
             </label>
 
             <label>
                 <span>Is private:</span>
-                <input type="checkbox" name="isPrivate" />
+                <input type="checkbox" name="isPrivate" checked={isPrivate} />
             </label>
 
             <label>
                 <span>Banner Image:</span>
-                <input type="file" name="bannerImage" accept=".jpg, .jpeg, .png" />
+                <input type="file" name={bannerImage} accept=".jpg, .jpeg, .png"  />
             </label>
 
             <button>Send</button>
