@@ -11,14 +11,20 @@ export default function EventPage() {
     return (
         <div>
             <h3>EventPage</h3>
-            {isEditMode ? <EventForm {...{
-                tripName: 'tripName',
-                description: 'description',
-                bannerImage: 'bannerImage',
-                endDate: '2023-05-05',
-                startDate: '2023-10-10',
-                isPrivate: true,
-            }} /> : <Event />}
+            {isEditMode ? (
+                <EventForm
+                    {...{
+                        tripName: "tripName",
+                        description: "description",
+                        startDate: "2023-11-01",
+                        endDate: "2023-12-31",
+                        isPrivate: false,
+                        bannerImage: "bannerImage",
+                    }}
+                />
+            ) : (
+                <Event />
+            )}
             <button
                 onClick={() => {
                     setIsEditMode(!isEditMode);

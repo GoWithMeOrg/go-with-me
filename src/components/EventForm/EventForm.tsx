@@ -10,46 +10,46 @@ interface EventFormProps {
     bannerImage: string;
 }
 
-const EventForm: FC<EventFormProps> = ({tripName, description, startDate, endDate, isPrivate, bannerImage}) => {
-    return <div className={classes.component}>
-        <form>
-            <h2>Registration form</h2>
+const EventForm: FC<EventFormProps> = ({ tripName, description, startDate, endDate, isPrivate, bannerImage }) => {
+    return (
+        <div className={classes.component}>
+            <form>
+                <h2>Registration form</h2>
 
-            <label>
-                <span>Trip Name:</span>
-                <input type="text" name="tripName" value={tripName} required />
-            </label>
+                <label>
+                    <span>Trip Name:</span>
+                    <input type="text" name="tripName" value={tripName} required />
+                </label>
 
-            <label>
-                <span>Description:</span>
-                <textarea name="description">{description}</textarea>
-            </label>
+                <label>
+                    <span>Description:</span>
+                    <textarea name="description">{description}</textarea>
+                </label>
 
-            <label>
-                <span>Start date:</span>
-                <input type="date" name="startDate" value={startDate} />
-            </label>
+                <label>
+                    <span>Start date:</span>
+                    <input type="date" name="startDate" defaultValue={startDate} />
+                </label>
 
-            <label>
-                <span>End date:</span>
-                <input type="date" name="endDate" value={endDate} />
-            </label>
+                <label>
+                    <span>End date:</span>
+                    <input type="date" name="endDate" defaultValue={endDate} />
+                </label>
 
-            <label>
-                <span>Is private:</span>
-                <input type="checkbox" name="isPrivate" checked={isPrivate} />
-            </label>
+                <label>
+                    <span>Is private:</span>
+                    <input type="checkbox" name="isPrivate" defaultChecked={isPrivate} />
+                </label>
 
-            <label>
-                <span>Banner Image:</span>
-                <input type="file" name={bannerImage} accept=".jpg, .jpeg, .png"  />
-            </label>
+                <label>
+                    <span>Banner Image:</span>
+                    <input type="file" name={bannerImage} accept=".jpg, .jpeg, .png" />
+                </label>
 
-            <button>Send</button>
-
-        </form>
-
-    </div>;
+                <button>Send</button>
+            </form>
+        </div>
+    );
 };
 
 export { EventForm };
