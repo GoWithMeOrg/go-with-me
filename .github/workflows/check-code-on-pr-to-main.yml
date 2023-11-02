@@ -10,6 +10,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: development
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -27,3 +28,5 @@ jobs:
 
       - name: Build
         run: npm run build
+        env: # Or as an environment variable
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
