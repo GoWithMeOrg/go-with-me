@@ -6,14 +6,14 @@ import { getUserId } from "@/database/acl/session";
 
 // /api/events
 // READ
-export async function GET(request: NextRequest) {
+export async function GET(request: NextRequest, response: NextResponse) {
     await mongooseConnect();
 
-    // TODO: check userId
-    const events = await EventModel.find({});
+    const currentSessionUserId = await getUserId(request);
+    const eventsOfSessionUser = await EventModel.find({ organizerId: currentSessionUserId });
 
     return NextResponse.json({
-        data: events,
+        data: eventsOfSessionUser,
         error: null,
     });
 }
@@ -25,9 +25,9 @@ export async function POST(request: NextRequest) {
         await mongooseConnect();
 
         // TODO: get organizerId from auth
-        const organizerId = await getUserId(request);
+        const currentSessionUserId = await getUserId(request);
 
-        if (!organizerId) {
+        if (!currentSessionUserId) {
             return NextResponse.json(
                 {
                     error: "User not found",
@@ -42,11 +42,14 @@ export async function POST(request: NextRequest) {
         const event: IEvent = await request.json();
         const newEvent = new EventModel({
             ...event,
-            organizerId,
+            organizerId: currentSessionUserId,
         });
 
-        const saved = await newEvent.save();
-        return NextResponse.json(saved);
+        const savedEvent = await newEvent.save();
+        return NextResponse.json({
+            data: savedEvent,
+            error: null,
+        });
     } catch (error) {
         return NextResponse.json("error", {
             status: 500,

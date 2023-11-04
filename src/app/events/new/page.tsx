@@ -1,4 +1,6 @@
 "use client";
+// It can be a server-side rendered page
+// take a look how to pass sessions to the page in `src/app/events/page.tsx`
 
 import type { NextPage, NextPageContext } from "next";
 import { EventForm } from "@/components/EventForm";
