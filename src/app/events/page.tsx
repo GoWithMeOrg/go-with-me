@@ -30,6 +30,9 @@ export default async function EventListPage() {
                     </li>
                 ))}
             </ul>
+            <div>
+                <Link href="/events/new">Create New Event</Link>
+            </div>
         </div>
     );
 }
