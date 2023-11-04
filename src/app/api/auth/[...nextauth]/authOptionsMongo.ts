@@ -6,6 +6,6 @@ import clientPromise from "@/database/mongodbConnect";
 import { authCommonOptions } from "@/options/authCommonOptions";
 
 export const authOptions = {
-    adapter: MongoDBAdapter(clientPromise) as Adapter,
     ...authCommonOptions,
+    adapter: MongoDBAdapter(clientPromise) as Adapter,
 };
