@@ -1,8 +1,8 @@
 "use client";
 
-import type { NextPage, NextPageContext } from "next";
-
 import { useEffect, useState } from "react";
+import type { NextPage } from "next";
+import { redirect, useRouter } from "next/navigation";
 
 import { EventForm } from "@/components/EventForm";
 import type { EventType } from "@/components/EventForm";
@@ -13,6 +13,7 @@ type PageParams = {
 };
 
 const EventPage: NextPage<PageParams> = (context) => {
+    const router = useRouter();
     const [isEditMode, setIsEditMode] = useState(false);
     const [event, setEvent] = useState(null);
 
@@ -39,7 +40,21 @@ const EventPage: NextPage<PageParams> = (context) => {
         console.log("EventPage mounted");
 
         fetch(`/api/events/${context.params.event_id}`)
-            .then((response) => response.json())
+            .then((response) => {
+                if (!response.ok) {
+                    switch (response.status) {
+                        case 401:
+                            router.push("/login");
+                            break;
+                        case 403:
+                            router.push("/login");
+                            break;
+                        default:
+                            throw new Error("Failed to fetch data");
+                    }
+                }
+                return response.json();
+            })
             .then((response) => {
                 console.log(response);
                 setEvent(response.data);

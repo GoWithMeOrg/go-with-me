@@ -6,10 +6,23 @@ import { getUserId } from "@/database/acl/session";
 
 // /api/events
 // READ
-export async function GET(request: NextRequest, response: NextResponse) {
+export async function GET(request: NextRequest) {
     await mongooseConnect();
 
     const currentSessionUserId = await getUserId(request);
+
+    if (!currentSessionUserId) {
+        return NextResponse.json(
+            {
+                error: "User not found",
+            },
+            {
+                status: 403,
+                statusText: "User not found",
+            },
+        );
+    }
+
     const eventsOfSessionUser = await EventModel.find({ organizerId: currentSessionUserId });
 
     return NextResponse.json({
