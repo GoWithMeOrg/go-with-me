@@ -7,7 +7,7 @@ import mongoose, { Schema, Document } from "mongoose";
  */
 
 export interface IEvent extends Document {
-    organizerId: mongoose.Schema.Types.ObjectId;
+    organizerId: mongoose.Types.ObjectId;
     tripName: string;
     description: string;
     isPrivate: boolean;
@@ -18,7 +18,7 @@ export interface IEvent extends Document {
 const EventSchema = new Schema<IEvent>(
     {
         organizerId: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: Schema.Types.ObjectId,
             required: true,
         },
         tripName: {

@@ -10,13 +10,4 @@ export const authCommonOptions = {
         }),
     ],
     secret: process.env.NEXTAUTH_SECRET,
-    callbacks: {
-        // @ts-ignore
-        session: ({ session, user }): Session => {
-            if (session.user) {
-                session.user.id = user.id;
-            }
-            return session;
-        },
-    },
 };

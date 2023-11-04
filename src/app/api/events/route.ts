@@ -1,11 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import EventModel, { IEvent } from "@/database/models/Event";
 import mongooseConnect from "@/database/mongooseConnect";
+import EventModel, { IEvent } from "@/database/models/Event";
+import { getUserId } from "@/database/acl/session";
 
 // /api/events
-export async function GET() {
+// READ
+export async function GET(request: NextRequest) {
     await mongooseConnect();
+
+    // TODO: check userId
     const events = await EventModel.find({});
 
     return NextResponse.json({
@@ -15,17 +19,18 @@ export async function GET() {
 }
 
 // /api/events
+// CREATE
 export async function POST(request: NextRequest) {
     try {
         await mongooseConnect();
 
         // TODO: get organizerId from auth
-        const organizerId = "6542bb81b642fb9cda29fee6";
+        const organizerId = await getUserId(request);
 
         if (!organizerId) {
             return NextResponse.json(
                 {
-                    error: "Вы не вошли Ж(",
+                    error: "User not found",
                 },
                 {
                     status: 403,

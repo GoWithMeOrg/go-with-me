@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 
-export interface ISession extends mongoose.Document {
+export interface ISession extends Document {
     sessionToken: string;
     userId: mongoose.Types.ObjectId;
     expires: Date;
@@ -9,12 +9,18 @@ export interface ISession extends mongoose.Document {
 /**
  * @see https://next-auth.js.org/adapters/mongodb
  */
-const Schema = new mongoose.Schema<ISession>({
-    sessionToken: String,
-    userId: mongoose.Types.ObjectId,
-    expires: Date,
-});
+const SessionSchema = new Schema<ISession>(
+    {
+        sessionToken: String,
+        userId: Schema.Types.ObjectId,
+        expires: Date,
+    },
+    {
+        timestamps: true,
+    },
+);
 
-const SessionModel: mongoose.Model<ISession> = mongoose.models.Session || mongoose.model("Session", Schema);
+const SessionModel: mongoose.Model<ISession> =
+    mongoose.models?.Session || mongoose.model<ISession>("Session", SessionSchema);
 
 export default SessionModel;
