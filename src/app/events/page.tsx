@@ -1,6 +1,7 @@
-import type { NextPage, NextPageContext } from "next";
+import type { NextPage } from "next";
 import Link from "next/link";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 import cookieName from "@/options/sessionCookieName";
 import type { IEvent } from "@/database/models/Event";
@@ -15,14 +16,22 @@ async function getData(sessionId?: string): Promise<{ data: IEvent[] }> {
     });
 
     if (!response.ok) {
-        // This will activate the closest `error.js` Error Boundary
-        throw new Error("Failed to fetch data");
+        switch (response.status) {
+            case 401:
+                redirect("/login");
+                break;
+            case 403:
+                redirect("/login");
+                break;
+            default:
+                throw new Error("Failed to fetch data");
+        }
     }
 
     return response.json();
 }
 
-const EventListPage: NextPage = async (...args) => {
+const EventListPage: NextPage = async () => {
     const cookieStore = cookies();
     // Server side pages don't have access to the browser's cookies
     const sessionCookie = cookieStore.get(cookieName);

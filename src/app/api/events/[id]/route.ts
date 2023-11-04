@@ -2,12 +2,27 @@ import { NextRequest, NextResponse } from "next/server";
 
 import EventModel from "@/database/models/Event";
 import mongooseConnect from "@/database/mongooseConnect";
+import { getUserId } from "@/database/acl/session";
 
 // /api/events/[id]
 
 // READ
 export async function GET(request: NextRequest, context: { params: { id: string } }) {
     await mongooseConnect();
+
+    const currentSessionUserId = await getUserId(request);
+
+    if (!currentSessionUserId) {
+        return NextResponse.json(
+            {
+                error: "User not found",
+            },
+            {
+                status: 403,
+                statusText: "User not found",
+            },
+        );
+    }
 
     const id = context?.params?.id;
     // TODO: check userId
@@ -21,6 +36,20 @@ export async function GET(request: NextRequest, context: { params: { id: string 
 // UPDATE
 export async function PATCH(request: NextRequest, context: { params: { id: string } }) {
     await mongooseConnect();
+
+    const currentSessionUserId = await getUserId(request);
+
+    if (!currentSessionUserId) {
+        return NextResponse.json(
+            {
+                error: "User not found",
+            },
+            {
+                status: 403,
+                statusText: "User not found",
+            },
+        );
+    }
 
     const id = context?.params?.id;
     // TODO: check userId
@@ -40,6 +69,20 @@ export async function PATCH(request: NextRequest, context: { params: { id: strin
 // DELETE
 export async function DELETE(request: NextRequest, context: { params: { id: string } }) {
     await mongooseConnect();
+
+    const currentSessionUserId = await getUserId(request);
+
+    if (!currentSessionUserId) {
+        return NextResponse.json(
+            {
+                error: "User not found",
+            },
+            {
+                status: 403,
+                statusText: "User not found",
+            },
+        );
+    }
 
     const id = context?.params?.id;
 
