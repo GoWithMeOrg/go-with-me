@@ -1,14 +1,18 @@
-import type { IEvent } from "@/database/models/Event";
+import type { NextPage, NextPageContext } from "next";
 import Link from "next/link";
+import { cookies } from "next/headers";
 
-async function getData(): Promise<{ data: IEvent[] }> {
+import cookieName from "@/options/sessionCookieName";
+import type { IEvent } from "@/database/models/Event";
+
+async function getData(sessionId?: string): Promise<{ data: IEvent[] }> {
     const response = await fetch(`${process.env.BASE_FETCH_URL}/api/events`, {
         cache: "no-cache",
+        headers: {
+            "Content-Type": "application/json",
+            Cookie: `${cookieName}=${sessionId}`,
+        },
     });
-    // The return value is *not* serialized
-    // You can return Date, Map, Set, etc.
-
-    //console.log("response: ", response.status); // eslint-disable-line
 
     if (!response.ok) {
         // This will activate the closest `error.js` Error Boundary
@@ -18,14 +22,18 @@ async function getData(): Promise<{ data: IEvent[] }> {
     return response.json();
 }
 
-export default async function EventListPage() {
-    const response = await getData();
+const EventListPage: NextPage = async (...args) => {
+    const cookieStore = cookies();
+    // Server side pages don't have access to the browser's cookies
+    const sessionCookie = cookieStore.get(cookieName);
+
+    const response = await getData(sessionCookie?.value);
     return (
         <div>
             <h1>Event List Page</h1>
             <ul>
                 {response.data.map((event) => (
-                    <li key={event.id}>
+                    <li key={event._id}>
                         <Link href={`/events/${event._id}`}>{event.tripName}</Link>
                     </li>
                 ))}
@@ -35,4 +43,6 @@ export default async function EventListPage() {
             </div>
         </div>
     );
-}
+};
+
+export default EventListPage;

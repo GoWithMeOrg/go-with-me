@@ -22,7 +22,7 @@ const EventForm: FC<EventFormProps> = ({ event, onSubmit }) => {
         setEventState((prevState) => {
             return {
                 ...prevState,
-                [event.target.name]: event.target.value,
+                [event.target.name]: event.target.type === "checkbox" ? event.target.checked : event.target.value,
             };
         });
     };
