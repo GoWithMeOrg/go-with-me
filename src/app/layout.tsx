@@ -13,9 +13,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
-        <NextAuthProvider>
-            <html lang="en">
-                <body className={inter.className}>
+        <html lang="en">
+            <body className={inter.className}>
+                <NextAuthProvider>
                     <menu>
                         <ul>
                             <li>
@@ -24,8 +24,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                         </ul>
                     </menu>
                     {children}
-                </body>
-            </html>
-        </NextAuthProvider>
+                </NextAuthProvider>
+            </body>
+        </html>
     );
 }
