@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from "react";
 import type { NextPage } from "next";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useSuspenseQuery } from "@apollo/experimental-nextjs-app-support/ssr";
+import { gql } from "@apollo/client";
 
 import { EventForm } from "@/components/EventForm";
 import type { EventType } from "@/components/EventForm";
@@ -12,7 +14,25 @@ type PageParams = {
     params: { event_id: string };
 };
 
+const query = gql`
+    #graphql
+    query GetEvent($id: ID!) {
+        event(id: $id) {
+            organizerId
+            tripName
+            description
+            isPrivate
+            startDate
+            endDate
+        }
+    }
+`;
+
 const EventPage: NextPage<PageParams> = (context) => {
+    const { data } = useSuspenseQuery(query, { variables: { id: context.params.event_id } });
+
+    console.log("data: ", data); // eslint-disable-line
+
     const router = useRouter();
     const [isEditMode, setIsEditMode] = useState(false);
     const [event, setEvent] = useState(null);

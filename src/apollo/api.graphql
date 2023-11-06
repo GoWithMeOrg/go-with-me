@@ -13,28 +13,27 @@ type Mutation {
     deleteEvent(_id: ID!): Event
 }
 
-type Event {
-    _id: ID
-    organizerId: ID
-    tripName: String
-    description: String
-    isPrivate: Boolean
-    startDate: String
-    endDate: String
-}
+#type Event {
+#    _id: ID
+#    organizerId: ID
+#    tripName: String
+#    description: String
+#    isPrivate: Boolean
+#    startDate: String
+#    endDate: String
+#}
 
-type Query {
-    events: [Event]
-}
+#type Query {
+#    events: [Event]
+#}
 
-query GetEvents {
-    events {
-        _id
-        organizerId
-        tripName
-        description
-        isPrivate
-        startDate
-        endDate
-    }
-}
+#query GetEvent($id: ID) {
+#    event(id: $id) {
+#        organizerId
+#        tripName
+#        description
+#        isPrivate
+#        startDate
+#        endDate
+#    }
+#}
