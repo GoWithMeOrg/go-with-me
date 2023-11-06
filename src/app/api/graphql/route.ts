@@ -12,13 +12,20 @@ const resolvers = {
             await mongooseConnect();
             return await EventModel.find();
         },
+        event: async (id: string) => {
+            console.log("id: ", id); // eslint-disable-line
+            await mongooseConnect();
+            return await EventModel.findById(id);
+        },
     },
 };
 
 const typeDefs = gql`
+    #graphql
     type Query {
         hello: String
         events: [Event]
+        event(id: ID!): Event
     }
 
     type Event {
