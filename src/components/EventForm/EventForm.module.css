@@ -1,3 +1,7 @@
 .component {
     /* keep */
 }
+
+.form_item {  
+    display: block;  
+  } 

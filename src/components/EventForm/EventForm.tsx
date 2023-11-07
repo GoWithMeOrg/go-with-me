@@ -16,32 +16,32 @@ const EventForm: FC<EventFormProps> = ({ tripName, description, startDate, endDa
             <form>
                 <h2>Registration form</h2>
 
-                <label>
+                <label className={classes.form_item}>
                     <span>Trip Name:</span>
                     <input type="text" name="tripName" value={tripName} required />
                 </label>
 
-                <label>
+                <label className={classes.form_item}>
                     <span>Description:</span>
                     <textarea name="description">{description}</textarea>
                 </label>
 
-                <label>
+                <label className={classes.form_item}>
                     <span>Start date:</span>
                     <input type="date" name="startDate" defaultValue={startDate} />
                 </label>
 
-                <label>
+                <label className={classes.form_item}>
                     <span>End date:</span>
                     <input type="date" name="endDate" defaultValue={endDate} />
                 </label>
 
-                <label>
+                <label className={classes.form_item}>
                     <span>Is private:</span>
                     <input type="checkbox" name="isPrivate" defaultChecked={isPrivate} />
                 </label>
 
-                <label>
+                <label className={classes.form_item}>
                     <span>Banner Image:</span>
                     <input type="file" name={bannerImage} accept=".jpg, .jpeg, .png" />
                 </label>
