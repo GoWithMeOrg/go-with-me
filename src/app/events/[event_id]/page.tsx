@@ -13,7 +13,7 @@ export default function EventPage() {
             <h3>EventPage</h3>
             {isEditMode ? (
                 <EventForm
-                    {...{
+                    event={{
                         tripName: "tripName",
                         description: "description",
                         startDate: "2023-11-01",

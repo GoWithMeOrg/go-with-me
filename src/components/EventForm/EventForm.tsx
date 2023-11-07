@@ -2,15 +2,18 @@ import React, { FC } from "react";
 import classes from "./EventForm.module.css";
 
 interface EventFormProps {
-    tripName: string;
-    description: string;
-    startDate: string;
-    endDate: string;
-    isPrivate: boolean;
-    bannerImage: string;
+    event: {
+        tripName: string;
+        description: string;
+        startDate: string;
+        endDate: string;
+        isPrivate: boolean;
+        bannerImage: string;
+    };
 }
 
-const EventForm: FC<EventFormProps> = ({ tripName, description, startDate, endDate, isPrivate, bannerImage }) => {
+const EventForm: FC<EventFormProps> = ({ event }) => {
+    const { tripName, description, startDate, endDate, isPrivate, bannerImage } = event;
     return (
         <div className={classes.component}>
             <form>
