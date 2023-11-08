@@ -31,7 +31,7 @@ const query = gql`
 const EventPage: NextPage<PageParams> = (context) => {
     const { data } = useSuspenseQuery(query, { variables: { id: context.params.event_id } });
 
-    console.log("data: ", data); // eslint-disable-line
+    console.log("apollo GetEvent data: ", data); // eslint-disable-line
 
     const router = useRouter();
     const [isEditMode, setIsEditMode] = useState(false);

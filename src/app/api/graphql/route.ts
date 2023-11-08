@@ -12,10 +12,26 @@ const resolvers = {
             await mongooseConnect();
             return await EventModel.find();
         },
-        event: async (id: string) => {
-            console.log("id: ", id); // eslint-disable-line
+        event: async (parent: any, { id, ...rest }: { id: string }) => {
+            console.log("rest: ", rest); // eslint-disable-line
             await mongooseConnect();
             return await EventModel.findById(id);
+        },
+    },
+    Mutation: {
+        createEvent: async (parent: any, { event }: { event: IEvent }) => {
+            await mongooseConnect();
+            const newEvent = new EventModel(event);
+            return await newEvent.save();
+        },
+        updateEvent: async (parent: any, { id, event }: { id: string; event: IEvent }) => {
+            await mongooseConnect();
+            await EventModel.updateOne({ _id: id }, event);
+            return await EventModel.findById(id);
+        },
+        deleteEvent: async (parent: any, { id }: { id: string }) => {
+            await mongooseConnect();
+            return await EventModel.deleteOne({ _id: id });
         },
     },
 };
@@ -36,6 +52,21 @@ const typeDefs = gql`
         isPrivate: Boolean
         startDate: String
         endDate: String
+    }
+
+    input EventInput {
+        organizerId: ID!
+        tripName: String
+        description: String
+        isPrivate: Boolean
+        startDate: String
+        endDate: String
+    }
+
+    type Mutation {
+        createEvent(event: EventInput): Event
+        updateEvent(id: ID!, event: EventInput): Event
+        deleteEvent(id: ID!): Event
     }
 `;
 
