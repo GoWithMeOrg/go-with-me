@@ -58,7 +58,7 @@ WHERE Events.id = 1
 https://www.mongodb.com/docs/manual/core/data-model-design/
 В документоориентированной модели данных, это будет выглядеть следующим образом:
 
-Коллекция `Events`:
+Коллекции `User` и `Event`:
 
 Модель mongoose:
 ```js
@@ -66,20 +66,30 @@ const UserSchema = new Schema({
   name: { type: String, required: true },
   email: { type: String, required: true },
   image: { type: String, required: true },
-});
+})
 
-const User = mongoose.model('User', UserSchema);
+const User = mongoose.model('User', UserSchema)
 
 const EventSchema = new Schema({
+  // Для связи с другой коллекцией используем тип Schema.Types.ObjectId и ref на модель
   organizerId: { type: Schema.Types.ObjectId, ref: 'User' },
   tripName: { type: String, required: true },
   description: { type: String, required: true },
   isPrivate: { type: Boolean, required: true },
   startDate: { type: Date, required: true },
   endDate: { type: Date, required: true },
-});
+})
+  
+// Для получения данных о пользователе, который создал событие,
+// нам нужно сделать populate по полю `organizer`, см пример ниже
+EventSchema.virtual('organizer', {
+  ref: UserModel,
+  localField: 'organizerId',
+  foreignField: '_id',
+  justOne: true,
+})
 
-const Event = mongoose.model('Event', EventSchema);
+const Event = mongoose.model('Event', EventSchema)
 
 ```
 
@@ -124,10 +134,27 @@ const users = [
 ]
 ```
 
-Пример запроса события с пользователем, который его создал:
+Пример запроса событий с пользователем, который их создал:
+https://mongoosejs.com/docs/populate.html
 
 ```js
-const event = await Event.findOne({ id: '5f8b1d8f0b9c2e1b1c9d4c7a' }).populate('organizerId');
+const events = await Event.find().populate('organizer');
+```
+
+В Mongo без mongoose это будет выглядеть так:
+https://www.mongodb.com/docs/manual/reference/operator/aggregation/lookup/#mongodb-pipeline-pipe.-lookup
+
+```js
+const events = db.events.aggregate([
+  {
+    $lookup: {
+      from: "users",
+      localField: "organizerId",
+      foreignField: "_id",
+      as: "organizer",
+    },
+  },
+]);
 ```
 
 

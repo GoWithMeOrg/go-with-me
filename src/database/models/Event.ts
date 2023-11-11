@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
+import UserModel from "./User";
 
 /**
  * TODO:
@@ -20,13 +21,17 @@ const EventSchema = new Schema<IEvent>(
         organizerId: {
             type: Schema.Types.ObjectId,
             required: true,
+            ref: UserModel,
         },
         tripName: {
             type: String,
             required: true,
         },
         description: String,
-        isPrivate: Boolean,
+        isPrivate: {
+            type: Boolean,
+            default: true,
+        },
         startDate: Date,
         endDate: Date,
     },
@@ -34,6 +39,13 @@ const EventSchema = new Schema<IEvent>(
         timestamps: true,
     },
 );
+
+EventSchema.virtual("organizer", {
+    ref: UserModel,
+    localField: "organizerId",
+    foreignField: "_id",
+    justOne: true,
+});
 
 const EventModel: mongoose.Model<IEvent> = mongoose.models.Event || mongoose.model<IEvent>("Event", EventSchema);
 

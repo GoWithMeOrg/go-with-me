@@ -10,7 +10,9 @@ const resolvers = {
         hello: () => "world",
         events: async () => {
             await mongooseConnect();
-            return await EventModel.find();
+            const result = await EventModel.find({ isPrivate: false }).populate("organizer");
+            console.log("result: ", result); // eslint-disable-line
+            return result;
         },
         event: async (parent: any, { id, ...rest }: { id: string }) => {
             console.log("rest: ", rest); // eslint-disable-line
@@ -44,9 +46,17 @@ const typeDefs = gql`
         event(id: ID!): Event
     }
 
+    type User {
+        _id: ID
+        name: String
+        email: String
+        image: String
+        emailVerified: Boolean
+    }
+
     type Event {
         _id: ID
-        organizerId: ID
+        organizer: User
         tripName: String
         description: String
         isPrivate: Boolean
