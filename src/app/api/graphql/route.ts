@@ -10,13 +10,12 @@ const resolvers = {
         hello: () => "world",
         events: async () => {
             await mongooseConnect();
-            const result = await EventModel.find({ isPrivate: false }).populate("organizer");
-            return result;
+            return await EventModel.find({ isPrivate: false }).populate("organizer");
         },
         event: async (parent: any, { id, ...rest }: { id: string }) => {
             console.log("rest: ", rest); // eslint-disable-line
             await mongooseConnect();
-            return await EventModel.findById(id);
+            return await EventModel.findById(id).populate("organizer");
         },
     },
     Mutation: {
@@ -28,7 +27,7 @@ const resolvers = {
         updateEvent: async (parent: any, { id, event }: { id: string; event: IEvent }) => {
             await mongooseConnect();
             await EventModel.updateOne({ _id: id }, event);
-            return await EventModel.findById(id);
+            return await EventModel.findById(id).populate("organizer");
         },
         deleteEvent: async (parent: any, { id }: { id: string }) => {
             await mongooseConnect();

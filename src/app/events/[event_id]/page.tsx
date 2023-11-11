@@ -18,7 +18,11 @@ const query = gql`
     #graphql
     query GetEvent($id: ID!) {
         event(id: $id) {
-            organizer_id
+            organizer {
+                _id
+                name
+                email
+            }
             tripName
             description
             isPrivate
