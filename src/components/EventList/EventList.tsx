@@ -14,7 +14,7 @@ const EventList: FC<EventListProps> = ({ events }) => {
             <ul>
                 {events.map((event) => (
                     <li key={event.id}>
-                        <div>organizerId: {event.organizerId.toString()}</div>
+                        <div>organizer_id: {event.organizer_id.toString()}</div>
                         <div>
                             tripName: <Link href={`/events/${event.id}`}>{event.tripName}</Link>
                         </div>

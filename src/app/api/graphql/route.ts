@@ -10,12 +10,12 @@ const resolvers = {
         hello: () => "world",
         events: async () => {
             await mongooseConnect();
-            return await EventModel.find();
+            return await EventModel.find({ isPrivate: false }).populate("organizer");
         },
         event: async (parent: any, { id, ...rest }: { id: string }) => {
             console.log("rest: ", rest); // eslint-disable-line
             await mongooseConnect();
-            return await EventModel.findById(id);
+            return await EventModel.findById(id).populate("organizer");
         },
     },
     Mutation: {
@@ -27,7 +27,7 @@ const resolvers = {
         updateEvent: async (parent: any, { id, event }: { id: string; event: IEvent }) => {
             await mongooseConnect();
             await EventModel.updateOne({ _id: id }, event);
-            return await EventModel.findById(id);
+            return await EventModel.findById(id).populate("organizer");
         },
         deleteEvent: async (parent: any, { id }: { id: string }) => {
             await mongooseConnect();
@@ -44,9 +44,17 @@ const typeDefs = gql`
         event(id: ID!): Event
     }
 
+    type User {
+        _id: ID
+        name: String
+        email: String
+        image: String
+        emailVerified: Boolean
+    }
+
     type Event {
         _id: ID
-        organizerId: ID
+        organizer: User
         tripName: String
         description: String
         isPrivate: Boolean
@@ -55,7 +63,7 @@ const typeDefs = gql`
     }
 
     input EventInput {
-        organizerId: ID!
+        organizer_id: ID!
         tripName: String
         description: String
         isPrivate: Boolean

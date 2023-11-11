@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
+import UserModel from "./User";
 
 /**
  * TODO:
@@ -7,7 +8,7 @@ import mongoose, { Schema, Document } from "mongoose";
  */
 
 export interface IEvent extends Document {
-    organizerId: mongoose.Types.ObjectId;
+    organizer_id: mongoose.Types.ObjectId;
     tripName: string;
     description: string;
     isPrivate: boolean;
@@ -17,16 +18,20 @@ export interface IEvent extends Document {
 
 const EventSchema = new Schema<IEvent>(
     {
-        organizerId: {
+        organizer_id: {
             type: Schema.Types.ObjectId,
             required: true,
+            ref: UserModel,
         },
         tripName: {
             type: String,
             required: true,
         },
         description: String,
-        isPrivate: Boolean,
+        isPrivate: {
+            type: Boolean,
+            default: true,
+        },
         startDate: Date,
         endDate: Date,
     },
@@ -34,6 +39,13 @@ const EventSchema = new Schema<IEvent>(
         timestamps: true,
     },
 );
+
+EventSchema.virtual("organizer", {
+    ref: UserModel,
+    localField: "organizer_id",
+    foreignField: "_id",
+    justOne: true,
+});
 
 const EventModel: mongoose.Model<IEvent> = mongoose.models.Event || mongoose.model<IEvent>("Event", EventSchema);
 
