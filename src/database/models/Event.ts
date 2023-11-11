@@ -8,7 +8,7 @@ import UserModel from "./User";
  */
 
 export interface IEvent extends Document {
-    organizerId: mongoose.Types.ObjectId;
+    organizer_id: mongoose.Types.ObjectId;
     tripName: string;
     description: string;
     isPrivate: boolean;
@@ -18,7 +18,7 @@ export interface IEvent extends Document {
 
 const EventSchema = new Schema<IEvent>(
     {
-        organizerId: {
+        organizer_id: {
             type: Schema.Types.ObjectId,
             required: true,
             ref: UserModel,
@@ -42,7 +42,7 @@ const EventSchema = new Schema<IEvent>(
 
 EventSchema.virtual("organizer", {
     ref: UserModel,
-    localField: "organizerId",
+    localField: "organizer_id",
     foreignField: "_id",
     justOne: true,
 });

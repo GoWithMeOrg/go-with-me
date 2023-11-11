@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
         );
     }
 
-    const eventsOfSessionUser = await EventModel.find({ organizerId: currentSessionUserId });
+    const eventsOfSessionUser = await EventModel.find({ organizer_id: currentSessionUserId });
 
     return NextResponse.json({
         data: eventsOfSessionUser,
@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
     try {
         await mongooseConnect();
 
-        // TODO: get organizerId from auth
+        // TODO: get organizer_id from auth
         const currentSessionUserId = await getUserId(request);
 
         if (!currentSessionUserId) {
@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
         const event: IEvent = await request.json();
         const newEvent = new EventModel({
             ...event,
-            organizerId: currentSessionUserId,
+            organizer_id: currentSessionUserId,
         });
 
         const savedEvent = await newEvent.save();

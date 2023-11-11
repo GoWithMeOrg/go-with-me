@@ -1,5 +1,5 @@
 input EventInput {
-    organizerId: ID!
+    organizer_id: ID!
     tripName: String!
     description: String
     isPrivate: Boolean
@@ -15,7 +15,7 @@ type Mutation {
 
 #type Event {
 #    _id: ID
-#    organizerId: ID
+#    organizer_id: ID
 #    tripName: String
 #    description: String
 #    isPrivate: Boolean
@@ -29,7 +29,7 @@ type Mutation {
 
 #query GetEvent($id: ID) {
 #    event(id: $id) {
-#        organizerId
+#        organizer_id
 #        tripName
 #        description
 #        isPrivate

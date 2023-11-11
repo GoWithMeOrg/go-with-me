@@ -9,7 +9,7 @@
 ### Рассмотрим хранение событий, Events
 Каждое событие содержит в себе следующие данные:
 - `id` — уникальный идентификатор события 
-- `organizerId` - идентификатор пользователя, который создал событие
+- `organizer_id` - идентификатор пользователя, который создал событие
 - `tripName` - название события
 - `description` - описание события
 - `isPrivate` - является ли событие доступным для всех пользователей
@@ -22,13 +22,13 @@
 
 **Events** таблица:
 
-| id | organizerId | tripName      | description            | isPrivate | startDate  | endDate    |
+| id | organizer_id | tripName      | description            | isPrivate | startDate  | endDate    |
 |----|-------------|---------------|------------------------|-----------|------------|------------|
 | 1  | 1           | Велопокатушки | Мы поедем, мы помчимся | 0         | 2024-01-01 | 2024-01-10 |
 | 2  | 2           | Поход в горы  | Поедем в горы          | 1         | 2024-01-11 | 2024-01-13 |
 и так далее.
 
-Организитор_ка события (`organizerId`) — это внешний ключ (foreign key) на таблицу пользователей (Users).
+Организитор_ка события (`organizer_id`) — это внешний ключ (foreign key) на таблицу пользователей (Users).
 
 **Users** таблица:
 
@@ -44,12 +44,12 @@
 А если пользователь решит поменять свое имя, то придется обновлять все события,
 которые он создал. Вместо этого, мы храним только идентификатор пользователя, а имя, email и изображение берем из таблицы `Users`.
 Для получения данных о пользователе, который создал событие, 
-нам нужно сделать `JOIN` таблиц `Events` и `Users` по полю `organizerId`.
+нам нужно сделать `JOIN` таблиц `Events` и `Users` по полю `organizer_id`.
 
 Пример запроса:
 ```sql
 SELECT * FROM Events
-JOIN Users ON Events.organizerId = Users.id
+JOIN Users ON Events.organizer_id = Users.id
 WHERE Events.id = 1
 ```
 
@@ -72,7 +72,7 @@ const User = mongoose.model('User', UserSchema)
 
 const EventSchema = new Schema({
   // Для связи с другой коллекцией используем тип Schema.Types.ObjectId и ref на модель
-  organizerId: { type: Schema.Types.ObjectId, ref: 'User' },
+  organizer_id: { type: Schema.Types.ObjectId, ref: 'User' },
   tripName: { type: String, required: true },
   description: { type: String, required: true },
   isPrivate: { type: Boolean, required: true },
@@ -84,7 +84,7 @@ const EventSchema = new Schema({
 // нам нужно сделать populate по полю `organizer`, см пример ниже
 EventSchema.virtual('organizer', {
   ref: UserModel,
-  localField: 'organizerId',
+  localField: 'organizer_id',
   foreignField: '_id',
   justOne: true,
 })
@@ -97,7 +97,7 @@ const Event = mongoose.model('Event', EventSchema)
 const events = [
   {
     "id": ObjectId("5f8b1d8f0b9c2e1b1c9d4c7a"),
-    "organizerId": ObjectId("5f8b1d8f0b9c2e1b1c9d4c7b"),
+    "organizer_id": ObjectId("5f8b1d8f0b9c2e1b1c9d4c7b"),
     "tripName": "Велопокатушки",
     "description": "Мы поедем, мы помчимся",
     "isPrivate": false,
@@ -106,7 +106,7 @@ const events = [
   },
   {
     "id": ObjectId("5f8b1d8f0b9c2e1b1c9d4c7c"),
-    "organizerId": ObjectId("5f8b1d8f0b9c2e1b1c9d4c7d"),
+    "organizer_id": ObjectId("5f8b1d8f0b9c2e1b1c9d4c7d"),
     "tripName": "Поход в горы",
     "description": "Поедем в горы",
     "isPrivate": true,
@@ -149,7 +149,7 @@ const events = db.events.aggregate([
   {
     $lookup: {
       from: "users",
-      localField: "organizerId",
+      localField: "organizer_id",
       foreignField: "_id",
       as: "organizer",
     },

@@ -11,7 +11,6 @@ const resolvers = {
         events: async () => {
             await mongooseConnect();
             const result = await EventModel.find({ isPrivate: false }).populate("organizer");
-            console.log("result: ", result); // eslint-disable-line
             return result;
         },
         event: async (parent: any, { id, ...rest }: { id: string }) => {
@@ -65,7 +64,7 @@ const typeDefs = gql`
     }
 
     input EventInput {
-        organizerId: ID!
+        organizer_id: ID!
         tripName: String
         description: String
         isPrivate: Boolean
