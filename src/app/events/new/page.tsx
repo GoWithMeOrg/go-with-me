@@ -2,7 +2,7 @@
 // It can be a server-side rendered page
 // take a look how to pass sessions to the page in `src/app/events/page.tsx`
 
-import type { NextPage, NextPageContext } from "next";
+import type { NextPage } from "next";
 import { EventForm } from "@/components/EventForm";
 import type { EventType } from "@/components/EventForm";
 
@@ -23,19 +23,21 @@ const EventNewPage: NextPage = () => {
                 console.error(error);
             });
     };
-
     return (
         <div>
             <h1>Event New Page</h1>
             <div>
                 <EventForm
                     event={{
+                        // @ts-ignore TODO: fix type
+                        organizer_id: null,
+                        createdAt: new Date(),
+                        updatedAt: new Date(),
                         tripName: "",
                         description: "",
-                        startDate: "",
-                        endDate: "",
+                        startDate: undefined,
+                        endDate: undefined,
                         isPrivate: false,
-                        bannerImage: "",
                     }}
                     onSubmit={handleCreateEvent}
                 />

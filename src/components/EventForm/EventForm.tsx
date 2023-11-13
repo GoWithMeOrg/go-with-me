@@ -1,14 +1,9 @@
 import React, { FC, useState } from "react";
 import classes from "./EventForm.module.css";
 
-export type EventType = {
-    tripName: string;
-    description: string;
-    startDate: string;
-    endDate: string;
-    isPrivate: boolean;
-    bannerImage: string;
-};
+import type { IEvent } from "@/database/models/Event";
+
+export type EventType = IEvent;
 
 interface EventFormProps {
     event: EventType;
@@ -16,7 +11,7 @@ interface EventFormProps {
 }
 
 const EventForm: FC<EventFormProps> = ({ event, onSubmit }) => {
-    const [eventState, setEventState] = useState(event);
+    const [eventState, setEventState] = useState<IEvent>(event);
 
     const handleChanges = (event: any) => {
         setEventState((prevState) => {
@@ -53,12 +48,22 @@ const EventForm: FC<EventFormProps> = ({ event, onSubmit }) => {
 
                 <label className={classes.label}>
                     <span>Start date:</span>
-                    <input type="date" onInput={handleChanges} name="startDate" defaultValue={eventState.startDate} />
+                    <input
+                        type="date"
+                        onInput={handleChanges}
+                        name="startDate"
+                        defaultValue={eventState.startDate?.toString()}
+                    />
                 </label>
 
                 <label className={classes.label}>
                     <span>End date:</span>
-                    <input type="date" onInput={handleChanges} name="endDate" defaultValue={eventState.endDate} />
+                    <input
+                        type="date"
+                        onInput={handleChanges}
+                        name="endDate"
+                        defaultValue={eventState.endDate?.toString()}
+                    />
                 </label>
 
                 <label className={classes.label}>
@@ -73,13 +78,7 @@ const EventForm: FC<EventFormProps> = ({ event, onSubmit }) => {
 
                 <label className={classes.label}>
                     <span>Banner Image:</span>
-                    <input
-                        title="Comming soon!"
-                        disabled={true}
-                        type="file"
-                        name={event.bannerImage}
-                        accept=".jpg, .jpeg, .png"
-                    />
+                    <input title="Comming soon!" disabled={true} type="file" accept=".jpg, .jpeg, .png" />
                 </label>
 
                 <button className={classes.button}>Send</button>

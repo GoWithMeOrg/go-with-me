@@ -7,16 +7,21 @@ import UserModel from "./User";
  * bannerImage: String (URL or base64 encoded data)
  */
 
-export interface IEvent extends Document {
+export interface IEvent {
+    _id: string;
     organizer_id: mongoose.Types.ObjectId;
     tripName: string;
     description: string;
     isPrivate: boolean;
-    startDate: Date;
-    endDate: Date;
+    startDate?: Date;
+    endDate?: Date;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
-const EventSchema = new Schema<IEvent>(
+export interface IEventDocument extends Omit<IEvent, "_id" | "createdAt" | "updatedAt">, Document {}
+
+const EventSchema = new Schema<IEventDocument>(
     {
         organizer_id: {
             type: Schema.Types.ObjectId,
@@ -47,6 +52,7 @@ EventSchema.virtual("organizer", {
     justOne: true,
 });
 
-const EventModel: mongoose.Model<IEvent> = mongoose.models.Event || mongoose.model<IEvent>("Event", EventSchema);
+const EventModel: mongoose.Model<IEventDocument> =
+    mongoose.models.Event || mongoose.model<IEventDocument>("Event", EventSchema);
 
 export default EventModel;
