@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 
 import cookieName from "@/options/sessionCookieName";
 import type { IEvent } from "@/database/models/Event";
+import { EventList } from "@/components/EventList/EventList";
 
 async function getData(sessionId?: string): Promise<{ data: IEvent[] }> {
     const response = await fetch(`${process.env.BASE_FETCH_URL}/api/events`, {
@@ -40,16 +41,10 @@ const EventListPage: NextPage = async () => {
     return (
         <div>
             <h1>Event List Page</h1>
-            <ul>
-                {response.data.map((event) => (
-                    <li key={event._id}>
-                        <Link href={`/events/${event._id}`}>{event.tripName}</Link>
-                    </li>
-                ))}
-            </ul>
             <div>
                 <Link href="/events/new">Create New Event</Link>
             </div>
+            <EventList events={response.data} />
         </div>
     );
 };
