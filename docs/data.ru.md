@@ -157,6 +157,248 @@ const events = db.events.aggregate([
 ]);
 ```
 
+## Примеры
+
+Рассмотрим пример создания API данных для комментариев (Comments).
+
+Комментарий содержит в себе следующие данные:
+- `_id` — уникальный идентификатор
+- `author_id` - идентификатор пользователя, который создал комментарий
+- `event_id` - идентификатор события, к которому относится комментарий
+- `content` - текст комментария
+- `createdAt` - дата создания
+- `updatedAt` - дата обновления
+
+### Создание модели данных для комментариев (Comments)
+В папке `src/database/models` создаем файл `Comment.ts` со следующим содержимым:
+
+```ts
+import mongoose, { Schema, Document } from 'mongoose'
+// импортируем модель пользователя, нужно для создания связи
+// с пользователем для показа имени и аватарки
+import UserModel from './User'
+
+// Создаем тип для комментария
+// Будет использоваться на стороне клиента (в React)
+export interface IComment {
+  author_id: mongoose.Types.ObjectId;
+  event_id: mongoose.Types.ObjectId;
+  content: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Создаем тип для схемы
+// Будет использоваться на стороне сервера (в Node.js)
+// содержит в себе API Document из mongoose
+// @see https://mongoosejs.com/docs/api/document.html
+export interface ICommentDocument extends Omit<IComment, '_id' | 'createdAt' | 'updatedAt'>, Document {}
+
+// Создаем схему для комментария
+const CommentSchema = new Schema<ICommentDocument>({
+  author_id: { type: Schema.Types.ObjectId, ref: UserModel },
+  event_id: { type: Schema.Types.ObjectId, required: true },
+  content: { type: String, required: true }, 
+}, 
+{
+  timestamps: true,
+})
+  
+// Добавляем виртуальное поле для получения данных о пользователе, который создал комментарий
+CommentSchema.virtual('author', {
+  ref: UserModel,
+  localField: 'author_id',
+  foreignField: '_id',
+  justOne: true,
+})
+
+// Создаем модель комментария
+// проверка mongoose.models.Comment нужна для того, чтобы не создавать модель повторно в dev режиме в hot reload
+const CommentModel:mongoose.Model<ICommentDocument> = mongoose.models.Comment || mongoose.model<ICommentDocument>('Comment', CommentSchema)
+
+export default CommentModel
+```
+
+
+### Создание API для комментариев (Comments)
+REST API в NextJS это Route Handlers, см https://nextjs.org/docs/app/building-your-application/routing/route-handlers
+В папке `src/app/api` создаем папку `comments` и файл `route.ts` со следующим содержимым:
+
+```ts
+import { NextRequest, NextResponse } from 'next/server'
+import mongooseConnect from '@/database/mongooseConnect'
+import CommentModel from '@/database/models/Comment'
+
+// Чтение комментариев
+// Коммментарии будут искаться по идентификатору события, к которому они относятся
+// GET /api/comments?event_id=5f8b1d8f0b9c2e1b1c9d4c7a
+export async function GET (request: NextRequest) {
+  const { event_id } = request.query
+
+  // Подключаемся к базе данных
+  await mongooseConnect()
+
+  // Получаем ID пользователя из сессии
+  const currentSessionUserId = await getUserId(request)
+
+  // Необходимо проверить, что пользователь авторизован
+  if (!currentSessionUserId) {
+    return NextResponse.json(
+      {
+        error: 'User not found',
+      },
+      {
+        status: 403,
+        statusText: 'User not found',
+      },
+    )
+  }
+
+  // Ищем комментарии по идентификатору события
+  // и добавляем данные о пользователе, который создал комментарий через populate
+  const comments = await CommentModel.find({ event_id }).populate('author')
+
+  // Возвращаем комментарии
+  return NextResponse.json({
+    data: comments,
+    error: null,
+  })
+}
+
+// Создание комментария
+// POST /api/comments
+export async function POST (request: NextRequest) {
+  // Подключаемся к базе данных
+  await mongooseConnect()
+
+  // Получаем ID пользователя из сессии
+  const currentSessionUserId = await getUserId(request)
+
+  // Необходимо проверить, что пользователь авторизован
+  if (!currentSessionUserId) {
+    return NextResponse.json(
+      {
+        error: 'User not found',
+      },
+      {
+        status: 403,
+        statusText: 'User not found',
+      },
+    )
+  }
+
+  // Получаем данные из тела запроса
+  const { event_id, content } = await request.body.json()
+
+  // Создаем комментарий
+  const comment = await CommentModel.create({
+    author_id: currentSessionUserId,
+    event_id,
+    content,
+  })
+
+  // Сохраняем комментарий
+  await comment.save()
+
+  // Возвращаем комментарий
+  return NextResponse.json({
+    data: comment,
+    error: null,
+  })
+}
+
+
+// Удаление комментария
+// DELETE /api/comments/[id]
+// Будет реализовано в файле src/app/api/comments/[id]/route.ts
+
+// Обновление комментария
+// PATCH /api/comments/[id]
+// Будет реализовано в файле src/app/api/comments/[id]/route.ts
+```
+
+В папке `src/app/api/comments` создаем папку `[id]` и файл `route.ts` со следующим содержимым:
+
+```ts
+import { NextRequest, NextResponse } from 'next/server'
+import mongooseConnect from '@/database/mongooseConnect'
+import CommentModel from '@/database/models/Comment'
+
+// Удаление комментария
+// DELETE /api/comments/[id]
+export async function DELETE (request: NextRequest) {
+  // Подключаемся к базе данных
+  await mongooseConnect()
+
+  // Получаем ID пользователя из сессии
+  const currentSessionUserId = await getUserId(request)
+
+  // Необходимо проверить, что пользователь авторизован
+  if (!currentSessionUserId) {
+    return NextResponse.json(
+      {
+        error: 'User not found',
+      },
+      {
+        status: 403,
+        statusText: 'User not found',
+      },
+    )
+  }
+
+  // Получаем ID комментария из URL
+  const { id } = request.params
+  // или так
+  // export async function DELETE (request: NextRequest, context: { params: { id: string } }) {}
+  // TODO проверить в докуметации способ получения id
+
+  // Удаляем комментарий
+  const result = await CommentModel.deleteOne({ _id: id })
+
+  return NextResponse.json({
+    data: result,
+    error: null,
+  })
+
+}
+
+// Обновление комментария
+// PATCH /api/comments/[id]
+export async function PATCH (request: NextRequest, context: { params: { id: string } }) {
+  // Подключаемся к базе данных
+  await mongooseConnect()
+
+  // Получаем ID пользователя из сессии
+  const currentSessionUserId = await getUserId(request)
+
+  // Необходимо проверить, что пользователь авторизован
+  if (!currentSessionUserId) {
+    return NextResponse.json(
+      {
+        error: 'User not found',
+      },
+      {
+        status: 403,
+        statusText: 'User not found',
+      },
+    )
+  }
+
+  // Получаем данные из тела запроса
+  const { content } = await request.body.json()
+
+  // Обновляем комментарий
+  const result = await CommentModel.updateOne({ _id: id }, { content })
+
+  return NextResponse.json({
+    data: result,
+    error: null,
+  })
+
+}
+```
+
+
 
 ## Бинарные данные
 Изображения, аудио, видео и тд.
