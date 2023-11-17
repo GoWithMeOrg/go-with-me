@@ -9,6 +9,7 @@ import { gql } from "@apollo/client";
 import { EventForm } from "@/components/EventForm";
 import type { EventType } from "@/components/EventForm";
 import { Event } from "@/components/Event";
+import { Comments } from "@/components/Comments";
 
 type PageParams = {
     params: { event_id: string };
@@ -90,7 +91,7 @@ const EventPage: NextPage<PageParams> = (context) => {
         return () => {
             console.log("EventPage unmounted");
         };
-    }, [context.params.event_id]);
+    }, [context.params.event_id, router]);
 
     if (!event) {
         return <div>Loading...</div>;
@@ -109,6 +110,9 @@ const EventPage: NextPage<PageParams> = (context) => {
             </button>
 
             {isEditMode ? <EventForm event={event} onSubmit={handleSaveEvent} /> : <Event event={event} />}
+
+            <h3>Comments</h3>
+            <Comments event_id={context.params.event_id} />
         </div>
     );
 };
