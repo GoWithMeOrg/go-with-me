@@ -195,14 +195,16 @@ export interface IComment {
 export interface ICommentDocument extends Omit<IComment, '_id' | 'createdAt' | 'updatedAt'>, Document {}
 
 // Создаем схему для комментария
-const CommentSchema = new Schema<ICommentDocument>({
-  author_id: { type: Schema.Types.ObjectId, ref: UserModel },
-  event_id: { type: Schema.Types.ObjectId, required: true },
-  content: { type: String, required: true }, 
-}, 
-{
-  timestamps: true,
-})
+const CommentSchema = new Schema<ICommentDocument>(
+  {
+    author_id: { type: Schema.Types.ObjectId, ref: UserModel },
+    event_id: { type: Schema.Types.ObjectId, required: true },
+    content: { type: String, required: true },
+  },
+  {
+    timestamps: true,
+  },
+);
   
 // Добавляем виртуальное поле для получения данных о пользователе, который создал комментарий
 CommentSchema.virtual('author', {
@@ -214,7 +216,8 @@ CommentSchema.virtual('author', {
 
 // Создаем модель комментария
 // проверка mongoose.models.Comment нужна для того, чтобы не создавать модель повторно в dev режиме в hot reload
-const CommentModel:mongoose.Model<ICommentDocument> = mongoose.models.Comment || mongoose.model<ICommentDocument>('Comment', CommentSchema)
+const CommentModel: mongoose.Model<ICommentDocument> =
+  mongoose.models.Comment || mongoose.model<ICommentDocument>("Comment", CommentSchema);
 
 export default CommentModel
 ```
@@ -228,6 +231,8 @@ REST API в NextJS это Route Handlers, см https://nextjs.org/docs/app/build
 import { NextRequest, NextResponse } from 'next/server'
 import mongooseConnect from '@/database/mongooseConnect'
 import CommentModel from '@/database/models/Comment'
+import { getUserId } from "@/database/acl/session"
+
 
 // Чтение комментариев
 // Коммментарии будут искаться по идентификатору события, к которому они относятся

@@ -26,7 +26,7 @@ export async function GET(request: NextRequest, context: { params: { id: string 
 
     const id = context?.params?.id;
     // TODO: check userId
-    const eventItem = await EventModel.findOne({ _id: id });
+    const eventItem = await EventModel.findOne({ _id: id }).populate("organizer");
     return NextResponse.json({
         data: eventItem,
         error: null,
