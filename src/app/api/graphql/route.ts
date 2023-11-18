@@ -4,18 +4,22 @@ import { gql } from "graphql-tag";
 
 import EventModel, { IEvent } from "@/database/models/Event";
 import mongooseConnect from "@/database/mongooseConnect";
+import CommentModel from "@/database/models/Comment";
 
 const resolvers = {
     Query: {
         hello: () => "world",
         events: async () => {
             await mongooseConnect();
-            return await EventModel.find({ isPrivate: false }).populate("organizer");
+            return EventModel.find({ isPrivate: false }).populate("organizer");
         },
         event: async (parent: any, { id, ...rest }: { id: string }) => {
-            console.log("rest: ", rest); // eslint-disable-line
             await mongooseConnect();
-            return await EventModel.findById(id).populate("organizer");
+            return EventModel.findById(id).populate("organizer");
+        },
+        comments: async (parent: any, { event_id }: { event_id: string }) => {
+            await mongooseConnect();
+            return CommentModel.find({ event_id }).sort({ createdAt: -1 }).populate("author");
         },
     },
     Mutation: {
@@ -42,6 +46,7 @@ const typeDefs = gql`
         hello: String
         events: [Event]
         event(id: ID!): Event
+        comments(event_id: ID!): [Comment]
     }
 
     type User {
@@ -60,6 +65,15 @@ const typeDefs = gql`
         isPrivate: Boolean
         startDate: String
         endDate: String
+    }
+
+    type Comment {
+        _id: ID
+        event_id: ID
+        author: User
+        content: String
+        createdAt: String
+        updatedAt: String
     }
 
     input EventInput {
