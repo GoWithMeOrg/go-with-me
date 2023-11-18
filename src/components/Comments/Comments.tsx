@@ -69,8 +69,10 @@ const Comments: FC<CommentsProps> = ({ event_id }) => {
             <ul>
                 {comments.map((comment) => (
                     <li key={comment._id}>
+                        <p>
+                            {comment.author?.name} at <small>{comment.createdAt.toString()}</small>
+                        </p>
                         <p>{comment.content}</p>
-                        <p>{comment.author?.name}</p>
                     </li>
                 ))}
             </ul>

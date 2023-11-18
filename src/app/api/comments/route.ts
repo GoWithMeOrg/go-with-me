@@ -33,8 +33,6 @@ export async function GET(request: NextRequest) {
     // и добавляем данные о пользователе, который создал комментарий через populate
     const comments = await CommentModel.find({ event_id }).sort({ createdAt: -1 }).populate("author");
 
-    console.log("comments: ", comments); // eslint-disable-line
-
     // Возвращаем комментарии
     return NextResponse.json({
         data: comments,

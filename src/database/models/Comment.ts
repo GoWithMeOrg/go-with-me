@@ -12,7 +12,7 @@ export interface IComment {
     updatedAt: Date;
 }
 
-export interface ICommentDocument extends Omit<IComment, "_id" | "author" | "createdAt" | "updatedAt">, Document {}
+export interface ICommentDocument extends Omit<IComment, "_id" | "createdAt" | "updatedAt">, Document {}
 
 const CommentSchema = new Schema<ICommentDocument>(
     {
@@ -32,6 +32,7 @@ const CommentSchema = new Schema<ICommentDocument>(
     },
     {
         timestamps: true,
+        toJSON: { virtuals: true },
     },
 );
 

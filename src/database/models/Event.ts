@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
-import UserModel from "./User";
+import UserModel, { IUser } from "./User";
 
 /**
  * TODO:
@@ -10,6 +10,7 @@ import UserModel from "./User";
 export interface IEvent {
     _id: string;
     organizer_id: mongoose.Types.ObjectId;
+    organizer: IUser;
     tripName: string;
     description: string;
     isPrivate: boolean;
@@ -19,7 +20,7 @@ export interface IEvent {
     updatedAt: Date;
 }
 
-export interface IEventDocument extends Omit<IEvent, "_id" | "createdAt" | "updatedAt">, Document {}
+export interface IEventDocument extends Omit<IEvent, "_id" | "organizer" | "createdAt" | "updatedAt">, Document {}
 
 const EventSchema = new Schema<IEventDocument>(
     {
@@ -42,6 +43,7 @@ const EventSchema = new Schema<IEventDocument>(
     },
     {
         timestamps: true,
+        toJSON: { virtuals: true },
     },
 );
 

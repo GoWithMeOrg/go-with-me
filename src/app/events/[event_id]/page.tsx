@@ -30,13 +30,23 @@ const query = gql`
             startDate
             endDate
         }
+        comments(event_id: $id) {
+            _id
+            author {
+                _id
+                name
+                email
+            }
+            content
+            createdAt
+        }
     }
 `;
 
 const EventPage: NextPage<PageParams> = (context) => {
     const { data } = useSuspenseQuery(query, { variables: { id: context.params.event_id } });
 
-    console.log("apollo GetEvent data: ", data); // eslint-disable-line
+    console.log("[client side] data: ", data); // eslint-disable-line
 
     const router = useRouter();
     const [isEditMode, setIsEditMode] = useState(false);
@@ -81,7 +91,7 @@ const EventPage: NextPage<PageParams> = (context) => {
                 return response.json();
             })
             .then((response) => {
-                console.log(response);
+                console.log("REST", response);
                 setEvent(response.data);
             })
             .catch((error) => {
