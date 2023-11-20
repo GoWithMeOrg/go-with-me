@@ -3,13 +3,15 @@
 // take a look how to pass sessions to the page in `src/app/events/page.tsx`
 
 import type { NextPage } from "next";
+import { useRouter } from "next/navigation";
 import { EventForm } from "@/components/EventForm";
 import type { EventType } from "@/components/EventForm";
+
 import classes from "./EventNewPage.module.css";
-import { DateTime } from "luxon";
 
 const EventNewPage: NextPage = () => {
-    const DateTimeFull = DateTime.now();
+    const router = useRouter();
+
     const handleCreateEvent = (event: EventType) => {
         fetch(`/api/events`, {
             method: "POST",
@@ -21,6 +23,7 @@ const EventNewPage: NextPage = () => {
             .then((response) => response.json())
             .then((response) => {
                 console.log(response);
+                router.push(`/events/${response.data.id}`);
             })
             .catch((error) => {
                 console.error(error);
