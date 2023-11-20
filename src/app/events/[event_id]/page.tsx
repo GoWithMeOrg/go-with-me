@@ -11,6 +11,7 @@ import type { EventType } from "@/components/EventForm";
 import { Event } from "@/components/Event";
 import { Comments } from "@/components/Comments";
 import classes from "../new/EventNewPage.module.css";
+import { Map } from "@/components/Map";
 
 type PageParams = {
     params: { event_id: string };
