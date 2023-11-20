@@ -1,5 +1,6 @@
 import React, { FC, useState } from "react";
 import classes from "./EventForm.module.css";
+import { Map } from "@/components/Map";
 
 import type { IEvent } from "@/database/models/Event";
 
@@ -20,6 +21,10 @@ const EventForm: FC<EventFormProps> = ({ event, onSubmit }) => {
                 [event.target.name]: event.target.type === "checkbox" ? event.target.checked : event.target.value,
             };
         });
+    };
+
+    const handleLocationChanges = (location: { lat: number; lng: number }) => {
+        console.log("location: ", location); // eslint-disable-line
     };
 
     const handleSubmit = (event: any) => {
@@ -94,6 +99,8 @@ const EventForm: FC<EventFormProps> = ({ event, onSubmit }) => {
 
                     <button className={classes.btn}>Send</button>
                 </form>
+
+                <Map location={event.location} onChange={handleLocationChanges} />
             </div>
         </>
     );

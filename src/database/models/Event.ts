@@ -10,7 +10,7 @@ import UserModel, { IUser } from "./User";
 export interface IEvent {
     _id: string;
     organizer_id: mongoose.Types.ObjectId;
-    organizer: IUser;
+    organizer: IUser; // virtual
     tripName: string;
     description: string;
     isPrivate: boolean;
@@ -18,6 +18,10 @@ export interface IEvent {
     endDate?: Date;
     createdAt: Date | string;
     updatedAt: Date | string;
+    location?: {
+        lat: number;
+        lng: number; // 47.14758598529329, 8.509962121063706 Zug, Switzerland
+    };
 }
 
 export interface IEventDocument extends Omit<IEvent, "_id" | "organizer" | "createdAt" | "updatedAt">, Document {}
@@ -40,6 +44,10 @@ const EventSchema = new Schema<IEventDocument>(
         },
         startDate: Date,
         endDate: Date,
+        location: {
+            lat: { type: Number, required: true, default: 47.14758598529329 },
+            lng: { type: Number, required: true, default: 8.509962121063706 },
+        },
     },
     {
         timestamps: true,
