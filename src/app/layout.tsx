@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Inter } from "next/font/google";
 
 import ApolloWrapper from "@/apollo/client-side-components";
 import { NextAuthProvider } from "./providers";
+import "../styles/global.css";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 

@@ -3,6 +3,7 @@
 import { FC } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { formatDate } from "@/utils/formatDate";
 
 import classes from "./EventList.module.css";
 import type { IEvent } from "@/database/models/Event";
@@ -48,14 +49,27 @@ const EventList: FC<EventListProps> = ({ events }) => {
                             </button>
                         </div>
                         <div className={classes.dates}>
-                            {event.startDate && <div>startDate: {event.startDate.toString()}</div>}
-                            {event.endDate && <div>endDate: {event.endDate?.toString()}</div>}
+                            {event.startDate && (
+                                <div>
+                                    Start Date:
+                                    {formatDate(event.startDate, "dd LLLL yyyy")}
+                                </div>
+                            )}
+                            {event.endDate && (
+                                <div>
+                                    endDate:
+                                    {formatDate(event.endDate, "dd LLLL yyyy")}
+                                </div>
+                            )}
                         </div>
                     </li>
                 ))}
             </ul>
         </div>
     );
+    {
+        (" ");
+    }
 };
 
 export { EventList };

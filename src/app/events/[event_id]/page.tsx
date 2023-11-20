@@ -10,6 +10,7 @@ import { EventForm } from "@/components/EventForm";
 import type { EventType } from "@/components/EventForm";
 import { Event } from "@/components/Event";
 import { Comments } from "@/components/Comments";
+import classes from "../new/EventNewPage.module.css";
 
 type PageParams = {
     params: { event_id: string };
@@ -108,10 +109,11 @@ const EventPage: NextPage<PageParams> = (context) => {
     }
 
     return (
-        <div>
+        <div className={classes.container}>
             <h3>EventPage</h3>
 
             <button
+                className={classes.btn}
                 onClick={() => {
                     setIsEditMode(!isEditMode);
                 }}

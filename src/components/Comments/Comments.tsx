@@ -2,6 +2,8 @@
 
 import { useEffect, useState, FC, ChangeEvent } from "react";
 import type { IComment } from "@/database/models/Comment";
+import classes from "../EventForm/EventForm.module.css";
+import { formatDate } from "@/utils/formatDate";
 
 type CommentsProps = {
     event_id: string;
@@ -60,8 +62,9 @@ const Comments: FC<CommentsProps> = ({ event_id }) => {
                         name="content"
                         placeholder="Введите комментарий"
                         onInput={handleInputCommentContent}
+                        className={classes.textarea}
                     />
-                    <input type="submit" value="Отправить" />
+                    <input type="submit" value="Отправить" className={classes.btn} />
                 </form>
             </section>
 
@@ -70,7 +73,8 @@ const Comments: FC<CommentsProps> = ({ event_id }) => {
                 {comments.map((comment) => (
                     <li key={comment._id}>
                         <p>
-                            {comment.author?.name} at <small>{comment.createdAt.toString()}</small>
+                            {comment.author?.name} at{" "}
+                            <small>{formatDate(comment.createdAt, "dd LLLL yyyy hh:mm")}</small>
                         </p>
                         <p>{comment.content}</p>
                     </li>

@@ -16,8 +16,8 @@ export interface IEvent {
     isPrivate: boolean;
     startDate?: Date;
     endDate?: Date;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: Date | string;
+    updatedAt: Date | string;
 }
 
 export interface IEventDocument extends Omit<IEvent, "_id" | "organizer" | "createdAt" | "updatedAt">, Document {}
