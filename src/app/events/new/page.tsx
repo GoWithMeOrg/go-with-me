@@ -6,8 +6,10 @@ import type { NextPage } from "next";
 import { EventForm } from "@/components/EventForm";
 import type { EventType } from "@/components/EventForm";
 import classes from "./EventNewPage.module.css";
+import { DateTime } from "luxon";
 
 const EventNewPage: NextPage = () => {
+    const DateTimeFull = DateTime.now();
     const handleCreateEvent = (event: EventType) => {
         fetch(`/api/events`, {
             method: "POST",

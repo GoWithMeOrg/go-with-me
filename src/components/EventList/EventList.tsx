@@ -3,7 +3,7 @@
 import { FC } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { DateTime } from "luxon";
+import { formatDate } from "@/utils/formatDate";
 
 import classes from "./EventList.module.css";
 import type { IEvent } from "@/database/models/Event";
@@ -52,13 +52,13 @@ const EventList: FC<EventListProps> = ({ events }) => {
                             {event.startDate && (
                                 <div>
                                     Start Date:
-                                    {DateTime.fromISO(event.startDate.toString()).toFormat("dd LLLL yyyy")}
+                                    {formatDate(event.startDate, "dd LLLL yyyy")}
                                 </div>
                             )}
                             {event.endDate && (
                                 <div>
                                     endDate:
-                                    {DateTime.fromISO(event.endDate.toString()).toFormat("dd LLLL yyyy")}
+                                    {formatDate(event.endDate, "dd LLLL yyyy")}
                                 </div>
                             )}
                         </div>
