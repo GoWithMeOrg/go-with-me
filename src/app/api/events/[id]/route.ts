@@ -58,7 +58,7 @@ export async function PATCH(request: NextRequest, context: { params: { id: strin
 
     await EventModel.updateOne({ _id: id }, { ...eventFromClient });
 
-    const eventItemUpdated = await EventModel.findOne({ _id: id });
+    const eventItemUpdated = await EventModel.findOne({ _id: id }).populate("organizer");
 
     return NextResponse.json({
         data: eventItemUpdated,

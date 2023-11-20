@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
         );
     }
 
-    const eventsOfSessionUser = await EventModel.find({ organizer_id: currentSessionUserId });
+    const eventsOfSessionUser = await EventModel.find({ organizer_id: currentSessionUserId }).populate("organizer");
 
     return NextResponse.json({
         data: eventsOfSessionUser,
@@ -59,6 +59,7 @@ export async function POST(request: NextRequest) {
         });
 
         const savedEvent = await newEvent.save();
+        await savedEvent.populate("organizer");
         return NextResponse.json({
             data: savedEvent,
             error: null,
