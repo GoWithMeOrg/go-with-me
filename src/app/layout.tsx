@@ -24,6 +24,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                                 <li>
                                     <Link href="/events">Events</Link>
                                 </li>
+
+                                <li>
+                                    <Link href="/trips">Trips</Link>
+                                </li>
                             </ul>
                         </menu>
                         {children}
