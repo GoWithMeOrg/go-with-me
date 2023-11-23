@@ -5,7 +5,7 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/navigation";
 
-import classes from "@/app/trips/new/TripNewPage.module.css";
+import classes from "@/app/trips/Trips.module.css";
 import { TripForm, TripType } from "@/components/TripForm/TripForm";
 
 const TripNewPage: NextPage = () => {

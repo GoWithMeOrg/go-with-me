@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useSuspenseQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 import { gql } from "@apollo/client";
 
-import classes from "../../events/new/EventNewPage.module.css";
+import classes from "@/app/trips/Trips.module.css";
 import { Comments } from "@/components/Comments";
 import { TripForm, TripType } from "@/components/TripForm/TripForm";
 import { Trip } from "@/components/Trip";
@@ -17,8 +17,8 @@ type PageParams = {
 
 const query = gql`
     #graphql
-    query GetEvent($id: ID!) {
-        event(id: $id) {
+    query GetTrip($id: ID!) {
+        trip(id: $id) {
             organizer {
                 _id
                 name
@@ -30,7 +30,7 @@ const query = gql`
             startDate
             endDate
         }
-        comments(event_id: $id) {
+        comments(trip_id: $id) {
             _id
             author {
                 _id

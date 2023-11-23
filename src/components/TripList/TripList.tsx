@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { formatDate } from "@/utils/formatDate";
 
-import classes from "@/app/trips/new/TripNewPage.module.css";
+import classes from "@/app/trips/Trips.module.css";
 import type { ITrip } from "@/database/models/Trip";
 
 type TripListProps = {
@@ -17,7 +17,7 @@ const TripList: FC<TripListProps> = ({ trips }) => {
 
     const handleDelete = (trip: ITrip) => {
         if (confirm(`Вы уверены, что хотите удалить поездку ${trip.tripName}`)) {
-            fetch(`/api/events/${trip._id}`, {
+            fetch(`/api/trips/${trip._id}`, {
                 method: "DELETE",
             })
                 .then((response) => response.json())

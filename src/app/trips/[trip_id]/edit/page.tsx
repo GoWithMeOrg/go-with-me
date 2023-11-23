@@ -33,7 +33,7 @@ const TripEditPage: NextPage<PageParams> = (context) => {
     };
 
     useEffect(() => {
-        fetch(`/api/events/${tripId}`)
+        fetch(`/api/trips/${tripId}`)
             .then((response) => response.json())
             .then((response) => {
                 setTrip(response.data);

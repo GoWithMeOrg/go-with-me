@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import type { ITrip } from "@/database/models/Trip";
 import { formatDate } from "@/utils/formatDate";
 
-import classes from "@/components/EventForm/EventForm.module.css";
+import classes from "@/app/trips/Trips.module.css";
 
 export interface TripProps {
     trip: ITrip;

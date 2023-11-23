@@ -11,10 +11,10 @@ interface TripFormProps {
 }
 
 const TripForm: FC<TripFormProps> = ({ trip, onSubmit }) => {
-    const [eventState, setEventState] = useState<ITrip>(trip);
+    const [tripState, setTripState] = useState<ITrip>(trip);
 
     const handleChanges = (trip: any) => {
-        setEventState((prevState) => {
+        setTripState((prevState) => {
             return {
                 ...prevState,
                 [trip.target.name]: trip.target.type === "checkbox" ? trip.target.checked : trip.target.value,
@@ -24,7 +24,7 @@ const TripForm: FC<TripFormProps> = ({ trip, onSubmit }) => {
 
     const handleSubmit = (trip: any) => {
         trip.preventDefault();
-        onSubmit(eventState);
+        onSubmit(tripState);
     };
 
     return (
@@ -38,7 +38,7 @@ const TripForm: FC<TripFormProps> = ({ trip, onSubmit }) => {
                             type="text"
                             onInput={handleChanges}
                             name="tripName"
-                            value={eventState.tripName}
+                            value={tripState.tripName}
                             required
                             className={classes.input}
                         />
@@ -50,7 +50,7 @@ const TripForm: FC<TripFormProps> = ({ trip, onSubmit }) => {
                             rows={24}
                             onInput={handleChanges}
                             name="description"
-                            defaultValue={eventState.description}
+                            defaultValue={tripState.description}
                             className={classes.textarea}
                         />
                     </label>
@@ -61,7 +61,7 @@ const TripForm: FC<TripFormProps> = ({ trip, onSubmit }) => {
                             type="date"
                             onInput={handleChanges}
                             name="startDate"
-                            defaultValue={eventState.startDate?.toString()}
+                            defaultValue={tripState.startDate?.toString()}
                             className={classes.input}
                         />
                     </label>
@@ -72,7 +72,7 @@ const TripForm: FC<TripFormProps> = ({ trip, onSubmit }) => {
                             type="date"
                             onInput={handleChanges}
                             name="endDate"
-                            defaultValue={eventState.endDate?.toString()}
+                            defaultValue={tripState.endDate?.toString()}
                             className={classes.input}
                         />
                     </label>
