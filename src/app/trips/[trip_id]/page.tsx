@@ -30,7 +30,7 @@ const query = gql`
             startDate
             endDate
         }
-        comments(trip_id: $id) {
+        comments(event_id: $id) {
             _id
             author {
                 _id

@@ -104,3 +104,8 @@
     filter: none;
     background-color: #4a77d4;
 }
+
+.controls {
+    display: flex;
+    justify-content: space-evenly;
+}

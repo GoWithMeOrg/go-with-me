@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { EventForm } from "@/components/EventForm";
 import type { EventType } from "@/components/EventForm";
 
-import classes from "./EventNewPage.module.css";
+import classes from "@/app/events/Events.module.css";
 
 const EventNewPage: NextPage = () => {
     const router = useRouter();

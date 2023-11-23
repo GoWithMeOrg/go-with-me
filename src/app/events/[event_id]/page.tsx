@@ -10,7 +10,7 @@ import { EventForm } from "@/components/EventForm";
 import type { EventType } from "@/components/EventForm";
 import { Event } from "@/components/Event";
 import { Comments } from "@/components/Comments";
-import classes from "../new/EventNewPage.module.css";
+import classes from "@/app/events/Events.module.css";
 
 type PageParams = {
     params: { event_id: string };

@@ -45,7 +45,7 @@ const TripEditPage: NextPage<PageParams> = (context) => {
 
     return (
         <div>
-            <h1>Edit Event</h1>
+            <h1>Edit Trip</h1>
             {trip && <TripForm trip={trip} onSubmit={handleEdit} />}
         </div>
     );

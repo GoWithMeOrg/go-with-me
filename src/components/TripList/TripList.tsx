@@ -43,8 +43,10 @@ const TripList: FC<TripListProps> = ({ trips }) => {
                             </Link>
                         </h3>
                         <div className={classes.controls}>
-                            <Link href={`/trips/${trip._id}/edit`}>Редактировать</Link>
-                            <button className={classes.delete} onClick={() => handleDelete(trip)}>
+                            <Link className={classes.btn} href={`/trips/${trip._id}/edit`}>
+                                Редактировать
+                            </Link>
+                            <button className={classes.btn} onClick={() => handleDelete(trip)}>
                                 Удалить
                             </button>
                         </div>

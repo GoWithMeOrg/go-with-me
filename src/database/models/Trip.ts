@@ -1,5 +1,6 @@
 import mongoose, { Schema, Document } from "mongoose";
 import UserModel, { IUser } from "./User";
+import { ILocation } from "./Location";
 
 export interface ITrip {
     _id: string;
@@ -7,10 +8,12 @@ export interface ITrip {
     organizer: IUser;
     tripName: string;
     description: string;
+    isPrivate: boolean;
     startDate?: Date;
     endDate?: Date;
     createdAt: Date | string;
     updatedAt: Date | string;
+    location_id: ILocation[] | mongoose.Types.ObjectId;
 }
 
 export interface ITripDocument extends Omit<ITrip, "_id" | "organizer" | "createdAt" | "updatedAt">, Document {}
@@ -27,12 +30,13 @@ const TripSchema = new Schema<ITripDocument>(
             required: true,
         },
         description: String,
-        /* isPrivate: {
+        isPrivate: {
             type: Boolean,
             default: true,
-        }, */
+        },
         startDate: Date,
         endDate: Date,
+        location_id: [{ type: Schema.Types.ObjectId, ref: "Location" }],
     },
     {
         timestamps: true,
