@@ -43,26 +43,28 @@ const TripList: FC<TripListProps> = ({ trips }) => {
                             </Link>
                         </h3>
 
-                        <div>{trip.description}</div>
+                        <div className={classes.item}>{trip.description}</div>
 
                         <div className={classes.locations}>
                             <strong>Locations:</strong>
                             <ul>
                                 {trip.location.map((location) => (
-                                    <li key={location.name}>{location.name}</li>
+                                    <li key={location.name} className={classes.item}>
+                                        {location.name}
+                                    </li>
                                 ))}
                             </ul>
                         </div>
 
                         <div className={classes.dates}>
                             {trip.startDate && (
-                                <div>
+                                <div className={classes.item}>
                                     Start Date:
                                     {formatDate(trip.startDate, "dd LLLL yyyy")}
                                 </div>
                             )}
                             {trip.endDate && (
-                                <div>
+                                <div className={classes.item}>
                                     endDate:
                                     {formatDate(trip.endDate, "dd LLLL yyyy")}
                                 </div>
@@ -71,10 +73,10 @@ const TripList: FC<TripListProps> = ({ trips }) => {
 
                         <div className={classes.controls}>
                             <Link className={classes.btn} href={`/trips/${trip._id}/edit`}>
-                                Редактировать
+                                Edit
                             </Link>
                             <button className={classes.btn} onClick={() => handleDelete(trip)}>
-                                Удалить
+                                Delete
                             </button>
                         </div>
                     </li>

@@ -5,6 +5,7 @@ import { NextPage } from "next";
 
 import type { ITrip } from "@/database/models/Trip";
 import { TripForm } from "@/components/TripForm";
+import classes from "@/app/trips/Trips.module.css";
 
 type PageParams = {
     params: { trip_id: string };
@@ -44,7 +45,7 @@ const TripEditPage: NextPage<PageParams> = (context) => {
     }, [tripId]);
 
     return (
-        <div>
+        <div className={classes.container}>
             <h1>Edit Trip</h1>
             {trip && <TripForm trip={trip} onSubmit={handleEdit} />}
         </div>

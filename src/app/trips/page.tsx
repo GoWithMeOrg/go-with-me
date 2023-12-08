@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import cookieName from "@/options/sessionCookieName";
 import type { ITrip } from "@/database/models/Trip";
 import { TripList } from "@/components/TripList";
+import classes from "@/app/trips/Trips.module.css";
 
 async function getData(sessionId?: string): Promise<{ data: ITrip[] }> {
     const response = await fetch(`${process.env.BASE_FETCH_URL}/api/trips`, {
@@ -39,7 +40,7 @@ const TripListPage: NextPage = async () => {
 
     const response = await getData(sessionCookie?.value);
     return (
-        <div>
+        <div className={classes.container}>
             <h1>Trip List Page</h1>
             <div>
                 <Link href="/trips/new">Create New Trip</Link>

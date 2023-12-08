@@ -102,7 +102,7 @@ const TripForm: FC<TripFormProps> = ({ trip, onSubmit }) => {
                         />
                     </label>
 
-                    <label className={classes.label}>
+                    <label className={classes.location}>
                         <span className={classes.titleField}>Location:</span>
                         {tripState.location &&
                             tripState.location.map((location, index) => <div key={index}>{location.name}</div>)}
@@ -112,7 +112,7 @@ const TripForm: FC<TripFormProps> = ({ trip, onSubmit }) => {
                             value={newLocation}
                             className={classes.input}
                         />
-                        <button type="button" onClick={addLocation}>
+                        <button type="button" onClick={addLocation} className={classes.btn}>
                             Add Location
                         </button>
                     </label>

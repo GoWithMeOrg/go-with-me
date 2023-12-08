@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import cookieName from "@/options/sessionCookieName";
 import type { IEvent } from "@/database/models/Event";
 import { EventList } from "@/components/EventList/EventList";
+import classes from "@/app/events/Events.module.css";
 
 async function getData(sessionId?: string): Promise<{ data: IEvent[] }> {
     const response = await fetch(`${process.env.BASE_FETCH_URL}/api/events`, {
@@ -39,7 +40,7 @@ const EventListPage: NextPage = async () => {
 
     const response = await getData(sessionCookie?.value);
     return (
-        <div>
+        <div className={classes.container}>
             <h1>Event List Page</h1>
             <div>
                 <Link href="/events/new">Create New Event</Link>

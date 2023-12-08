@@ -5,6 +5,7 @@ import ApolloWrapper from "@/apollo/client-side-components";
 import { NextAuthProvider } from "./providers";
 import "../styles/global.css";
 import Link from "next/link";
+import { Menu } from "@/components/Menu";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,17 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <body className={inter.className}>
                 <NextAuthProvider>
                     <ApolloWrapper>
-                        <menu>
-                            <ul>
-                                <li>
-                                    <Link href="/events">Events</Link>
-                                </li>
-
-                                <li>
-                                    <Link href="/trips">Trips</Link>
-                                </li>
-                            </ul>
-                        </menu>
+                        <Menu />
                         {children}
                     </ApolloWrapper>
                 </NextAuthProvider>

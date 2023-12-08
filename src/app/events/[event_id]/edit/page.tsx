@@ -5,6 +5,7 @@ import { NextPage } from "next";
 
 import { EventForm } from "@/components/EventForm/EventForm";
 import type { IEvent } from "@/database/models/Event";
+import classes from "@/app/events/Events.module.css";
 
 type PageParams = {
     params: { event_id: string };
@@ -44,7 +45,7 @@ const EventEditPage: NextPage<PageParams> = (context) => {
     }, [eventId]);
 
     return (
-        <div>
+        <div className={classes.container}>
             <h1>Edit Event</h1>
             {event && <EventForm event={event} onSubmit={handleEdit} />}
         </div>
