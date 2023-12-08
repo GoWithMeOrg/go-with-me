@@ -42,14 +42,18 @@ const TripList: FC<TripListProps> = ({ trips }) => {
                                 {trip.tripName}
                             </Link>
                         </h3>
-                        <div className={classes.controls}>
-                            <Link className={classes.btn} href={`/trips/${trip._id}/edit`}>
-                                Редактировать
-                            </Link>
-                            <button className={classes.btn} onClick={() => handleDelete(trip)}>
-                                Удалить
-                            </button>
+
+                        <div>{trip.description}</div>
+
+                        <div className={classes.locations}>
+                            <strong>Locations:</strong>
+                            <ul>
+                                {trip.location.map((location) => (
+                                    <li key={location.name}>{location.name}</li>
+                                ))}
+                            </ul>
                         </div>
+
                         <div className={classes.dates}>
                             {trip.startDate && (
                                 <div>
@@ -63,6 +67,15 @@ const TripList: FC<TripListProps> = ({ trips }) => {
                                     {formatDate(trip.endDate, "dd LLLL yyyy")}
                                 </div>
                             )}
+                        </div>
+
+                        <div className={classes.controls}>
+                            <Link className={classes.btn} href={`/trips/${trip._id}/edit`}>
+                                Редактировать
+                            </Link>
+                            <button className={classes.btn} onClick={() => handleDelete(trip)}>
+                                Удалить
+                            </button>
                         </div>
                     </li>
                 ))}

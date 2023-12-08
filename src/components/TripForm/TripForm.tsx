@@ -2,6 +2,7 @@ import React, { FC, useState } from "react";
 import classes from "../EventForm/EventForm.module.css";
 
 import { ITrip } from "@/database/models/Trip";
+import mongoose from "mongoose";
 
 export type TripType = ITrip;
 
@@ -11,7 +12,8 @@ interface TripFormProps {
 }
 
 const TripForm: FC<TripFormProps> = ({ trip, onSubmit }) => {
-    const [tripState, setTripState] = useState<ITrip>(trip);
+    const [tripState, setTripState] = useState(trip);
+    const [newLocation, setNewLocation] = useState<string>("");
 
     const handleChanges = (trip: any) => {
         setTripState((prevState) => {
@@ -22,8 +24,21 @@ const TripForm: FC<TripFormProps> = ({ trip, onSubmit }) => {
         });
     };
 
-    const handleSubmit = (trip: any) => {
-        trip.preventDefault();
+    const handleLocationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setNewLocation(event.target.value);
+    };
+
+    const addLocation = () => {
+        setTripState((prevState) => ({
+            ...prevState,
+            location: Array.isArray(prevState.location)
+                ? [...prevState.location, { name: newLocation }]
+                : [{ name: newLocation }],
+        }));
+    };
+
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
         onSubmit(tripState);
     };
 
@@ -85,6 +100,21 @@ const TripForm: FC<TripFormProps> = ({ trip, onSubmit }) => {
                             name="isPrivate"
                             /* defaultChecked={eventState.isPrivate} */
                         />
+                    </label>
+
+                    <label className={classes.label}>
+                        <span className={classes.titleField}>Location:</span>
+                        {tripState.location &&
+                            tripState.location.map((location, index) => <div key={index}>{location.name}</div>)}
+                        <input
+                            type="text"
+                            onChange={handleLocationChange}
+                            value={newLocation}
+                            className={classes.input}
+                        />
+                        <button type="button" onClick={addLocation}>
+                            Add Location
+                        </button>
                     </label>
 
                     <label className={classes.label}>

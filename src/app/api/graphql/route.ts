@@ -6,7 +6,7 @@ import EventModel, { IEvent } from "@/database/models/Event";
 import mongooseConnect from "@/database/mongooseConnect";
 import CommentModel from "@/database/models/Comment";
 import TripModel, { ITrip } from "@/database/models/Trip";
-import LocationModel from "@/database/models/Location";
+import LocationModel, { ILocation } from "@/database/models/Location";
 
 const resolvers = {
     Query: {
@@ -32,11 +32,6 @@ const resolvers = {
         comments: async (parent: any, { event_id }: { event_id: string }) => {
             await mongooseConnect();
             return CommentModel.find({ event_id }).sort({ createdAt: -1 }).populate("author");
-        },
-
-        locations: async (parent: any, { event_id }: { event_id: string }) => {
-            await mongooseConnect();
-            return LocationModel.find({ event_id }).sort({ createdAt: -1 }).populate("author");
         },
     },
 
@@ -82,7 +77,6 @@ const typeDefs = gql`
         trips: [Trip]
         trip(id: ID!): Trip
         comments(event_id: ID!): [Comment]
-        locations(event_id: ID!): [Location]
     }
 
     type User {
@@ -91,6 +85,10 @@ const typeDefs = gql`
         email: String
         image: String
         emailVerified: Boolean
+    }
+
+    type Location {
+        name: String
     }
 
     type Event {
@@ -111,7 +109,7 @@ const typeDefs = gql`
         isPrivate: Boolean
         startDate: String
         endDate: String
-        locations: [Location]
+        location: [Location]
     }
 
     type Comment {
@@ -123,19 +121,6 @@ const typeDefs = gql`
         updatedAt: String
     }
 
-    type Location {
-        _id: ID
-        name: String
-        address: String
-        coordinates: Coordinates
-        description: String
-    }
-
-    type Coordinates {
-        latitude: Float
-        longitude: Float
-    }
-
     input EventInput {
         organizer_id: ID!
         tripName: String
@@ -145,6 +130,10 @@ const typeDefs = gql`
         endDate: String
     }
 
+    input LocationInput {
+        name: String
+    }
+
     input TripInput {
         organizer_id: ID!
         tripName: String
@@ -152,19 +141,7 @@ const typeDefs = gql`
         isPrivate: Boolean
         startDate: String
         endDate: String
-        locations: [LocationInput]
-    }
-
-    input LocationInput {
-        name: String
-        address: String
-        coordinates: CoordinatesInput
-        description: String
-    }
-
-    input CoordinatesInput {
-        latitude: Float
-        longitude: Float
+        location: [LocationInput]
     }
 
     type Mutation {

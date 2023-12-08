@@ -13,7 +13,8 @@ export interface ITrip {
     endDate?: Date;
     createdAt: Date | string;
     updatedAt: Date | string;
-    location_id: ILocation[] | mongoose.Types.ObjectId;
+    location: ILocation[];
+    newLocation: string;
 }
 
 export interface ITripDocument extends Omit<ITrip, "_id" | "organizer" | "createdAt" | "updatedAt">, Document {}
@@ -36,7 +37,7 @@ const TripSchema = new Schema<ITripDocument>(
         },
         startDate: Date,
         endDate: Date,
-        location_id: [{ type: Schema.Types.ObjectId, ref: "Location" }],
+        location: [],
     },
     {
         timestamps: true,
