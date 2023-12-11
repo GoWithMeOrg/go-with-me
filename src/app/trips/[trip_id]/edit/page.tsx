@@ -3,26 +3,26 @@
 import { useEffect, useState } from "react";
 import { NextPage } from "next";
 
-import { EventForm } from "@/components/EventForm/EventForm";
-import type { IEvent } from "@/database/models/Event";
-import classes from "@/app/events/Events.module.css";
+import type { ITrip } from "@/database/models/Trip";
+import { TripForm } from "@/components/TripForm";
+import classes from "@/app/trips/Trips.module.css";
 
 type PageParams = {
-    params: { event_id: string };
+    params: { trip_id: string };
 };
 
-const EventEditPage: NextPage<PageParams> = (context) => {
-    const eventId = context.params.event_id;
-    const [event, setEvent] = useState<IEvent>();
+const TripEditPage: NextPage<PageParams> = (context) => {
+    const tripId = context.params.trip_id;
+    const [trip, setTrip] = useState<ITrip>();
 
-    const handleEdit = (eventEdited: IEvent) => {
-        console.log("eventEdited: ", eventEdited); // eslint-disable-line
-        fetch(`/api/events/${eventId}`, {
+    const handleEdit = (tripEdited: ITrip) => {
+        console.log("tripEdited: ", tripEdited); // eslint-disable-line
+        fetch(`/api/trips/${tripId}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(eventEdited),
+            body: JSON.stringify(tripEdited),
         })
             .then((response) => response.json())
             .then((data) => {
@@ -34,22 +34,22 @@ const EventEditPage: NextPage<PageParams> = (context) => {
     };
 
     useEffect(() => {
-        fetch(`/api/events/${eventId}`)
+        fetch(`/api/trips/${tripId}`)
             .then((response) => response.json())
             .then((response) => {
-                setEvent(response.data);
+                setTrip(response.data);
             })
             .catch((error) => {
                 console.log("error: ", error); // eslint-disable-line
             });
-    }, [eventId]);
+    }, [tripId]);
 
     return (
         <div className={classes.container}>
-            <h1>Edit Event</h1>
-            {event && <EventForm event={event} onSubmit={handleEdit} />}
+            <h1>Edit Trip</h1>
+            {trip && <TripForm trip={trip} onSubmit={handleEdit} />}
         </div>
     );
 };
 
-export default EventEditPage;
+export default TripEditPage;

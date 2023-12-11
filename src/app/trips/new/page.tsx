@@ -4,26 +4,25 @@
 
 import type { NextPage } from "next";
 import { useRouter } from "next/navigation";
-import { EventForm } from "@/components/EventForm";
-import type { EventType } from "@/components/EventForm";
 
-import classes from "@/app/events/Events.module.css";
+import classes from "@/app/trips/Trips.module.css";
+import { TripForm, TripType } from "@/components/TripForm/TripForm";
 
-const EventNewPage: NextPage = () => {
+const TripNewPage: NextPage = () => {
     const router = useRouter();
 
-    const handleCreateEvent = (event: EventType) => {
-        fetch(`/api/events`, {
+    const handleCreateTrip = (trip: TripType) => {
+        fetch(`/api/trips`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(event),
+            body: JSON.stringify(trip),
         })
             .then((response) => response.json())
             .then((response) => {
                 console.log(response);
-                router.push(`/events/${response.data.id}`);
+                router.push(`/trips/${response.data.id}`);
             })
             .catch((error) => {
                 console.error(error);
@@ -31,10 +30,10 @@ const EventNewPage: NextPage = () => {
     };
     return (
         <div className={classes.container}>
-            <h1>Event New Page</h1>
+            <h1>Trip New Page</h1>
             <div className={classes.eventForm}>
-                <EventForm
-                    event={{
+                <TripForm
+                    trip={{
                         // @ts-ignore TODO: fix type
                         organizer_id: null,
                         createdAt: new Date(),
@@ -45,11 +44,11 @@ const EventNewPage: NextPage = () => {
                         endDate: undefined,
                         isPrivate: false,
                     }}
-                    onSubmit={handleCreateEvent}
+                    onSubmit={handleCreateTrip}
                 />
             </div>
         </div>
     );
 };
 
-export default EventNewPage;
+export default TripNewPage;

@@ -1,0 +1,9 @@
+.itemList {
+    display: flex;
+    justify-content: space-around;
+}
+
+.link:hover {
+    font-size: 1.5rem;
+    color: red;
+}

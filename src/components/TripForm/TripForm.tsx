@@ -1,24 +1,24 @@
 import React, { FC, useState } from "react";
-import classes from "./EventForm.module.css";
+import classes from "../EventForm/EventForm.module.css";
 
-import type { IEvent } from "@/database/models/Event";
+import { ITrip } from "@/database/models/Trip";
 
-export type EventType = IEvent;
+export type TripType = ITrip;
 
-interface EventFormProps {
-    event: EventType;
-    onSubmit: (event: EventType) => void;
+interface TripFormProps {
+    trip: TripType;
+    onSubmit: (trip: TripType) => void;
 }
 
-const EventForm: FC<EventFormProps> = ({ event, onSubmit }) => {
-    const [eventState, setEventState] = useState<IEvent>(event);
+const TripForm: FC<TripFormProps> = ({ trip, onSubmit }) => {
+    const [tripState, setTripState] = useState<ITrip>(trip);
     const [newLocation, setNewLocation] = useState<string>("");
 
-    const handleChanges = (event: any) => {
-        setEventState((prevState) => {
+    const handleChanges = (trip: any) => {
+        setTripState((prevState) => {
             return {
                 ...prevState,
-                [event.target.name]: event.target.type === "checkbox" ? event.target.checked : event.target.value,
+                [trip.target.name]: trip.target.type === "checkbox" ? trip.target.checked : trip.target.value,
             };
         });
     };
@@ -28,7 +28,7 @@ const EventForm: FC<EventFormProps> = ({ event, onSubmit }) => {
     };
 
     const addLocation = () => {
-        setEventState((prevState) => ({
+        setTripState((prevState) => ({
             ...prevState,
             location: Array.isArray(prevState.location)
                 ? [...prevState.location, { name: newLocation }]
@@ -36,9 +36,9 @@ const EventForm: FC<EventFormProps> = ({ event, onSubmit }) => {
         }));
     };
 
-    const handleSubmit = (event: any) => {
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        onSubmit(eventState);
+        onSubmit(tripState);
     };
 
     return (
@@ -52,7 +52,7 @@ const EventForm: FC<EventFormProps> = ({ event, onSubmit }) => {
                             type="text"
                             onInput={handleChanges}
                             name="tripName"
-                            value={eventState.tripName}
+                            value={tripState.tripName}
                             required
                             className={classes.input}
                         />
@@ -64,7 +64,7 @@ const EventForm: FC<EventFormProps> = ({ event, onSubmit }) => {
                             rows={24}
                             onInput={handleChanges}
                             name="description"
-                            defaultValue={eventState.description}
+                            defaultValue={tripState.description}
                             className={classes.textarea}
                         />
                     </label>
@@ -75,7 +75,7 @@ const EventForm: FC<EventFormProps> = ({ event, onSubmit }) => {
                             type="date"
                             onInput={handleChanges}
                             name="startDate"
-                            defaultValue={eventState.startDate?.toString()}
+                            defaultValue={tripState.startDate?.toString()}
                             className={classes.input}
                         />
                     </label>
@@ -86,7 +86,7 @@ const EventForm: FC<EventFormProps> = ({ event, onSubmit }) => {
                             type="date"
                             onInput={handleChanges}
                             name="endDate"
-                            defaultValue={eventState.endDate?.toString()}
+                            defaultValue={tripState.endDate?.toString()}
                             className={classes.input}
                         />
                     </label>
@@ -97,14 +97,14 @@ const EventForm: FC<EventFormProps> = ({ event, onSubmit }) => {
                             type="checkbox"
                             onInput={handleChanges}
                             name="isPrivate"
-                            defaultChecked={eventState.isPrivate}
+                            /* defaultChecked={eventState.isPrivate} */
                         />
                     </label>
 
                     <label className={classes.location}>
                         <span className={classes.titleField}>Location:</span>
-                        {eventState.location &&
-                            eventState.location.map((location, index) => <div key={index}>{location.name}</div>)}
+                        {tripState.location &&
+                            tripState.location.map((location, index) => <div key={index}>{location.name}</div>)}
                         <input
                             type="text"
                             onChange={handleLocationChange}
@@ -128,4 +128,4 @@ const EventForm: FC<EventFormProps> = ({ event, onSubmit }) => {
     );
 };
 
-export { EventForm };
+export { TripForm };

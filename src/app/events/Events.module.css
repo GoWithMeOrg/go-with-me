@@ -1,27 +1,15 @@
-.form {
+.container {
     display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.header {
-    font-size: 1.3em;
-}
-
-.label {
-    display: flex;
-}
-
-.label > span {
-    width: 200px;
-}
-
-.button {
-    margin-top: 12px;
-}
-
-.description {
     width: 100%;
+    flex-direction: column;
+    align-items: center;
+}
+
+.eventForm {
+    border: 1px solid #efefef;
+    border-radius: 10px;
+    width: 50%;
+    padding: 5%;
 }
 
 .btn {
@@ -59,7 +47,7 @@
     cursor: pointer;
 
     background-color: #4a77d4;
-    background-image: -moz-linear-gradient(to bottom, #6eb6de, #4a77d4);
+    background-image: -moz-linear-gradient(to button, #6eb6de, #4a77d4);
     background-image: -ms-linear-gradient(to bottom, #6eb6de, #4a77d4);
     background-image: -webkit-linear-gradient(to bottom, #6eb6de, #4a77d4);
     background-image: -o-linear-gradient(to bottom, #6eb6de, #4a77d4);
@@ -79,7 +67,7 @@
     -moz-border-radius: 5px;
     border-radius: 5px;
 
-    width: 100%;
+    width: 303px;
     display: block;
 }
 
@@ -115,75 +103,4 @@
 .btn[disabled] {
     filter: none;
     background-color: #4a77d4;
-}
-
-.titleForm {
-    display: flex;
-    justify-content: center;
-    padding-bottom: 20px;
-    color: #fff;
-    text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    letter-spacing: 1px;
-}
-
-.titleField {
-    color: #fff;
-}
-
-.login h1 {
-    color: #fff;
-    text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    letter-spacing: 1px;
-    text-align: center;
-}
-
-.input {
-    width: 100%;
-    margin-bottom: 10px;
-    background: rgba(0, 0, 0, 0.3);
-    border: none;
-    outline: none;
-    padding: 10px;
-    font-size: 13px;
-    color: #fff;
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(0, 0, 0, 0.3);
-    border-radius: 4px;
-    box-shadow:
-        inset 0 -5px 45px rgba(100, 100, 100, 0.2),
-        0 1px 1px rgba(255, 255, 255, 0.2);
-    -webkit-transition: box-shadow 0.5s ease;
-    -moz-transition: box-shadow 0.5s ease;
-    -o-transition: box-shadow 0.5s ease;
-    -ms-transition: box-shadow 0.5s ease;
-    transition: box-shadow 0.5s ease;
-}
-
-.input:focus {
-    box-shadow:
-        inset 0 -5px 45px rgba(100, 100, 100, 0.4),
-        0 1px 1px rgba(255, 255, 255, 0.2);
-}
-
-.textarea {
-    width: 100%;
-    height: 200px;
-    margin-bottom: 10px;
-    background: rgba(0, 0, 0, 0.3);
-    border: none;
-    outline: none;
-    padding: 10px;
-    font-size: 13px;
-    color: #fff;
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(0, 0, 0, 0.3);
-    border-radius: 4px;
-    box-shadow:
-        inset 0 -5px 45px rgba(100, 100, 100, 0.2),
-        0 1px 1px rgba(255, 255, 255, 0.2);
-    -webkit-transition: box-shadow 0.5s ease;
-    -moz-transition: box-shadow 0.5s ease;
-    -o-transition: box-shadow 0.5s ease;
-    -ms-transition: box-shadow 0.5s ease;
-    transition: box-shadow 0.5s ease;
 }

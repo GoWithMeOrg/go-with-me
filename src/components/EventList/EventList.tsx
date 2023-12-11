@@ -42,6 +42,21 @@ const EventList: FC<EventListProps> = ({ events }) => {
                                 {event.tripName}
                             </Link>
                         </h3>
+
+                        <div className={classes.item}>{event.description}</div>
+
+                        <div className={classes.locations}>
+                            <strong>Locations:</strong>
+                            <ul>
+                                {event.location &&
+                                    event.location.map((location) => (
+                                        <li key={location.name} className={classes.item}>
+                                            {location.name}
+                                        </li>
+                                    ))}
+                            </ul>
+                        </div>
+
                         <div className={classes.controls}>
                             <Link href={`/events/${event._id}/edit`}>Редактировать</Link>
                             <button className={classes.delete} onClick={() => handleDelete(event)}>

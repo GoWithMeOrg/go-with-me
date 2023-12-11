@@ -4,12 +4,12 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import cookieName from "@/options/sessionCookieName";
-import type { IEvent } from "@/database/models/Event";
-import { EventList } from "@/components/EventList/EventList";
-import classes from "@/app/events/Events.module.css";
+import type { ITrip } from "@/database/models/Trip";
+import { TripList } from "@/components/TripList";
+import classes from "@/app/trips/Trips.module.css";
 
-async function getData(sessionId?: string): Promise<{ data: IEvent[] }> {
-    const response = await fetch(`${process.env.BASE_FETCH_URL}/api/events`, {
+async function getData(sessionId?: string): Promise<{ data: ITrip[] }> {
+    const response = await fetch(`${process.env.BASE_FETCH_URL}/api/trips`, {
         cache: "no-cache",
         headers: {
             "Content-Type": "application/json",
@@ -33,7 +33,7 @@ async function getData(sessionId?: string): Promise<{ data: IEvent[] }> {
     return response.json();
 }
 
-const EventListPage: NextPage = async () => {
+const TripListPage: NextPage = async () => {
     const cookieStore = cookies();
     // Server side pages don't have access to the browser's cookies
     const sessionCookie = cookieStore.get(cookieName);
@@ -41,13 +41,13 @@ const EventListPage: NextPage = async () => {
     const response = await getData(sessionCookie?.value);
     return (
         <div className={classes.container}>
-            <h1>Event List Page</h1>
+            <h1>Trip List Page</h1>
             <div>
-                <Link href="/events/new">Create New Event</Link>
+                <Link href="/trips/new">Create New Trip</Link>
             </div>
-            <EventList events={response.data} />
+            <TripList trips={response.data} />
         </div>
     );
 };
 
-export default EventListPage;
+export default TripListPage;

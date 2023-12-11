@@ -2,13 +2,7 @@ import mongoose, { Schema, Document } from "mongoose";
 import UserModel, { IUser } from "./User";
 import { ILocation } from "./Location";
 
-/**
- * TODO:
- * location: Array of Embedded Documents (see below for structure)
- * bannerImage: String (URL or base64 encoded data)
- */
-
-export interface IEvent {
+export interface ITrip {
     _id: string;
     organizer_id: mongoose.Types.ObjectId;
     organizer: IUser;
@@ -23,9 +17,9 @@ export interface IEvent {
     newLocation: string;
 }
 
-export interface IEventDocument extends Omit<IEvent, "_id" | "organizer" | "createdAt" | "updatedAt">, Document {}
+export interface ITripDocument extends Omit<ITrip, "_id" | "organizer" | "createdAt" | "updatedAt">, Document {}
 
-const EventSchema = new Schema<IEventDocument>(
+const TripSchema = new Schema<ITripDocument>(
     {
         organizer_id: {
             type: Schema.Types.ObjectId,
@@ -51,14 +45,14 @@ const EventSchema = new Schema<IEventDocument>(
     },
 );
 
-EventSchema.virtual("organizer", {
+TripSchema.virtual("organizer", {
     ref: UserModel,
     localField: "organizer_id",
     foreignField: "_id",
     justOne: true,
 });
 
-const EventModel: mongoose.Model<IEventDocument> =
-    mongoose.models.Event || mongoose.model<IEventDocument>("Event", EventSchema);
+const TripModel: mongoose.Model<ITripDocument> =
+    mongoose.models.Trip || mongoose.model<ITripDocument>("Trip", TripSchema);
 
-export default EventModel;
+export default TripModel;

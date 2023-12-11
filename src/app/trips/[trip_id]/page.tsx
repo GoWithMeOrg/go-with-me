@@ -6,20 +6,19 @@ import { useRouter } from "next/navigation";
 import { useSuspenseQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 import { gql } from "@apollo/client";
 
-import { EventForm } from "@/components/EventForm";
-import type { EventType } from "@/components/EventForm";
-import { Event } from "@/components/Event";
+import classes from "@/app/trips/Trips.module.css";
 import { Comments } from "@/components/Comments";
-import classes from "@/app/events/Events.module.css";
+import { TripForm, TripType } from "@/components/TripForm/TripForm";
+import { Trip } from "@/components/Trip";
 
 type PageParams = {
-    params: { event_id: string };
+    params: { trip_id: string };
 };
 
 const query = gql`
     #graphql
-    query GetEvent($id: ID!) {
-        event(id: $id) {
+    query GetTrip($id: ID!) {
+        trip(id: $id) {
             organizer {
                 _id
                 name
@@ -44,28 +43,28 @@ const query = gql`
     }
 `;
 
-const EventPage: NextPage<PageParams> = (context) => {
-    const { data } = useSuspenseQuery(query, { variables: { id: context.params.event_id } });
+const TripPage: NextPage<PageParams> = (context) => {
+    const { data } = useSuspenseQuery(query, { variables: { id: context.params.trip_id } });
 
     console.log("[client side] data: ", data); // eslint-disable-line
 
     const router = useRouter();
     const [isEditMode, setIsEditMode] = useState(false);
-    const [event, setEvent] = useState(null);
+    const [trip, setTrip] = useState(null);
 
-    const handleSaveEvent = (event: EventType) => {
-        fetch(`/api/events/${context.params.event_id}`, {
+    const handleSaveEvent = (trip: TripType) => {
+        fetch(`/api/trips/${context.params.trip_id}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(event),
+            body: JSON.stringify(trip),
         })
             .then((response) => response.json())
             .then((response) => {
                 console.log(response);
                 setIsEditMode(false);
-                setEvent(response.data);
+                setTrip(response.data);
             })
             .catch((error) => {
                 console.error(error);
@@ -73,9 +72,9 @@ const EventPage: NextPage<PageParams> = (context) => {
     };
 
     useEffect(() => {
-        console.log("EventPage mounted");
+        console.log("TripPage mounted");
 
-        fetch(`/api/events/${context.params.event_id}`)
+        fetch(`/api/trips/${context.params.trip_id}`)
             .then((response) => {
                 if (!response.ok) {
                     switch (response.status) {
@@ -93,24 +92,24 @@ const EventPage: NextPage<PageParams> = (context) => {
             })
             .then((response) => {
                 console.log("REST", response);
-                setEvent(response.data);
+                setTrip(response.data);
             })
             .catch((error) => {
                 console.error(error);
             });
 
         return () => {
-            console.log("EventPage unmounted");
+            console.log("TripPage unmounted");
         };
-    }, [context.params.event_id, router]);
+    }, [context.params.trip_id, router]);
 
-    if (!event) {
+    if (!trip) {
         return <div>Loading...</div>;
     }
 
     return (
         <div className={classes.container}>
-            <h3>EventPage</h3>
+            <h3>TripPage</h3>
 
             <button
                 className={classes.btn}
@@ -121,12 +120,12 @@ const EventPage: NextPage<PageParams> = (context) => {
                 {isEditMode ? "Cancel" : "Edit"}
             </button>
 
-            {isEditMode ? <EventForm event={event} onSubmit={handleSaveEvent} /> : <Event event={event} />}
+            {isEditMode ? <TripForm trip={trip} onSubmit={handleSaveEvent} /> : <Trip trip={trip} />}
 
             <h3>Comments</h3>
-            <Comments event_id={context.params.event_id} />
+            <Comments event_id={context.params.trip_id} />
         </div>
     );
 };
 
-export default EventPage;
+export default TripPage;
