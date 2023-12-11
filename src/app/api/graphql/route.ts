@@ -6,7 +6,6 @@ import EventModel, { IEvent } from "@/database/models/Event";
 import mongooseConnect from "@/database/mongooseConnect";
 import CommentModel from "@/database/models/Comment";
 import TripModel, { ITrip } from "@/database/models/Trip";
-import LocationModel, { ILocation } from "@/database/models/Location";
 
 const resolvers = {
     Query: {
@@ -99,6 +98,7 @@ const typeDefs = gql`
         isPrivate: Boolean
         startDate: String
         endDate: String
+        location: [Location]
     }
 
     type Trip {
@@ -128,6 +128,7 @@ const typeDefs = gql`
         isPrivate: Boolean
         startDate: String
         endDate: String
+        location: [LocationInput]
     }
 
     input LocationInput {

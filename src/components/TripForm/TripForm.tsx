@@ -2,7 +2,6 @@ import React, { FC, useState } from "react";
 import classes from "../EventForm/EventForm.module.css";
 
 import { ITrip } from "@/database/models/Trip";
-import mongoose from "mongoose";
 
 export type TripType = ITrip;
 
@@ -12,7 +11,7 @@ interface TripFormProps {
 }
 
 const TripForm: FC<TripFormProps> = ({ trip, onSubmit }) => {
-    const [tripState, setTripState] = useState(trip);
+    const [tripState, setTripState] = useState<ITrip>(trip);
     const [newLocation, setNewLocation] = useState<string>("");
 
     const handleChanges = (trip: any) => {

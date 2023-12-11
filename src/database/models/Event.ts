@@ -1,5 +1,6 @@
 import mongoose, { Schema, Document } from "mongoose";
 import UserModel, { IUser } from "./User";
+import { ILocation } from "./Location";
 
 /**
  * TODO:
@@ -18,6 +19,8 @@ export interface IEvent {
     endDate?: Date;
     createdAt: Date | string;
     updatedAt: Date | string;
+    location: ILocation[];
+    newLocation: string;
 }
 
 export interface IEventDocument extends Omit<IEvent, "_id" | "organizer" | "createdAt" | "updatedAt">, Document {}
@@ -40,6 +43,7 @@ const EventSchema = new Schema<IEventDocument>(
         },
         startDate: Date,
         endDate: Date,
+        location: [],
     },
     {
         timestamps: true,

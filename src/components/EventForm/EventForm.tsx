@@ -12,6 +12,7 @@ interface EventFormProps {
 
 const EventForm: FC<EventFormProps> = ({ event, onSubmit }) => {
     const [eventState, setEventState] = useState<IEvent>(event);
+    const [newLocation, setNewLocation] = useState<string>("");
 
     const handleChanges = (event: any) => {
         setEventState((prevState) => {
@@ -20,6 +21,19 @@ const EventForm: FC<EventFormProps> = ({ event, onSubmit }) => {
                 [event.target.name]: event.target.type === "checkbox" ? event.target.checked : event.target.value,
             };
         });
+    };
+
+    const handleLocationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setNewLocation(event.target.value);
+    };
+
+    const addLocation = () => {
+        setEventState((prevState) => ({
+            ...prevState,
+            location: Array.isArray(prevState.location)
+                ? [...prevState.location, { name: newLocation }]
+                : [{ name: newLocation }],
+        }));
     };
 
     const handleSubmit = (event: any) => {
@@ -85,6 +99,21 @@ const EventForm: FC<EventFormProps> = ({ event, onSubmit }) => {
                             name="isPrivate"
                             defaultChecked={eventState.isPrivate}
                         />
+                    </label>
+
+                    <label className={classes.location}>
+                        <span className={classes.titleField}>Location:</span>
+                        {eventState.location &&
+                            eventState.location.map((location, index) => <div key={index}>{location.name}</div>)}
+                        <input
+                            type="text"
+                            onChange={handleLocationChange}
+                            value={newLocation}
+                            className={classes.input}
+                        />
+                        <button type="button" onClick={addLocation} className={classes.btn}>
+                            Add Location
+                        </button>
                     </label>
 
                     <label className={classes.label}>
