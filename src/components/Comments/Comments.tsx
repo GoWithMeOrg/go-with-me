@@ -2,7 +2,7 @@
 
 import { useEffect, useState, FC, ChangeEvent } from "react";
 import type { IComment } from "@/database/models/Comment";
-import classes from "../EventForm/EventForm.module.css";
+import classes from "@/components/Comments/Comments.module.css";
 import { formatDate } from "@/utils/formatDate";
 
 type CommentsProps = {
@@ -53,7 +53,7 @@ const Comments: FC<CommentsProps> = ({ event_id }) => {
     };
 
     return (
-        <div>
+        <div className={classes.container}>
             <section>
                 <h6>Написать комментарий</h6>
                 <form action="/api/comments" onSubmit={handleSaveComment}>
