@@ -18,11 +18,12 @@
     "node": ">=18"
   },
   "dependencies": {
-    "@apollo/client": "^3.8.0-rc.2",
+    "@apollo/client": "^3.8.8",
     "@apollo/experimental-nextjs-app-support": "^0.5.1",
     "@apollo/server": "^4.9.5",
     "@as-integrations/next": "^2.0.2",
     "@auth/mongodb-adapter": "^2.0.3",
+    "graphql": "^16.8.1",
     "graphql-tag": "^2.12.6",
     "luxon": "^3.4.4",
     "mongodb": "^6.2.0",

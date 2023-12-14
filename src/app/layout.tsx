@@ -4,7 +4,6 @@ import { Inter } from "next/font/google";
 import ApolloWrapper from "@/apollo/client-side-components";
 import { NextAuthProvider } from "./providers";
 import "../styles/global.css";
-import Link from "next/link";
 import { Menu } from "@/components/Menu";
 
 const inter = Inter({ subsets: ["latin"] });
