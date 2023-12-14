@@ -2,32 +2,65 @@
 
 import { FC } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { formatDate } from "@/utils/formatDate";
 
 import classes from "./EventList.module.css";
 import type { IEvent } from "@/database/models/Event";
+import { useQuery, gql, useMutation } from "@apollo/client";
 
 type EventListProps = {
     events: IEvent[];
 };
 
-const EventList: FC<EventListProps> = ({ events }) => {
-    const router = useRouter();
+const GET_EVENTS = gql`
+    query GetEvents {
+        events {
+            _id
+            organizer {
+                _id
+                name
+                email
+                image
+                emailVerified
+            }
 
-    const handleDelete = (event: IEvent) => {
-        if (confirm(`Вы уверены, что хотите удалить встречу ${event.tripName}`)) {
-            fetch(`/api/events/${event._id}`, {
-                method: "DELETE",
-            })
-                .then((response) => response.json())
-                .then((data) => {
-                    console.log("data: ", data); // eslint-disable-line
-                    router.refresh();
-                })
-                .catch((error) => {
-                    console.log("error: ", error); // eslint-disable-line
-                });
+            tripName
+            description
+            isPrivate
+            startDate
+            endDate
+            location {
+                name
+            }
+        }
+    }
+`;
+
+const DELETE_EVENT_MUTATION = gql`
+    mutation DeleteEvent($id: ID!) {
+        deleteEvent(id: $id) {
+            _id
+        }
+    }
+`;
+
+const EventList: FC<EventListProps> = ({ events }) => {
+    const { loading, error, data } = useQuery(GET_EVENTS);
+    const [deleteTripMutation] = useMutation(DELETE_EVENT_MUTATION);
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error : {error.message}</p>;
+
+    const handleDelete = async (eventId: string) => {
+        try {
+            await deleteTripMutation({
+                variables: { id: eventId },
+            });
+
+            // Обновляем страницу после успешного удаления
+            location.reload();
+        } catch (error) {
+            console.error("Error deleting trip: ", error);
         }
     };
 
@@ -35,21 +68,21 @@ const EventList: FC<EventListProps> = ({ events }) => {
         <div className={classes.component}>
             <h3>Event List</h3>
             <ul>
-                {events.map((event) => (
-                    <li key={event._id} className={classes.item}>
+                {data.events.map(({ _id, description, tripName, startDate, endDate, location }: IEvent) => (
+                    <li key={_id} className={classes.item}>
                         <h3>
-                            <Link className={classes.edit} href={`/events/${event._id}`}>
-                                {event.tripName}
+                            <Link className={classes.edit} href={`/events/${_id}`}>
+                                {tripName}
                             </Link>
                         </h3>
 
-                        <div className={classes.item}>{event.description}</div>
+                        <div className={classes.item}>{description}</div>
 
                         <div className={classes.locations}>
                             <strong>Locations:</strong>
                             <ul>
-                                {event.location &&
-                                    event.location.map((location) => (
+                                {location &&
+                                    location.map((location) => (
                                         <li key={location.name} className={classes.item}>
                                             {location.name}
                                         </li>
@@ -58,22 +91,22 @@ const EventList: FC<EventListProps> = ({ events }) => {
                         </div>
 
                         <div className={classes.controls}>
-                            <Link href={`/events/${event._id}/edit`}>Редактировать</Link>
-                            <button className={classes.delete} onClick={() => handleDelete(event)}>
+                            <Link href={`/events/${_id}/edit`}>Редактировать</Link>
+                            <button className={classes.delete} onClick={() => handleDelete(_id)}>
                                 Удалить
                             </button>
                         </div>
                         <div className={classes.dates}>
-                            {event.startDate && (
+                            {startDate && (
                                 <div>
                                     Start Date:
-                                    {formatDate(event.startDate, "dd LLLL yyyy")}
+                                    {formatDate(startDate, "dd LLLL yyyy")}
                                 </div>
                             )}
-                            {event.endDate && (
+                            {endDate && (
                                 <div>
                                     endDate:
-                                    {formatDate(event.endDate, "dd LLLL yyyy")}
+                                    {formatDate(endDate, "dd LLLL yyyy")}
                                 </div>
                             )}
                         </div>
