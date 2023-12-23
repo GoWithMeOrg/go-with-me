@@ -46,7 +46,7 @@ const query = gql`
 const TripPage: NextPage<PageParams> = (context) => {
     const { data } = useSuspenseQuery(query, { variables: { id: context.params.trip_id } });
 
-    console.log("[client side] data: ", data); // eslint-disable-line
+    //console.log("[client side] data: ", data); // eslint-disable-line
 
     const router = useRouter();
     const [isEditMode, setIsEditMode] = useState(false);
@@ -62,9 +62,9 @@ const TripPage: NextPage<PageParams> = (context) => {
         })
             .then((response) => response.json())
             .then((response) => {
-                console.log(response);
+                //console.log(response);
                 setIsEditMode(false);
-                setTrip(response.data);
+                //setTrip(response.data);
             })
             .catch((error) => {
                 console.error(error);
@@ -72,7 +72,7 @@ const TripPage: NextPage<PageParams> = (context) => {
     };
 
     useEffect(() => {
-        console.log("TripPage mounted");
+        //console.log("TripPage mounted");
 
         fetch(`/api/trips/${context.params.trip_id}`)
             .then((response) => {
@@ -91,7 +91,7 @@ const TripPage: NextPage<PageParams> = (context) => {
                 return response.json();
             })
             .then((response) => {
-                console.log("REST", response);
+                //console.log("REST", response);
                 setTrip(response.data);
             })
             .catch((error) => {

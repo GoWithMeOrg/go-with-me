@@ -2,7 +2,6 @@
 
 import { FC } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { formatDate } from "@/utils/formatDate";
 
 import classes from "@/app/trips/Trips.module.css";
@@ -10,7 +9,7 @@ import type { ITrip } from "@/database/models/Trip";
 import { useQuery, gql, useMutation } from "@apollo/client";
 
 type TripListProps = {
-    trips: ITrip[];
+    trips?: ITrip[];
 };
 
 const GET_TRIPS = gql`
@@ -35,8 +34,6 @@ const DELETE_TRIP_MUTATION = gql`
         }
     }
 `;
-
-export { DELETE_TRIP_MUTATION };
 
 const TripList: FC<TripListProps> = () => {
     const { loading, error, data } = useQuery(GET_TRIPS);

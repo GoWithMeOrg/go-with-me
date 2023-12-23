@@ -9,7 +9,7 @@ import type { IEvent } from "@/database/models/Event";
 import { useQuery, gql, useMutation } from "@apollo/client";
 
 type EventListProps = {
-    events: IEvent[];
+    events?: IEvent[];
 };
 
 const GET_EVENTS = gql`
@@ -44,7 +44,7 @@ const DELETE_EVENT_MUTATION = gql`
     }
 `;
 
-const EventList: FC<EventListProps> = ({ events }) => {
+const EventList: FC<EventListProps> = () => {
     const { loading, error, data } = useQuery(GET_EVENTS);
     const [deleteTripMutation] = useMutation(DELETE_EVENT_MUTATION);
 
