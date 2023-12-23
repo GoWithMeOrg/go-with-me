@@ -21,7 +21,7 @@ const TripNewPage: NextPage = () => {
         })
             .then((response) => response.json())
             .then((response) => {
-                console.log(response);
+                //console.log(response);
                 router.push(`/trips/${response.data.id}`);
             })
             .catch((error) => {
