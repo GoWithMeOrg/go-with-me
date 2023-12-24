@@ -2,10 +2,26 @@
 
 import { useEffect, useState } from "react";
 import { NextPage } from "next";
+import { gql, useMutation } from "@apollo/client";
 
 import type { ITrip } from "@/database/models/Trip";
 import { TripForm } from "@/components/TripForm";
+
 import classes from "@/app/trips/Trips.module.css";
+
+const UPDATE_TRIP = gql`
+    #graphql
+    mutation UpdateTrip($id: ID!, $trip: TripInput!) {
+        updateTrip(id: $id, trip: $trip) {
+            _id
+            tripName
+            description
+            isPrivate
+            startDate
+            endDate
+        }
+    }
+`;
 
 type PageParams = {
     params: { trip_id: string };
@@ -14,23 +30,28 @@ type PageParams = {
 const TripEditPage: NextPage<PageParams> = (context) => {
     const tripId = context.params.trip_id;
     const [trip, setTrip] = useState<ITrip>();
+    const [updateTrip] = useMutation(UPDATE_TRIP);
 
-    const handleEdit = (tripEdited: ITrip) => {
-        console.log("tripEdited: ", tripEdited); // eslint-disable-line
-        fetch(`/api/trips/${tripId}`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
+    const handleEdit = async (tripEdited: ITrip) => {
+        const { data, errors } = await updateTrip({
+            variables: {
+                id: tripId,
+                trip: {
+                    organizer_id: tripEdited.organizer_id,
+                    tripName: tripEdited.tripName,
+                    description: tripEdited.description,
+                    isPrivate: tripEdited.isPrivate,
+                    startDate: tripEdited.startDate,
+                    endDate: tripEdited.endDate,
+                    location: tripEdited.location,
+                },
             },
-            body: JSON.stringify(tripEdited),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log("data: ", data); // eslint-disable-line
-            })
-            .catch((error) => {
-                console.log("error: ", error); // eslint-disable-line
-            });
+        });
+        if (!errors) {
+            setTrip(data.updateTrip);
+        } else {
+            console.log("errors: ", errors); // eslint-disable-line
+        }
     };
 
     useEffect(() => {

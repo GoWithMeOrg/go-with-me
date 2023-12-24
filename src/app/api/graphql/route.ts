@@ -6,6 +6,8 @@ import EventModel, { IEvent } from "@/database/models/Event";
 import mongooseConnect from "@/database/mongooseConnect";
 import CommentModel from "@/database/models/Comment";
 import TripModel, { ITrip } from "@/database/models/Trip";
+import { getUserId } from "@/database/acl/session";
+import type { WithCookiesAPI } from "@/database/acl/session";
 
 const resolvers = {
     Query: {
@@ -55,8 +57,16 @@ const resolvers = {
             const newTrip = new TripModel(trip);
             return await newTrip.save();
         },
-        updateTrip: async (parent: any, { id, trip }: { id: string; trip: ITrip }) => {
+        updateTrip: async (
+            parent: any,
+            { id, trip }: { id: string; trip: ITrip },
+            context: { req: WithCookiesAPI },
+        ) => {
             await mongooseConnect();
+            const userId = await getUserId(context.req);
+
+            console.log("userId: ", userId); // eslint-disable-line
+
             await TripModel.updateOne({ _id: id }, trip);
             return await TripModel.findById(id).populate("organizer");
         },
@@ -161,6 +171,13 @@ const server = new ApolloServer({
     typeDefs,
 });
 
-const handler = startServerAndCreateNextHandler(server);
+const handler = startServerAndCreateNextHandler(server, {
+    // Похоже, что в @as-integrations/next типы не совсем корректные
+    // @ts-ignore
+    context: async (nextApiRequest) => {
+        await mongooseConnect();
+        return { req: { cookies: nextApiRequest.cookies._parsed } };
+    },
+});
 
 export { handler as GET, handler as POST };
