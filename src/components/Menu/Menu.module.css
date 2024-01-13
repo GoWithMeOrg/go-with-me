@@ -1,3 +1,7 @@
+.component {
+    /* keep */
+}
+
 .itemList {
     display: flex;
     justify-content: space-around;

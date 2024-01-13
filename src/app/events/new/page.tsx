@@ -4,46 +4,49 @@
 
 import type { NextPage } from "next";
 import { useRouter } from "next/navigation";
+import { useMutation, gql } from "@apollo/client";
+import { useSession } from "next-auth/react";
+
 import { EventForm } from "@/components/EventForm";
 import type { EventType } from "@/components/EventForm";
 
-import classes from "@/app/events/Events.module.css";
+const CREATE_EVENT = gql`
+    mutation CreateEvent($event: EventInput!) {
+        createEvent(event: $event) {
+            _id
+        }
+    }
+`;
 
 const EventNewPage: NextPage = () => {
     const router = useRouter();
+    const { data: session } = useSession();
+    const [createEvent] = useMutation(CREATE_EVENT);
 
-    const handleCreateEvent = (event: EventType) => {
-        fetch(`/api/events`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
+    const handleCreateEvent = async (event: EventType) => {
+        createEvent({
+            variables: {
+                event,
             },
-            body: JSON.stringify(event),
-        })
-            .then((response) => response.json())
-            .then((response) => {
-                console.log(response);
-                router.push(`/events/${response.data.id}`);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        }).then((response) => {
+            router.push(`/events/${response.data?.createEvent?._id}`);
+        });
     };
+
     return (
-        <div className={classes.container}>
+        <div className="EventNewPage">
             <h1>Event New Page</h1>
-            <div className={classes.eventForm}>
+            <div>
                 <EventForm
                     event={{
                         // @ts-ignore TODO: fix type
-                        organizer_id: null,
-                        createdAt: new Date(),
-                        updatedAt: new Date(),
+                        organizer_id: session?.user?.id,
                         tripName: "",
                         description: "",
-                        startDate: undefined,
-                        endDate: undefined,
-                        isPrivate: false,
+                        startDate: new Date(),
+                        endDate: new Date(),
+                        isPrivate: true,
+                        locationName: "",
                     }}
                     onSubmit={handleCreateEvent}
                 />

@@ -3,10 +3,11 @@
 import { FC } from "react";
 import Link from "next/link";
 import { formatDate } from "@/utils/formatDate";
+import { useQuery, gql, useMutation } from "@apollo/client";
+
+import type { IEvent } from "@/database/models/Event";
 
 import classes from "./EventList.module.css";
-import type { IEvent } from "@/database/models/Event";
-import { useQuery, gql, useMutation } from "@apollo/client";
 
 type EventListProps = {
     events?: IEvent[];
@@ -21,7 +22,6 @@ const GET_EVENTS = gql`
                 name
                 email
                 image
-                emailVerified
             }
 
             tripName
@@ -29,9 +29,7 @@ const GET_EVENTS = gql`
             isPrivate
             startDate
             endDate
-            location {
-                name
-            }
+            locationName
         }
     }
 `;
@@ -68,7 +66,7 @@ const EventList: FC<EventListProps> = () => {
         <div className={classes.component}>
             <h3>Event List</h3>
             <ul>
-                {data.events.map(({ _id, description, tripName, startDate, endDate, location }: IEvent) => (
+                {data.events.map(({ _id, description, tripName, startDate, endDate, locationName }: IEvent) => (
                     <li key={_id} className={classes.item}>
                         <h3>
                             <Link className={classes.edit} href={`/events/${_id}`}>
@@ -78,21 +76,16 @@ const EventList: FC<EventListProps> = () => {
 
                         <div className={classes.item}>{description}</div>
 
-                        <div className={classes.locations}>
-                            <strong>Locations:</strong>
-                            <ul>
-                                {location &&
-                                    location.map((location) => (
-                                        <li key={location.name} className={classes.item}>
-                                            {location.name}
-                                        </li>
-                                    ))}
-                            </ul>
-                        </div>
+                        <div className={classes.locations}>{locationName}</div>
 
                         <div className={classes.controls}>
                             <Link href={`/events/${_id}/edit`}>Редактировать</Link>
-                            <button className={classes.delete} onClick={() => handleDelete(_id)}>
+                            <button
+                                className={classes.delete}
+                                onClick={() => {
+                                    confirm("Delete?") ? handleDelete(_id) : null;
+                                }}
+                            >
                                 Удалить
                             </button>
                         </div>
@@ -115,9 +108,6 @@ const EventList: FC<EventListProps> = () => {
             </ul>
         </div>
     );
-    {
-        (" ");
-    }
 };
 
 export { EventList };

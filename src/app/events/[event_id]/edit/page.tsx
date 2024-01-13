@@ -1,53 +1,79 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { NextPage } from "next";
+import { useRouter } from "next/navigation";
+import { gql, useMutation, useQuery } from "@apollo/client";
 
 import { EventForm } from "@/components/EventForm/EventForm";
 import type { IEvent } from "@/database/models/Event";
-import classes from "@/app/events/Events.module.css";
 
 type PageParams = {
     params: { event_id: string };
 };
 
-const EventEditPage: NextPage<PageParams> = (context) => {
-    const eventId = context.params.event_id;
-    const [event, setEvent] = useState<IEvent>();
+const GET_EVENT = gql`
+    query GetEvent($id: ID!) {
+        event(id: $id) {
+            _id
+            organizer_id
+            organizer {
+                _id
+                name
+                email
+                image
+                emailVerified
+            }
 
-    const handleEdit = (eventEdited: IEvent) => {
-        console.log("eventEdited: ", eventEdited); // eslint-disable-line
-        fetch(`/api/events/${eventId}`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
+            tripName
+            description
+            isPrivate
+            startDate
+            endDate
+            locationName
+        }
+    }
+`;
+
+const UPDATE_EVENT = gql`
+    #graphql
+    mutation UpdateEvent($id: ID!, $event: EventInput!) {
+        updateEvent(id: $id, event: $event) {
+            tripName
+            description
+            isPrivate
+            startDate
+            endDate
+            locationName
+        }
+    }
+`;
+
+const EventEditPage: NextPage<PageParams> = (context) => {
+    const router = useRouter();
+    const eventId = context.params.event_id;
+    const { loading, error, data } = useQuery(GET_EVENT, {
+        variables: { id: eventId },
+    });
+    const [updateEvent] = useMutation(UPDATE_EVENT);
+
+    const handleEdit = (eventEdited: Partial<IEvent>) => {
+        updateEvent({
+            variables: {
+                id: eventId,
+                event: eventEdited,
             },
-            body: JSON.stringify(eventEdited),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log("data: ", data); // eslint-disable-line
-            })
-            .catch((error) => {
-                console.log("error: ", error); // eslint-disable-line
-            });
+        }).then((response) => {
+            console.log("EventEditPage: ", response); // eslint-disable-line
+            router.push(`/events/${eventId}`);
+        });
     };
 
-    useEffect(() => {
-        fetch(`/api/events/${eventId}`)
-            .then((response) => response.json())
-            .then((response) => {
-                setEvent(response.data);
-            })
-            .catch((error) => {
-                console.log("error: ", error); // eslint-disable-line
-            });
-    }, [eventId]);
-
     return (
-        <div className={classes.container}>
-            <h1>Edit Event</h1>
-            {event && <EventForm event={event} onSubmit={handleEdit} />}
+        <div className="EventEditPage">
+            <h3>Edit Event {data?.event?.tripName}</h3>
+            {loading && <p>Loading...</p>}
+            {error && <p>Error : {error.message}</p>}
+            {!error && data?.event && <EventForm event={data.event} onSubmit={handleEdit} />}
         </div>
     );
 };

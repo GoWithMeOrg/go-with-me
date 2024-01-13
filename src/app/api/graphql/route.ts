@@ -1,33 +1,36 @@
 import { startServerAndCreateNextHandler } from "@as-integrations/next";
 import { ApolloServer } from "@apollo/server";
 import { gql } from "graphql-tag";
+import dayjs from "dayjs";
 
 import EventModel, { IEvent } from "@/database/models/Event";
 import mongooseConnect from "@/database/mongooseConnect";
-import CommentModel from "@/database/models/Comment";
-import TripModel, { ITrip } from "@/database/models/Trip";
-import { getUserId } from "@/database/acl/session";
-import type { WithCookiesAPI } from "@/database/acl/session";
+import CommentModel, { IComment } from "@/database/models/Comment";
 
 const resolvers = {
+    ISODate: {
+        __parseValue(value: string) {
+            return new Date(value); // value from the client
+        },
+        __serialize(value: string) {
+            return dayjs(value).toISOString(); // value sent to the client
+        },
+        __parseLiteral(ast: any) {
+            if (ast.kind === "StringValue") {
+                return new Date(parseInt(ast.value, 10)); // ast value is always in string format
+            }
+            return null;
+        },
+    },
+
     Query: {
-        hello: () => "world",
         events: async () => {
             await mongooseConnect();
-            return EventModel.find({ isPrivate: false }).populate("organizer");
+            return EventModel.find({}).populate("organizer");
         },
         event: async (parent: any, { id, ...rest }: { id: string }) => {
             await mongooseConnect();
             return EventModel.findById(id).populate("organizer");
-        },
-
-        trips: async () => {
-            await mongooseConnect();
-            return TripModel.find({ isPrivate: false }).populate("organizer");
-        },
-        trip: async (parent: any, { id, ...rest }: { id: string }) => {
-            await mongooseConnect();
-            return TripModel.findById(id).populate("organizer");
         },
 
         comments: async (parent: any, { event_id }: { event_id: string }) => {
@@ -52,33 +55,20 @@ const resolvers = {
             return await EventModel.deleteOne({ _id: id });
         },
 
-        createTrip: async (parent: any, { trip }: { trip: ITrip }) => {
+        saveComment: async (parent: any, { comment }: { comment: IComment }) => {
             await mongooseConnect();
-            const newTrip = new TripModel(trip);
-            return await newTrip.save();
-        },
-        updateTrip: async (
-            parent: any,
-            { id, trip }: { id: string; trip: ITrip },
-            context: { req: WithCookiesAPI },
-        ) => {
-            await mongooseConnect();
-            const userId = await getUserId(context.req);
-
-            console.log("userId: ", userId); // eslint-disable-line
-
-            await TripModel.updateOne({ _id: id }, trip);
-            return await TripModel.findById(id).populate("organizer");
-        },
-        deleteTrip: async (parent: any, { id }: { id: string }) => {
-            await mongooseConnect();
-            return await TripModel.deleteOne({ _id: id });
+            const newComment = new CommentModel(comment);
+            return await newComment.save();
         },
     },
 };
 
 const typeDefs = gql`
     #graphql
+
+    # Custom scalar type for Date
+    scalar ISODate
+
     type Query {
         hello: String
         events: [Event]
@@ -102,13 +92,14 @@ const typeDefs = gql`
 
     type Event {
         _id: ID
+        organizer_id: ID
         organizer: User
         tripName: String
         description: String
         isPrivate: Boolean
-        startDate: String
-        endDate: String
-        location: [Location]
+        startDate: ISODate
+        endDate: ISODate
+        locationName: String
     }
 
     type Trip {
@@ -117,18 +108,25 @@ const typeDefs = gql`
         tripName: String
         description: String
         isPrivate: Boolean
-        startDate: String
-        endDate: String
+        startDate: ISODate
+        endDate: ISODate
         location: [Location]
     }
 
     type Comment {
         _id: ID
         event_id: ID
+        author_id: ID
         author: User
         content: String
-        createdAt: String
-        updatedAt: String
+        createdAt: ISODate
+        updatedAt: ISODate
+    }
+
+    input CommentInput {
+        event_id: ID!
+        author_id: ID!
+        content: String
     }
 
     input EventInput {
@@ -136,23 +134,13 @@ const typeDefs = gql`
         tripName: String
         description: String
         isPrivate: Boolean
-        startDate: String
-        endDate: String
-        location: [LocationInput]
+        startDate: ISODate
+        endDate: ISODate
+        location: String
     }
 
     input LocationInput {
         name: String
-    }
-
-    input TripInput {
-        organizer_id: ID!
-        tripName: String
-        description: String
-        isPrivate: Boolean
-        startDate: String
-        endDate: String
-        location: [LocationInput]
     }
 
     type Mutation {
@@ -160,9 +148,7 @@ const typeDefs = gql`
         updateEvent(id: ID!, event: EventInput): Event
         deleteEvent(id: ID!): Event
 
-        createTrip(trip: TripInput): Trip
-        updateTrip(id: ID!, trip: TripInput): Trip
-        deleteTrip(id: ID!): Trip
+        saveComment(comment: CommentInput): Comment
     }
 `;
 

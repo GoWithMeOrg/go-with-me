@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
-import ApolloWrapper from "@/apollo/client-side-components";
-import { NextAuthProvider } from "./providers";
-import "../styles/global.css";
 import { Menu } from "@/components/Menu";
+import { NextAuthProvider, ApolloWrapper } from "./providers";
+
+import "@/styles/global.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,12 +17,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html lang="en">
             <body className={inter.className}>
-                <NextAuthProvider>
-                    <ApolloWrapper>
+                <ApolloWrapper>
+                    <NextAuthProvider>
                         <Menu />
                         {children}
-                    </ApolloWrapper>
-                </NextAuthProvider>
+                    </NextAuthProvider>
+                </ApolloWrapper>
             </body>
         </html>
     );
