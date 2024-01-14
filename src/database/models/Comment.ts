@@ -2,6 +2,10 @@ import mongoose, { Schema, Document } from "mongoose";
 import UserModel from "./User";
 import type { IUser } from "./User";
 
+// TODO: split to types:
+// - INewComment (without _id, author, createdAt and updatedAt)
+// - IComment (with _id, author, createdAt and updatedAt)
+// think about createdAt and updatedAt
 export interface IComment {
     _id: string;
     author_id: mongoose.Types.ObjectId;

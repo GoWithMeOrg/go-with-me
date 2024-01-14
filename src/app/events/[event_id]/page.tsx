@@ -1,25 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import type { NextPage } from "next";
-import { useRouter } from "next/navigation";
-import { useSuspenseQuery } from "@apollo/experimental-nextjs-app-support/ssr";
-import { gql } from "@apollo/client";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { gql, useMutation, useQuery } from "@apollo/client";
 
-import { EventForm } from "@/components/EventForm";
-import type { EventType } from "@/components/EventForm";
 import { Event } from "@/components/Event";
 import { Comments } from "@/components/Comments";
-import classes from "@/app/events/Events.module.css";
 
 type PageParams = {
     params: { event_id: string };
 };
 
-const query = gql`
+const GET_EVENT_BY_ID = gql`
     #graphql
-    query GetEvent($id: ID!) {
+    query GetEventById($id: ID!) {
         event(id: $id) {
+            organizer_id
             organizer {
                 _id
                 name
@@ -40,91 +37,70 @@ const query = gql`
             }
             content
             createdAt
+            updatedAt
+        }
+    }
+`;
+
+const SAVE_COMMENT = gql`
+    #graphql
+    mutation SaveComment($comment: CommentInput!) {
+        saveComment(comment: $comment) {
+            _id
+            author {
+                _id
+                name
+                email
+            }
+            content
+            createdAt
+            updatedAt
         }
     }
 `;
 
 const EventPage: NextPage<PageParams> = (context) => {
-    const { data } = useSuspenseQuery(query, { variables: { id: context.params.event_id } });
+    const { data: session } = useSession();
+    const { data, error, loading } = useQuery(GET_EVENT_BY_ID, { variables: { id: context.params.event_id } });
+    const [saveComment] = useMutation(SAVE_COMMENT);
 
-    console.log("[client side] data: ", data); // eslint-disable-line
-
-    const router = useRouter();
-    const [isEditMode, setIsEditMode] = useState(false);
-    const [event, setEvent] = useState(null);
-
-    const handleSaveEvent = (event: EventType) => {
-        fetch(`/api/events/${context.params.event_id}`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(event),
-        })
-            .then((response) => response.json())
-            .then((response) => {
-                console.log(response);
-                setIsEditMode(false);
-                setEvent(response.data);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    };
-
-    useEffect(() => {
-        console.log("EventPage mounted");
-
-        fetch(`/api/events/${context.params.event_id}`)
-            .then((response) => {
-                if (!response.ok) {
-                    switch (response.status) {
-                        case 401:
-                            router.push("/login");
-                            break;
-                        case 403:
-                            router.push("/login");
-                            break;
-                        default:
-                            throw new Error("Failed to fetch data");
-                    }
-                }
-                return response.json();
-            })
-            .then((response) => {
-                console.log("REST", response);
-                setEvent(response.data);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-
-        return () => {
-            console.log("EventPage unmounted");
-        };
-    }, [context.params.event_id, router]);
-
-    if (!event) {
+    if (loading && !error) {
         return <div>Loading...</div>;
     }
 
+    if (error) {
+        return <div>Error: {error.message}</div>;
+    }
+
+    const handleSaveComment = (commentContent: string) => {
+        saveComment({
+            variables: {
+                comment: {
+                    event_id: context.params.event_id,
+                    // @ts-ignore TODO: fix type
+                    author_id: session?.user?.id,
+                    content: commentContent,
+                },
+            },
+        })
+            .then((response) => {
+                console.log("EventPage: ", response); // eslint-disable-line
+            })
+            .catch((error) => {
+                console.error("EventPage: ", error); // eslint-disable-line
+            });
+    };
+
     return (
-        <div className={classes.container}>
+        <div className="EventPage">
             <h3>EventPage</h3>
 
-            <button
-                className={classes.btn}
-                onClick={() => {
-                    setIsEditMode(!isEditMode);
-                }}
-            >
-                {isEditMode ? "Cancel" : "Edit"}
-            </button>
+            <Link href={`/events/${context.params.event_id}/edit`}>Edit</Link>
 
-            {isEditMode ? <EventForm event={event} onSubmit={handleSaveEvent} /> : <Event event={event} />}
+            <Event event={data.event} />
 
             <h3>Comments</h3>
-            <Comments event_id={context.params.event_id} />
+            <Comments comments={data.comments} onSave={handleSaveComment} />
         </div>
     );
 };

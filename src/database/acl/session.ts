@@ -1,14 +1,14 @@
-import type { NextRequest } from "next/server";
-
 import SessionModel from "@/database/models/Session";
 import cookieName from "@/options/sessionCookieName";
 
-const getToken = (request: NextRequest) => {
+export type WithCookiesAPI = { cookies: Map<string, { value: string }> };
+
+const getToken = (request: WithCookiesAPI) => {
     const cookie = request.cookies.get(cookieName);
     return cookie?.value;
 };
 
-const getUserId = async (request: NextRequest) => {
+const getUserId = async (request: WithCookiesAPI) => {
     const sessionToken = getToken(request);
     const session = await SessionModel.findOne({ sessionToken });
     if (!session) return false;

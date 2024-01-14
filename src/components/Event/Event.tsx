@@ -11,7 +11,7 @@ export interface EventProps {
 const Event: FC<EventProps> = ({ event }) => {
     return (
         <div className={classes.component}>
-            <h2 className={classes.header}>{event.tripName}</h2>
+            <h3 className={classes.header}>{event.tripName}</h3>
             <div>Организатор: {event.organizer.name}</div>
             <div>{event.description}</div>
             <div>{formatDate(event.startDate, "dd LLLL yyyy")}</div>
