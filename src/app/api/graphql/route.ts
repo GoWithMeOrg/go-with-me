@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import EventModel, { IEvent } from "@/database/models/Event";
 import mongooseConnect from "@/database/mongooseConnect";
 import CommentModel, { IComment } from "@/database/models/Comment";
-import LocationModel, { ILocation } from "@/database/models/Location";
+import LocationModel, { ILocation, LocationsRequestField } from "@/database/models/Location";
 
 const resolvers = {
     ISODate: {
@@ -38,9 +38,9 @@ const resolvers = {
             await mongooseConnect();
             return CommentModel.find({ event_id }).sort({ createdAt: -1 }).populate("author");
         },
-        locations: async (data: Partial<ILocation>) => {
+        locations: async (data: LocationsRequestField) => {
             await mongooseConnect();
-            return LocationModel.find({ ...data });
+            return LocationModel.find(data);
         },
         location: async ({ _id }: Pick<ILocation, "_id">) => {
             await mongooseConnect();

@@ -18,6 +18,12 @@ export interface ILocation {
 
 export interface ILocationDocument extends Omit<ILocation, "_id" | "createdAt" | "updatedAt">, Document {}
 
+export type LocationsRequestField =
+    | Pick<ILocation, "address">
+    | Pick<ILocation, "author">
+    | Pick<ILocation, "coordinates">
+    | Pick<ILocation, "name">;
+
 const LocationSchema = new Schema<ILocationDocument>({
     name: {
         type: String,
