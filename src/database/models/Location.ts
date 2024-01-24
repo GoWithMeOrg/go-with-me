@@ -1,18 +1,19 @@
 import mongoose, { Schema, Document } from "mongoose";
+import { IUser } from "./User";
 
 export interface ILocation {
-    // _id: string;
-    // author_id: mongoose.Types.ObjectId;
-    // author: IUser;
-    // trip_id: mongoose.Types.ObjectId;
-    // content: string;
+    _id: string;
+    author_id: mongoose.Types.ObjectId;
+    author: IUser;
+    trip_id: mongoose.Types.ObjectId;
+    content: string;
     name: string;
-    // address: string;
-    // coordinates: {
-    //     latitude: number;
-    //     longitude: number;
-    // };
-    // description?: string;
+    address: string;
+    coordinates: {
+        latitude: number;
+        longitude: number;
+    };
+    description?: string;
 }
 
 export interface ILocationDocument extends Omit<ILocation, "_id" | "createdAt" | "updatedAt">, Document {}

@@ -38,13 +38,13 @@ const resolvers = {
             await mongooseConnect();
             return CommentModel.find({ event_id }).sort({ createdAt: -1 }).populate("author");
         },
-        locations: async (parent: any) => {
+        locations: async (data: Partial<ILocation>) => {
             await mongooseConnect();
-            return LocationModel.find({ name }).sort({ createdAt: -1 });
+            return LocationModel.find({ ...data });
         },
-        location: async (parent: any, { name }: Pick<ILocation, "name">) => {
+        location: async ({ _id }: Pick<ILocation, "_id">) => {
             await mongooseConnect();
-            return LocationModel.findOne({ name });
+            return LocationModel.findById({ _id });
         },
     },
 
