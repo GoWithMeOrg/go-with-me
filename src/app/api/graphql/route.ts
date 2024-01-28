@@ -3,9 +3,11 @@ import { ApolloServer } from "@apollo/server";
 import { gql } from "graphql-tag";
 import dayjs from "dayjs";
 
-import EventModel, { IEvent } from "@/database/models/Event";
 import mongooseConnect from "@/database/mongooseConnect";
+import EventModel, { IEvent } from "@/database/models/Event";
 import CommentModel, { IComment } from "@/database/models/Comment";
+import ListModel, { IList } from "@/database/models/List";
+import UserModel from "@/database/models/User";
 
 const resolvers = {
     ISODate: {
@@ -37,6 +39,20 @@ const resolvers = {
             await mongooseConnect();
             return CommentModel.find({ event_id }).sort({ createdAt: -1 }).populate("author");
         },
+
+        lists: async () => {
+            await mongooseConnect();
+            return ListModel.find({}).populate("author");
+        },
+        list: async (parent: any, { id, ...rest }: { id: string }) => {
+            await mongooseConnect();
+            return ListModel.findById(id).populate("author");
+        },
+
+        users: async () => {
+            await mongooseConnect();
+            return UserModel.find({});
+        },
     },
 
     Mutation: {
@@ -60,6 +76,21 @@ const resolvers = {
             const newComment = new CommentModel(comment);
             return await newComment.save();
         },
+
+        createList: async (parent: any, { list }: { list: IList }) => {
+            await mongooseConnect();
+            const newList = new ListModel(list);
+            return await newList.save();
+        },
+        updateList: async (parent: any, { id, list }: { id: string; list: IList }) => {
+            await mongooseConnect();
+            await ListModel.updateOne({ _id: id }, list);
+            return await ListModel.findById(id).populate("author");
+        },
+        deleteList: async (parent: any, { id }: { id: string }) => {
+            await mongooseConnect();
+            return await ListModel.deleteOne({ _id: id });
+        },
     },
 };
 
@@ -71,11 +102,19 @@ const typeDefs = gql`
 
     type Query {
         hello: String
+
         events: [Event]
         event(id: ID!): Event
+
         trips: [Trip]
         trip(id: ID!): Trip
+
         comments(event_id: ID!): [Comment]
+
+        lists: [List]
+        list(id: ID!): List
+
+        users: [User]
     }
 
     type User {
@@ -143,12 +182,31 @@ const typeDefs = gql`
         name: String
     }
 
+    type List {
+        _id: ID
+        author_id: ID
+        name: String
+        description: String
+        users_id: [ID]
+    }
+
+    input ListInput {
+        author_id: ID
+        name: String
+        description: String
+        users_id: [ID]
+    }
+
     type Mutation {
         createEvent(event: EventInput): Event
         updateEvent(id: ID!, event: EventInput): Event
         deleteEvent(id: ID!): Event
 
         saveComment(comment: CommentInput): Comment
+
+        createList(list: ListInput): List
+        updateList(id: ID!, list: ListInput): List
+        deleteList(id: ID!): List
     }
 `;
 
