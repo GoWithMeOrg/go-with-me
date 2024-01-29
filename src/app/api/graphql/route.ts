@@ -69,6 +69,19 @@ const resolvers = {
             const newComment = new CommentModel(comment);
             return await newComment.save();
         },
+        createLocation: async (location: Pick<ILocation, "name" | "address" | "coordinates" | "author_id">) => {
+            await mongooseConnect();
+            const newLocation = new LocationModel(location);
+            return await newLocation.save();
+        },
+        updateLocation: async ({ id, location }: { id: ILocation["_id"]; location: Omit<ILocation, "_id"> }) => {
+            await mongooseConnect();
+            await LocationModel.updateOne({ _id: id }, location);
+        },
+        deleteLocation: async ({ id }: { id: ILocation["_id"] }) => {
+            await mongooseConnect();
+            return await LocationModel.deleteOne({ _id: id });
+        },
     },
 };
 
