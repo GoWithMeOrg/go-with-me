@@ -42,7 +42,7 @@ const resolvers = {
         //     await mongooseConnect();
         //     return LocationModel.find(data);
         // },
-        location: async (parent: any, { id }: { id: ILocation["_id"] }) => {
+        location: async ({ id }: { id: ILocation["_id"] }) => {
             await mongooseConnect();
             return LocationModel.findById({ id });
         },
@@ -98,6 +98,7 @@ const typeDefs = gql`
         trips: [Trip]
         trip(id: ID!): Trip
         comments(event_id: ID!): [Comment]
+        location(id: ID!): Location
     }
 
     type User {
@@ -109,13 +110,27 @@ const typeDefs = gql`
     }
 
     type Location {
+        _id: ID
+        author_id: ID
+        author: User
+        trip_id: ID
+        content: String
         name: String
+        address: String
+        coordinates: Coordinates
+        description?: String;
+        name: String
+    }
+
+    type Coordinates {
+        latitude: Number
+        longitude: Number
     }
 
     type Event {
         _id: ID
         organizer_id: ID
-        organizer: User
+        organizer: [User]
         tripName: String
         description: String
         isPrivate: Boolean
