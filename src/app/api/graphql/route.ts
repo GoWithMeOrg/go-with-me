@@ -38,10 +38,10 @@ const resolvers = {
             await mongooseConnect();
             return CommentModel.find({ event_id }).sort({ createdAt: -1 }).populate("author");
         },
-        // locations: async (data: LocationsRequestField) => {
-        //     await mongooseConnect();
-        //     return LocationModel.find(data);
-        // },
+        locations: async () => {
+            await mongooseConnect();
+            return LocationModel.find({});
+        },
         location: async ({ id }: { id: ILocation["_id"] }) => {
             await mongooseConnect();
             return LocationModel.findById({ id });
@@ -69,19 +69,20 @@ const resolvers = {
             const newComment = new CommentModel(comment);
             return await newComment.save();
         },
-        // createLocation: async (location: Pick<ILocation, "name" | "address" | "coordinates" | "author_id">) => {
-        //     await mongooseConnect();
-        //     const newLocation = new LocationModel(location);
-        //     return await newLocation.save();
-        // },
-        // updateLocation: async ({ id, location }: { id: ILocation["_id"]; location: Omit<ILocation, "_id"> }) => {
-        //     await mongooseConnect();
-        //     await LocationModel.updateOne({ _id: id }, location);
-        // },
-        // deleteLocation: async ({ id }: { id: ILocation["_id"] }) => {
-        //     await mongooseConnect();
-        //     return await LocationModel.deleteOne({ _id: id });
-        // },
+
+        createLocation: async (location: Pick<ILocation, "name" | "address" | "coordinates" | "author_id">) => {
+            await mongooseConnect();
+            const newLocation = new LocationModel(location);
+            return await newLocation.save();
+        },
+        updateLocation: async ({ id, location }: { id: ILocation["_id"]; location: Omit<ILocation, "_id"> }) => {
+            await mongooseConnect();
+            await LocationModel.updateOne({ _id: id }, location);
+        },
+        deleteLocation: async ({ id }: { id: ILocation["_id"] }) => {
+            await mongooseConnect();
+            return await LocationModel.deleteOne({ _id: id });
+        },
     },
 };
 
@@ -98,6 +99,7 @@ const typeDefs = gql`
         trips: [Trip]
         trip(id: ID!): Trip
         comments(event_id: ID!): [Comment]
+        locations: [Location]
         location(id: ID!): Location
     }
 
@@ -115,16 +117,15 @@ const typeDefs = gql`
         author: User
         trip_id: ID
         content: String
-        name: String
         address: String
         coordinates: Coordinates
-        description?: String;
+        description: String
         name: String
     }
 
     type Coordinates {
-        latitude: Number
-        longitude: Number
+        latitude: Float
+        longitude: Float
     }
 
     type Event {
@@ -178,6 +179,13 @@ const typeDefs = gql`
 
     input LocationInput {
         name: String
+        address: String
+        coordinates: CoordinatesInput
+    }
+
+    input CoordinatesInput {
+        latitude: Float
+        longitude: Float
     }
 
     type Mutation {
@@ -186,6 +194,10 @@ const typeDefs = gql`
         deleteEvent(id: ID!): Event
 
         saveComment(comment: CommentInput): Comment
+
+        createLocation(location: LocationInput): Location
+        updateLocation(id: ID!, location: LocationInput): Location
+        deleteLocation(id: ID!): Location
     }
 `;
 
