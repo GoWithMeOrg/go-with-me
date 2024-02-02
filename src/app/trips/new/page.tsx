@@ -1,6 +1,4 @@
 "use client";
-// It can be a server-side rendered page
-// take a look how to pass sessions to the page in `src/app/events/page.tsx`
 
 import type { NextPage } from "next";
 import { useRouter } from "next/navigation";
@@ -10,7 +8,7 @@ import { useSession } from "next-auth/react";
 import { EventForm } from "@/components/EventForm";
 import type { EventType } from "@/components/EventForm";
 
-export const CREATE_EVENT = gql`
+const CREATE_TRIP = gql`
     mutation CreateEvent($event: EventInput!) {
         createEvent(event: $event) {
             _id
@@ -18,24 +16,25 @@ export const CREATE_EVENT = gql`
     }
 `;
 
-const EventNewPage: NextPage = () => {
+const TripNewPage: NextPage = () => {
     const router = useRouter();
     const { data: session } = useSession();
-    const [createEvent] = useMutation(CREATE_EVENT);
+    const [createTrip] = useMutation(CREATE_TRIP);
 
     const handleCreateEvent = async (event: EventType) => {
-        createEvent({
+        createTrip({
             variables: {
                 event,
             },
         }).then((response) => {
-            router.push(`/events/${response.data?.createEvent?._id}`);
+            router.push(`/trips/${response.data?.createTrip?._id}`);
+            console.log(response.data);
         });
     };
 
     return (
         <div className="EventNewPage">
-            <h1>Event New Page</h1>
+            <h1>Trip New Page</h1>
             <div>
                 <EventForm
                     event={{
@@ -55,4 +54,4 @@ const EventNewPage: NextPage = () => {
     );
 };
 
-export default EventNewPage;
+export default TripNewPage;

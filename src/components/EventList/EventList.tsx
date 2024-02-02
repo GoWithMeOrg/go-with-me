@@ -4,9 +4,7 @@ import { FC } from "react";
 import Link from "next/link";
 import { formatDate } from "@/utils/formatDate";
 import { useQuery, gql, useMutation } from "@apollo/client";
-
 import type { IEvent } from "@/database/models/Event";
-
 import classes from "./EventList.module.css";
 
 type EventListProps = {
@@ -44,21 +42,22 @@ const DELETE_EVENT_MUTATION = gql`
 
 const EventList: FC<EventListProps> = () => {
     const { loading, error, data } = useQuery(GET_EVENTS);
-    const [deleteTripMutation] = useMutation(DELETE_EVENT_MUTATION);
+    const [deleteEventMutation] = useMutation(DELETE_EVENT_MUTATION);
+    console.log(data);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error : {error.message}</p>;
 
     const handleDelete = async (eventId: string) => {
         try {
-            await deleteTripMutation({
+            await deleteEventMutation({
                 variables: { id: eventId },
             });
 
             // Обновляем страницу после успешного удаления
             location.reload();
         } catch (error) {
-            console.error("Error deleting trip: ", error);
+            console.error("Error deleting event: ", error);
         }
     };
 

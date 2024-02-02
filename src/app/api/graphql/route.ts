@@ -45,6 +45,19 @@ const resolvers = {
             const newEvent = new EventModel(event);
             return await newEvent.save();
         },
+
+        // createTrip: async (parent: any, { trip }: { trip: TripInput }) => {
+        //     await mongooseConnect();
+        //     const newTrip = new TripModel(trip);
+        //     return await newTrip.save();
+        // },
+
+        // updateTrip: async (parent: any, { id, trip }: { id: string; trip: TripInput }) => {
+        //     await mongooseConnect();
+        //     await TripModel.updateOne({ _id: id }, trip);
+        //     return await TripModel.findById(id);
+        // },
+
         updateEvent: async (parent: any, { id, event }: { id: string; event: IEvent }) => {
             await mongooseConnect();
             await EventModel.updateOne({ _id: id }, event);
@@ -107,11 +120,27 @@ const typeDefs = gql`
         organizer: User
         tripName: String
         description: String
-        isPrivate: Boolean
+        events_id: [ID!]
         startDate: ISODate
         endDate: ISODate
-        location: [Location]
     }
+
+    type TripInput {
+        organizer_id: ID!
+        tripName: String
+        event_ids: [ID!]
+    }
+
+    # type Trip {
+    #     _id: ID
+    #     organizer: User
+    #     tripName: String
+    #     description: String
+    #     isPrivate: Boolean
+    #     startDate: ISODate
+    #     endDate: ISODate
+    #     location: [Location]
+    # }
 
     type Comment {
         _id: ID
