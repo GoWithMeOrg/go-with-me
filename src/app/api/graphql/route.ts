@@ -177,7 +177,11 @@ const typeDefs = gql`
     }
 
     input LocationInput {
+        author_id: ID!
         name: String
+        address: String
+        latitude: Float
+        longitude: Float
     }
 
     type Mutation {

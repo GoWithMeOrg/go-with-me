@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
-import { IUser } from "./User";
+import UserModel, { IUser } from "./User";
 
 export interface ILocation {
     _id: string;
@@ -28,6 +28,25 @@ const LocationSchema = new Schema<ILocationDocument>({
     name: {
         type: String,
         required: true,
+    },
+    author_id: {
+        type: Schema.Types.ObjectId,
+        required: true,
+        ref: UserModel,
+    },
+    address: {
+        type: String,
+        required: true,
+    },
+    coordinates: {
+        latitude: {
+            type: Number,
+            required: true,
+        },
+        longitude: {
+            type: Number,
+            required: true,
+        },
     },
 });
 
