@@ -7,7 +7,7 @@ export interface ITrip {
     organizer: IUser;
     tripName: string;
     description: string;
-    event_ids: mongoose.Types.ObjectId[];
+    events_id: mongoose.Types.ObjectId[];
     startDate?: Date | string;
     endDate?: Date | string;
     createdAt: Date | string;
@@ -28,7 +28,7 @@ const TripSchema = new Schema<ITripDocument>(
             required: true,
         },
         description: String,
-        event_ids: [
+        events_id: [
             {
                 type: mongoose.Types.ObjectId,
                 ref: "Event",

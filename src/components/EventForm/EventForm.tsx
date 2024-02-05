@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 
 import type { IEvent } from "@/database/models/Event";
 import classes from "./EventForm.module.css";
+import { ITrip } from "@/database/models/Trip";
 
 export type EventType = Partial<IEvent>;
 

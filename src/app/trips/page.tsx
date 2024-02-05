@@ -1,3 +1,4 @@
+import { TripList } from "@/components/TripList";
 import { NextPage } from "next";
 import Link from "next/link";
 
@@ -8,6 +9,7 @@ const TripListPage: NextPage = () => {
             <div>
                 <Link href="/trips/new">Create New Trip</Link>
             </div>
+            <TripList />
         </div>
     );
 };

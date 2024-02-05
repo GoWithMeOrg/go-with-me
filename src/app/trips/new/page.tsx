@@ -9,8 +9,8 @@ import { EventForm } from "@/components/EventForm";
 import type { EventType } from "@/components/EventForm";
 
 const CREATE_TRIP = gql`
-    mutation CreateEvent($event: EventInput!) {
-        createEvent(event: $event) {
+    mutation CreateTrip($trip: TripInput!) {
+        createTrip(trip: $trip) {
             _id
         }
     }
@@ -21,14 +21,15 @@ const TripNewPage: NextPage = () => {
     const { data: session } = useSession();
     const [createTrip] = useMutation(CREATE_TRIP);
 
-    const handleCreateEvent = async (event: EventType) => {
+    const handleCreateEvent = async (trip: EventType) => {
         createTrip({
             variables: {
-                event,
+                trip,
             },
         }).then((response) => {
+            console.log(response);
             router.push(`/trips/${response.data?.createTrip?._id}`);
-            console.log(response.data);
+            // console.log(response.data);
         });
     };
 

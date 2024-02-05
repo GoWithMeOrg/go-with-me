@@ -4,52 +4,53 @@ import { FC } from "react";
 import Link from "next/link";
 import { formatDate } from "@/utils/formatDate";
 import { useQuery, gql, useMutation } from "@apollo/client";
-import type { IEvent } from "@/database/models/Event";
-import classes from "./EventList.module.css";
+import classes from "../EventList/EventList.module.css";
+import { ITrip } from "@/database/models/Trip";
+import { DELETE_EVENT_MUTATION } from "@/components/EventList/EventList";
 
-type EventListProps = {
-    events?: IEvent[];
+type TripListProps = {
+    trips?: ITrip[];
 };
 
-const GET_EVENTS = gql`
-    query GetEvents {
-        events {
+const GET_TRIPS = gql`
+    query GetTrips {
+        trips {
             _id
+            organizer_id
             organizer {
                 _id
                 name
                 email
                 image
+                emailVerified
             }
-
             tripName
             description
-            isPrivate
             startDate
             endDate
-            locationName
         }
     }
 `;
 
-export const DELETE_EVENT_MUTATION = gql`
-    mutation DeleteEvent($id: ID!) {
-        deleteEvent(id: $id) {
+export const DELETE_TRIP_MUTATION = gql`
+    mutation DeleteTrip($id: ID!) {
+        deleteTrip(id: $id) {
             _id
         }
     }
 `;
 
-const EventList: FC<EventListProps> = () => {
-    const { loading, error, data } = useQuery(GET_EVENTS);
-    const [deleteEventMutation] = useMutation(DELETE_EVENT_MUTATION);
+const TripList: FC<TripListProps> = () => {
+    const { loading, error, data } = useQuery(GET_TRIPS);
+    const [deleteTripMutation] = useMutation(DELETE_TRIP_MUTATION);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error : {error.message}</p>;
 
     const handleDelete = async (eventId: string) => {
+        console.log(eventId);
         try {
-            await deleteEventMutation({
+            await deleteTripMutation({
                 variables: { id: eventId },
             });
 
@@ -62,22 +63,22 @@ const EventList: FC<EventListProps> = () => {
 
     return (
         <div className={classes.component}>
-            <h3>Event List</h3>
+            <h3>Trip List</h3>
             <ul>
-                {data.events.map(({ _id, description, tripName, startDate, endDate, locationName }: IEvent) => (
+                {data.trips.map(({ _id, description, tripName, startDate, endDate }: ITrip) => (
                     <li key={_id} className={classes.item}>
                         <h3>
-                            <Link className={classes.edit} href={`/events/${_id}`}>
+                            <Link className={classes.edit} href={`/trips/${_id}`}>
                                 {tripName}
                             </Link>
                         </h3>
 
                         <div className={classes.item}>{description}</div>
 
-                        <div className={classes.locations}>{locationName}</div>
+                        {/* <div className={classes.locations}>{locationName}</div> */}
 
                         <div className={classes.controls}>
-                            <Link href={`/events/${_id}/edit`}>Редактировать</Link>
+                            <Link href={`/trips/${_id}/edit`}>Редактировать</Link>
                             <button
                                 className={classes.delete}
                                 onClick={() => {
@@ -108,4 +109,4 @@ const EventList: FC<EventListProps> = () => {
     );
 };
 
-export { EventList };
+export { TripList };

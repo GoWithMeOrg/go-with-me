@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import EventModel, { IEvent } from "@/database/models/Event";
 import mongooseConnect from "@/database/mongooseConnect";
 import CommentModel, { IComment } from "@/database/models/Comment";
+import TripModel, { ITrip } from "@/database/models/Trip";
 
 const resolvers = {
     ISODate: {
@@ -33,6 +34,15 @@ const resolvers = {
             return EventModel.findById(id).populate("organizer");
         },
 
+        trips: async () => {
+            await mongooseConnect();
+            return TripModel.find({}).populate("organizer");
+        },
+        trip: async (parent: any, { id, ...rest }: { id: string }) => {
+            await mongooseConnect();
+            return TripModel.findById(id).populate("organizer");
+        },
+
         comments: async (parent: any, { event_id }: { event_id: string }) => {
             await mongooseConnect();
             return CommentModel.find({ event_id }).sort({ createdAt: -1 }).populate("author");
@@ -45,19 +55,6 @@ const resolvers = {
             const newEvent = new EventModel(event);
             return await newEvent.save();
         },
-
-        // createTrip: async (parent: any, { trip }: { trip: TripInput }) => {
-        //     await mongooseConnect();
-        //     const newTrip = new TripModel(trip);
-        //     return await newTrip.save();
-        // },
-
-        // updateTrip: async (parent: any, { id, trip }: { id: string; trip: TripInput }) => {
-        //     await mongooseConnect();
-        //     await TripModel.updateOne({ _id: id }, trip);
-        //     return await TripModel.findById(id);
-        // },
-
         updateEvent: async (parent: any, { id, event }: { id: string; event: IEvent }) => {
             await mongooseConnect();
             await EventModel.updateOne({ _id: id }, event);
@@ -66,6 +63,23 @@ const resolvers = {
         deleteEvent: async (parent: any, { id }: { id: string }) => {
             await mongooseConnect();
             return await EventModel.deleteOne({ _id: id });
+        },
+
+        createTrip: async (parent: any, { trip }: { trip: ITrip }) => {
+            await mongooseConnect();
+            const newTrip = new TripModel(trip);
+            return await newTrip.save();
+        },
+
+        updateTrip: async (parent: any, { id, trip }: { id: string; trip: ITrip }) => {
+            await mongooseConnect();
+            await TripModel.updateOne({ _id: id }, trip);
+            return await TripModel.findById(id);
+        },
+
+        deleteTrip: async (parent: any, { id }: { id: string }) => {
+            await mongooseConnect();
+            return await TripModel.deleteOne({ _id: id });
         },
 
         saveComment: async (parent: any, { comment }: { comment: IComment }) => {
@@ -117,6 +131,7 @@ const typeDefs = gql`
 
     type Trip {
         _id: ID
+        organizer_id: ID
         organizer: User
         tripName: String
         description: String
@@ -125,22 +140,14 @@ const typeDefs = gql`
         endDate: ISODate
     }
 
-    type TripInput {
+    input TripInput {
         organizer_id: ID!
         tripName: String
-        event_ids: [ID!]
+        description: String
+        startDate: ISODate
+        endDate: ISODate
+        isPrivate: Boolean
     }
-
-    # type Trip {
-    #     _id: ID
-    #     organizer: User
-    #     tripName: String
-    #     description: String
-    #     isPrivate: Boolean
-    #     startDate: ISODate
-    #     endDate: ISODate
-    #     location: [Location]
-    # }
 
     type Comment {
         _id: ID
@@ -176,6 +183,10 @@ const typeDefs = gql`
         createEvent(event: EventInput): Event
         updateEvent(id: ID!, event: EventInput): Event
         deleteEvent(id: ID!): Event
+
+        createTrip(trip: TripInput): Trip
+        updateTrip(id: ID!, trip: TripInput): Trip
+        deleteTrip(id: ID!): Trip
 
         saveComment(comment: CommentInput): Comment
     }
