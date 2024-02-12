@@ -32,7 +32,7 @@ const GET_EVENTS = gql`
     }
 `;
 
-export const DELETE_EVENT_MUTATION = gql`
+const DELETE_EVENT_MUTATION = gql`
     mutation DeleteEvent($id: ID!) {
         deleteEvent(id: $id) {
             _id

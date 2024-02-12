@@ -12,7 +12,7 @@ const Event: FC<EventProps> = ({ event }) => {
     return (
         <div className={classes.component}>
             <h3 className={classes.header}>{event.tripName}</h3>
-            <div>Организатор: {event.organizer.name}</div>
+            <div>Организатор: {event.organizer ? event.organizer.name : "Нет информации"}</div>
             <div>{event.description}</div>
             <div>{formatDate(event.startDate, "dd LLLL yyyy")}</div>
             <div>{formatDate(event.endDate, "dd LLLL yyyy")}</div>

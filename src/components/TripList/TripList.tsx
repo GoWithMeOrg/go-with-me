@@ -6,7 +6,7 @@ import { formatDate } from "@/utils/formatDate";
 import { useQuery, gql, useMutation } from "@apollo/client";
 import classes from "../EventList/EventList.module.css";
 import { ITrip } from "@/database/models/Trip";
-import { DELETE_EVENT_MUTATION } from "@/components/EventList/EventList";
+import SearchEvents from "../SearchEvent/SearchEvent";
 
 type TripListProps = {
     trips?: ITrip[];
@@ -64,6 +64,7 @@ const TripList: FC<TripListProps> = () => {
     return (
         <div className={classes.component}>
             <h3>Trip List</h3>
+
             <ul>
                 {data.trips.map(({ _id, description, tripName, startDate, endDate }: ITrip) => (
                     <li key={_id} className={classes.item}>
@@ -77,17 +78,6 @@ const TripList: FC<TripListProps> = () => {
 
                         {/* <div className={classes.locations}>{locationName}</div> */}
 
-                        <div className={classes.controls}>
-                            <Link href={`/trips/${_id}/edit`}>Редактировать</Link>
-                            <button
-                                className={classes.delete}
-                                onClick={() => {
-                                    confirm("Delete?") ? handleDelete(_id) : null;
-                                }}
-                            >
-                                Удалить
-                            </button>
-                        </div>
                         <div className={classes.dates}>
                             {startDate && (
                                 <div>
@@ -101,6 +91,18 @@ const TripList: FC<TripListProps> = () => {
                                     {formatDate(endDate, "dd LLLL yyyy")}
                                 </div>
                             )}
+                        </div>
+
+                        <div className={classes.controls}>
+                            <Link href={`/trips/${_id}/edit`}>Редактировать</Link>
+                            <button
+                                className={classes.delete}
+                                onClick={() => {
+                                    confirm("Delete?") ? handleDelete(_id) : null;
+                                }}
+                            >
+                                Удалить
+                            </button>
                         </div>
                     </li>
                 ))}

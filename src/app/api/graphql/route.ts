@@ -7,6 +7,7 @@ import EventModel, { IEvent } from "@/database/models/Event";
 import mongooseConnect from "@/database/mongooseConnect";
 import CommentModel, { IComment } from "@/database/models/Comment";
 import TripModel, { ITrip } from "@/database/models/Trip";
+import { Types } from "mongoose";
 
 const resolvers = {
     ISODate: {
@@ -46,6 +47,16 @@ const resolvers = {
         comments: async (parent: any, { event_id }: { event_id: string }) => {
             await mongooseConnect();
             return CommentModel.find({ event_id }).sort({ createdAt: -1 }).populate("author");
+        },
+
+        search: async (parent: any, { text }: { text: string }) => {
+            await mongooseConnect();
+            const events = await EventModel.find({ $text: { $search: text } });
+
+            //const trips = await TripModel.find({ $text: { $search: text } });
+            const searchResults = [...events];
+
+            return searchResults;
         },
     },
 
@@ -103,6 +114,7 @@ const typeDefs = gql`
         trips: [Trip]
         trip(id: ID!): Trip
         comments(event_id: ID!): [Comment]
+        search(text: String!): [Event]
     }
 
     type User {
