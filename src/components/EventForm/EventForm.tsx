@@ -3,7 +3,6 @@ import dayjs from "dayjs";
 
 import type { IEvent } from "@/database/models/Event";
 import classes from "./EventForm.module.css";
-import { ITrip } from "@/database/models/Trip";
 
 export type EventType = Partial<IEvent>;
 
@@ -77,10 +76,12 @@ const EventForm: FC<EventFormProps> = ({ event, onSubmit }) => {
                     <input type="checkbox" name="isPrivate" defaultChecked={event.isPrivate} />
                 </label>
 
-                <label className={classes.label}>
-                    <span>location:</span>
-                    <input type="text" defaultValue={event.locationName} className={classes.input} />
-                </label>
+                {event.__typename === "Event" && (
+                    <label className={classes.label}>
+                        <span>location:</span>
+                        <input type="text" defaultValue={event.locationName} className={classes.input} />
+                    </label>
+                )}
 
                 <button className={classes.button} type="submit">
                     Save

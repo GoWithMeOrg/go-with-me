@@ -159,6 +159,7 @@ const typeDefs = gql`
         startDate: ISODate
         endDate: ISODate
         isPrivate: Boolean
+        events_id: [ID!]
     }
 
     type Comment {

@@ -34,18 +34,6 @@ const GET_TRIP = gql`
 `;
 
 const UPDATE_TRIP = gql`
-    #graphql
-    # mutation UpdateTrip($id: ID!, $trip: TripInput!) {
-    #     updateTrip(id: $id, trip: $trip) {
-    #         tripName
-    #         description
-    #         isPrivate
-    #         startDate
-    #         endDate
-    #         events_id
-    #     }
-    # }
-
     mutation UpdateTrip($id: ID!, $trip: TripInput) {
         updateTrip(id: $id, trip: $trip) {
             _id
@@ -82,20 +70,6 @@ const TripEditPage: NextPage<PageParams> = (context) => {
         }).then((response) => {
             console.log("TripEditPage: ", response); // eslint-disable-line
             router.push(`/trips/${tripId}`);
-        });
-    };
-
-    const handleAddIdEvents = (id: string) => {
-        updateTrip({
-            variables: {
-                id: tripId,
-                trip: {
-                    events_id: [...data.trip.events_id, id], // Добавляем новый event_id в массив events_id
-                },
-            },
-        }).then((response) => {
-            console.log("Added event to trip: ", response); // eslint-disable-line
-            // Дополнительные действия после добавления event_id
         });
     };
 

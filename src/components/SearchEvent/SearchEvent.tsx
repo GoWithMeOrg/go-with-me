@@ -20,49 +20,76 @@ const GET_SEARCH = gql`
     }
 `;
 
-// const UPDATE_TRIP = gql`
-//     mutation UpdateTrip($id: ID!, $trip: TripInput) {
-//         updateTrip(id: $id, trip: $trip) {
-//             _id
-//             organizer_id
-//             tripName
-//             description
-//             events_id
-//             startDate
-//             endDate
-//         }
-//     }
-// `;
+const UPDATE_TRIP = gql`
+    mutation UpdateTrip($id: ID!, $trip: TripInput) {
+        updateTrip(id: $id, trip: $trip) {
+            tripName
+            description
+            events_id
+            startDate
+            endDate
+        }
+    }
+`;
 
 const SearchEvents = ({ tripId, organizerId }: SearchEventProps) => {
     const [searchEvent, setSearchEvent] = useState("");
-    //const [events, setEvents] = useState<string[]>([]);
+    const [events, setEvents] = useState<string[]>([]);
     const { data, loading, error } = useQuery(GET_SEARCH, {
         variables: { text: searchEvent },
     });
-
-    //const [updateTrip] = useMutation(UPDATE_TRIP);
+    const [updateTrip] = useMutation(UPDATE_TRIP);
 
     const handleSearch = () => {
         setSearchEvent(searchEvent);
     };
 
     const handleAddEvents = async (eventId: string) => {
-        console.log(eventId);
-        // try {
-        //     const updatedEvents = [...events, eventId];
-        //     const { data } = await updateTrip({
-        //         variables: {
-        //             id: tripId,
-        //             trip: { events_id: updatedEvents },
-        //         },
-        //     });
-        //     const updatedTrip = data.updateTrip;
-        //     setEvents(updatedTrip.events_id);
-        // } catch (error) {
-        //     console.error("Ошибка при обновлении поездки:", error);
-        // }
+        try {
+            console.log("Add event: ", eventId);
+            const updatedEvents = [...events, eventId];
+            const { data } = await updateTrip({
+                variables: {
+                    id: tripId,
+                    trip: { events_id: updatedEvents, organizer_id: organizerId },
+                },
+            });
+            const updatedTrip = data.updateTrip;
+            setEvents(updatedTrip.events_id);
+        } catch (error) {
+            console.error("Ошибка при обновлении поездки:", error);
+        }
     };
+
+    // const handleRemoveEvent = (eventId: string) => {
+    //     // const updatedEvents = events.filter((event) => event !== eventId);
+    //     // setEvents(updatedEvents);
+    //     // console.log(updatedEvents);
+    //     try {
+    //         const { data } = await deleteEvent({
+    //             variables: { id: eventIdToRemove },
+    //         });
+    //         // Обработка успешного удаления event_id
+    //     } catch (error) {
+    //         console.error("Ошибка при удалении event_id:", error);
+    //         // Обработка ошибки при удалении event_id
+    //     }
+    // };
+
+    // const removeEventFromTrip = async (eventIdToRemove: string) => {
+    //     try {
+    //         const { data } = await updateTrip({
+    //             variables: {
+    //                 id: tripId,
+    //                 trip: { removeEvents: [eventIdToRemove], organizer_id: organizerId },
+    //             },
+    //         });
+    //         // Обработка успешного удаления event_id из массива
+    //     } catch (error) {
+    //         console.error("Ошибка при удалении event_id из массива:", error);
+    //         // Обработка ошибки при удалении event_id из массива
+    //     }
+    // };
 
     return (
         <div>
@@ -84,6 +111,7 @@ const SearchEvents = ({ tripId, organizerId }: SearchEventProps) => {
                             <p>Дата окончания: {event.endDate}</p>
                             <p>Местоположение: {event.locationName}</p>
                             <button onClick={() => handleAddEvents(event._id)}>add event</button>
+                            {/* <button onClick={() => removeEventFromTrip(event._id)}>remove event</button> */}
                         </div>
                     ))}
                 </div>

@@ -19,6 +19,7 @@ export interface IEvent {
     createdAt: Date | string;
     updatedAt: Date | string;
     locationName: string;
+    __typename: string;
 }
 
 export interface IEventDocument extends Omit<IEvent, "_id" | "organizer" | "createdAt" | "updatedAt">, Document {}
