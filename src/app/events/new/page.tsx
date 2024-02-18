@@ -10,7 +10,7 @@ import { useSession } from "next-auth/react";
 import { EventForm } from "@/components/EventForm";
 import type { EventType } from "@/components/EventForm";
 
-export const CREATE_EVENT = gql`
+const CREATE_EVENT = gql`
     mutation CreateEvent($event: EventInput!) {
         createEvent(event: $event) {
             _id
