@@ -22,7 +22,6 @@ const GET_TRIP = gql`
                 name
                 email
                 image
-                emailVerified
             }
             tripName
             description
@@ -37,12 +36,11 @@ const UPDATE_TRIP = gql`
     mutation UpdateTrip($id: ID!, $trip: TripInput) {
         updateTrip(id: $id, trip: $trip) {
             _id
-            organizer_id
             organizer {
                 _id
+                name
                 email
                 image
-                emailVerified
             }
             tripName
             description
@@ -59,6 +57,8 @@ const TripEditPage: NextPage<PageParams> = (context) => {
     const { loading, error, data } = useQuery(GET_TRIP, {
         variables: { id: tripId },
     });
+
+    console.log(data);
     const [updateTrip] = useMutation(UPDATE_TRIP);
 
     const handleEdit = (eventEdited: Partial<ITrip>) => {
@@ -74,7 +74,7 @@ const TripEditPage: NextPage<PageParams> = (context) => {
     };
 
     return (
-        <div className="EventEditPage">
+        <div className="TripEditPage">
             <h3>Edit Trip {data?.trip?.tripName}</h3>
             <SearchEvent tripId={tripId} organizerId={data?.trip?.organizer_id} />
             {loading && <p>Loading...</p>}

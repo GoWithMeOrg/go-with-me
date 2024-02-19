@@ -6,7 +6,6 @@ import { formatDate } from "@/utils/formatDate";
 import { useQuery, gql, useMutation } from "@apollo/client";
 import classes from "../EventList/EventList.module.css";
 import { ITrip } from "@/database/models/Trip";
-import SearchEvents from "../SearchEvent/SearchEvent";
 
 type TripListProps = {
     trips?: ITrip[];
@@ -16,13 +15,11 @@ const GET_TRIPS = gql`
     query GetTrips {
         trips {
             _id
-            organizer_id
             organizer {
                 _id
                 name
                 email
                 image
-                emailVerified
             }
             tripName
             description

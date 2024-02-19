@@ -33,15 +33,15 @@ const UPDATE_TRIP = gql`
 `;
 
 const SearchEvents = ({ tripId, organizerId }: SearchEventProps) => {
-    const [searchEvent, setSearchEvent] = useState("");
+    const [searchHandler, setSearchHandler] = useState("");
     const [events, setEvents] = useState<string[]>([]);
     const { data, loading, error } = useQuery(GET_SEARCH, {
-        variables: { text: searchEvent },
+        variables: { text: searchHandler },
     });
     const [updateTrip] = useMutation(UPDATE_TRIP);
 
     const handleSearch = () => {
-        setSearchEvent(searchEvent);
+        setSearchHandler(searchHandler);
     };
 
     const handleAddEvents = async (eventId: string) => {
@@ -95,8 +95,8 @@ const SearchEvents = ({ tripId, organizerId }: SearchEventProps) => {
         <div>
             <input
                 type="text"
-                value={searchEvent}
-                onChange={(e) => setSearchEvent(e.target.value)}
+                value={searchHandler}
+                onChange={(e) => setSearchHandler(e.target.value)}
                 placeholder="Введите поисковый запрос..."
             />
             <button onClick={handleSearch}>search events</button>
