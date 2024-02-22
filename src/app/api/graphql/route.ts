@@ -7,7 +7,6 @@ import EventModel, { IEvent } from "@/database/models/Event";
 import mongooseConnect from "@/database/mongooseConnect";
 import CommentModel, { IComment } from "@/database/models/Comment";
 import TripModel, { ITrip } from "@/database/models/Trip";
-import { Types } from "mongoose";
 
 const resolvers = {
     ISODate: {

@@ -23,11 +23,23 @@ const GET_SEARCH = gql`
 const UPDATE_TRIP = gql`
     mutation UpdateTrip($id: ID!, $trip: TripInput) {
         updateTrip(id: $id, trip: $trip) {
+            # organizer_id
+            organizer {
+                _id
+            }
             tripName
             description
             events_id
             startDate
             endDate
+        }
+    }
+`;
+
+const GET_TRIP_BY_ID = gql`
+    query GetTripById($tripId: ID!) {
+        trip(id: $tripId) {
+            events_id
         }
     }
 `;
@@ -38,58 +50,34 @@ const SearchEvents = ({ tripId, organizerId }: SearchEventProps) => {
     const { data, loading, error } = useQuery(GET_SEARCH, {
         variables: { text: searchHandler },
     });
-    const [updateTrip] = useMutation(UPDATE_TRIP);
 
+    const { data: tripData } = useQuery(GET_TRIP_BY_ID, { variables: { tripId } });
+    const eventsId = tripData?.trip?.events_id;
+
+    const [updateTrip] = useMutation(UPDATE_TRIP);
     const handleSearch = () => {
         setSearchHandler(searchHandler);
     };
 
-    const handleAddEvents = async (eventId: string) => {
+    const handleAddEvent = async (eventId: string) => {
         try {
-            console.log("Add event: ", eventId);
-            const updatedEvents = [...events, eventId];
-            const { data } = await updateTrip({
-                variables: {
-                    id: tripId,
-                    trip: { events_id: updatedEvents, organizer_id: organizerId },
-                },
-            });
-            const updatedTrip = data.updateTrip;
-            setEvents(updatedTrip.events_id);
+            if (!eventsId?.includes(eventId)) {
+                const updatedEvents = [...(eventsId || []), eventId];
+                const { data } = await updateTrip({
+                    variables: {
+                        id: tripId,
+                        trip: { events_id: updatedEvents, organizer_id: organizerId },
+                    },
+                });
+                const updatedTrip = data.updateTrip;
+                setEvents(updatedTrip.events_id);
+            } else {
+                console.log("Event already added: ", eventId);
+            }
         } catch (error) {
             console.error("Ошибка при обновлении поездки:", error);
         }
     };
-
-    // const handleRemoveEvent = (eventId: string) => {
-    //     // const updatedEvents = events.filter((event) => event !== eventId);
-    //     // setEvents(updatedEvents);
-    //     // console.log(updatedEvents);
-    //     try {
-    //         const { data } = await deleteEvent({
-    //             variables: { id: eventIdToRemove },
-    //         });
-    //         // Обработка успешного удаления event_id
-    //     } catch (error) {
-    //         console.error("Ошибка при удалении event_id:", error);
-    //         // Обработка ошибки при удалении event_id
-    //     }
-    // };
-
-    // const removeEventFromTrip = async (eventIdToRemove: string) => {
-    //     try {
-    //         const { data } = await updateTrip({
-    //             variables: {
-    //                 id: tripId,
-    //                 trip: { removeEvents: [eventIdToRemove], organizer_id: organizerId },
-    //             },
-    //         });
-    //         // Обработка успешного удаления event_id из массива
-    //     } catch (error) {
-    //         console.error("Ошибка при удалении event_id из массива:", error);
-    //         // Обработка ошибки при удалении event_id из массива
-    //     }
-    // };
 
     return (
         <div>
@@ -110,8 +98,7 @@ const SearchEvents = ({ tripId, organizerId }: SearchEventProps) => {
                             <p>Дата начала: {event.startDate}</p>
                             <p>Дата окончания: {event.endDate}</p>
                             <p>Местоположение: {event.locationName}</p>
-                            <button onClick={() => handleAddEvents(event._id)}>add event</button>
-                            {/* <button onClick={() => removeEventFromTrip(event._id)}>remove event</button> */}
+                            <button onClick={() => handleAddEvent(event._id)}>add event</button>
                         </div>
                     ))}
                 </div>

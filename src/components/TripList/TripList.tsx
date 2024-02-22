@@ -25,11 +25,12 @@ const GET_TRIPS = gql`
             description
             startDate
             endDate
+            events_id
         }
     }
 `;
 
-export const DELETE_TRIP_MUTATION = gql`
+const DELETE_TRIP_MUTATION = gql`
     mutation DeleteTrip($id: ID!) {
         deleteTrip(id: $id) {
             _id
@@ -37,21 +38,41 @@ export const DELETE_TRIP_MUTATION = gql`
     }
 `;
 
+const GET_EVENTS = gql`
+    query GetEvents {
+        events {
+            _id
+            organizer {
+                _id
+                name
+                email
+                image
+            }
+
+            tripName
+            description
+            isPrivate
+            startDate
+            endDate
+            locationName
+        }
+    }
+`;
+
 const TripList: FC<TripListProps> = () => {
     const { loading, error, data } = useQuery(GET_TRIPS);
     const [deleteTripMutation] = useMutation(DELETE_TRIP_MUTATION);
+    const { data: eventData } = useQuery(GET_EVENTS);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error : {error.message}</p>;
 
     const handleDelete = async (eventId: string) => {
-        console.log(eventId);
         try {
             await deleteTripMutation({
                 variables: { id: eventId },
             });
 
-            // Обновляем страницу после успешного удаления
             location.reload();
         } catch (error) {
             console.error("Error deleting event: ", error);
@@ -63,7 +84,7 @@ const TripList: FC<TripListProps> = () => {
             <h3>Trip List</h3>
 
             <ul>
-                {data.trips.map(({ _id, description, tripName, startDate, endDate }: ITrip) => (
+                {data.trips.map(({ _id, description, tripName, startDate, endDate, events_id }: ITrip) => (
                     <li key={_id} className={classes.item}>
                         <h3>
                             <Link className={classes.edit} href={`/trips/${_id}`}>
@@ -88,6 +109,17 @@ const TripList: FC<TripListProps> = () => {
                                     {formatDate(endDate, "dd LLLL yyyy")}
                                 </div>
                             )}
+                        </div>
+
+                        <div className={classes.eventsList}>
+                            Events:
+                            {events_id.map((eventId: any) => (
+                                <div key={eventId}>
+                                    <p>{eventData.events.find((event: any) => event._id === eventId).tripName}</p>
+                                    {/* <p>{eventData.events.find((event: any) => event._id === eventId).startDate}</p>
+                                    <p>{eventData.events.find((event: any) => event._id === eventId).endDate}</p> */}
+                                </div>
+                            ))}
                         </div>
 
                         <div className={classes.controls}>

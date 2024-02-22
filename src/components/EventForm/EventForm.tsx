@@ -3,12 +3,13 @@ import dayjs from "dayjs";
 
 import type { IEvent } from "@/database/models/Event";
 import classes from "./EventForm.module.css";
+import { ITrip } from "@/database/models/Trip";
 
 export type EventType = Partial<IEvent>;
 
 interface EventFormProps {
     event: EventType;
-    onSubmit: (event: Partial<IEvent>) => void;
+    onSubmit: (event: Partial<IEvent | ITrip>) => void;
 }
 
 const EventForm: FC<EventFormProps> = ({ event, onSubmit }) => {
@@ -16,7 +17,7 @@ const EventForm: FC<EventFormProps> = ({ event, onSubmit }) => {
         formEvent.preventDefault();
         const formData = Object.fromEntries(new FormData(formEvent.currentTarget).entries());
         const onSubmitData: Partial<IEvent> = {
-            organizer_id: event.organizer_id,
+            organizer_id: event.organizer?._id,
             tripName: formData.tripName as string,
             description: formData.description as string,
             isPrivate: formData.isPrivate === "on",

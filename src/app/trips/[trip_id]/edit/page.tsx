@@ -9,14 +9,15 @@ import type { ITrip } from "@/database/models/Trip";
 import SearchEvent from "@/components/SearchEvent/SearchEvent";
 
 type PageParams = {
-    params: { trip_id: string };
+    params: {
+        trip_id: string;
+    };
 };
 
 const GET_TRIP = gql`
     query GetTrip($id: ID!) {
         trip(id: $id) {
             _id
-            organizer_id
             organizer {
                 _id
                 name
@@ -58,7 +59,6 @@ const TripEditPage: NextPage<PageParams> = (context) => {
         variables: { id: tripId },
     });
 
-    console.log(data);
     const [updateTrip] = useMutation(UPDATE_TRIP);
 
     const handleEdit = (eventEdited: Partial<ITrip>) => {
@@ -76,7 +76,7 @@ const TripEditPage: NextPage<PageParams> = (context) => {
     return (
         <div className="TripEditPage">
             <h3>Edit Trip {data?.trip?.tripName}</h3>
-            <SearchEvent tripId={tripId} organizerId={data?.trip?.organizer_id} />
+            <SearchEvent tripId={tripId} organizerId={data?.trip?.organizer?._id} />
             {loading && <p>Loading...</p>}
             {error && <p>Error : {error.message}</p>}
             {!error && data?.trip && <EventForm event={data.trip} onSubmit={handleEdit} />}

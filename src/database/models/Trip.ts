@@ -3,7 +3,7 @@ import UserModel, { IUser } from "./User";
 
 export interface ITrip {
     _id: string;
-    organizer_id: mongoose.Types.ObjectId;
+    organizer_id: mongoose.Types.ObjectId | string;
     organizer: IUser;
     tripName: string;
     description: string;

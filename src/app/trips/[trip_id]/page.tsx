@@ -1,7 +1,6 @@
 "use client";
 
 import type { NextPage } from "next";
-import { useSession } from "next-auth/react";
 import { gql, useQuery } from "@apollo/client";
 import { Event } from "@/components/Event";
 
@@ -31,7 +30,6 @@ const GET_TRIP_BY_ID = gql`
 `;
 
 const TripPage: NextPage<PageParams> = (context) => {
-    const { data: session } = useSession();
     const { data, error, loading } = useQuery(GET_TRIP_BY_ID, { variables: { id: context.params.trip_id } });
     console.log(data);
 
