@@ -115,7 +115,7 @@ const TripList: FC<TripListProps> = () => {
                             Events:
                             {events_id.map((eventId: any) => (
                                 <div key={eventId}>
-                                    <p>{eventData.events.find((event: any) => event._id === eventId).tripName}</p>
+                                    <p>{eventData?.events.find((event: any) => event._id === eventId).tripName}</p>
                                     {/* <p>{eventData.events.find((event: any) => event._id === eventId).startDate}</p>
                                     <p>{eventData.events.find((event: any) => event._id === eventId).endDate}</p> */}
                                 </div>

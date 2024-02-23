@@ -23,7 +23,6 @@ const GET_SEARCH = gql`
 const UPDATE_TRIP = gql`
     mutation UpdateTrip($id: ID!, $trip: TripInput) {
         updateTrip(id: $id, trip: $trip) {
-            # organizer_id
             organizer {
                 _id
             }
