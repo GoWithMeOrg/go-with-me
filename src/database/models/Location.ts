@@ -14,7 +14,11 @@ export interface ILocation {
     description?: string;
 }
 
-export type LocationInput = Pick<ILocation, "author_id" | "name" | "address" | "latitude" | "longitude">;
+export type LocationInput = Pick<
+    ILocation,
+    "author_id" | "name" | "address" | "latitude" | "longitude" | "content" | "description"
+> &
+    Partial<Pick<ILocation, "content" | "description">>;
 
 export interface ILocationDocument extends Omit<ILocation, "_id" | "createdAt" | "updatedAt">, Document {}
 
@@ -38,6 +42,12 @@ export const LocationSchema = new Schema({
     longitude: {
         type: Number,
         required: true,
+    },
+    content: {
+        type: String,
+    },
+    description: {
+        type: String,
     },
 });
 

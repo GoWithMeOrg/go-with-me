@@ -6,8 +6,7 @@ import dayjs from "dayjs";
 import EventModel, { IEvent } from "@/database/models/Event";
 import mongooseConnect from "@/database/mongooseConnect";
 import CommentModel, { IComment } from "@/database/models/Comment";
-import LocationModel, { ILocation, LocationInput, LocationSchema } from "@/database/models/Location";
-import { Schema, model } from "mongoose";
+import LocationModel, { ILocation, LocationInput } from "@/database/models/Location";
 
 const resolvers = {
     ISODate: {
@@ -75,11 +74,13 @@ const resolvers = {
             const newLocation = new LocationModel(location);
             return await newLocation.save();
         },
-        updateLocation: async ({ id, location }: { id: ILocation["_id"]; location: Omit<ILocation, "_id"> }) => {
+        updateLocation: async (parent: any, { id, location }: { id: string; location: LocationInput }) => {
             await mongooseConnect();
+            console.log(location);
             await LocationModel.updateOne({ _id: id }, location);
+            return await LocationModel.findById(id);
         },
-        deleteLocation: async ({ id }: { id: ILocation["_id"] }) => {
+        deleteLocation: async (parent: any, { id }: { id: string }) => {
             await mongooseConnect();
             return await LocationModel.deleteOne({ _id: id });
         },
@@ -114,18 +115,14 @@ const typeDefs = gql`
     type Location {
         _id: ID
         author_id: ID
+        name: String
+        address: String
+        latitude: Float
+        longitude: Float
         author: User
         trip_id: ID
         content: String
-        name: String
-        address: String
-        coordinates: Coordinates
         description: String
-    }
-
-    type Coordinates {
-        latitude: Float
-        longitude: Float
     }
 
     type Event {
@@ -178,11 +175,13 @@ const typeDefs = gql`
     }
 
     input LocationInput {
-        author_id: ID!
+        author_id: ID
         name: String
         address: String
         latitude: Float
         longitude: Float
+        content: String
+        description: String
     }
 
     type Mutation {
