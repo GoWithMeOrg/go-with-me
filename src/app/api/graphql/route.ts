@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import EventModel, { IEvent } from "@/database/models/Event";
 import mongooseConnect from "@/database/mongooseConnect";
 import CommentModel, { IComment } from "@/database/models/Comment";
+import LocationModel, { ILocation, LocationInput } from "@/database/models/Location";
 
 const resolvers = {
     ISODate: {
@@ -37,6 +38,14 @@ const resolvers = {
             await mongooseConnect();
             return CommentModel.find({ event_id }).sort({ createdAt: -1 }).populate("author");
         },
+        locations: async () => {
+            await mongooseConnect();
+            return LocationModel.find({});
+        },
+        location: async ({ id }: { id: ILocation["_id"] }) => {
+            await mongooseConnect();
+            return LocationModel.findById({ id });
+        },
     },
 
     Mutation: {
@@ -60,6 +69,21 @@ const resolvers = {
             const newComment = new CommentModel(comment);
             return await newComment.save();
         },
+        createLocation: async (parent: any, { location }: { location: LocationInput }) => {
+            await mongooseConnect();
+            const newLocation = new LocationModel(location);
+            return await newLocation.save();
+        },
+        updateLocation: async (parent: any, { id, location }: { id: string; location: LocationInput }) => {
+            await mongooseConnect();
+            console.log(location);
+            await LocationModel.updateOne({ _id: id }, location);
+            return await LocationModel.findById(id);
+        },
+        deleteLocation: async (parent: any, { id }: { id: string }) => {
+            await mongooseConnect();
+            return await LocationModel.deleteOne({ _id: id });
+        },
     },
 };
 
@@ -76,6 +100,8 @@ const typeDefs = gql`
         trips: [Trip]
         trip(id: ID!): Trip
         comments(event_id: ID!): [Comment]
+        locations: [Location]
+        location(id: ID!): Location
     }
 
     type User {
@@ -87,13 +113,22 @@ const typeDefs = gql`
     }
 
     type Location {
+        _id: ID
+        author_id: ID
         name: String
+        address: String
+        latitude: Float
+        longitude: Float
+        author: User
+        trip_id: ID
+        content: String
+        description: String
     }
 
     type Event {
         _id: ID
         organizer_id: ID
-        organizer: User
+        organizer: [User]
         tripName: String
         description: String
         isPrivate: Boolean
@@ -140,7 +175,13 @@ const typeDefs = gql`
     }
 
     input LocationInput {
+        author_id: ID
         name: String
+        address: String
+        latitude: Float
+        longitude: Float
+        content: String
+        description: String
     }
 
     type Mutation {
@@ -149,6 +190,10 @@ const typeDefs = gql`
         deleteEvent(id: ID!): Event
 
         saveComment(comment: CommentInput): Comment
+
+        createLocation(location: LocationInput): Location
+        updateLocation(id: ID!, location: LocationInput): Location
+        deleteLocation(id: ID!): Location
     }
 `;
 

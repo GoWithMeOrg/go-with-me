@@ -1,26 +1,53 @@
 import mongoose, { Schema, Document } from "mongoose";
+import { IUser } from "./User";
 
 export interface ILocation {
-    // _id: string;
-    // author_id: mongoose.Types.ObjectId;
-    // author: IUser;
-    // trip_id: mongoose.Types.ObjectId;
-    // content: string;
+    _id: string;
+    author_id: mongoose.Types.ObjectId;
+    author: IUser;
+    trip_id: mongoose.Types.ObjectId;
+    content: string;
     name: string;
-    // address: string;
-    // coordinates: {
-    //     latitude: number;
-    //     longitude: number;
-    // };
-    // description?: string;
+    address: string;
+    latitude: number;
+    longitude: number;
+    description?: string;
 }
+
+export type LocationInput = Pick<
+    ILocation,
+    "author_id" | "name" | "address" | "latitude" | "longitude" | "content" | "description"
+> &
+    Partial<Pick<ILocation, "content" | "description">>;
 
 export interface ILocationDocument extends Omit<ILocation, "_id" | "createdAt" | "updatedAt">, Document {}
 
-const LocationSchema = new Schema<ILocationDocument>({
+export const LocationSchema = new Schema({
+    author_id: {
+        type: String,
+        required: true,
+    },
     name: {
         type: String,
         required: true,
+    },
+    address: {
+        type: String,
+        required: true,
+    },
+    latitude: {
+        type: Number,
+        required: true,
+    },
+    longitude: {
+        type: Number,
+        required: true,
+    },
+    content: {
+        type: String,
+    },
+    description: {
+        type: String,
     },
 });
 
