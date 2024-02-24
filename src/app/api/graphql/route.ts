@@ -6,7 +6,8 @@ import dayjs from "dayjs";
 import EventModel, { IEvent } from "@/database/models/Event";
 import mongooseConnect from "@/database/mongooseConnect";
 import CommentModel, { IComment } from "@/database/models/Comment";
-import LocationModel, { ILocation, LocationsRequestField } from "@/database/models/Location";
+import LocationModel, { ILocation, LocationInput, LocationSchema } from "@/database/models/Location";
+import { Schema, model } from "mongoose";
 
 const resolvers = {
     ISODate: {
@@ -69,7 +70,7 @@ const resolvers = {
             const newComment = new CommentModel(comment);
             return await newComment.save();
         },
-        createLocation: async (location: Pick<ILocation, "name" | "address" | "coordinates" | "author_id">) => {
+        createLocation: async (parent: any, { location }: { location: LocationInput }) => {
             await mongooseConnect();
             const newLocation = new LocationModel(location);
             return await newLocation.save();

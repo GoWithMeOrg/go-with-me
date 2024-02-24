@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
-import UserModel, { IUser } from "./User";
+import { IUser } from "./User";
 
 export interface ILocation {
     _id: string;
@@ -9,44 +9,35 @@ export interface ILocation {
     content: string;
     name: string;
     address: string;
-    coordinates: {
-        latitude: number;
-        longitude: number;
-    };
+    latitude: number;
+    longitude: number;
     description?: string;
 }
 
+export type LocationInput = Pick<ILocation, "author_id" | "name" | "address" | "latitude" | "longitude">;
+
 export interface ILocationDocument extends Omit<ILocation, "_id" | "createdAt" | "updatedAt">, Document {}
 
-export type LocationsRequestField =
-    | Pick<ILocation, "address">
-    | Pick<ILocation, "author">
-    | Pick<ILocation, "coordinates">
-    | Pick<ILocation, "name">;
-
-const LocationSchema = new Schema<ILocationDocument>({
-    name: {
+export const LocationSchema = new Schema({
+    author_id: {
         type: String,
         required: true,
     },
-    author_id: {
-        type: Schema.Types.ObjectId,
+    name: {
+        type: String,
         required: true,
-        ref: UserModel,
     },
     address: {
         type: String,
         required: true,
     },
-    coordinates: {
-        latitude: {
-            type: Number,
-            required: true,
-        },
-        longitude: {
-            type: Number,
-            required: true,
-        },
+    latitude: {
+        type: Number,
+        required: true,
+    },
+    longitude: {
+        type: Number,
+        required: true,
     },
 });
 
