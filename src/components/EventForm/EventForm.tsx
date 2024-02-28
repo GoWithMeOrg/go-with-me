@@ -16,7 +16,7 @@ const EventForm: FC<EventFormProps> = ({ event, onSubmit }) => {
     const handleSubmit = (formEvent: FormEvent<HTMLFormElement>) => {
         formEvent.preventDefault();
         const formData = Object.fromEntries(new FormData(formEvent.currentTarget).entries());
-        const onSubmitData: Partial<IEvent> = {
+        const onSubmitData: Partial<IEvent | ITrip> = {
             organizer_id: event.organizer?._id,
             tripName: formData.tripName as string,
             description: formData.description as string,
@@ -26,7 +26,10 @@ const EventForm: FC<EventFormProps> = ({ event, onSubmit }) => {
             locationName: formData.locationName as string,
         };
         onSubmit(onSubmitData);
+        console.log(onSubmitData);
     };
+
+    console.log(event);
 
     return (
         <div className={classes.container}>
@@ -77,12 +80,17 @@ const EventForm: FC<EventFormProps> = ({ event, onSubmit }) => {
                     <input type="checkbox" name="isPrivate" defaultChecked={event.isPrivate} />
                 </label>
 
-                {event.__typename === "Event" && (
+                {/* {event.__typename === "Event" && (
                     <label className={classes.label}>
                         <span>location:</span>
                         <input type="text" defaultValue={event.locationName} className={classes.input} />
                     </label>
-                )}
+                )} */}
+
+                <label className={classes.label}>
+                    <span>location:</span>
+                    <input type="text" defaultValue={event.locationName} className={classes.input} />
+                </label>
 
                 <button className={classes.button} type="submit">
                     Save

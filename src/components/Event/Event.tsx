@@ -3,6 +3,7 @@ import type { IEvent } from "@/database/models/Event";
 import { formatDate } from "@/utils/formatDate";
 
 import classes from "@/components/EventForm/EventForm.module.css";
+import { gql, useQuery } from "@apollo/client";
 
 export interface EventProps {
     event: IEvent;

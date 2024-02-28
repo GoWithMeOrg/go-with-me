@@ -12,18 +12,6 @@ const CREATE_TRIP = gql`
     mutation CreateTrip($trip: TripInput) {
         createTrip(trip: $trip) {
             _id
-            organizer_id
-            organizer {
-                _id
-                name
-                email
-                image
-            }
-            tripName
-            description
-            events_id
-            startDate
-            endDate
         }
     }
 `;
@@ -33,8 +21,6 @@ const TripNewPage: NextPage = () => {
     const { data: session } = useSession();
     const [createTrip] = useMutation(CREATE_TRIP);
     const organizerId = (session?.user as { id: string })?.id;
-
-    console.log(organizerId);
 
     const handleCreateEvent = async (trip: EventType) => {
         createTrip({
@@ -54,7 +40,6 @@ const TripNewPage: NextPage = () => {
             <div>
                 <EventForm
                     event={{
-                        // @ts-ignore TODO: fix type
                         organizer_id: organizerId,
                         tripName: "",
                         description: "",

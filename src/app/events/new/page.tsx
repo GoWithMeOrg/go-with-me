@@ -22,11 +22,12 @@ const EventNewPage: NextPage = () => {
     const router = useRouter();
     const { data: session } = useSession();
     const [createEvent] = useMutation(CREATE_EVENT);
+    const organizerId = (session?.user as { id: string })?.id;
 
     const handleCreateEvent = async (event: EventType) => {
         createEvent({
             variables: {
-                event,
+                event: { ...event, organizer_id: organizerId },
             },
         }).then((response) => {
             router.push(`/events/${response.data?.createEvent?._id}`);
@@ -39,8 +40,7 @@ const EventNewPage: NextPage = () => {
             <div>
                 <EventForm
                     event={{
-                        // @ts-ignore TODO: fix type
-                        organizer_id: session?.user?.id,
+                        organizer_id: organizerId,
                         tripName: "",
                         description: "",
                         startDate: new Date(),
