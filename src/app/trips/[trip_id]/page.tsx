@@ -42,7 +42,6 @@ const TripPage: NextPage<PageParams> = (context) => {
     return (
         <div className="TripPage">
             <h3>Trip Page</h3>
-            {/* Нужно использовать Trip компонент  */}
             <Trip event={data.trip} />
         </div>
     );
