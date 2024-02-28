@@ -8,6 +8,9 @@ import mongooseConnect from "@/database/mongooseConnect";
 import CommentModel, { IComment } from "@/database/models/Comment";
 import TripModel, { ITrip } from "@/database/models/Trip";
 
+/**
+ * @see https://www.apollographql.com/docs/apollo-server/data/resolvers/
+ */
 const resolvers = {
     ISODate: {
         __parseValue(value: string) {
@@ -25,7 +28,8 @@ const resolvers = {
     },
 
     Query: {
-        events: async () => {
+        events: async (eventsParent: any) => {
+            console.log("eventsParent: ", eventsParent); // eslint-disable-line
             await mongooseConnect();
             return EventModel.find({}).populate("organizer");
         },
@@ -34,7 +38,9 @@ const resolvers = {
             return EventModel.findById(id).populate("organizer");
         },
 
-        trips: async () => {
+        // parent, args, contextValue, info
+        trips: async (...args: any) => {
+            // console.log("args: ", args); // eslint-disable-line
             await mongooseConnect();
             return TripModel.find({}).populate("organizer");
         },
@@ -56,6 +62,36 @@ const resolvers = {
             const searchResults = [...events];
 
             return searchResults;
+        },
+    },
+
+    Trip: {
+        /*
+        * В parent будут приходить trips из запроса вида
+query GetTrips {
+        trips {
+            _id
+            organizer {
+                _id
+                name
+                email
+                image
+            }
+            tripName
+            description
+            startDate
+            endDate
+            events { <== вот для этого поля и нужен этот резолвер
+                _id
+                tripName
+                description
+            }
+        }
+    }
+        * */
+        events: async (parent: any) => {
+            await mongooseConnect();
+            return await EventModel.find({ _id: { $in: parent.events_id } });
         },
     },
 
@@ -146,7 +182,8 @@ const typeDefs = gql`
         organizer: User
         tripName: String
         description: String
-        events_id: [ID!]
+        events_id: [ID]
+        events: [Event]
         startDate: ISODate
         endDate: ISODate
     }
@@ -158,7 +195,7 @@ const typeDefs = gql`
         startDate: ISODate
         endDate: ISODate
         isPrivate: Boolean
-        events_id: [ID!]
+        events_id: [ID]
     }
 
     type Comment {

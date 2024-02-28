@@ -4,8 +4,9 @@ import { FC } from "react";
 import Link from "next/link";
 import { formatDate } from "@/utils/formatDate";
 import { useQuery, gql, useMutation } from "@apollo/client";
-import classes from "../EventList/EventList.module.css";
 import { ITrip } from "@/database/models/Trip";
+
+import classes from "./TripList.module.css";
 
 type TripListProps = {
     trips?: ITrip[];
@@ -25,7 +26,11 @@ const GET_TRIPS = gql`
             description
             startDate
             endDate
-            events_id
+            events {
+                _id
+                tripName
+                description
+            }
         }
     }
 `;
@@ -38,34 +43,14 @@ const DELETE_TRIP_MUTATION = gql`
     }
 `;
 
-const GET_EVENTS = gql`
-    query GetEvents {
-        events {
-            _id
-            organizer {
-                _id
-                name
-                email
-                image
-            }
-
-            tripName
-            description
-            isPrivate
-            startDate
-            endDate
-            locationName
-        }
-    }
-`;
-
 const TripList: FC<TripListProps> = () => {
-    const { loading, error, data } = useQuery(GET_TRIPS);
+    const { loading, error, data: tripData } = useQuery(GET_TRIPS);
     const [deleteTripMutation] = useMutation(DELETE_TRIP_MUTATION);
-    const { data: eventData } = useQuery(GET_EVENTS);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error : {error.message}</p>;
+
+    console.log("tripData: ", tripData); // eslint-disable-line
 
     const handleDelete = async (eventId: string) => {
         try {
@@ -84,7 +69,7 @@ const TripList: FC<TripListProps> = () => {
             <h3>Trip List</h3>
 
             <ul>
-                {data.trips.map(({ _id, description, tripName, startDate, endDate, events_id }: ITrip) => (
+                {tripData.trips.map(({ _id, description, tripName, startDate, endDate }: ITrip) => (
                     <li key={_id} className={classes.item}>
                         <h3>
                             <Link className={classes.edit} href={`/trips/${_id}`}>
@@ -93,8 +78,6 @@ const TripList: FC<TripListProps> = () => {
                         </h3>
 
                         <div className={classes.item}>{description}</div>
-
-                        {/* <div className={classes.locations}>{locationName}</div> */}
 
                         <div className={classes.dates}>
                             {startDate && (
@@ -109,17 +92,6 @@ const TripList: FC<TripListProps> = () => {
                                     {formatDate(endDate, "dd LLLL yyyy")}
                                 </div>
                             )}
-                        </div>
-
-                        <div className={classes.eventsList}>
-                            Events:
-                            {events_id.map((eventId: any) => (
-                                <div key={eventId}>
-                                    <p>{eventData?.events.find((event: any) => event._id === eventId).tripName}</p>
-                                    {/* <p>{eventData.events.find((event: any) => event._id === eventId).startDate}</p>
-                                    <p>{eventData.events.find((event: any) => event._id === eventId).endDate}</p> */}
-                                </div>
-                            ))}
                         </div>
 
                         <div className={classes.controls}>

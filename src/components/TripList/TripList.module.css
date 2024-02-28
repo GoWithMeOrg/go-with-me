@@ -1,0 +1,25 @@
+.component {
+    /* keep*/
+}
+
+.item {
+    margin-bottom: 24px;
+}
+
+.controls {
+    margin: 12px 0;
+    font-size: 0.8em;
+}
+
+.delete {
+    margin-left: 12px;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 18px;
+    background-color: #ff9898;
+    cursor: pointer;
+}
+
+.dates {
+    font-size: 0.8em;
+}
