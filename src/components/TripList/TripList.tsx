@@ -4,7 +4,7 @@ import { FC } from "react";
 import Link from "next/link";
 import { formatDate } from "@/utils/formatDate";
 import { useQuery, gql, useMutation } from "@apollo/client";
-import classes from "../EventList/EventList.module.css";
+import classes from "../TripList/TripList.module.css";
 import { ITrip } from "@/database/models/Trip";
 
 type TripListProps = {
