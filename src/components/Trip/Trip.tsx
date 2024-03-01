@@ -1,3 +1,9 @@
+/* TODO
+ *
+ * В Trip нужно вывйти список событий (Event), которые входят в этот трип
+ *
+ *  */
+
 import { ITrip } from "@/database/models/Trip";
 import gql from "graphql-tag";
 import classes from "@/components/EventForm/EventForm.module.css";

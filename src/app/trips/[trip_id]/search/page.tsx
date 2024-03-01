@@ -1,21 +1,20 @@
 import SearchEvent from "./SearchEvent";
 import EventsList from "./EventsList";
 
-//нужно query заменить на text
 const SearchPage = ({
     searchParams,
 }: {
     searchParams?: {
-        query?: string;
+        text?: string;
     };
 }) => {
-    const query = searchParams?.query || "";
-    console.log(query);
+    const text = searchParams?.text || "";
+
     return (
         <div className="EventListPage">
             <h1>Search Page</h1>
             <SearchEvent />
-            <EventsList query={query} />
+            <EventsList text={text} />
         </div>
     );
 };

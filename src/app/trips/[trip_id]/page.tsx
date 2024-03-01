@@ -2,9 +2,8 @@
 
 import type { NextPage } from "next";
 import { gql, useQuery } from "@apollo/client";
-import { Event } from "@/components/Event";
 import { Trip } from "@/components/Trip";
-
+//эвент удален
 type PageParams = {
     params: { trip_id: string };
 };
@@ -41,9 +40,8 @@ const TripPage: NextPage<PageParams> = (context) => {
     }
 
     return (
-        <div className="EventPage">
+        <div className="TripPage">
             <h3>Trip Page</h3>
-
             <Trip event={data.trip} />
         </div>
     );
