@@ -9,9 +9,9 @@ export const SearchEvent = () => {
     const handleSearch = (searchTerm: string) => {
         const params = new URLSearchParams(searchParams);
         if (searchTerm) {
-            params.set("query", searchTerm);
+            params.set("text", searchTerm);
         } else {
-            params.delete("query");
+            params.delete("text");
         }
         replace(`${pathname}?${params.toString()}`);
     };
@@ -25,7 +25,7 @@ export const SearchEvent = () => {
             <input
                 className="search"
                 placeholder="search"
-                defaultValue={searchParams.get("query")?.toString()}
+                defaultValue={searchParams.get("text")?.toString()}
                 onChange={(e) => {
                     handleSearch(e.target.value);
                 }}
