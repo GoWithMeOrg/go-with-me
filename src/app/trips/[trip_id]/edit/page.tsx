@@ -6,7 +6,7 @@ import { gql, useMutation, useQuery } from "@apollo/client";
 
 import { EventForm } from "@/components/EventForm/EventForm";
 import type { ITrip } from "@/database/models/Trip";
-import SearchEvent from "@/components/SearchEvent/SearchEvent";
+// import SearchEvent from "@/components/SearchEvent/SearchEvent";
 
 type PageParams = {
     params: {
@@ -76,7 +76,7 @@ const TripEditPage: NextPage<PageParams> = (context) => {
     return (
         <div className="TripEditPage">
             <h3>Edit Trip {data?.trip?.tripName}</h3>
-            <SearchEvent tripId={tripId} organizerId={data?.trip?.organizer?._id} />
+            {/* <SearchEvent tripId={tripId} organizerId={data?.trip?.organizer?._id} /> */}
             {loading && <p>Loading...</p>}
             {error && <p>Error : {error.message}</p>}
             {!error && data?.trip && <EventForm event={data.trip} onSubmit={handleEdit} />}
