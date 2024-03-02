@@ -1,42 +1,36 @@
 import { FC, FormEvent } from "react";
 import dayjs from "dayjs";
 
-import type { IEvent } from "@/database/models/Event";
+import type { ITrip } from "@/database/models/Trip";
 
-import classes from "./EventForm.module.css";
+import classes from "./TripForm.module.css";
 
-export type EventType = Partial<IEvent>;
-
-interface EventFormProps {
-    eventData: EventType;
-    onSubmit: (event: Partial<IEvent>) => void;
+interface TripFormProps {
+    tripData: ITrip;
+    onSubmit: (eventData: ITrip) => void;
 }
 
-const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
+const TripForm: FC<TripFormProps> = ({ tripData, onSubmit }) => {
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = Object.fromEntries(new FormData(e.currentTarget).entries());
-        const onSubmitData: Partial<IEvent> = {
-            organizer_id: eventData.organizer?._id,
+        // Convert the form data to the correct types
+        const onSubmitData: ITrip = {
             name: formData.name as string,
             description: formData.description as string,
             isPrivate: formData.isPrivate === "on",
+            organizer_id: tripData.organizer_id,
             startDate: dayjs(formData.startDate as string).toISOString(),
             endDate: dayjs(formData.endDate as string).toISOString(),
-            locationName: formData.locationName as string,
         };
         onSubmit(onSubmitData);
-        console.log(onSubmitData);
     };
-
-    console.log(eventData);
-
     return (
         <div className={classes.container}>
             <form className={classes.form} onSubmit={handleSubmit}>
                 <label className={classes.label}>
-                    <span className={classes.titleField}>Event Name:</span>
-                    <input className={classes.input} type="text" name="name" defaultValue={eventData.name} required />
+                    <span className={classes.titleField}>Trip Name:</span>
+                    <input className={classes.input} type="text" name="name" defaultValue={tripData.name} required />
                 </label>
 
                 <label className={classes.label}>
@@ -44,7 +38,7 @@ const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                     <textarea
                         rows={24}
                         name="description"
-                        defaultValue={eventData.description}
+                        defaultValue={tripData.description}
                         className={classes.textarea}
                     />
                 </label>
@@ -54,7 +48,7 @@ const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                     <input
                         type="date"
                         name="startDate"
-                        defaultValue={dayjs(eventData.startDate).format("YYYY-MM-DD")}
+                        defaultValue={dayjs(tripData.startDate).format("YYYY-MM-DD")}
                         className={classes.input}
                     />
                 </label>
@@ -64,19 +58,14 @@ const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                     <input
                         type="date"
                         name="endDate"
-                        defaultValue={dayjs(eventData.endDate).format("YYYY-MM-DD")}
+                        defaultValue={dayjs(tripData.endDate).format("YYYY-MM-DD")}
                         className={classes.input}
                     />
                 </label>
 
                 <label className={classes.label}>
                     <span>Is private:</span>
-                    <input type="checkbox" name="isPrivate" defaultChecked={eventData.isPrivate} />
-                </label>
-
-                <label className={classes.label}>
-                    <span>location:</span>
-                    <input type="text" defaultValue={eventData.locationName} className={classes.input} />
+                    <input type="checkbox" name="isPrivate" defaultChecked={tripData.isPrivate} />
                 </label>
 
                 <button className={classes.button} type="submit">
@@ -87,4 +76,4 @@ const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
     );
 };
 
-export { EventForm };
+export { TripForm };

@@ -17,6 +17,11 @@ export const Menu = () => {
                         Events
                     </Link>
                 </li>
+                <li>
+                    <Link href="/trips" className={classes.link}>
+                        Trips
+                    </Link>
+                </li>
             </ul>
         </nav>
     );

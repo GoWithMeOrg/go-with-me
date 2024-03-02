@@ -4,8 +4,8 @@
 
 import type { NextPage } from "next";
 import { useRouter } from "next/navigation";
-import { useMutation, gql } from "@apollo/client";
 import { useSession } from "next-auth/react";
+import { useMutation, gql } from "@apollo/client";
 
 import { EventForm } from "@/components/EventForm";
 import type { EventType } from "@/components/EventForm";
@@ -22,11 +22,12 @@ const EventNewPage: NextPage = () => {
     const router = useRouter();
     const { data: session } = useSession();
     const [createEvent] = useMutation(CREATE_EVENT);
+    const organizerId = (session?.user as { id: string })?.id;
 
     const handleCreateEvent = async (event: EventType) => {
         createEvent({
             variables: {
-                event,
+                event: { ...event, organizer_id: organizerId },
             },
         }).then((response) => {
             router.push(`/events/${response.data?.createEvent?._id}`);
@@ -38,10 +39,9 @@ const EventNewPage: NextPage = () => {
             <h1>Event New Page</h1>
             <div>
                 <EventForm
-                    event={{
-                        // @ts-ignore TODO: fix type
-                        organizer_id: session?.user?.id,
-                        tripName: "",
+                    eventData={{
+                        organizer_id: organizerId,
+                        name: "",
                         description: "",
                         startDate: new Date(),
                         endDate: new Date(),

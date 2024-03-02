@@ -1,0 +1,36 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.header {
+    font-size: 1.3em;
+}
+
+.label {
+    display: flex;
+}
+
+.label > span {
+    width: 200px;
+}
+
+.button {
+    margin-top: 12px;
+}
+
+.description {
+    width: 100%;
+}
+
+.titleForm {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 20px;
+    letter-spacing: 1px;
+}
+
+.titleField {
+   /* keep */
+}

@@ -1,4 +1,5 @@
 import mongoose, { ConnectOptions } from "mongoose";
+import EventModel from "./models/Event";
 
 if (!process.env.MONGODB_URI) {
     throw new Error('Invalid/Missing environment variable: "MONGODB_URI"');
@@ -23,4 +24,6 @@ export default async function mongooseConnect() {
             return mongoose;
         })
         .catch((error) => console.error(error));
+
+    await EventModel.createIndexes({ "$**": "text" } as { [key: string]: string });
 }

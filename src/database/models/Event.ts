@@ -9,9 +9,9 @@ import UserModel, { IUser } from "./User";
 
 export interface IEvent {
     _id: string;
-    organizer_id: mongoose.Types.ObjectId;
+    organizer_id: mongoose.Types.ObjectId | string;
     organizer: IUser;
-    tripName: string;
+    name: string;
     description: string;
     isPrivate: boolean;
     startDate?: Date | string;
@@ -19,6 +19,7 @@ export interface IEvent {
     createdAt: Date | string;
     updatedAt: Date | string;
     locationName: string;
+    __typename?: string;
 }
 
 export interface IEventDocument extends Omit<IEvent, "_id" | "organizer" | "createdAt" | "updatedAt">, Document {}
@@ -30,7 +31,7 @@ const EventSchema = new Schema<IEventDocument>(
             required: true,
             ref: UserModel,
         },
-        tripName: {
+        name: {
             type: String,
             required: true,
         },

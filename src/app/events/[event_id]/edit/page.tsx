@@ -24,7 +24,7 @@ const GET_EVENT = gql`
                 emailVerified
             }
 
-            tripName
+            name
             description
             isPrivate
             startDate
@@ -38,7 +38,7 @@ const UPDATE_EVENT = gql`
     #graphql
     mutation UpdateEvent($id: ID!, $event: EventInput!) {
         updateEvent(id: $id, event: $event) {
-            tripName
+            name
             description
             isPrivate
             startDate
@@ -70,10 +70,10 @@ const EventEditPage: NextPage<PageParams> = (context) => {
 
     return (
         <div className="EventEditPage">
-            <h3>Edit Event {data?.event?.tripName}</h3>
+            <h3>Edit Event {data?.event?.name}</h3>
             {loading && <p>Loading...</p>}
             {error && <p>Error : {error.message}</p>}
-            {!error && data?.event && <EventForm event={data.event} onSubmit={handleEdit} />}
+            {!error && data?.event && <EventForm eventData={data.event} onSubmit={handleEdit} />}
         </div>
     );
 };
