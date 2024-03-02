@@ -1,33 +1,44 @@
 import mongoose, { Schema, Document } from "mongoose";
 import UserModel, { IUser } from "./User";
+import { IEvent } from "@/database/models/Event";
 
 export interface ITrip {
-    _id: string;
+    name: string;
+    description?: string;
+    isPrivate: boolean;
     organizer_id: mongoose.Types.ObjectId | string;
-    organizer: IUser;
-    tripName: string;
-    description: string;
-    events_id: mongoose.Types.ObjectId[];
+    events_id?: mongoose.Types.ObjectId[];
     startDate?: Date | string;
     endDate?: Date | string;
-    createdAt: Date | string;
-    updatedAt: Date | string;
 }
 
-export interface ITripDocument extends Omit<ITrip, "_id" | "organizer" | "createdAt" | "updatedAt">, Document {}
+export interface ITripFromDB extends ITrip {
+    _id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    organizer: IUser;
+    events: IEvent[];
+}
+
+export interface ITripDocument extends ITrip, Document {}
 
 const TripSchema = new Schema<ITripDocument>(
     {
-        organizer_id: {
-            type: Schema.Types.ObjectId,
+        name: {
             required: true,
-            ref: UserModel,
-        },
-        tripName: {
             type: String,
-            required: true,
         },
         description: String,
+        isPrivate: {
+            required: true,
+            type: Boolean,
+            default: true,
+        },
+        organizer_id: {
+            required: true,
+            type: Schema.Types.ObjectId,
+            ref: UserModel,
+        },
         events_id: [
             {
                 type: mongoose.Types.ObjectId,
@@ -42,13 +53,6 @@ const TripSchema = new Schema<ITripDocument>(
         toJSON: { virtuals: true },
     },
 );
-
-TripSchema.virtual("organizer", {
-    ref: UserModel,
-    localField: "organizer_id",
-    foreignField: "_id",
-    justOne: true,
-});
 
 const TripModel: mongoose.Model<ITripDocument> =
     mongoose.models.Trip || mongoose.model<ITripDocument>("Trip", TripSchema);

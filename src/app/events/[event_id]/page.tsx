@@ -22,7 +22,7 @@ const GET_EVENT_BY_ID = gql`
                 name
                 email
             }
-            tripName
+            name
             description
             isPrivate
             startDate

@@ -8,7 +8,7 @@ const GET_SEARCH = gql`
         search(text: $text) {
             _id
             organizer_id
-            tripName
+            name
             description
             startDate
             endDate
@@ -23,7 +23,7 @@ const UPDATE_TRIP = gql`
             organizer {
                 _id
             }
-            tripName
+            name
             description
             events_id
             startDate
@@ -79,7 +79,7 @@ const EventsList = ({ text }: { text: string }) => {
                 <div>
                     {data.search.map((event: any) => (
                         <div key={event._id}>
-                            <h2>{event.tripName}</h2>
+                            <h2>{event.name}</h2>
                             <p>{event.description}</p>
                             <p>Дата начала: {event.startDate}</p>
                             <p>Дата окончания: {event.endDate}</p>

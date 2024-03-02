@@ -2,9 +2,12 @@
 
 import { FC } from "react";
 import Link from "next/link";
-import { formatDate } from "@/utils/formatDate";
+import { useRouter } from "next/navigation";
 import { useQuery, gql, useMutation } from "@apollo/client";
+
+import { formatDate } from "@/utils/formatDate";
 import type { IEvent } from "@/database/models/Event";
+
 import classes from "./EventList.module.css";
 
 type EventListProps = {
@@ -22,7 +25,7 @@ const GET_EVENTS = gql`
                 image
             }
 
-            tripName
+            name
             description
             isPrivate
             startDate
@@ -41,6 +44,7 @@ const DELETE_EVENT_MUTATION = gql`
 `;
 
 const EventList: FC<EventListProps> = () => {
+    const router = useRouter();
     const { loading, error, data } = useQuery(GET_EVENTS);
     const [deleteEventMutation] = useMutation(DELETE_EVENT_MUTATION);
 
@@ -54,7 +58,7 @@ const EventList: FC<EventListProps> = () => {
             });
 
             // Обновляем страницу после успешного удаления
-            location.reload();
+            router.refresh();
         } catch (error) {
             console.error("Error deleting event: ", error);
         }
@@ -64,11 +68,11 @@ const EventList: FC<EventListProps> = () => {
         <div className={classes.component}>
             <h3>Event List</h3>
             <ul>
-                {data.events.map(({ _id, description, tripName, startDate, endDate, locationName }: IEvent) => (
+                {data.events.map(({ _id, description, name, startDate, endDate, locationName }: IEvent) => (
                     <li key={_id} className={classes.item}>
                         <h3>
                             <Link className={classes.edit} href={`/events/${_id}`}>
-                                {tripName}
+                                {name}
                             </Link>
                         </h3>
 

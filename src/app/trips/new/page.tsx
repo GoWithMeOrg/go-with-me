@@ -2,11 +2,11 @@
 
 import type { NextPage } from "next";
 import { useRouter } from "next/navigation";
-import { useMutation, gql } from "@apollo/client";
 import { useSession } from "next-auth/react";
+import { useMutation, gql } from "@apollo/client";
 
-import { EventForm } from "@/components/EventForm";
-import type { EventType } from "@/components/EventForm";
+import { TripForm } from "@/components/TripForm";
+import { ITrip } from "@/database/models/Trip";
 
 const CREATE_TRIP = gql`
     mutation CreateTrip($trip: TripInput) {
@@ -22,31 +22,28 @@ const TripNewPage: NextPage = () => {
     const [createTrip] = useMutation(CREATE_TRIP);
     const organizerId = (session?.user as { id: string })?.id;
 
-    const handleCreateEvent = async (trip: EventType) => {
+    const handleCreateEvent = async (trip: ITrip) => {
         createTrip({
             variables: {
                 trip: { ...trip, organizer_id: organizerId },
             },
         }).then((response) => {
-            console.log(response);
             router.push(`/trips/${response.data?.createTrip?._id}`);
-            // console.log(response.data);
         });
     };
 
     return (
-        <div className="EventNewPage">
+        <div className="TripNewPage">
             <h1>Trip New Page</h1>
             <div>
-                <EventForm
-                    event={{
-                        organizer_id: organizerId,
-                        tripName: "",
+                <TripForm
+                    tripData={{
+                        name: "",
                         description: "",
+                        isPrivate: true,
+                        organizer_id: organizerId,
                         startDate: new Date(),
                         endDate: new Date(),
-                        isPrivate: true,
-                        locationName: "",
                     }}
                     onSubmit={handleCreateEvent}
                 />

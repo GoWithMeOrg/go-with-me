@@ -2,14 +2,13 @@
 
 import { FC } from "react";
 import Link from "next/link";
-import { formatDate } from "@/utils/formatDate";
+import { useRouter } from "next/navigation";
 import { useQuery, gql, useMutation } from "@apollo/client";
-import classes from "../TripList/TripList.module.css";
-import { ITrip } from "@/database/models/Trip";
 
-type TripListProps = {
-    trips?: ITrip[];
-};
+import { formatDate } from "@/utils/formatDate";
+import { ITripFromDB } from "@/database/models/Trip";
+
+import classes from "../TripList/TripList.module.css";
 
 const GET_TRIPS = gql`
     query GetTrips {
@@ -21,13 +20,13 @@ const GET_TRIPS = gql`
                 email
                 image
             }
-            tripName
+            name
             description
             startDate
             endDate
             events {
                 _id
-                tripName
+                name
                 description
             }
         }
@@ -42,14 +41,13 @@ const DELETE_TRIP_MUTATION = gql`
     }
 `;
 
-const TripList: FC<TripListProps> = () => {
+const TripList: FC = () => {
+    const router = useRouter();
     const { loading, error, data: tripData } = useQuery(GET_TRIPS);
     const [deleteTripMutation] = useMutation(DELETE_TRIP_MUTATION);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error : {error.message}</p>;
-
-    console.log("tripData: ", tripData); // eslint-disable-line
 
     const handleDelete = async (eventId: string) => {
         try {
@@ -57,7 +55,7 @@ const TripList: FC<TripListProps> = () => {
                 variables: { id: eventId },
             });
 
-            location.reload();
+            router.refresh();
         } catch (error) {
             console.error("Error deleting event: ", error);
         }
@@ -68,15 +66,17 @@ const TripList: FC<TripListProps> = () => {
             <h3>Trip List</h3>
 
             <ul>
-                {tripData.trips.map(({ _id, description, tripName, startDate, endDate }: ITrip) => (
+                {tripData.trips.map(({ _id, description, name, startDate, endDate, organizer }: ITripFromDB) => (
                     <li key={_id} className={classes.item}>
                         <h3>
                             <Link className={classes.edit} href={`/trips/${_id}`}>
-                                {tripName}
+                                {name}
                             </Link>
                         </h3>
 
-                        <div className={classes.item}>{description}</div>
+                        <div className={classes.organizer}>{organizer.name}</div>
+
+                        <div className={classes.description}>{description}</div>
 
                         <div className={classes.dates}>
                             {startDate && (

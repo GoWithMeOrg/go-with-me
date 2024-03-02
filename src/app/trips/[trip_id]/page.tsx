@@ -13,15 +13,14 @@ const GET_TRIP_BY_ID = gql`
         trip(id: $id) {
             _id
             organizer {
+                name
+            }
+            name
+            description
+            events {
                 _id
                 name
-                email
-                image
-                emailVerified
             }
-            tripName
-            description
-            events_id
             startDate
             endDate
         }
@@ -42,7 +41,7 @@ const TripPage: NextPage<PageParams> = (context) => {
     return (
         <div className="TripPage">
             <h3>Trip Page</h3>
-            <Trip event={data.trip} />
+            <Trip tripData={data.trip} />
         </div>
     );
 };

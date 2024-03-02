@@ -7,6 +7,7 @@ import EventModel, { IEvent } from "@/database/models/Event";
 import mongooseConnect from "@/database/mongooseConnect";
 import CommentModel, { IComment } from "@/database/models/Comment";
 import TripModel, { ITrip } from "@/database/models/Trip";
+import UserModel from "@/database/models/User";
 
 //измения от Сани
 /**
@@ -29,108 +30,77 @@ const resolvers = {
     },
 
     Query: {
-        events: async (eventsParent: any) => {
-            console.log("eventsParent: ", eventsParent); // eslint-disable-line
-            await mongooseConnect();
-            return EventModel.find({}).populate("organizer");
+        events: async () => {
+            return EventModel.find({});
         },
         event: async (parent: any, { id, ...rest }: { id: string }) => {
-            await mongooseConnect();
-            return EventModel.findById(id).populate("organizer");
+            return EventModel.findById(id);
         },
 
-        // parent, args, contextValue, info
-        trips: async (...args: any) => {
-            // console.log("args: ", args); // eslint-disable-line
-            await mongooseConnect();
-            return TripModel.find({}).populate("organizer");
+        trips: async () => {
+            return TripModel.find({});
         },
         trip: async (parent: any, { id, ...rest }: { id: string }) => {
-            await mongooseConnect();
-            return TripModel.findById(id).populate("organizer");
+            return TripModel.findById(id);
         },
 
         comments: async (parent: any, { event_id }: { event_id: string }) => {
-            await mongooseConnect();
             return CommentModel.find({ event_id }).sort({ createdAt: -1 }).populate("author");
         },
 
         search: async (parent: any, { text }: { text: string }) => {
-            await mongooseConnect();
             const events = await EventModel.find({ $text: { $search: text } });
+            return [...events];
+        },
+    },
 
-            //const trips = await TripModel.find({ $text: { $search: text } });
-            const searchResults = [...events];
-
-            return searchResults;
+    Event: {
+        organizer: async (parent: IEvent) => {
+            return await UserModel.findById(parent.organizer_id);
         },
     },
 
     Trip: {
-        /*
-        * В parent будут приходить trips из запроса вида
-query GetTrips {
-        trips {
-            _id
-            organizer {
-                _id
-                name
-                email
-                image
-            }
-            tripName
-            description
-            startDate
-            endDate
-            events { <== вот для этого поля и нужен этот резолвер
-                _id
-                tripName
-                description
-            }
-        }
-    }
-        * */
-        events: async (parent: any) => {
-            await mongooseConnect();
+        events: async (parent: ITrip) => {
             return await EventModel.find({ _id: { $in: parent.events_id } });
+        },
+        organizer: async (parent: ITrip) => {
+            return await UserModel.findById(parent.organizer_id);
+        },
+    },
+
+    Comment: {
+        author: async (parent: IComment) => {
+            return await UserModel.findById(parent.author_id);
         },
     },
 
     Mutation: {
         createEvent: async (parent: any, { event }: { event: IEvent }) => {
-            await mongooseConnect();
             const newEvent = new EventModel(event);
             return await newEvent.save();
         },
         updateEvent: async (parent: any, { id, event }: { id: string; event: IEvent }) => {
-            await mongooseConnect();
             await EventModel.updateOne({ _id: id }, event);
             return await EventModel.findById(id).populate("organizer");
         },
         deleteEvent: async (parent: any, { id }: { id: string }) => {
-            await mongooseConnect();
             return await EventModel.deleteOne({ _id: id });
         },
 
         createTrip: async (parent: any, { trip }: { trip: ITrip }) => {
-            await mongooseConnect();
             const newTrip = new TripModel(trip);
             return await newTrip.save();
         },
-
         updateTrip: async (parent: any, { id, trip }: { id: string; trip: ITrip }) => {
-            await mongooseConnect();
             await TripModel.updateOne({ _id: id }, trip);
             return await TripModel.findById(id);
         },
-
         deleteTrip: async (parent: any, { id }: { id: string }) => {
-            await mongooseConnect();
             return await TripModel.deleteOne({ _id: id });
         },
 
         saveComment: async (parent: any, { comment }: { comment: IComment }) => {
-            await mongooseConnect();
             const newComment = new CommentModel(comment);
             return await newComment.save();
         },
@@ -169,7 +139,7 @@ const typeDefs = gql`
         _id: ID
         organizer_id: ID
         organizer: User
-        tripName: String
+        name: String
         description: String
         isPrivate: Boolean
         startDate: ISODate
@@ -181,7 +151,7 @@ const typeDefs = gql`
         _id: ID
         organizer_id: ID
         organizer: User
-        tripName: String
+        name: String
         description: String
         events_id: [ID]
         events: [Event]
@@ -191,7 +161,7 @@ const typeDefs = gql`
 
     input TripInput {
         organizer_id: ID!
-        tripName: String
+        name: String
         description: String
         startDate: ISODate
         endDate: ISODate
@@ -217,7 +187,7 @@ const typeDefs = gql`
 
     input EventInput {
         organizer_id: ID!
-        tripName: String
+        name: String
         description: String
         isPrivate: Boolean
         startDate: ISODate
@@ -251,6 +221,7 @@ const handler = startServerAndCreateNextHandler(server, {
     // Похоже, что в @as-integrations/next типы не совсем корректные
     // @ts-ignore
     context: async (nextApiRequest) => {
+        // Этот вызов будет выполняться перед любым запросом
         await mongooseConnect();
         return { req: { cookies: nextApiRequest.cookies._parsed } };
     },

@@ -24,7 +24,7 @@ const GET_TRIP = gql`
                 email
                 image
             }
-            tripName
+            name
             description
             events_id
             startDate
@@ -43,7 +43,7 @@ const UPDATE_TRIP = gql`
                 email
                 image
             }
-            tripName
+            name
             description
             events_id
             startDate
@@ -75,11 +75,11 @@ const TripEditPage: NextPage<PageParams> = (context) => {
 
     return (
         <div className="TripEditPage">
-            <h3>Edit Trip {data?.trip?.tripName}</h3>
+            <h3>Edit Trip {data?.trip?.name}</h3>
             {/* <SearchEvent tripId={tripId} organizerId={data?.trip?.organizer?._id} /> */}
             {loading && <p>Loading...</p>}
             {error && <p>Error : {error.message}</p>}
-            {!error && data?.trip && <EventForm event={data.trip} onSubmit={handleEdit} />}
+            {!error && data?.trip && <EventForm eventData={data.trip} onSubmit={handleEdit} />}
         </div>
     );
 };

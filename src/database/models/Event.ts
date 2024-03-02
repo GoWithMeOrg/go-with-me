@@ -11,7 +11,7 @@ export interface IEvent {
     _id: string;
     organizer_id: mongoose.Types.ObjectId | string;
     organizer: IUser;
-    tripName: string;
+    name: string;
     description: string;
     isPrivate: boolean;
     startDate?: Date | string;
@@ -31,7 +31,7 @@ const EventSchema = new Schema<IEventDocument>(
             required: true,
             ref: UserModel,
         },
-        tripName: {
+        name: {
             type: String,
             required: true,
         },

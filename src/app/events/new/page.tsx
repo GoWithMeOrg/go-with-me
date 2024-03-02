@@ -4,8 +4,8 @@
 
 import type { NextPage } from "next";
 import { useRouter } from "next/navigation";
-import { useMutation, gql } from "@apollo/client";
 import { useSession } from "next-auth/react";
+import { useMutation, gql } from "@apollo/client";
 
 import { EventForm } from "@/components/EventForm";
 import type { EventType } from "@/components/EventForm";
@@ -39,9 +39,9 @@ const EventNewPage: NextPage = () => {
             <h1>Event New Page</h1>
             <div>
                 <EventForm
-                    event={{
+                    eventData={{
                         organizer_id: organizerId,
-                        tripName: "",
+                        name: "",
                         description: "",
                         startDate: new Date(),
                         endDate: new Date(),

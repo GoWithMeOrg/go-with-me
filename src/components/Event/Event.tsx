@@ -3,7 +3,6 @@ import type { IEvent } from "@/database/models/Event";
 import { formatDate } from "@/utils/formatDate";
 
 import classes from "@/components/EventForm/EventForm.module.css";
-import { gql, useQuery } from "@apollo/client";
 
 export interface EventProps {
     event: IEvent;
@@ -12,7 +11,7 @@ export interface EventProps {
 const Event: FC<EventProps> = ({ event }) => {
     return (
         <div className={classes.component}>
-            <h3 className={classes.header}>{event.tripName}</h3>
+            <h3 className={classes.header}>{event.name}</h3>
             <div>Организатор: {event.organizer ? event.organizer.name : "Нет информации"}</div>
             <div>{event.description}</div>
             <div>{formatDate(event.startDate, "dd LLLL yyyy")}</div>

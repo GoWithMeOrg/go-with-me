@@ -6,6 +6,21 @@
     margin-bottom: 24px;
 }
 
+.edit {
+    font-size: 1em;
+    margin-bottom: 1em;
+}
+
+.organizer {
+    font-size: 0.8em;
+    margin-bottom: 12px;
+}
+
+.description {
+    margin-bottom: 12px;
+    font-size: 0.8em;
+}
+
 .controls {
     margin: 12px 0;
     font-size: 0.8em;
