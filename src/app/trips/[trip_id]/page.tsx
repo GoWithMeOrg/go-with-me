@@ -3,8 +3,7 @@
 import type { NextPage } from "next";
 import { gql, useQuery } from "@apollo/client";
 import { Trip } from "@/components/Trip";
-//эвент удален
-type PageParams = {
+export type PageParams = {
     params: { trip_id: string };
 };
 

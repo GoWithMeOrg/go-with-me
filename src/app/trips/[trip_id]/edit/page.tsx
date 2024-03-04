@@ -4,9 +4,9 @@ import { NextPage } from "next";
 import { useRouter } from "next/navigation";
 import { gql, useMutation, useQuery } from "@apollo/client";
 
-import { EventForm } from "@/components/EventForm/EventForm";
 import type { ITrip } from "@/database/models/Trip";
-// import SearchEvent from "@/components/SearchEvent/SearchEvent";
+import Link from "next/link";
+import { TripForm } from "@/components/TripForm";
 
 type PageParams = {
     params: {
@@ -26,9 +26,13 @@ const GET_TRIP = gql`
             }
             name
             description
-            events_id
             startDate
             endDate
+            events {
+                _id
+                name
+                description
+            }
         }
     }
 `;
@@ -59,6 +63,8 @@ const TripEditPage: NextPage<PageParams> = (context) => {
         variables: { id: tripId },
     });
 
+    //console.log(data);
+
     const [updateTrip] = useMutation(UPDATE_TRIP);
 
     const handleEdit = (eventEdited: Partial<ITrip>) => {
@@ -76,10 +82,9 @@ const TripEditPage: NextPage<PageParams> = (context) => {
     return (
         <div className="TripEditPage">
             <h3>Edit Trip {data?.trip?.name}</h3>
-            {/* <SearchEvent tripId={tripId} organizerId={data?.trip?.organizer?._id} /> */}
             {loading && <p>Loading...</p>}
             {error && <p>Error : {error.message}</p>}
-            {!error && data?.trip && <EventForm eventData={data.trip} onSubmit={handleEdit} />}
+            {!error && data?.trip && <TripForm tripData={data.trip} onSubmit={handleEdit} />}
         </div>
     );
 };

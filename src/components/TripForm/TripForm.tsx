@@ -1,12 +1,15 @@
 import { FC, FormEvent } from "react";
 import dayjs from "dayjs";
 
-import type { ITrip } from "@/database/models/Trip";
+import type { ITrip, ITripFromDB } from "@/database/models/Trip";
 
 import classes from "./TripForm.module.css";
+import gql from "graphql-tag";
+import Link from "next/link";
+import styles from "../TripForm/TripForm.module.css";
 
 interface TripFormProps {
-    tripData: ITrip;
+    tripData: ITripFromDB;
     onSubmit: (eventData: ITrip) => void;
 }
 
@@ -25,6 +28,9 @@ const TripForm: FC<TripFormProps> = ({ tripData, onSubmit }) => {
         };
         onSubmit(onSubmitData);
     };
+
+    console.log(tripData._id);
+
     return (
         <div className={classes.container}>
             <form className={classes.form} onSubmit={handleSubmit}>
@@ -67,6 +73,27 @@ const TripForm: FC<TripFormProps> = ({ tripData, onSubmit }) => {
                     <span>Is private:</span>
                     <input type="checkbox" name="isPrivate" defaultChecked={tripData.isPrivate} />
                 </label>
+
+                <div>
+                    <h3 className={styles.titleForm}>Events</h3>
+                    {tripData.events?.map((event) => (
+                        <div key={event._id}>
+                            <ul className={styles.ul}>
+                                <li>
+                                    <Link href={`/events/${event._id}`}>{event.name}</Link>
+                                </li>
+                            </ul>
+                        </div>
+                    ))}
+                    <button>
+                        <Link
+                            href={`/trips/search?tripId=${tripData._id}`}
+                            style={{ color: "white", textDecoration: "none" }}
+                        >
+                            Добавить событие
+                        </Link>
+                    </button>
+                </div>
 
                 <button className={classes.button} type="submit">
                     Save

@@ -33,6 +33,27 @@ const GET_TRIPS = gql`
     }
 `;
 
+const GET_EVENTS = gql`
+    query GetEvents {
+        events {
+            _id
+            organizer {
+                _id
+                name
+                email
+                image
+            }
+
+            tripName
+            description
+            isPrivate
+            startDate
+            endDate
+            locationName
+        }
+    }
+`;
+
 const DELETE_TRIP_MUTATION = gql`
     mutation DeleteTrip($id: ID!) {
         deleteTrip(id: $id) {
@@ -44,6 +65,7 @@ const DELETE_TRIP_MUTATION = gql`
 const TripList: FC = () => {
     const router = useRouter();
     const { loading, error, data: tripData } = useQuery(GET_TRIPS);
+    const { data: eventData } = useQuery(GET_EVENTS);
     const [deleteTripMutation] = useMutation(DELETE_TRIP_MUTATION);
 
     if (loading) return <p>Loading...</p>;
@@ -66,46 +88,58 @@ const TripList: FC = () => {
             <h3>Trip List</h3>
 
             <ul>
-                {tripData.trips.map(({ _id, description, name, startDate, endDate, organizer }: ITripFromDB) => (
-                    <li key={_id} className={classes.item}>
-                        <h3>
-                            <Link className={classes.edit} href={`/trips/${_id}`}>
-                                {name}
-                            </Link>
-                        </h3>
+                {tripData.trips.map(
+                    ({ _id, description, name, startDate, endDate, organizer, events }: ITripFromDB) => (
+                        <li key={_id} className={classes.item}>
+                            <h3>
+                                <Link className={classes.edit} href={`/trips/${_id}`}>
+                                    {name}
+                                </Link>
+                            </h3>
 
-                        <div className={classes.organizer}>{organizer.name}</div>
+                            <div className={classes.organizer}>{organizer.name}</div>
 
-                        <div className={classes.description}>{description}</div>
+                            <div className={classes.description}>{description}</div>
 
-                        <div className={classes.dates}>
-                            {startDate && (
-                                <div>
-                                    Start Date:
-                                    {formatDate(startDate, "dd LLLL yyyy")}
+                            <div className={classes.dates}>
+                                {startDate && (
+                                    <div>
+                                        Start Date:
+                                        {formatDate(startDate, "dd LLLL yyyy")}
+                                    </div>
+                                )}
+                                {endDate && (
+                                    <div>
+                                        endDate:
+                                        {formatDate(endDate, "dd LLLL yyyy")}
+                                    </div>
+                                )}
+                            </div>
+
+                            {events.map((event) => (
+                                <div key={event._id}>
+                                    <ul>
+                                        <li>
+                                            <Link href={`/events/${event._id}`}>{event.name}</Link>
+                                        </li>
+                                    </ul>
                                 </div>
-                            )}
-                            {endDate && (
-                                <div>
-                                    endDate:
-                                    {formatDate(endDate, "dd LLLL yyyy")}
-                                </div>
-                            )}
-                        </div>
+                            ))}
 
-                        <div className={classes.controls}>
-                            <Link href={`/trips/${_id}/edit`}>Редактировать</Link>
-                            <button
-                                className={classes.delete}
-                                onClick={() => {
-                                    confirm("Delete?") ? handleDelete(_id) : null;
-                                }}
-                            >
-                                Удалить
-                            </button>
-                        </div>
-                    </li>
-                ))}
+                            <div className={classes.controls}>
+                                <Link href={`/trips/${_id}/edit`}>Редактировать</Link>
+                                <button
+                                    className={classes.delete}
+                                    onClick={() => {
+                                        confirm("Delete?") ? handleDelete(_id) : null;
+                                    }}
+                                >
+                                    Удалить
+                                </button>
+                            </div>
+                        </li>
+                    ),
+                )}
             </ul>
         </div>
     );
