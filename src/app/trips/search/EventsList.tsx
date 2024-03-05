@@ -1,7 +1,7 @@
 "use client";
 import { useMutation, useQuery } from "@apollo/client";
 import gql from "graphql-tag";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./EventsList.module.css";
 import Link from "next/link";
 
@@ -27,7 +27,6 @@ const UPDATE_TRIP = gql`
             }
             name
             description
-            events_id
             startDate
             endDate
         }
@@ -37,94 +36,59 @@ const UPDATE_TRIP = gql`
 const GET_TRIP_BY_ID = gql`
     query GetTripById($tripId: ID!) {
         trip(id: $tripId) {
+            organizer_id
             events_id
         }
     }
 `;
 
 const EventsList = ({ text, tripId }: { text: string; tripId: string }) => {
-    // const [searchHandler, setSearchHandler] = useState("")
-
-    const [events, setEvents] = useState<string[]>([]);
-    const { data, loading, error } = useQuery(GET_SEARCH, {
+    const { data: searchData } = useQuery(GET_SEARCH, {
         variables: { text },
     });
 
     const { data: tripData } = useQuery(GET_TRIP_BY_ID, { variables: { tripId } });
-    const eventsId = tripData?.trip?.events_id;
+    const organizerId = tripData?.trip?.organizer_id;
 
     const [updateTrip] = useMutation(UPDATE_TRIP);
+    const [eventsIdDB, setEventsIdDB] = useState(new Set(tripData?.trip?.events_id || []));
 
     const handleAddEvent = async (eventId: string) => {
-        console.log(eventId);
-        // try {
-        //     if (!eventsId?.includes(eventId)) {
-        //         const updatedEvents = [...(eventsId || []), eventId];
-        //         const { data } = await updateTrip({
-        //             variables: {
-        //                 id: tripId,
-        //                 trip: { events_id: updatedEvents, organizer_id: organizerId },
-        //             },
-        //         });
-        //         const updatedTrip = data.updateTrip;
-        //         setEvents(updatedTrip.events_id);
-        //     } else {
-        //         console.log("Event already added: ", eventId);
-        //     }
-        // } catch (error) {
-        //     console.error("Ошибка при обновлении поездки:", error);
-        // }
+        const updatedEventsIdDB = new Set(eventsIdDB);
+        updatedEventsIdDB.add(eventId);
+        setEventsIdDB(
+            // объеденяем текущее полученное сотяние и eventId
+            (prevEventsIdDB) => new Set([...Array.from(prevEventsIdDB), ...tripData?.trip?.events_id, eventId]),
+        );
+
+        try {
+            const { data: tripData } = await updateTrip({
+                variables: {
+                    id: tripId,
+                    trip: { events_id: Array.from(updatedEventsIdDB), organizer_id: organizerId },
+                },
+            });
+        } catch (error) {
+            console.error("Error updating trip:", error);
+        }
     };
 
     return (
-        data &&
-        data.search &&
-        data.search.map((event: any) => (
+        searchData &&
+        searchData.search &&
+        searchData.search.map((event: any) => (
             <div key={event._id}>
                 <ul>
                     <li className={styles.checkbox}>
                         <Link href={`/events/${event._id}`}>{event.name}</Link>
-                        <button onClick={() => handleAddEvent(event._id)}>add event</button>
+                        <button type="button" onClick={() => handleAddEvent(event._id)}>
+                            add event
+                        </button>
                     </li>
                 </ul>
             </div>
         ))
     );
-
-    // <div>
-    //     {loading && <p>Загрузка...</p>}
-    //     {data && data.search && (
-    //         <div>
-    //             {data.search.map((event: any) => (
-    //                 <>
-    //                     <ul>
-    //                         <li key={event._id} className={styles.checkbox}>
-    //                             <Link href={`/events/${event._id}`}>{event.name}</Link>
-    //                         </li>
-    //                     </ul>
-    //                 </>
-
-    //                 // <div key={event._id}>
-    //                 //     <div className={styles.checkbox}>
-    //                 //         <input
-    //                 //             type="checkbox"
-    //                 //             id={event._id}
-    //                 //             checked={selectedEvents.includes(event._id)}
-    //                 //             onChange={() => handleCheckboxChange(event._id)}
-    //                 //         />
-    //                 //         <h4 className={styles.title}>{event.name}</h4>
-    //                 //     </div>
-    //                 //     {/* <h4>{event.name}</h4> */}
-    //                 //     <p>{event.description}</p>
-    //                 //     <p>Дата начала: {event.startDate}</p>
-    //                 //     <p>Дата окончания: {event.endDate}</p>
-    //                 //     <p>Местоположение: {event.locationName}</p>
-    //                 //     {/* <button onClick={() => handleAddEvent(event._id)}>add event</button> */}
-    //                 // </div>
-    //             ))}
-    //         </div>
-    //     )}
-    // </div>
 };
 
 export default EventsList;

@@ -28,6 +28,7 @@ const GET_TRIP = gql`
             description
             startDate
             endDate
+            events_id
             events {
                 _id
                 name
@@ -62,8 +63,6 @@ const TripEditPage: NextPage<PageParams> = (context) => {
     const { loading, error, data } = useQuery(GET_TRIP, {
         variables: { id: tripId },
     });
-
-    //console.log(data);
 
     const [updateTrip] = useMutation(UPDATE_TRIP);
 
