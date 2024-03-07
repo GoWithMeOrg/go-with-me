@@ -1,7 +1,6 @@
 "use client";
 import { useMutation, useQuery } from "@apollo/client";
 import gql from "graphql-tag";
-import { useEffect, useState } from "react";
 import styles from "./EventsList.module.css";
 import Link from "next/link";
 
@@ -47,30 +46,22 @@ const EventsList = ({ text, tripId }: { text: string; tripId: string }) => {
         variables: { text },
     });
 
-    const { data: tripData } = useQuery(GET_TRIP_BY_ID, { variables: { tripId } });
+    const { data: tripData, refetch } = useQuery(GET_TRIP_BY_ID, { variables: { tripId } });
     const organizerId = tripData?.trip?.organizer_id;
-
     const [updateTrip] = useMutation(UPDATE_TRIP);
-    const [eventsIdDB, setEventsIdDB] = useState(new Set(tripData?.trip?.events_id || []));
 
     const handleAddEvent = async (eventId: string) => {
-        const updatedEventsIdDB = new Set(eventsIdDB);
-        updatedEventsIdDB.add(eventId);
-        setEventsIdDB(
-            // объеденяем текущее полученное сотяние и eventId
-            (prevEventsIdDB) => new Set([...Array.from(prevEventsIdDB), ...tripData?.trip?.events_id, eventId]),
-        );
-
-        try {
-            const { data: tripData } = await updateTrip({
-                variables: {
-                    id: tripId,
-                    trip: { events_id: Array.from(updatedEventsIdDB), organizer_id: organizerId },
-                },
-            });
-        } catch (error) {
-            console.error("Error updating trip:", error);
-        }
+        await refetch(); // Получаем новые данные tripData?.trip?.events_id из БД
+        const eventsIdDB = tripData?.trip?.events_id || []; // Получаем массив events_id для текущего пользователя из базы данных
+        const updatedEventsIdDB = new Set(eventsIdDB); // Создаем новый объект Set на основе массива events_id
+        updatedEventsIdDB.add(eventId); // Добавляем новый eventId в объект Set
+        await updateTrip({
+            variables: {
+                id: tripId,
+                trip: { events_id: Array.from(updatedEventsIdDB), organizer_id: organizerId },
+            },
+        }); // Обновляем trip с новым массивом events_id
+        await refetch();
     };
 
     return (

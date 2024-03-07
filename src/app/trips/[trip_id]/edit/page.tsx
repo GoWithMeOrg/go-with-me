@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { gql, useMutation, useQuery } from "@apollo/client";
 
 import type { ITrip } from "@/database/models/Trip";
-import Link from "next/link";
 import { TripForm } from "@/components/TripForm";
+import { useState } from "react";
 
 type PageParams = {
     params: {

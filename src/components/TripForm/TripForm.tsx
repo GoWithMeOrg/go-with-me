@@ -1,4 +1,4 @@
-import { FC, FormEvent, useState } from "react";
+import { FC, FormEvent, useEffect, useRef, useState } from "react";
 
 import dayjs from "dayjs";
 
@@ -8,7 +8,7 @@ import classes from "./TripForm.module.css";
 import Link from "next/link";
 import styles from "../TripForm/TripForm.module.css";
 import gql from "graphql-tag";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 
 interface TripFormProps {
     tripData: ITripFromDB;
@@ -29,17 +29,8 @@ const UPDATE_TRIP = gql`
     }
 `;
 
-const GET_TRIP_BY_ID = gql`
-    query GetTripById($tripId: ID!) {
-        trip(id: $tripId) {
-            organizer_id
-            events_id
-        }
-    }
-`;
-
 const TripForm: FC<TripFormProps> = ({ tripData, onSubmit }) => {
-    const [events, setEvents] = useState<string[]>([]);
+    const [eventsList, setEventsList] = useState(tripData.events_id || []);
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = Object.fromEntries(new FormData(e.currentTarget).entries());
@@ -56,35 +47,43 @@ const TripForm: FC<TripFormProps> = ({ tripData, onSubmit }) => {
     };
 
     const [updateTrip] = useMutation(UPDATE_TRIP);
-
-    const tripId = tripData?._id;
-    const eventsId = tripData?.events_id;
-    const organizerId = tripData.organizer._id;
-    //console.log(tripId, "tripId", eventsId, "eventsId", organizerId, "organizerId");
-
     const handleDelEvent = async (eventId: string, e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        try {
-            if (eventsId?.includes(eventId)) {
-                const updatedEvents = eventsId.filter((id) => id !== eventId);
-                const { data } = await updateTrip({
-                    variables: {
-                        id: tripId,
-                        trip: { events_id: updatedEvents, organizer_id: organizerId },
-                    },
-                });
-                const updatedTrip = data.updateTrip;
-                setEvents(updatedTrip.events_id);
-            } else {
-                console.log("Событие не найдено в поездке: ", eventId);
-            }
-        } catch (error) {
-            console.error("Ошибка при удалении события из поездки:", error);
-        }
+        let updatedEvents = eventsList?.filter((id) => id.toString() !== eventId);
+
+        const { data } = await updateTrip({
+            variables: {
+                id: tripData?._id,
+                trip: { events_id: updatedEvents, organizer_id: tripData.organizer._id },
+            },
+        });
+        setEventsList(updatedEvents);
     };
 
     return (
         <div className={classes.container}>
+            <div>
+                <h3 className={styles.titleForm}>Events</h3>
+                {tripData.events.map((event) => (
+                    <div key={event._id}>
+                        <ul className={styles.ul}>
+                            <li>
+                                <Link href={`/events/${event._id}`}>{event.name}</Link>
+                            </li>
+                        </ul>
+                        <button onClick={(e) => handleDelEvent(event._id, e)}>remove event</button>
+                    </div>
+                ))}
+                <button>
+                    <Link
+                        href={`/trips/search?tripId=${tripData._id}`}
+                        style={{ color: "white", textDecoration: "none" }}
+                    >
+                        Добавить событие
+                    </Link>
+                </button>
+            </div>
+
             <form className={classes.form} onSubmit={handleSubmit}>
                 <label className={classes.label}>
                     <span className={classes.titleField}>Trip Name:</span>
@@ -125,28 +124,6 @@ const TripForm: FC<TripFormProps> = ({ tripData, onSubmit }) => {
                     <span>Is private:</span>
                     <input type="checkbox" name="isPrivate" defaultChecked={tripData.isPrivate} />
                 </label>
-
-                <div>
-                    <h3 className={styles.titleForm}>Events</h3>
-                    {tripData.events?.map((event) => (
-                        <div key={event._id}>
-                            <ul className={styles.ul}>
-                                <li>
-                                    <Link href={`/events/${event._id}`}>{event.name}</Link>
-                                </li>
-                            </ul>
-                            <button onClick={(e) => handleDelEvent(event._id, e)}>remove event</button>
-                        </div>
-                    ))}
-                    <button>
-                        <Link
-                            href={`/trips/search?tripId=${tripData._id}`}
-                            style={{ color: "white", textDecoration: "none" }}
-                        >
-                            Добавить событие
-                        </Link>
-                    </button>
-                </div>
 
                 <button className={classes.button} type="submit">
                     Save
