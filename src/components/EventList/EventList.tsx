@@ -45,7 +45,7 @@ const DELETE_EVENT_MUTATION = gql`
 
 const EventList: FC<EventListProps> = () => {
     const router = useRouter();
-    const { loading, error, data } = useQuery(GET_EVENTS);
+    const { loading, error, data, refetch } = useQuery(GET_EVENTS);
     const [deleteEventMutation] = useMutation(DELETE_EVENT_MUTATION);
 
     if (loading) return <p>Loading...</p>;
@@ -59,6 +59,7 @@ const EventList: FC<EventListProps> = () => {
 
             // Обновляем страницу после успешного удаления
             router.refresh();
+            await refetch();
         } catch (error) {
             console.error("Error deleting event: ", error);
         }

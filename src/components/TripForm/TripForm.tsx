@@ -29,8 +29,19 @@ const UPDATE_TRIP = gql`
     }
 `;
 
+const GET_TRIP_BY_ID = gql`
+    query GetTripById($tripId: ID!) {
+        trip(id: $tripId) {
+            organizer_id
+            events_id
+        }
+    }
+`;
+
 const TripForm: FC<TripFormProps> = ({ tripData, onSubmit }) => {
-    const [eventsList, setEventsList] = useState(tripData.events_id || []);
+    const organizerId = tripData?.organizer._id;
+    const tripId = tripData?._id;
+    const { data, refetch } = useQuery(GET_TRIP_BY_ID, { variables: { tripId } });
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = Object.fromEntries(new FormData(e.currentTarget).entries());
@@ -49,15 +60,16 @@ const TripForm: FC<TripFormProps> = ({ tripData, onSubmit }) => {
     const [updateTrip] = useMutation(UPDATE_TRIP);
     const handleDelEvent = async (eventId: string, e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
+        const eventsList = tripData.events_id || [];
         let updatedEvents = eventsList?.filter((id) => id.toString() !== eventId);
 
-        const { data } = await updateTrip({
+        await updateTrip({
             variables: {
                 id: tripData?._id,
                 trip: { events_id: updatedEvents, organizer_id: tripData.organizer._id },
             },
         });
-        setEventsList(updatedEvents);
+        await refetch();
     };
 
     return (
@@ -90,7 +102,7 @@ const TripForm: FC<TripFormProps> = ({ tripData, onSubmit }) => {
                     <input className={classes.input} type="text" name="name" defaultValue={tripData.name} required />
                 </label>
 
-                {/* <label className={classes.label}>
+                <label className={classes.label}>
                     <span className={classes.titleField}>Description:</span>
                     <textarea
                         rows={24}
@@ -98,7 +110,7 @@ const TripForm: FC<TripFormProps> = ({ tripData, onSubmit }) => {
                         defaultValue={tripData.description}
                         className={classes.textarea}
                     />
-                </label> */}
+                </label>
 
                 <label className={classes.label}>
                     <span className={classes.titleField}>Start date:</span>

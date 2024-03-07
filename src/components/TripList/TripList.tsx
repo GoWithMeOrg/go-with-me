@@ -33,27 +33,6 @@ const GET_TRIPS = gql`
     }
 `;
 
-const GET_EVENTS = gql`
-    query GetEvents {
-        events {
-            _id
-            organizer {
-                _id
-                name
-                email
-                image
-            }
-
-            tripName
-            description
-            isPrivate
-            startDate
-            endDate
-            locationName
-        }
-    }
-`;
-
 const DELETE_TRIP_MUTATION = gql`
     mutation DeleteTrip($id: ID!) {
         deleteTrip(id: $id) {
@@ -64,8 +43,7 @@ const DELETE_TRIP_MUTATION = gql`
 
 const TripList: FC = () => {
     const router = useRouter();
-    const { loading, error, data: tripData } = useQuery(GET_TRIPS);
-    const { data: eventData } = useQuery(GET_EVENTS);
+    const { loading, error, data: tripData, refetch } = useQuery(GET_TRIPS);
     const [deleteTripMutation] = useMutation(DELETE_TRIP_MUTATION);
 
     if (loading) return <p>Loading...</p>;
@@ -78,6 +56,7 @@ const TripList: FC = () => {
             });
 
             router.refresh();
+            await refetch();
         } catch (error) {
             console.error("Error deleting event: ", error);
         }

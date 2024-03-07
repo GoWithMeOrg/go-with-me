@@ -1,8 +1,9 @@
 "use client";
 
-import EventsList from "./EventsList";
+import EventsList from "./SearchEventsList";
 import SearchEvent from "./SearchEvent";
 import { useSearchParams } from "next/navigation";
+import SearchEventsList from "./SearchEventsList";
 
 const SearchPage = ({
     searchParams,
@@ -18,7 +19,7 @@ const SearchPage = ({
         <div className="EventListPage">
             <h1>Search Page</h1>
             <SearchEvent />
-            <EventsList text={text} tripId={tripId} />
+            <SearchEventsList text={text} tripId={tripId} />
         </div>
     );
 };

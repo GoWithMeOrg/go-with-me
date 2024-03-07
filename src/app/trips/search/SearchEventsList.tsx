@@ -1,7 +1,7 @@
 "use client";
 import { useMutation, useQuery } from "@apollo/client";
 import gql from "graphql-tag";
-import styles from "./EventsList.module.css";
+import styles from "./SearchEventsList.module.css";
 import Link from "next/link";
 
 const GET_SEARCH = gql`
@@ -41,7 +41,7 @@ const GET_TRIP_BY_ID = gql`
     }
 `;
 
-const EventsList = ({ text, tripId }: { text: string; tripId: string }) => {
+const SearchEventsList = ({ text, tripId }: { text: string; tripId: string }) => {
     const { data: searchData } = useQuery(GET_SEARCH, {
         variables: { text },
     });
@@ -52,7 +52,7 @@ const EventsList = ({ text, tripId }: { text: string; tripId: string }) => {
 
     const handleAddEvent = async (eventId: string) => {
         await refetch(); // Получаем новые данные tripData?.trip?.events_id из БД
-        const eventsIdDB = tripData?.trip?.events_id || []; // Получаем массив events_id для текущего пользователя из базы данных
+        const eventsIdDB = tripData?.trip?.events_id || []; // Получаем массив events_id для текущего пользователя из БД
         const updatedEventsIdDB = new Set(eventsIdDB); // Создаем новый объект Set на основе массива events_id
         updatedEventsIdDB.add(eventId); // Добавляем новый eventId в объект Set
         await updateTrip({
@@ -82,4 +82,4 @@ const EventsList = ({ text, tripId }: { text: string; tripId: string }) => {
     );
 };
 
-export default EventsList;
+export default SearchEventsList;
