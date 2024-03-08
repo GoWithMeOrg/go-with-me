@@ -1,6 +1,5 @@
 "use client";
 
-import EventsList from "./SearchEventsList";
 import SearchEvent from "./SearchEvent";
 import { useSearchParams } from "next/navigation";
 import SearchEventsList from "./SearchEventsList";
@@ -13,6 +12,7 @@ const SearchPage = ({
     };
 }) => {
     const text = searchParams?.text || "";
+    // Именно этот учаток кода интересует, сомневаюсь в выборе этого решения
     const [tripId] = useSearchParams().getAll("tripId");
 
     return (
