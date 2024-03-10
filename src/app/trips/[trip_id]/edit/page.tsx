@@ -6,7 +6,6 @@ import { gql, useMutation, useQuery } from "@apollo/client";
 
 import type { ITrip } from "@/database/models/Trip";
 import { TripForm } from "@/components/TripForm";
-import { useState } from "react";
 
 type PageParams = {
     params: {

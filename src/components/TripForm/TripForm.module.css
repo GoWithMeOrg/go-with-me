@@ -1,43 +1,34 @@
+.component {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
 .form {
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
 
-.header {
-    font-size: 1.3em;
+.trips {
+    /* стили для trips */
 }
 
 .label {
     display: flex;
 }
 
-.label > span {
+.titleField {
     width: 200px;
 }
 
-.ul {
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-}
+.input {
+    width: 300px;
 
-.ulItem {
-    display: flex;
-    justify-content: space-between;
 }
 
 .button {
     margin-top: 12px;
-}
-
-.description {
-    width: 100%;
-}
-
-.titleForm {
-    display: flex;
-    justify-content: center;
-    padding-bottom: 20px;
-    letter-spacing: 1px;
 }

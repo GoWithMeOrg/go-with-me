@@ -1,47 +1,17 @@
-import { FC, FormEvent, useEffect, useRef, useState } from "react";
-
+import { FC, FormEvent } from "react";
 import dayjs from "dayjs";
 
 import type { ITrip, ITripFromDB } from "@/database/models/Trip";
+import { TripFormEvents } from "@/components/TripForm/TripFormEvents/TripFormEvents";
 
 import classes from "./TripForm.module.css";
-import Link from "next/link";
-import styles from "../TripForm/TripForm.module.css";
-import gql from "graphql-tag";
-import { useMutation, useQuery } from "@apollo/client";
 
 interface TripFormProps {
     tripData: ITripFromDB;
     onSubmit: (eventData: ITrip) => void;
 }
 
-const UPDATE_TRIP = gql`
-    mutation UpdateTrip($id: ID!, $trip: TripInput) {
-        updateTrip(id: $id, trip: $trip) {
-            organizer {
-                _id
-            }
-            name
-            description
-            startDate
-            endDate
-        }
-    }
-`;
-
-const GET_TRIP_BY_ID = gql`
-    query GetTripById($tripId: ID!) {
-        trip(id: $tripId) {
-            organizer_id
-            events_id
-        }
-    }
-`;
-
 const TripForm: FC<TripFormProps> = ({ tripData, onSubmit }) => {
-    const organizerId = tripData?.organizer._id;
-    const tripId = tripData?._id;
-    const { data, refetch } = useQuery(GET_TRIP_BY_ID, { variables: { tripId } });
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = Object.fromEntries(new FormData(e.currentTarget).entries());
@@ -57,44 +27,8 @@ const TripForm: FC<TripFormProps> = ({ tripData, onSubmit }) => {
         onSubmit(onSubmitData);
     };
 
-    const [updateTrip] = useMutation(UPDATE_TRIP);
-    const handleDelEvent = async (eventId: string, e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        const eventsList = tripData.events_id || [];
-        let updatedEvents = eventsList?.filter((id) => id.toString() !== eventId);
-
-        await updateTrip({
-            variables: {
-                id: tripData?._id,
-                trip: { events_id: updatedEvents, organizer_id: tripData.organizer._id },
-            },
-        });
-        await refetch();
-    };
-
     return (
-        <div className={classes.container}>
-            <div>
-                <h3 className={styles.titleForm}>Events</h3>
-                <ul className={styles.ul}>
-                    {tripData.events.map((event) => (
-                        <li key={event._id} className={styles.ulItem}>
-                            <Link href={`/events/${event._id}`}>{event.name}</Link>
-                            <button onClick={(e) => handleDelEvent(event._id, e)}>Remove event</button>
-                        </li>
-                    ))}
-                </ul>
-
-                <button>
-                    <Link
-                        href={`/trips/search?tripId=${tripData._id}`}
-                        style={{ color: "white", textDecoration: "none" }}
-                    >
-                        Добавить событие
-                    </Link>
-                </button>
-            </div>
-
+        <div className={classes.component}>
             <form className={classes.form} onSubmit={handleSubmit}>
                 <label className={classes.label}>
                     <span className={classes.titleField}>Trip Name:</span>
@@ -140,6 +74,9 @@ const TripForm: FC<TripFormProps> = ({ tripData, onSubmit }) => {
                     Save
                 </button>
             </form>
+            <div className={classes.trips}>
+                <TripFormEvents tripID={tripData._id} />
+            </div>
         </div>
     );
 };
