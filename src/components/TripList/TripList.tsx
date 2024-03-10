@@ -95,15 +95,13 @@ const TripList: FC = () => {
                                 )}
                             </div>
 
-                            {events.map((event) => (
-                                <div key={event._id}>
-                                    <ul>
-                                        <li>
-                                            <Link href={`/events/${event._id}`}>{event.name}</Link>
-                                        </li>
-                                    </ul>
-                                </div>
-                            ))}
+                            <ul>
+                                {events.map((event) => (
+                                    <li key={event._id}>
+                                        <Link href={`/events/${event._id}`}>{event.name}</Link>
+                                    </li>
+                                ))}
+                            </ul>
 
                             <div className={classes.controls}>
                                 <Link href={`/trips/${_id}/edit`}>Редактировать</Link>

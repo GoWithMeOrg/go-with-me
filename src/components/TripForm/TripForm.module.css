@@ -18,6 +18,13 @@
 
 .ul {
     margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.ulItem {
+    display: flex;
+    justify-content: space-between;
 }
 
 .button {

@@ -1,25 +1,13 @@
-"use client";
+import SearchEvent from "../../../components/SearchEvent/SearchEvent";
+import SearchEventsList from "../../../components/SearchEventsList/SearchEventsList";
+import { NextPage } from "next";
 
-import SearchEvent from "./SearchEvent";
-import { useSearchParams } from "next/navigation";
-import SearchEventsList from "./SearchEventsList";
-
-const SearchPage = ({
-    searchParams,
-}: {
-    searchParams?: {
-        text?: string;
-    };
-}) => {
-    const text = searchParams?.text || "";
-    // Именно этот учаток кода интересует, сомневаюсь в выборе этого решения
-    const [tripId] = useSearchParams().getAll("tripId");
-
+const SearchPage: NextPage<{ searchParams: { text: string; tripId: string } }> = ({ searchParams }) => {
     return (
         <div className="EventListPage">
             <h1>Search Page</h1>
             <SearchEvent />
-            <SearchEventsList text={text} tripId={tripId} />
+            <SearchEventsList text={searchParams.text} tripId={searchParams.tripId} />
         </div>
     );
 };

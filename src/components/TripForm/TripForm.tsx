@@ -76,16 +76,15 @@ const TripForm: FC<TripFormProps> = ({ tripData, onSubmit }) => {
         <div className={classes.container}>
             <div>
                 <h3 className={styles.titleForm}>Events</h3>
-                {tripData.events.map((event) => (
-                    <div key={event._id}>
-                        <ul className={styles.ul}>
-                            <li>
-                                <Link href={`/events/${event._id}`}>{event.name}</Link>
-                            </li>
-                        </ul>
-                        <button onClick={(e) => handleDelEvent(event._id, e)}>remove event</button>
-                    </div>
-                ))}
+                <ul className={styles.ul}>
+                    {tripData.events.map((event) => (
+                        <li key={event._id} className={styles.ulItem}>
+                            <Link href={`/events/${event._id}`}>{event.name}</Link>
+                            <button onClick={(e) => handleDelEvent(event._id, e)}>Remove event</button>
+                        </li>
+                    ))}
+                </ul>
+
                 <button>
                     <Link
                         href={`/trips/search?tripId=${tripData._id}`}

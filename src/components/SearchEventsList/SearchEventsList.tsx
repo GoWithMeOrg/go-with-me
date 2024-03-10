@@ -51,35 +51,31 @@ const SearchEventsList = ({ text, tripId }: { text: string; tripId: string }) =>
     const [updateTrip] = useMutation(UPDATE_TRIP);
 
     const handleAddEvent = async (eventId: string) => {
-        await refetch(); // Получаем новые данные tripData?.trip?.events_id из БД
-        const eventsIdDB = tripData?.trip?.events_id || []; // Получаем массив events_id для текущего пользователя из БД
-        const updatedEventsIdDB = new Set(eventsIdDB); // Создаем новый объект Set на основе массива events_id
-        updatedEventsIdDB.add(eventId); // Добавляем новый eventId в объект Set
+        await refetch();
+        const eventsIdDB = tripData?.trip?.events_id || [];
+        const updatedEventsIdDB = new Set(eventsIdDB);
+        updatedEventsIdDB.add(eventId);
         await updateTrip({
             variables: {
                 id: tripId,
                 trip: { events_id: Array.from(updatedEventsIdDB), organizer_id: organizerId },
             },
-        }); // Обновляем trip с новым массивом events_id
+        });
         await refetch();
     };
 
-    return (
-        searchData &&
-        searchData.search &&
-        searchData.search.map((event: any) => (
-            <div key={event._id}>
-                <ul>
-                    <li className={styles.checkbox}>
-                        <Link href={`/events/${event._id}`}>{event.name}</Link>
-                        <button type="button" onClick={() => handleAddEvent(event._id)}>
-                            add event
-                        </button>
-                    </li>
-                </ul>
-            </div>
-        ))
-    );
+    return searchData?.search?.map((event: any) => (
+        <div key={event._id}>
+            <ul>
+                <li className={styles.checkbox}>
+                    <Link href={`/events/${event._id}`}>{event.name}</Link>
+                    <button type="button" onClick={() => handleAddEvent(event._id)}>
+                        add event
+                    </button>
+                </li>
+            </ul>
+        </div>
+    ));
 };
 
 export default SearchEventsList;
