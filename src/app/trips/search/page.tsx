@@ -5,7 +5,6 @@ import { NextPage } from "next";
 const SearchPage: NextPage<{ searchParams: { text: string; tripId: string } }> = ({ searchParams }) => {
     return (
         <div className="EventListPage">
-            <h1>Search Page</h1>
             <SearchEvent />
             <SearchEventsList text={searchParams.text} tripId={searchParams.tripId} />
         </div>
