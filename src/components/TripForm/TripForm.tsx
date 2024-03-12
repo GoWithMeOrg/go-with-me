@@ -1,12 +1,13 @@
 import { FC, FormEvent } from "react";
 import dayjs from "dayjs";
 
-import type { ITrip } from "@/database/models/Trip";
+import type { ITrip, ITripFromDB } from "@/database/models/Trip";
+import { TripFormEvents } from "@/components/TripForm/TripFormEvents/TripFormEvents";
 
 import classes from "./TripForm.module.css";
 
 interface TripFormProps {
-    tripData: ITrip;
+    tripData: ITripFromDB;
     onSubmit: (eventData: ITrip) => void;
 }
 
@@ -19,14 +20,15 @@ const TripForm: FC<TripFormProps> = ({ tripData, onSubmit }) => {
             name: formData.name as string,
             description: formData.description as string,
             isPrivate: formData.isPrivate === "on",
-            organizer_id: tripData.organizer_id,
+            organizer_id: tripData.organizer._id,
             startDate: dayjs(formData.startDate as string).toISOString(),
             endDate: dayjs(formData.endDate as string).toISOString(),
         };
         onSubmit(onSubmitData);
     };
+
     return (
-        <div className={classes.container}>
+        <div className={classes.component}>
             <form className={classes.form} onSubmit={handleSubmit}>
                 <label className={classes.label}>
                     <span className={classes.titleField}>Trip Name:</span>
@@ -72,6 +74,9 @@ const TripForm: FC<TripFormProps> = ({ tripData, onSubmit }) => {
                     Save
                 </button>
             </form>
+            <div className={classes.trips}>
+                <TripFormEvents tripID={tripData._id} />
+            </div>
         </div>
     );
 };

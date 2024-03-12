@@ -1,18 +1,18 @@
 "use client";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 
-//поиск теперь по адресу trip/trip_id/search
 export const SearchEvent = () => {
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const { replace } = useRouter();
 
+    //console.log(searchParams);
     const handleSearch = (searchTerm: string) => {
         const params = new URLSearchParams(searchParams);
         if (searchTerm) {
-            params.set("query", searchTerm);
+            params.set("text", searchTerm);
         } else {
-            params.delete("query");
+            params.delete("text");
         }
         replace(`${pathname}?${params.toString()}`);
     };
@@ -26,7 +26,7 @@ export const SearchEvent = () => {
             <input
                 className="search"
                 placeholder="search"
-                defaultValue={searchParams.get("query")?.toString()}
+                defaultValue={searchParams.get("text")?.toString()}
                 onChange={(e) => {
                     handleSearch(e.target.value);
                 }}

@@ -37,7 +37,28 @@ const TripNewPage: NextPage = () => {
             <h1>Trip New Page</h1>
             <div>
                 <TripForm
+                    // tripData={{
+                    //     name: "",
+                    //     description: "",
+                    //     isPrivate: true,
+                    //     organizer_id: organizerId,
+                    //     startDate: new Date(),
+                    //     endDate: new Date(),
+                    // }}
                     tripData={{
+                        _id: "",
+                        createdAt: new Date(),
+                        updatedAt: new Date(),
+                        organizer: {
+                            _id: "",
+                            name: "",
+                            email: "",
+                            image: "",
+                            emailVerified: false,
+                            createdAt: new Date(),
+                            updatedAt: new Date(),
+                        },
+                        events: [],
                         name: "",
                         description: "",
                         isPrivate: true,
