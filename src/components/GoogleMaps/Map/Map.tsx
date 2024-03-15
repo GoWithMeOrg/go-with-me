@@ -1,7 +1,7 @@
 "use client";
 
 import { Loader } from "@googlemaps/js-api-loader";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export const Map = () => {
     const mapRef = useRef<HTMLDivElement>(null);
@@ -11,21 +11,22 @@ export const Map = () => {
             const loader = new Loader({
                 apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
                 version: "weekly",
+                libraries: ["places", "marker", "core"],
             });
 
-            const { Map } = await loader.importLibrary("maps");
-            const { AdvancedMarkerElement } = await loader.importLibrary("marker");
+            const { Map } = (await loader.importLibrary("maps")) as google.maps.MapsLibrary;
+            const { AdvancedMarkerElement } = (await loader.importLibrary("marker")) as google.maps.MarkerLibrary;
 
             // координаты центра
             const position = {
-                lat: 59.95,
-                lng: 30.33,
+                lat: 60.01,
+                lng: 30.35,
             };
 
             // опции карты
             const mapOptions: google.maps.MapOptions = {
                 center: new google.maps.LatLng(position.lat, position.lng),
-                zoom: 10,
+                zoom: 15,
                 mapId: "MY_MAP_ID",
             };
 

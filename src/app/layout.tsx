@@ -5,7 +5,7 @@ import { Menu } from "@/components/Menu";
 import { NextAuthProvider, ApolloWrapper } from "./providers";
 
 import "@/styles/global.css";
-import { Maps } from "@/components/Map";
+import { Maps } from "@/components/GoogleMaps/Map";
 
 const inter = Inter({ subsets: ["latin"] });
 
