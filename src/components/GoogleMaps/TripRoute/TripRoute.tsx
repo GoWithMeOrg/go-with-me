@@ -1,10 +1,12 @@
 import { Loader } from "@googlemaps/js-api-loader";
 import { useRef } from "react";
-import classes from "./PlaceSearch.module.css";
 
-export const PlaceSearch = () => {
+import classes from "./TripRoute.module.css";
+
+export const TripRoute = () => {
     const mapRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
+    const inputRefRoute = useRef<HTMLInputElement>(null);
     const initMap = async () => {
         //инициализируем карту
         const loader = new Loader({
@@ -51,6 +53,28 @@ export const PlaceSearch = () => {
         const { AdvancedMarkerElement } = (await loader.importLibrary("marker")) as google.maps.MarkerLibrary;
         const marker = new AdvancedMarkerElement({
             map: map,
+        });
+
+        const { DirectionsService } = (await google.maps.importLibrary("routes")) as google.maps.RoutesLibrary;
+
+        const directionsService = new DirectionsService();
+
+        const request = {
+            origin: "Санкт-Петербург",
+            destination: "Москва",
+            travelMode: google.maps.TravelMode.DRIVING,
+        };
+
+        directionsService.route(request, (response, status) => {
+            if (status === google.maps.DirectionsStatus.OK) {
+                // Обработайте ответ
+                const directionsRenderer = new google.maps.DirectionsRenderer({
+                    map: map,
+                    directions: response,
+                });
+            } else {
+                // Обработайте ошибку
+            }
         });
 
         searchBox.addListener("places_changed", () => {
@@ -103,10 +127,18 @@ export const PlaceSearch = () => {
 
     return (
         <div className={classes.map}>
-            <input id="pac-input" className={classes.searchInput} type="text" placeholder="Найти ..." ref={inputRef} />
+            {/* <input id="pac-input" className={classes.searchInput} type="text" placeholder="Найти ..." ref={inputRef} /> */}
+            <input id="origin-input" className={classes.searchInput} type="text" placeholder="Откуда" ref={inputRef} />
+            <input
+                id="destination-input"
+                className={classes.searchInput}
+                type="text"
+                placeholder="Куда"
+                ref={inputRefRoute}
+            />
             <div style={{ height: "600px" }} ref={mapRef}></div>
         </div>
     );
 };
 
-export default PlaceSearch;
+export default TripRoute;
