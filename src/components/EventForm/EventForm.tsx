@@ -4,6 +4,8 @@ import dayjs from "dayjs";
 import type { IEvent } from "@/database/models/Event";
 
 import classes from "./EventForm.module.css";
+import { PlaceSearch } from "../GoogleMaps/PlaceSearch";
+import { GoogleMaps } from "../GoogleMaps";
 
 export type EventType = Partial<IEvent>;
 
