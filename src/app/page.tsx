@@ -8,8 +8,8 @@ export default function HomePage() {
         <div className="HomePage">
             <AuthPanel />
             Social meetings <a href="https://github.com/GoWithMeOrg/go-with-me">GoWithMeOrg/go-with-me</a>
-            <TripRoute />
-            {/* <GoogleMaps /> */}
+            {/* <TripRoute /> */}
+            <GoogleMaps />
         </div>
     );
 }
