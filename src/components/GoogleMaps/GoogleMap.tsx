@@ -8,7 +8,7 @@ import { Directions } from "./Directions";
 
 const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string;
 
-export const GoogleMaps = () => {
+export const GoogleMap = () => {
     const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
     const [positionMarker, setPositionMarker] = useState<google.maps.LatLng | null>(null);
 
@@ -30,20 +30,11 @@ export const GoogleMaps = () => {
                 gestureHandling={"greedy"}
                 disableDefaultUI={false}
                 mapId={"<Your custom MapId here>"}
-            >
-                {/*  <AdvancedMarker position={positionMarker} title={"AdvancedMarker with customized pin."}>
-                    <Pin background={"#FBBC04"} borderColor={"#1e89a1"} glyphColor={"#0f677a"}></Pin>
-                </AdvancedMarker> */}
-                {/* <MarkerWithInfowindow /> */}
-
-                {/* <Directions onPlaceSelect={setSelectedPlace} /> */}
-            </Map>
-
-            <CustomMapControl controlPosition={ControlPosition.TOP} onPlaceSelect={setSelectedPlace} />
+            ></Map>
 
             <MapHandler place={selectedPlace} />
         </APIProvider>
     );
 };
 
-export default GoogleMaps;
+export default GoogleMap;
