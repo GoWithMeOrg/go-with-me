@@ -1,0 +1,14 @@
+.comments {
+}
+
+.title {
+    margin-bottom: 2rem;
+    font-size: 1.25rem;
+    line-height: 2rem;
+    font-weight: 700;
+    color: var(--main-color);
+}
+
+.replies {
+    margin-left: 8rem;
+}
