@@ -34,7 +34,7 @@ const Popup: FC<PopupProps> = ({ showPopup, setShowPopup, containerProps, childr
 
     const render = (
         <div className={styles.popupContainer} {...containerProps}>
-            <div ref={refPopup} {...rest}>
+            <div ref={refPopup} {...rest} style={{ width: "900px" }}>
                 {children}
             </div>
         </div>

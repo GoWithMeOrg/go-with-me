@@ -44,7 +44,7 @@ const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
         onSubmit(onSubmitData);
     };
 
-    let newPosition;
+    // let newPosition;
     // if (selectedPlace?.geometry && selectedPlace.geometry.location) {
     //     newPosition = {
     //         lat: selectedPlace.geometry.location.lat(),
@@ -99,7 +99,7 @@ const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                     <div className={classes.labelFindMap}>
                         <span>location:</span>
                         <Button className={classes.btnFindMap} onClick={handleShowMap}>
-                            <label className={classes.labelBtnFindMap}>Найти на карте</label>
+                            <label className={classes.labelBtnFindMap}>Find on the Map</label>
                             <MarkerIcon />
                         </Button>
                     </div>
@@ -112,7 +112,7 @@ const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                         {...{
                             showPopup,
                             setShowPopup,
-                            containerProps: { style: { backgroundColor: "rgba(172, 22, 22, 0.4)" } },
+                            //containerProps: { style: { backgroundColor: "rgba(172, 22, 22, 0.4)" } },
                         }}
                         style={{ backgroundColor: "white", padding: "1rem", borderRadius: "0.5rem" }}
                     >
@@ -147,10 +147,9 @@ const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                             </CustomMapControl>
                             <MapHandler place={selectedPlace} />
                         </APIProvider>
- */}{" "}
+                        */}
                         <button onClick={() => setShowPopup(false)}>закрыть карту</button>
                     </Popup>
-                    {/* <input type="text" defaultValue={eventData.locationName} className={classes.input} /> */}
                 </label>
 
                 <button className={classes.button} type="submit">
