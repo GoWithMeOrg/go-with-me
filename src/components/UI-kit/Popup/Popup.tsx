@@ -6,9 +6,10 @@ import styles from "./Popup.module.css";
 interface PopupProps extends React.HTMLAttributes<HTMLDivElement> {
     showPopup: boolean;
     setShowPopup: Dispatch<SetStateAction<boolean>>;
+    containerProps?: React.HTMLAttributes<HTMLDivElement>;
 }
 
-const Popup: FC<PopupProps> = ({ showPopup, setShowPopup, children, ...rest }) => {
+const Popup: FC<PopupProps> = ({ showPopup, setShowPopup, containerProps, children, ...rest }) => {
     const [containerState, setContainerState] = useState<HTMLDivElement | null>(null);
     const refPopup = useRef<HTMLDivElement>(null);
 
@@ -19,7 +20,6 @@ const Popup: FC<PopupProps> = ({ showPopup, setShowPopup, children, ...rest }) =
         if (showPopup) {
             if (containerExist) return;
             const container = document.createElement("div");
-            container.className = styles.popupContainer;
             container.id = "popupContainer";
             body.append(container);
             setContainerState(container);
@@ -35,8 +35,10 @@ const Popup: FC<PopupProps> = ({ showPopup, setShowPopup, children, ...rest }) =
     }, [showPopup, setShowPopup]);
 
     const render = (
-        <div ref={refPopup} {...rest}>
-            {children}
+        <div className={styles.popupContainer} {...containerProps}>
+            <div ref={refPopup} {...rest}>
+                {children}
+            </div>
         </div>
     );
     if (!showPopup) return null;
