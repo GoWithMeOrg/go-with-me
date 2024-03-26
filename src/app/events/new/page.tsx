@@ -9,6 +9,7 @@ import { useMutation, gql } from "@apollo/client";
 
 import { EventForm } from "@/components/EventForm";
 import type { EventType } from "@/components/EventForm";
+import { useState } from "react";
 
 const CREATE_EVENT = gql`
     mutation CreateEvent($event: EventInput!) {

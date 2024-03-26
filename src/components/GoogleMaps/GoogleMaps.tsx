@@ -39,7 +39,7 @@ export const GoogleMaps = () => {
                 {/* <Directions onPlaceSelect={setSelectedPlace} /> */}
             </Map>
 
-            <CustomMapControl controlPosition={ControlPosition.TOP} onPlaceSelect={setSelectedPlace} />
+            {/* <CustomMapControl controlPosition={ControlPosition.TOP} onPlaceSelect={setSelectedPlace} /> */}
 
             <MapHandler place={selectedPlace} />
         </APIProvider>

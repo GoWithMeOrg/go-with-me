@@ -71,7 +71,7 @@ export const Directions = ({ onPlaceSelect }: Props) => {
                     directionsRenderer.setDirections(response);
                     setRoutes(response.routes);
                 })
-                .catch((e) => window.alert("Directions request failed due to " + status));
+                .catch((e) => console.log("Directions request failed due to "));
         }
 
         return () => directionsRenderer.setMap(null);
@@ -91,23 +91,23 @@ export const Directions = ({ onPlaceSelect }: Props) => {
 
             {selected && (
                 <div className="directions">
-                    <h2>{selected?.summary}</h2>
+                    {/* <h2>{selected?.summary}</h2> */}
                     {/*  <p>
                         {leg?.start_address.split(",")[0]} to {leg?.end_address.split(",")[0]}
                     </p> */}
-                    <div className={classes.leg}>
+                    {/* <div className={classes.leg}>
                         <p>Distance: {leg?.distance?.text}</p>
                         <p>Duration: {leg?.duration?.text}</p>
-                    </div>
+                    </div> */}
 
-                    <h2>Other Routes</h2>
+                    {/* <h2>Other Routes</h2>
                     <ul>
                         {routes.map((route, index) => (
                             <li key={route.summary}>
                                 <button onClick={() => setRouteIndex(index)}>{route.summary}</button>
                             </li>
                         ))}
-                    </ul>
+                    </ul> */}
                 </div>
             )}
         </>

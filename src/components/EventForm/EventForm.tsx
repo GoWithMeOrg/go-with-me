@@ -1,12 +1,13 @@
-import { FC, FormEvent } from "react";
+import { FC, FormEvent, useState } from "react";
 import dayjs from "dayjs";
-
 import type { IEvent } from "@/database/models/Event";
-
 import classes from "./EventForm.module.css";
-import { PlaceSearch } from "../GoogleMaps/PlaceSearch";
-import { GoogleMaps } from "../GoogleMaps";
+import MapHandler from "@/components/GoogleMaps/MapHandler";
 
+import { Button } from "../Button";
+import MarkerIcon from "../Marker/MarkerIcon";
+
+const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string;
 export type EventType = Partial<IEvent>;
 
 interface EventFormProps {
@@ -15,6 +16,10 @@ interface EventFormProps {
 }
 
 const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
+    const handleShowMap = () => {
+        console.log("clock");
+    };
+
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = Object.fromEntries(new FormData(e.currentTarget).entries());
@@ -28,10 +33,7 @@ const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
             locationName: formData.locationName as string,
         };
         onSubmit(onSubmitData);
-        console.log(onSubmitData);
     };
-
-    console.log(eventData);
 
     return (
         <div className={classes.container}>
@@ -77,8 +79,14 @@ const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                 </label>
 
                 <label className={classes.label}>
-                    <span>location:</span>
-                    <input type="text" defaultValue={eventData.locationName} className={classes.input} />
+                    <div className={classes.labelFindMap}>
+                        <span>location:</span>
+                        <Button className={classes.btnFindMap} onClick={handleShowMap}>
+                            <label className={classes.labelBtnFindMap}>Find on the map</label>
+                            <MarkerIcon />
+                        </Button>
+                    </div>
+                    {/* <input type="text" defaultValue={eventData.locationName} className={classes.input} /> */}
                 </label>
 
                 <button className={classes.button} type="submit">

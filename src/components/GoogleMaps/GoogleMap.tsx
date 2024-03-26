@@ -5,20 +5,19 @@ import { CustomMapControl } from "./CustomMapControl";
 import MapHandler from "./MapHandler";
 import { MarkerWithInfowindow } from "./MarkerWithInfowindow";
 import { Directions } from "./Directions";
+import { PlaceAutocomplete } from "./PlaceAutocomplete";
 
 const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string;
 
 export const GoogleMap = () => {
     const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
-    const [positionMarker, setPositionMarker] = useState<google.maps.LatLng | null>(null);
 
-    // Доработать установку маркера.
-    if (!positionMarker && selectedPlace && selectedPlace.geometry && selectedPlace.geometry.location) {
-        const newPosition = new google.maps.LatLng(
-            selectedPlace.geometry.location.lat(),
-            selectedPlace.geometry.location.lng(),
-        );
-        setPositionMarker(newPosition);
+    let newPosition;
+    if (selectedPlace?.geometry && selectedPlace.geometry.location) {
+        newPosition = {
+            lat: selectedPlace.geometry.location.lat(),
+            lng: selectedPlace.geometry.location.lng(),
+        };
     }
 
     return (
@@ -30,8 +29,15 @@ export const GoogleMap = () => {
                 gestureHandling={"greedy"}
                 disableDefaultUI={false}
                 mapId={"<Your custom MapId here>"}
-            ></Map>
-
+            >
+                <AdvancedMarker position={newPosition} title={"AdvancedMarker with customized pin."}>
+                    <Pin background={"#FBBC04"} borderColor={"#1e89a1"} glyphColor={"#0f677a"}></Pin>
+                </AdvancedMarker>
+            </Map>
+            <CustomMapControl controlPosition={ControlPosition.TOP}>
+                {/* <PlaceAutocomplete onPlaceSelect={setSelectedPlace} /> */}
+                <Directions onPlaceSelect={setSelectedPlace} />
+            </CustomMapControl>
             <MapHandler place={selectedPlace} />
         </APIProvider>
     );
