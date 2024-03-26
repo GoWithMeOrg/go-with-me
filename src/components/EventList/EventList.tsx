@@ -16,8 +16,11 @@ const Asdf: FC = () => {
     return (
         <>
             <button onClick={() => setShowPopup(true)}>открыть popup</button>
-            <Popup {...{ showPopup, setShowPopup }}>
-                <button onClick={() => setShowPopup(false)}>закрыть popup</button>
+            <Popup {...{ showPopup, setShowPopup }} style={{ backgroundColor: "white" }}>
+                <p>description</p>
+                <p>description</p>
+                <p>description</p>
+                <p>description</p>
             </Popup>
         </>
     );
