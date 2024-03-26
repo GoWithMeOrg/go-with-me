@@ -1,5 +1,5 @@
 import { createPortal } from "react-dom";
-import { Dispatch, FC, SetStateAction, useEffect, useRef, useState } from "react";
+import { Dispatch, FC, SetStateAction, useCallback, useEffect, useRef, useState } from "react";
 
 import styles from "./Popup.module.css";
 
@@ -12,10 +12,6 @@ const Popup: FC<PopupProps> = ({ showPopup, setShowPopup, children, ...rest }) =
     const [containerState, setContainerState] = useState<HTMLDivElement | null>(null);
     const refPopup = useRef<HTMLDivElement>(null);
 
-    const containerHandler = (event: MouseEvent) => {
-        if (!refPopup.current?.contains(event.target as Node)) setShowPopup(false);
-    };
-
     useEffect(() => {
         const body = document.querySelector("body");
         if (!body) return;
@@ -27,14 +23,16 @@ const Popup: FC<PopupProps> = ({ showPopup, setShowPopup, children, ...rest }) =
             container.id = "popupContainer";
             body.append(container);
             setContainerState(container);
-            container.addEventListener("click", containerHandler);
+            container.addEventListener("click", (event: MouseEvent) => {
+                if (!refPopup.current?.contains(event.target as Node)) setShowPopup(false);
+            });
         }
         if (!showPopup) {
             if (containerExist) {
                 containerExist.remove();
             }
         }
-    }, [showPopup]);
+    }, [showPopup, setShowPopup]);
 
     const render = (
         <div ref={refPopup} {...rest}>
