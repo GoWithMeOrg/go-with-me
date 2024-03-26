@@ -1,5 +1,5 @@
 interface IButton {
-    onClick?: () => void;
+    onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
     className?: string;
     label?: string;
     children?: React.ReactNode;
@@ -7,7 +7,7 @@ interface IButton {
     id?: string;
 }
 
-export const Button = ({ className, onClick, label, children, icon, id }: IButton) => {
+export const Button = ({ className, onClick, label, children, icon }: IButton) => {
     return (
         <button className={className} onClick={onClick}>
             {icon}

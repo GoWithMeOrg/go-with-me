@@ -29,14 +29,15 @@
     cursor: pointer;
     margin: 0;
     padding: 0;
+    color: #a4a7bc;
 }
 
 .labelBtnFindMap {
-    color: #a4a7bc;
     font-size: 0.88rem;
     font-weight: 500;
     line-height: 1.63rem;
     text-align: left;
+    cursor: pointer;
 }
 
 .description {

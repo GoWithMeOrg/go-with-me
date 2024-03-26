@@ -4,21 +4,24 @@ import classes from "./PlaceAutocomlete.module.css";
 
 interface Props {
     onPlaceSelect: (place: google.maps.places.PlaceResult | null) => void;
+    children?: React.ReactNode;
+    originRef?: React.RefObject<HTMLInputElement> | null;
+    //ref?: React.Ref<HTMLInputElement>;
 }
-export const PlaceAutocomplete = ({ onPlaceSelect }: Props) => {
+export const PlaceAutocomplete = ({ children, onPlaceSelect, originRef }: Props) => {
     const [placeAutocomplete, setPlaceAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
-    const originRef = useRef<HTMLInputElement>(null);
+    //const originRef = useRef<HTMLInputElement>(null);
     const places = useMapsLibrary("places");
 
     useEffect(() => {
-        if (!places || !originRef.current) return;
+        if (!places || !originRef || !originRef.current) return;
 
         const options = {
             fields: ["geometry", "name", "formatted_address"],
         };
 
         setPlaceAutocomplete(new places.Autocomplete(originRef.current, options));
-    }, [places]);
+    }, [originRef, places]);
 
     useEffect(() => {
         if (!placeAutocomplete) return;
@@ -28,9 +31,17 @@ export const PlaceAutocomplete = ({ onPlaceSelect }: Props) => {
         });
     }, [onPlaceSelect, placeAutocomplete]);
 
-    return (
+    //return children;
+    /* {
         <div className={classes.autocompleteContainer}>
             <input ref={originRef} />
         </div>
-    );
+    } */
+
+    return React.Children.map(children, (child) => {
+        if (React.isValidElement(child)) {
+            return React.cloneElement(child, { ref: originRef } as React.Attributes);
+        }
+        return child;
+    });
 };
