@@ -1,6 +1,6 @@
 "use client";
 
-import { FC } from "react";
+import { FC, useState } from "react";
 import Link from "next/link";
 import { formatDate } from "@/utils/formatDate";
 import { useQuery, gql, useMutation } from "@apollo/client";
@@ -8,6 +8,19 @@ import { useQuery, gql, useMutation } from "@apollo/client";
 import type { IEvent } from "@/database/models/Event";
 
 import classes from "./EventList.module.css";
+import Popup from "../UI-kit/Popup/Popup";
+
+const Asdf: FC = () => {
+    const [showPopup, setShowPopup] = useState<boolean>(true);
+    return (
+        <>
+            <button onClick={() => setShowPopup(true)}>открыть popup</button>
+            <Popup {...{ showPopup, setShowPopup }}>
+                <button onClick={() => setShowPopup(false)}>закрыть popup</button>
+            </Popup>
+        </>
+    );
+};
 
 type EventListProps = {
     events?: IEvent[];
@@ -64,6 +77,7 @@ const EventList: FC<EventListProps> = () => {
 
     return (
         <div className={classes.component}>
+            <Asdf />
             <h3>Event List</h3>
             <ul>
                 {data.events.map(({ _id, description, tripName, startDate, endDate, locationName }: IEvent) => (
