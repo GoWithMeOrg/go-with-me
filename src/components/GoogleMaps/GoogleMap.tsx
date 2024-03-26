@@ -1,16 +1,15 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { APIProvider, AdvancedMarker, ControlPosition, Map, Pin } from "@vis.gl/react-google-maps";
-
 import { CustomMapControl } from "./CustomMapControl";
 import MapHandler from "./MapHandler";
-import { MarkerWithInfowindow } from "./MarkerWithInfowindow";
-import { Directions } from "./Directions";
 import { PlaceAutocomplete } from "./PlaceAutocomplete";
+import { Input } from "../Input";
 
 const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string;
 
 export const GoogleMap = () => {
     const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
+    const originRef = useRef<HTMLInputElement>(null);
 
     let newPosition;
     if (selectedPlace?.geometry && selectedPlace.geometry.location) {
@@ -35,8 +34,9 @@ export const GoogleMap = () => {
                 </AdvancedMarker>
             </Map>
             <CustomMapControl controlPosition={ControlPosition.TOP}>
-                {/* <PlaceAutocomplete onPlaceSelect={setSelectedPlace} /> */}
-                <Directions onPlaceSelect={setSelectedPlace} />
+                <PlaceAutocomplete onPlaceSelect={setSelectedPlace} originRef={originRef}>
+                    <Input type={"text"} placeholder={"Найти ..."} />
+                </PlaceAutocomplete>
             </CustomMapControl>
             <MapHandler place={selectedPlace} />
         </APIProvider>
