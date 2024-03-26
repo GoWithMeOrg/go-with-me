@@ -28,11 +28,7 @@ const Popup: FC<PopupProps> = ({ showPopup, setShowPopup, children, ...rest }) =
         }
     }, [showPopup]);
 
-    const render = (
-        <div className={styles.popup} {...{ ...rest }}>
-            {children}
-        </div>
-    );
+    const render = <div {...{ ...rest }}>{children}</div>;
     if (!showPopup) return null;
     if (!containerState) return null;
 
