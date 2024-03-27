@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useRef, useState } from "react";
+import { FC } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useQuery, gql, useMutation } from "@apollo/client";
@@ -9,34 +9,6 @@ import { formatDate } from "@/utils/formatDate";
 import type { IEvent } from "@/database/models/Event";
 
 import classes from "./EventList.module.css";
-import Popup from "../UI-kit/Popup/Popup";
-
-const Asdf: FC = () => {
-    const [showPopup, setShowPopup] = useState<boolean>(true);
-    const containerRef = useRef<HTMLDivElement>(null);
-
-    return (
-        <>
-            <button onClick={() => setShowPopup(true)}>открыть popup</button>
-            <span className="asdf" ref={containerRef}></span>
-            <Popup
-                {...{
-                    showPopup,
-                    setShowPopup,
-                    wrapperProps: { style: { backgroundColor: "rgba(172, 22, 22, 0.4)" } },
-                    containerElement: containerRef.current ?? undefined,
-                }}
-                style={{ backgroundColor: "white", padding: "1rem", borderRadius: "0.5rem" }}
-            >
-                <p>description</p>
-                <p>description</p>
-                <p>description</p>
-                <p>description</p>
-                <button onClick={() => setShowPopup(false)}>закрыть</button>
-            </Popup>
-        </>
-    );
-};
 
 type EventListProps = {
     events?: IEvent[];
@@ -95,7 +67,6 @@ const EventList: FC<EventListProps> = () => {
 
     return (
         <div className={classes.component}>
-            <Asdf />
             <h3>Event List</h3>
             <ul>
                 {data.events.map(({ _id, description, name, startDate, endDate, locationName }: IEvent) => (
