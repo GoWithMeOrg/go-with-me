@@ -6,22 +6,22 @@ import styles from "./Popup.module.css";
 interface PopupProps extends React.HTMLAttributes<HTMLDivElement> {
     showPopup: boolean;
     setShowPopup: Dispatch<SetStateAction<boolean>>;
-    containerProps?: React.HTMLAttributes<HTMLDivElement>;
+    wrapperProps?: React.HTMLAttributes<HTMLDivElement>;
+    containerElement?: HTMLElement;
 }
 
-const Popup: FC<PopupProps> = ({ showPopup, setShowPopup, containerProps, children, ...rest }) => {
+const Popup: FC<PopupProps> = ({ showPopup, setShowPopup, wrapperProps, containerElement, children, ...rest }) => {
     const [containerState, setContainerState] = useState<HTMLDivElement | null>(null);
     const refPopup = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        const body = document.querySelector("body");
-        if (!body) return;
         const containerExist = document.getElementById("popupContainer");
         if (showPopup) {
             if (containerExist) return;
             const container = document.createElement("div");
             container.id = "popupContainer";
-            body.append(container);
+            if (!containerElement) document.querySelector("body")?.append(container);
+            if (containerElement) containerElement.append(container);
             setContainerState(container);
             container.addEventListener("click", (event: MouseEvent) => {
                 if (!refPopup.current?.contains(event.target as Node)) setShowPopup(false);
@@ -32,10 +32,10 @@ const Popup: FC<PopupProps> = ({ showPopup, setShowPopup, containerProps, childr
                 containerExist.remove();
             }
         }
-    }, [showPopup, setShowPopup]);
+    }, [showPopup, setShowPopup, containerElement]);
 
     const render = (
-        <div className={styles.popupContainer} {...containerProps}>
+        <div className={styles.wrapper} {...wrapperProps}>
             <div ref={refPopup} {...rest}>
                 {children}
             </div>
