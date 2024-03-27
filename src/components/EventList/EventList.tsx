@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useState } from "react";
+import { FC, useRef, useState } from "react";
 import Link from "next/link";
 import { formatDate } from "@/utils/formatDate";
 import { useQuery, gql, useMutation } from "@apollo/client";
@@ -12,14 +12,18 @@ import Popup from "../UI-kit/Popup/Popup";
 
 const Asdf: FC = () => {
     const [showPopup, setShowPopup] = useState<boolean>(true);
+    const containerRef = useRef<HTMLDivElement>(null);
+
     return (
         <>
             <button onClick={() => setShowPopup(true)}>открыть popup</button>
+            <span className="asdf" ref={containerRef}></span>
             <Popup
                 {...{
                     showPopup,
                     setShowPopup,
-                    containerProps: { style: { backgroundColor: "rgba(172, 22, 22, 0.4)" } },
+                    wrapperProps: { style: { backgroundColor: "rgba(172, 22, 22, 0.4)" } },
+                    containerElement: containerRef.current ?? undefined,
                 }}
                 style={{ backgroundColor: "white", padding: "1rem", borderRadius: "0.5rem" }}
             >
