@@ -6,10 +6,10 @@ import classes from "./EventForm.module.css";
 import { Button } from "../Button";
 import MarkerIcon from "../Marker/MarkerIcon";
 import { APIProvider } from "@vis.gl/react-google-maps";
-import { PlaceAutocomplete } from "../GoogleMaps/PlaceAutocomplete";
+import { PlaceAutocomplete } from "../GoogleMap/PlaceAutocomplete";
 import { Input } from "../Input";
 import Popup from "../UI-kit/Popup/Popup";
-import GoogleMap from "../GoogleMaps/GoogleMap";
+import GoogleMap from "../GoogleMap/GoogleMap";
 
 const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string;
 export type EventType = Partial<IEvent>;
@@ -105,51 +105,9 @@ const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                     </div>
                     <APIProvider apiKey={API_KEY}>
                         <PlaceAutocomplete onPlaceSelect={setSelectedPlace} originRef={originRef}>
-                            <Input ref={originRef} type={"text"} placeholder={"Найти ..."} />
+                            <Input type={"text"} placeholder={"Найти ..."} />
                         </PlaceAutocomplete>
                     </APIProvider>
-                    <Popup
-                        {...{
-                            showPopup,
-                            setShowPopup,
-                            //containerProps: { style: { backgroundColor: "rgba(172, 22, 22, 0.4)" } },
-                        }}
-                        style={{ backgroundColor: "white", padding: "1rem", borderRadius: "0.5rem" }}
-                    >
-                        <GoogleMap />
-                        {/* <APIProvider apiKey={API_KEY}>
-                            {showPopup && (
-                                <Map
-                                    style={{ height: "600px" }}
-                                    defaultZoom={3}
-                                    defaultCenter={{ lat: 22.54992, lng: 0 }}
-                                    gestureHandling={"greedy"}
-                                    disableDefaultUI={false}
-                                    mapId={"<Your custom MapId here>"}
-                                >
-                                    <AdvancedMarker
-                                        position={newPosition}
-                                        title={"AdvancedMarker with customized pin."}
-                                    >
-                                        <Pin
-                                            background={"#FBBC04"}
-                                            borderColor={"#1e89a1"}
-                                            glyphColor={"#0f677a"}
-                                        ></Pin>
-                                    </AdvancedMarker>
-                                </Map>
-                            )}
-
-                            <CustomMapControl controlPosition={ControlPosition.TOP}>
-                                <PlaceAutocomplete onPlaceSelect={setSelectedPlace} originRef={originRef}>
-                                    <Input type={"text"} placeholder={"Найти ..."} />
-                                </PlaceAutocomplete>
-                            </CustomMapControl>
-                            <MapHandler place={selectedPlace} />
-                        </APIProvider>
-                        */}
-                        <button onClick={() => setShowPopup(false)}>закрыть карту</button>
-                    </Popup>
                 </label>
 
                 <button className={classes.button} type="submit">

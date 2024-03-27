@@ -5,7 +5,7 @@ interface Props {
     place: google.maps.places.PlaceResult | null;
 }
 
-const MapHandler = ({ place }: Props) => {
+export const MapHandler = ({ place }: Props) => {
     const map = useMap();
 
     useEffect(() => {

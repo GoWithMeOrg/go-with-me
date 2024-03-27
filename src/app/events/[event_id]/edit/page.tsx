@@ -6,7 +6,7 @@ import { gql, useMutation, useQuery } from "@apollo/client";
 
 import { EventForm } from "@/components/EventForm/EventForm";
 import type { IEvent } from "@/database/models/Event";
-import GoogleMap from "@/components/GoogleMaps/GoogleMap";
+import GoogleMap from "@/components/GoogleMap/GoogleMap";
 
 type PageParams = {
     params: { event_id: string };

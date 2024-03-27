@@ -1,8 +1,6 @@
 "use client";
 import { AuthPanel } from "@/components/AuthPanel";
-import { GoogleMaps } from "@/components/GoogleMaps";
-import GoogleMap from "@/components/GoogleMaps/GoogleMap";
-import { TripRoute } from "@/components/GoogleMaps/TripRoute";
+import { GoogleMap } from "@/components/GoogleMap";
 
 export default function HomePage() {
     return (

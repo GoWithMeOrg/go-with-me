@@ -22,3 +22,5 @@ export const MarkerWithInfowindow = () => {
         </>
     );
 };
+
+export default MarkerWithInfowindow;
