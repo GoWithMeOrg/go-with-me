@@ -27,7 +27,15 @@ export const PlaceAutocomplete = ({ children, onPlaceSelect, originRef }: Props)
         if (!placeAutocomplete) return;
 
         placeAutocomplete.addListener("place_changed", () => {
-            onPlaceSelect(placeAutocomplete.getPlace());
+            const place = placeAutocomplete.getPlace();
+            onPlaceSelect(place);
+            //Получаем координаты в формате json
+            const coordinates = {
+                type: "Point",
+                coordinates: [place?.geometry?.location?.lng(), place?.geometry?.location?.lat()],
+            };
+
+            console.log(coordinates);
         });
     }, [onPlaceSelect, placeAutocomplete]);
 
