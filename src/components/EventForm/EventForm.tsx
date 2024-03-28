@@ -1,20 +1,34 @@
-import { FC, FormEvent } from "react";
+import { FC, FormEvent, useRef, useState } from "react";
 import dayjs from "dayjs";
-
 import type { IEvent } from "@/database/models/Event";
-
 import classes from "./EventForm.module.css";
-import { PlaceSearch } from "../GoogleMaps/PlaceSearch";
-import { GoogleMaps } from "../GoogleMaps";
 
+import { Button } from "../Button";
+import MarkerIcon from "../Marker/MarkerIcon";
+import { APIProvider } from "@vis.gl/react-google-maps";
+import { PlaceAutocomplete } from "../GoogleMap/PlaceAutocomplete";
+import { Input } from "../Input";
+import Popup from "../UI-kit/Popup/Popup";
+import GoogleMap from "../GoogleMap/GoogleMap";
+
+const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string;
 export type EventType = Partial<IEvent>;
 
 interface EventFormProps {
     eventData: EventType;
     onSubmit: (event: Partial<IEvent>) => void;
+    ref?: React.RefObject<HTMLFormElement>;
 }
 
 const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
+    const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
+    const [showPopup, setShowPopup] = useState<boolean>(false);
+    const originRef = useRef<HTMLInputElement>(null);
+    const handleShowMap = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        setShowPopup(true);
+    };
+
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = Object.fromEntries(new FormData(e.currentTarget).entries());
@@ -28,10 +42,15 @@ const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
             locationName: formData.locationName as string,
         };
         onSubmit(onSubmitData);
-        console.log(onSubmitData);
     };
 
-    console.log(eventData);
+    // let newPosition;
+    // if (selectedPlace?.geometry && selectedPlace.geometry.location) {
+    //     newPosition = {
+    //         lat: selectedPlace.geometry.location.lat(),
+    //         lng: selectedPlace.geometry.location.lng(),
+    //     };
+    // }
 
     return (
         <div className={classes.container}>
@@ -77,8 +96,18 @@ const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                 </label>
 
                 <label className={classes.label}>
-                    <span>location:</span>
-                    <input type="text" defaultValue={eventData.locationName} className={classes.input} />
+                    <div className={classes.labelFindMap}>
+                        <span>location:</span>
+                        <Button className={classes.btnFindMap} onClick={handleShowMap}>
+                            <label className={classes.labelBtnFindMap}>Find on the Map</label>
+                            <MarkerIcon />
+                        </Button>
+                    </div>
+                    <APIProvider apiKey={API_KEY}>
+                        <PlaceAutocomplete onPlaceSelect={setSelectedPlace} originRef={originRef}>
+                            <Input type={"text"} placeholder={"Найти ..."} />
+                        </PlaceAutocomplete>
+                    </APIProvider>
                 </label>
 
                 <button className={classes.button} type="submit">

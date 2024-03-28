@@ -9,7 +9,6 @@ import CommentModel, { IComment } from "@/database/models/Comment";
 import TripModel, { ITrip } from "@/database/models/Trip";
 import UserModel from "@/database/models/User";
 
-//измения от Сани
 /**
  * @see https://www.apollographql.com/docs/apollo-server/data/resolvers/
  */
