@@ -22,7 +22,7 @@
     justify-content: space-between;
 }
 
-.btnFindMap {
+.buttonFindMap {
     display: flex;
     flex-direction: row-reverse;
     background: none;
@@ -32,7 +32,7 @@
     color: #a4a7bc;
 }
 
-.labelBtnFindMap {
+.labelButtonFindMap {
     font-size: 0.88rem;
     font-weight: 500;
     line-height: 1.63rem;
@@ -42,9 +42,6 @@
 
 .inputFindMap {
     width: 100%;
-    /* padding: 0.5rem 0.5rem;
-    border: 1px solid #a4a7bc;
-    border-radius: 0.5rem; */
 }
 
 .description {

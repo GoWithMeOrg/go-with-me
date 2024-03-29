@@ -98,8 +98,8 @@ const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                 <label className={classes.label}>
                     <div className={classes.labelFindMap}>
                         <span>location:</span>
-                        <Button className={classes.btnFindMap} onClick={handleShowMap}>
-                            <label className={classes.labelBtnFindMap}>Find on the Map</label>
+                        <Button className={classes.buttonFindMap} onClick={handleShowMap}>
+                            <label className={classes.labelButtonFindMap}> Find on the Map</label>
                             <MarkerIcon />
                         </Button>
                     </div>
