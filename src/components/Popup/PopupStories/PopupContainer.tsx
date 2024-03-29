@@ -7,10 +7,9 @@ export const PopupContainer: FC = () => {
     return (
         <>
             <button
-                onClick={() => {
-                    setTimeout(() => {
-                        setShowPopup(true);
-                    }, 0);
+                onClick={(event) => {
+                    event.stopPropagation();
+                    setShowPopup(true);
                 }}
             >
                 ShowPopup

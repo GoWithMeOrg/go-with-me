@@ -7,9 +7,8 @@ export const PopupTrigger: FC = () => {
         <>
             <button
                 onClick={(event) => {
-                    setTimeout(() => {
-                        setShowPopup(true);
-                    }, 0);
+                    event.stopPropagation();
+                    setShowPopup(true);
                 }}
             >
                 ShowPopup
