@@ -29,7 +29,6 @@ const Popup: FC<PopupProps> = ({ showPopup, setShowPopup, wrapperProps, containe
             if (containerElement) containerElement.append(container);
             setContainerState(container);
             document.body.addEventListener("click", eventListener);
-            // return document.body.removeEventListener("click", eventListener);
             return () => document.body.removeEventListener("click", eventListener);
         }
         if (!showPopup) {
