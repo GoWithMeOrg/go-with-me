@@ -14,6 +14,11 @@ const Popup: FC<PopupProps> = ({ showPopup, setShowPopup, wrapperProps, containe
     const [containerState, setContainerState] = useState<HTMLDivElement | null>(null);
     const refPopup = useRef<HTMLDivElement>(null);
 
+    const eventListener = (event: MouseEvent) => {
+        console.log("click");
+        if (!refPopup.current?.contains(event.target as Node)) setShowPopup(false);
+    };
+
     useEffect(() => {
         const containerExist = document.getElementById("popupContainer");
         if (showPopup) {
@@ -23,9 +28,9 @@ const Popup: FC<PopupProps> = ({ showPopup, setShowPopup, wrapperProps, containe
             if (!containerElement) document.querySelector("body")?.append(container);
             if (containerElement) containerElement.append(container);
             setContainerState(container);
-            container.addEventListener("click", (event: MouseEvent) => {
-                if (!refPopup.current?.contains(event.target as Node)) setShowPopup(false);
-            });
+            document.body.addEventListener("click", eventListener);
+            // return document.body.removeEventListener("click", eventListener);
+            return () => document.body.removeEventListener("click", eventListener);
         }
         if (!showPopup) {
             if (containerExist) {

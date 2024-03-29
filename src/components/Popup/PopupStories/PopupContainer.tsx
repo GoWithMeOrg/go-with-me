@@ -6,7 +6,15 @@ export const PopupContainer: FC = () => {
     const container = useRef<HTMLDivElement>(null);
     return (
         <>
-            <button onClick={() => setShowPopup(!showPopup)}>ShowPopup</button>
+            <button
+                onClick={() => {
+                    setTimeout(() => {
+                        setShowPopup(true);
+                    }, 0);
+                }}
+            >
+                ShowPopup
+            </button>
             <div ref={container} style={{ position: "relative", zIndex: 0 }}>
                 container
             </div>
@@ -29,6 +37,7 @@ export const PopupContainer: FC = () => {
                                 top: "auto",
                                 left: "2rem",
                                 zIndex: 1,
+                                padding: "1rem",
                             },
                         },
                     }}
