@@ -50,7 +50,7 @@ const EventSchema = new Schema<IEventDocument>(
                 required: true,
             },
             coordinates: {
-                type: [Number], // Для типа Point это будет массив из двух чисел [longitude, latitude]
+                type: [Number],
                 required: true,
             },
         },

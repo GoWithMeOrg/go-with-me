@@ -105,6 +105,7 @@ const resolvers = {
 };
 
 const typeDefs = gql`
+    scalar ISODate
     scalar JSON
 
     type Query {
@@ -126,7 +127,13 @@ const typeDefs = gql`
     }
 
     type Location {
-        name: String
+        type: String
+        coordinates: [Float!]!
+    }
+
+    input LocationInput {
+        type: String
+        coordinates: [Float!]!
     }
 
     type Event {
@@ -138,7 +145,7 @@ const typeDefs = gql`
         isPrivate: Boolean
         startDate: ISODate
         endDate: ISODate
-        locationName: String
+        location: Location
     }
 
     type Trip {
@@ -186,11 +193,7 @@ const typeDefs = gql`
         isPrivate: Boolean
         startDate: ISODate
         endDate: ISODate
-        location: String
-    }
-
-    input LocationInput {
-        name: String
+        location: LocationInput
     }
 
     type Mutation {
