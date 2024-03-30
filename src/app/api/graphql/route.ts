@@ -8,10 +8,8 @@ import mongooseConnect from "@/database/mongooseConnect";
 import CommentModel, { IComment } from "@/database/models/Comment";
 import TripModel, { ITrip } from "@/database/models/Trip";
 import UserModel from "@/database/models/User";
+import GraphQLJSON from "graphql-type-json";
 
-/**
- * @see https://www.apollographql.com/docs/apollo-server/data/resolvers/
- */
 const resolvers = {
     ISODate: {
         __parseValue(value: string) {
@@ -107,10 +105,7 @@ const resolvers = {
 };
 
 const typeDefs = gql`
-    #graphql
-
-    # Custom scalar type for Date
-    scalar ISODate
+    scalar JSON
 
     type Query {
         hello: String

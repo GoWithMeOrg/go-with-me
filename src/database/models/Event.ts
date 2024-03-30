@@ -18,8 +18,10 @@ export interface IEvent {
     endDate?: Date | string;
     createdAt: Date | string;
     updatedAt: Date | string;
-    locationName: string;
-    __typename?: string;
+    location: {
+        type: string;
+        coordinates: number[];
+    };
 }
 
 export interface IEventDocument extends Omit<IEvent, "_id" | "organizer" | "createdAt" | "updatedAt">, Document {}
@@ -40,9 +42,21 @@ const EventSchema = new Schema<IEventDocument>(
             type: Boolean,
             default: true,
         },
+
+        location: {
+            type: {
+                type: String,
+                enum: ["Point", "LineString", "Polygon"],
+                required: true,
+            },
+            coordinates: {
+                type: [Number], // Для типа Point это будет массив из двух чисел [longitude, latitude]
+                required: true,
+            },
+        },
+
         startDate: Date,
         endDate: Date,
-        locationName: String,
     },
     {
         timestamps: true,
