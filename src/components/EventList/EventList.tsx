@@ -33,6 +33,9 @@ const GET_EVENTS = gql`
             location {
                 type
                 coordinates
+                properties {
+                    address
+                }
             }
         }
     }
@@ -85,9 +88,9 @@ const EventList: FC<EventListProps> = () => {
                         <div className={classes.item}>{description}</div>
 
                         <div className={classes.location}>
-                            {/* выводим координаты */}
-                            <span>Координаты:</span>
-                            {location.coordinates.flatMap((coord) => coord).join(", ")}
+                            <span>Адрес:</span>
+                            {/* {location.coordinates.flatMap((coord) => coord).join(", ")} */}
+                            {location?.properties?.address}
                         </div>
 
                         <div className={classes.controls}>

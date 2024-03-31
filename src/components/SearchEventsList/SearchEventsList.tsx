@@ -46,6 +46,8 @@ const SearchEventsList = ({ text, tripId }: { text: string; tripId: string }) =>
         variables: { text },
     });
 
+    console.log(searchData);
+
     const { data: tripData, refetch } = useQuery(GET_TRIP_BY_ID, { variables: { tripId } });
     const organizerId = tripData?.trip?.organizer_id;
     const [updateTrip] = useMutation(UPDATE_TRIP);

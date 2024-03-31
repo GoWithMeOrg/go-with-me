@@ -21,6 +21,9 @@ export interface IEvent {
     location: {
         type: string;
         coordinates: [Number];
+        properties: {
+            address: string;
+        };
     };
 }
 
@@ -52,6 +55,9 @@ const EventSchema = new Schema<IEventDocument>(
             coordinates: {
                 type: [Number],
                 required: true,
+            },
+            properties: {
+                address: String,
             },
         },
 

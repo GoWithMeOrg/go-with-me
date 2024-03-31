@@ -29,12 +29,10 @@ const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
     //     e.preventDefault();
     //     setShowPopup(true);
     // };
-
-    console.log(eventData);
+    // решить вопрос с типом coordinates
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = Object.fromEntries(new FormData(e.currentTarget).entries());
-        //console.log(formData);
         const onSubmitData: Partial<IEvent> = {
             organizer_id: eventData.organizer?._id,
             name: formData.name as string,
@@ -48,6 +46,9 @@ const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                     selectedPlace?.geometry?.location?.lng() ?? 0,
                     selectedPlace?.geometry?.location?.lat() ?? 0,
                 ],
+                properties: {
+                    address: selectedPlace?.formatted_address ?? "",
+                },
             },
         };
         onSubmit(onSubmitData);
