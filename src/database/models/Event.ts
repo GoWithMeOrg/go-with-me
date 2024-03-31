@@ -20,7 +20,7 @@ export interface IEvent {
     updatedAt: Date | string;
     location: {
         type: string;
-        coordinates: number[];
+        coordinates: [Number];
     };
 }
 
@@ -46,7 +46,7 @@ const EventSchema = new Schema<IEventDocument>(
         location: {
             type: {
                 type: String,
-                enum: ["Point", "LineString", "Polygon"],
+                enum: ["Point"],
                 required: true,
             },
             coordinates: {

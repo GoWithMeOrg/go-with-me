@@ -8,7 +8,6 @@ import mongooseConnect from "@/database/mongooseConnect";
 import CommentModel, { IComment } from "@/database/models/Comment";
 import TripModel, { ITrip } from "@/database/models/Trip";
 import UserModel from "@/database/models/User";
-import GraphQLJSON from "graphql-type-json";
 
 const resolvers = {
     ISODate: {
@@ -128,12 +127,12 @@ const typeDefs = gql`
 
     type Location {
         type: String
-        coordinates: [Float!]!
+        coordinates: [Float]
     }
 
     input LocationInput {
         type: String
-        coordinates: [Float!]!
+        coordinates: [Float]
     }
 
     type Event {

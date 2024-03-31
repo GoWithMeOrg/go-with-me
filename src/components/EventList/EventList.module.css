@@ -1,5 +1,4 @@
 .component {
-
 }
 
 .item {
@@ -22,4 +21,9 @@
 
 .dates {
     font-size: 0.8em;
+}
+
+.location {
+    display: flex;
+    flex-direction: column;
 }

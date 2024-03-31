@@ -1,6 +1,7 @@
 import React, { forwardRef } from "react";
 
 interface Props {
+    id?: string;
     type: string;
     placeholder: string;
     className?: string;

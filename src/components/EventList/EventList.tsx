@@ -30,7 +30,10 @@ const GET_EVENTS = gql`
             isPrivate
             startDate
             endDate
-            locationName
+            location {
+                type
+                coordinates
+            }
         }
     }
 `;
@@ -47,6 +50,8 @@ const EventList: FC<EventListProps> = () => {
     const router = useRouter();
     const { loading, error, data, refetch } = useQuery(GET_EVENTS);
     const [deleteEventMutation] = useMutation(DELETE_EVENT_MUTATION);
+
+    console.log(data);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error : {error.message}</p>;
@@ -69,7 +74,7 @@ const EventList: FC<EventListProps> = () => {
         <div className={classes.component}>
             <h3>Event List</h3>
             <ul>
-                {data.events.map(({ _id, description, name, startDate, endDate, locationName }: IEvent) => (
+                {data.events.map(({ _id, description, name, startDate, endDate, location }: IEvent) => (
                     <li key={_id} className={classes.item}>
                         <h3>
                             <Link className={classes.edit} href={`/events/${_id}`}>
@@ -79,7 +84,11 @@ const EventList: FC<EventListProps> = () => {
 
                         <div className={classes.item}>{description}</div>
 
-                        <div className={classes.locations}>{locationName}</div>
+                        <div className={classes.location}>
+                            {/* выводим координаты */}
+                            <span>Координаты:</span>
+                            {location.coordinates.flatMap((coord) => coord).join(", ")}
+                        </div>
 
                         <div className={classes.controls}>
                             <Link href={`/events/${_id}/edit`}>Редактировать</Link>

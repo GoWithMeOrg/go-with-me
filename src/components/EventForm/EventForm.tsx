@@ -22,16 +22,19 @@ interface EventFormProps {
 
 const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
     const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
-    const [showPopup, setShowPopup] = useState<boolean>(false);
-    const originRef = useRef<HTMLInputElement>(null);
-    const handleShowMap = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        setShowPopup(true);
-    };
+    //const [showPopup, setShowPopup] = useState<boolean>(false);
 
+    const originRef = useRef<HTMLInputElement>(null);
+    // const handleShowMap = (e: React.MouseEvent<HTMLButtonElement>) => {
+    //     e.preventDefault();
+    //     setShowPopup(true);
+    // };
+
+    console.log(eventData);
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = Object.fromEntries(new FormData(e.currentTarget).entries());
+        //console.log(formData);
         const onSubmitData: Partial<IEvent> = {
             organizer_id: eventData.organizer?._id,
             name: formData.name as string,
@@ -39,9 +42,16 @@ const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
             isPrivate: formData.isPrivate === "on",
             startDate: dayjs(formData.startDate as string).toISOString(),
             endDate: dayjs(formData.endDate as string).toISOString(),
-            locationName: formData.locationName as string,
+            location: {
+                type: "Point",
+                coordinates: [
+                    selectedPlace?.geometry?.location?.lng() ?? 0,
+                    selectedPlace?.geometry?.location?.lat() ?? 0,
+                ],
+            },
         };
         onSubmit(onSubmitData);
+        console.log(onSubmitData.location);
     };
 
     // let newPosition;
@@ -98,14 +108,17 @@ const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                 <label className={classes.label}>
                     <div className={classes.labelFindMap}>
                         <span>location:</span>
-                        <Button className={classes.btnFindMap} onClick={handleShowMap}>
+                        <Button
+                            className={classes.btnFindMap}
+                            //onClick={handleShowMap}
+                        >
                             <label className={classes.labelBtnFindMap}>Find on the Map</label>
                             <MarkerIcon />
                         </Button>
                     </div>
                     <APIProvider apiKey={API_KEY}>
                         <PlaceAutocomplete onPlaceSelect={setSelectedPlace} originRef={originRef}>
-                            <Input type={"text"} placeholder={"Найти ..."} />
+                            <Input id="location" type={"text"} placeholder={"Найти ..."} />
                         </PlaceAutocomplete>
                     </APIProvider>
                 </label>
