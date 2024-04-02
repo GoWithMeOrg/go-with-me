@@ -8,15 +8,6 @@ type TripFormEventsProps = {
     tripID: string;
 };
 
-/**
- * Этот компонент будет сам полчать данные о событиях по ID поездки
- * Также он должен уметь добавлять новые события
- * и удалять существующие
- *
- * @param tripID
- * @constructor
- */
-
 const GET_TRIP_BY_ID = gql`
     query GetTripById($tripId: ID!) {
         trip(id: $tripId) {
@@ -54,7 +45,6 @@ const GET_SEARCH = gql`
             description
             startDate
             endDate
-            locationName
         }
     }
 `;
@@ -110,9 +100,6 @@ const TripFormEvents = ({ tripID }: TripFormEventsProps) => {
                     </li>
                 ))}
             </ul>
-            {/* Список событий в поездке tripID.
-             у каждого события должна быть кнопка удаления
-             */}
 
             <h3>Найти и сохранить событие в поездке</h3>
 
@@ -134,13 +121,6 @@ const TripFormEvents = ({ tripID }: TripFormEventsProps) => {
                     </li>
                 ))}
             </ul>
-
-            {/*  инпут для поиска события
-
-                найденные события отображаются в списке
-                у каждого события должна быть кнопка добавления в поездку tripID
-
-              */}
         </div>
     );
 };

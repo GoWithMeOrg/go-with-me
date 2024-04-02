@@ -1,29 +1,31 @@
 import mongoose, { Schema, Document } from "mongoose";
 import UserModel, { IUser } from "./User";
-import { IEvent } from "@/database/models/Event";
+import { IEvent } from "./Event";
 
 export interface ITrip {
-    name: string;
-    description?: string;
-    isPrivate: boolean;
+    _id: string;
     organizer_id: mongoose.Types.ObjectId | string;
-    events_id?: mongoose.Types.ObjectId[];
+    organizer: IUser;
+    name: string;
+    description: string;
+    isPrivate: boolean;
     startDate?: Date | string;
     endDate?: Date | string;
-}
-
-export interface ITripFromDB extends ITrip {
-    _id: string;
-    createdAt: Date;
-    updatedAt: Date;
-    organizer: IUser;
+    createdAt: Date | string;
+    updatedAt: Date | string;
     events: IEvent[];
+    events_id: mongoose.Types.ObjectId[];
 }
 
-export interface ITripDocument extends ITrip, Document {}
+export interface ITripDocument extends Omit<ITrip, "_id" | "organizer" | "createdAt" | "updatedAt">, Document {}
 
 const TripSchema = new Schema<ITripDocument>(
     {
+        organizer_id: {
+            required: true,
+            type: Schema.Types.ObjectId,
+            ref: UserModel,
+        },
         name: {
             required: true,
             type: String,
@@ -34,17 +36,13 @@ const TripSchema = new Schema<ITripDocument>(
             type: Boolean,
             default: true,
         },
-        organizer_id: {
-            required: true,
-            type: Schema.Types.ObjectId,
-            ref: UserModel,
-        },
         events_id: [
             {
                 type: mongoose.Types.ObjectId,
                 ref: "Event",
             },
         ],
+
         startDate: Date,
         endDate: Date,
     },
@@ -53,6 +51,13 @@ const TripSchema = new Schema<ITripDocument>(
         toJSON: { virtuals: true },
     },
 );
+
+TripSchema.virtual("organizer", {
+    ref: UserModel,
+    localField: "organizer_id",
+    foreignField: "_id",
+    justOne: true,
+});
 
 const TripModel: mongoose.Model<ITripDocument> =
     mongoose.models.Trip || mongoose.model<ITripDocument>("Trip", TripSchema);

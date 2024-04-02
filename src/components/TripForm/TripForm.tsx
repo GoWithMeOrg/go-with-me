@@ -1,14 +1,15 @@
 import { FC, FormEvent } from "react";
 import dayjs from "dayjs";
-
-import type { ITrip, ITripFromDB } from "@/database/models/Trip";
+import type { ITrip } from "@/database/models/Trip";
 import { TripFormEvents } from "@/components/TripForm/TripFormEvents/TripFormEvents";
-
 import classes from "./TripForm.module.css";
 
+export type TripType = Partial<ITrip>;
+
 interface TripFormProps {
-    tripData: ITripFromDB;
-    onSubmit: (eventData: ITrip) => void;
+    tripData: TripType;
+    onSubmit: (event: Partial<ITrip>) => void;
+    ref?: React.RefObject<HTMLFormElement>;
 }
 
 const TripForm: FC<TripFormProps> = ({ tripData, onSubmit }) => {
@@ -16,11 +17,11 @@ const TripForm: FC<TripFormProps> = ({ tripData, onSubmit }) => {
         e.preventDefault();
         const formData = Object.fromEntries(new FormData(e.currentTarget).entries());
         // Convert the form data to the correct types
-        const onSubmitData: ITrip = {
+        const onSubmitData: Partial<ITrip> = {
+            organizer_id: tripData.organizer_id,
             name: formData.name as string,
             description: formData.description as string,
             isPrivate: formData.isPrivate === "on",
-            organizer_id: tripData.organizer._id,
             startDate: dayjs(formData.startDate as string).toISOString(),
             endDate: dayjs(formData.endDate as string).toISOString(),
         };
@@ -74,9 +75,11 @@ const TripForm: FC<TripFormProps> = ({ tripData, onSubmit }) => {
                     Save
                 </button>
             </form>
-            <div className={classes.trips}>
-                <TripFormEvents tripID={tripData._id} />
-            </div>
+            {tripData._id && (
+                <div className={classes.trips}>
+                    <TripFormEvents tripID={tripData._id} />
+                </div>
+            )}
         </div>
     );
 };

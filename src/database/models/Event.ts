@@ -1,12 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
 import UserModel, { IUser } from "./User";
-
-/**
- * TODO:
- * location: Array of Embedded Documents (see below for structure)
- * bannerImage: String (URL or base64 encoded data)
- */
-
 export interface IEvent {
     _id: string;
     organizer_id: mongoose.Types.ObjectId | string;
