@@ -1,4 +1,4 @@
-import { FC, FormEvent, useRef, useState } from "react";
+import { FC, FormEvent, useEffect, useRef, useState } from "react";
 import dayjs from "dayjs";
 import type { IEvent } from "@/database/models/Event";
 import classes from "./EventForm.module.css";
@@ -22,6 +22,7 @@ interface EventFormProps {
 
 const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
     const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
+    const [addressComponents, setAddressComponents] = useState<{ city: string; street: string } | null>(null);
     //const [showPopup, setShowPopup] = useState<boolean>(false);
 
     const originRef = useRef<HTMLInputElement>(null);
@@ -41,7 +42,7 @@ const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
             startDate: dayjs(formData.startDate as string).toISOString(),
             endDate: dayjs(formData.endDate as string).toISOString(),
             location: {
-                type: "Point",
+                type: "Point", //@ts-ignore
                 coordinates: [
                     selectedPlace?.geometry?.location?.lng() ?? 0,
                     selectedPlace?.geometry?.location?.lat() ?? 0,
@@ -52,8 +53,39 @@ const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
             },
         };
         onSubmit(onSubmitData);
-        console.log(onSubmitData.location);
     };
+
+    // useEffect(() => {
+    //     if (selectedPlace && selectedPlace.geometry && selectedPlace.geometry.location) {
+    //         loadScript({
+    //             libraries: ["places"],
+    //         }).then((google) => {
+    //             const geocoder = new google.maps.Geocoder();
+    //             geocoder
+    //                 .geocode({
+    //                     location: {
+    //                         lat: selectedPlace.geometry.location.lat(),
+    //                         lng: selectedPlace.geometry.location.lng(),
+    //                     },
+    //                 })
+    //                 .then((response) => {
+    //                     if (response.results.length > 0) {
+    //                         const addressComponents = response.results[0].address_components;
+    //                         const city = addressComponents.find((component) => component.types.includes("locality"));
+    //                         const street = addressComponents.find((component) => component.types.includes("route"));
+    //                         if (city && street) {
+    //                             setAddressComponents({
+    //                                 city: city.long_name,
+    //                                 street: street.long_name,
+    //                             });
+    //                         }
+    //                     }
+    //                 });
+    //         });
+    //     }
+    // }, [selectedPlace]);
+
+    console.log(selectedPlace);
 
     // let newPosition;
     // if (selectedPlace?.geometry && selectedPlace.geometry.location) {
