@@ -4,3 +4,4 @@ export { MapHandler } from "./MapHandler";
 export { PlaceAutocomplete } from "./PlaceAutocomplete";
 export { CustomMapControl } from "./CustomMapControl";
 export { MarkerWithInfowindow } from "./MarkerWithInfowindow";
+export { Geocoding } from "./Geocoding";

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useMapsLibrary, useMap } from "@vis.gl/react-google-maps";
-import classes from "./PlaceAutocomlete.module.css";
+
 interface Props {
     onPlaceSelect: (place: google.maps.places.PlaceResult | null) => void;
 }

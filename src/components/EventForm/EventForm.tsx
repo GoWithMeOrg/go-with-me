@@ -8,8 +8,9 @@ import MarkerIcon from "../Marker/MarkerIcon";
 import { APIProvider } from "@vis.gl/react-google-maps";
 import { PlaceAutocomplete } from "../GoogleMap/PlaceAutocomplete";
 import { Input } from "../Input";
-import Popup from "../UI-kit/Popup/Popup";
+import Popup from "../Popup/Popup";
 import GoogleMap from "../GoogleMap/GoogleMap";
+import { Geocoding } from "../GoogleMap";
 
 const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string;
 export type EventType = Partial<IEvent>;
@@ -23,13 +24,13 @@ interface EventFormProps {
 const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
     const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
     const [addressComponents, setAddressComponents] = useState<{ city: string; street: string } | null>(null);
-    //const [showPopup, setShowPopup] = useState<boolean>(false);
+    const [showPopup, setShowPopup] = useState<boolean>(false);
 
     const originRef = useRef<HTMLInputElement>(null);
-    // const handleShowMap = (e: React.MouseEvent<HTMLButtonElement>) => {
-    //     e.preventDefault();
-    //     setShowPopup(true);
-    // };
+    const handleShowMap = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        setShowPopup(true);
+    };
     // решить вопрос с типом coordinates
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -54,38 +55,6 @@ const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
         };
         onSubmit(onSubmitData);
     };
-
-    // useEffect(() => {
-    //     if (selectedPlace && selectedPlace.geometry && selectedPlace.geometry.location) {
-    //         loadScript({
-    //             libraries: ["places"],
-    //         }).then((google) => {
-    //             const geocoder = new google.maps.Geocoder();
-    //             geocoder
-    //                 .geocode({
-    //                     location: {
-    //                         lat: selectedPlace.geometry.location.lat(),
-    //                         lng: selectedPlace.geometry.location.lng(),
-    //                     },
-    //                 })
-    //                 .then((response) => {
-    //                     if (response.results.length > 0) {
-    //                         const addressComponents = response.results[0].address_components;
-    //                         const city = addressComponents.find((component) => component.types.includes("locality"));
-    //                         const street = addressComponents.find((component) => component.types.includes("route"));
-    //                         if (city && street) {
-    //                             setAddressComponents({
-    //                                 city: city.long_name,
-    //                                 street: street.long_name,
-    //                             });
-    //                         }
-    //                     }
-    //                 });
-    //         });
-    //     }
-    // }, [selectedPlace]);
-
-    console.log(selectedPlace);
 
     // let newPosition;
     // if (selectedPlace?.geometry && selectedPlace.geometry.location) {
@@ -141,10 +110,7 @@ const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                 <label className={classes.label}>
                     <div className={classes.labelFindMap}>
                         <span>location:</span>
-                        <Button
-                            className={classes.btnFindMap}
-                            //onClick={handleShowMap}
-                        >
+                        <Button className={classes.btnFindMap} onClick={handleShowMap}>
                             <label className={classes.labelBtnFindMap}>Find on the Map</label>
                             <MarkerIcon />
                         </Button>
@@ -153,9 +119,23 @@ const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                         <PlaceAutocomplete onPlaceSelect={setSelectedPlace} originRef={originRef}>
                             <Input id="location" type={"text"} placeholder={"Найти ..."} />
                         </PlaceAutocomplete>
+                        <Geocoding
+                            lng={selectedPlace?.geometry?.location?.lng() ?? 0}
+                            lat={selectedPlace?.geometry?.location?.lat() ?? 0}
+                        />
                     </APIProvider>
-                </label>
+                    <Popup
+                        {...{
+                            showPopup,
+                            setShowPopup,
+                        }}
+                        style={{ backgroundColor: "none", padding: "1rem", borderRadius: "0.5rem", width: "60%" }}
+                    >
+                        <GoogleMap />
 
+                        <button onClick={() => setShowPopup(false)}>закрыть карту</button>
+                    </Popup>
+                </label>
                 <button className={classes.button} type="submit">
                     Save
                 </button>
