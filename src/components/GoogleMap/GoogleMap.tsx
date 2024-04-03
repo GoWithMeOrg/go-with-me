@@ -10,6 +10,7 @@ import {
 import { CustomMapControl } from "./CustomMapControl";
 import MapHandler from "./MapHandler";
 import Autocomplete from "./Autocomplete";
+import Geolocation from "./Geolocation";
 import { Input } from "../Input";
 export const GoogleMap = () => {
     const apiIsLoaded = useApiIsLoaded();
@@ -47,6 +48,7 @@ export const GoogleMap = () => {
                 <Autocomplete onPlaceSelect={setSelectedPlace} originRef={originRef}>
                     <Input type={"text"} placeholder={"Найти ..."} />
                 </Autocomplete>
+                <Geolocation />
             </CustomMapControl>
             <MapHandler place={selectedPlace} />
         </>
