@@ -1,18 +1,15 @@
-import { FC, FormEvent, useEffect, useRef, useState } from "react";
+import { FC, FormEvent, useRef, useState } from "react";
 import dayjs from "dayjs";
 import type { IEvent } from "@/database/models/Event";
 import classes from "./EventForm.module.css";
 
 import { Button } from "../Button";
 import MarkerIcon from "../Marker/MarkerIcon";
-import { APIProvider } from "@vis.gl/react-google-maps";
-import { PlaceAutocomplete } from "../GoogleMap/PlaceAutocomplete";
+import Autocomplete from "../GoogleMap/Autocomplete";
 import { Input } from "../Input";
 import Popup from "../Popup/Popup";
 import GoogleMap from "../GoogleMap/GoogleMap";
-import { Geocoding } from "../GoogleMap";
 
-const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string;
 export type EventType = Partial<IEvent>;
 
 interface EventFormProps {
@@ -23,7 +20,6 @@ interface EventFormProps {
 
 const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
     const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
-    const [addressComponents, setAddressComponents] = useState<{ city: string; street: string } | null>(null);
     const [showPopup, setShowPopup] = useState<boolean>(false);
 
     const originRef = useRef<HTMLInputElement>(null);
@@ -43,7 +39,7 @@ const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
             startDate: dayjs(formData.startDate as string).toISOString(),
             endDate: dayjs(formData.endDate as string).toISOString(),
             location: {
-                type: "Point", //@ts-ignore
+                type: "Point",
                 coordinates: [
                     selectedPlace?.geometry?.location?.lng() ?? 0,
                     selectedPlace?.geometry?.location?.lat() ?? 0,
@@ -115,11 +111,9 @@ const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                             <MarkerIcon />
                         </Button>
                     </div>
-                    <APIProvider apiKey={API_KEY}>
-                        <PlaceAutocomplete onPlaceSelect={setSelectedPlace} originRef={originRef}>
-                            <Input id="location" type={"text"} placeholder={"Найти ..."} />
-                        </PlaceAutocomplete>
-                    </APIProvider>
+                    <Autocomplete onPlaceSelect={setSelectedPlace} originRef={originRef}>
+                        <Input id="location" type={"text"} placeholder={"Найти ..."} />
+                    </Autocomplete>
                     <Popup
                         {...{
                             showPopup,

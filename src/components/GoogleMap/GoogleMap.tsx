@@ -9,7 +9,7 @@ import {
 } from "@vis.gl/react-google-maps";
 import { CustomMapControl } from "./CustomMapControl";
 import MapHandler from "./MapHandler";
-import { PlaceAutocomplete } from "./PlaceAutocomplete";
+import Autocomplete from "./Autocomplete";
 import { Input } from "../Input";
 export const GoogleMap = () => {
     const apiIsLoaded = useApiIsLoaded();
@@ -44,9 +44,9 @@ export const GoogleMap = () => {
                 </AdvancedMarker>
             </Map>
             <CustomMapControl controlPosition={ControlPosition.TOP}>
-                <PlaceAutocomplete onPlaceSelect={setSelectedPlace} originRef={originRef}>
+                <Autocomplete onPlaceSelect={setSelectedPlace} originRef={originRef}>
                     <Input type={"text"} placeholder={"Найти ..."} />
-                </PlaceAutocomplete>
+                </Autocomplete>
             </CustomMapControl>
             <MapHandler place={selectedPlace} />
         </>

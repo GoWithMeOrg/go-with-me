@@ -51,7 +51,7 @@ const DELETE_EVENT_MUTATION = gql`
 `;
 
 const EventList: FC<EventListProps> = () => {
-    const router = useRouter();
+    //const router = useRouter();
     const { loading, error, data, refetch } = useQuery(GET_EVENTS);
     const [deleteEventMutation] = useMutation(DELETE_EVENT_MUTATION);
 
@@ -65,7 +65,7 @@ const EventList: FC<EventListProps> = () => {
             });
 
             // Обновляем страницу после успешного удаления
-            router.refresh();
+            //router.refresh();
             await refetch();
         } catch (error) {
             console.error("Error deleting event: ", error);
@@ -90,11 +90,7 @@ const EventList: FC<EventListProps> = () => {
                             <span>Адрес:</span>
                             {/* {location.coordinates.flatMap((coord) => coord).join(", ")} */}
                             {/* {location?.properties?.address} */}
-                            <Geocoding
-                                // lng={location.coordinates.map((coord) => coord)[0] as number}
-                                // lat={location.coordinates.map((coord) => coord)[1] as number}
-                                coordinates={location.coordinates}
-                            />
+                            <Geocoding coordinates={location.coordinates} />
                         </div>
 
                         <div className={classes.controls}>

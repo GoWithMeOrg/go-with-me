@@ -7,7 +7,7 @@ interface Props {
     children?: React.ReactNode;
     originRef?: React.RefObject<HTMLInputElement> | null;
 }
-export const PlaceAutocomplete = ({ children, onPlaceSelect, originRef }: Props) => {
+export const Autocomplete = ({ children, onPlaceSelect, originRef }: Props) => {
     const [placeAutocomplete, setPlaceAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
     const places = useMapsLibrary("places");
 
@@ -27,21 +27,6 @@ export const PlaceAutocomplete = ({ children, onPlaceSelect, originRef }: Props)
         placeAutocomplete.addListener("place_changed", () => {
             const place = placeAutocomplete.getPlace();
             onPlaceSelect(place);
-            // const coordinates = {
-            //     type: "Point",
-            //     coordinates: [place?.geometry?.location?.lng(), place?.geometry?.location?.lat()],
-            // };
-
-            // const geojsonPoint = {
-            //     type: "Point",
-            //     coordinates,
-            //     properties: {
-            //         name: place?.name,
-            //         address: place?.formatted_address,
-            //     },
-            // };
-
-            //console.log(coordinates);
         });
     }, [onPlaceSelect, placeAutocomplete]);
 
@@ -52,3 +37,5 @@ export const PlaceAutocomplete = ({ children, onPlaceSelect, originRef }: Props)
         return child;
     });
 };
+
+export default Autocomplete;

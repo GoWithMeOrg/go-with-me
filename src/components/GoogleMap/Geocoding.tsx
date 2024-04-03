@@ -2,13 +2,13 @@ import { useApiIsLoaded, useMapsLibrary } from "@vis.gl/react-google-maps";
 import React, { useEffect, useState } from "react";
 
 interface Props {
-    coordinates: [Number];
+    coordinates: [number, number];
 }
 
 export const Geocoding = ({ coordinates }: Props) => {
     const apiIsLoaded = useApiIsLoaded();
-    const lng = coordinates.flatMap((coord) => coord)[0] as number;
-    const lat = coordinates.flatMap((coord) => coord)[1] as number;
+    const lng = coordinates[0];
+    const lat = coordinates[1];
     const [city, setCity] = useState<string>("");
     const [street, setStreet] = useState<string>("");
     const [houseNumber, setHouseNumber] = useState<string>("");

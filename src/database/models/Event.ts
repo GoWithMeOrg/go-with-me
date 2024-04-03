@@ -13,7 +13,7 @@ export interface IEvent {
     updatedAt: Date | string;
     location: {
         type: string;
-        coordinates: [Number];
+        coordinates: [number, number];
         properties: {
             address: string;
         };
