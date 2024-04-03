@@ -9,6 +9,7 @@ import { formatDate } from "@/utils/formatDate";
 import type { IEvent } from "@/database/models/Event";
 
 import classes from "./EventList.module.css";
+import { Geocoding } from "../GoogleMap";
 
 type EventListProps = {
     events?: IEvent[];
@@ -88,7 +89,12 @@ const EventList: FC<EventListProps> = () => {
                         <div className={classes.location}>
                             <span>Адрес:</span>
                             {/* {location.coordinates.flatMap((coord) => coord).join(", ")} */}
-                            {location?.properties?.address}
+                            {/* {location?.properties?.address} */}
+                            <Geocoding
+                                // lng={location.coordinates.map((coord) => coord)[0] as number}
+                                // lat={location.coordinates.map((coord) => coord)[1] as number}
+                                coordinates={location.coordinates}
+                            />
                         </div>
 
                         <div className={classes.controls}>

@@ -119,10 +119,6 @@ const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                         <PlaceAutocomplete onPlaceSelect={setSelectedPlace} originRef={originRef}>
                             <Input id="location" type={"text"} placeholder={"Найти ..."} />
                         </PlaceAutocomplete>
-                        <Geocoding
-                            lng={selectedPlace?.geometry?.location?.lng() ?? 0}
-                            lat={selectedPlace?.geometry?.location?.lat() ?? 0}
-                        />
                     </APIProvider>
                     <Popup
                         {...{

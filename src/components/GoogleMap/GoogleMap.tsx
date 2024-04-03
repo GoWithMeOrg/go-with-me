@@ -1,15 +1,25 @@
-import React, { useRef, useState } from "react";
-import { APIProvider, AdvancedMarker, ControlPosition, Map, Pin } from "@vis.gl/react-google-maps";
+import React, { useContext, useRef, useState } from "react";
+import {
+    APIProviderContext,
+    AdvancedMarker,
+    ControlPosition,
+    Map,
+    Pin,
+    useApiIsLoaded,
+} from "@vis.gl/react-google-maps";
 import { CustomMapControl } from "./CustomMapControl";
 import MapHandler from "./MapHandler";
 import { PlaceAutocomplete } from "./PlaceAutocomplete";
 import { Input } from "../Input";
-
-const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string;
-
 export const GoogleMap = () => {
+    const apiIsLoaded = useApiIsLoaded();
+    const ctx = useContext(APIProviderContext);
     const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
     const originRef = useRef<HTMLInputElement>(null);
+
+    if (!apiIsLoaded || !ctx) {
+        return;
+    }
 
     let newPosition;
     if (selectedPlace?.geometry && selectedPlace.geometry.location) {
@@ -20,7 +30,7 @@ export const GoogleMap = () => {
     }
 
     return (
-        <APIProvider apiKey={API_KEY}>
+        <>
             <Map
                 style={{ height: "600px" }}
                 defaultZoom={3}
@@ -39,7 +49,7 @@ export const GoogleMap = () => {
                 </PlaceAutocomplete>
             </CustomMapControl>
             <MapHandler place={selectedPlace} />
-        </APIProvider>
+        </>
     );
 };
 

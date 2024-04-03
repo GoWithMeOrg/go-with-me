@@ -21,7 +21,6 @@ export const Directions = ({ onPlaceSelect }: Props) => {
     const selected = routes[routeIndex];
     const leg = selected?.legs[0];
 
-    // Initialize directions service and renderer
     useEffect(() => {
         if (!places || !originRef.current || !destinationRef.current) return;
         const options = {
