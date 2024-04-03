@@ -4,11 +4,11 @@ import { FC } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useQuery, gql, useMutation } from "@apollo/client";
-
 import { formatDate } from "@/utils/formatDate";
-import { ITripFromDB } from "@/database/models/Trip";
 
 import classes from "../TripList/TripList.module.css";
+import { IEvent } from "@/database/models/Event";
+import { ITrip } from "@/database/models/Trip";
 
 const GET_TRIPS = gql`
     query GetTrips {
@@ -67,56 +67,54 @@ const TripList: FC = () => {
             <h3>Trip List</h3>
 
             <ul>
-                {tripData.trips.map(
-                    ({ _id, description, name, startDate, endDate, organizer, events }: ITripFromDB) => (
-                        <li key={_id} className={classes.item}>
-                            <h3>
-                                <Link className={classes.edit} href={`/trips/${_id}`}>
-                                    {name}
-                                </Link>
-                            </h3>
+                {tripData.trips.map(({ _id, description, name, startDate, endDate, organizer, events }: ITrip) => (
+                    <li key={_id} className={classes.item}>
+                        <h3>
+                            <Link className={classes.edit} href={`/trips/${_id}`}>
+                                {name}
+                            </Link>
+                        </h3>
 
-                            <div className={classes.organizer}>{organizer.name}</div>
+                        <div className={classes.organizer}>{organizer.name}</div>
 
-                            <div className={classes.description}>{description}</div>
+                        <div className={classes.description}>{description}</div>
 
-                            <div className={classes.dates}>
-                                {startDate && (
-                                    <div>
-                                        Start Date:
-                                        {formatDate(startDate, "dd LLLL yyyy")}
-                                    </div>
-                                )}
-                                {endDate && (
-                                    <div>
-                                        endDate:
-                                        {formatDate(endDate, "dd LLLL yyyy")}
-                                    </div>
-                                )}
-                            </div>
+                        <div className={classes.dates}>
+                            {startDate && (
+                                <div>
+                                    Start Date:
+                                    {formatDate(startDate, "dd LLLL yyyy")}
+                                </div>
+                            )}
+                            {endDate && (
+                                <div>
+                                    endDate:
+                                    {formatDate(endDate, "dd LLLL yyyy")}
+                                </div>
+                            )}
+                        </div>
 
-                            <ul>
-                                {events.map((event) => (
-                                    <li key={event._id}>
-                                        <Link href={`/events/${event._id}`}>{event.name}</Link>
-                                    </li>
-                                ))}
-                            </ul>
+                        <ul>
+                            {events.map((event: IEvent) => (
+                                <li key={event._id}>
+                                    <Link href={`/events/${event._id}`}>{event.name}</Link>
+                                </li>
+                            ))}
+                        </ul>
 
-                            <div className={classes.controls}>
-                                <Link href={`/trips/${_id}/edit`}>Редактировать</Link>
-                                <button
-                                    className={classes.delete}
-                                    onClick={() => {
-                                        confirm("Delete?") ? handleDelete(_id) : null;
-                                    }}
-                                >
-                                    Удалить
-                                </button>
-                            </div>
-                        </li>
-                    ),
-                )}
+                        <div className={classes.controls}>
+                            <Link href={`/trips/${_id}/edit`}>Редактировать</Link>
+                            <button
+                                className={classes.delete}
+                                onClick={() => {
+                                    confirm("Delete?") ? handleDelete(_id) : null;
+                                }}
+                            >
+                                Удалить
+                            </button>
+                        </div>
+                    </li>
+                ))}
             </ul>
         </div>
     );
