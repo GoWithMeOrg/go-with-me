@@ -169,6 +169,12 @@ const typeDefs = gql`
         endDate: ISODate
     }
 
+    input EventsInput {
+        id: ID!
+        name: String
+        description: String
+    }
+
     input TripInput {
         organizer_id: ID!
         name: String
@@ -177,6 +183,7 @@ const typeDefs = gql`
         endDate: ISODate
         isPrivate: Boolean
         events_id: [ID]
+        events: [EventsInput]
     }
 
     type Comment {

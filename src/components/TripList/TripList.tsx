@@ -7,7 +7,6 @@ import { useQuery, gql, useMutation } from "@apollo/client";
 import { formatDate } from "@/utils/formatDate";
 
 import classes from "../TripList/TripList.module.css";
-import { IEvent } from "@/database/models/Event";
 import { ITrip } from "@/database/models/Trip";
 
 const GET_TRIPS = gql`
@@ -95,7 +94,7 @@ const TripList: FC = () => {
                         </div>
 
                         <ul>
-                            {events.map((event: IEvent) => (
+                            {events.map((event) => (
                                 <li key={event._id}>
                                     <Link href={`/events/${event._id}`}>{event.name}</Link>
                                 </li>

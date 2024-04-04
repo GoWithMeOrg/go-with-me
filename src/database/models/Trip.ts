@@ -13,8 +13,8 @@ export interface ITrip {
     endDate?: Date | string;
     createdAt: Date | string;
     updatedAt: Date | string;
-    events: IEvent[];
     events_id: mongoose.Types.ObjectId[];
+    events: IEvent[];
 }
 
 export interface ITripDocument extends Omit<ITrip, "_id" | "organizer" | "createdAt" | "updatedAt">, Document {}
@@ -38,7 +38,7 @@ const TripSchema = new Schema<ITripDocument>(
         },
         events_id: [
             {
-                type: mongoose.Types.ObjectId,
+                type: mongoose.Types.ObjectId as any,
                 ref: "Event",
             },
         ],

@@ -18,7 +18,7 @@ interface EventFormProps {
     ref?: React.RefObject<HTMLFormElement>;
 }
 
-const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
+export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
     const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
     const [showPopup, setShowPopup] = useState<boolean>(false);
 
@@ -27,7 +27,7 @@ const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
         e.preventDefault();
         setShowPopup(true);
     };
-    // решить вопрос с типом coordinates
+
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = Object.fromEntries(new FormData(e.currentTarget).entries());
@@ -51,14 +51,6 @@ const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
         };
         onSubmit(onSubmitData);
     };
-
-    // let newPosition;
-    // if (selectedPlace?.geometry && selectedPlace.geometry.location) {
-    //     newPosition = {
-    //         lat: selectedPlace.geometry.location.lat(),
-    //         lng: selectedPlace.geometry.location.lng(),
-    //     };
-    // }
 
     return (
         <div className={classes.container}>
@@ -134,4 +126,4 @@ const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
     );
 };
 
-export { EventForm };
+export default EventForm;

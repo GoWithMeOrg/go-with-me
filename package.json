@@ -20,7 +20,7 @@
         "node": "20"
     },
     "dependencies": {
-        "@apollo/client": "^3.8.9",
+        "@apollo/client": "^3.9.10",
         "@apollo/server": "^4.10.0",
         "@as-integrations/next": "^3.0.0",
         "@auth/mongodb-adapter": "^2.0.12",
@@ -35,7 +35,6 @@
         "luxon": "^3.4.4",
         "mongodb": "^6.3.0",
         "mongoose": "^8.0.4",
-        "mongoose-geojson-schema": "^2.2.5",
         "next": "^14.0.4",
         "next-auth": "^4.24.5",
         "react": "^18.2.0",
