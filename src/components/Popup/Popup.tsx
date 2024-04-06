@@ -1,5 +1,5 @@
 import { createPortal } from "react-dom";
-import { Dispatch, FC, SetStateAction, useCallback, useEffect, useRef, useState } from "react";
+import { Dispatch, FC, SetStateAction, useEffect, useRef, useState } from "react";
 
 import styles from "./Popup.module.css";
 
@@ -15,7 +15,6 @@ const Popup: FC<PopupProps> = ({ showPopup, setShowPopup, wrapperProps, containe
     const refPopup = useRef<HTMLDivElement>(null);
 
     const eventListener = (event: MouseEvent) => {
-        console.log("click");
         if (!refPopup.current?.contains(event.target as Node)) setShowPopup(false);
     };
 

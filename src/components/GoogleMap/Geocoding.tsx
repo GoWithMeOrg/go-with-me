@@ -7,15 +7,14 @@ interface Props {
 
 export const Geocoding = ({ coordinates }: Props) => {
     const apiIsLoaded = useApiIsLoaded();
-    const lng = coordinates[0];
-    const lat = coordinates[1];
+    const [lng, lat] = coordinates;
     const [city, setCity] = useState<string>("");
     const [street, setStreet] = useState<string>("");
     const [houseNumber, setHouseNumber] = useState<string>("");
     const geocodind = useMapsLibrary("geocoding");
 
     useEffect(() => {
-        if (!apiIsLoaded || !geocodind) return;
+        if (!apiIsLoaded || !geocodind || !coordinates) return;
         const geocoder = new geocodind.Geocoder();
         geocoder.geocode({ location: { lng, lat } }, (results, status) => {
             if (status === "OK" && results !== null) {
@@ -24,7 +23,7 @@ export const Geocoding = ({ coordinates }: Props) => {
                 setHouseNumber(results[0].address_components[0].long_name);
             }
         });
-    }, [apiIsLoaded, geocodind, lat, lng]);
+    }, [apiIsLoaded, coordinates, geocodind, lat, lng]);
 
     return (
         <div>

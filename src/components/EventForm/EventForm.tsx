@@ -9,6 +9,7 @@ import Autocomplete from "../GoogleMap/Autocomplete";
 import { Input } from "../Input";
 import Popup from "../Popup/Popup";
 import GoogleMap from "../GoogleMap/GoogleMap";
+import { Geolocation } from "../GoogleMap";
 
 export type EventType = Partial<IEvent>;
 
@@ -114,8 +115,10 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                         style={{ backgroundColor: "none", padding: "1rem", borderRadius: "0.5rem", width: "60%" }}
                     >
                         <GoogleMap />
-
-                        <button onClick={() => setShowPopup(false)}>закрыть карту</button>
+                        <div className={classes.buttonBlockMap}>
+                            <Geolocation />
+                            <button onClick={() => setShowPopup(false)}>закрыть карту</button>
+                        </div>
                     </Popup>
                 </label>
                 <button className={classes.button} type="submit">

@@ -24,9 +24,14 @@ export const Autocomplete = ({ children, onPlaceSelect, originRef }: Props) => {
     useEffect(() => {
         if (!placeAutocomplete) return;
 
-        placeAutocomplete.addListener("place_changed", () => {
+        const placeChangedListener = placeAutocomplete.addListener("place_changed", () => {
             const place = placeAutocomplete.getPlace();
             onPlaceSelect(place);
+
+            return () => {
+                placeChangedListener.remove();
+                setPlaceAutocomplete(null);
+            };
         });
     }, [onPlaceSelect, placeAutocomplete]);
 

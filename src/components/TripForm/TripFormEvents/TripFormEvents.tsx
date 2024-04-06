@@ -22,16 +22,6 @@ const GET_TRIP_BY_ID = gql`
     }
 `;
 
-const GET_EVENTS = gql`
-    query GetEvents {
-        events {
-            _id
-            name
-            description
-        }
-    }
-`;
-
 const UPDATE_TRIP = gql`
     mutation UpdateTrip($id: ID!, $trip: TripInput) {
         updateTrip(id: $id, trip: $trip) {
@@ -63,7 +53,6 @@ const GET_SEARCH = gql`
 const TripFormEvents = ({ tripID }: TripFormEventsProps) => {
     // Получить данные о событиях по ID поездки tripID
     const { data: tripData, refetch } = useQuery(GET_TRIP_BY_ID, { variables: { tripId: tripID } });
-    const { data: eventsData } = useQuery(GET_EVENTS);
     const [updateTrip] = useMutation(UPDATE_TRIP);
 
     //console.log(eventsData);
@@ -123,10 +112,9 @@ const TripFormEvents = ({ tripID }: TripFormEventsProps) => {
 
             <input
                 className="search"
-                placeholder="search"
+                placeholder="search event"
                 value={text}
                 onChange={(e) => setText(e.target.value)}
-                //placeholder="Введите поисковый запрос..."
             />
 
             <ul>

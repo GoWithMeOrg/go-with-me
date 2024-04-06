@@ -12,16 +12,13 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-    const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string;
     return (
         <html lang="en">
             <body className={inter.className}>
                 <ApolloWrapper>
                     <NextAuthProvider>
-                        <APIProviderGoogleMaps>
-                            <Menu />
-                            {children}
-                        </APIProviderGoogleMaps>
+                        <Menu />
+                        <APIProviderGoogleMaps>{children}</APIProviderGoogleMaps>
                     </NextAuthProvider>
                 </ApolloWrapper>
             </body>

@@ -18,7 +18,7 @@ const TripForm: FC<TripFormProps> = ({ tripData, onSubmit }) => {
         const formData = Object.fromEntries(new FormData(e.currentTarget).entries());
         // Convert the form data to the correct types
         const onSubmitData: Partial<ITrip> = {
-            organizer_id: tripData.organizer_id,
+            organizer_id: tripData.organizer?._id,
             name: formData.name as string,
             description: formData.description as string,
             isPrivate: formData.isPrivate === "on",

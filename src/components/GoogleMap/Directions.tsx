@@ -43,9 +43,10 @@ export const Directions = ({ onPlaceSelect }: Props) => {
 
         let originValue = originRef.current;
         let destinationValue = destinationRef.current;
+        let originListener: google.maps.MapsEventListener | null = null;
 
         if (originPlace && destinationValue) {
-            originPlace.addListener("place_changed", () => {
+            originListener = originPlace.addListener("place_changed", () => {
                 onPlaceSelect(originPlace.getPlace());
             });
             destinationValue.addEventListener("change", onChangeHandler);
@@ -73,7 +74,17 @@ export const Directions = ({ onPlaceSelect }: Props) => {
                 .catch((e) => console.log("Directions request failed due to "));
         }
 
-        return () => directionsRenderer.setMap(null);
+        return () => {
+            if (originListener) {
+                originListener.remove();
+                setOriginPlace(null);
+            }
+
+            if (destinationValue) {
+                destinationValue.removeEventListener("change", onChangeHandler);
+            }
+            directionsRenderer.setMap(null);
+        };
     }, [onPlaceSelect, originPlace, destinationPlace, directionsService, directionsRenderer]);
 
     useEffect(() => {

@@ -10,12 +10,13 @@ import {
 import { CustomMapControl } from "./CustomMapControl";
 import MapHandler from "./MapHandler";
 import Autocomplete from "./Autocomplete";
-import Geolocation from "./Geolocation";
 import { Input } from "../Input";
 export const GoogleMap = () => {
     const apiIsLoaded = useApiIsLoaded();
     const ctx = useContext(APIProviderContext);
     const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
+    const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(null);
+
     const originRef = useRef<HTMLInputElement>(null);
 
     if (!apiIsLoaded || !ctx) {
@@ -23,6 +24,7 @@ export const GoogleMap = () => {
     }
 
     let newPosition;
+
     if (selectedPlace?.geometry && selectedPlace.geometry.location) {
         newPosition = {
             lat: selectedPlace.geometry.location.lat(),
@@ -39,8 +41,17 @@ export const GoogleMap = () => {
                 gestureHandling={"greedy"}
                 disableDefaultUI={false}
                 mapId={"<Your custom MapId here>"}
+                onClick={(e) => {
+                    setMarkerPosition(e.detail.latLng);
+                }}
             >
-                <AdvancedMarker position={newPosition} title={"AdvancedMarker with customized pin."}>
+                {/* {markerPosition && <AdvancedMarker position={markerPosition} />} */}
+                <AdvancedMarker
+                    position={newPosition || markerPosition}
+                    //draggable={true}
+                    title={"AdvancedMarker with customized pin."}
+                    // добавть установку маркера при помощи клика на карте
+                >
                     <Pin background={"#FBBC04"} borderColor={"#1e89a1"} glyphColor={"#0f677a"}></Pin>
                 </AdvancedMarker>
             </Map>
@@ -48,7 +59,6 @@ export const GoogleMap = () => {
                 <Autocomplete onPlaceSelect={setSelectedPlace} originRef={originRef}>
                     <Input type={"text"} placeholder={"Найти ..."} />
                 </Autocomplete>
-                <Geolocation />
             </CustomMapControl>
             <MapHandler place={selectedPlace} />
         </>
