@@ -16,21 +16,21 @@ export const GoogleMap = () => {
     const ctx = useContext(APIProviderContext);
     const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
     const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(null);
-
     const originRef = useRef<HTMLInputElement>(null);
 
     if (!apiIsLoaded || !ctx) {
         return;
     }
 
-    let newPosition;
+    // let newPosition;
+    // if (selectedPlace?.geometry && selectedPlace.geometry.location) {
+    //     newPosition = {
+    //         lat: selectedPlace.geometry.location.lat(),
+    //         lng: selectedPlace.geometry.location.lng(),
+    //     };
+    // }
 
-    if (selectedPlace?.geometry && selectedPlace.geometry.location) {
-        newPosition = {
-            lat: selectedPlace.geometry.location.lat(),
-            lng: selectedPlace.geometry.location.lng(),
-        };
-    }
+    console.log(markerPosition);
 
     return (
         <>
@@ -47,10 +47,9 @@ export const GoogleMap = () => {
             >
                 {/* {markerPosition && <AdvancedMarker position={markerPosition} />} */}
                 <AdvancedMarker
-                    position={newPosition || markerPosition}
-                    //draggable={true}
+                    position={markerPosition}
+                    // draggable={true}
                     title={"AdvancedMarker with customized pin."}
-                    // добавть установку маркера при помощи клика на карте
                 >
                     <Pin background={"#FBBC04"} borderColor={"#1e89a1"} glyphColor={"#0f677a"}></Pin>
                 </AdvancedMarker>
