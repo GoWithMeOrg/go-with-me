@@ -11,11 +11,11 @@ export const Geocoding = ({ coordinates }: Props) => {
     const [city, setCity] = useState<string>("");
     const [street, setStreet] = useState<string>("");
     const [houseNumber, setHouseNumber] = useState<string>("");
-    const geocodind = useMapsLibrary("geocoding");
+    const geocoding = useMapsLibrary("geocoding");
 
     useEffect(() => {
-        if (!apiIsLoaded || !geocodind || !coordinates) return;
-        const geocoder = new geocodind.Geocoder();
+        if (!apiIsLoaded || !geocoding || !coordinates) return;
+        const geocoder = new geocoding.Geocoder();
         geocoder.geocode({ location: { lng, lat } }, (results, status) => {
             if (status === "OK" && results !== null) {
                 setCity(results[0].address_components[2].long_name);
@@ -23,7 +23,7 @@ export const Geocoding = ({ coordinates }: Props) => {
                 setHouseNumber(results[0].address_components[0].long_name);
             }
         });
-    }, [apiIsLoaded, coordinates, geocodind, lat, lng]);
+    }, [apiIsLoaded, coordinates, geocoding, lat, lng]);
 
     return (
         <div>

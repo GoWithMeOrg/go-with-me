@@ -8,7 +8,6 @@ import MarkerIcon from "../Marker/MarkerIcon";
 import Autocomplete from "../GoogleMap/Autocomplete";
 import { Input } from "../Input";
 import Popup from "../Popup/Popup";
-import GoogleMap from "../GoogleMap/GoogleMap";
 import { CustomMapControl, Geolocation, MapHandler } from "../GoogleMap";
 import {
     Map,
@@ -32,12 +31,12 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
     const [showPopup, setShowPopup] = useState<boolean>(false);
 
     const apiIsLoaded = useApiIsLoaded();
-    const ctx = useContext(APIProviderContext);
+    const mapAPI = useContext(APIProviderContext);
 
     const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(null);
     const originRef = useRef<HTMLInputElement>(null);
 
-    if (!apiIsLoaded || !ctx) {
+    if (!apiIsLoaded || !mapAPI) {
         return;
     }
 
