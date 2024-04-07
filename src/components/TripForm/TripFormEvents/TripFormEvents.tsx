@@ -8,15 +8,6 @@ type TripFormEventsProps = {
     tripID: string;
 };
 
-/**
- * Этот компонент будет сам полчать данные о событиях по ID поездки
- * Также он должен уметь добавлять новые события
- * и удалять существующие
- *
- * @param tripID
- * @constructor
- */
-
 const GET_TRIP_BY_ID = gql`
     query GetTripById($tripId: ID!) {
         trip(id: $tripId) {
@@ -41,6 +32,7 @@ const UPDATE_TRIP = gql`
             description
             startDate
             endDate
+            events_id
         }
     }
 `;
@@ -54,7 +46,6 @@ const GET_SEARCH = gql`
             description
             startDate
             endDate
-            locationName
         }
     }
 `;
@@ -64,22 +55,25 @@ const TripFormEvents = ({ tripID }: TripFormEventsProps) => {
     const { data: tripData, refetch } = useQuery(GET_TRIP_BY_ID, { variables: { tripId: tripID } });
     const [updateTrip] = useMutation(UPDATE_TRIP);
 
+    //console.log(eventsData);
     //Найти события по тексту
     const [text, setText] = useState("");
     const { data: searchData } = useQuery(GET_SEARCH, {
         variables: { text },
     });
-
-    // Обработчик добавления найденного события в поездку
+    //Обработчик добавления найденного события в поездку
     const handleAddEvent = async (eventId: string) => {
         await refetch();
-        const eventsIdDB = tripData?.trip?.events_id || [];
-        const updatedEventsIdDB = new Set(eventsIdDB);
+        const eventsIdDB: string[] = tripData?.trip?.events_id || [];
+        const updatedEventsIdDB: Set<string> = new Set(eventsIdDB);
         updatedEventsIdDB.add(eventId);
         await updateTrip({
             variables: {
                 id: tripID,
-                trip: { events_id: Array.from(updatedEventsIdDB), organizer_id: tripData?.trip.organizer_id },
+                trip: {
+                    events_id: Array.from(updatedEventsIdDB),
+                    organizer_id: tripData?.trip.organizer_id,
+                },
             },
         });
         await refetch();
@@ -88,12 +82,15 @@ const TripFormEvents = ({ tripID }: TripFormEventsProps) => {
     // Обработчик удаления события из поездки
     const handleDelEvent = async (eventId: string, e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        const eventsIdDB = tripData?.trip?.events_id || [];
-        let updatedEventsIdDB = eventsIdDB?.filter((id: string) => id !== eventId);
+        const eventsIdDB: string[] = tripData?.trip?.events_id || [];
+        let updatedEventsIdDB: string[] = eventsIdDB?.filter((id: string) => id !== eventId);
         await updateTrip({
             variables: {
                 id: tripID,
-                trip: { events_id: updatedEventsIdDB, organizer_id: tripData?.trip.organizer_id },
+                trip: {
+                    events_id: updatedEventsIdDB,
+                    organizer_id: tripData?.trip.organizer_id,
+                },
             },
         });
         await refetch();
@@ -110,18 +107,14 @@ const TripFormEvents = ({ tripID }: TripFormEventsProps) => {
                     </li>
                 ))}
             </ul>
-            {/* Список событий в поездке tripID.
-             у каждого события должна быть кнопка удаления
-             */}
 
             <h3>Найти и сохранить событие в поездке</h3>
 
             <input
                 className="search"
-                placeholder="search"
+                placeholder="search event"
                 value={text}
                 onChange={(e) => setText(e.target.value)}
-                //placeholder="Введите поисковый запрос..."
             />
 
             <ul>
@@ -134,13 +127,6 @@ const TripFormEvents = ({ tripID }: TripFormEventsProps) => {
                     </li>
                 ))}
             </ul>
-
-            {/*  инпут для поиска события
-
-                найденные события отображаются в списке
-                у каждого события должна быть кнопка добавления в поездку tripID
-
-              */}
         </div>
     );
 };

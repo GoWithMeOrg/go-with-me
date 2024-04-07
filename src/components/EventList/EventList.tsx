@@ -9,6 +9,7 @@ import { formatDate } from "@/utils/formatDate";
 import type { IEvent } from "@/database/models/Event";
 
 import classes from "./EventList.module.css";
+import { Geocoding } from "../GoogleMap";
 
 type EventListProps = {
     events?: IEvent[];
@@ -30,7 +31,13 @@ const GET_EVENTS = gql`
             isPrivate
             startDate
             endDate
-            locationName
+            location {
+                type
+                coordinates
+                properties {
+                    address
+                }
+            }
         }
     }
 `;
@@ -44,7 +51,7 @@ const DELETE_EVENT_MUTATION = gql`
 `;
 
 const EventList: FC<EventListProps> = () => {
-    const router = useRouter();
+    //const router = useRouter();
     const { loading, error, data, refetch } = useQuery(GET_EVENTS);
     const [deleteEventMutation] = useMutation(DELETE_EVENT_MUTATION);
 
@@ -58,7 +65,7 @@ const EventList: FC<EventListProps> = () => {
             });
 
             // Обновляем страницу после успешного удаления
-            router.refresh();
+            //router.refresh();
             await refetch();
         } catch (error) {
             console.error("Error deleting event: ", error);
@@ -69,7 +76,7 @@ const EventList: FC<EventListProps> = () => {
         <div className={classes.component}>
             <h3>Event List</h3>
             <ul>
-                {data.events.map(({ _id, description, name, startDate, endDate, locationName }: IEvent) => (
+                {data.events.map(({ _id, description, name, startDate, endDate, location }: IEvent) => (
                     <li key={_id} className={classes.item}>
                         <h3>
                             <Link className={classes.edit} href={`/events/${_id}`}>
@@ -79,7 +86,12 @@ const EventList: FC<EventListProps> = () => {
 
                         <div className={classes.item}>{description}</div>
 
-                        <div className={classes.locations}>{locationName}</div>
+                        <div className={classes.location}>
+                            <span>Адрес:</span>
+                            {/* {location.coordinates.flatMap((coord) => coord).join(", ")} */}
+                            {/* {location?.properties?.address} */}
+                            <Geocoding coordinates={location.coordinates} />
+                        </div>
 
                         <div className={classes.controls}>
                             <Link href={`/events/${_id}/edit`}>Редактировать</Link>

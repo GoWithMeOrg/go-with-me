@@ -10,14 +10,41 @@
 
 .label {
     display: flex;
+    flex-direction: column;
 }
 
 .label > span {
     width: 200px;
 }
 
-.button {
-    margin-top: 12px;
+.labelFindMap {
+    display: flex;
+    justify-content: space-between;
+}
+
+.btnFindMap {
+    display: flex;
+    flex-direction: row-reverse;
+    background: none;
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+    color: #a4a7bc;
+}
+
+.labelBtnFindMap {
+    font-size: 0.88rem;
+    font-weight: 500;
+    line-height: 1.63rem;
+    text-align: left;
+    cursor: pointer;
+}
+
+.inputFindMap {
+    width: 100%;
+    /* padding: 0.5rem 0.5rem;
+    border: 1px solid #a4a7bc;
+    border-radius: 0.5rem; */
 }
 
 .description {
@@ -31,6 +58,7 @@
     letter-spacing: 1px;
 }
 
-.titleField {
-   /* keep */
+.buttonBlockMap {
+    display: flex;
+    justify-content: space-between;
 }

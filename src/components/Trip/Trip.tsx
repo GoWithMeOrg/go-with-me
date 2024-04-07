@@ -1,12 +1,12 @@
 import { FC } from "react";
 
-import { ITripFromDB } from "@/database/models/Trip";
+import { ITrip } from "@/database/models/Trip";
 import { formatDate } from "@/utils/formatDate";
 
 import classes from "@/components/EventForm/EventForm.module.css";
 
 export interface TripProps {
-    tripData: ITripFromDB;
+    tripData: ITrip;
 }
 
 const Trip: FC<TripProps> = ({ tripData }) => {

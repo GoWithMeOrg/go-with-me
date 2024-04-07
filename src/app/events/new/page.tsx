@@ -46,7 +46,6 @@ const EventNewPage: NextPage = () => {
                         startDate: new Date(),
                         endDate: new Date(),
                         isPrivate: true,
-                        locationName: "",
                     }}
                     onSubmit={handleCreateEvent}
                 />

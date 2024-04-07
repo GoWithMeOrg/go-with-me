@@ -29,7 +29,6 @@ const GET_EVENT = gql`
             isPrivate
             startDate
             endDate
-            locationName
         }
     }
 `;
@@ -43,7 +42,6 @@ const UPDATE_EVENT = gql`
             isPrivate
             startDate
             endDate
-            locationName
         }
     }
 `;

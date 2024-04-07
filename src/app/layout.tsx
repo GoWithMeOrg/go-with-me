@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Menu } from "@/components/Menu";
-import { NextAuthProvider, ApolloWrapper } from "./providers";
+import { NextAuthProvider, ApolloWrapper, APIProviderGoogleMaps } from "./providers";
 import "@/styles/global.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -18,7 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <ApolloWrapper>
                     <NextAuthProvider>
                         <Menu />
-                        {children}
+                        <APIProviderGoogleMaps>{children}</APIProviderGoogleMaps>
                     </NextAuthProvider>
                 </ApolloWrapper>
             </body>

@@ -1,12 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
 import UserModel, { IUser } from "./User";
-
-/**
- * TODO:
- * location: Array of Embedded Documents (see below for structure)
- * bannerImage: String (URL or base64 encoded data)
- */
-
 export interface IEvent {
     _id: string;
     organizer_id: mongoose.Types.ObjectId | string;
@@ -18,8 +11,13 @@ export interface IEvent {
     endDate?: Date | string;
     createdAt: Date | string;
     updatedAt: Date | string;
-    locationName: string;
-    __typename?: string;
+    location: {
+        type: string;
+        coordinates: [number, number];
+        properties: {
+            address: string;
+        };
+    };
 }
 
 export interface IEventDocument extends Omit<IEvent, "_id" | "organizer" | "createdAt" | "updatedAt">, Document {}
@@ -40,9 +38,24 @@ const EventSchema = new Schema<IEventDocument>(
             type: Boolean,
             default: true,
         },
+
+        location: {
+            type: {
+                type: String,
+                enum: ["Point"],
+                required: true,
+            },
+            coordinates: {
+                type: [Number],
+                required: true,
+            },
+            properties: {
+                address: String,
+            },
+        },
+
         startDate: Date,
         endDate: Date,
-        locationName: String,
     },
     {
         timestamps: true,

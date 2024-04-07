@@ -9,10 +9,6 @@ import CommentModel, { IComment } from "@/database/models/Comment";
 import TripModel, { ITrip } from "@/database/models/Trip";
 import UserModel from "@/database/models/User";
 
-//измения от Сани
-/**
- * @see https://www.apollographql.com/docs/apollo-server/data/resolvers/
- */
 const resolvers = {
     ISODate: {
         __parseValue(value: string) {
@@ -108,9 +104,6 @@ const resolvers = {
 };
 
 const typeDefs = gql`
-    #graphql
-
-    # Custom scalar type for Date
     scalar ISODate
 
     type Query {
@@ -132,7 +125,23 @@ const typeDefs = gql`
     }
 
     type Location {
-        name: String
+        type: String
+        coordinates: [Float]
+        properties: Properties
+    }
+
+    input LocationInput {
+        type: String
+        coordinates: [Float]
+        properties: PropertiesInput
+    }
+
+    type Properties {
+        address: String
+    }
+
+    input PropertiesInput {
+        address: String
     }
 
     type Event {
@@ -144,7 +153,7 @@ const typeDefs = gql`
         isPrivate: Boolean
         startDate: ISODate
         endDate: ISODate
-        locationName: String
+        location: Location
     }
 
     type Trip {
@@ -192,11 +201,7 @@ const typeDefs = gql`
         isPrivate: Boolean
         startDate: ISODate
         endDate: ISODate
-        location: String
-    }
-
-    input LocationInput {
-        name: String
+        location: LocationInput
     }
 
     type Mutation {
