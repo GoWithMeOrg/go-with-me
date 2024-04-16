@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { Menu } from "@/components/Menu";
 import { NextAuthProvider, ApolloWrapper, APIProviderGoogleMaps } from "./providers";
 import "@/styles/global.css";
+import { Footer } from "@/components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +19,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <ApolloWrapper>
                     <NextAuthProvider>
                         <Menu />
-                        <APIProviderGoogleMaps>{children}</APIProviderGoogleMaps>
+                        <APIProviderGoogleMaps>
+                            {children}
+                            <Footer />
+                        </APIProviderGoogleMaps>
                     </NextAuthProvider>
                 </ApolloWrapper>
             </body>
