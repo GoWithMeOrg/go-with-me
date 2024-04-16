@@ -1,6 +1,7 @@
 .component {
-    padding: 0 48px;
-    width: 300px;
+    /* padding: 0 48px; */
+    /* width: 300px; */
+    height: 3.13rem;
 }
 
 .loader {
@@ -72,4 +73,15 @@
     border-radius: 4px;
     cursor: pointer;
     background-color: unset;
+}
+
+.buttonLogIn {
+    width: 10.5rem;
+    margin-left: 1.25rem;
+}
+
+.buttonLogIn:hover {
+    color: rgb(73, 90, 168);
+    border: 0.13rem solid rgb(73, 90, 168);
+    background: rgba(9, 23, 87, 0);
 }

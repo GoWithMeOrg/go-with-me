@@ -11,7 +11,11 @@ export const AuthPanel = () => {
 
     return (
         <div className={classes.component}>
-            {status === "unauthenticated" && <button onClick={() => signIn()}>Войти через Google</button>}
+            {status === "unauthenticated" && (
+                <button className={classes.buttonLogIn} onClick={() => signIn()}>
+                    Sign In
+                </button>
+            )}
             {status === "loading" && <div className={classes.loader}></div>}
             {status === "authenticated" && (
                 <>

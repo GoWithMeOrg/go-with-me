@@ -1,0 +1,35 @@
+.header {
+    height: 6.25rem;
+    display: flex;
+}
+
+.logo {
+    color: #091757;
+    font-size: 1.13rem;
+    font-weight: 700;
+    line-height: 1.38rem;
+    text-align: center;
+}
+
+.container {
+    width: 100%;
+    display: flex;
+    padding: 0 2rem;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+}
+
+.headerSerch {
+    width: 36.25rem;
+}
+
+.headerSerchEvent {
+    width: 100%;
+    height: 3.13rem;
+    padding: 0.69rem 1.06rem 0.69rem 1.06rem;
+}
+
+.headerAuth {
+    display: flex;
+}

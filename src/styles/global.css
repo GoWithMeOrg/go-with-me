@@ -115,6 +115,7 @@ button {
     font-weight: 700;
     line-height: 1.38rem;
     text-align: center;
+    cursor: pointer;
 }
 
 button:hover {

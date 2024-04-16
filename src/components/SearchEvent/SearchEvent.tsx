@@ -1,7 +1,13 @@
 "use client";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 
-export const SearchEvent = () => {
+interface ISearchEventProps {
+    className: string;
+    placeholder?: string;
+    icon?: React.ReactNode;
+}
+
+export const SearchEvent = ({ className, placeholder, icon }: ISearchEventProps) => {
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const { replace } = useRouter();
@@ -19,14 +25,15 @@ export const SearchEvent = () => {
 
     return (
         <div className="SearchEvent">
-            <label htmlFor="search" className="search">
+            {/* <label htmlFor="search" className="search">
                 search
-            </label>
+            </label> */}
 
             <input
-                className="search"
-                placeholder="search"
+                type="search"
+                className={className}
                 defaultValue={searchParams.get("text")?.toString()}
+                placeholder={placeholder}
                 onChange={(e) => {
                     handleSearch(e.target.value);
                 }}
