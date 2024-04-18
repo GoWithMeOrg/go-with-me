@@ -1,0 +1,1 @@
+export { PromoIcon } from "./PromoIcon";

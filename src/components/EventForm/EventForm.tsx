@@ -117,7 +117,7 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                         <span>location:</span>
                         <Button className={classes.btnFindMap} onClick={handleShowMap}>
                             <label className={classes.labelBtnFindMap}>Find on the Map</label>
-                            <MarkerIcon />
+                            <MarkerIcon color={""} />
                         </Button>
                     </div>
                     <Autocomplete onPlaceSelect={setSelectedPlace} originRef={originRef}>

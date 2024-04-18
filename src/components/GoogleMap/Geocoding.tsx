@@ -27,7 +27,8 @@ export const Geocoding = ({ coordinates }: Props) => {
 
     return (
         <div>
-            {city}, {street}, {houseNumber}
+            {city}
+            {/* , {street}, {houseNumber} */}
         </div>
     );
 };

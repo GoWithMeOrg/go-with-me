@@ -1,0 +1,116 @@
+.promo {
+    margin-top: 3rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.promoDescription {
+    display: flex;
+    width: 30rem;
+    margin-top: 2.625rem;
+    color: rgb(9, 23, 87);
+    font-size: 1.25rem;
+    font-weight: 400;
+    line-height: 1.88rem;
+    text-align: left;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.promoTitle {
+    color: rgb(9, 23, 87);
+    font-size: 2.88rem;
+    font-weight: 700;
+    line-height: 3.63rem;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+.arrow {
+    display: flex;
+    align-items: center;
+    color: rgb(9, 23, 87);
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 34px;
+    text-align: left;
+}
+
+.cardList {
+    margin-top: 5rem;
+}
+
+.title {
+    color: rgb(9, 23, 87);
+    font-family: Inter;
+    font-size: 1.88rem;
+    font-weight: 700;
+    line-height: 2.25rem;
+    letter-spacing: 0%;
+    text-align: left;
+    text-transform: uppercase;
+    margin-bottom: 4.375rem;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    max-width: 23.75rem;
+    max-height: 27.88rem;
+}
+
+.list {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-content: center;
+}
+
+.location {
+    display: flex;
+    margin-top: 1.31rem;
+    color: rgb(9, 23, 87);
+    font-size: 0.88rem;
+    font-weight: 500;
+    line-height: 1.63rem;
+    text-align: left;
+}
+
+.geocoding {
+    margin-left: 0.31rem;
+}
+
+.date {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    color: rgb(9, 23, 87);
+    font-size: 0.88rem;
+    font-weight: 500;
+    line-height: 1.63rem;
+    text-align: left;
+}
+
+.name {
+    color: rgb(9, 23, 87);
+    font-size: 1.13rem;
+    font-weight: 700;
+    line-height: 1.38rem;
+    text-align: left;
+}
+
+.description {
+    text-overflow: ellipsis;
+    margin-top: 1.31rem;
+    color: rgb(87, 91, 117);
+    font-size: 0.88rem;
+    font-weight: 400;
+    line-height: 1.38rem;
+    text-align: left;
+}
+
+.checkboxDate {
+    margin-right: 0.31rem;
+}
