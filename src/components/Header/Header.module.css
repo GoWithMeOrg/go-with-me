@@ -32,4 +32,5 @@
 
 .headerAuth {
     display: flex;
+    align-items: center;
 }

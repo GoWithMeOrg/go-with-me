@@ -1,7 +1,7 @@
 import { AuthPanel } from "../AuthPanel";
-import { HumanIcon } from "../HumanIcon";
 import SearchEvent from "../SearchEvent/SearchEvent";
 import { SearchIcon } from "../SearchIcon";
+import Human from "@/assets/icons/human.svg";
 import classes from "./Header.module.css";
 
 export const Header = () => {
@@ -14,7 +14,7 @@ export const Header = () => {
                     {/* <SearchIcon /> */}
                 </div>
                 <div className={classes.headerAuth}>
-                    <HumanIcon />
+                    <Human />
                     <AuthPanel />
                 </div>
             </div>

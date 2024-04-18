@@ -1,1 +1,0 @@
-export { PromoIcon } from "./PromoIcon";

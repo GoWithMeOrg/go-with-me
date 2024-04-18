@@ -2,19 +2,17 @@
 
 import { FC } from "react";
 import Link from "next/link";
-import { useQuery, gql, useMutation } from "@apollo/client";
-
-import { formatDate } from "@/utils/formatDate";
+import { useQuery, gql } from "@apollo/client";
 import type { IEvent } from "@/database/models/Event";
 
 import classes from "./PopularEventsList.module.css";
 import { Geocoding } from "../GoogleMap";
 import Image from "next/image";
 import profile from "../../assets/images/profile.png";
-import { MarkerIcon } from "../Marker";
 import dayjs from "dayjs";
-import { PromoIcon } from "../PromoIcon";
-import { ArrowIcon } from "../ArrowIcon";
+import Arrow from "@/assets/icons/arrow.svg";
+import Promo from "@/assets/icons/promo.svg";
+import Marker from "@/assets/icons/marker.svg";
 
 type EventListProps = {
     events?: IEvent[];
@@ -47,14 +45,6 @@ const GET_EVENTS = gql`
     }
 `;
 
-const DELETE_EVENT_MUTATION = gql`
-    mutation DeleteEvent($id: ID!) {
-        deleteEvent(id: $id) {
-            _id
-        }
-    }
-`;
-
 export const PopularEventList: FC<EventListProps> = () => {
     const { loading, error, data } = useQuery(GET_EVENTS);
 
@@ -75,12 +65,12 @@ export const PopularEventList: FC<EventListProps> = () => {
 
                     <div className={classes.arrow}>
                         <div>JOIN</div>
-                        <ArrowIcon />
+                        <Arrow />
                     </div>
                 </div>
 
                 <div className={classes.promoPicture}>
-                    <PromoIcon />
+                    <Promo />
                 </div>
             </div>
 
@@ -93,7 +83,7 @@ export const PopularEventList: FC<EventListProps> = () => {
                                 <Image src={profile} alt="img" />
 
                                 <div className={classes.location}>
-                                    <MarkerIcon color={"#575B75"} />
+                                    <Marker />
                                     <div className={classes.geocoding}>
                                         <Geocoding coordinates={location.coordinates} />
                                     </div>
