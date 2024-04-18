@@ -1,10 +1,21 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Lato&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Lato&display=swap"); */
+
+:root {
+    --white: #ffffff;
+    --black: #333333;
+    --main: #091757;
+    --accent: #e3ef41;
+    --background: #f7f7fa;
+    --text: #575b75;
+    --additional: #a4a7bc;
+    --hover: #495aa8;
+}
 
 * {
     padding: 0px;
     margin: 0px;
     border: none;
-    background: #f7f7fa;
+    /* background: var(--background); */
 }
 
 *,
@@ -41,7 +52,10 @@ h2,
 h3,
 h4,
 h5,
-h6,
+h6 {
+    color: var(--main);
+}
+
 p {
     font-size: inherit;
     font-weight: inherit;
@@ -71,10 +85,10 @@ address {
 input,
 textarea,
 select {
-    background: #ffffff;
-    border: 1px solid rgb(164, 167, 188);
-    border-radius: 4px;
-    color: rgb(9, 23, 87);
+    background: var(--white);
+    border: 1px solid var(--additional);
+    border-radius: 0.25rem;
+    color: var(--main);
     font-size: 1rem;
     font-weight: 400;
     text-align: left;
@@ -103,10 +117,10 @@ button:active {
 
 button {
     height: 3.13rem;
-    border: 0.13rem solid rgb(9, 23, 87);
+    border: 0.13rem solid var(--main);
     border-radius: 0.25rem;
     background: rgba(9, 23, 87, 0);
-    color: rgb(9, 23, 87);
+    color: var(--main);
     font-size: 1.13rem;
     font-weight: 700;
     line-height: 1.38rem;
@@ -115,8 +129,9 @@ button {
 }
 
 button:hover {
-    background: #495aa8;
-    color: #ffffff;
+    background: rgba(9, 23, 87, 0);
+    border: 0.13rem solid var(--hover);
+    color: var(--hover);
 }
 
 button::-moz-focus-inner {

@@ -3,6 +3,7 @@
 import React from "react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
+import Human from "@/assets/icons/human.svg";
 
 import classes from "./AuthPanel.module.css";
 
@@ -19,18 +20,18 @@ export const AuthPanel = () => {
             {status === "loading" && <div className={classes.loader}></div>}
             {status === "authenticated" && (
                 <>
-                    <p className={classes.title}>Привет, {session?.user?.name}</p>
+                    {/* <p className={classes.title}>Привет, {session?.user?.name}</p> */}
                     <div className={classes.avatarAndMenu}>
                         <Link href="/profile">
-                            <img
+                            {/* <img
                                 className={classes.avatar}
                                 src={session?.user?.image as string}
                                 alt={session?.user?.name as string}
-                            />
+                            /> */}
                         </Link>
                         <div className={classes.menu}>
                             <Link href="/profile" className={classes.linkToProfile}>
-                                Профиль
+                                <Human />
                             </Link>
                             <button
                                 className={classes.logout}

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { Menu } from "@/components/Menu";
 import { NextAuthProvider, ApolloWrapper, APIProviderGoogleMaps } from "./providers";
 import "@/styles/global.css";
 import { Footer } from "@/components/Footer";

@@ -1,0 +1,35 @@
+.cardWork {
+    border: 0.13rem solid rgb(9, 23, 87);
+    border-radius: 1.25rem;
+    width: 35.63rem;
+    height: 35.63rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2.5rem;
+}
+
+.cardWorkWrapper {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 80%;
+    width: 80%;
+}
+
+.cardWorkTitle {
+    color: rgb(9, 23, 87);
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.88rem;
+    text-align: left;
+}
+
+.cardWorkDescription {
+    color: rgb(87, 91, 117);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.63rem;
+    text-align: left;
+}
