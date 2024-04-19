@@ -4,7 +4,6 @@ import type { IEvent } from "@/database/models/Event";
 import classes from "./EventForm.module.css";
 
 import { Button } from "../Button";
-import MarkerIcon from "../Marker/MarkerIcon";
 import Autocomplete from "../GoogleMap/Autocomplete";
 import { Input } from "../Input";
 import Popup from "../Popup/Popup";
@@ -17,6 +16,7 @@ import {
     APIProviderContext,
     ControlPosition,
 } from "@vis.gl/react-google-maps";
+import Marker from "@/assets/icons/marker.svg";
 
 export type EventType = Partial<IEvent>;
 
@@ -117,7 +117,7 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                         <span>location:</span>
                         <Button className={classes.btnFindMap} onClick={handleShowMap}>
                             <label className={classes.labelBtnFindMap}>Find on the Map</label>
-                            <MarkerIcon color={""} />
+                            <Marker />
                         </Button>
                     </div>
                     <Autocomplete onPlaceSelect={setSelectedPlace} originRef={originRef}>

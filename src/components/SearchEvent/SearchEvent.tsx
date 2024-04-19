@@ -4,7 +4,7 @@ import Search from "@/assets/icons/search.svg";
 import classes from "./SearchEvent.module.css";
 
 interface ISearchEventProps {
-    className: string;
+    className?: string;
     placeholder?: string;
 }
 
