@@ -4,11 +4,16 @@
 }
 
 .logo {
-    color: #091757;
     font-size: 1.13rem;
     font-weight: 700;
     line-height: 1.38rem;
     text-align: center;
+}
+
+.headerSerchIcon {
+    position: absolute;
+    right: 35rem;
+    top: 2.2rem;
 }
 
 .container {

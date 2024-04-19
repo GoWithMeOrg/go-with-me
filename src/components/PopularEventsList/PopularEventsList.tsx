@@ -63,7 +63,6 @@ export const PopularEventList: FC<EventListProps> = () => {
                         hosting a casual meeting, we&#39;re here to help you every step of the way. Join us today and
                         unlock a world of endless possibilities. Start crafting your adventure now!
                     </p>
-
                     <div className={classes.arrow}>
                         <div>Join</div>
                         <Arrow />

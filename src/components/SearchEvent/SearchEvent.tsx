@@ -1,13 +1,14 @@
 "use client";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
+import Search from "@/assets/icons/search.svg";
+import classes from "./SearchEvent.module.css";
 
 interface ISearchEventProps {
     className: string;
     placeholder?: string;
-    icon?: React.ReactNode;
 }
 
-export const SearchEvent = ({ className, placeholder, icon }: ISearchEventProps) => {
+export const SearchEvent = ({ className, placeholder }: ISearchEventProps) => {
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const { replace } = useRouter();
@@ -24,11 +25,7 @@ export const SearchEvent = ({ className, placeholder, icon }: ISearchEventProps)
     };
 
     return (
-        <div className="SearchEvent">
-            {/* <label htmlFor="search" className="search">
-                search
-            </label> */}
-
+        <div className={classes.searchEvent}>
             <input
                 type="search"
                 className={className}
@@ -38,6 +35,7 @@ export const SearchEvent = ({ className, placeholder, icon }: ISearchEventProps)
                     handleSearch(e.target.value);
                 }}
             />
+            <Search className={classes.searchIcon} />
         </div>
     );
 };
