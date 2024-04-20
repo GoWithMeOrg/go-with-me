@@ -1,11 +1,12 @@
 "use client";
-import { AuthPanel } from "@/components/AuthPanel";
+
+import { PopularEventList } from "@/components/PopularEventsList/PopularEventsList";
+import classes from "./page.module.css";
 
 export default function HomePage() {
     return (
-        <div className="HomePage">
-            <AuthPanel />
-            Social meetings <a href="https://github.com/GoWithMeOrg/go-with-me">GoWithMeOrg/go-with-me</a>
-        </div>
+        <main className={classes.container}>
+            <PopularEventList />
+        </main>
     );
 }

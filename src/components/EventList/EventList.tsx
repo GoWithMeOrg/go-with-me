@@ -88,8 +88,6 @@ const EventList: FC<EventListProps> = () => {
 
                         <div className={classes.location}>
                             <span>Адрес:</span>
-                            {/* {location.coordinates.flatMap((coord) => coord).join(", ")} */}
-                            {/* {location?.properties?.address} */}
                             <Geocoding coordinates={location.coordinates} />
                         </div>
 

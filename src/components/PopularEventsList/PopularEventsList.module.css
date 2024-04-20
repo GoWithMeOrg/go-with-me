@@ -1,0 +1,98 @@
+.promo {
+    margin-top: 3rem;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.promoDescription {
+    display: flex;
+    width: 36.67vw;
+    color: var(--main);
+    margin-top: 2.625rem;
+    font-size: 1.25rem;
+    font-weight: 400;
+    line-height: 1.88rem;
+    text-align: left;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.promoTitle {
+    font-size: 2.88rem;
+    font-weight: 700;
+    line-height: 3.63rem;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+.arrow {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 34px;
+    text-align: left;
+}
+
+.titleArrow {
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.19rem;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+.promoPicture {
+    width: 37.5vw;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.cardsEvents {
+    margin: 5rem 0;
+    width: 100%;
+    position: relative;
+}
+
+.cardsEventsTitle {
+    font-size: 1.88rem;
+    font-weight: 700;
+    line-height: 2.25rem;
+    letter-spacing: 0%;
+    text-align: left;
+    text-transform: uppercase;
+    margin-bottom: 4.75rem;
+}
+
+.cardsEventsList {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-content: center;
+    position: relative;
+}
+
+.cardsEventsList::after {
+    content: "";
+    position: absolute;
+    top: 10%;
+    left: -10%;
+    width: 117%;
+    height: 63%; /* Высота псевдоэлемента равна высоте контейнера */
+    background-color: var(--white); /* Цвет псевдоэлемента */
+    z-index: -1; /* Помещаем псевдоэлемент за содержимым контейнера */
+}
+
+.cardsWork {
+    margin-top: 5rem;
+}
+
+.cardsWorkList {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+}
