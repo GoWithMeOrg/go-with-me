@@ -19,6 +19,9 @@ const GET_TRIP_BY_ID = gql`
             events {
                 _id
                 name
+                location {
+                    coordinates
+                }
             }
             startDate
             endDate
