@@ -9,7 +9,9 @@
     --text: #575b75;
     --additional: #a4a7bc;
     --hover: #495aa8;
+    --error: #ff2f3b;
 }
+
 body {
     background: var(--background);
 }

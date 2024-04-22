@@ -1,21 +1,55 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import Human from "@/assets/icons/human.svg";
 
 import classes from "./AuthPanel.module.css";
+import Popup from "../Popup/Popup";
+import { AuthModal } from "../AuthModal";
 
 export const AuthPanel = () => {
     const { data: session, status } = useSession();
+    const [showPopup, setShowPopup] = useState<boolean>(false);
+
+    console.log(session);
+
+    const handleShowAuth = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        setShowPopup(true);
+    };
 
     return (
         <div className={classes.component}>
             {status === "unauthenticated" && (
-                <button className={classes.buttonLogIn} onClick={() => signIn()}>
-                    Sign In
-                </button>
+                // <button className={classes.buttonLogIn} onClick={() => signIn()}>
+                //     Sign In
+                // </button>
+
+                <>
+                    <button className={classes.buttonLogIn} onClick={handleShowAuth}>
+                        Sign In
+                    </button>
+
+                    <Popup
+                        {...{
+                            showPopup,
+                            setShowPopup,
+                        }}
+                        style={{
+                            backgroundColor: "#F7F7FA",
+                            width: "30rem",
+                            height: "34.2rem",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            position: "absolute",
+                        }}
+                    >
+                        <AuthModal onClose={() => setShowPopup(false)} />
+                    </Popup>
+                </>
             )}
             {status === "loading" && <div className={classes.loader}></div>}
             {status === "authenticated" && (
