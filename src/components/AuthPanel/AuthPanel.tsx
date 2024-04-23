@@ -13,8 +13,6 @@ export const AuthPanel = () => {
     const { data: session, status } = useSession();
     const [showPopup, setShowPopup] = useState<boolean>(false);
 
-    console.log(session);
-
     const handleShowAuth = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         setShowPopup(true);

@@ -24,7 +24,7 @@ export const AuthModal = ({ onClose }: IAuthModal) => {
         userEmail = formData.email as string;
     };
 
-    console.log(userEmail);
+    //console.log(userEmail);
     //генерируем одноразовый пароль
 
     let OTP;
@@ -57,7 +57,7 @@ export const AuthModal = ({ onClose }: IAuthModal) => {
                         <Twitter onClick={() => signIn("twitter")} />
                     </button>
                 </div>
-                {/* <div className={classes.authModalFormEmail}>
+                <div className={classes.authModalFormEmail}>
                     <p className={classes.authModalDescription}>or get one-time password via email</p>
                     <form action="" onSubmit={handleSubmit}>
                         <input type="email" name="email" className={classes.authModalInput} />
@@ -65,9 +65,9 @@ export const AuthModal = ({ onClose }: IAuthModal) => {
                             Get password
                         </button>
                     </form>
-                </div> */}
+                </div>
 
-                <div className={classes.authModalFormEmail}>
+                {/* <div className={classes.authModalFormEmail}>
                     <p className={classes.authModalDescription}> The password has been sent to qwerty@gmail.com</p>
                     <form action="" onSubmit={handleSubmit}>
                         <input
@@ -82,7 +82,7 @@ export const AuthModal = ({ onClose }: IAuthModal) => {
                             Resend password &#8658;
                         </button>
                     </form>
-                </div>
+                </div> */}
             </div>
         </div>
     );

@@ -1,11 +1,11 @@
 "use client";
 
 import { PopularEventList } from "@/components/PopularEventsList/PopularEventsList";
-import classes from "./page.module.css";
+import "@/styles/global.css";
 
 export default function HomePage() {
     return (
-        <main className={classes.container}>
+        <main className="container">
             <PopularEventList />
         </main>
     );
