@@ -156,7 +156,7 @@ const typeDefs = gql`
         endDate: ISODate
         location: Location
         tags: [String]
-        category: String
+        # category: String
         status: String
     }
 
@@ -208,7 +208,7 @@ const typeDefs = gql`
         endDate: ISODate
         location: LocationInput
         tags: [String]
-        category: String
+        # category: String
         status: String
     }
 

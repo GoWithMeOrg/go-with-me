@@ -30,7 +30,7 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
     const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
     const [showPopup, setShowPopup] = useState<boolean>(false);
     const [time, setTime] = useState<string>(eventData.time ?? "00:00");
-    const [categories, setCategories] = useState<string>(eventData.category ?? "");
+    //const [categories, setCategories] = useState<string>(eventData.category ?? "");
     const [eventStatus, setEventStatus] = useState<string>(eventData.status ?? "Public");
 
     const apiIsLoaded = useApiIsLoaded();
@@ -39,7 +39,7 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
     const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(null);
     const originRef = useRef<HTMLInputElement>(null);
 
-    const eventCategory = ["Party", "Conference", "Concert", "Trip", "Workshops"];
+    //const eventCategory = ["Party", "Conference", "Concert", "Trip", "Workshops"];
 
     if (!apiIsLoaded || !mapAPI) {
         return;
@@ -51,17 +51,17 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
         setShowPopup(true);
     };
 
-    const selectedCategory = (e: React.MouseEvent<HTMLButtonElement>) => {
+    /* const selectedCategory = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         const button = e.currentTarget as HTMLButtonElement;
         setCategories(button.textContent as string);
-    };
+    }; */
 
     // const timeM = document.getElementsByName("time") as NodeListOf<HTMLInputElement>;
     // const timeString = timeM[0]?.value;
     // console.log(typeof timeString);
 
-    const setCheckedRadio = () => {
+    /* const setCheckedRadio = () => {
         const radioGroup = document.getElementsByName("eventRadio") as NodeListOf<HTMLInputElement>;
         for (const radio of radioGroup) {
             if (radio.value === eventStatus) {
@@ -71,9 +71,9 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
         }
         //console.log(eventStatus);
     };
-    setCheckedRadio();
+    setCheckedRadio(); */
 
-    console.log(time);
+    // console.log(time);
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = Object.fromEntries(new FormData(e.currentTarget).entries());
@@ -94,7 +94,7 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                     address: selectedPlace?.formatted_address ?? "",
                 },
             },
-            category: (formData.category as string) ?? categories,
+            /* category: (formData.category as string) ?? categories, */
             status: (formData.status as string) ?? eventStatus,
         };
         onSubmit(onSubmitData);
@@ -251,7 +251,7 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                 <label className={classes.label}>
                     <span className={classes.inputTitle}>Select category</span>
                     <div className={classes.categories}>
-                        {eventCategory.map((category) => (
+                        {/* {eventCategory.map((category) => (
                             <Button
                                 key={category}
                                 id={category}
@@ -260,7 +260,7 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                             >
                                 {category}
                             </Button>
-                        ))}
+                        ))} */}
                     </div>
                 </label>
 

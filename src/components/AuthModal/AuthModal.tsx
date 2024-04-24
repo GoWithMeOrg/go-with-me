@@ -13,7 +13,7 @@ interface IAuthModal {
 export const AuthModal = ({ onClose }: IAuthModal) => {
     const handleClose = () => {
         if (onClose) {
-            onClose();
+            onClose?.();
         }
     };
 

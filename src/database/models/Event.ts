@@ -20,7 +20,7 @@ export interface IEvent {
         };
     };
     tags?: string[];
-    category?: string;
+    /* category?: string; */
     status?: string;
 }
 
@@ -57,11 +57,11 @@ const EventSchema = new Schema<IEventDocument>(
                 address: String,
             },
         },
-        category: {
+        /* category: {
             type: String,
             required: true,
             enum: ["Party", "Conference", "Concert", "Trip", "Workshops"],
-        },
+        }, */
         status: {
             type: String,
             required: true,
