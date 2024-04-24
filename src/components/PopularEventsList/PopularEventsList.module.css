@@ -34,11 +34,12 @@
 .arrow {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    font-size: 28px;
+    justify-content: flex-end;
+    font-size: 1.75rem;
     font-weight: 700;
-    line-height: 34px;
+    line-height: 2.125rem;
     text-align: left;
+    margin-right: 1rem;
 }
 
 .titleArrow {
