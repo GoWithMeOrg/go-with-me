@@ -24,7 +24,7 @@ const GET_EVENT_BY_ID = gql`
             }
             name
             description
-            isPrivate
+            # isPrivate
             startDate
             endDate
         }

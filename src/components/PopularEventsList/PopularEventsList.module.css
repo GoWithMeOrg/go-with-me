@@ -3,17 +3,18 @@
 }
 
 .promo {
-    margin-top: 3rem;
+    margin-top: 13.8rem;
+    margin-bottom: 14.84rem;
     display: flex;
-    justify-content: space-between;
     width: 100%;
 }
 
 .promoDescription {
     display: flex;
-    width: 36.67vw;
+    width: 30rem;
+    height: 100%;
     color: var(--main-color);
-    margin-top: 2.625rem;
+    margin-top: 2.5rem;
     font-size: 1.25rem;
     font-weight: 400;
     line-height: 1.88rem;
@@ -46,27 +47,27 @@
     line-height: 1.19rem;
     text-align: left;
     text-transform: uppercase;
+    color: var(--main-color);
+    margin-right: 0.7rem;
 }
 
 .promoPicture {
-    width: 37.5vw;
-    display: flex;
-    justify-content: flex-end;
+    width: 33.9rem;
+    margin-left: 8.75rem;
 }
 
 .cardsEvents {
-    margin: 5rem 0;
     width: 100%;
+    margin-bottom: 6.3rem;
 }
 
 .cardsEventsTitle {
     font-size: 1.88rem;
     font-weight: 700;
     line-height: 2.25rem;
-    letter-spacing: 0%;
     text-align: left;
     text-transform: uppercase;
-    margin-bottom: 4.75rem;
+    margin-bottom: 4.375rem;
 }
 
 .cardsEventsList {
@@ -76,21 +77,18 @@
     flex-wrap: wrap;
     align-content: center;
     position: relative;
+    margin-bottom: 0.875rem;
 }
 
-/* .cardsEventsList::after {
+.cardsEventsList::after {
     content: "";
     position: absolute;
-    top: 10%;
-    left: -12%;
-    width: 130%;
-    height: 63%;
+    top: 4%;
+    left: -40%;
+    width: 179.5%;
+    height: 76%;
     background-color: var(--white-color);
     z-index: -1;
-} */
-
-.cardsWork {
-    margin-top: 5rem;
 }
 
 .cardsWorkList {

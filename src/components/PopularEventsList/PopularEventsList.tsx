@@ -6,7 +6,7 @@ import type { IEvent } from "@/database/models/Event";
 
 import classes from "./PopularEventsList.module.css";
 import Arrow from "@/assets/icons/arrow.svg";
-import PromoImg from "@/assets/icons/promo.svg";
+import Promo from "@/assets/icons/promo.svg";
 import CreateEvent from "@/assets/icons/createEvent.svg";
 import CreatePrivateEvent from "@/assets/icons/createPrivateEvent.svg";
 import ExploreEvents from "@/assets/icons/exploreEvents.svg";
@@ -14,7 +14,6 @@ import PlanAdventure from "@/assets/icons/planAdventure.svg";
 import { CardWork } from "../CardWork";
 import { CardEvent } from "../CardEvent";
 import { CreateAndInvite } from "../CreateAndInvite";
-import { Promo } from "../Promo";
 
 type EventListProps = {
     events?: IEvent[];
@@ -33,7 +32,7 @@ const GET_EVENTS = gql`
 
             name
             description
-            isPrivate
+            # isPrivate
             startDate
             endDate
             location {
@@ -55,7 +54,25 @@ export const PopularEventList: FC<EventListProps> = () => {
 
     return (
         <div className={classes.container}>
-            <Promo />
+            <div className={classes.promo}>
+                <div className={classes.promoDescription}>
+                    <h1 className={classes.promoTitle}>CREATE YOUR OWN ROUTE WITH US</h1>
+                    <p className={classes.promoDescription}>
+                        Craft your trips and events effortlessly. Whether you&#39;re planning a weekend getaway with
+                        friends, organizing a cultural exploration, arranging a concert, coordinating a conference, or
+                        hosting a casual meeting, we&#39;re here to help you every step of the way. Join us today and
+                        unlock a world of endless possibilities. Start crafting your adventure now!
+                    </p>
+                    <div className={classes.arrow}>
+                        <div>Join</div>
+                        <Arrow style={{ marginLeft: "0.7rem" }} />
+                    </div>
+                </div>
+
+                <div className={classes.promoPicture}>
+                    <Promo />
+                </div>
+            </div>
             <div className={classes.cardsEvents}>
                 <h2 className={classes.cardsEventsTitle}>Popular Event List</h2>
                 <div className={classes.cardsEventsList}>
