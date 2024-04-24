@@ -1,3 +1,7 @@
+.container {
+    display: grid;
+}
+
 .promo {
     margin-top: 3rem;
     display: flex;

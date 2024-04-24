@@ -4,14 +4,13 @@
     background-color: var(--text-color);
     text-align: center;
     height: 11.88rem;
+    justify-content: center;
 }
 
 .footerContainer {
-    width: 100%;
+    width: 73.75rem;
     display: flex;
     justify-content: space-between;
-    background-color: var(--text-color);
-    padding: 2rem 8rem;
 }
 
 .footerWrapper {
@@ -61,6 +60,7 @@
     line-height: 1.38rem;
     text-align: left;
     background: var(--text-color);
+    width: 6.75rem;
 }
 
 .footerBlock h2 {
@@ -86,7 +86,7 @@
     margin-bottom: 10px;
 }
 
-/* .footerBlock input[type="email"] {
+.footerBlock input[type="email"] {
     flex: 1;
     padding: 5px;
     margin-right: 10px;
@@ -98,7 +98,7 @@
     background-color: #007bff;
     border: none;
     cursor: pointer;
-} */
+}
 
 .footerSocial {
     list-style: none;
