@@ -1,7 +1,19 @@
+.container {
+    width: 36.25rem;
+}
+
 .form {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 1.875rem;
+}
+
+.inputTitle {
+    color: var(--text-color);
+    font-size: 0.88rem;
+    font-weight: 500;
+    line-height: 1.625rem;
+    text-align: left;
 }
 
 .header {
@@ -13,9 +25,9 @@
     flex-direction: column;
 }
 
-.label > span {
+/* .label > span {
     width: 200px;
-}
+} */
 
 .labelFindMap {
     display: flex;
@@ -29,7 +41,13 @@
     cursor: pointer;
     margin: 0;
     padding: 0;
-    color: #a4a7bc;
+    color: var(--text-color);
+    border: none;
+    height: auto;
+}
+
+.btnFindMap:hover {
+    border: none;
 }
 
 .labelBtnFindMap {
@@ -61,4 +79,68 @@
 .buttonBlockMap {
     display: flex;
     justify-content: space-between;
+}
+
+.categories {
+    display: flex;
+}
+
+.buttonCategory {
+    height: 1.69rem;
+    background: #a4a7bc;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0.25rem 0.75rem 0.25rem 0.75rem;
+    color: rgb(87, 91, 117);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.19rem;
+    text-align: center;
+    margin-right: 0.5rem;
+    border-radius: 0.25rem;
+}
+
+.buttonCategory.active {
+    background: #e3ef41;
+    color: black;
+}
+
+.inputsDate {
+    display: flex;
+    justify-content: space-between;
+    width: 11.25rem;
+}
+
+.inputsRadio {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.labelRadio {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    margin-right: 1.62rem;
+}
+
+.spanRadio {
+    margin-left: 0.5rem;
+}
+
+.inputRadio {
+    box-sizing: border-box;
+    border: 0.25rem solid rgb(164, 167, 188);
+    background: rgb(247, 247, 250);
+}
+
+.inputRadio:checked {
+    background-color: rgb(227, 239, 65);
+}
+
+.inputRadio::after {
+    box-sizing: border-box;
+    border: 0.25rem solid rgb(227, 239, 65);
+    background-color: rgb(227, 239, 65);
 }

@@ -16,7 +16,7 @@ const Event: FC<EventProps> = ({ event }) => {
             <div>{event.description}</div>
             <div>{formatDate(event.startDate, "dd LLLL yyyy")}</div>
             <div>{formatDate(event.endDate, "dd LLLL yyyy")}</div>
-            {event.isPrivate && <div>{event.isPrivate.valueOf()}</div>}
+            {/* {event.isPrivate && <div>{event.isPrivate.valueOf()}</div>} */}
         </div>
     );
 };

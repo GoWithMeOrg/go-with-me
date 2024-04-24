@@ -5,7 +5,11 @@ import "@/styles/global.css";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({
+    subsets: ["latin"],
+    display: "swap",
+    weight: "400",
+});
 
 export const metadata: Metadata = {
     title: "Go With Me",
@@ -14,8 +18,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
-        <html lang="en">
-            <body className={inter.className}>
+        <html lang="en" className={inter.className}>
+            <body>
                 <ApolloWrapper>
                     <NextAuthProvider>
                         <Header />

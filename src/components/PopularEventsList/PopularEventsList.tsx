@@ -32,7 +32,7 @@ const GET_EVENTS = gql`
 
             name
             description
-            isPrivate
+            # isPrivate
             startDate
             endDate
             location {
@@ -56,7 +56,7 @@ export const PopularEventList: FC<EventListProps> = () => {
         <div className={classes.container}>
             <div className={classes.promo}>
                 <div className={classes.promoDescription}>
-                    <h1 className={classes.promoTitle}>Craft Your Adventure Here</h1>
+                    <h1 className={classes.promoTitle}>CRAFT YOUR ADVENTURE HERE</h1>
                     <p className={classes.promoDescription}>
                         Craft your trips and events effortlessly. Whether you&#39;re planning a weekend getaway with
                         friends, organizing a cultural exploration, arranging a concert, coordinating a conference, or
@@ -65,7 +65,7 @@ export const PopularEventList: FC<EventListProps> = () => {
                     </p>
                     <div className={classes.arrow}>
                         <div>Join</div>
-                        <Arrow />
+                        <Arrow style={{ marginLeft: "0.7rem" }} />
                     </div>
                 </div>
 
@@ -73,7 +73,6 @@ export const PopularEventList: FC<EventListProps> = () => {
                     <Promo />
                 </div>
             </div>
-
             <div className={classes.cardsEvents}>
                 <h2 className={classes.cardsEventsTitle}>Popular Event List</h2>
                 <div className={classes.cardsEventsList}>
@@ -88,7 +87,7 @@ export const PopularEventList: FC<EventListProps> = () => {
                         />
                     ))}
                 </div>
-                <div className={classes.arrow}>
+                <div className={classes.arrowEvents}>
                     <div className={classes.titleArrow}>MORE EVENTS</div>
                     <Arrow />
                 </div>
@@ -96,7 +95,7 @@ export const PopularEventList: FC<EventListProps> = () => {
 
             <div className={classes.cardsWork}>
                 <div className={classes.cardsEventsTitle}>
-                    <h2 className={classes.title}>How IT Works</h2>
+                    <h2 className={classes.cardsEventsTitle}>How IT Works</h2>
                 </div>
 
                 <div className={classes.cardsWorkList}>
