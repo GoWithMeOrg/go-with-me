@@ -87,7 +87,7 @@ export const PopularEventList: FC<EventListProps> = () => {
                         />
                     ))}
                 </div>
-                <div className={classes.arrow}>
+                <div className={classes.arrowEvents}>
                     <div className={classes.titleArrow}>MORE EVENTS</div>
                     <Arrow />
                 </div>
