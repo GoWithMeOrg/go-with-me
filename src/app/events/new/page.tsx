@@ -9,6 +9,9 @@ import { useMutation, gql } from "@apollo/client";
 
 import { EventForm } from "@/components/EventForm";
 import type { EventType } from "@/components/EventForm";
+import classes from "./page.module.css";
+import Image from "next/image";
+import rectangle from "@/assets/images/rectangle.png";
 
 const CREATE_EVENT = gql`
     mutation CreateEvent($event: EventInput!) {
@@ -35,9 +38,9 @@ const EventNewPage: NextPage = () => {
     };
 
     return (
-        <div className="EventNewPage">
-            <h1>Event New Page</h1>
-            <div>
+        <div className="container">
+            <h2 className={classes.createEventTitle}>CREATE EVENT</h2>
+            <div className={classes.createEventFormWrapper}>
                 <EventForm
                     eventData={{
                         organizer_id: organizerId,
@@ -45,10 +48,14 @@ const EventNewPage: NextPage = () => {
                         description: "",
                         startDate: new Date(),
                         endDate: new Date(),
-                        isPrivate: true,
+                        /* isPrivate: true, */
                     }}
                     onSubmit={handleCreateEvent}
                 />
+                <div className={classes.createEventFormImage}>
+                    <Image style={{ width: "100%" }} src={rectangle} alt="img" />
+                    <button className={classes.createEventFormImageButton}>Update photo</button>
+                </div>
             </div>
         </div>
     );

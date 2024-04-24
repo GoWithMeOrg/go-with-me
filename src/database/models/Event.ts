@@ -6,9 +6,10 @@ export interface IEvent {
     organizer: IUser;
     name: string;
     description: string;
-    isPrivate: boolean;
+    /* isPrivate: boolean; */
     startDate?: Date | string;
     endDate?: Date | string;
+    time?: string;
     createdAt: Date | string;
     updatedAt: Date | string;
     location: {
@@ -18,6 +19,9 @@ export interface IEvent {
             address: string;
         };
     };
+    tags?: string[];
+    category?: string;
+    status?: string;
 }
 
 export interface IEventDocument extends Omit<IEvent, "_id" | "organizer" | "createdAt" | "updatedAt">, Document {}
@@ -34,10 +38,10 @@ const EventSchema = new Schema<IEventDocument>(
             required: true,
         },
         description: String,
-        isPrivate: {
+        /* isPrivate: {
             type: Boolean,
             default: true,
-        },
+        }, */
 
         location: {
             type: {
@@ -52,6 +56,16 @@ const EventSchema = new Schema<IEventDocument>(
             properties: {
                 address: String,
             },
+        },
+        category: {
+            type: String,
+            required: true,
+            enum: ["Party", "Conference", "Concert", "Trip", "Workshops"],
+        },
+        status: {
+            type: String,
+            required: true,
+            enum: ["Public", "Invation", "Private"],
         },
 
         startDate: Date,

@@ -53,7 +53,8 @@
 .avatarAndMenu {
     display: flex;
     flex-direction: row;
-    gap: 24px;
+    gap: 1.25rem;
+    margin-left: 1.25rem;
 }
 
 .menu {

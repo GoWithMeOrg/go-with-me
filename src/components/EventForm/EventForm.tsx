@@ -1,9 +1,10 @@
-import { FC, FormEvent, useContext, useRef, useState } from "react";
+import { FC, FormEvent, useContext, useEffect, useRef, useState } from "react";
 import dayjs from "dayjs";
 import type { IEvent } from "@/database/models/Event";
 import classes from "./EventForm.module.css";
 
 import { Button } from "../Button";
+import Marker from "@/assets/icons/marker.svg";
 import Autocomplete from "../GoogleMap/Autocomplete";
 import { Input } from "../Input";
 import Popup from "../Popup/Popup";
@@ -16,7 +17,6 @@ import {
     APIProviderContext,
     ControlPosition,
 } from "@vis.gl/react-google-maps";
-import Marker from "@/assets/icons/marker.svg";
 
 export type EventType = Partial<IEvent>;
 
@@ -29,6 +29,9 @@ interface EventFormProps {
 export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
     const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
     const [showPopup, setShowPopup] = useState<boolean>(false);
+    const [time, setTime] = useState<string>(eventData.time ?? "00:00");
+    const [categories, setCategories] = useState<string>(eventData.category ?? "");
+    const [eventStatus, setEventStatus] = useState<string>(eventData.status ?? "Public");
 
     const apiIsLoaded = useApiIsLoaded();
     const mapAPI = useContext(APIProviderContext);
@@ -36,15 +39,41 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
     const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(null);
     const originRef = useRef<HTMLInputElement>(null);
 
+    const eventCategory = ["Party", "Conference", "Concert", "Trip", "Workshops"];
+
     if (!apiIsLoaded || !mapAPI) {
         return;
     }
 
+    //console.log(eventData.eventType);
     const handleShowMap = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         setShowPopup(true);
     };
 
+    const selectedCategory = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        const button = e.currentTarget as HTMLButtonElement;
+        setCategories(button.textContent as string);
+    };
+
+    // const timeM = document.getElementsByName("time") as NodeListOf<HTMLInputElement>;
+    // const timeString = timeM[0]?.value;
+    // console.log(typeof timeString);
+
+    const setCheckedRadio = () => {
+        const radioGroup = document.getElementsByName("eventRadio") as NodeListOf<HTMLInputElement>;
+        for (const radio of radioGroup) {
+            if (radio.value === eventStatus) {
+                radio.checked = radio.value === eventStatus;
+                radio.checked = true;
+            }
+        }
+        //console.log(eventStatus);
+    };
+    setCheckedRadio();
+
+    console.log(time);
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = Object.fromEntries(new FormData(e.currentTarget).entries());
@@ -52,9 +81,9 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
             organizer_id: eventData.organizer?._id,
             name: formData.name as string,
             description: formData.description as string,
-            isPrivate: formData.isPrivate === "on",
             startDate: dayjs(formData.startDate as string).toISOString(),
             endDate: dayjs(formData.endDate as string).toISOString(),
+            time: (formData.time as string) ?? time,
             location: {
                 type: "Point",
                 coordinates: [
@@ -65,6 +94,8 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                     address: selectedPlace?.formatted_address ?? "",
                 },
             },
+            category: (formData.category as string) ?? categories,
+            status: (formData.status as string) ?? eventStatus,
         };
         onSubmit(onSubmitData);
     };
@@ -73,55 +104,25 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
         <div className={classes.container}>
             <form className={classes.form} onSubmit={handleSubmit}>
                 <label className={classes.label}>
-                    <span className={classes.titleField}>Event Name:</span>
+                    <span className={classes.inputTitle}>Event Name</span>
                     <input className={classes.input} type="text" name="name" defaultValue={eventData.name} required />
                 </label>
 
                 <label className={classes.label}>
-                    <span className={classes.titleField}>Description:</span>
-                    <textarea
-                        rows={24}
-                        name="description"
-                        defaultValue={eventData.description}
-                        className={classes.textarea}
-                    />
-                </label>
-
-                <label className={classes.label}>
-                    <span className={classes.titleField}>Start date:</span>
-                    <input
-                        type="date"
-                        name="startDate"
-                        defaultValue={dayjs(eventData.startDate).format("YYYY-MM-DD")}
-                        className={classes.input}
-                    />
-                </label>
-
-                <label className={classes.label}>
-                    <span className={classes.titleField}>End date:</span>
-                    <input
-                        type="date"
-                        name="endDate"
-                        defaultValue={dayjs(eventData.endDate).format("YYYY-MM-DD")}
-                        className={classes.input}
-                    />
-                </label>
-
-                <label className={classes.label}>
-                    <span>Is private:</span>
-                    <input type="checkbox" name="isPrivate" defaultChecked={eventData.isPrivate} />
-                </label>
-
-                <label className={classes.label}>
                     <div className={classes.labelFindMap}>
-                        <span>location:</span>
+                        <span className={classes.inputTitle}>Location/Address</span>
                         <Button className={classes.btnFindMap} onClick={handleShowMap}>
                             <label className={classes.labelBtnFindMap}>Find on the Map</label>
-                            <Marker />
+                            <Marker style={{ marginRight: "0.8rem" }} />
                         </Button>
                     </div>
                     <Autocomplete onPlaceSelect={setSelectedPlace} originRef={originRef}>
-                        <Input id="location" type={"text"} placeholder={"Найти ..."} />
+                        <Input
+                            id="location"
+                            type={"text"}
+                            placeholder={"Найти ..."}
+                            defaultValue={eventData.location?.properties?.address}
+                        />
                     </Autocomplete>
                     <Popup
                         {...{
@@ -150,7 +151,11 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                             </AdvancedMarker>
                             <CustomMapControl controlPosition={ControlPosition.TOP}>
                                 <Autocomplete onPlaceSelect={setSelectedPlace} originRef={originRef}>
-                                    <Input type={"text"} placeholder={"Найти ..."} />
+                                    <Input
+                                        type={"text"}
+                                        placeholder={"Найти ..."}
+                                        defaultValue={eventData.location?.properties?.address}
+                                    />
                                 </Autocomplete>
                             </CustomMapControl>
                             <MapHandler place={selectedPlace} />
@@ -161,6 +166,104 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                         </div>
                     </Popup>
                 </label>
+
+                <div className={classes.inputsDate}>
+                    <label className={classes.label}>
+                        <span className={classes.inputTitle}>Start date</span>
+                        <input
+                            type="date"
+                            name="startDate"
+                            defaultValue={dayjs(eventData.startDate).format("YYYY-MM-DD")}
+                            className={classes.inputsDate}
+                        />
+                    </label>
+
+                    <label className={classes.label}>
+                        <span className={classes.inputTitle}>End date</span>
+                        <input
+                            type="date"
+                            name="endDate"
+                            defaultValue={dayjs(eventData.endDate).format("YYYY-MM-DD")}
+                            className={classes.inputsDate}
+                        />
+                    </label>
+
+                    <label className={classes.label}>
+                        <span className={classes.inputTitle}>Start time</span>
+                        <input
+                            type="time"
+                            name="time"
+                            //defaultValue={time}
+                            className={classes.inputsDate}
+                            //onClick={(e) => setTime((e.target as HTMLInputElement).value)}
+                            // onClick={(e) => {
+                            //     const inputValue = setTime((e.target as HTMLInputElement).value);
+                            //     console.log(inputValue);
+                            // }}
+                        />
+                    </label>
+                </div>
+
+                <div className={classes.inputsRadio}>
+                    <label className={classes.labelRadio}>
+                        <span className={classes.spanRadio}>Public event</span>
+                        <input
+                            className={classes.inputRadio}
+                            type="radio"
+                            name="eventRadio"
+                            value={"Public"}
+                            onClick={() => setEventStatus("Public")}
+                            defaultChecked
+                        />
+                    </label>
+                    <label className={classes.labelRadio}>
+                        <span className={classes.spanRadio}>By invation only</span>
+                        <input
+                            className={classes.inputRadio}
+                            type="radio"
+                            name="eventRadio"
+                            value={"Invation"}
+                            onClick={() => setEventStatus("Invation")}
+                        />
+                    </label>
+                    <label className={classes.labelRadio}>
+                        <span className={classes.spanRadio}>Private</span>
+                        <input
+                            className={classes.inputRadio}
+                            type="radio"
+                            name="eventRadio"
+                            value={"Private"}
+                            onClick={() => setEventStatus("Private")}
+                        />
+                    </label>
+                </div>
+
+                <label className={classes.label}>
+                    <span className={classes.inputTitle}>Description</span>
+                    <textarea
+                        rows={8}
+                        name="description"
+                        defaultValue={eventData.description}
+                        className={classes.textarea}
+                    />
+                </label>
+
+                <label className={classes.label}>
+                    <span className={classes.inputTitle}>Select category</span>
+                    <div className={classes.categories}>
+                        {eventCategory.map((category) => (
+                            <Button
+                                key={category}
+                                id={category}
+                                className={classes.buttonCategory}
+                                onClick={selectedCategory}
+                            >
+                                {category}
+                            </Button>
+                        ))}
+                    </div>
+                </label>
+
                 <button className={classes.button} type="submit">
                     Save
                 </button>
