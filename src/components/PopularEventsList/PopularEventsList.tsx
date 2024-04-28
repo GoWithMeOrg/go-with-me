@@ -98,7 +98,7 @@ export const PopularEventList: FC<EventListProps> = () => {
             <div className={classes.cardsWork}>
                 <div className={classes.cardsWorkTitleWrapper}>
                     <h2 className={classes.cardsWorkTitle}>How IT Works</h2>
-                    <Link className={classes.cardsWorkLink} href={""}>
+                    <Link className={classes.cardsWorkLink} href="/faq">
                         FAQ
                     </Link>
                 </div>

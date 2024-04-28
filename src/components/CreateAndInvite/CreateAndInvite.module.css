@@ -42,3 +42,11 @@
     font-weight: 400;
     line-height: 1.88rem;
 }
+
+.createAndInviteButtonLink {
+    color: var(--main-color);
+}
+
+.createAndInviteButtonLink:hover {
+    color: var(--hover-color);
+}

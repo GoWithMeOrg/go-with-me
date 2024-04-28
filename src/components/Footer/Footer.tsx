@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import classes from "./Footer.module.css";
 import Link from "next/link";
 import LogoFooter from "@/assets/icons/logoFooter.svg";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Popup from "../Popup/Popup";
 import { AuthModal } from "../AuthModal";
 
