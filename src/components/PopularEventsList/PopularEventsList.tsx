@@ -14,6 +14,7 @@ import PlanAdventure from "@/assets/icons/planAdventure.svg";
 import { CardWork } from "../CardWork";
 import { CardEvent } from "../CardEvent";
 import { CreateAndInvite } from "../CreateAndInvite";
+import Link from "next/link";
 
 type EventListProps = {
     events?: IEvent[];
@@ -58,10 +59,11 @@ export const PopularEventList: FC<EventListProps> = () => {
                 <div className={classes.promoDescription}>
                     <h1 className={classes.promoTitle}>CRAFT YOUR ADVENTURE HERE</h1>
                     <p className={classes.promoDescription}>
-                        Craft your trips and events effortlessly. Whether you&#39;re planning a weekend getaway with
-                        friends, organizing a cultural exploration, arranging a concert, coordinating a conference, or
-                        hosting a casual meeting, we&#39;re here to help you every step of the way. Join us today and
-                        unlock a world of endless possibilities. Start crafting your adventure now!
+                        Craft your trips and events effortlessly. Whether you&#39;re planning a&nbsp;weekend getaway
+                        with&nbsp;friends, organizing a&nbsp;cultural exploration, arranging a&nbsp;concert,
+                        coordinating a&nbsp;conference, or&nbsp;hosting a&nbsp;casual meeting, we&#39;re here
+                        to&nbsp;help you every step of&nbsp; the way. Join us today and unlock a&nbsp;world
+                        of&nbsp;endless possibilities. Start crafting your adventure now!
                     </p>
                     <div className={classes.arrow}>
                         <div>Join</div>
@@ -94,36 +96,58 @@ export const PopularEventList: FC<EventListProps> = () => {
             </div>
 
             <div className={classes.cardsWork}>
-                <div className={classes.cardsEventsTitle}>
-                    <h2 className={classes.cardsEventsTitle}>How IT Works</h2>
+                <div className={classes.cardsWorkTitleWrapper}>
+                    <h2 className={classes.cardsWorkTitle}>How IT Works</h2>
+                    <Link className={classes.cardsWorkLink} href={""}>
+                        FAQ
+                    </Link>
                 </div>
 
                 <div className={classes.cardsWorkList}>
                     <CardWork
                         title={"Create an awesome event for everyone"}
                         description={
-                            "Organizers can easily create public events that are open to everyone. From concerts to community gatherings, share your event with the world. Engage attendees with interactive features like event discussions and photo sharing."
+                            <p>
+                                Organizers can easily create public events that are&nbsp;open to&nbsp;everyone. From
+                                concerts to&nbsp;community gatherings, share your event with&nbsp;the&nbsp;world. Engage
+                                attendees with&nbsp;interactive features like event discussions and&nbsp;photo sharing.
+                            </p>
                         }
                         picture={<CreateEvent />}
                     />
                     <CardWork
                         title={"Create a private event for your close ones"}
                         description={
-                            "Organizers can create private events for close friends, family, or select invitees. Whether it's a birthday celebration or a private gathering, keep your event exclusive. Control access to your event with customizable invitation options and guest list management."
+                            <p>
+                                Organizers can create private events for&nbsp;close friends, family, or&nbsp;select
+                                invitees. Whether it&#39;s&nbsp;a&nbsp;birthday celebration or&nbsp;a&nbsp;private
+                                gathering, keep your event exclusive. Control access to&nbsp;your event with&nbsp;
+                                customizable invitation options and&nbsp;guest list management.
+                            </p>
                         }
                         picture={<CreatePrivateEvent />}
                     />
                     <CardWork
                         title={"Plan your next adventure"}
                         description={
-                            "Clients can plan their next adventure effortlessly. From weekend getaways to international expeditions, explore destinations, create itineraries, and invite friends to join. Seamlessly collaborate with travel companions by sharing trip details and coordinating activities."
+                            <p>
+                                Clients can plan their next adventure effortlessly. From weekend getaways to&nbsp;
+                                international expeditions, explore destinations, create itineraries, and&nbsp;invite
+                                friends to&nbsp;join. Seamlessly collaborate with&nbsp;travel companions by&nbsp;sharing
+                                trip details and&nbsp;coordinating activities.
+                            </p>
                         }
                         picture={<PlanAdventure />}
                     />
                     <CardWork
                         title={"Explore awesome events near you"}
                         description={
-                            "Clients can discover exciting events near their location. Whether it's concerts, workshops, or community events, browse, RSVP, and join the fun. Stay informed about upcoming events with personalized recommendations and notifications based on your interests."
+                            <p>
+                                Clients can discover exciting events near their location. Whether it&#39;s concerts,
+                                workshops, or&nbsp;community events, browse, RSVP, and&nbsp;join the&nbsp;fun. Stay
+                                informed about upcoming events with&nbsp;personalized recommendations
+                                and&nbsp;notifications based on&nbsp;your interests.
+                            </p>
                         }
                         picture={<ExploreEvents />}
                     />

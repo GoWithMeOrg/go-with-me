@@ -1,6 +1,7 @@
 import React from "react";
 import classes from "./Footer.module.css";
 import Link from "next/link";
+import LogoFooter from "@/assets/icons/logoFooter.svg";
 
 export const Footer = () => {
     return (
@@ -10,7 +11,9 @@ export const Footer = () => {
                     <Link href="/profile" className={classes.footerLink}>
                         Sign In
                     </Link>
-                    <label className={classes.footerLogo}>Go With Me</label>
+                    <div className={classes.footerLogo}>
+                        <LogoFooter />
+                    </div>
                 </div>
 
                 <div className={classes.footerBlockLinks}>
