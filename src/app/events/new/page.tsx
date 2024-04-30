@@ -12,6 +12,7 @@ import type { EventType } from "@/components/EventForm";
 import classes from "./page.module.css";
 import Image from "next/image";
 import rectangle from "@/assets/images/rectangle.png";
+import ArrowBack from "@/assets/icons/arrowBack.svg";
 
 const CREATE_EVENT = gql`
     mutation CreateEvent($event: EventInput!) {
@@ -39,8 +40,9 @@ const EventNewPage: NextPage = () => {
 
     return (
         <div className="container">
-            <h2 className={classes.createEventTitle}>CREATE EVENT</h2>
             <div className={classes.createEventFormWrapper}>
+                <ArrowBack />
+                <h2 className={classes.createEventTitle}>CREATE EVENT</h2>
                 <EventForm
                     eventData={{
                         organizer_id: organizerId,
@@ -52,10 +54,6 @@ const EventNewPage: NextPage = () => {
                     }}
                     onSubmit={handleCreateEvent}
                 />
-                <div className={classes.createEventFormImage}>
-                    <Image style={{ width: "100%" }} src={rectangle} alt="img" />
-                    <button className={classes.createEventFormImageButton}>Update photo</button>
-                </div>
             </div>
         </div>
     );

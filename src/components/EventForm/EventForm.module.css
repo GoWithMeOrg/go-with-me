@@ -5,7 +5,7 @@
 .form {
     display: flex;
     flex-direction: column;
-    gap: 1.875rem;
+    gap: 1.75rem;
 }
 
 .inputTitle {
@@ -25,9 +25,14 @@
     flex-direction: column;
 }
 
-/* .label > span {
-    width: 200px;
-} */
+.textarea {
+    color: var(--text-color);
+    height: 7rem;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.375rem;
+    padding: 0.84rem 0.94rem;
+}
 
 .labelFindMap {
     display: flex;
@@ -51,6 +56,7 @@
 }
 
 .labelBtnFindMap {
+    color: var(--text-color);
     font-size: 0.88rem;
     font-weight: 500;
     line-height: 1.63rem;
@@ -78,6 +84,12 @@
 
 .buttonBlockMap {
     display: flex;
+    justify-content: space-between;
+}
+
+.confidentialityWrapper {
+    display: flex;
+    width: 411px;
     justify-content: space-between;
 }
 
@@ -109,7 +121,7 @@
 
 .inputsDate {
     display: flex;
-    justify-content: space-between;
+    margin-right: 1.25rem;
     width: 11.25rem;
 }
 
@@ -122,7 +134,10 @@
     display: flex;
     flex-direction: row-reverse;
     align-items: center;
-    margin-right: 1.62rem;
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.625rem;
+    color: var(--main-color);
 }
 
 .spanRadio {
@@ -132,7 +147,7 @@
 .inputRadio {
     box-sizing: border-box;
     border: 0.25rem solid rgb(164, 167, 188);
-    background: rgb(247, 247, 250);
+    background: rgb(247, 250, 249);
 }
 
 .inputRadio:checked {
@@ -143,4 +158,99 @@
     box-sizing: border-box;
     border: 0.25rem solid rgb(227, 239, 65);
     background-color: rgb(227, 239, 65);
+}
+
+.attendees {
+    margin-top: 4.375rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.attendeesTitle {
+    margin-bottom: 2.81rem;
+}
+
+.categories {
+    margin-bottom: 1.875rem;
+}
+
+.user {
+    display: flex;
+    justify-content: space-between;
+}
+
+.userWrapper {
+    display: flex;
+    align-items: center;
+}
+
+.userName {
+    color: var(--text-color);
+    font-size: 0.88rem;
+    font-weight: 700;
+    line-height: 1.25;
+    text-align: left;
+    margin-left: 0.625rem;
+}
+
+.buttonPlus {
+    border: none;
+}
+
+.buttonPlus:hover {
+    border: none;
+}
+
+.button {
+    border-radius: 0.25rem;
+    width: 11.44rem;
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.375rem;
+    text-align: center;
+}
+
+.guestList {
+    border: 2px solid red;
+    width: 72.88rem;
+    height: 11.06rem;
+}
+
+.guestListTitle {
+    font-weight: 500;
+    font-size: 0.88rem;
+    line-height: 1.625rem;
+    color: var(--text-color);
+}
+
+.guestListWrapper {
+    display: flex;
+}
+
+.guestListUser {
+    height: 6.25rem;
+    display: flex;
+    align-items: center;
+}
+
+.questListUserName {
+    font-size: 0.88rem;
+    font-weight: 700;
+    line-height: 1.25rem;
+    text-align: left;
+    color: var(--text-color);
+    margin-left: 0.625rem;
+}
+
+.guestListUserImage {
+    width: 6.25rem;
+    height: 6.25rem;
+}
+
+.guestListUserStatus {
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.625rem;
+    text-align: left;
+    color: var(--text-color);
 }

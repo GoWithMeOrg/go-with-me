@@ -1,5 +1,3 @@
-"use client";
-
 import { FC } from "react";
 import { useQuery, gql } from "@apollo/client";
 import type { IEvent } from "@/database/models/Event";
@@ -50,6 +48,8 @@ const GET_EVENTS = gql`
 export const PopularEventList: FC<EventListProps> = () => {
     const { loading, error, data } = useQuery(GET_EVENTS);
 
+    console.log(data);
+
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error : {error.message}</p>;
 
@@ -62,7 +62,7 @@ export const PopularEventList: FC<EventListProps> = () => {
                         Craft your trips and events effortlessly. Whether you&#39;re planning a&nbsp;weekend getaway
                         with&nbsp;friends, organizing a&nbsp;cultural exploration, arranging a&nbsp;concert,
                         coordinating a&nbsp;conference, or&nbsp;hosting a&nbsp;casual meeting, we&#39;re here
-                        to&nbsp;help you every step of&nbsp; the way. Join us today and unlock a&nbsp;world
+                        to&nbsp;help you every step of&nbsp;the way. Join us today and unlock a&nbsp;world
                         of&nbsp;endless possibilities. Start crafting your adventure now!
                     </p>
                     <div className={classes.arrow}>
