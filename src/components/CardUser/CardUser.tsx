@@ -4,11 +4,11 @@ import profile from "@/assets/images/profile.png";
 import classes from "./UserCard.module.css";
 
 interface CardUserProps {
-    width: number;
     userName: string;
     status: string;
+    width: number;
 }
-export const CardUser = ({ width, userName, status }: CardUserProps & { width: number }) => {
+export const CardUser = ({ width, userName, status }: CardUserProps) => {
     return (
         <div className={classes.user}>
             <div className={classes.userAvatar}>
