@@ -1,4 +1,4 @@
-import { FC, FormEvent, useContext, useEffect, useRef, useState } from "react";
+import { FC, FormEvent, useContext, useRef, useState } from "react";
 import dayjs from "dayjs";
 import type { IEvent } from "@/database/models/Event";
 import Image from "next/image";
@@ -20,7 +20,8 @@ import {
 } from "@vis.gl/react-google-maps";
 import profile from "@/assets/images/profile.png";
 import Plus from "@/assets/icons/plus.svg";
-import Joined from "@/assets/icons/joined.svg";
+import { CardUser } from "../CardUser";
+import ArrowNext from "@/assets/icons/arrowNext.svg";
 
 export type EventType = Partial<IEvent>;
 
@@ -328,25 +329,14 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                 <div className={classes.guestList}>
                     <span className={classes.guestListTitle}>Guest list</span>
                     <div className={classes.guestListWrapper}>
-                        <div className={classes.guestListUser}>
-                            <div className={classes.guestListUserImage}>
-                                <Image
-                                    style={{ height: "100%", objectFit: "cover", borderRadius: "50%", zIndex: "-1" }}
-                                    width={100}
-                                    src={profile}
-                                    alt="img"
-                                />
-                            </div>
-
-                            <span className={classes.questListUserName}>
-                                Mike
-                                <br />
-                                Scoones
-                            </span>
-                            <span className={classes.guestListUserStatus}>joined</span>
-
-                            <Joined />
-                        </div>
+                        <CardUser width={100} userName="Mike Scoones" status={"joined"} />
+                        <CardUser width={100} userName="Mike Scoones" status={"invited"} />
+                        <CardUser width={100} userName="Mike Scoones" status={"invited"} />
+                        <CardUser width={100} userName="Mike Scoones" status={"joined"} />
+                        <CardUser width={100} userName="Mike Scoones" status={"joined"} />
+                    </div>
+                    <div className={classes.questListArrow}>
+                        <ArrowNext />
                     </div>
                 </div>
 

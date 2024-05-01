@@ -1,7 +1,7 @@
 import classes from "./CardWork.module.css";
 interface CardWorkProps {
     title: string;
-    description: React.ReactNode | string;
+    description: React.ReactNode;
     picture: React.ReactNode;
 }
 

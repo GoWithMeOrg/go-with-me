@@ -56,12 +56,13 @@
 }
 
 .labelBtnFindMap {
-    color: var(--text-color);
+    color: var(--additional-color);
     font-size: 0.88rem;
     font-weight: 500;
     line-height: 1.63rem;
     text-align: left;
     cursor: pointer;
+    font-family: "__Inter_aaf875";
 }
 
 .inputFindMap {
@@ -211,9 +212,11 @@
 }
 
 .guestList {
-    border: 2px solid red;
     width: 72.88rem;
     height: 11.06rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .guestListTitle {
@@ -227,30 +230,8 @@
     display: flex;
 }
 
-.guestListUser {
-    height: 6.25rem;
+.questListArrow {
     display: flex;
-    align-items: center;
-}
-
-.questListUserName {
-    font-size: 0.88rem;
-    font-weight: 700;
-    line-height: 1.25rem;
-    text-align: left;
-    color: var(--text-color);
-    margin-left: 0.625rem;
-}
-
-.guestListUserImage {
-    width: 6.25rem;
-    height: 6.25rem;
-}
-
-.guestListUserStatus {
-    font-size: 0.875rem;
-    font-weight: 500;
-    line-height: 1.625rem;
-    text-align: left;
-    color: var(--text-color);
+    justify-content: flex-end;
+    margin-right: 1.25rem;
 }
