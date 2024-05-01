@@ -10,6 +10,17 @@
     --error-color: #ff2f3b;
 }
 
+/* --scroll-fixed-width */
+/* ширина контейнера 1180 или 61,46vw*/
+/* отсупы по бокам 740 или 30.54vw */
+/* отступ с одной стороны 370 или 15.52vw */
+
+/* нужна переменна которая будет уменьшать отступы */
+
+/* html {
+
+} */
+
 body {
     min-height: 100%;
     background: var(--background-color);
@@ -48,6 +59,29 @@ header,
 section,
 main {
     display: block;
+}
+
+h1 {
+    font-size: 2.875rem;
+    font-weight: 700;
+    line-height: 3.625rem;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+h2 {
+    font-size: 1.875rem;
+    font-weight: 700;
+    line-height: 2.25rem;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.875rem;
+    text-align: left;
 }
 
 h1,
@@ -111,8 +145,35 @@ input[type="submit"] {
     cursor: pointer;
 }
 
+input[type="date"]::-webkit-calendar-picker-indicator {
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1, 625rem;
+    color: var(--main);
+    padding: 0.75rem 1.06rem;
+    background-image: url("./../assets/icons/calendar.svg");
+    background-repeat: no-repeat;
+    background-position: 100% center;
+    cursor: pointer;
+    font-family: "__Inter_aaf875";
+}
+
+input[type="time"]::-webkit-calendar-picker-indicator {
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1, 625rem;
+    color: var(--main);
+    padding: 0.75rem 1.06rem;
+    background-repeat: no-repeat;
+    background-position: 100% center;
+    cursor: pointer;
+    font-family: "__Inter_aaf875";
+}
+
 input:focus,
 input:active,
+textarea:focus,
+select:focus,
 button:focus,
 button:active {
     outline: none;

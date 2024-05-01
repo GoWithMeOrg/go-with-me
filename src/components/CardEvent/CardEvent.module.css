@@ -31,12 +31,16 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    font-size: 1rem;
+    font-size: 0.875rem;
     font-weight: 500;
-    line-height: 1.63rem;
+    line-height: 1.625rem;
     text-align: left;
     margin-bottom: 1.31rem;
     margin-top: 0.25rem;
+}
+
+.time {
+    margin-left: 0.6rem;
 }
 
 .title {
@@ -53,9 +57,11 @@
     font-weight: 400;
     line-height: 1.38rem;
     text-align: left;
-    text-overflow: ellipsis;
-    white-space: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
     overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .checkboxDate {

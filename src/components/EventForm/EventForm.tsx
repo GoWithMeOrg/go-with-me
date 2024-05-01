@@ -1,6 +1,7 @@
-import { FC, FormEvent, useContext, useEffect, useRef, useState } from "react";
+import { FC, FormEvent, useContext, useRef, useState } from "react";
 import dayjs from "dayjs";
 import type { IEvent } from "@/database/models/Event";
+import Image from "next/image";
 import classes from "./EventForm.module.css";
 
 import { Button } from "../Button";
@@ -17,6 +18,10 @@ import {
     APIProviderContext,
     ControlPosition,
 } from "@vis.gl/react-google-maps";
+import profile from "@/assets/images/profile.png";
+import Plus from "@/assets/icons/plus.svg";
+import { CardUser } from "../CardUser";
+import ArrowNext from "@/assets/icons/arrowNext.svg";
 
 export type EventType = Partial<IEvent>;
 
@@ -104,7 +109,7 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
         <div className={classes.container}>
             <form className={classes.form} onSubmit={handleSubmit}>
                 <label className={classes.label}>
-                    <span className={classes.inputTitle}>Event Name</span>
+                    <span className={classes.inputTitle}>Event title</span>
                     <input className={classes.input} type="text" name="name" defaultValue={eventData.name} required />
                 </label>
 
@@ -120,7 +125,7 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                         <Input
                             id="location"
                             type={"text"}
-                            placeholder={"Найти ..."}
+                            placeholder={""}
                             defaultValue={eventData.location?.properties?.address}
                         />
                     </Autocomplete>
@@ -204,38 +209,42 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                     </label>
                 </div>
 
-                <div className={classes.inputsRadio}>
-                    <label className={classes.labelRadio}>
-                        <span className={classes.spanRadio}>Public event</span>
-                        <input
-                            className={classes.inputRadio}
-                            type="radio"
-                            name="eventRadio"
-                            value={"Public"}
-                            onClick={() => setEventStatus("Public")}
-                            defaultChecked
-                        />
-                    </label>
-                    <label className={classes.labelRadio}>
-                        <span className={classes.spanRadio}>By invation only</span>
-                        <input
-                            className={classes.inputRadio}
-                            type="radio"
-                            name="eventRadio"
-                            value={"Invation"}
-                            onClick={() => setEventStatus("Invation")}
-                        />
-                    </label>
-                    <label className={classes.labelRadio}>
-                        <span className={classes.spanRadio}>Private</span>
-                        <input
-                            className={classes.inputRadio}
-                            type="radio"
-                            name="eventRadio"
-                            value={"Private"}
-                            onClick={() => setEventStatus("Private")}
-                        />
-                    </label>
+                <div className={classes.confidentiality}>
+                    <span className={classes.inputTitle}>Confidentiality</span>
+
+                    <div className={classes.confidentialityWrapper}>
+                        <label className={classes.labelRadio}>
+                            <span className={classes.spanRadio}>Public event</span>
+                            <input
+                                className={classes.inputRadio}
+                                type="radio"
+                                name="eventRadio"
+                                value={"Public"}
+                                onClick={() => setEventStatus("Public")}
+                                defaultChecked
+                            />
+                        </label>
+                        <label className={classes.labelRadio}>
+                            <span className={classes.spanRadio}>By invation only</span>
+                            <input
+                                className={classes.inputRadio}
+                                type="radio"
+                                name="eventRadio"
+                                value={"Invation"}
+                                onClick={() => setEventStatus("Invation")}
+                            />
+                        </label>
+                        <label className={classes.labelRadio}>
+                            <span className={classes.spanRadio}>Private</span>
+                            <input
+                                className={classes.inputRadio}
+                                type="radio"
+                                name="eventRadio"
+                                value={"Private"}
+                                onClick={() => setEventStatus("Private")}
+                            />
+                        </label>
+                    </div>
                 </div>
 
                 <label className={classes.label}>
@@ -250,22 +259,89 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
 
                 <label className={classes.label}>
                     <span className={classes.inputTitle}>Select category</span>
-                    <div className={classes.categories}>
-                        {/* {eventCategory.map((category) => (
-                            <Button
-                                key={category}
-                                id={category}
-                                className={classes.buttonCategory}
-                                onClick={selectedCategory}
-                            >
-                                {category}
-                            </Button>
-                        ))} */}
-                    </div>
+                    <select className={classes.categories}>
+                        <option className={classes.buttonCategory} value="1">
+                            category 1
+                        </option>
+                        <option className={classes.buttonCategory} value="2">
+                            category 2
+                        </option>
+                        <option className={classes.buttonCategory} value="3">
+                            category 3
+                        </option>
+                    </select>
                 </label>
 
+                <label className={classes.label}>
+                    <span className={classes.inputTitle}>Tags</span>
+                    <input className={classes.input} type="text" name="tags" />
+                </label>
+
+                <div className={classes.attendees}>
+                    <h3 className={classes.attendeesTitle}>Attendees</h3>
+                    <label className={classes.label}>
+                        <span className={classes.inputTitle}>Choose member list</span>
+                        <select className={classes.categories}>
+                            <option className={classes.buttonCategory} value="1">
+                                member 1
+                            </option>
+                            <option className={classes.buttonCategory} value="2">
+                                member 2
+                            </option>
+                            <option className={classes.buttonCategory} value="3">
+                                member 3
+                            </option>
+                        </select>
+                    </label>
+
+                    <label className={classes.label}>
+                        <span className={classes.inputTitle}>Invite</span>
+                        <select className={classes.categories}>
+                            <option className={classes.buttonCategory} value="1">
+                                invite 1
+                            </option>
+                            <option className={classes.buttonCategory} value="2">
+                                invite 2
+                            </option>
+                            <option className={classes.buttonCategory} value="3">
+                                invite 3
+                            </option>
+                        </select>
+
+                        <div className={classes.user}>
+                            <div className={classes.userWrapper}>
+                                <Image
+                                    style={{ height: "100%", borderRadius: "50%" }}
+                                    width={50}
+                                    height={50}
+                                    src={profile}
+                                    alt="img"
+                                />
+                                <span className={classes.userName}>Konstantin Raccoon</span>
+                            </div>
+                            <button className={classes.buttonPlus}>
+                                <Plus />
+                            </button>
+                        </div>
+                    </label>
+                </div>
+
+                <div className={classes.guestList}>
+                    <span className={classes.guestListTitle}>Guest list</span>
+                    <div className={classes.guestListWrapper}>
+                        <CardUser width={100} userName="Mike Scoones" status={"joined"} />
+                        <CardUser width={100} userName="Mike Scoones" status={"invited"} />
+                        <CardUser width={100} userName="Mike Scoones" status={"invited"} />
+                        <CardUser width={100} userName="Mike Scoones" status={"joined"} />
+                        <CardUser width={100} userName="Mike Scoones" status={"joined"} />
+                    </div>
+                    <div className={classes.questListArrow}>
+                        <ArrowNext />
+                    </div>
+                </div>
+
                 <button className={classes.button} type="submit">
-                    Save
+                    Save changes
                 </button>
             </form>
         </div>

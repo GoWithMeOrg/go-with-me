@@ -7,8 +7,8 @@ import { Header } from "@/components/Header";
 
 const inter = Inter({
     subsets: ["latin"],
+    style: ["normal"],
     display: "swap",
-    weight: "400",
 });
 
 export const metadata: Metadata = {

@@ -4,6 +4,7 @@ import Link from "next/link";
 import Geocoding from "../GoogleMap/Geocoding";
 import dayjs from "dayjs";
 import Marker from "@/assets/icons/marker.svg";
+import Clock from "@/assets/icons/clock.svg";
 import profile from "../../assets/images/profile.png";
 
 interface CardEventProps {
@@ -31,7 +32,8 @@ export const CardEvent = ({ id, name, description, coord, startDate }: CardEvent
             </div>
 
             <div className={classes.date}>
-                <div>{dayjs(startDate).format("DD.MM.YY")}</div>
+                <Clock />
+                <div className={classes.time}>{dayjs(startDate).format("DD.MM.YY")} | 12:15 PM</div>
             </div>
             <div className={classes.title}>{name}</div>
             <div className={classes.description}>{description}</div>

@@ -3,7 +3,7 @@
 }
 
 .promo {
-    margin-top: 13.8rem;
+    margin-top: 11.25rem;
     margin-bottom: 14.84rem;
     display: flex;
     width: 100%;
@@ -21,14 +21,6 @@
     text-align: left;
     flex-direction: column;
     justify-content: space-between;
-}
-
-.promoTitle {
-    font-size: 2.88rem;
-    font-weight: 700;
-    line-height: 3.63rem;
-    text-align: left;
-    text-transform: uppercase;
 }
 
 .arrow {
@@ -62,11 +54,6 @@
 }
 
 .cardsEventsTitle {
-    font-size: 1.88rem;
-    font-weight: 700;
-    line-height: 2.25rem;
-    text-align: left;
-    text-transform: uppercase;
     margin-bottom: 4.375rem;
 }
 
@@ -96,6 +83,27 @@
     flex-wrap: wrap;
     justify-content: space-between;
     width: 100%;
+}
+
+.cardsWorkTitleWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 4.375rem;
+}
+
+.cardsWorkLink {
+    color: var(--additional-color);
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.19rem;
+    text-align: center;
+    text-transform: uppercase;
+    margin-right: 1.25rem;
+}
+
+.cardsWorkLink:hover {
+    color: var(--main-color);
 }
 
 .arrowEvents {

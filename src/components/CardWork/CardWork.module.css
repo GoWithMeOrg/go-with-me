@@ -13,17 +13,17 @@
 .cardWorkWrapper {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     width: 23.75rem;
     height: 27.2rem;
-    /* margin-left: 13px; */
 }
 
 .cardWorkTitle {
+    display: flex;
     font-size: 1.25rem;
     font-weight: 700;
     line-height: 1.88rem;
     text-align: left;
+    margin-bottom: 1.56rem;
 }
 
 .cardWorkDescription {
@@ -37,4 +37,6 @@
 .cardWorkPicture {
     display: flex;
     justify-content: center;
+    height: 100%;
+    align-items: flex-end;
 }

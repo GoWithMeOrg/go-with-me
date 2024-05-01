@@ -66,12 +66,12 @@ export const AuthPanel = () => {
                                 <Human />
                             </Link>
                             <button
-                                className={classes.logout}
+                                className={classes.buttonLogIn}
                                 onClick={() => {
                                     confirm("Вы уверены, что хотите выйти?") && signOut();
                                 }}
                             >
-                                Выйти
+                                Sign Out
                             </button>
                         </div>
                     </div>
