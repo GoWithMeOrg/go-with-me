@@ -90,8 +90,8 @@
 
 .confidentialityWrapper {
     display: flex;
-    width: 411px;
-    justify-content: space-between;
+    width: 100%;
+    gap: 1.625rem;
 }
 
 .categories {
@@ -122,7 +122,7 @@
 
 .inputsDate {
     display: flex;
-    margin-right: 1.25rem;
+    gap: 1.25rem;
     width: 11.25rem;
 }
 
@@ -138,20 +138,21 @@
     font-weight: 400;
     font-size: 1rem;
     line-height: 1.625rem;
-    color: var(--main-color);
 }
 
-.spanRadio {
-    margin-left: 0.5rem;
+.confidentialityRadio {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
-.inputRadio {
+/* .inputRadio {
     box-sizing: border-box;
     border: 0.25rem solid rgb(164, 167, 188);
     background: rgb(247, 250, 249);
-}
+} */
 
-.inputRadio:checked {
+/* .inputRadio:checked {
     background-color: rgb(227, 239, 65);
 }
 
@@ -159,7 +160,7 @@
     box-sizing: border-box;
     border: 0.25rem solid rgb(227, 239, 65);
     background-color: rgb(227, 239, 65);
-}
+} */
 
 .attendees {
     margin-top: 4.375rem;

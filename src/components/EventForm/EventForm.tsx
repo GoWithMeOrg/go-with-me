@@ -213,37 +213,45 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                     <span className={classes.inputTitle}>Confidentiality</span>
 
                     <div className={classes.confidentialityWrapper}>
-                        <label className={classes.labelRadio}>
-                            <span className={classes.spanRadio}>Public event</span>
+                        <div className={classes.confidentialityRadio}>
                             <input
-                                className={classes.inputRadio}
                                 type="radio"
-                                name="eventRadio"
+                                name="eventStatus"
+                                id="public"
                                 value={"Public"}
-                                onClick={() => setEventStatus("Public")}
+                                onClick={() => console.log("public")}
                                 defaultChecked
                             />
-                        </label>
-                        <label className={classes.labelRadio}>
-                            <span className={classes.spanRadio}>By invation only</span>
+                            <label className={classes.labelRadio} htmlFor="public">
+                                Public event
+                            </label>
+                        </div>
+
+                        <div className={classes.confidentialityRadio}>
                             <input
-                                className={classes.inputRadio}
                                 type="radio"
-                                name="eventRadio"
+                                name="eventStatus"
+                                id="invation"
                                 value={"Invation"}
-                                onClick={() => setEventStatus("Invation")}
+                                onClick={() => console.log("invation")}
                             />
-                        </label>
-                        <label className={classes.labelRadio}>
-                            <span className={classes.spanRadio}>Private</span>
+                            <label className={classes.labelRadio} htmlFor="invation">
+                                By invation only
+                            </label>
+                        </div>
+
+                        <div className={classes.confidentialityRadio}>
                             <input
-                                className={classes.inputRadio}
                                 type="radio"
-                                name="eventRadio"
+                                name="eventStatus"
+                                id="private"
                                 value={"Private"}
-                                onClick={() => setEventStatus("Private")}
+                                onClick={() => console.log("private")}
                             />
-                        </label>
+                            <label className={classes.labelRadio} htmlFor="private">
+                                Private event
+                            </label>
+                        </div>
                     </div>
                 </div>
 
