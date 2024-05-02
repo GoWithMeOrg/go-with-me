@@ -19,9 +19,10 @@ import {
     ControlPosition,
 } from "@vis.gl/react-google-maps";
 import profile from "@/assets/images/profile.png";
-import Plus from "@/assets/icons/plus.svg";
 import { CardUser } from "../CardUser";
 import ArrowNext from "@/assets/icons/arrowNext.svg";
+import { Dropdown } from "../Dropdown";
+import { UploadFile } from "../UploadFile";
 
 export type EventType = Partial<IEvent>;
 
@@ -101,6 +102,7 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
             },
             /* category: (formData.category as string) ?? categories, */
             status: (formData.status as string) ?? eventStatus,
+            /* image: (formData.image as string) ?? "", */
         };
         onSubmit(onSubmitData);
     };
@@ -108,214 +110,197 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
     return (
         <div className={classes.container}>
             <form className={classes.form} onSubmit={handleSubmit}>
-                <label className={classes.label}>
-                    <span className={classes.inputTitle}>Event title</span>
-                    <input className={classes.input} type="text" name="name" defaultValue={eventData.name} required />
-                </label>
-
-                <label className={classes.label}>
-                    <div className={classes.labelFindMap}>
-                        <span className={classes.inputTitle}>Location/Address</span>
-                        <Button className={classes.btnFindMap} onClick={handleShowMap}>
-                            <label className={classes.labelBtnFindMap}>Find on the Map</label>
-                            <Marker style={{ marginRight: "0.8rem" }} />
-                        </Button>
-                    </div>
-                    <Autocomplete onPlaceSelect={setSelectedPlace} originRef={originRef}>
-                        <Input
-                            id="location"
-                            type={"text"}
-                            placeholder={""}
-                            defaultValue={eventData.location?.properties?.address}
+                <div className={classes.formWrapper}>
+                    <label className={classes.label}>
+                        <span className={classes.inputTitle}>Event title</span>
+                        <input
+                            className={classes.input}
+                            type="text"
+                            name="name"
+                            defaultValue={eventData.name}
+                            required
                         />
-                    </Autocomplete>
-                    <Popup
-                        {...{
-                            showPopup,
-                            setShowPopup,
-                        }}
-                        style={{ backgroundColor: "none", padding: "1rem", borderRadius: "0.5rem", width: "60%" }}
-                    >
-                        <Map
-                            style={{ height: "600px" }}
-                            defaultZoom={3}
-                            defaultCenter={{ lat: 22.54992, lng: 0 }}
-                            gestureHandling={"greedy"}
-                            disableDefaultUI={false}
-                            mapId={"<Your custom MapId here>"}
-                            onClick={(e) => {
-                                setMarkerPosition(e.detail.latLng);
+                    </label>
+
+                    <label className={classes.label}>
+                        <div className={classes.labelFindMap}>
+                            <span className={classes.inputTitle}>Location/Address</span>
+                            <button className={classes.btnFindMap} onClick={handleShowMap}>
+                                Find on the Map
+                                <Marker style={{ marginRight: "0.25rem" }} />
+                            </button>
+                        </div>
+                        <Autocomplete onPlaceSelect={setSelectedPlace} originRef={originRef}>
+                            <Input
+                                id="location"
+                                type={"text"}
+                                placeholder={""}
+                                defaultValue={eventData.location?.properties?.address}
+                            />
+                        </Autocomplete>
+                        <Popup
+                            {...{
+                                showPopup,
+                                setShowPopup,
                             }}
+                            style={{ backgroundColor: "none", padding: "1rem", borderRadius: "0.5rem", width: "60%" }}
                         >
-                            <AdvancedMarker
-                                position={markerPosition}
-                                // draggable={true}
-                                title={"AdvancedMarker with customized pin."}
+                            <Map
+                                style={{ height: "600px" }}
+                                defaultZoom={3}
+                                defaultCenter={{ lat: 22.54992, lng: 0 }}
+                                gestureHandling={"greedy"}
+                                disableDefaultUI={false}
+                                mapId={"<Your custom MapId here>"}
+                                onClick={(e) => {
+                                    setMarkerPosition(e.detail.latLng);
+                                }}
                             >
-                                <Pin background={"#FBBC04"} borderColor={"#1e89a1"} glyphColor={"#0f677a"}></Pin>
-                            </AdvancedMarker>
-                            <CustomMapControl controlPosition={ControlPosition.TOP}>
-                                <Autocomplete onPlaceSelect={setSelectedPlace} originRef={originRef}>
-                                    <Input
-                                        type={"text"}
-                                        placeholder={"Найти ..."}
-                                        defaultValue={eventData.location?.properties?.address}
-                                    />
-                                </Autocomplete>
-                            </CustomMapControl>
-                            <MapHandler place={selectedPlace} />
-                        </Map>
-                        <div className={classes.buttonBlockMap}>
-                            <Geolocation />
-                            <button onClick={() => setShowPopup(false)}>закрыть карту</button>
-                        </div>
-                    </Popup>
-                </label>
-
-                <div className={classes.inputsDate}>
-                    <label className={classes.label}>
-                        <span className={classes.inputTitle}>Start date</span>
-                        <input
-                            type="date"
-                            name="startDate"
-                            defaultValue={dayjs(eventData.startDate).format("YYYY-MM-DD")}
-                            className={classes.inputsDate}
-                        />
+                                <AdvancedMarker
+                                    position={markerPosition}
+                                    // draggable={true}
+                                    title={"AdvancedMarker with customized pin."}
+                                >
+                                    <Pin background={"#FBBC04"} borderColor={"#1e89a1"} glyphColor={"#0f677a"}></Pin>
+                                </AdvancedMarker>
+                                <CustomMapControl controlPosition={ControlPosition.TOP}>
+                                    <Autocomplete onPlaceSelect={setSelectedPlace} originRef={originRef}>
+                                        <Input
+                                            type={"text"}
+                                            placeholder={"Найти ..."}
+                                            defaultValue={eventData.location?.properties?.address}
+                                        />
+                                    </Autocomplete>
+                                </CustomMapControl>
+                                <MapHandler place={selectedPlace} />
+                            </Map>
+                            <div className={classes.buttonBlockMap}>
+                                <Geolocation />
+                                <button onClick={() => setShowPopup(false)}>закрыть карту</button>
+                            </div>
+                        </Popup>
                     </label>
 
-                    <label className={classes.label}>
-                        <span className={classes.inputTitle}>End date</span>
-                        <input
-                            type="date"
-                            name="endDate"
-                            defaultValue={dayjs(eventData.endDate).format("YYYY-MM-DD")}
-                            className={classes.inputsDate}
-                        />
-                    </label>
-
-                    <label className={classes.label}>
-                        <span className={classes.inputTitle}>Start time</span>
-                        <input
-                            type="time"
-                            name="time"
-                            //defaultValue={time}
-                            className={classes.inputsDate}
-                            //onClick={(e) => setTime((e.target as HTMLInputElement).value)}
-                            // onClick={(e) => {
-                            //     const inputValue = setTime((e.target as HTMLInputElement).value);
-                            //     console.log(inputValue);
-                            // }}
-                        />
-                    </label>
-                </div>
-
-                <div className={classes.confidentiality}>
-                    <span className={classes.inputTitle}>Confidentiality</span>
-
-                    <div className={classes.confidentialityWrapper}>
-                        <div className={classes.confidentialityRadio}>
+                    <div className={classes.inputsDate}>
+                        <label className={classes.label}>
+                            <span className={classes.inputTitle}>Start date</span>
                             <input
-                                type="radio"
-                                name="eventStatus"
-                                id="public"
-                                value={"Public"}
-                                onClick={() => console.log("public")}
-                                defaultChecked
+                                type="date"
+                                name="startDate"
+                                defaultValue={dayjs(eventData.startDate).format("YYYY-MM-DD")}
+                                className={classes.inputsDate}
                             />
-                            <label className={classes.labelRadio} htmlFor="public">
-                                Public event
-                            </label>
-                        </div>
+                        </label>
 
-                        <div className={classes.confidentialityRadio}>
+                        <label className={classes.label}>
+                            <span className={classes.inputTitle}>End date</span>
                             <input
-                                type="radio"
-                                name="eventStatus"
-                                id="invation"
-                                value={"Invation"}
-                                onClick={() => console.log("invation")}
+                                type="date"
+                                name="endDate"
+                                defaultValue={dayjs(eventData.endDate).format("YYYY-MM-DD")}
+                                className={classes.inputsDate}
                             />
-                            <label className={classes.labelRadio} htmlFor="invation">
-                                By invation only
-                            </label>
-                        </div>
+                        </label>
 
-                        <div className={classes.confidentialityRadio}>
+                        <label className={classes.label}>
+                            <span className={classes.inputTitle}>Start time</span>
                             <input
-                                type="radio"
-                                name="eventStatus"
-                                id="private"
-                                value={"Private"}
-                                onClick={() => console.log("private")}
+                                type="time"
+                                name="time"
+                                //defaultValue={time}
+                                className={classes.inputsDate}
+                                //onClick={(e) => setTime((e.target as HTMLInputElement).value)}
+                                // onClick={(e) => {
+                                //     const inputValue = setTime((e.target as HTMLInputElement).value);
+                                //     console.log(inputValue);
+                                // }}
                             />
-                            <label className={classes.labelRadio} htmlFor="private">
-                                Private event
-                            </label>
+                        </label>
+                    </div>
+
+                    <div className={classes.confidentiality}>
+                        <span className={classes.inputTitle}>Confidentiality</span>
+
+                        <div className={classes.confidentialityWrapper}>
+                            <div className={classes.confidentialityRadio}>
+                                <input
+                                    type="radio"
+                                    name="eventStatus"
+                                    id="public"
+                                    value={"Public"}
+                                    onClick={() => console.log("public")}
+                                    defaultChecked
+                                />
+                                <label className={classes.labelRadio} htmlFor="public">
+                                    Public event
+                                </label>
+                            </div>
+
+                            <div className={classes.confidentialityRadio}>
+                                <input
+                                    type="radio"
+                                    name="eventStatus"
+                                    id="invation"
+                                    value={"Invation"}
+                                    onClick={() => console.log("invation")}
+                                />
+                                <label className={classes.labelRadio} htmlFor="invation">
+                                    By invation only
+                                </label>
+                            </div>
+
+                            <div className={classes.confidentialityRadio}>
+                                <input
+                                    type="radio"
+                                    name="eventStatus"
+                                    id="private"
+                                    value={"Private"}
+                                    onClick={() => console.log("private")}
+                                />
+                                <label className={classes.labelRadio} htmlFor="private">
+                                    Private event
+                                </label>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <label className={classes.label}>
-                    <span className={classes.inputTitle}>Description</span>
-                    <textarea
-                        rows={8}
-                        name="description"
-                        defaultValue={eventData.description}
-                        className={classes.textarea}
-                    />
-                </label>
-
-                <label className={classes.label}>
-                    <span className={classes.inputTitle}>Select category</span>
-                    <select className={classes.categories}>
-                        <option className={classes.buttonCategory} value="1">
-                            category 1
-                        </option>
-                        <option className={classes.buttonCategory} value="2">
-                            category 2
-                        </option>
-                        <option className={classes.buttonCategory} value="3">
-                            category 3
-                        </option>
-                    </select>
-                </label>
-
-                <label className={classes.label}>
-                    <span className={classes.inputTitle}>Tags</span>
-                    <input className={classes.input} type="text" name="tags" />
-                </label>
-
-                <div className={classes.attendees}>
-                    <h3 className={classes.attendeesTitle}>Attendees</h3>
                     <label className={classes.label}>
-                        <span className={classes.inputTitle}>Choose member list</span>
-                        <select className={classes.categories}>
-                            <option className={classes.buttonCategory} value="1">
-                                member 1
-                            </option>
-                            <option className={classes.buttonCategory} value="2">
-                                member 2
-                            </option>
-                            <option className={classes.buttonCategory} value="3">
-                                member 3
-                            </option>
-                        </select>
+                        <span className={classes.inputTitle}>Description</span>
+                        <textarea
+                            rows={8}
+                            name="description"
+                            defaultValue={eventData.description}
+                            className={classes.textarea}
+                        />
                     </label>
 
-                    <label className={classes.label}>
-                        <span className={classes.inputTitle}>Invite</span>
-                        <select className={classes.categories}>
-                            <option className={classes.buttonCategory} value="1">
-                                invite 1
-                            </option>
-                            <option className={classes.buttonCategory} value="2">
-                                invite 2
-                            </option>
-                            <option className={classes.buttonCategory} value="3">
-                                invite 3
-                            </option>
-                        </select>
+                    <div className={classes.label}>
+                        <span className={classes.inputTitle}>Select category</span>
+                        <Dropdown textButton={"No category"} className={classes.dropdownButton} />
+                    </div>
 
+                    <div className={classes.label}>
+                        <span className={classes.inputTitle}>Select subject</span>
+                        <Dropdown textButton={"No category"} className={classes.dropdownButton} />
+                    </div>
+
+                    <label className={classes.label}>
+                        <span className={classes.inputTitle}>Create your tag</span>
+                        <input className={classes.input} type="text" name="tag" />
+                    </label>
+
+                    <h3 className={classes.companionsTitle}>Companions</h3>
+                    <div className={classes.label}>
+                        <span className={classes.inputTitle}>Choose member list</span>
+                        <Dropdown className={classes.dropdownButtonCompanions} />
+                    </div>
+
+                    <div className={classes.label}>
+                        <span className={classes.inputTitle}>Invite</span>
+                        <Dropdown className={classes.dropdownButtonCompanions} />
+                    </div>
+
+                    {/* <label className={classes.label}>
                         <div className={classes.user}>
                             <div className={classes.userWrapper}>
                                 <Image
@@ -331,26 +316,28 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                                 <Plus />
                             </button>
                         </div>
-                    </label>
+                    </label> */}
+
+                    <div className={classes.guestList}>
+                        <span className={classes.guestListTitle}>Guest list</span>
+                        <div className={classes.guestListWrapper}>
+                            <CardUser width={100} userName="Mike Scoones" status={"joined"} />
+                            <CardUser width={100} userName="Mike Scoones" status={"invited"} />
+                            <CardUser width={100} userName="Mike Scoones" status={"invited"} />
+                            <CardUser width={100} userName="Mike Scoones" status={"joined"} />
+                            <CardUser width={100} userName="Mike Scoones" status={"joined"} />
+                        </div>
+                        <div className={classes.questListArrow}>
+                            <ArrowNext />
+                        </div>
+                    </div>
+
+                    <button className={classes.button} type="submit">
+                        Save changes
+                    </button>
                 </div>
 
-                <div className={classes.guestList}>
-                    <span className={classes.guestListTitle}>Guest list</span>
-                    <div className={classes.guestListWrapper}>
-                        <CardUser width={100} userName="Mike Scoones" status={"joined"} />
-                        <CardUser width={100} userName="Mike Scoones" status={"invited"} />
-                        <CardUser width={100} userName="Mike Scoones" status={"invited"} />
-                        <CardUser width={100} userName="Mike Scoones" status={"joined"} />
-                        <CardUser width={100} userName="Mike Scoones" status={"joined"} />
-                    </div>
-                    <div className={classes.questListArrow}>
-                        <ArrowNext />
-                    </div>
-                </div>
-
-                <button className={classes.button} type="submit">
-                    Save changes
-                </button>
+                <UploadFile />
             </form>
         </div>
     );

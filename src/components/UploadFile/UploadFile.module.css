@@ -1,0 +1,10 @@
+.uploadFile {
+    display: flex;
+    flex-direction: column;
+    width: 28.75rem;
+    margin-left: 120px;
+}
+
+.preview {
+    width: 100%;
+}

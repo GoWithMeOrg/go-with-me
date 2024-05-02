@@ -1,11 +1,21 @@
 .container {
-    width: 36.25rem;
+    width: 73.75rem;
 }
 
 .form {
     display: flex;
+}
+
+.formWrapper {
+    width: 36.25rem;
+    display: flex;
     flex-direction: column;
-    gap: 1.75rem;
+    gap: 1.875rem;
+}
+
+.btnUpload {
+    width: 12.75rem;
+    margin-top: 1.125rem;
 }
 
 .inputTitle {
@@ -14,6 +24,7 @@
     font-weight: 500;
     line-height: 1.625rem;
     text-align: left;
+    margin-bottom: 0.125rem;
 }
 
 .header {
@@ -42,20 +53,8 @@
 .btnFindMap {
     display: flex;
     flex-direction: row-reverse;
-    background: none;
-    cursor: pointer;
-    margin: 0;
-    padding: 0;
-    color: var(--text-color);
     border: none;
     height: auto;
-}
-
-.btnFindMap:hover {
-    border: none;
-}
-
-.labelBtnFindMap {
     color: var(--additional-color);
     font-size: 0.88rem;
     font-weight: 500;
@@ -64,6 +63,21 @@
     cursor: pointer;
     font-family: "__Inter_aaf875";
 }
+
+.btnFindMap:hover {
+    border: none;
+    color: var(--additional-color);
+}
+
+/* .labelBtnFindMap {
+    color: var(--additional-color);
+    font-size: 0.88rem;
+    font-weight: 500;
+    line-height: 1.63rem;
+    text-align: left;
+    cursor: pointer;
+    font-family: "__Inter_aaf875";
+} */
 
 .inputFindMap {
     width: 100%;
@@ -115,11 +129,6 @@
     border-radius: 0.25rem;
 }
 
-.buttonCategory.active {
-    background: #e3ef41;
-    color: black;
-}
-
 .inputsDate {
     display: flex;
     gap: 1.25rem;
@@ -132,44 +141,34 @@
 }
 
 .labelRadio {
-    display: flex;
-    flex-direction: row-reverse;
-    align-items: center;
-    font-weight: 400;
     font-size: 1rem;
+    font-weight: 400;
     line-height: 1.625rem;
+    color: var(--main-color);
 }
 
 .confidentialityRadio {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    margin-top: 0.75rem;
 }
 
-/* .inputRadio {
-    box-sizing: border-box;
-    border: 0.25rem solid rgb(164, 167, 188);
-    background: rgb(247, 250, 249);
-} */
-
-/* .inputRadio:checked {
-    background-color: rgb(227, 239, 65);
-}
-
-.inputRadio::after {
-    box-sizing: border-box;
-    border: 0.25rem solid rgb(227, 239, 65);
-    background-color: rgb(227, 239, 65);
-} */
-
-.attendees {
-    margin-top: 4.375rem;
+.companions {
+    margin-top: 3.125rem;
     display: flex;
     flex-direction: column;
 }
 
-.attendeesTitle {
-    margin-bottom: 2.81rem;
+.companionsTitle {
+    margin-top: 3.125rem;
+    margin-bottom: 0.94rem;
+}
+
+.labelCompanions {
+    display: flex;
+    flex-direction: column;
+    gap: 1.875rem;
 }
 
 .categories {
@@ -204,12 +203,8 @@
 }
 
 .button {
-    border-radius: 0.25rem;
     width: 11.44rem;
-    font-size: 1.125rem;
-    font-weight: 700;
-    line-height: 1.375rem;
-    text-align: center;
+    margin-bottom: 10.625rem;
 }
 
 .guestList {
@@ -218,6 +213,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    margin-bottom: 58px;
 }
 
 .guestListTitle {
@@ -235,4 +231,40 @@
     display: flex;
     justify-content: flex-end;
     margin-right: 1.25rem;
+}
+
+.dropdownButton {
+    width: 100%;
+    background: var(--white-color);
+    border: 1px solid var(--additional-color);
+    border-radius: 0.25rem;
+    color: var(--main-color);
+    height: 3.13rem;
+    padding: 0.75rem 1.25rem 0.75rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dropdownButton:hover {
+    background: var(--white-color);
+    border: 1px solid var(--additional-color);
+}
+
+.dropdownButtonCompanions {
+    width: 100%;
+    background: var(--white-color);
+    border: 1px solid var(--additional-color);
+    border-radius: 0.25rem;
+    color: var(--main-color);
+    height: 3.13rem;
+    padding: 0.75rem 1.25rem 0.75rem 1rem;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.dropdownButtonCompanions:hover {
+    background: var(--white-color);
+    border: 1px solid var(--additional-color);
 }

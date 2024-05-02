@@ -130,7 +130,7 @@ select {
     font-weight: 400;
     text-align: left;
     height: 3.13rem;
-    padding: 0.75rem 0.94rem 0.75rem 0.94rem;
+    padding: 0.75rem 0.94rem;
 }
 
 input::-ms-clear {
@@ -180,8 +180,11 @@ input[type="radio"]:checked + label,
 input[type="radio"]:not(:checked) + label {
     display: inline-block;
     position: relative;
-    padding-left: 28px;
-    line-height: 20px;
+    padding-left: 1.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.25rem;
+    color: var(--main-color);
     cursor: pointer;
 }
 
@@ -262,10 +265,6 @@ button::-moz-focus-inner {
     border: 0;
 }
 
-label {
-    cursor: pointer;
-}
-
 legend {
     display: block;
 }
@@ -275,4 +274,14 @@ legend {
     grid-template-columns: repeat(12, 80px);
     column-gap: 20px;
     justify-content: center;
+}
+
+.buttonSaveChange {
+    border-radius: 0.25rem;
+    width: 11.44rem;
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.375rem;
+    text-align: center;
+    cursor: pointer;
 }
