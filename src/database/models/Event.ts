@@ -21,7 +21,8 @@ export interface IEvent {
     };
     tags?: string[];
     /* category?: string; */
-    status?: string;
+    status: string;
+    image?: Buffer;
 }
 
 export interface IEventDocument extends Omit<IEvent, "_id" | "organizer" | "createdAt" | "updatedAt">, Document {}
@@ -64,13 +65,24 @@ const EventSchema = new Schema<IEventDocument>(
         }, */
         status: {
             type: String,
+            enum: ["public", "invation", "private"],
             required: true,
-            enum: ["Public", "Invation", "Private"],
         },
 
         startDate: Date,
         endDate: Date,
+
+        // image: {
+        //     type: Buffer, // Store image data as a Buffer
+        //     validate: {
+        //         validator: function (v: any) {
+        //             return v && v instanceof Buffer; // Check for valid Buffer
+        //         },
+        //         message: "Image must be a Buffer",
+        //     },
+        // },
     },
+
     {
         timestamps: true,
         toJSON: { virtuals: true },

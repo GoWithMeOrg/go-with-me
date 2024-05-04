@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
+    //assetPrefix: `https://<your-space-endpoint>.digitalocean.space/`,
     webpack(config) {
         const fileLoaderRule = config.module.rules.find((rule) => rule.test?.test?.(".svg"));
 

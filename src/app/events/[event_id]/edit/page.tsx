@@ -29,6 +29,7 @@ const GET_EVENT = gql`
             # isPrivate
             startDate
             endDate
+            status
         }
     }
 `;
@@ -67,8 +68,8 @@ const EventEditPage: NextPage<PageParams> = (context) => {
     };
 
     return (
-        <div className="EventEditPage">
-            <h3>Edit Event {data?.event?.name}</h3>
+        <div className="container">
+            <h3>Edit Event</h3>
             {loading && <p>Loading...</p>}
             {error && <p>Error : {error.message}</p>}
             {!error && data?.event && <EventForm eventData={data.event} onSubmit={handleEdit} />}

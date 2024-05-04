@@ -158,6 +158,7 @@ const typeDefs = gql`
         tags: [String]
         # category: String
         status: String
+        image: String
     }
 
     type Trip {
@@ -210,6 +211,7 @@ const typeDefs = gql`
         tags: [String]
         # category: String
         status: String
+        image: String
     }
 
     type Mutation {

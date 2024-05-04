@@ -37,7 +37,14 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
     const [showPopup, setShowPopup] = useState<boolean>(false);
     const [time, setTime] = useState<string>(eventData.time ?? "00:00");
     //const [categories, setCategories] = useState<string>(eventData.category ?? "");
-    const [eventStatus, setEventStatus] = useState<string>(eventData.status ?? "Public");
+
+    enum EventStatus {
+        PUBLIC = "public",
+        INVATION = "invation",
+        PRIVATE = "private",
+    }
+
+    const [eventStatus, setEventStatus] = useState<string>(eventData.status ?? EventStatus.PUBLIC);
 
     const apiIsLoaded = useApiIsLoaded();
     const mapAPI = useContext(APIProviderContext);
@@ -45,13 +52,18 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
     const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(null);
     const originRef = useRef<HTMLInputElement>(null);
 
-    //const eventCategory = ["Party", "Conference", "Concert", "Trip", "Workshops"];
+    const [image, setImage] = useState(null);
+
+    const handleImageChange = (selectedImage: any) => {
+        setImage(selectedImage);
+    };
 
     if (!apiIsLoaded || !mapAPI) {
         return;
     }
 
-    //console.log(eventData.eventType);
+    console.log(eventStatus);
+
     const handleShowMap = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         setShowPopup(true);
@@ -63,23 +75,6 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
         setCategories(button.textContent as string);
     }; */
 
-    // const timeM = document.getElementsByName("time") as NodeListOf<HTMLInputElement>;
-    // const timeString = timeM[0]?.value;
-    // console.log(typeof timeString);
-
-    /* const setCheckedRadio = () => {
-        const radioGroup = document.getElementsByName("eventRadio") as NodeListOf<HTMLInputElement>;
-        for (const radio of radioGroup) {
-            if (radio.value === eventStatus) {
-                radio.checked = radio.value === eventStatus;
-                radio.checked = true;
-            }
-        }
-        //console.log(eventStatus);
-    };
-    setCheckedRadio(); */
-
-    // console.log(time);
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = Object.fromEntries(new FormData(e.currentTarget).entries());
@@ -102,10 +97,12 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
             },
             /* category: (formData.category as string) ?? categories, */
             status: (formData.status as string) ?? eventStatus,
-            /* image: (formData.image as string) ?? "", */
+            //image: formData.image ? Buffer.from(formData.image, 'base64') : undefined,
         };
         onSubmit(onSubmitData);
     };
+
+    // спросить как мы будем хранить картинки.
 
     return (
         <div className={classes.container}>
@@ -228,8 +225,8 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                                     name="eventStatus"
                                     id="public"
                                     value={"Public"}
-                                    onClick={() => console.log("public")}
-                                    defaultChecked
+                                    onChange={() => setEventStatus(EventStatus.PUBLIC)}
+                                    checked={eventStatus === "public"}
                                 />
                                 <label className={classes.labelRadio} htmlFor="public">
                                     Public event
@@ -242,7 +239,8 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                                     name="eventStatus"
                                     id="invation"
                                     value={"Invation"}
-                                    onClick={() => console.log("invation")}
+                                    onChange={() => setEventStatus(EventStatus.INVATION)}
+                                    checked={eventStatus === "invation"}
                                 />
                                 <label className={classes.labelRadio} htmlFor="invation">
                                     By invation only
@@ -255,7 +253,8 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                                     name="eventStatus"
                                     id="private"
                                     value={"Private"}
-                                    onClick={() => console.log("private")}
+                                    onChange={() => setEventStatus(EventStatus.PRIVATE)}
+                                    checked={eventStatus === "private"}
                                 />
                                 <label className={classes.labelRadio} htmlFor="private">
                                     Private event
@@ -337,7 +336,7 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                     </button>
                 </div>
 
-                <UploadFile />
+                <UploadFile onImageChange={handleImageChange} />
             </form>
         </div>
     );

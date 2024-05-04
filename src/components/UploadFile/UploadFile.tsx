@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import classes from "./UploadFile.module.css";
-import Image from "next/image";
 
-export const UploadFile = () => {
+interface UploadFileProps {
+    onImageChange: (selectedImage: any) => void;
+}
+
+export const UploadFile: React.FC<UploadFileProps> = ({ onImageChange }) => {
     const [file, setFile] = useState(null);
     const [previewUrl, setPreviewUrl] = useState(null);
 
@@ -18,11 +21,15 @@ export const UploadFile = () => {
         }
 
         // Create a new URL object to display the image preview
-        const reader = new FileReader();
+        const reader: any = new FileReader();
         reader.onloadend = () => {
             setPreviewUrl(reader.result);
         };
         reader.readAsDataURL(selectedFile);
+
+        //onImageChange(selectedFile); //метаданные изображения
+
+        onImageChange(previewUrl);
     };
 
     const handleSubmit = async (event: any) => {
@@ -47,7 +54,7 @@ export const UploadFile = () => {
     };
 
     return (
-        <div className={classes.uploadFile} onSubmit={handleSubmit}>
+        <div className={classes.uploadFile} onSubmit={handleSubmit} onChange={handleFileChange}>
             {previewUrl && <img src={previewUrl} alt="img" className={classes.preview} />}
             <input type="file" onChange={handleFileChange} />
         </div>

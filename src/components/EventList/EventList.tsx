@@ -38,6 +38,8 @@ const GET_EVENTS = gql`
                     address
                 }
             }
+            status
+            image
         }
     }
 `;
@@ -54,6 +56,8 @@ const EventList: FC<EventListProps> = () => {
     //const router = useRouter();
     const { loading, error, data, refetch } = useQuery(GET_EVENTS);
     const [deleteEventMutation] = useMutation(DELETE_EVENT_MUTATION);
+
+    console.log(data);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error : {error.message}</p>;
