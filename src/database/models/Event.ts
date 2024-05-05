@@ -38,11 +38,8 @@ const EventSchema = new Schema<IEventDocument>(
             type: String,
             required: true,
         },
+
         description: String,
-        /* isPrivate: {
-            type: Boolean,
-            default: true,
-        }, */
 
         location: {
             type: {
@@ -58,6 +55,10 @@ const EventSchema = new Schema<IEventDocument>(
                 address: String,
             },
         },
+
+        startDate: Date,
+        endDate: Date,
+        time: String,
         /* category: {
             type: String,
             required: true,
@@ -68,9 +69,6 @@ const EventSchema = new Schema<IEventDocument>(
             enum: ["public", "invation", "private"],
             required: true,
         },
-
-        startDate: Date,
-        endDate: Date,
 
         // image: {
         //     type: Buffer, // Store image data as a Buffer

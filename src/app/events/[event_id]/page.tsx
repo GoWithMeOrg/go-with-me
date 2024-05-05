@@ -24,9 +24,9 @@ const GET_EVENT_BY_ID = gql`
             }
             name
             description
-            # isPrivate
             startDate
             endDate
+            time
         }
         comments(event_id: $id) {
             _id
@@ -98,6 +98,8 @@ const EventPage: NextPage<PageParams> = (context) => {
             <Link href={`/events/${context.params.event_id}/edit`}>Edit</Link>
 
             <Event event={data.event} />
+
+            <div>{data.event.time}</div>
 
             <h3>Comments</h3>
             <Comments comments={data.comments} onSave={handleSaveComment} />

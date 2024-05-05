@@ -13,9 +13,10 @@ interface CardEventProps {
     description: string;
     coord: [number, number];
     startDate: string | Date | undefined;
+    time: string | undefined;
 }
 
-export const CardEvent = ({ id, name, description, coord, startDate }: CardEventProps) => {
+export const CardEvent = ({ id, name, description, coord, startDate, time }: CardEventProps) => {
     return (
         <div id={id} className={classes.card}>
             <div className={classes.image}>
@@ -33,7 +34,9 @@ export const CardEvent = ({ id, name, description, coord, startDate }: CardEvent
 
             <div className={classes.date}>
                 <Clock />
-                <div className={classes.time}>{dayjs(startDate).format("DD.MM.YY")} | 12:15 PM</div>
+                <div className={classes.time}>
+                    {dayjs(startDate).format("DD.MM.YY")} | {time}
+                </div>
             </div>
             <div className={classes.title}>{name}</div>
             <div className={classes.description}>{description}</div>

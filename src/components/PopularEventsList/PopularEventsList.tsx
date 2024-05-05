@@ -31,9 +31,9 @@ const GET_EVENTS = gql`
 
             name
             description
-            # isPrivate
             startDate
             endDate
+            time
             location {
                 type
                 coordinates
@@ -78,7 +78,7 @@ export const PopularEventList: FC<EventListProps> = () => {
             <div className={classes.cardsEvents}>
                 <h2 className={classes.cardsEventsTitle}>Popular Event List</h2>
                 <div className={classes.cardsEventsList}>
-                    {data.events.map(({ _id, description, name, startDate, location }: IEvent) => (
+                    {data.events.map(({ _id, description, name, startDate, location, time }: IEvent) => (
                         <CardEvent
                             key={_id}
                             id={_id}
@@ -86,6 +86,7 @@ export const PopularEventList: FC<EventListProps> = () => {
                             description={description}
                             coord={location.coordinates}
                             startDate={startDate}
+                            time={time}
                         />
                     ))}
                 </div>

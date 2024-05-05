@@ -28,9 +28,9 @@ const GET_EVENTS = gql`
 
             name
             description
-            # isPrivate
             startDate
             endDate
+            time
             location {
                 type
                 coordinates

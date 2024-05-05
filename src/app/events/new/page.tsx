@@ -10,8 +10,6 @@ import { useMutation, gql } from "@apollo/client";
 import { EventForm } from "@/components/EventForm";
 import type { EventType } from "@/components/EventForm";
 import classes from "./page.module.css";
-import Image from "next/image";
-import rectangle from "@/assets/images/rectangle.png";
 import ArrowBack from "@/assets/icons/arrowBack.svg";
 
 const CREATE_EVENT = gql`
@@ -50,7 +48,6 @@ const EventNewPage: NextPage = () => {
                         description: "",
                         startDate: new Date(),
                         endDate: new Date(),
-                        /* isPrivate: true, */
                     }}
                     onSubmit={handleCreateEvent}
                 />

@@ -26,9 +26,9 @@ const GET_EVENT = gql`
 
             name
             description
-            # isPrivate
             startDate
             endDate
+            time
             status
         }
     }
@@ -40,9 +40,10 @@ const UPDATE_EVENT = gql`
         updateEvent(id: $id, event: $event) {
             name
             description
-            # isPrivate
+            status
             startDate
             endDate
+            time
         }
     }
 `;

@@ -4,7 +4,6 @@ import type { IEvent } from "@/database/models/Event";
 import Image from "next/image";
 import classes from "./EventForm.module.css";
 
-import { Button } from "../Button";
 import Marker from "@/assets/icons/marker.svg";
 import Autocomplete from "../GoogleMap/Autocomplete";
 import { Input } from "../Input";
@@ -62,7 +61,7 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
         return;
     }
 
-    console.log(eventStatus);
+    console.log(eventData.time);
 
     const handleShowMap = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
@@ -102,7 +101,7 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
         onSubmit(onSubmitData);
     };
 
-    // спросить как мы будем хранить картинки.
+    // картинки будем хранить в OD CDN
 
     return (
         <div className={classes.container}>
@@ -204,13 +203,9 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                             <input
                                 type="time"
                                 name="time"
-                                //defaultValue={time}
+                                defaultValue={time ?? dayjs(eventData.time).format("HH:mm")}
                                 className={classes.inputsDate}
-                                //onClick={(e) => setTime((e.target as HTMLInputElement).value)}
-                                // onClick={(e) => {
-                                //     const inputValue = setTime((e.target as HTMLInputElement).value);
-                                //     console.log(inputValue);
-                                // }}
+                                onChange={(e) => setTime(e.target.value)}
                             />
                         </label>
                     </div>

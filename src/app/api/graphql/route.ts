@@ -150,10 +150,9 @@ const typeDefs = gql`
         organizer: User
         name: String
         description: String
-        # isPrivate: Boolean
         startDate: ISODate
-        time: String
         endDate: ISODate
+        time: String
         location: Location
         tags: [String]
         # category: String
@@ -203,10 +202,9 @@ const typeDefs = gql`
         organizer_id: ID!
         name: String
         description: String
-        # isPrivate: Boolean
         startDate: ISODate
-        time: String
         endDate: ISODate
+        time: String
         location: LocationInput
         tags: [String]
         # category: String
