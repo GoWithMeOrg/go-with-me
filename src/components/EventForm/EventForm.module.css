@@ -84,6 +84,10 @@
     width: 100%;
 }
 
+.selectedCategories {
+    margin-top: 1.25rem;
+}
+
 .titleForm {
     display: flex;
     justify-content: center;

@@ -11,6 +11,7 @@ interface DropdownProps {
 
 export const Dropdown = ({ textButton, className }: DropdownProps) => {
     const [isOpen, setIsOpen] = useState(false);
+    const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
     const handleDropdown = () => {
         setIsOpen(!isOpen);
@@ -123,6 +124,27 @@ export const Dropdown = ({ textButton, className }: DropdownProps) => {
         },
     ];
 
+    console.log(selectedCategories);
+
+    const handleAddCategory = (e: any) => {
+        e.preventDefault();
+        // добавлем если нет в елемента в массиве
+        setSelectedCategories((prevSelectedCategories) => {
+            if (!prevSelectedCategories.includes(e.target.textContent)) {
+                return prevSelectedCategories.concat(e.target.textContent);
+            } else {
+                // удаляем из массива если элемент в массиве найден
+                return prevSelectedCategories.filter((category) => category !== e.target.textContent); //prevSelectedCategories;
+            }
+        });
+    };
+
+    const handleDeleteCategory = (category: string) => {
+        setSelectedCategories((prevSelectedCategories) => {
+            return prevSelectedCategories.filter((cat) => cat !== category);
+        });
+    };
+
     return (
         <div className={classes.dropdown}>
             <div className={className} onClick={handleDropdown}>
@@ -133,14 +155,22 @@ export const Dropdown = ({ textButton, className }: DropdownProps) => {
                 <ul className={classes.dropdownList}>
                     {eventCategory.map((category, index) => (
                         <li key={index}>
-                            <button className={classes.dropdownItem}>
+                            <button className={classes.dropdownItem} onClick={handleAddCategory}>
                                 {category.label}
-                                {category.icon}
+                                <Plus />
                             </button>
                         </li>
                     ))}
                 </ul>
             )}
+            <ul className={classes.selectedCategories}>
+                {selectedCategories.map((category, index) => (
+                    <li key={index} className={classes.selectedCategory}>
+                        {category}
+                        <Minus style={{ marginLeft: "0.5rem" }} onClick={() => handleDeleteCategory(category)} />
+                    </li>
+                ))}
+            </ul>
         </div>
     );
 };

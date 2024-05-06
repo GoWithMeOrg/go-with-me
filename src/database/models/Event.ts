@@ -1,12 +1,17 @@
 import mongoose, { Schema, Document } from "mongoose";
 import UserModel, { IUser } from "./User";
+
+enum EventStatus {
+    PUBLIC = "public",
+    INVATION = "invation",
+    PRIVATE = "private",
+}
 export interface IEvent {
     _id: string;
     organizer_id: mongoose.Types.ObjectId | string;
     organizer: IUser;
     name: string;
     description: string;
-    /* isPrivate: boolean; */
     startDate?: Date | string;
     endDate?: Date | string;
     time?: string;
@@ -20,9 +25,9 @@ export interface IEvent {
         };
     };
     tags?: string[];
-    /* category?: string; */
+    categories?: string[];
     status: string;
-    image?: Buffer;
+    image?: string;
 }
 
 export interface IEventDocument extends Omit<IEvent, "_id" | "organizer" | "createdAt" | "updatedAt">, Document {}
@@ -59,26 +64,38 @@ const EventSchema = new Schema<IEventDocument>(
         startDate: Date,
         endDate: Date,
         time: String,
-        /* category: {
-            type: String,
+
+        categories: {
+            type: [String],
             required: true,
-            enum: ["Party", "Conference", "Concert", "Trip", "Workshops"],
-        }, */
+            /* enum: [
+                "Music & Concerts",
+                "Sport & Fitness",
+                "Arts & Theatre",
+                "Conferences & Workshops",
+                "Food & Drink",
+                "Networking & Social",
+                "Technology & Innovation",
+                "Family & Education",
+                "Health & Wellnes",
+                "Charity & Causes",
+                "Parties & Nightlife",
+                "Travel & Outdoor",
+                "Cultural & Religious",
+                "Fashion & Beauty",
+                "Hobbies & Special interest",
+            ], */
+        },
+
         status: {
             type: String,
             enum: ["public", "invation", "private"],
             required: true,
         },
 
-        // image: {
-        //     type: Buffer, // Store image data as a Buffer
-        //     validate: {
-        //         validator: function (v: any) {
-        //             return v && v instanceof Buffer; // Check for valid Buffer
-        //         },
-        //         message: "Image must be a Buffer",
-        //     },
-        // },
+        image: {
+            type: String,
+        },
     },
 
     {

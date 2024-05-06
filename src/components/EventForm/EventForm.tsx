@@ -17,7 +17,6 @@ import {
     APIProviderContext,
     ControlPosition,
 } from "@vis.gl/react-google-maps";
-import profile from "@/assets/images/profile.png";
 import { CardUser } from "../CardUser";
 import ArrowNext from "@/assets/icons/arrowNext.svg";
 import { Dropdown } from "../Dropdown";
@@ -35,7 +34,7 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
     const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
     const [showPopup, setShowPopup] = useState<boolean>(false);
     const [time, setTime] = useState<string>(eventData.time ?? "00:00");
-    //const [categories, setCategories] = useState<string>(eventData.category ?? "");
+    const [categories, setCategories] = useState<string[]>(eventData.categories ?? []);
 
     enum EventStatus {
         PUBLIC = "public",
@@ -52,7 +51,7 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
     const originRef = useRef<HTMLInputElement>(null);
 
     const [image, setImage] = useState(null);
-
+    console.log(eventData.categories);
     const handleImageChange = (selectedImage: any) => {
         setImage(selectedImage);
     };
@@ -61,7 +60,7 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
         return;
     }
 
-    console.log(eventData.time);
+    //console.log(eventData.location?.coordinates[0], eventData.location?.coordinates[1]);
 
     const handleShowMap = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
@@ -87,22 +86,21 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
             location: {
                 type: "Point",
                 coordinates: [
+                    //eventData.location?.coordinates[0] ??
                     selectedPlace?.geometry?.location?.lng() ?? 0,
+                    //eventData.location?.coordinates[1] ??
                     selectedPlace?.geometry?.location?.lat() ?? 0,
                 ],
                 properties: {
                     address: selectedPlace?.formatted_address ?? "",
                 },
             },
-            /* category: (formData.category as string) ?? categories, */
-            status: (formData.status as string) ?? eventStatus,
             //image: formData.image ? Buffer.from(formData.image, 'base64') : undefined,
         };
         onSubmit(onSubmitData);
     };
 
     // картинки будем хранить в OD CDN
-
     return (
         <div className={classes.container}>
             <form className={classes.form} onSubmit={handleSubmit}>
@@ -127,7 +125,7 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                             </button>
                         </div>
                         <Autocomplete onPlaceSelect={setSelectedPlace} originRef={originRef}>
-                            <Input
+                            <input
                                 id="location"
                                 type={"text"}
                                 placeholder={""}
@@ -275,7 +273,7 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
 
                     <div className={classes.label}>
                         <span className={classes.inputTitle}>Select subject</span>
-                        <Dropdown textButton={"No category"} className={classes.dropdownButton} />
+                        {/* <Dropdown textButton={"No category"} className={classes.dropdownButton} /> */}
                     </div>
 
                     <label className={classes.label}>
@@ -286,12 +284,12 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                     <h3 className={classes.companionsTitle}>Companions</h3>
                     <div className={classes.label}>
                         <span className={classes.inputTitle}>Choose member list</span>
-                        <Dropdown className={classes.dropdownButtonCompanions} />
+                        {/* <Dropdown className={classes.dropdownButtonCompanions} /> */}
                     </div>
 
                     <div className={classes.label}>
                         <span className={classes.inputTitle}>Invite</span>
-                        <Dropdown className={classes.dropdownButtonCompanions} />
+                        {/* <Dropdown className={classes.dropdownButtonCompanions} /> */}
                     </div>
 
                     {/* <label className={classes.label}>

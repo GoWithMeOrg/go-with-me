@@ -155,7 +155,7 @@ const typeDefs = gql`
         time: String
         location: Location
         tags: [String]
-        # category: String
+        categories: [String]
         status: String
         image: String
     }
@@ -207,7 +207,7 @@ const typeDefs = gql`
         time: String
         location: LocationInput
         tags: [String]
-        # category: String
+        categories: [String]
         status: String
         image: String
     }

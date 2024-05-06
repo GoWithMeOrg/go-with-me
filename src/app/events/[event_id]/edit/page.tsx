@@ -23,8 +23,10 @@ const GET_EVENT = gql`
                 image
                 emailVerified
             }
-
             name
+            location {
+                coordinates
+            }
             description
             startDate
             endDate
