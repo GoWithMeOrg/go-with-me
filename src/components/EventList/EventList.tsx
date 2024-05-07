@@ -39,6 +39,8 @@ const GET_EVENTS = gql`
                 }
             }
             status
+            categories
+            tags
             image
         }
     }

@@ -7,15 +7,44 @@ import classes from "./Dropdown.module.css";
 interface DropdownProps {
     textButton?: string;
     className?: string;
+    categoriesData: string[];
+    onSelectedCategories?: (categories: string[]) => void;
 }
 
-export const Dropdown = ({ textButton, className }: DropdownProps) => {
+/* изменить цвет плюса при наведении 
+заменить плюс на минус
+*/
+export const Dropdown = ({ textButton, className, categoriesData, onSelectedCategories }: DropdownProps) => {
     const [isOpen, setIsOpen] = useState(false);
-    const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-
+    const [selectedCategories, setSelectedCategories] = useState<string[]>(categoriesData);
+    const dropdownRef = useRef<HTMLDivElement>(null);
     const handleDropdown = () => {
         setIsOpen(!isOpen);
     };
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (
+                dropdownRef.current &&
+                !dropdownRef.current.contains(event.target as Node) &&
+                !(event.target as HTMLElement).closest(`[data-id="${dropdownRef.current.id}"]`)
+            ) {
+                setIsOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
+    useEffect(() => {
+        if (onSelectedCategories) {
+            onSelectedCategories(selectedCategories);
+        }
+    }, [selectedCategories, onSelectedCategories]);
 
     const eventCategory = [
         {
@@ -124,17 +153,15 @@ export const Dropdown = ({ textButton, className }: DropdownProps) => {
         },
     ];
 
-    console.log(selectedCategories);
-
     const handleAddCategory = (e: any) => {
         e.preventDefault();
-        // добавлем если нет в елемента в массиве
+        // добавлем если нет елемента в массиве
         setSelectedCategories((prevSelectedCategories) => {
             if (!prevSelectedCategories.includes(e.target.textContent)) {
                 return prevSelectedCategories.concat(e.target.textContent);
             } else {
                 // удаляем из массива если элемент в массиве найден
-                return prevSelectedCategories.filter((category) => category !== e.target.textContent); //prevSelectedCategories;
+                return prevSelectedCategories.filter((category) => category !== e.target.textContent);
             }
         });
     };
@@ -146,9 +173,9 @@ export const Dropdown = ({ textButton, className }: DropdownProps) => {
     };
 
     return (
-        <div className={classes.dropdown}>
+        <div className={classes.dropdown} ref={dropdownRef}>
             <div className={className} onClick={handleDropdown}>
-                {textButton}
+                {selectedCategories.length === 0 ? textButton : selectedCategories.length + " category"}
                 <ArrowMenu style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)" }} />
             </div>
             {isOpen && (
@@ -157,12 +184,14 @@ export const Dropdown = ({ textButton, className }: DropdownProps) => {
                         <li key={index}>
                             <button className={classes.dropdownItem} onClick={handleAddCategory}>
                                 {category.label}
-                                <Plus />
+                                {category.icon}
+                                {/* {значение === category.label ? <Minus /> : <Plus />} */}
                             </button>
                         </li>
                     ))}
                 </ul>
             )}
+
             <ul className={classes.selectedCategories}>
                 {selectedCategories.map((category, index) => (
                     <li key={index} className={classes.selectedCategory}>

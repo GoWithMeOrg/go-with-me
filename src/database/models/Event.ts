@@ -24,9 +24,9 @@ export interface IEvent {
             address: string;
         };
     };
-    tags?: string[];
-    categories?: string[];
     status: string;
+    categories?: string[];
+    tags?: string[];
     image?: string;
 }
 
@@ -65,31 +65,19 @@ const EventSchema = new Schema<IEventDocument>(
         endDate: Date,
         time: String,
 
-        categories: {
-            type: [String],
-            required: true,
-            /* enum: [
-                "Music & Concerts",
-                "Sport & Fitness",
-                "Arts & Theatre",
-                "Conferences & Workshops",
-                "Food & Drink",
-                "Networking & Social",
-                "Technology & Innovation",
-                "Family & Education",
-                "Health & Wellnes",
-                "Charity & Causes",
-                "Parties & Nightlife",
-                "Travel & Outdoor",
-                "Cultural & Religious",
-                "Fashion & Beauty",
-                "Hobbies & Special interest",
-            ], */
-        },
-
         status: {
             type: String,
             enum: ["public", "invation", "private"],
+            required: true,
+        },
+
+        categories: {
+            type: [String],
+            required: true,
+        },
+
+        tags: {
+            type: [String],
             required: true,
         },
 

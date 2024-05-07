@@ -21,6 +21,8 @@ import { CardUser } from "../CardUser";
 import ArrowNext from "@/assets/icons/arrowNext.svg";
 import { Dropdown } from "../Dropdown";
 import { UploadFile } from "../UploadFile";
+import Plus from "@/assets/icons/plus.svg";
+import Minus from "@/assets/icons/minus.svg";
 
 export type EventType = Partial<IEvent>;
 
@@ -35,6 +37,8 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
     const [showPopup, setShowPopup] = useState<boolean>(false);
     const [time, setTime] = useState<string>(eventData.time ?? "00:00");
     const [categories, setCategories] = useState<string[]>(eventData.categories ?? []);
+    const tagRef = useRef<HTMLInputElement>(null);
+    const [tags, setTags] = useState<string[]>(eventData.tags ?? []);
 
     enum EventStatus {
         PUBLIC = "public",
@@ -51,7 +55,7 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
     const originRef = useRef<HTMLInputElement>(null);
 
     const [image, setImage] = useState(null);
-    console.log(eventData.categories);
+
     const handleImageChange = (selectedImage: any) => {
         setImage(selectedImage);
     };
@@ -60,18 +64,30 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
         return;
     }
 
-    //console.log(eventData.location?.coordinates[0], eventData.location?.coordinates[1]);
+    //console.log(eventData.categories);
+    const handleCategoryChange = (selectedCategories: any) => {
+        setCategories(selectedCategories);
+    };
 
     const handleShowMap = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         setShowPopup(true);
     };
 
-    /* const selectedCategory = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        const button = e.currentTarget as HTMLButtonElement;
-        setCategories(button.textContent as string);
-    }; */
+    const handleAddTag = () => {
+        if (!tagRef.current?.value) return;
+        const tag = tagRef.current?.value;
+        const updatedTags: Set<string> = new Set(tags);
+        updatedTags.add(tag);
+        setTags(Array.from(updatedTags));
+        tagRef.current!.value = "";
+    };
+
+    const handleDeleteTag = (tag: string) => {
+        setTags((prevSelectedTags) => {
+            return prevSelectedTags.filter((cat) => cat !== tag);
+        });
+    };
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -95,7 +111,10 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                     address: selectedPlace?.formatted_address ?? "",
                 },
             },
-            //image: formData.image ? Buffer.from(formData.image, 'base64') : undefined,
+            //image: string,
+            status: (formData.status as string) ?? eventStatus,
+            categories: categories,
+            tags: tags,
         };
         onSubmit(onSubmitData);
     };
@@ -268,7 +287,12 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
 
                     <div className={classes.label}>
                         <span className={classes.inputTitle}>Select category</span>
-                        <Dropdown textButton={"No category"} className={classes.dropdownButton} />
+                        <Dropdown
+                            textButton={"No category"}
+                            className={classes.dropdownButton}
+                            categoriesData={eventData.categories ?? []}
+                            onSelectedCategories={handleCategoryChange}
+                        />
                     </div>
 
                     <div className={classes.label}>
@@ -276,9 +300,23 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                         {/* <Dropdown textButton={"No category"} className={classes.dropdownButton} /> */}
                     </div>
 
-                    <label className={classes.label}>
+                    <label className={classes.labelTags}>
                         <span className={classes.inputTitle}>Create your tag</span>
-                        <input className={classes.input} type="text" name="tag" />
+                        <div className={classes.inputWrapper}>
+                            <input className={classes.input} type="text" name="tag" ref={tagRef} />
+                            <Plus transform="scale(0.83)" className={classes.tagButton} onClick={handleAddTag} />
+                        </div>
+
+                        <div className={classes.selectedTagsWrapper}>
+                            <ul className={classes.selectedTags}>
+                                {tags.map((tag, index) => (
+                                    <li key={index} className={classes.selectedTag}>
+                                        {tag}
+                                        <Minus style={{ marginLeft: "0.5rem" }} onClick={() => handleDeleteTag(tag)} />
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
                     </label>
 
                     <h3 className={classes.companionsTitle}>Companions</h3>

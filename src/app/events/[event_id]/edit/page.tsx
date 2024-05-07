@@ -32,6 +32,8 @@ const GET_EVENT = gql`
             endDate
             time
             status
+            categories
+            tags
         }
     }
 `;
@@ -46,6 +48,7 @@ const UPDATE_EVENT = gql`
             startDate
             endDate
             time
+            categories
         }
     }
 `;
