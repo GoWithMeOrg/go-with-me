@@ -15,36 +15,8 @@ interface DropdownProps {
 заменить плюс на минус
 */
 export const Dropdown = ({ textButton, className, categoriesData, onSelectedCategories }: DropdownProps) => {
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
     const [selectedCategories, setSelectedCategories] = useState<string[]>(categoriesData);
-    const dropdownRef = useRef<HTMLDivElement>(null);
-    const handleDropdown = () => {
-        setIsOpen(!isOpen);
-    };
-
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (
-                dropdownRef.current &&
-                !dropdownRef.current.contains(event.target as Node) &&
-                !(event.target as HTMLElement).closest(`[data-id="${dropdownRef.current.id}"]`)
-            ) {
-                setIsOpen(false);
-            }
-        };
-
-        document.addEventListener("mousedown", handleClickOutside);
-
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
-
-    useEffect(() => {
-        if (onSelectedCategories) {
-            onSelectedCategories(selectedCategories);
-        }
-    }, [selectedCategories, onSelectedCategories]);
 
     const eventCategory = [
         {
@@ -153,15 +125,59 @@ export const Dropdown = ({ textButton, className, categoriesData, onSelectedCate
         },
     ];
 
+    const [isHovered, setIsHovered] = useState(Array(eventCategory.length).fill(false));
+    const dropdownRef = useRef<HTMLDivElement>(null);
+
+    //показываем иконку при наведении
+    const showIcon = (index: number, value: boolean) => {
+        setIsHovered((prevIsHovered) => {
+            const updatedIsHovered = [...prevIsHovered];
+            updatedIsHovered[index] = value;
+            return updatedIsHovered;
+        });
+    };
+
+    const handleDropdown = () => {
+        setIsOpen(!isOpen);
+    };
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (
+                dropdownRef.current &&
+                !dropdownRef.current.contains(event.target as Node) &&
+                !(event.target as HTMLElement).closest(`[data-id="${dropdownRef.current.id}"]`)
+            ) {
+                setIsOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
+    useEffect(() => {
+        if (onSelectedCategories) {
+            onSelectedCategories(selectedCategories);
+        }
+    }, [selectedCategories, onSelectedCategories]);
+
     const handleAddCategory = (e: any) => {
         e.preventDefault();
+        //получаем родительский элемент
+        const parentElement = e.target.closest("[data-category]");
+        //получаем значение родительского элемента
+        const clickedCategory = parentElement.dataset.category;
         // добавлем если нет елемента в массиве
         setSelectedCategories((prevSelectedCategories) => {
-            if (!prevSelectedCategories.includes(e.target.textContent)) {
-                return prevSelectedCategories.concat(e.target.textContent);
+            if (!prevSelectedCategories.includes(clickedCategory)) {
+                return prevSelectedCategories.concat(clickedCategory);
             } else {
                 // удаляем из массива если элемент в массиве найден
-                return prevSelectedCategories.filter((category) => category !== e.target.textContent);
+                return prevSelectedCategories.filter((category) => category !== clickedCategory);
             }
         });
     };
@@ -181,11 +197,20 @@ export const Dropdown = ({ textButton, className, categoriesData, onSelectedCate
             {isOpen && (
                 <ul className={classes.dropdownList}>
                     {eventCategory.map((category, index) => (
-                        <li key={index}>
-                            <button className={classes.dropdownItem} onClick={handleAddCategory}>
+                        <li key={index} data-category={category.label}>
+                            <button
+                                className={classes.dropdownItem}
+                                onClick={handleAddCategory}
+                                onMouseEnter={() => showIcon(index, true)}
+                                onMouseLeave={() => showIcon(index, false)}
+                            >
                                 {category.label}
-                                {category.icon}
-                                {/* {значение === category.label ? <Minus /> : <Plus />} */}
+                                {isHovered[index] &&
+                                    (selectedCategories.includes(category.label) ? (
+                                        <Minus className={classes.dropdownItemMinus} />
+                                    ) : (
+                                        <Plus className={classes.dropdownItemPlus} />
+                                    ))}
                             </button>
                         </li>
                     ))}

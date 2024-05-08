@@ -69,11 +69,11 @@
 
 .btnFindMap:hover {
     border: none;
-    color: var(--main-color);
+    color: var(--hover-color);
 }
 
 .btnFindMap:hover path {
-    fill: var(--main-color);
+    fill: var(--hover-color);
 }
 
 .inputFindMap {
