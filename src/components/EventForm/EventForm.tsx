@@ -23,6 +23,7 @@ import { Dropdown } from "../Dropdown";
 import { UploadFile } from "../UploadFile";
 import Plus from "@/assets/icons/plus.svg";
 import Minus from "@/assets/icons/minus.svg";
+import { TitleField } from "../TitleField";
 
 export type EventType = Partial<IEvent>;
 
@@ -129,16 +130,7 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
         <div className={classes.container}>
             <form className={classes.form} onSubmit={handleSubmit}>
                 <div className={classes.formWrapper}>
-                    <label className={classes.label}>
-                        <span className={classes.inputTitle}>Event title</span>
-                        <input
-                            className={classes.input}
-                            type="text"
-                            name="name"
-                            defaultValue={eventData.name}
-                            required
-                        />
-                    </label>
+                    <TitleField name={eventData.name} />
 
                     <label className={classes.label}>
                         <div className={classes.labelFindMap}>

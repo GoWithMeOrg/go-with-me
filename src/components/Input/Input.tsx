@@ -11,6 +11,7 @@ interface Props {
     onClick?: () => void;
     checked?: boolean;
     defaultValue?: string;
+    required?: boolean;
 }
 
 export const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
@@ -25,6 +26,7 @@ export const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
             name={props.name}
             onClick={props.onClick}
             defaultValue={props.defaultValue}
+            required={props.required}
         />
     );
 });
