@@ -1,7 +1,17 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
-    //assetPrefix: `https://<your-space-endpoint>.digitalocean.space/`,
+    images: {
+        remotePatterns: [
+            {
+                protocol: "https",
+                hostname: "fra1.digitaloceanspaces.com",
+                port: "",
+                pathname: "/gowithme/**",
+            },
+        ],
+    },
+
     webpack(config) {
         const fileLoaderRule = config.module.rules.find((rule) => rule.test?.test?.(".svg"));
 

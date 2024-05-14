@@ -1,62 +1,63 @@
-import React, { useState } from "react";
+"use client";
+import { FormEvent, useState } from "react";
+import Image from "next/image";
 import classes from "./UploadFile.module.css";
 
 interface UploadFileProps {
     onImageChange: (selectedImage: any) => void;
+    onImageUrl: (selectedImageUrl: string) => void;
+    imageUrl?: string;
 }
 
-export const UploadFile: React.FC<UploadFileProps> = ({ onImageChange }) => {
-    const [file, setFile] = useState(null);
-    const [previewUrl, setPreviewUrl] = useState(null);
+export const UploadFile: React.FC<UploadFileProps> = ({ onImageChange, onImageUrl, imageUrl }) => {
+    const [file, setFile] = useState<File | null>(null);
 
     const handleFileChange = (event: any) => {
         const selectedFile = event.target.files[0];
         setFile(selectedFile);
+        onImageChange(file);
 
-        // Check if the selected file is an image
         const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
         if (!validImageTypes.includes(selectedFile.type)) {
             console.error("Invalid file type. Please select an image.");
             return;
         }
-
-        // Create a new URL object to display the image preview
-        const reader: any = new FileReader();
-        reader.onloadend = () => {
-            setPreviewUrl(reader.result);
-        };
-        reader.readAsDataURL(selectedFile);
-
-        //onImageChange(selectedFile); //метаданные изображения
-
-        onImageChange(previewUrl);
     };
 
-    const handleSubmit = async (event: any) => {
-        event.preventDefault();
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         if (!file) return;
 
         const formData = new FormData();
         formData.append("file", file);
 
-        // Replace '/api/upload' with your file upload endpoint
-        const response = await fetch("/api/upload", {
-            method: "POST",
-            body: formData,
-        });
+        try {
+            const response = await fetch("/api/upload", {
+                method: "POST",
+                body: formData,
+            });
 
-        // Handle the response from the server
-        if (response.ok) {
-            console.log("File uploaded successfully");
-        } else {
-            console.error("File upload failed");
+            if (!response.ok) {
+                throw new Error("Error uploading file");
+            }
+
+            const data = await response.json();
+            onImageUrl(data.url);
+        } catch (error) {
+            console.error(error);
         }
     };
 
     return (
-        <div className={classes.uploadFile} onSubmit={handleSubmit} onChange={handleFileChange}>
-            {previewUrl && <img src={previewUrl} alt="img" className={classes.preview} />}
-            <input type="file" onChange={handleFileChange} />
+        <div className={classes.uploadFile}>
+            <div className={classes.preview}>
+                {file && <Image src={imageUrl ?? URL.createObjectURL(file)} width={460} height={324} alt="img" />}
+            </div>
+
+            <form onSubmit={handleSubmit} className={classes.customFileInput}>
+                <input type="file" id="fileInput" className={classes.customFile} onChange={handleFileChange} />
+                <label htmlFor="fileInput">Upload photo</label>
+            </form>
         </div>
     );
 };

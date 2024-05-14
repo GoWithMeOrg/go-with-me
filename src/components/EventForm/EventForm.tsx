@@ -55,9 +55,14 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
     const originRef = useRef<HTMLInputElement>(null);
 
     const [image, setImage] = useState(null);
+    const [imageUrl, setImageUrl] = useState(null);
 
     const handleImageChange = (selectedImage: any) => {
         setImage(selectedImage);
+    };
+
+    const handleImageUrl = (selectedImageUrl: any) => {
+        setImageUrl(selectedImageUrl);
     };
 
     if (!apiIsLoaded || !mapAPI) {
@@ -91,6 +96,7 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
         const formData = Object.fromEntries(new FormData(e.currentTarget).entries());
         const onSubmitData: Partial<IEvent> = {
             organizer_id: eventData.organizer?._id,
@@ -111,7 +117,7 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                     address: selectedPlace?.formatted_address ?? "",
                 },
             },
-            //image: string,
+            image: imageUrl ?? eventData.image,
             status: (formData.status as string) ?? eventStatus,
             categories: categories,
             tags: tags,
@@ -119,7 +125,6 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
         onSubmit(onSubmitData);
     };
 
-    // картинки будем хранить в OD CDN
     return (
         <div className={classes.container}>
             <form className={classes.form} onSubmit={handleSubmit}>
@@ -297,7 +302,7 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
 
                     <div className={classes.label}>
                         <span className={classes.inputTitle}>Select subject</span>
-                        {/* <Dropdown textButton={"No category"} className={classes.dropdownButton} /> */}
+                        <Dropdown textButton={"No category"} className={classes.dropdownButton} categoriesData={[]} />
                     </div>
 
                     <label className={classes.labelTags}>
@@ -322,12 +327,12 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                     <h3 className={classes.companionsTitle}>Companions</h3>
                     <div className={classes.label}>
                         <span className={classes.inputTitle}>Choose member list</span>
-                        {/* <Dropdown className={classes.dropdownButtonCompanions} /> */}
+                        <Dropdown className={classes.dropdownButtonCompanions} categoriesData={[]} />
                     </div>
 
                     <div className={classes.label}>
                         <span className={classes.inputTitle}>Invite</span>
-                        {/* <Dropdown className={classes.dropdownButtonCompanions} /> */}
+                        <Dropdown className={classes.dropdownButtonCompanions} categoriesData={[]} />
                     </div>
 
                     {/* <label className={classes.label}>
@@ -367,7 +372,7 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                     </button>
                 </div>
 
-                <UploadFile onImageChange={handleImageChange} />
+                <UploadFile onImageChange={handleImageChange} onImageUrl={handleImageUrl} imageUrl={eventData.image} />
             </form>
         </div>
     );

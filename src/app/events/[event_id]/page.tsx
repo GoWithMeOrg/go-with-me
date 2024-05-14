@@ -27,6 +27,7 @@ const GET_EVENT_BY_ID = gql`
             startDate
             endDate
             time
+            image
         }
         comments(event_id: $id) {
             _id

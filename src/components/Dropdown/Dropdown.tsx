@@ -11,9 +11,6 @@ interface DropdownProps {
     onSelectedCategories?: (categories: string[]) => void;
 }
 
-/* изменить цвет плюса при наведении 
-заменить плюс на минус
-*/
 export const Dropdown = ({ textButton, className, categoriesData, onSelectedCategories }: DropdownProps) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [selectedCategories, setSelectedCategories] = useState<string[]>(categoriesData);
