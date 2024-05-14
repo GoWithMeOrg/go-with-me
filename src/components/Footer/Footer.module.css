@@ -1,17 +1,16 @@
 .footer {
     display: flex;
     align-items: center;
-    background-color: #575b75;
+    background-color: var(--text-color);
     text-align: center;
     height: 11.88rem;
+    justify-content: center;
 }
 
 .footerContainer {
-    width: 100%;
+    width: 73.75rem;
     display: flex;
     justify-content: space-between;
-    background-color: #575b75;
-    padding: 2rem 8rem;
 }
 
 .footerWrapper {
@@ -19,12 +18,18 @@
 }
 
 .footerLink {
-    background: #575b75;
-    color: #a4a7bc;
+    background: var(--text-color);
+    color: var(--additional-color);
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.38rem;
     text-align: left;
+    border: none;
+}
+
+.footerLink:hover {
+    color: var(--additional-color);
+    border: none;
 }
 
 .footerBlockLinks {
@@ -32,19 +37,19 @@
     width: 36.25rem;
     height: 4rem;
     justify-content: space-between;
-    background: #575b75;
+    background: var(--text-color);
 }
 
 .footerLogIn {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background: #575b75;
+    background: var(--text-color);
 }
 
 .footerLogo {
-    background: #575b75;
-    color: #a4a7bc;
+    background: var(--text-color);
+    color: var(--additional-color);
     font-size: 1.13rem;
     font-weight: 700;
     line-height: 1.38rem;
@@ -55,12 +60,13 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    color: #a4a7bc;
+    color: var(--additional-color);
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.38rem;
     text-align: left;
-    background: #575b75;
+    background: var(--text-color);
+    width: 6.75rem;
 }
 
 .footerBlock h2 {
@@ -78,7 +84,7 @@
 }
 
 .footerBlock a {
-    color: #a4a7bc;
+    color: var(--additional-color);
     text-decoration: none;
 }
 
@@ -86,7 +92,7 @@
     margin-bottom: 10px;
 }
 
-/* .footerBlock input[type="email"] {
+.footerBlock input[type="email"] {
     flex: 1;
     padding: 5px;
     margin-right: 10px;
@@ -98,7 +104,7 @@
     background-color: #007bff;
     border: none;
     cursor: pointer;
-} */
+}
 
 .footerSocial {
     list-style: none;

@@ -26,10 +26,10 @@ export const Geocoding = ({ coordinates }: Props) => {
     }, [apiIsLoaded, coordinates, geocoding, lat, lng]);
 
     return (
-        <div>
+        <span>
             {city}
             {/* , {street}, {houseNumber} */}
-        </div>
+        </span>
     );
 };
 

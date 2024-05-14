@@ -53,14 +53,14 @@
 .avatarAndMenu {
     display: flex;
     flex-direction: row;
-    gap: 24px;
+    gap: 1.25rem;
 }
 
 .menu {
     display: flex;
     justify-content: center;
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    align-items: center;
     gap: 16px;
 }
 
