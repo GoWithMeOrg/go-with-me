@@ -18,7 +18,7 @@ import {
     ControlPosition,
 } from "@vis.gl/react-google-maps";
 import { CardUser } from "../CardUser";
-import ArrowNext from "@/assets/icons/arrowNext.svg";
+import Arrow from "@/assets/icons/arrow.svg";
 import { Dropdown } from "../Dropdown";
 import { UploadFile } from "../UploadFile";
 import Plus from "@/assets/icons/plus.svg";
@@ -363,7 +363,7 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                             <CardUser width={100} userName="Mike Scoones" status={"joined"} />
                         </div>
                         <div className={classes.questListArrow}>
-                            <ArrowNext />
+                            <Arrow style={{ transform: "rotate(180deg)" }} />
                         </div>
                     </div>
 

@@ -11,6 +11,15 @@
     position: relative;
 }
 
+.createAndInviteTitle {
+    color: var(--main-color);
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+    font-weight: 700;
+    text-align: left;
+    text-transform: uppercase;
+}
+
 .logoJoin {
     position: absolute;
     right: -3rem;
@@ -81,6 +90,8 @@
 }
 
 .createAndInviteDescr {
+    font-size: inherit;
+    font-weight: inherit;
     width: 23.63rem;
     color: var(--main-color);
     font-size: 1.25rem;

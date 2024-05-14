@@ -9,6 +9,15 @@
     width: 100%;
 }
 
+.promoTitle {
+    font-size: 2.875rem;
+    font-weight: 700;
+    line-height: 3.625rem;
+    text-align: left;
+    text-transform: uppercase;
+    color: var(--main-color);
+}
+
 .promoDescription {
     display: flex;
     width: 30rem;
@@ -23,14 +32,20 @@
     justify-content: space-between;
 }
 
-.arrow {
+.promoButton {
     display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
     align-items: center;
-    justify-content: flex-start;
+    font-family: "__Inter_469f07", "__Inter_Fallback_469f07";
+    font-style: normal;
+    color: var(--main-color);
     font-size: 1.75rem;
     font-weight: 700;
     line-height: 2.125rem;
     text-align: left;
+    background: none;
+    cursor: pointer;
 }
 
 .titleArrow {
@@ -54,6 +69,12 @@
 }
 
 .cardsEventsTitle {
+    color: var(--main-color);
+    font-size: 1.875rem;
+    font-weight: 700;
+    line-height: 2.25rem;
+    text-align: left;
+    text-transform: uppercase;
     margin-bottom: 4.375rem;
 }
 
@@ -92,6 +113,15 @@
     margin-bottom: 4.375rem;
 }
 
+.cardsWorkTitle {
+    color: var(--main-color);
+    font-size: 1.875rem;
+    font-weight: 700;
+    line-height: 2.25rem;
+    text-align: left;
+    text-transform: uppercase;
+}
+
 .cardsWorkLink {
     color: var(--additional-color);
     font-size: 1rem;
@@ -106,9 +136,21 @@
     color: var(--main-color);
 }
 
-.arrowEvents {
+.eventsButton {
+    width: 100%;
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
     align-items: center;
-    margin-right: 1rem;
+    background: none;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.19rem;
+    text-align: left;
+    text-transform: uppercase;
+    color: var(--main-color);
+    margin-right: 0.7rem;
+    cursor: pointer;
+    flex-direction: row-reverse;
+    font-family: "__Inter_469f07", "__Inter_Fallback_469f07";
+    font-style: normal;
 }

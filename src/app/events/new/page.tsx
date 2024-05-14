@@ -10,7 +10,7 @@ import { useMutation, gql } from "@apollo/client";
 import { EventForm } from "@/components/EventForm";
 import type { EventType } from "@/components/EventForm";
 import classes from "./page.module.css";
-import ArrowBack from "@/assets/icons/arrowBack.svg";
+import Arrow from "@/assets/icons/arrow.svg";
 
 const CREATE_EVENT = gql`
     mutation CreateEvent($event: EventInput!) {
@@ -39,7 +39,7 @@ const EventNewPage: NextPage = () => {
     return (
         <div className="container">
             <div className={classes.createEventFormWrapper}>
-                <ArrowBack />
+                <Arrow />
                 <h2 className={classes.createEventTitle}>CREATE EVENT</h2>
                 <EventForm
                     eventData={{

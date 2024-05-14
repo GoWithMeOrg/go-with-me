@@ -1,9 +1,10 @@
 import { FC } from "react";
 import { useQuery, gql } from "@apollo/client";
 import type { IEvent } from "@/database/models/Event";
+import { TitleH1 } from "@/components/TitleH1";
 
 import classes from "./PopularEventsList.module.css";
-import Arrow from "@/assets/icons/arrow.svg";
+import ArrowCircle from "@/assets/icons/arrowCircle.svg";
 import Promo from "@/assets/icons/promo.svg";
 import CreateEvent from "@/assets/icons/createEvent.svg";
 import CreatePrivateEvent from "@/assets/icons/createPrivateEvent.svg";
@@ -13,6 +14,8 @@ import { CardWork } from "../CardWork";
 import { CardEvent } from "../CardEvent";
 import { CreateAndInvite } from "../CreateAndInvite";
 import Link from "next/link";
+import { Button } from "../Button";
+import { TitleH2 } from "../TitleH2";
 
 type EventListProps = {
     events?: IEvent[];
@@ -48,8 +51,6 @@ const GET_EVENTS = gql`
 export const PopularEventList: FC<EventListProps> = () => {
     const { loading, error, data } = useQuery(GET_EVENTS);
 
-    console.log(data);
-
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error : {error.message}</p>;
 
@@ -57,7 +58,7 @@ export const PopularEventList: FC<EventListProps> = () => {
         <div className={classes.container}>
             <div className={classes.promo}>
                 <div className={classes.promoDescription}>
-                    <h1 className={classes.promoTitle}>CRAFT YOUR ADVENTURE HERE</h1>
+                    <TitleH1 title={"CRAFT YOUR ADVENTURE HERE"} className={classes.promoTitle} />
                     <p className={classes.promoDescription}>
                         Craft your trips and events effortlessly. Whether you&#39;re planning a&nbsp;weekend getaway
                         with&nbsp;friends, organizing a&nbsp;cultural exploration, arranging a&nbsp;concert,
@@ -65,10 +66,9 @@ export const PopularEventList: FC<EventListProps> = () => {
                         to&nbsp;help you every step of&nbsp;the way. Join us today and unlock a&nbsp;world
                         of&nbsp;endless possibilities. Start crafting your adventure now!
                     </p>
-                    <div className={classes.arrow}>
-                        <div>Join</div>
-                        <Arrow style={{ marginLeft: "0.7rem" }} />
-                    </div>
+                    <Button text={"Join"} className={classes.promoButton}>
+                        <ArrowCircle style={{ marginLeft: "0.7rem" }} />
+                    </Button>
                 </div>
 
                 <div className={classes.promoPicture}>
@@ -76,7 +76,8 @@ export const PopularEventList: FC<EventListProps> = () => {
                 </div>
             </div>
             <div className={classes.cardsEvents}>
-                <h2 className={classes.cardsEventsTitle}>Popular Event List</h2>
+                <TitleH2 title={"Popular Event List"} className={classes.cardsEventsTitle} />
+
                 <div className={classes.cardsEventsList}>
                     {data.events.map(({ _id, description, name, startDate, location, time }: IEvent) => (
                         <CardEvent
@@ -90,15 +91,15 @@ export const PopularEventList: FC<EventListProps> = () => {
                         />
                     ))}
                 </div>
-                <div className={classes.arrowEvents}>
-                    <div className={classes.titleArrow}>MORE EVENTS</div>
-                    <Arrow />
-                </div>
+
+                <Button className={classes.eventsButton} text={"More Events"}>
+                    <ArrowCircle style={{ marginRight: "1.25rem", marginLeft: "1rem" }} />
+                </Button>
             </div>
 
             <div className={classes.cardsWork}>
                 <div className={classes.cardsWorkTitleWrapper}>
-                    <h2 className={classes.cardsWorkTitle}>How IT Works</h2>
+                    <TitleH2 title={"How IT Works"} className={classes.cardsWorkTitle} />
                     <Link className={classes.cardsWorkLink} href="/faq">
                         FAQ
                     </Link>

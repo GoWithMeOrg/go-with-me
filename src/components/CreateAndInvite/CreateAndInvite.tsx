@@ -8,6 +8,7 @@ import Popup from "../Popup/Popup";
 import { AuthModal } from "../AuthModal";
 import Link from "next/link";
 import { Button } from "../Button";
+import { TitleH2 } from "../TitleH2";
 
 export const CreateAndInvite = () => {
     const { data: session, status } = useSession();
@@ -20,12 +21,10 @@ export const CreateAndInvite = () => {
 
     return (
         <div className={classes.createAndInvite}>
-            <div className={classes.logoJoin}>
-                <Join />
-            </div>
+            <Join className={classes.logoJoin} />
             <div className={classes.createAndInviteWrapper}>
                 <div className={classes.createAndInviteTitle}>
-                    <h2>CREATE AND INVITE</h2>
+                    <TitleH2 title={"CREATE AND INVITE"} className={classes.createAndInviteTitle} />
                 </div>
 
                 {status === "unauthenticated" && (
