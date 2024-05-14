@@ -8,6 +8,8 @@ import Human from "@/assets/icons/human.svg";
 import classes from "./AuthPanel.module.css";
 import Popup from "../Popup/Popup";
 import { AuthModal } from "../AuthModal";
+import { Button } from "../Button";
+import { Loader } from "../Loader";
 
 export const AuthPanel = () => {
     const { data: session, status } = useSession();
@@ -26,10 +28,7 @@ export const AuthPanel = () => {
                 // </button>
 
                 <>
-                    <button className={classes.buttonLogIn} onClick={handleShowAuth}>
-                        Sign In
-                    </button>
-
+                    <Button className={classes.buttonLogIn} onClick={handleShowAuth} text={"Sign In"} />
                     <Popup
                         {...{
                             showPopup,
@@ -49,7 +48,8 @@ export const AuthPanel = () => {
                     </Popup>
                 </>
             )}
-            {status === "loading" && <div className={classes.loader}></div>}
+
+            {status === "loading" && <Loader />}
             {status === "authenticated" && (
                 <>
                     {/* <p className={classes.title}>Привет, {session?.user?.name}</p> */}
@@ -65,14 +65,13 @@ export const AuthPanel = () => {
                             <Link href="/profile" className={classes.linkToProfile}>
                                 <Human />
                             </Link>
-                            <button
+                            <Button
                                 className={classes.buttonLogIn}
                                 onClick={() => {
                                     confirm("Вы уверены, что хотите выйти?") && signOut();
                                 }}
-                            >
-                                Sign Out
-                            </button>
+                                text={"Sign Out"}
+                            />
                         </div>
                     </div>
                 </>

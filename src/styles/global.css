@@ -22,7 +22,9 @@
 } */
 
 body {
-    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     background: var(--background-color);
 }
 
@@ -242,7 +244,7 @@ button:active {
     outline: none;
 }
 
-button {
+/* button {
     height: 3.13rem;
     border: 0.13rem solid var(--main-color);
     border-radius: 0.25rem;
@@ -264,11 +266,7 @@ button:hover {
 button::-moz-focus-inner {
     padding: 0;
     border: 0;
-}
-
-legend {
-    display: block;
-}
+} */
 
 .container {
     display: grid;
@@ -285,4 +283,8 @@ legend {
     line-height: 1.375rem;
     text-align: center;
     cursor: pointer;
+}
+
+footer {
+    margin-top: auto;
 }

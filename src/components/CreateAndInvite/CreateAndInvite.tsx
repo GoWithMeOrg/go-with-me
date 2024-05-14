@@ -7,6 +7,7 @@ import { useState } from "react";
 import Popup from "../Popup/Popup";
 import { AuthModal } from "../AuthModal";
 import Link from "next/link";
+import { Button } from "../Button";
 
 export const CreateAndInvite = () => {
     const { data: session, status } = useSession();
@@ -29,12 +30,16 @@ export const CreateAndInvite = () => {
 
                 {status === "unauthenticated" && (
                     <div className={classes.createAndInviteButtons}>
-                        <button onClick={handleShowAuth} className={classes.createAndInviteButton}>
-                            Create event
-                        </button>
-                        <button onClick={handleShowAuth} className={classes.createAndInviteButton}>
-                            Create trip
-                        </button>
+                        <Button
+                            onClick={handleShowAuth}
+                            className={classes.createAndInviteButtonUnAuth}
+                            text={"Create event"}
+                        />
+                        <Button
+                            onClick={handleShowAuth}
+                            className={classes.createAndInviteButtonUnAuth}
+                            text={"Create trip"}
+                        />
                     </div>
                 )}
 
@@ -58,17 +63,16 @@ export const CreateAndInvite = () => {
 
                 {status === "authenticated" && (
                     <div className={classes.createAndInviteButtons}>
-                        {/* <Link href="/events/new">Create New Event</Link> */}
-                        <button className={classes.createAndInviteButton}>
+                        <Button className={classes.createAndInviteButton}>
                             <Link className={classes.createAndInviteButtonLink} href="/events/new">
                                 Create event
                             </Link>
-                        </button>
-                        <button className={classes.createAndInviteButton}>
+                        </Button>
+                        <Button className={classes.createAndInviteButton}>
                             <Link className={classes.createAndInviteButtonLink} href="/trips/new">
                                 Create trip
                             </Link>
-                        </button>
+                        </Button>
                     </div>
                 )}
             </div>

@@ -6,6 +6,7 @@ import LogoFooter from "@/assets/icons/logoFooter.svg";
 import { signOut, useSession } from "next-auth/react";
 import Popup from "../Popup/Popup";
 import { AuthModal } from "../AuthModal";
+import { Button } from "../Button";
 
 export const Footer = () => {
     const { data: session, status } = useSession();
@@ -21,40 +22,21 @@ export const Footer = () => {
             {status === "unauthenticated" && (
                 <div className={classes.footerContainer}>
                     <div className={classes.footerLogIn}>
-                        <button onClick={handleShowAuth} className={classes.footerLink}>
-                            Sign In
-                        </button>
-                        <div className={classes.footerLogo}>
-                            <LogoFooter />
-                        </div>
+                        <Button onClick={handleShowAuth} className={classes.footerLink} text={"Sign In"} />
+                        <LogoFooter />
                     </div>
                     <div className={classes.footerBlockLinks}>
                         <div className={classes.footerBlock}>
-                            <button onClick={handleShowAuth} className={classes.footerLink}>
-                                Events
-                            </button>
-
-                            <button onClick={handleShowAuth} className={classes.footerLink}>
-                                Profile
-                            </button>
+                            <Button onClick={handleShowAuth} className={classes.footerLink} text={"Events"} />
+                            <Button onClick={handleShowAuth} className={classes.footerLink} text={"Profile"} />
                         </div>
                         <div className={classes.footerBlock}>
-                            <button onClick={handleShowAuth} className={classes.footerLink}>
-                                Privacy policy
-                            </button>
-
-                            <button onClick={handleShowAuth} className={classes.footerLink}>
-                                Terms of use
-                            </button>
+                            <Button onClick={handleShowAuth} className={classes.footerLink} text={"Privacy policy"} />
+                            <Button onClick={handleShowAuth} className={classes.footerLink} text={"Terms of use"} />
                         </div>
                         <div className={classes.footerBlock}>
-                            <button onClick={handleShowAuth} className={classes.footerLink}>
-                                FAQ
-                            </button>
-
-                            <button onClick={handleShowAuth} className={classes.footerLink}>
-                                Write to use
-                            </button>
+                            <Button onClick={handleShowAuth} className={classes.footerLink} text={"FAQ"} />
+                            <Button onClick={handleShowAuth} className={classes.footerLink} text={"Write to use"} />
                         </div>
 
                         <Popup
@@ -81,12 +63,10 @@ export const Footer = () => {
             {status === "authenticated" && (
                 <div className={classes.footerContainer}>
                     <div className={classes.footerLogIn}>
-                        <button onClick={() => signOut()} className={classes.footerLink}>
+                        <Button onClick={() => signOut()} className={classes.footerLink}>
                             Sign Out
-                        </button>
-                        <div className={classes.footerLogo}>
-                            <LogoFooter />
-                        </div>
+                        </Button>
+                        <LogoFooter />
                     </div>
                     <div className={classes.footerBlockLinks}>
                         <div className={classes.footerBlock}>
