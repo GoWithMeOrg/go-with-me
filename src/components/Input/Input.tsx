@@ -9,6 +9,7 @@ interface Props {
     defaultChecked?: boolean;
     name?: string;
     onClick?: () => void;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     checked?: boolean;
     defaultValue?: string;
     required?: boolean;

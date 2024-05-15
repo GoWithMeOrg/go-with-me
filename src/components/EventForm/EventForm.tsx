@@ -24,6 +24,9 @@ import { UploadFile } from "../UploadFile";
 import Plus from "@/assets/icons/plus.svg";
 import Minus from "@/assets/icons/minus.svg";
 import { TitleField } from "../TitleField";
+import { LocationField } from "../LocationField";
+import { Date } from "../Date";
+import Time from "../Time/Time";
 
 export type EventType = Partial<IEvent>;
 
@@ -35,8 +38,8 @@ interface EventFormProps {
 
 export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
     const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
-    const [showPopup, setShowPopup] = useState<boolean>(false);
-    const [time, setTime] = useState<string>(eventData.time ?? "00:00");
+    /* const [showPopup, setShowPopup] = useState<boolean>(false); */
+    /* const [time, setTime] = useState<string>(eventData.time ?? "00:00"); */
     const [categories, setCategories] = useState<string[]>(eventData.categories ?? []);
     const tagRef = useRef<HTMLInputElement>(null);
     const [tags, setTags] = useState<string[]>(eventData.tags ?? []);
@@ -49,11 +52,11 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
 
     const [eventStatus, setEventStatus] = useState<string>(eventData.status ?? EventStatus.PUBLIC);
 
-    const apiIsLoaded = useApiIsLoaded();
-    const mapAPI = useContext(APIProviderContext);
+    /* const apiIsLoaded = useApiIsLoaded();
+    const mapAPI = useContext(APIProviderContext); */
 
-    const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(null);
-    const originRef = useRef<HTMLInputElement>(null);
+    /* const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(null);
+    const originRef = useRef<HTMLInputElement>(null); */
 
     const [image, setImage] = useState(null);
     const [imageUrl, setImageUrl] = useState(null);
@@ -66,19 +69,19 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
         setImageUrl(selectedImageUrl);
     };
 
-    if (!apiIsLoaded || !mapAPI) {
+    /* if (!apiIsLoaded || !mapAPI) {
         return;
-    }
+    } */
 
     //console.log(eventData.categories);
     const handleCategoryChange = (selectedCategories: any) => {
         setCategories(selectedCategories);
     };
 
-    const handleShowMap = (e: React.MouseEvent<HTMLButtonElement>) => {
+    /* const handleShowMap = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         setShowPopup(true);
-    };
+    }; */
 
     const handleAddTag = () => {
         if (!tagRef.current?.value) return;
@@ -105,7 +108,7 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
             description: formData.description as string,
             startDate: dayjs(formData.startDate as string).toISOString(),
             endDate: dayjs(formData.endDate as string).toISOString(),
-            time: (formData.time as string) ?? time,
+            time: (formData.time as string) ?? eventData.time,
             location: {
                 type: "Point",
                 coordinates: [
@@ -131,8 +134,9 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
             <form className={classes.form} onSubmit={handleSubmit}>
                 <div className={classes.formWrapper}>
                     <TitleField name={eventData.name} />
+                    <LocationField address={eventData.location?.properties?.address} />
 
-                    <label className={classes.label}>
+                    {/* <label className={classes.label}>
                         <div className={classes.labelFindMap}>
                             <span className={classes.inputTitle}>Location/Address</span>
                             <button className={classes.btnFindMap} onClick={handleShowMap}>
@@ -189,30 +193,14 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                                 <button onClick={() => setShowPopup(false)}>закрыть карту</button>
                             </div>
                         </Popup>
-                    </label>
+                    </label> */}
 
                     <div className={classes.inputsDate}>
-                        <label className={classes.label}>
-                            <span className={classes.inputTitle}>Start date</span>
-                            <input
-                                type="date"
-                                name="startDate"
-                                defaultValue={dayjs(eventData.startDate).format("YYYY-MM-DD")}
-                                className={classes.inputsDate}
-                            />
-                        </label>
+                        <Date date={eventData.startDate} title={"Start date"} />
+                        <Date date={eventData.endDate} title={"Finish Date"} />
+                        <Time time={eventData.time} />
 
-                        <label className={classes.label}>
-                            <span className={classes.inputTitle}>End date</span>
-                            <input
-                                type="date"
-                                name="endDate"
-                                defaultValue={dayjs(eventData.endDate).format("YYYY-MM-DD")}
-                                className={classes.inputsDate}
-                            />
-                        </label>
-
-                        <label className={classes.label}>
+                        {/* <label className={classes.label}>
                             <span className={classes.inputTitle}>Start time</span>
                             <input
                                 type="time"
@@ -221,7 +209,7 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                                 className={classes.inputsDate}
                                 onChange={(e) => setTime(e.target.value)}
                             />
-                        </label>
+                        </label> */}
                     </div>
 
                     <div className={classes.confidentiality}>
@@ -363,9 +351,9 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                         Save changes
                     </button>
                 </div>
-
-                <UploadFile onImageChange={handleImageChange} onImageUrl={handleImageUrl} imageUrl={eventData.image} />
             </form>
+
+            <UploadFile onImageChange={handleImageChange} onImageUrl={handleImageUrl} imageUrl={eventData.image} />
         </div>
     );
 };

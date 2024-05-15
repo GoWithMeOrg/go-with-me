@@ -45,7 +45,7 @@
     padding: 0.84rem 0.94rem;
 }
 
-.labelFindMap {
+/* .labelFindMap {
     display: flex;
     justify-content: space-between;
 }
@@ -78,7 +78,7 @@
 
 .inputFindMap {
     width: 100%;
-}
+} */
 
 .description {
     width: 100%;

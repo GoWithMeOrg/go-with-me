@@ -13,7 +13,13 @@ interface IButton {
 
 export const Button = ({ className, onClick, text, children, icon, onMouseEnter, onMouseLeave }: IButton) => {
     return (
-        <button className={className} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+        <button
+            type="button"
+            className={className}
+            onClick={onClick}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+        >
             {icon}
             {children}
             {text}
