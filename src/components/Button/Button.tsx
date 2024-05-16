@@ -7,14 +7,15 @@ interface IButton {
     text?: string;
     children?: React.ReactNode;
     icon?: React.ReactNode;
+    type?: "submit" | "reset" | "button" | undefined;
     onMouseEnter?: (event: React.MouseEvent<HTMLButtonElement>) => void;
     onMouseLeave?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-export const Button = ({ className, onClick, text, children, icon, onMouseEnter, onMouseLeave }: IButton) => {
+export const Button = ({ className, onClick, text, children, icon, onMouseEnter, onMouseLeave, type }: IButton) => {
     return (
         <button
-            type="button"
+            type={type}
             className={className}
             onClick={onClick}
             onMouseEnter={onMouseEnter}

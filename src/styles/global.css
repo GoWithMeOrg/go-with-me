@@ -10,17 +10,6 @@
     --error-color: #ff2f3b;
 }
 
-/* --scroll-fixed-width */
-/* ширина контейнера 1180 или 61,46vw*/
-/* отсупы по бокам 740 или 30.54vw */
-/* отступ с одной стороны 370 или 15.52vw */
-
-/* нужна переменна которая будет уменьшать отступы */
-
-/* html {
-
-} */
-
 body {
     display: flex;
     flex-direction: column;
@@ -78,122 +67,6 @@ svg {
     height: auto;
 }
 
-/* Form */
-
-input,
-textarea,
-select {
-    width: 100%;
-    background: var(--white-color);
-    border: 1px solid var(--additional-color);
-    border-radius: 0.25rem;
-    color: var(--main-color);
-    font-size: 1rem;
-    font-weight: 400;
-    text-align: left;
-    height: 3.13rem;
-    padding: 0.75rem 0.94rem;
-}
-
-input::-ms-clear {
-    display: none;
-}
-
-input[type="submit"] {
-    display: inline-block;
-    box-shadow: none;
-    background-color: transparent;
-    background: none;
-    cursor: pointer;
-}
-
-input[type="date"]::-webkit-calendar-picker-indicator {
-    font-weight: 400;
-    font-size: 1rem;
-    line-height: 1, 625rem;
-    color: var(--main);
-    padding: 0.75rem 1.06rem;
-    background-image: url("./../assets/icons/calendar.svg");
-    background-repeat: no-repeat;
-    background-position: 100% center;
-    cursor: pointer;
-    font-family: "__Inter_aaf875";
-}
-
-input[type="time"]::-webkit-calendar-picker-indicator {
-    font-weight: 400;
-    font-size: 1rem;
-    line-height: 1, 625rem;
-    color: var(--main);
-    padding: 0.75rem 1.06rem;
-    background-repeat: no-repeat;
-    background-position: 100% center;
-    cursor: pointer;
-    font-family: "__Inter_aaf875";
-}
-
-input[type="radio"]:checked,
-input[type="radio"]:not(:checked) {
-    position: absolute;
-    left: -9999px;
-}
-
-input[type="radio"]:checked + label,
-input[type="radio"]:not(:checked) + label {
-    display: inline-block;
-    position: relative;
-    padding-left: 1.75rem;
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.25rem;
-    color: var(--main-color);
-    cursor: pointer;
-}
-
-input[type="radio"]:checked + label:before,
-input[type="radio"]:not(:checked) + label:before {
-    content: "";
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    width: 1.25rem;
-    height: 1.25rem;
-    border: 0.25rem solid var(--additional-color);
-}
-
-input[type="radio"]:checked + label:before,
-input[type="radio"]:not(:checked) + label:before {
-    border-radius: 100%;
-}
-
-input[type="radio"]:checked + label:after,
-input[type="radio"]:not(:checked) + label:after {
-    content: "";
-    position: absolute;
-    -webkit-transition: all 0.2s ease;
-    -moz-transition: all 0.2s ease;
-    -o-transition: all 0.2s ease;
-    transition: all 0.2s ease;
-}
-
-input[type="radio"]:checked + label:after,
-input[type="radio"]:not(:checked) + label:after {
-    left: 0.25rem;
-    top: 0.25rem;
-    width: 0.75rem;
-    height: 0.75rem;
-    border-radius: 100%;
-    background-color: var(--accent-color);
-}
-
-input[type="radio"]:not(:checked) + label:after {
-    opacity: 0;
-}
-
-input[type="radio"]:checked + label:after {
-    opacity: 1;
-}
-
 input:focus,
 input:active,
 textarea:focus,
@@ -203,45 +76,11 @@ button:active {
     outline: none;
 }
 
-/* button {
-    height: 3.13rem;
-    border: 0.13rem solid var(--main-color);
-    border-radius: 0.25rem;
-    background: rgba(9, 23, 87, 0);
-    color: var(--main-color);
-    font-size: 1.13rem;
-    font-weight: 700;
-    line-height: 1.38rem;
-    text-align: center;
-    cursor: pointer;
-}
-
-button:hover {
-    background: rgba(9, 23, 87, 0);
-    border: 0.13rem solid var(--hover-color);
-    color: var(--hover-color);
-}
-
-button::-moz-focus-inner {
-    padding: 0;
-    border: 0;
-} */
-
 .container {
     display: grid;
     grid-template-columns: repeat(12, 80px);
     column-gap: 20px;
     justify-content: center;
-}
-
-.buttonSaveChange {
-    border-radius: 0.25rem;
-    width: 11.44rem;
-    font-size: 1.125rem;
-    font-weight: 700;
-    line-height: 1.375rem;
-    text-align: center;
-    cursor: pointer;
 }
 
 footer {
