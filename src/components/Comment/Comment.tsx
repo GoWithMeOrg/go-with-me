@@ -6,6 +6,7 @@ import { Avatar } from "../Avatar";
 import styles from "./Comment.module.css";
 import { IComment } from "./types";
 import Link from "next/link";
+import { Button } from "../Button";
 
 type CommentProps = IComment;
 
@@ -17,16 +18,18 @@ export const Comment: FC<CommentProps> = ({ userName, text, likesNumber, comment
             </div>
             <div className={styles.contentContainer}>
                 <div className={styles.userName}>
+                    <span className={styles.additionalColor}>#{commentId}</span>
                     <span>{userName}</span>
-                    <span>{commentId}</span>
                     {replyToId ? <Link href={`#comment-id-${replyToId}`}>reply to {replyToId}</Link> : null}
-                    <span>{date.toISOString()}</span>
+                    <span className={styles.date}>{date.toISOString()}</span>
                 </div>
                 <p className={styles.commentText}>{text}</p>
                 <div className={styles.likesContainer}>
                     <Like className={likesNumber ? styles.liked : undefined} />
                     <span className={styles.number}>{likesNumber ? likesNumber : ""}</span>
-                    <Reply />
+                    <button className={styles.reply}>
+                        <Reply />
+                    </button>
                 </div>
             </div>
         </li>

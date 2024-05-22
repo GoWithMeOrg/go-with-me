@@ -18,7 +18,9 @@
 }
 
 .userName {
+    display: flex;
     margin-bottom: 0.75rem;
+    margin-right: 5rem;
     font-weight: 600;
 }
 .userName > *:not(:last-child) {
@@ -44,5 +46,27 @@
 }
 
 .liked {
-    fill: var(--text-color)
+    fill: var(--text-color);
+}
+
+.reply {
+    padding-left: 1rem;
+    background-color: transparent;
+    &:hover {
+        cursor: pointer;
+    }
+    & svg {
+        stroke: var(--text-color);
+    }
+}
+
+.additionalColor {
+    color: var(--additional-color);
+}
+
+.date {
+    flex-grow: 1;
+    display: flex;
+    justify-content: end;
+    color: var(--additional-color);
 }
