@@ -1,6 +1,6 @@
 "use client";
 import { FC } from "react";
-import { Like } from "./svg";
+import { Like, Reply } from "./svg";
 import { Avatar } from "../Avatar";
 
 import styles from "./Comment.module.css";
@@ -26,6 +26,7 @@ export const Comment: FC<CommentProps> = ({ userName, text, likesNumber, comment
                 <div className={styles.likesContainer}>
                     <Like className={likesNumber ? styles.liked : undefined} />
                     <span className={styles.number}>{likesNumber ? likesNumber : ""}</span>
+                    <Reply />
                 </div>
             </div>
         </li>
