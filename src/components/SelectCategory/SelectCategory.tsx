@@ -5,13 +5,15 @@ import classes from "./SelectCategory.module.css";
 interface ISelectCategory {
     titleCategories: string;
     eventCategories: string[];
+    onCategoriesChange: (categories: string[]) => void;
 }
 
-export const SelectCategory = ({ eventCategories, titleCategories }: ISelectCategory) => {
+export const SelectCategory = ({ eventCategories, titleCategories, onCategoriesChange }: ISelectCategory) => {
     const [categories, setCategories] = useState<string[]>(eventCategories ?? []);
 
-    const handleCategoryChange = (selectedCategories: any) => {
+    const handleCategoryChange = (selectedCategories: string[]) => {
         setCategories(selectedCategories);
+        if (onCategoriesChange) onCategoriesChange(categories);
     };
 
     return (
@@ -20,7 +22,7 @@ export const SelectCategory = ({ eventCategories, titleCategories }: ISelectCate
             <Dropdown
                 textButton={"No category"}
                 className={classes.dropdownButton}
-                categoriesData={eventCategories ?? []}
+                categoriesData={categories ?? []}
                 onSelectedCategories={handleCategoryChange}
             />
         </div>

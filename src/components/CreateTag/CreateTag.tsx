@@ -4,11 +4,12 @@ import Minus from "@/assets/icons/minus.svg";
 import classes from "./CreateTag.module.css";
 
 interface ICreateTag {
-    tagsEvent: string[];
+    eventTags: string[];
+    onTagsChange: (tags: string[]) => void;
 }
-export const CreateTag = ({ tagsEvent }: ICreateTag) => {
+export const CreateTag = ({ eventTags, onTagsChange }: ICreateTag) => {
     const tagRef = useRef<HTMLInputElement>(null);
-    const [tags, setTags] = useState<string[]>(tagsEvent);
+    const [tags, setTags] = useState<string[]>(eventTags);
 
     const handleAddTag = () => {
         if (!tagRef.current?.value) return;
@@ -24,6 +25,12 @@ export const CreateTag = ({ tagsEvent }: ICreateTag) => {
             return prevSelectedTags.filter((cat) => cat !== tag);
         });
     };
+
+    const handleTagsChange = (tags: string[]) => {
+        if (onTagsChange) onTagsChange(tags);
+    };
+
+    handleTagsChange(tags);
 
     return (
         <label className={classes.tagLabel}>

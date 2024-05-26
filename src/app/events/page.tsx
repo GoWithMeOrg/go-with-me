@@ -4,7 +4,7 @@ import { EventList } from "@/components/EventList/EventList";
 import classes from "./page.module.css";
 const EventListPage: NextPage = async () => {
     return (
-        <div className="container">
+        <div className={classes.container}>
             <div className={classes.eventListPage}>
                 <h1>Event List Page</h1>
                 <div>

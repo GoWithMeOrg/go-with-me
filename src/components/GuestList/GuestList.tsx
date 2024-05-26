@@ -1,6 +1,7 @@
 import { CardUser } from "../CardUser";
 import Arrow from "@/assets/icons/arrow.svg";
 import classes from "./GuestList.module.css";
+import { Button } from "../Button";
 
 export const GuestList = () => {
     return (
@@ -13,9 +14,11 @@ export const GuestList = () => {
                 <CardUser width={100} userName="Mike Scoones" status={"joined"} />
                 <CardUser width={100} userName="Mike Scoones" status={"joined"} />
             </div>
-            <div className={classes.questListArrow}>
-                <Arrow style={{ transform: "rotate(180deg)" }} />
-            </div>
+            <Button className={classes.questListArrow}>
+                <Arrow
+                //style={{ transform: "rotate(180deg)" }}
+                />
+            </Button>
         </div>
     );
 };

@@ -1,11 +1,6 @@
 import mongoose, { Schema, Document } from "mongoose";
 import UserModel, { IUser } from "./User";
 
-enum EventStatus {
-    PUBLIC = "public",
-    INVATION = "invation",
-    PRIVATE = "private",
-}
 export interface IEvent {
     _id: string;
     organizer_id: mongoose.Types.ObjectId | string;

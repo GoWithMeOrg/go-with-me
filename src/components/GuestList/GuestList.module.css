@@ -20,6 +20,13 @@
 
 .questListArrow {
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
     margin-right: 1.25rem;
+    background: none;
+    cursor: pointer;
+    transform: rotate(180deg);
+}
+
+.questListArrow path:hover {
+    stroke: var(--hover-color);
 }

@@ -1,17 +1,23 @@
 import { useState } from "react";
-import classes from "./Confidentiality.module.css";
+import classes from "./EventStatus.module.css";
 
-interface IConfidentiality {
+interface IEventStatus {
     status: string | undefined;
+    onStatusChange: (status: string) => void;
 }
-export const Confidentiality = ({ status }: IConfidentiality) => {
+export const EventStatus = ({ status, onStatusChange }: IEventStatus) => {
     enum EventStatus {
         PUBLIC = "public",
         INVATION = "invation",
         PRIVATE = "private",
     }
 
-    const [eventStatus, setEventStatus] = useState<string>(status ?? EventStatus.PUBLIC);
+    const [isEventStatus, setIsEventStatus] = useState<string>(status ?? EventStatus.PUBLIC);
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const status = e.target.value;
+        onStatusChange(status);
+        setIsEventStatus(status);
+    };
 
     return (
         <div className={classes.confidentiality}>
@@ -23,9 +29,9 @@ export const Confidentiality = ({ status }: IConfidentiality) => {
                         type="radio"
                         name="eventStatus"
                         id="public"
-                        value={"Public"}
-                        onChange={() => setEventStatus(EventStatus.PUBLIC)}
-                        checked={eventStatus === "public"}
+                        value={EventStatus.PUBLIC}
+                        onChange={handleChange}
+                        checked={isEventStatus === EventStatus.PUBLIC}
                         className={classes.confidentialityInput}
                     />
                     <label className={classes.confidentialityLabel} htmlFor="public">
@@ -38,9 +44,9 @@ export const Confidentiality = ({ status }: IConfidentiality) => {
                         type="radio"
                         name="eventStatus"
                         id="invation"
-                        value={"Invation"}
-                        onChange={() => setEventStatus(EventStatus.INVATION)}
-                        checked={eventStatus === "invation"}
+                        value={EventStatus.INVATION}
+                        onChange={handleChange}
+                        checked={isEventStatus === EventStatus.INVATION}
                         className={classes.confidentialityInput}
                     />
                     <label className={classes.confidentialityLabel} htmlFor="invation">
@@ -53,9 +59,9 @@ export const Confidentiality = ({ status }: IConfidentiality) => {
                         type="radio"
                         name="eventStatus"
                         id="private"
-                        value={"Private"}
-                        onChange={() => setEventStatus(EventStatus.PRIVATE)}
-                        checked={eventStatus === "private"}
+                        value={EventStatus.PRIVATE}
+                        onChange={handleChange}
+                        checked={isEventStatus === EventStatus.PRIVATE}
                         className={classes.confidentialityInput}
                     />
                     <label className={classes.confidentialityLabel} htmlFor="private">
@@ -67,4 +73,4 @@ export const Confidentiality = ({ status }: IConfidentiality) => {
     );
 };
 
-export default Confidentiality;
+export default EventStatus;

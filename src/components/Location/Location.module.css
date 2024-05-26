@@ -25,7 +25,6 @@
     font-weight: 500;
     line-height: 1.63rem;
     text-align: left;
-    font-family: "__Inter_aaf875";
     background: none;
     cursor: pointer;
 }
@@ -57,5 +56,34 @@
 }
 
 .inputFindMap {
-    width: 100%;
+    width: 20rem;
+    background: var(--white-color);
+    border: 1px solid var(--additional-color);
+    border-radius: 0.25rem;
+    color: var(--main-color);
+    height: 2.6rem;
+    padding: 0.75rem 1.25rem 0.75rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.buttonBlockMap {
+    display: flex;
+    justify-content: space-between;
+}
+
+.buttonMap {
+    width: 10rem;
+    height: 3.13rem;
+    border: 0.13rem solid var(--main-color);
+    border-radius: 0.25rem;
+    background: none;
+    color: var(--main-color);
+    font-size: 1.13rem;
+    font-weight: 700;
+    line-height: 1.38rem;
+    text-align: center;
+    cursor: pointer;
 }

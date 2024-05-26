@@ -5,7 +5,6 @@ import Geocoding from "../GoogleMap/Geocoding";
 import dayjs from "dayjs";
 import Marker from "@/assets/icons/marker.svg";
 import Clock from "@/assets/icons/clock.svg";
-import profile from "../../assets/images/profile.png";
 
 interface CardEventProps {
     id: string;
@@ -14,15 +13,22 @@ interface CardEventProps {
     coord: [number, number];
     startDate: string | Date | undefined;
     time: string | undefined;
+    image?: string;
 }
 
-export const CardEvent = ({ id, name, description, coord, startDate, time }: CardEventProps) => {
+//разобраться с ошибкой размера картинки.
+
+export const CardEvent = ({ id, name, description, coord, startDate, time, image }: CardEventProps) => {
     return (
         <div id={id} className={classes.card}>
-            <div className={classes.image}>
-                <Link href={`/events/${id}`}>
-                    <Image src={profile} alt="img" />
-                </Link>
+            <div className={classes.imageContainer}>
+                <div className={classes.image}>
+                    {image && (
+                        <Link href={`/events/${id}`}>
+                            <Image src={image} alt="img" width={380} height={250} />
+                        </Link>
+                    )}
+                </div>
             </div>
 
             <div className={classes.location}>

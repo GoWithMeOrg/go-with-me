@@ -61,12 +61,6 @@ img {
     vertical-align: top;
 }
 
-img,
-svg {
-    max-width: 100%;
-    height: auto;
-}
-
 input:focus,
 input:active,
 textarea:focus,
@@ -74,15 +68,4 @@ select:focus,
 button:focus,
 button:active {
     outline: none;
-}
-
-.container {
-    display: grid;
-    grid-template-columns: repeat(12, 80px);
-    column-gap: 20px;
-    justify-content: center;
-}
-
-footer {
-    margin-top: auto;
 }

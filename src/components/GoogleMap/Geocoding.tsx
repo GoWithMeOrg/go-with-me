@@ -5,6 +5,7 @@ interface Props {
     coordinates: [number, number];
 }
 
+//определиться, что будет являть местом и что изходя из этого будем выводить.
 export const Geocoding = ({ coordinates }: Props) => {
     const apiIsLoaded = useApiIsLoaded();
     const [lng, lat] = coordinates;
@@ -19,8 +20,8 @@ export const Geocoding = ({ coordinates }: Props) => {
         const geocoder = new geocoding.Geocoder();
         geocoder.geocode({ location: { lng, lat } }, (results, status) => {
             if (status === "OK" && results !== null) {
-                setCity(results[0].address_components[2].short_name);
-                // setStreet(results[0].address_components[1].long_name);
+                setCity(results[0].address_components[3]?.short_name);
+                //setStreet(results[0].address_components[1].long_name);
                 // setHouseNumber(results[0].address_components[0].long_name);
             }
         });

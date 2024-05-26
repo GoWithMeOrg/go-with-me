@@ -11,6 +11,7 @@ interface DropdownProps {
     onSelectedCategories?: (categories: string[]) => void;
 }
 
+//решить вопрос если выбрана категория, то минус на выбранной категории показываем постоянно.
 export const Dropdown = ({ textButton, className, categoriesData, onSelectedCategories }: DropdownProps) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [selectedCategories, setSelectedCategories] = useState<string[]>(categoriesData);

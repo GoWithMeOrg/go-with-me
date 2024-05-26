@@ -44,6 +44,7 @@ const GET_EVENTS = gql`
                     address
                 }
             }
+            image
         }
     }
 `;
@@ -79,15 +80,16 @@ export const PopularEventList: FC<EventListProps> = () => {
                 <TitleH2 title={"Popular Event List"} className={classes.cardsEventsTitle} />
 
                 <div className={classes.cardsEventsList}>
-                    {data.events.map(({ _id, description, name, startDate, location, time }: IEvent) => (
+                    {data.events.map(({ _id, description, name, startDate, location, time, image }: IEvent) => (
                         <CardEvent
                             key={_id}
                             id={_id}
                             name={name}
                             description={description}
-                            coord={location.coordinates}
+                            coord={[location.coordinates[1], location.coordinates[0]]}
                             startDate={startDate}
                             time={time}
+                            image={image}
                         />
                     ))}
                 </div>

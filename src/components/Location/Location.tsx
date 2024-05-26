@@ -1,8 +1,7 @@
-import { useContext, useRef, useState } from "react";
-import classes from "./LocationField.module.css";
+import { SetStateAction, useContext, useRef, useState } from "react";
+import classes from "./Location.module.css";
 import Marker from "@/assets/icons/marker.svg";
 import Autocomplete from "@/components/GoogleMap/Autocomplete";
-import { Input } from "@/components/Input";
 import { Button } from "@/components/Button";
 import { CustomMapControl, Geolocation, MapHandler } from "@/components/GoogleMap";
 import {
@@ -14,17 +13,17 @@ import {
     ControlPosition,
 } from "@vis.gl/react-google-maps";
 import Popup from "../Popup/Popup";
-import { APIProviderGoogleMaps } from "@/app/providers";
 
-interface ILocationField {
+interface ILocation {
     address?: string;
+    coord?: { lat: number; lng: number } | null;
+    onPlaceChange?: (selectedPlace: google.maps.places.PlaceResult | null) => void;
 }
 
-export const LocationField = ({ address }: ILocationField) => {
+export const Location = ({ address, onPlaceChange, coord }: ILocation) => {
     const apiIsLoaded = useApiIsLoaded();
     const mapAPI = useContext(APIProviderContext);
     const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(null);
-    const originRef = useRef<HTMLInputElement>(null);
     const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
     const [showPopup, setShowPopup] = useState<boolean>(false);
 
@@ -32,28 +31,32 @@ export const LocationField = ({ address }: ILocationField) => {
         return;
     }
 
+    const handlePlaceSelect = (selectedPlace: google.maps.places.PlaceResult | null) => {
+        if (onPlaceChange) {
+            onPlaceChange(selectedPlace);
+        }
+    };
+
+    handlePlaceSelect(selectedPlace);
     const handleShowMap = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         setShowPopup(true);
+    };
+
+    const handleMarkerPosition = (e: { detail: { latLng: SetStateAction<google.maps.LatLngLiteral | null> } }) => {
+        setMarkerPosition(e.detail.latLng);
     };
 
     return (
         <label className={classes.locationForm}>
             <div className={classes.labelFindMap}>
                 <span className={classes.titleInput}>Location/Address</span>
-                <Button className={classes.btnFindMap} onClick={handleShowMap} text={"Find on Map"}>
+                <Button className={classes.btnFindMap} onClick={handleShowMap}>
                     <Marker style={{ marginRight: "0.25rem" }} />
+                    {"Find on Map"}
                 </Button>
             </div>
-            <Autocomplete onPlaceSelect={setSelectedPlace} originRef={originRef}>
-                <Input
-                    id="location"
-                    type={"text"}
-                    placeholder={""}
-                    defaultValue={address}
-                    className={classes.fieldInput}
-                />
-            </Autocomplete>
+            <Autocomplete className={classes.fieldInput} onPlaceSelect={setSelectedPlace} address={address} />
             <Popup
                 {...{
                     showPopup,
@@ -65,12 +68,11 @@ export const LocationField = ({ address }: ILocationField) => {
                     style={{ height: "600px" }}
                     defaultZoom={3}
                     defaultCenter={{ lat: 22.54992, lng: 0 }}
+                    //defaultCenter={coord ? { lat: coord.lat ?? 22.54992, lng: coord.lng ?? 0 } : { lat: 22.54992, lng: 0 }}
                     gestureHandling={"greedy"}
                     disableDefaultUI={false}
                     mapId={"<Your custom MapId here>"}
-                    onClick={(e) => {
-                        setMarkerPosition(e.detail.latLng);
-                    }}
+                    onClick={handleMarkerPosition}
                 >
                     <AdvancedMarker
                         position={markerPosition}
@@ -80,19 +82,21 @@ export const LocationField = ({ address }: ILocationField) => {
                         <Pin background={"#FBBC04"} borderColor={"#1e89a1"} glyphColor={"#0f677a"}></Pin>
                     </AdvancedMarker>
                     <CustomMapControl controlPosition={ControlPosition.TOP}>
-                        <Autocomplete onPlaceSelect={setSelectedPlace} originRef={originRef}>
-                            <Input type={"text"} placeholder={"Найти ..."} defaultValue={address} />
-                        </Autocomplete>
+                        <Autocomplete
+                            onPlaceSelect={setSelectedPlace}
+                            className={classes.inputFindMap}
+                            address={address}
+                        />
                     </CustomMapControl>
                     <MapHandler place={selectedPlace} />
                 </Map>
                 <div className={classes.buttonBlockMap}>
                     <Geolocation />
-                    <Button onClick={() => setShowPopup(false)} text={"Закрыть карту"} />
+                    <Button className={classes.buttonMap} onClick={() => setShowPopup(false)} text={"Закрыть карту"} />
                 </div>
             </Popup>
         </label>
     );
 };
 
-export default LocationField;
+export default Location;

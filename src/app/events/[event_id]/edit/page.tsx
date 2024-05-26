@@ -6,6 +6,7 @@ import { gql, useMutation, useQuery } from "@apollo/client";
 
 import { EventForm } from "@/components/EventForm/EventForm";
 import type { IEvent } from "@/database/models/Event";
+import classes from "./page.module.css";
 
 type PageParams = {
     params: { event_id: string };
@@ -26,6 +27,9 @@ const GET_EVENT = gql`
             name
             location {
                 coordinates
+                properties {
+                    address
+                }
             }
             description
             startDate
@@ -76,7 +80,7 @@ const EventEditPage: NextPage<PageParams> = (context) => {
     };
 
     return (
-        <div className="container">
+        <div className={classes.container}>
             <h3>Edit Event</h3>
             {loading && <p>Loading...</p>}
             {error && <p>Error : {error.message}</p>}

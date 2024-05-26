@@ -1,4 +1,6 @@
 import { useMap } from "@vis.gl/react-google-maps";
+import { Button } from "../Button";
+import classes from "./Autocomlete.module.css";
 
 export const Geolocation = () => {
     const map = useMap();
@@ -42,7 +44,11 @@ export const Geolocation = () => {
     }
 
     const infoWindow = new google.maps.InfoWindow();
-    return <button onClick={toLocate}>Найти меня</button>;
+    return (
+        <Button className={classes.buttonMap} onClick={toLocate}>
+            Найти меня
+        </Button>
+    );
 };
 
 export default Geolocation;

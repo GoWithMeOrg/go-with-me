@@ -2,7 +2,6 @@
 
 import { FC } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useQuery, gql, useMutation } from "@apollo/client";
 
 import { formatDate } from "@/utils/formatDate";
@@ -32,7 +31,6 @@ const GET_EVENTS = gql`
             endDate
             time
             location {
-                type
                 coordinates
                 properties {
                     address
@@ -94,7 +92,7 @@ const EventList: FC<EventListProps> = () => {
 
                         <div className={classes.location}>
                             <span>Адрес:</span>
-                            <Geocoding coordinates={location.coordinates} />
+                            <Geocoding coordinates={[location.coordinates[1], location.coordinates[0]]} />
                         </div>
 
                         <div className={classes.controls}>

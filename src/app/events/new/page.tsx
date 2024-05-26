@@ -11,6 +11,8 @@ import { EventForm } from "@/components/EventForm";
 import type { EventType } from "@/components/EventForm";
 import classes from "./page.module.css";
 import Arrow from "@/assets/icons/arrow.svg";
+import { TitleH2 } from "@/components/TitleH2";
+import { Button } from "@/components/Button";
 
 const CREATE_EVENT = gql`
     mutation CreateEvent($event: EventInput!) {
@@ -37,10 +39,13 @@ const EventNewPage: NextPage = () => {
     };
 
     return (
-        <div className="container">
+        <div className={classes.container}>
             <div className={classes.createEventFormWrapper}>
-                <Arrow />
-                <h2 className={classes.createEventTitle}>CREATE EVENT</h2>
+                <Button className={classes.createEventButton}>
+                    <Arrow />
+                </Button>
+
+                <TitleH2 className={classes.createEventTitle} title="CREATE EVENT" />
                 <EventForm
                     eventData={{
                         organizer_id: organizerId,
