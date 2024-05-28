@@ -17,18 +17,18 @@ export const Trip: FC<TripProps> = ({ tripData }) => {
         lng: event.location.coordinates[0],
     }));
 
-    const focusMarker = (coordinates: google.maps.LatLngLiteral) => {
-        if (map) {
-            map.panTo(coordinates);
-            map.setZoom(6);
-        }
-    };
-
     useEffect(() => {
+        const focusMarker = (coordinates: google.maps.LatLngLiteral) => {
+            if (map) {
+                map.panTo(coordinates);
+                map.setZoom(6);
+            }
+        };
+
         if (eventCoord.length > 0) {
             focusMarker(eventCoord[0]);
         }
-    }, [eventCoord]);
+    }, [eventCoord, map]);
 
     return (
         <div className={classes.container}>

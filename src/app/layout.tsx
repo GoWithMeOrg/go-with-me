@@ -4,6 +4,7 @@ import { NextAuthProvider, ApolloWrapper, APIProviderGoogleMaps } from "./provid
 import "@/styles/global.css";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { Suspense } from "react";
 
 const inter = Inter({
     weight: ["400", "500", "600", "700"],
@@ -23,9 +24,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <body className={inter.className}>
                 <ApolloWrapper>
                     <NextAuthProvider>
-                        <Header />
-                        <APIProviderGoogleMaps>{children}</APIProviderGoogleMaps>
-                        <Footer />
+                        <Suspense>
+                            <Header />
+                            <APIProviderGoogleMaps>{children}</APIProviderGoogleMaps>
+                            <Footer />
+                        </Suspense>
                     </NextAuthProvider>
                 </ApolloWrapper>
             </body>

@@ -14,11 +14,11 @@ const Popup: FC<PopupProps> = ({ showPopup, setShowPopup, wrapperProps, containe
     const [containerState, setContainerState] = useState<HTMLDivElement | null>(null);
     const refPopup = useRef<HTMLDivElement>(null);
 
-    const eventListener = (event: MouseEvent) => {
-        if (!refPopup.current?.contains(event.target as Node)) setShowPopup(false);
-    };
-
     useEffect(() => {
+        const eventListener = (event: MouseEvent) => {
+            if (!refPopup.current?.contains(event.target as Node)) setShowPopup(false);
+        };
+
         const containerExist = document.getElementById("popupContainer");
         if (showPopup) {
             if (containerExist) return;

@@ -6,7 +6,7 @@ import { gql, useMutation, useQuery } from "@apollo/client";
 
 import { EventForm } from "@/components/EventForm/EventForm";
 import type { IEvent } from "@/database/models/Event";
-import classes from "./page.module.css";
+import classes from "../../page.module.css";
 
 type PageParams = {
     params: { event_id: string };
