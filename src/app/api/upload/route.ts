@@ -5,10 +5,13 @@ import { s3Client } from "@/app/api/upload/s3client";
 export const POST = async (req: NextRequest) => {
     const data = await req.formData();
     const file = data.get("file");
+    const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
 
-    if (!(file instanceof File)) {
-        return NextResponse.json("No file");
+    if (!(file instanceof File) || !validImageTypes.includes(file.type)) {
+        return NextResponse.json("Invalid file type", { status: 400 });
     }
+
+    console.log(file);
 
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
