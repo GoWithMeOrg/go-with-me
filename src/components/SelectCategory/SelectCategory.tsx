@@ -2,13 +2,25 @@ import { useState } from "react";
 import { Dropdown } from "../Dropdown";
 import classes from "./SelectCategory.module.css";
 
+export interface ICategory {
+    label: string;
+    icon?: JSX.Element;
+    onClick?: () => void;
+    className?: string;
+}
 interface ISelectCategory {
+    categoryList: ICategory[];
     titleCategories: string;
     eventCategories: string[];
     onCategoriesChange: (categories: string[]) => void;
 }
 
-export const SelectCategory = ({ eventCategories, titleCategories, onCategoriesChange }: ISelectCategory) => {
+export const SelectCategory = ({
+    categoryList,
+    eventCategories,
+    titleCategories,
+    onCategoriesChange,
+}: ISelectCategory) => {
     const [categories, setCategories] = useState<string[]>(eventCategories ?? []);
 
     const handleCategoryChange = (selectedCategories: string[]) => {
@@ -24,6 +36,7 @@ export const SelectCategory = ({ eventCategories, titleCategories, onCategoriesC
                 className={classes.dropdownButton}
                 categoriesData={categories ?? []}
                 onSelectedCategories={handleCategoryChange}
+                list={categoryList}
             />
         </div>
     );

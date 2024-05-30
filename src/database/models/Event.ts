@@ -21,6 +21,7 @@ export interface IEvent {
     };
     status: string;
     categories?: string[];
+    types?: string[];
     tags?: string[];
     image?: string;
 }
@@ -67,6 +68,11 @@ const EventSchema = new Schema<IEventDocument>(
         },
 
         categories: {
+            type: [String],
+            required: true,
+        },
+
+        types: {
             type: [String],
             required: true,
         },

@@ -7,7 +7,7 @@ interface ITime {
     onTimeChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 export const Time = ({ time, onTimeChange }: ITime) => {
-    const [startTime, setStartTime] = useState<string>(time ?? "00:00");
+    const [startTime, setStartTime] = useState<string>(time ?? dayjs().format("HH:mm"));
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setStartTime(e.target.value);
         if (onTimeChange) {

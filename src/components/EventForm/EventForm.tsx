@@ -12,6 +12,7 @@ import { Description } from "../Description";
 import { SelectCategory } from "../SelectCategory";
 import { CreateTag } from "../CreateTag";
 import { GuestList } from "../GuestList";
+import { eventCategory, eventTypes } from "../Dropdown/dropdownLists";
 
 export type EventType = Partial<IEvent>;
 
@@ -31,6 +32,7 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
         description: string,
         eventStatus: string,
         selectedCategories: string[],
+        selectedTypes: string[],
         selectedTags: string[],
         imageUrl: string;
 
@@ -53,6 +55,7 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
     const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => (description = e.target.value);
     const handleStatusChange = (status: string) => (eventStatus = status);
     const handleCategoriesChange = (categories: string[]) => (selectedCategories = categories);
+    const handleTypesChange = (types: string[]) => (selectedTypes = types);
     const handleTagsChange = (tags: string[]) => (selectedTags = tags);
     const handleImageUrl = (selectedImageUrl: string) => (imageUrl = selectedImageUrl);
 
@@ -77,6 +80,7 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
             image: imageUrl,
             status: eventStatus,
             categories: selectedCategories,
+            types: selectedTypes,
             tags: selectedTags,
         };
         onSubmit(onSubmitData);
@@ -106,15 +110,17 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                     <EventStatus status={eventData.status} onStatusChange={handleStatusChange} />
                     <Description text={eventData.description} onDescriptionChange={handleDescriptionChange} />
                     <SelectCategory
+                        categoryList={eventCategory}
                         onCategoriesChange={handleCategoriesChange}
                         eventCategories={eventData.categories ?? []}
                         titleCategories={"Select category"}
                     />
-                    {/* <SelectCategory
-                        onCategoriesChange={handleCatigoriesChange}
-                        eventCategories={eventData.categories ?? []}
+                    <SelectCategory
+                        categoryList={eventTypes}
+                        onCategoriesChange={handleTypesChange}
+                        eventCategories={eventData.types ?? []}
                         titleCategories={"Select subject"}
-                    /> */}
+                    />
                     <CreateTag onTagsChange={handleTagsChange} eventTags={eventData.tags ?? []} />
                     <GuestList />
                     <Button className={classes.buttonSaveChange} type="submit" text={"Save changes"} />

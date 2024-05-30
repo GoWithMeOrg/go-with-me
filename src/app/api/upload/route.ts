@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ObjectCannedACL, PutObjectCommand } from "@aws-sdk/client-s3";
-import { v4 as uuidv4 } from "uuid";
+import { customAlphabet } from "nanoid";
 import { s3Client } from "@/app/api/upload/s3client";
 export const POST = async (req: NextRequest) => {
     const data = await req.formData();
@@ -13,7 +13,7 @@ export const POST = async (req: NextRequest) => {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
     const fileExtension = file.name.split(".").pop();
-    const fileName = `${uuidv4()}.${fileExtension}`;
+    const fileName = `${customAlphabet("1234567890abcdef", 10)()}.${fileExtension}`;
 
     const bucketParams = {
         Bucket: "gowithme",

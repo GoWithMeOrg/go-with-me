@@ -37,6 +37,7 @@ const GET_EVENT = gql`
             time
             status
             categories
+            types
             tags
             image
         }
@@ -54,6 +55,7 @@ const UPDATE_EVENT = gql`
             endDate
             time
             categories
+            types
             image
         }
     }
@@ -66,6 +68,8 @@ const EventEditPage: NextPage<PageParams> = (context) => {
         variables: { id: eventId },
     });
     const [updateEvent] = useMutation(UPDATE_EVENT);
+
+    console.log(data);
 
     const handleEdit = (eventEdited: Partial<IEvent>) => {
         updateEvent({

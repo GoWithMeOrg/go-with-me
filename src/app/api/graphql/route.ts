@@ -156,6 +156,7 @@ const typeDefs = gql`
         location: Location
         tags: [String]
         categories: [String]
+        types: [String]
         status: String
         image: String
     }
@@ -208,6 +209,7 @@ const typeDefs = gql`
         location: LocationInput
         tags: [String]
         categories: [String]
+        types: [String]
         status: String
         image: String
     }
