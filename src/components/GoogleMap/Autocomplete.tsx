@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useMapsLibrary } from "@vis.gl/react-google-maps";
 
 interface Props {
     onPlaceSelect: (place: google.maps.places.PlaceResult | null) => void;
-    children?: React.ReactNode;
-    originRef?: React.RefObject<HTMLInputElement> | null;
+    className?: string;
+    address?: string;
 }
-export const Autocomplete = ({ children, onPlaceSelect, originRef }: Props) => {
-    const [placeAutocomplete, setPlaceAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
+export const Autocomplete = ({ onPlaceSelect, className, address }: Props) => {
     const places = useMapsLibrary("places");
+    const originRef = useRef<HTMLInputElement>(null);
+    const [placeAutocomplete, setPlaceAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
+    const newAdress = placeAutocomplete?.getPlace()?.formatted_address;
 
     useEffect(() => {
         if (!places || !originRef || !originRef.current) return;
@@ -34,12 +36,15 @@ export const Autocomplete = ({ children, onPlaceSelect, originRef }: Props) => {
         });
     }, [onPlaceSelect, placeAutocomplete]);
 
-    return React.Children.map(children, (child) => {
-        if (React.isValidElement(child)) {
-            return React.cloneElement(child, { ref: originRef } as React.Attributes);
-        }
-        return child;
-    });
+    return (
+        <input
+            className={className}
+            type={"text"}
+            placeholder={""}
+            ref={originRef}
+            defaultValue={address ?? newAdress}
+        />
+    );
 };
 
 export default Autocomplete;

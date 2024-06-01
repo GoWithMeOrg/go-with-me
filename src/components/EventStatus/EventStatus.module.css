@@ -1,0 +1,95 @@
+.confidentialityTitle {
+    color: var(--text-color);
+    font-size: 0.88rem;
+    font-weight: 500;
+    line-height: 1.625rem;
+    text-align: left;
+    margin-bottom: 0.125rem;
+}
+
+.confidentialityWrapper {
+    display: flex;
+    width: 100%;
+    gap: 1.625rem;
+}
+
+.confidentialityRadio {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+}
+
+.confidentialityInput {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.confidentialityLabel {
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.625rem;
+    color: var(--main-color);
+}
+
+.confidentialityInput[type="radio"]:checked,
+.confidentialityInput[type="radio"]:not(:checked) {
+    position: absolute;
+    left: -9999px;
+}
+
+.confidentialityInput[type="radio"]:checked + .confidentialityLabel,
+.confidentialityInput[type="radio"]:not(:checked) + .confidentialityLabel {
+    display: inline-block;
+    position: relative;
+    padding-left: 1.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.25rem;
+    color: var(--main-color);
+    cursor: pointer;
+}
+
+.confidentialityInput[type="radio"]:checked + .confidentialityLabel:before,
+.confidentialityInput[type="radio"]:not(:checked) + .confidentialityLabel:before {
+    content: "";
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 0.25rem solid var(--additional-color);
+}
+
+.confidentialityInput[type="radio"]:checked + .confidentialityLabel:before,
+.confidentialityInput[type="radio"]:not(:checked) + .confidentialityLabel:before {
+    border-radius: 100%;
+}
+
+.confidentialityInput[type="radio"]:checked + .confidentialityLabel:after,
+.confidentialityInput[type="radio"]:not(:checked) + .confidentialityLabel:after {
+    content: "";
+    position: absolute;
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+}
+
+.confidentialityInput[type="radio"]:checked + .confidentialityLabel:after,
+.confidentialityInput[type="radio"]:not(:checked) + .confidentialityLabel:after {
+    left: 0.25rem;
+    top: 0.25rem;
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 100%;
+    background-color: var(--accent-color);
+}
+
+.confidentialityInput[type="radio"]:not(:checked) + .confidentialityLabel:after {
+    opacity: 0;
+}
+
+.confidentialityInput[type="radio"]:checked + label:after {
+    opacity: 1;
+}

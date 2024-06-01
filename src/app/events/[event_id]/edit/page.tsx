@@ -6,6 +6,7 @@ import { gql, useMutation, useQuery } from "@apollo/client";
 
 import { EventForm } from "@/components/EventForm/EventForm";
 import type { IEvent } from "@/database/models/Event";
+import classes from "../../page.module.css";
 
 type PageParams = {
     params: { event_id: string };
@@ -23,12 +24,22 @@ const GET_EVENT = gql`
                 image
                 emailVerified
             }
-
             name
+            location {
+                coordinates
+                properties {
+                    address
+                }
+            }
             description
-            # isPrivate
             startDate
             endDate
+            time
+            status
+            categories
+            types
+            tags
+            image
         }
     }
 `;
@@ -39,9 +50,13 @@ const UPDATE_EVENT = gql`
         updateEvent(id: $id, event: $event) {
             name
             description
-            # isPrivate
+            status
             startDate
             endDate
+            time
+            categories
+            types
+            image
         }
     }
 `;
@@ -53,6 +68,8 @@ const EventEditPage: NextPage<PageParams> = (context) => {
         variables: { id: eventId },
     });
     const [updateEvent] = useMutation(UPDATE_EVENT);
+
+    console.log(data);
 
     const handleEdit = (eventEdited: Partial<IEvent>) => {
         updateEvent({
@@ -67,8 +84,8 @@ const EventEditPage: NextPage<PageParams> = (context) => {
     };
 
     return (
-        <div className="EventEditPage">
-            <h3>Edit Event {data?.event?.name}</h3>
+        <div className={classes.container}>
+            <h3>Edit Event</h3>
             {loading && <p>Loading...</p>}
             {error && <p>Error : {error.message}</p>}
             {!error && data?.event && <EventForm eventData={data.event} onSubmit={handleEdit} />}

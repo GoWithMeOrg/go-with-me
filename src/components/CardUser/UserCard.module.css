@@ -26,6 +26,7 @@
 .userJoined {
     position: relative;
     bottom: 1.875rem;
+    transform: scale(1.2);
 }
 
 .userStatus {

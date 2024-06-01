@@ -1,0 +1,17 @@
+.loader {
+    width: 500px;
+    height: 25px;
+    border-radius: 25px;
+    top: 50%;
+    position: absolute;
+    transform: translate(-230%, -50%);
+    background:
+        repeating-linear-gradient(135deg, var(--main-color) 0 10px, var(--accent-color) 0 20px) 0/0% no-repeat,
+        repeating-linear-gradient(135deg, #ddd 0 10px, #eee 0 20px) 0/100%;
+    animation: l3 2s infinite;
+}
+@keyframes l3 {
+    100% {
+        background-size: 100%;
+    }
+}

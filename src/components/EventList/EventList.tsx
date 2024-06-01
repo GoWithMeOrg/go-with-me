@@ -2,7 +2,6 @@
 
 import { FC } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useQuery, gql, useMutation } from "@apollo/client";
 
 import { formatDate } from "@/utils/formatDate";
@@ -28,16 +27,19 @@ const GET_EVENTS = gql`
 
             name
             description
-            # isPrivate
             startDate
             endDate
+            time
             location {
-                type
                 coordinates
                 properties {
                     address
                 }
             }
+            status
+            categories
+            tags
+            image
         }
     }
 `;
@@ -54,6 +56,8 @@ const EventList: FC<EventListProps> = () => {
     //const router = useRouter();
     const { loading, error, data, refetch } = useQuery(GET_EVENTS);
     const [deleteEventMutation] = useMutation(DELETE_EVENT_MUTATION);
+
+    console.log(data);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error : {error.message}</p>;
@@ -88,7 +92,7 @@ const EventList: FC<EventListProps> = () => {
 
                         <div className={classes.location}>
                             <span>Адрес:</span>
-                            <Geocoding coordinates={location.coordinates} />
+                            <Geocoding coordinates={[location.coordinates[1], location.coordinates[0]]} />
                         </div>
 
                         <div className={classes.controls}>

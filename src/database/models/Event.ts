@@ -1,12 +1,12 @@
 import mongoose, { Schema, Document } from "mongoose";
 import UserModel, { IUser } from "./User";
+
 export interface IEvent {
     _id: string;
     organizer_id: mongoose.Types.ObjectId | string;
     organizer: IUser;
     name: string;
     description: string;
-    /* isPrivate: boolean; */
     startDate?: Date | string;
     endDate?: Date | string;
     time?: string;
@@ -19,9 +19,11 @@ export interface IEvent {
             address: string;
         };
     };
+    status: string;
+    categories?: string[];
+    types?: string[];
     tags?: string[];
-    /* category?: string; */
-    status?: string;
+    image?: string;
 }
 
 export interface IEventDocument extends Omit<IEvent, "_id" | "organizer" | "createdAt" | "updatedAt">, Document {}
@@ -37,11 +39,8 @@ const EventSchema = new Schema<IEventDocument>(
             type: String,
             required: true,
         },
+
         description: String,
-        /* isPrivate: {
-            type: Boolean,
-            default: true,
-        }, */
 
         location: {
             type: {
@@ -57,20 +56,37 @@ const EventSchema = new Schema<IEventDocument>(
                 address: String,
             },
         },
-        /* category: {
-            type: String,
-            required: true,
-            enum: ["Party", "Conference", "Concert", "Trip", "Workshops"],
-        }, */
-        status: {
-            type: String,
-            required: true,
-            enum: ["Public", "Invation", "Private"],
-        },
 
         startDate: Date,
         endDate: Date,
+        time: String,
+
+        status: {
+            type: String,
+            enum: ["public", "invation", "private"],
+            required: true,
+        },
+
+        categories: {
+            type: [String],
+            required: true,
+        },
+
+        types: {
+            type: [String],
+            required: true,
+        },
+
+        tags: {
+            type: [String],
+            required: true,
+        },
+
+        image: {
+            type: String,
+        },
     },
+
     {
         timestamps: true,
         toJSON: { virtuals: true },

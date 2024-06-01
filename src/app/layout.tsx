@@ -4,10 +4,12 @@ import { NextAuthProvider, ApolloWrapper, APIProviderGoogleMaps } from "./provid
 import "@/styles/global.css";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { Suspense } from "react";
 
 const inter = Inter({
-    subsets: ["latin"],
+    weight: ["400", "500", "600", "700"],
     style: ["normal"],
+    subsets: ["latin"],
     display: "swap",
 });
 
@@ -18,14 +20,15 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
-        <html lang="en" className={inter.className}>
-            <body>
+        <html lang="en">
+            <body className={inter.className}>
                 <ApolloWrapper>
                     <NextAuthProvider>
-                        <Header />
-                        {/* <Menu /> */}
-                        <APIProviderGoogleMaps>{children}</APIProviderGoogleMaps>
-                        <Footer />
+                        <Suspense>
+                            <Header />
+                            <APIProviderGoogleMaps>{children}</APIProviderGoogleMaps>
+                            <Footer />
+                        </Suspense>
                     </NextAuthProvider>
                 </ApolloWrapper>
             </body>

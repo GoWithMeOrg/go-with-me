@@ -4,7 +4,7 @@ import { PopularEventList } from "@/components/PopularEventsList/PopularEventsLi
 
 export default function HomePage() {
     return (
-        <main className="container">
+        <main className={classes.container}>
             <PopularEventList />
         </main>
     );

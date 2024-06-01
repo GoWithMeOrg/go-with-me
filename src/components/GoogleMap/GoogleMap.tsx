@@ -55,9 +55,7 @@ export const GoogleMap = () => {
                 </AdvancedMarker>
             </Map>
             <CustomMapControl controlPosition={ControlPosition.TOP}>
-                <Autocomplete onPlaceSelect={setSelectedPlace} originRef={originRef}>
-                    <Input type={"text"} placeholder={"Найти ..."} />
-                </Autocomplete>
+                <Autocomplete onPlaceSelect={setSelectedPlace} />
             </CustomMapControl>
             <MapHandler place={selectedPlace} />
         </>

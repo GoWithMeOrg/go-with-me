@@ -150,14 +150,15 @@ const typeDefs = gql`
         organizer: User
         name: String
         description: String
-        # isPrivate: Boolean
         startDate: ISODate
-        time: String
         endDate: ISODate
+        time: String
         location: Location
         tags: [String]
-        # category: String
+        categories: [String]
+        types: [String]
         status: String
+        image: String
     }
 
     type Trip {
@@ -202,14 +203,15 @@ const typeDefs = gql`
         organizer_id: ID!
         name: String
         description: String
-        # isPrivate: Boolean
         startDate: ISODate
-        time: String
         endDate: ISODate
+        time: String
         location: LocationInput
         tags: [String]
-        # category: String
+        categories: [String]
+        types: [String]
         status: String
+        image: String
     }
 
     type Mutation {

@@ -7,6 +7,8 @@ import { useState } from "react";
 import Popup from "../Popup/Popup";
 import { AuthModal } from "../AuthModal";
 import Link from "next/link";
+import { Button } from "../Button";
+import { TitleH2 } from "../TitleH2";
 
 export const CreateAndInvite = () => {
     const { data: session, status } = useSession();
@@ -19,22 +21,24 @@ export const CreateAndInvite = () => {
 
     return (
         <div className={classes.createAndInvite}>
-            <div className={classes.logoJoin}>
-                <Join />
-            </div>
+            <Join className={classes.logoJoin} />
             <div className={classes.createAndInviteWrapper}>
                 <div className={classes.createAndInviteTitle}>
-                    <h2>CREATE AND INVITE</h2>
+                    <TitleH2 title={"CREATE AND INVITE"} className={classes.createAndInviteTitle} />
                 </div>
 
                 {status === "unauthenticated" && (
                     <div className={classes.createAndInviteButtons}>
-                        <button onClick={handleShowAuth} className={classes.createAndInviteButton}>
-                            Create event
-                        </button>
-                        <button onClick={handleShowAuth} className={classes.createAndInviteButton}>
-                            Create trip
-                        </button>
+                        <Button
+                            onClick={handleShowAuth}
+                            className={classes.createAndInviteButtonUnAuth}
+                            text={"Create event"}
+                        />
+                        <Button
+                            onClick={handleShowAuth}
+                            className={classes.createAndInviteButtonUnAuth}
+                            text={"Create trip"}
+                        />
                     </div>
                 )}
 
@@ -58,17 +62,16 @@ export const CreateAndInvite = () => {
 
                 {status === "authenticated" && (
                     <div className={classes.createAndInviteButtons}>
-                        {/* <Link href="/events/new">Create New Event</Link> */}
-                        <button className={classes.createAndInviteButton}>
+                        <Button className={classes.createAndInviteButton}>
                             <Link className={classes.createAndInviteButtonLink} href="/events/new">
                                 Create event
                             </Link>
-                        </button>
-                        <button className={classes.createAndInviteButton}>
+                        </Button>
+                        <Button className={classes.createAndInviteButton}>
                             <Link className={classes.createAndInviteButtonLink} href="/trips/new">
                                 Create trip
                             </Link>
-                        </button>
+                        </Button>
                     </div>
                 )}
             </div>

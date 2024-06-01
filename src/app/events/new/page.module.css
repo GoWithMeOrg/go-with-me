@@ -1,14 +1,37 @@
+.container {
+    display: grid;
+    grid-template-columns: repeat(12, 80px);
+    column-gap: 20px;
+    justify-content: center;
+}
+
 .createEventTitle {
     margin-top: 2.8rem;
     margin-bottom: 4.375rem;
     width: 14.25rem;
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+    color: var(--main-color);
+    font-weight: 700;
+    text-align: left;
+    text-transform: uppercase;
 }
 
 .createEventFormWrapper {
     margin-top: 1.875rem;
-    /* width: 100%;
-    display: flex;
-    justify-content: space-between; */
+    width: 73.75rem;
+}
+
+.createEventButton {
+    width: 3.75rem;
+    height: 1.25rem;
+    background: none;
+    cursor: pointer;
+}
+
+.createEventButton:hover,
+.createEventButton path:hover {
+    stroke: var(--hover-color);
 }
 
 .createEventFormImage {
