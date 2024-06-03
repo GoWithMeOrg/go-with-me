@@ -57,6 +57,12 @@
     font-weight: 700;
     line-height: 1.38rem;
     text-align: left;
+    color: var(--main-color);
+    cursor: pointer;
+}
+
+.title:hover {
+    color: var(--hover-color);
 }
 
 .description {
