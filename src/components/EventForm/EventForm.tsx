@@ -86,8 +86,6 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
         onSubmit(onSubmitData);
     };
 
-    console.log(eventData.image);
-
     return (
         <div className={classes.container}>
             <form className={classes.form} onSubmit={handleSubmit}>
