@@ -236,6 +236,7 @@
     line-height: 1.375rem;
     text-align: center;
     cursor: pointer;
+    margin-top: 3rem;
 }
 
 .buttonSaveChange:hover {

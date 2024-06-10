@@ -7,6 +7,10 @@ import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { useSession } from "next-auth/react";
 import { gql, useMutation } from "@apollo/client";
 import { EventType } from "../EventForm";
+import { EventStatus } from "../EventStatus";
+import { Button } from "../Button";
+import { Date } from "@/components/Date";
+import { Time } from "@/components/Time";
 
 const CREATE_EVENT = gql`
     mutation CreateEvent($event: EventInput!) {
@@ -31,7 +35,7 @@ interface IFormInputs {
         };
     };
     image: string;
-    status: string;
+    status: "public" | "private | invation";
     categories: string[];
     types: string[];
     tags: string[];
@@ -55,18 +59,46 @@ export const EventHookForm = () => {
         console.log(event);
     };
 
-    return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <Controller
-                name="name"
-                control={control}
-                defaultValue="defaultValue"
-                render={({ field }) => <TitleField {...field} />}
-                rules={{ required: true }}
-            />
+    enum Status {
+        PUBLIC = "public",
+        INVATION = "invation",
+        PRIVATE = "private",
+    }
 
-            <button type="submit">Сохранить</button>
-        </form>
+    return (
+        <div className={classes.container}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <Controller
+                    name="name"
+                    control={control}
+                    defaultValue="defaultValue"
+                    render={({ field }) => <TitleField {...field} />}
+                    rules={{ required: true }}
+                />
+
+                <Controller
+                    name="status"
+                    control={control}
+                    render={({ field }) => <EventStatus options={Status} selected={field.value} {...field} />}
+                />
+
+                <div className={classes.inputsDate}>
+                    <Controller
+                        name="startDate"
+                        control={control}
+                        render={({ field }) => <Date title={"Start date"} {...field} />}
+                    />
+                    <Controller
+                        name="endDate"
+                        control={control}
+                        render={({ field }) => <Date title={"Finish date"} {...field} />}
+                    />
+                    <Controller name="time" control={control} render={({ field }) => <Time {...field} />} />
+                </div>
+
+                <Button className={classes.buttonSaveChange} type="submit" text={"Save changes"} />
+            </form>
+        </div>
     );
 };
 

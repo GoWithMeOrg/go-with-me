@@ -10,7 +10,7 @@ interface ITitleField {
     ref: RefCallBack;
 }
 
-// export const TitleField = ({ ref }: ITitleField, {}) => {
+// export const TitleField = ({ ref }: ITitleField) => {
 //     const [eventName, setEventName] = useState("");
 //     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 //         setEventName(e.target.value);

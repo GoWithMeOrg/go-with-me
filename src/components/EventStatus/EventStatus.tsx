@@ -1,22 +1,22 @@
-import { useState } from "react";
+import { forwardRef, useState } from "react";
 import classes from "./EventStatus.module.css";
+import { RefCallBack } from "react-hook-form";
 
 interface IEventStatus {
-    status: string | undefined;
-    onStatusChange: (status: string) => void;
-}
-export const EventStatus = ({ status, onStatusChange }: IEventStatus) => {
-    enum EventStatus {
-        PUBLIC = "public",
-        INVATION = "invation",
-        PRIVATE = "private",
-    }
+    options?: {
+        PUBLIC: string;
+        INVATION: string;
+        PRIVATE: string;
+    };
+    ref: RefCallBack;
 
-    const [isEventStatus, setIsEventStatus] = useState<string>(status ?? EventStatus.PUBLIC);
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    selected: string;
+}
+
+export const EventStatus = forwardRef(function EventStatus(props: IEventStatus, ref) {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const status = e.target.value;
-        onStatusChange(status);
-        setIsEventStatus(status);
+        props.onChange(e);
     };
 
     return (
@@ -28,13 +28,13 @@ export const EventStatus = ({ status, onStatusChange }: IEventStatus) => {
                     <input
                         type="radio"
                         name="eventStatus"
-                        id="public"
-                        value={EventStatus.PUBLIC}
+                        id={props.options?.PUBLIC}
+                        value={props.options?.PUBLIC}
                         onChange={handleChange}
-                        checked={isEventStatus === EventStatus.PUBLIC}
+                        checked={props.selected === props.options?.PUBLIC}
                         className={classes.confidentialityInput}
                     />
-                    <label className={classes.confidentialityLabel} htmlFor="public">
+                    <label className={classes.confidentialityLabel} htmlFor={props.options?.PUBLIC}>
                         Public event
                     </label>
                 </div>
@@ -43,13 +43,13 @@ export const EventStatus = ({ status, onStatusChange }: IEventStatus) => {
                     <input
                         type="radio"
                         name="eventStatus"
-                        id="invation"
-                        value={EventStatus.INVATION}
+                        id={props.options?.INVATION}
+                        value={props.options?.INVATION}
                         onChange={handleChange}
-                        checked={isEventStatus === EventStatus.INVATION}
+                        checked={props.selected === props.options?.INVATION}
                         className={classes.confidentialityInput}
                     />
-                    <label className={classes.confidentialityLabel} htmlFor="invation">
+                    <label className={classes.confidentialityLabel} htmlFor={props.options?.INVATION}>
                         By invation only
                     </label>
                 </div>
@@ -58,19 +58,19 @@ export const EventStatus = ({ status, onStatusChange }: IEventStatus) => {
                     <input
                         type="radio"
                         name="eventStatus"
-                        id="private"
-                        value={EventStatus.PRIVATE}
+                        id={props.options?.PRIVATE}
+                        value={props.options?.PRIVATE}
                         onChange={handleChange}
-                        checked={isEventStatus === EventStatus.PRIVATE}
+                        checked={props.selected === props.options?.PRIVATE}
                         className={classes.confidentialityInput}
                     />
-                    <label className={classes.confidentialityLabel} htmlFor="private">
+                    <label className={classes.confidentialityLabel} htmlFor={props.options?.PRIVATE}>
                         Private event
                     </label>
                 </div>
             </div>
         </div>
     );
-};
+});
 
 export default EventStatus;

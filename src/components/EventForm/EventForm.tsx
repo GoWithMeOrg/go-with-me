@@ -90,7 +90,7 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
         <div className={classes.container}>
             <form className={classes.form} onSubmit={handleSubmit}>
                 <div className={classes.formWrapper}>
-                    <TitleField defaultValue={eventData.name} onTitleChange={handleTitleChange} />
+                    {/* <TitleField defaultValue={eventData.name} onTitleChange={handleTitleChange} /> */}
                     <Location
                         onPlaceChange={handlePlaceChange}
                         address={eventData.location?.properties?.address}
@@ -101,11 +101,11 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                         }
                     />
                     <div className={classes.inputsDate}>
-                        <Date date={eventData.startDate} title={"Start date"} onDateChange={handleStartDateChange} />
+                        {/* <Date date={eventData.startDate} title={"Start date"} onDateChange={handleStartDateChange} />
                         <Date date={eventData.endDate} title={"Finish Date"} onDateChange={handleFinishDateChange} />
-                        <Time time={eventData.time} onTimeChange={handleTimeChange} />
+                        <Time time={eventData.time} onTimeChange={handleTimeChange} /> */}
                     </div>
-                    <EventStatus status={eventData.status} onStatusChange={handleStatusChange} />
+                    {/* <EventStatus status={eventData.status} onStatusChange={handleStatusChange} /> */}
                     <Description text={eventData.description} onDescriptionChange={handleDescriptionChange} />
                     <SelectCategory
                         categoryList={eventCategory}
