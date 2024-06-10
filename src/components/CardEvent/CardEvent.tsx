@@ -44,7 +44,10 @@ export const CardEvent = ({ id, name, description, coord, startDate, time, image
                     {dayjs(startDate).format("DD.MM.YY")} | {time}
                 </div>
             </div>
-            <div className={classes.title}>{name}</div>
+            <Link href={`/events/${id}`}>
+                <span className={classes.title}>{name}</span>
+            </Link>
+
             <div className={classes.description}>{description}</div>
         </div>
     );

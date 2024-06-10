@@ -1,23 +1,15 @@
 import dayjs from "dayjs";
 import classes from "./Time.module.css";
-import { useState } from "react";
+import { forwardRef } from "react";
 
 interface ITime {
-    time?: string;
-    onTimeChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    time?: Date | string | undefined;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
-export const Time = ({ time, onTimeChange }: ITime) => {
-    const [startTime, setStartTime] = useState<string>(time ?? dayjs().format("HH:mm"));
+
+export const Time = forwardRef(function Time(props: ITime, ref) {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setStartTime(e.target.value);
-        if (onTimeChange) {
-            const changeEvent = Object.assign(Object.create(e), {
-                target: {
-                    value: e.target.value,
-                },
-            });
-            onTimeChange(changeEvent);
-        }
+        props.onChange(e);
     };
 
     return (
@@ -26,12 +18,12 @@ export const Time = ({ time, onTimeChange }: ITime) => {
             <input
                 type="time"
                 name="time"
-                defaultValue={time ?? dayjs(startTime).format("HH:mm")}
+                defaultValue={dayjs(props.time).format("YYYY-MM-DD")}
                 className={classes.timeInput}
                 onChange={handleChange}
             />
         </label>
     );
-};
+});
 
 export default Time;
