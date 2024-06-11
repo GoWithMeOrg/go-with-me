@@ -11,6 +11,7 @@ import { EventStatus } from "../EventStatus";
 import { Button } from "../Button";
 import { Date } from "@/components/Date";
 import { Time } from "@/components/Time";
+import { Description } from "../Description";
 
 const CREATE_EVENT = gql`
     mutation CreateEvent($event: EventInput!) {
@@ -80,6 +81,14 @@ export const EventHookForm = () => {
                     name="status"
                     control={control}
                     render={({ field }) => <EventStatus options={Status} selected={field.value} {...field} />}
+                />
+
+                <Controller
+                    name="description"
+                    control={control}
+                    defaultValue="Description"
+                    render={({ field }) => <Description {...field} />}
+                    rules={{ required: true }}
                 />
 
                 <div className={classes.inputsDate}>
