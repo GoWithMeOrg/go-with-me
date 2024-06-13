@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 import Plus from "@/assets/icons/plus.svg";
 import Minus from "@/assets/icons/minus.svg";
 import ArrowMenu from "@/assets/icons/arrowMenu.svg";
@@ -11,201 +11,13 @@ interface DropdownProps {
     categoriesData: string[];
     onSelectedCategories?: (categories: string[]) => void;
     list: ICategory[];
+    onChange?: (categories: string[]) => void;
 }
 
 //решить вопрос если выбрана категория, то минус на выбранной категории показываем постоянно.
 export const Dropdown = ({ list, textButton, className, categoriesData, onSelectedCategories }: DropdownProps) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [selectedCategories, setSelectedCategories] = useState<string[]>(categoriesData);
-    //     {
-    //         label: "Party",
-    //         icon: <Plus transform="scale(0.83)" />,
-    //         //onClick: () => handleAddPomodoro(),
-    //         className: "menuItem",
-    //     },
-
-    //     {
-    //         label: "Gathering",
-    //         icon: <Plus transform="scale(0.83)" />,
-    //         //onClick: () => handleShortPomodoro(),
-    //         className: "menuItem",
-    //     },
-
-    //     {
-    //         label: "Meetup",
-    //         icon: <Plus transform="scale(0.83)" />,
-    //         //onClick: () => handleEditNameTask(),
-    //         className: "menuItem",
-    //     },
-
-    //     {
-    //         label: "Conference",
-    //         icon: <Plus transform="scale(0.83)" />,
-    //         //onClick: () => setIsModalOpened(true),
-    //         className: "menuItem",
-    //     },
-
-    //     {
-    //         label: "Sport",
-    //         icon: <Plus transform="scale(0.83)" />,
-    //         //onClick: () => setIsModalOpened(true),
-    //         className: "menuItem",
-    //     },
-
-    //     {
-    //         label: "Workshop",
-    //         icon: <Plus transform="scale(0.83)" />,
-    //         //onClick: () => setIsModalOpened(true),
-    //         className: "menuItem",
-    //     },
-
-    //     {
-    //         label: "Seminar",
-    //         icon: <Plus transform="scale(0.83)" />,
-    //         //onClick: () => setIsModalOpened(true),
-    //         className: "menuItem",
-    //     },
-
-    //     {
-    //         label: "Concert",
-    //         icon: <Plus transform="scale(0.83)" />,
-    //         //onClick: () => setIsModalOpened(true),
-    //         className: "menuItem",
-    //     },
-
-    //     {
-    //         label: "Festival",
-    //         icon: <Plus transform="scale(0.83)" />,
-    //         //onClick: () => setIsModalOpened(true),
-    //         className: "menuItem",
-    //     },
-
-    //     {
-    //         label: "Exhibition",
-    //         icon: <Plus transform="scale(0.83)" />,
-    //         //onClick: () => setIsModalOpened(true),
-    //         className: "menuItem",
-    //     },
-
-    //     {
-    //         label: "Networking",
-    //         icon: <Plus transform="scale(0.83)" />,
-    //         //onClick: () => setIsModalOpened(true),
-    //         className: "menuItem",
-    //     },
-
-    //     {
-    //         label: "Trade Show",
-    //         icon: <Plus transform="scale(0.83)" />,
-    //         //onClick: () => setIsModalOpened(true),
-    //         className: "menuItem",
-    //     },
-
-    //     {
-    //         label: "Class/Course",
-    //         icon: <Plus transform="scale(0.83)" />,
-    //         //onClick: () => setIsModalOpened(true),
-    //         className: "menuItem",
-    //     },
-
-    //     {
-    //         label: "Lecture",
-    //         icon: <Plus transform="scale(0.83)" />,
-    //         //onClick: () => setIsModalOpened(true),
-    //         className: "menuItem",
-    //     },
-
-    //     {
-    //         label: "Fundraiser",
-    //         icon: <Plus transform="scale(0.83)" />,
-    //         //onClick: () => setIsModalOpened(true),
-    //         className: "menuItem",
-    //     },
-
-    //     {
-    //         label: "Gala",
-    //         icon: <Plus transform="scale(0.83)" />,
-    //         //onClick: () => setIsModalOpened(true),
-    //         className: "menuItem",
-    //     },
-
-    //     {
-    //         label: "Retreat",
-    //         icon: <Plus transform="scale(0.83)" />,
-    //         //onClick: () => setIsModalOpened(true),
-    //         className: "menuItem",
-    //     },
-
-    //     {
-    //         label: "Tour",
-    //         icon: <Plus transform="scale(0.83)" />,
-    //         //onClick: () => setIsModalOpened(true),
-    //         className: "menuItem",
-    //     },
-
-    //     {
-    //         label: "Competition",
-    //         icon: <Plus transform="scale(0.83)" />,
-    //         //onClick: () => setIsModalOpened(true),
-    //         className: "menuItem",
-    //     },
-
-    //     {
-    //         label: "Competition",
-    //         icon: <Plus transform="scale(0.83)" />,
-    //         //onClick: () => setIsModalOpened(true),
-    //         className: "menuItem",
-    //     },
-
-    //     {
-    //         label: "Hackathon",
-    //         icon: <Plus transform="scale(0.83)" />,
-    //         //onClick: () => setIsModalOpened(true),
-    //         className: "menuItem",
-    //     },
-
-    //     {
-    //         label: "Fair",
-    //         icon: <Plus transform="scale(0.83)" />,
-    //         //onClick: () => setIsModalOpened(true),
-    //         className: "menuItem",
-    //     },
-
-    //     {
-    //         label: "Fair",
-    //         icon: <Plus transform="scale(0.83)" />,
-    //         //onClick: () => setIsModalOpened(true),
-    //         className: "menuItem",
-    //     },
-
-    //     {
-    //         label: "Community Service/Volunteer Event",
-    //         icon: <Plus transform="scale(0.83)" />,
-    //         //onClick: () => setIsModalOpened(true),
-    //         className: "menuItem",
-    //     },
-
-    //     {
-    //         label: "Open House",
-    //         icon: <Plus transform="scale(0.83)" />,
-    //         //onClick: () => setIsModalOpened(true),
-    //         className: "menuItem",
-    //     },
-
-    //     {
-    //         label: "Theater/Play",
-    //         icon: <Plus transform="scale(0.83)" />,
-    //         //onClick: () => setIsModalOpened(true),
-    //         className: "menuItem",
-    //     },
-
-    //     {
-    //         label: "Dance Event",
-    //         icon: <Plus transform="scale(0.83)" />,
-    //         //onClick: () => setIsModalOpened(true),
-    //         className: "menuItem",
-    //     },
-    // ];
 
     const [isHovered, setIsHovered] = useState(Array(list.length).fill(false));
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -310,5 +122,3 @@ export const Dropdown = ({ list, textButton, className, categoriesData, onSelect
         </div>
     );
 };
-
-export default Dropdown;

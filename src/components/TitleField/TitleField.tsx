@@ -1,11 +1,5 @@
 import { forwardRef } from "react";
 import classes from "./TitleField.module.css";
-import { RefCallBack } from "react-hook-form";
-
-interface ITitleField {
-    name: string;
-    ref: RefCallBack;
-}
 
 export const TitleField = forwardRef(function TitleField(props, ref) {
     return (

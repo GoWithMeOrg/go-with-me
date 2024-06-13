@@ -106,16 +106,16 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                         <Time time={eventData.time} onTimeChange={handleTimeChange} /> */}
                     </div>
                     {/* <EventStatus status={eventData.status} onStatusChange={handleStatusChange} /> */}
-                    <Description text={eventData.description} onDescriptionChange={handleDescriptionChange} />
+                    {/* <Description text={eventData.description} onDescriptionChange={handleDescriptionChange} /> */}
                     <SelectCategory
                         categoryList={eventCategory}
-                        onCategoriesChange={handleCategoriesChange}
+                        //onCategoriesChange={handleCategoriesChange}
                         eventCategories={eventData.categories ?? []}
                         titleCategories={"Select category"}
                     />
                     <SelectCategory
                         categoryList={eventTypes}
-                        onCategoriesChange={handleTypesChange}
+                        //onCategoriesChange={handleTypesChange}
                         eventCategories={eventData.types ?? []}
                         titleCategories={"Select subject"}
                     />

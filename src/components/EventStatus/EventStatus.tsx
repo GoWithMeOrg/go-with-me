@@ -1,4 +1,4 @@
-import { forwardRef, useState } from "react";
+import { forwardRef } from "react";
 import classes from "./EventStatus.module.css";
 import { RefCallBack } from "react-hook-form";
 
@@ -9,16 +9,11 @@ interface IEventStatus {
         PRIVATE: string;
     };
     ref: RefCallBack;
-
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     selected: string;
 }
 
 export const EventStatus = forwardRef(function EventStatus(props: IEventStatus, ref) {
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        props.onChange(e);
-    };
-
     return (
         <div className={classes.confidentiality}>
             <span className={classes.confidentialityTitle}>Confidentiality</span>
@@ -30,7 +25,7 @@ export const EventStatus = forwardRef(function EventStatus(props: IEventStatus, 
                         name="eventStatus"
                         id={props.options?.PUBLIC}
                         value={props.options?.PUBLIC}
-                        onChange={handleChange}
+                        onChange={(e) => props.onChange(e)}
                         checked={props.selected === props.options?.PUBLIC}
                         className={classes.confidentialityInput}
                     />
@@ -45,7 +40,7 @@ export const EventStatus = forwardRef(function EventStatus(props: IEventStatus, 
                         name="eventStatus"
                         id={props.options?.INVATION}
                         value={props.options?.INVATION}
-                        onChange={handleChange}
+                        onChange={(e) => props.onChange(e)}
                         checked={props.selected === props.options?.INVATION}
                         className={classes.confidentialityInput}
                     />
@@ -60,7 +55,7 @@ export const EventStatus = forwardRef(function EventStatus(props: IEventStatus, 
                         name="eventStatus"
                         id={props.options?.PRIVATE}
                         value={props.options?.PRIVATE}
-                        onChange={handleChange}
+                        onChange={(e) => props.onChange(e)}
                         checked={props.selected === props.options?.PRIVATE}
                         className={classes.confidentialityInput}
                     />
