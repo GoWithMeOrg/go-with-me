@@ -69,7 +69,7 @@ export const EventHookForm = () => {
         PRIVATE = "private",
     }
 
-    const watchCategories = watch("types");
+    const watchCategories = watch("tags");
     console.log(watchCategories);
 
     return (
@@ -135,6 +135,12 @@ export const EventHookForm = () => {
                                 onChange={field.onChange}
                             />
                         )}
+                    />
+
+                    <Controller
+                        name="tags"
+                        control={control}
+                        render={({ field }) => <CreateTag onChange={field.onChange} eventTags={[]} />}
                     />
 
                     <Button className={classes.buttonSaveChange} type="submit" text={"Save changes"} />
