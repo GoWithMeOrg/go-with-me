@@ -15,6 +15,7 @@ import { Description } from "../Description";
 import { SelectCategory } from "../SelectCategory";
 import { eventCategory, eventTypes } from "../Dropdown/dropdownLists";
 import { CreateTag } from "../CreateTag";
+import { GuestList } from "../GuestList";
 
 const CREATE_EVENT = gql`
     mutation CreateEvent($event: EventInput!) {
@@ -142,6 +143,8 @@ export const EventHookForm = () => {
                         control={control}
                         render={({ field }) => <CreateTag onChange={field.onChange} eventTags={[]} />}
                     />
+
+                    <GuestList />
 
                     <Button className={classes.buttonSaveChange} type="submit" text={"Save changes"} />
                 </div>
