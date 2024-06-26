@@ -9,10 +9,6 @@ export interface IDate {
 }
 
 export const Date = forwardRef(function Date(props: IDate, ref) {
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        props.onChange(e);
-    };
-
     return (
         <label className={classes.date}>
             <span className={classes.dateTitle}>{props.title}</span>
@@ -21,7 +17,7 @@ export const Date = forwardRef(function Date(props: IDate, ref) {
                 name={props.title}
                 defaultValue={dayjs(props.date).format("YYYY-MM-DD")}
                 className={classes.dateInput}
-                onChange={handleChange}
+                onChange={(e) => props.onChange(e)}
             />
         </label>
     );

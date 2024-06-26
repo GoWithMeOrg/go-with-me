@@ -1,15 +1,26 @@
-import { useRef, useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 import Plus from "@/assets/icons/plus.svg";
 import Minus from "@/assets/icons/minus.svg";
 import classes from "./CreateTag.module.css";
+import { types } from "util";
 
 interface ICreateTag {
     eventTags: string[];
-    onTagsChange: (tags: string[]) => void;
+    onTagsChange?: (tags: string[]) => void;
+    onChange: (e: string[]) => void;
 }
-export const CreateTag = ({ eventTags, onTagsChange }: ICreateTag) => {
+
+export const CreateTag = forwardRef(function CreateTag(props: ICreateTag, ref) {
     const tagRef = useRef<HTMLInputElement>(null);
-    const [tags, setTags] = useState<string[]>(eventTags);
+    const [tags, setTags] = useState<string[]>([]);
+    const prevTagsRef = useRef<string[]>(tags ?? []);
+
+    useEffect(() => {
+        if (prevTagsRef.current !== tags) {
+            props.onChange(tags || []);
+            prevTagsRef.current = tags;
+        }
+    }, [tags, props]);
 
     const handleAddTag = () => {
         if (!tagRef.current?.value) return;
@@ -27,7 +38,7 @@ export const CreateTag = ({ eventTags, onTagsChange }: ICreateTag) => {
     };
 
     const handleTagsChange = (tags: string[]) => {
-        if (onTagsChange) onTagsChange(tags);
+        if (props.onTagsChange) props.onTagsChange(tags);
     };
 
     handleTagsChange(tags);
@@ -52,6 +63,6 @@ export const CreateTag = ({ eventTags, onTagsChange }: ICreateTag) => {
             </div>
         </label>
     );
-};
+});
 
 export default CreateTag;

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 import { Dropdown } from "../Dropdown";
 import classes from "./SelectCategory.module.css";
 
@@ -11,35 +11,38 @@ export interface ICategory {
 interface ISelectCategory {
     categoryList: ICategory[];
     titleCategories: string;
-    eventCategories: string[];
-    onCategoriesChange: (categories: string[]) => void;
+    eventCategories?: string[];
+    onChange: (e: string[]) => void;
 }
 
-export const SelectCategory = ({
-    categoryList,
-    eventCategories,
-    titleCategories,
-    onCategoriesChange,
-}: ISelectCategory) => {
-    const [categories, setCategories] = useState<string[]>(eventCategories ?? []);
+export const SelectCategory = forwardRef(function SelectCategory(props: ISelectCategory, ref) {
+    const [categories, setCategories] = useState<string[]>([]);
+    const prevCategoriesRef = useRef<string[]>(categories ?? []);
+
+    //Отслеживаем изменившиеся категории. Если категории изменились, то вызываем onChange. При вызове OnChange в функции handleCategoryChange получаем бесконечный цикл.
+    useEffect(() => {
+        if (prevCategoriesRef.current !== categories) {
+            props.onChange(categories || []);
+            prevCategoriesRef.current = categories;
+        }
+    }, [categories, props]);
 
     const handleCategoryChange = (selectedCategories: string[]) => {
         setCategories(selectedCategories);
-        if (onCategoriesChange) onCategoriesChange(categories);
     };
 
     return (
         <div className={classes.selectedCategoriesLabel}>
-            <span className={classes.selectedCategoriesTitle}>{titleCategories}</span>
+            <span className={classes.selectedCategoriesTitle}>{props.titleCategories}</span>
             <Dropdown
                 textButton={"No category"}
                 className={classes.dropdownButton}
-                categoriesData={categories ?? []}
+                categoriesData={[]}
                 onSelectedCategories={handleCategoryChange}
-                list={categoryList}
+                list={props.categoryList}
             />
         </div>
     );
-};
+});
 
 export default SelectCategory;

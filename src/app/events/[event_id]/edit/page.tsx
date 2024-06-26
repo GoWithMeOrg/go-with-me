@@ -69,8 +69,6 @@ const EventEditPage: NextPage<PageParams> = (context) => {
     });
     const [updateEvent] = useMutation(UPDATE_EVENT);
 
-    console.log(data);
-
     const handleEdit = (eventEdited: Partial<IEvent>) => {
         updateEvent({
             variables: {
