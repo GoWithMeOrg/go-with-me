@@ -1,10 +1,11 @@
 "use client";
-import { forwardRef, useEffect, useRef, useState } from "react";
+import { forwardRef, useRef, useState } from "react";
 import Image from "next/image";
 import classes from "./UploadFile.module.css";
 
 interface IUploadFile {
-    onChange: (e: string) => void;
+    onImageUrl?: (selectedImageUrl: string) => void;
+    onChange?: (e: string) => void;
 }
 
 export const UploadFile = forwardRef(function UploadFile(props: IUploadFile, ref) {

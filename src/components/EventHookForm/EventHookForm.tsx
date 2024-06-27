@@ -17,7 +17,6 @@ import { eventCategory, eventTypes } from "../Dropdown/dropdownLists";
 import { CreateTag } from "../CreateTag";
 import { GuestList } from "../GuestList";
 import { UploadFile } from "../UploadFile";
-import { useState } from "react";
 
 const CREATE_EVENT = gql`
     mutation CreateEvent($event: EventInput!) {
