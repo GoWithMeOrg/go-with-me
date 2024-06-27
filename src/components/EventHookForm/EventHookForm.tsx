@@ -53,11 +53,8 @@ export const EventHookForm = () => {
     const [createEvent] = useMutation(CREATE_EVENT);
     const organizerId = (session?.user as { id: string })?.id;
     const { control, handleSubmit, watch } = useForm<IFormInputs>();
-    const [submitCalled, setSubmitCalled] = useState(false);
 
     const onSubmit: SubmitHandler<IFormInputs> = (event: EventType) => {
-        setSubmitCalled(true);
-
         createEvent({
             variables: {
                 event: { ...event, organizer_id: organizerId },
@@ -151,7 +148,7 @@ export const EventHookForm = () => {
                     <Controller
                         name="image"
                         control={control}
-                        render={({ field }) => <UploadFile onSubmitCalled={submitCalled} {...field} />}
+                        render={({ field }) => <UploadFile onChange={field.onChange} />}
                     />
                 </div>
 
