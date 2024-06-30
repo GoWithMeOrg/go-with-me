@@ -1,4 +1,4 @@
-import { SetStateAction, useContext, useRef, useState } from "react";
+import { SetStateAction, forwardRef, useContext, useEffect, useRef, useState } from "react";
 import classes from "./Location.module.css";
 import Marker from "@/assets/icons/marker.svg";
 import Autocomplete from "@/components/GoogleMap/Autocomplete";
@@ -18,26 +18,40 @@ interface ILocation {
     address?: string;
     coord?: { lat: number; lng: number } | null;
     onPlaceChange?: (selectedPlace: google.maps.places.PlaceResult | null) => void;
+    onChange?: (...event: any[]) => void;
 }
 
-export const Location = ({ address, onPlaceChange, coord }: ILocation) => {
+export const Location = forwardRef(function Location(props: ILocation, ref) {
     const apiIsLoaded = useApiIsLoaded();
     const mapAPI = useContext(APIProviderContext);
     const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(null);
     const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
+    const prevSelectedPlaceRef = useRef<google.maps.places.PlaceResult | null>(selectedPlace);
     const [showPopup, setShowPopup] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (prevSelectedPlaceRef.current !== selectedPlace && props.onChange) {
+            //props.onChange(selectedPlace?.formatted_address);
+            const newPlace = {
+                coordinates: [selectedPlace?.geometry?.location?.lat(), selectedPlace?.geometry?.location?.lng()],
+                properties: {
+                    address: selectedPlace?.formatted_address,
+                },
+            };
+
+            props.onChange(newPlace);
+            // props.onChange(
+            //     [selectedPlace?.geometry?.location?.lat(), selectedPlace?.geometry?.location?.lng()],
+            //     selectedPlace?.formatted_address,
+            // );
+            prevSelectedPlaceRef.current = selectedPlace;
+        }
+    }, [selectedPlace, props]);
 
     if (!apiIsLoaded || !mapAPI) {
         return;
     }
 
-    const handlePlaceSelect = (selectedPlace: google.maps.places.PlaceResult | null) => {
-        if (onPlaceChange) {
-            onPlaceChange(selectedPlace);
-        }
-    };
-
-    handlePlaceSelect(selectedPlace);
     const handleShowMap = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         setShowPopup(true);
@@ -56,7 +70,11 @@ export const Location = ({ address, onPlaceChange, coord }: ILocation) => {
                     {"Find on Map"}
                 </Button>
             </div>
-            <Autocomplete className={classes.fieldInput} onPlaceSelect={setSelectedPlace} address={address} />
+            <Autocomplete
+                className={classes.fieldInput}
+                onPlaceSelect={setSelectedPlace}
+                //address={address}
+            />
             <Popup
                 {...{
                     showPopup,
@@ -85,7 +103,7 @@ export const Location = ({ address, onPlaceChange, coord }: ILocation) => {
                         <Autocomplete
                             onPlaceSelect={setSelectedPlace}
                             className={classes.inputFindMap}
-                            address={address}
+                            //address={address}
                         />
                     </CustomMapControl>
                     <MapHandler place={selectedPlace} />
@@ -97,6 +115,6 @@ export const Location = ({ address, onPlaceChange, coord }: ILocation) => {
             </Popup>
         </label>
     );
-};
+});
 
 export default Location;

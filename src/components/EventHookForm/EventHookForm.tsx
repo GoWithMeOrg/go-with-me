@@ -17,6 +17,7 @@ import { eventCategory, eventTypes } from "../Dropdown/dropdownLists";
 import { CreateTag } from "../CreateTag";
 import { GuestList } from "../GuestList";
 import { UploadFile } from "../UploadFile";
+import { Location } from "../Location";
 
 const CREATE_EVENT = gql`
     mutation CreateEvent($event: EventInput!) {
@@ -71,6 +72,8 @@ export const EventHookForm = () => {
         PRIVATE = "private",
     }
 
+    console.log(watch("location"));
+
     return (
         <div className={classes.container}>
             <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
@@ -82,6 +85,12 @@ export const EventHookForm = () => {
                             defaultValue="defaultValue"
                             render={({ field }) => <TitleField {...field} />}
                             rules={{ required: true }}
+                        />
+
+                        <Controller
+                            name="location"
+                            control={control}
+                            render={({ field }) => <Location onChange={field.onChange} />}
                         />
 
                         <Controller
