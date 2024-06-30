@@ -1,33 +1,31 @@
 "use client";
-import { FormEvent, useRef, useState } from "react";
+import { forwardRef, useRef, useState } from "react";
 import Image from "next/image";
 import classes from "./UploadFile.module.css";
 
-interface UploadFileProps {
-    onImageUrl: (selectedImageUrl: string) => void;
-    imageUrl?: string;
+interface IUploadFile {
+    onImageUrl?: (selectedImageUrl: string) => void;
+    onChange?: (e: string) => void;
 }
 
-// привязать отправку фото к основной форме.
-export const UploadFile: React.FC<UploadFileProps> = ({ onImageUrl, imageUrl }) => {
+export const UploadFile = forwardRef(function UploadFile(props: IUploadFile, ref) {
     const uploadRef = useRef<HTMLInputElement>(null);
     const [file, setFile] = useState<File | null>(null);
-    const [url, setUrl] = useState<string | null>(imageUrl ?? null);
+    const [url, setUrl] = useState<string | null>();
 
     const handleFileChange = (event: any) => {
-        const selectedFile = event.target.files[0];
-        setFile(selectedFile);
-        // onImageChange(file);
+        setFile(event.target.files[0]);
 
         const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
-        if (!validImageTypes.includes(selectedFile.type)) {
+        if (!validImageTypes.includes(event.target.files[0].type)) {
             console.error("Invalid file type. Please select an image.");
             return;
         }
+
+        onSubmitFile(event.target.files[0]);
     };
 
-    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const onSubmitFile = async (file: File) => {
         if (!file) return;
 
         const formData = new FormData();
@@ -45,7 +43,10 @@ export const UploadFile: React.FC<UploadFileProps> = ({ onImageUrl, imageUrl }) 
 
             const data = await response.json();
             setUrl(data.url);
-            onImageUrl(data.url);
+
+            if (props.onChange) {
+                props.onChange(data.url);
+            }
         } catch (error) {
             console.error(error);
         }
@@ -57,10 +58,9 @@ export const UploadFile: React.FC<UploadFileProps> = ({ onImageUrl, imageUrl }) 
                 <div className={classes.previewImage}>
                     {file && <Image src={url ?? URL.createObjectURL(file)} width={460} height={324} alt="img" />}
                 </div>
-                {/* {file && <Image src={imageUrl ?? URL.createObjectURL(file)} width={460} height={324} alt="img" />} */}
             </div>
 
-            <form onSubmit={handleSubmit} className={classes.customFileInput}>
+            <div className={classes.customFileInput}>
                 <input
                     type="file"
                     ref={uploadRef}
@@ -69,12 +69,9 @@ export const UploadFile: React.FC<UploadFileProps> = ({ onImageUrl, imageUrl }) 
                     onChange={handleFileChange}
                 />
                 <label htmlFor="fileInput">Upload photo</label>
-                <button className={classes.sendFile} type="submit">
-                    Send
-                </button>
-            </form>
+            </div>
         </div>
     );
-};
+});
 
 export default UploadFile;

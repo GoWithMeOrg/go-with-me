@@ -19,7 +19,7 @@ export const POST = async (req: NextRequest) => {
     const fileName = `${customAlphabet("1234567890abcdef", 10)()}.${fileExtension}`;
 
     const bucketParams = {
-        Bucket: "gowithme",
+        Bucket: process.env.DO_SPACES_BUCKET as string,
         Key: fileName,
         Body: buffer,
         ACL: ObjectCannedACL.public_read,

@@ -125,7 +125,9 @@ export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                 </div>
             </form>
 
-            <UploadFile onImageUrl={handleImageUrl} imageUrl={eventData.image} />
+            <UploadFile
+                onImageUrl={handleImageUrl} //imageUrl={eventData.image}
+            />
         </div>
     );
 };

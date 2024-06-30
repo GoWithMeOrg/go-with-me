@@ -27,7 +27,7 @@
         "@aws-sdk/client-s3": "^3.569.0",
         "@googlemaps/js-api-loader": "^1.16.6",
         "@googlemaps/routing": "^1.1.0",
-        "@vis.gl/react-google-maps": "^1.0.2",
+        "@vis.gl/react-google-maps": "^1.1.0",
         "child_process": "^1.0.2",
         "dayjs": "^1.11.10",
         "graphql": "^16.8.1",
