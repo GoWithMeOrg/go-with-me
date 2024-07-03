@@ -17,7 +17,7 @@ export const CreateTag = forwardRef(function CreateTag(props: ICreateTag, ref) {
 
     useEffect(() => {
         if (prevTagsRef.current !== tags) {
-            props.onChange(tags || []);
+            props.onChange(tags);
             prevTagsRef.current = tags;
         }
     }, [tags, props]);
