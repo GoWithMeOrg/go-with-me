@@ -28,6 +28,12 @@ const CREATE_EVENT = gql`
     }
 `;
 
+export enum Status {
+    PUBLIC = "public",
+    INVATION = "invation",
+    PRIVATE = "private",
+}
+
 interface IFormInputs {
     organizer_id: string;
     name: string;
@@ -43,7 +49,7 @@ interface IFormInputs {
         };
     };
     image: string;
-    status: "public" | "private" | "invation";
+    status: Status;
     categories: string[];
     types: string[];
     tags: string[];
@@ -61,6 +67,8 @@ export const EventForm = ({ eventData }: IEventFormProps) => {
     const organizerId = (session?.user as { id: string })?.id;
     const { control, handleSubmit, watch } = useForm<IFormInputs>();
 
+    console.log(eventData.status);
+
     const onSubmit: SubmitHandler<IFormInputs> = (event: EventType) => {
         //onSubmitCreate(event);
         createEvent({
@@ -73,12 +81,6 @@ export const EventForm = ({ eventData }: IEventFormProps) => {
 
         console.log(event);
     };
-
-    enum Status {
-        PUBLIC = "public",
-        INVATION = "invation",
-        PRIVATE = "private",
-    }
 
     //console.log(watch("location"));
 
@@ -104,7 +106,9 @@ export const EventForm = ({ eventData }: IEventFormProps) => {
                         <Controller
                             name="status"
                             control={control}
-                            render={({ field }) => <EventStatus options={Status} selected={field.value} {...field} />}
+                            render={({ field }) => (
+                                <EventStatus selected={eventData.status || Status.PUBLIC} {...field} />
+                            )}
                         />
 
                         <Controller
