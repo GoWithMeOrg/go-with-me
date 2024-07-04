@@ -47,22 +47,8 @@ const EventNewPage: NextPage = () => {
                 </Button>
 
                 <TitleH2 className={classes.createEventTitle} title="CREATE EVENT" />
-                {/* <EventForm
-                    eventData={{
-                        organizer_id: organizerId,
-                        name: "",
-                        description: "",
-                        startDate: new Date(),
-                        endDate: new Date(),
-                    }}
-                    onSubmit={handleCreateEvent}
-                /> */}
 
-                <EventForm
-                    eventData={{}}
-                    onSubmit={handleCreateEvent}
-                    //onSubmitCreate={handleCreateEvent}
-                />
+                <EventForm eventData={{}} onSubmitEvent={handleCreateEvent} />
             </div>
         </div>
     );

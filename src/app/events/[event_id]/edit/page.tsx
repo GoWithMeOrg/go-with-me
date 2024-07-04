@@ -6,7 +6,12 @@ import { gql, useMutation, useQuery } from "@apollo/client";
 
 import { EventForm } from "@/components/EventForm/EventForm";
 import type { IEvent } from "@/database/models/Event";
-import classes from "../../page.module.css";
+import classes from "../../new/page.module.css";
+import { Button } from "@/components/Button";
+import Arrow from "@/assets/icons/arrow.svg";
+import { TitleH2 } from "@/components/TitleH2";
+import { Loader } from "@/components/Loader";
+import { EventType } from "@/components/OldEventForm";
 
 type PageParams = {
     params: { event_id: string };
@@ -69,11 +74,11 @@ const EventEditPage: NextPage<PageParams> = (context) => {
     });
     const [updateEvent] = useMutation(UPDATE_EVENT);
 
-    const handleEdit = (eventEdited: Partial<IEvent>) => {
+    const handleEditEvent = (eventEdited: Partial<IEvent>) => {
         updateEvent({
             variables: {
                 id: eventId,
-                event: eventEdited,
+                event: { ...eventEdited, organizer_id: data?.event?.organizer_id },
             },
         }).then((response) => {
             console.log("EventEditPage: ", response); // eslint-disable-line
@@ -83,10 +88,18 @@ const EventEditPage: NextPage<PageParams> = (context) => {
 
     return (
         <div className={classes.container}>
-            <h3>Edit Event</h3>
-            {loading && <p>Loading...</p>}
-            {error && <p>Error : {error.message}</p>}
-            {!error && data?.event && <EventForm eventData={data.event} onSubmit={handleEdit} />}
+            <div className={classes.createEventFormWrapper}>
+                <Button className={classes.createEventButton}>
+                    <Arrow />
+                </Button>
+
+                <TitleH2 className={classes.createEventTitle} title="EDIT EVENT" />
+
+                {loading && <Loader />}
+                {error && <p>Error : {error.message}</p>}
+
+                {!error && data?.event && <EventForm eventData={data.event} onSubmitEvent={handleEditEvent} />}
+            </div>
         </div>
     );
 };

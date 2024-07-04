@@ -20,13 +20,13 @@ import { UploadFile } from "../UploadFile";
 import { Location } from "../Location";
 import { IEvent } from "@/database/models/Event";
 
-const CREATE_EVENT = gql`
-    mutation CreateEvent($event: EventInput!) {
-        createEvent(event: $event) {
-            _id
-        }
-    }
-`;
+// const CREATE_EVENT = gql`
+//     mutation CreateEvent($event: EventInput!) {
+//         createEvent(event: $event) {
+//             _id
+//         }
+//     }
+// `;
 
 export enum Status {
     PUBLIC = "public",
@@ -57,27 +57,27 @@ interface IFormInputs {
 
 interface IEventFormProps {
     eventData: EventType;
-    onSubmit: (event: EventType) => void;
-    //onSubmitEvent: (event: EventType) => void;
+    //onSubmit: (event: EventType) => void;
+    onSubmitEvent: (event: EventType) => void;
 }
-export const EventForm = ({ eventData }: IEventFormProps) => {
-    const router = useRouter();
-    const { data: session } = useSession();
-    const [createEvent] = useMutation(CREATE_EVENT);
-    const organizerId = (session?.user as { id: string })?.id;
+export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
+    //const router = useRouter();
+    //const { data: session } = useSession();
+    //const [createEvent] = useMutation(CREATE_EVENT);
+    //const organizerId = (session?.user as { id: string })?.id;
     const { control, handleSubmit, watch } = useForm<IFormInputs>();
 
     // console.log(eventData.location);
 
     const onSubmit: SubmitHandler<IFormInputs> = (event: EventType) => {
-        //onSubmitEvent(event);
-        createEvent({
-            variables: {
-                event: { ...event, organizer_id: organizerId },
-            },
-        }).then((response) => {
-            router.push(`/events/${response.data?.createEvent?._id}`);
-        });
+        onSubmitEvent(event);
+        // createEvent({
+        //     variables: {
+        //         event: { ...event, organizer_id: organizerId },
+        //     },
+        // }).then((response) => {
+        //     router.push(`/events/${response.data?.createEvent?._id}`);
+        // });
 
         console.log(event);
     };
@@ -101,16 +101,15 @@ export const EventForm = ({ eventData }: IEventFormProps) => {
                             name="location"
                             control={control}
                             render={({ field }) => (
-                                <Location address={eventData.location?.properties?.address} onChange={field.onChange} />
+                                <Location locationEvent={eventData?.location as any} onChange={field.onChange} />
                             )}
                         />
 
                         <Controller
                             name="status"
                             control={control}
-                            render={({ field }) => (
-                                <EventStatus selected={eventData.status || Status.PUBLIC} {...field} />
-                            )}
+                            defaultValue={(eventData.status || Status.PUBLIC) as Status}
+                            render={({ field }) => <EventStatus options={Status} selected={field.value} {...field} />}
                         />
 
                         <Controller

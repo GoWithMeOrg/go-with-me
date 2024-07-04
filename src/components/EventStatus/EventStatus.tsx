@@ -1,8 +1,12 @@
 import { forwardRef } from "react";
 import classes from "./EventStatus.module.css";
-import { Status } from "@/components/EventForm/EventForm";
 
 interface IEventStatus {
+    options?: {
+        PUBLIC: string;
+        INVATION: string;
+        PRIVATE: string;
+    };
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     selected: string;
 }
@@ -17,13 +21,13 @@ export const EventStatus = forwardRef(function EventStatus(props: IEventStatus, 
                     <input
                         type="radio"
                         name="eventStatus"
-                        id={Status.PUBLIC}
-                        value={Status.PUBLIC}
+                        id={props.options?.PUBLIC}
+                        value={props.options?.PUBLIC}
                         onChange={(e) => props.onChange(e)}
-                        checked={props.selected === Status.PUBLIC}
+                        checked={props.selected === props.options?.PUBLIC}
                         className={classes.confidentialityInput}
                     />
-                    <label className={classes.confidentialityLabel} htmlFor={Status.PUBLIC}>
+                    <label className={classes.confidentialityLabel} htmlFor={props.options?.PUBLIC}>
                         Public event
                     </label>
                 </div>
@@ -32,13 +36,13 @@ export const EventStatus = forwardRef(function EventStatus(props: IEventStatus, 
                     <input
                         type="radio"
                         name="eventStatus"
-                        id={Status.INVATION}
-                        value={Status.INVATION}
+                        id={props.options?.INVATION}
+                        value={props.options?.INVATION}
                         onChange={(e) => props.onChange(e)}
-                        checked={props.selected === Status.INVATION}
+                        checked={props.selected === props.options?.INVATION}
                         className={classes.confidentialityInput}
                     />
-                    <label className={classes.confidentialityLabel} htmlFor={Status.INVATION}>
+                    <label className={classes.confidentialityLabel} htmlFor={props.options?.INVATION}>
                         By invation only
                     </label>
                 </div>
@@ -47,13 +51,13 @@ export const EventStatus = forwardRef(function EventStatus(props: IEventStatus, 
                     <input
                         type="radio"
                         name="eventStatus"
-                        id={Status.PRIVATE}
-                        value={Status.PRIVATE}
+                        id={props.options?.PRIVATE}
+                        value={props.options?.PRIVATE}
                         onChange={(e) => props.onChange(e)}
-                        checked={props.selected === Status.PRIVATE}
+                        checked={props.selected === props.options?.PRIVATE}
                         className={classes.confidentialityInput}
                     />
-                    <label className={classes.confidentialityLabel} htmlFor={Status.PRIVATE}>
+                    <label className={classes.confidentialityLabel} htmlFor={props.options?.PRIVATE}>
                         Private event
                     </label>
                 </div>
