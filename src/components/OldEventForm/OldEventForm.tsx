@@ -91,7 +91,7 @@ export const OldEventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
             <form className={classes.form} onSubmit={handleSubmit}>
                 <div className={classes.formWrapper}>
                     {/* <TitleField defaultValue={eventData.name} onTitleChange={handleTitleChange} /> */}
-                    <Location
+                    {/* <Location
                         onPlaceChange={handlePlaceChange}
                         address={eventData.location?.properties?.address}
                         coord={
@@ -99,7 +99,7 @@ export const OldEventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                                 ? { lat: eventData.location.coordinates[0], lng: eventData.location.coordinates[1] }
                                 : null
                         }
-                    />
+                    /> */}
                     <div className={classes.inputsDate}>
                         {/* <Date date={eventData.startDate} title={"Start date"} onDateChange={handleStartDateChange} />
                         <Date date={eventData.endDate} title={"Finish Date"} onDateChange={handleFinishDateChange} />
@@ -125,9 +125,9 @@ export const OldEventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
                 </div>
             </form>
 
-            <UploadFile
+            {/* <UploadFile
                 onImageUrl={handleImageUrl} //imageUrl={eventData.image}
-            />
+            /> */}
         </div>
     );
 };
