@@ -1,133 +1,187 @@
-import { FC, FormEvent } from "react";
-import type { IEvent } from "@/database/models/Event";
-import classes from "./EventForm.module.css";
-import { UploadFile } from "../UploadFile";
+"use client";
+
+import { useRouter } from "next/navigation";
 import { TitleField } from "../TitleField";
-import { Location } from "../Location";
-import { Date } from "../Date";
-import Time from "../Time/Time";
-import { EventStatus } from "@/components/EventStatus";
+import classes from "./EventForm.module.css";
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { useSession } from "next-auth/react";
+import { gql, useMutation } from "@apollo/client";
+import { EventType } from "../OldEventForm";
+import { EventStatus } from "../EventStatus";
 import { Button } from "../Button";
+import { Date } from "@/components/Date";
+import { Time } from "@/components/Time";
 import { Description } from "../Description";
 import { SelectCategory } from "../SelectCategory";
+import { eventCategory, eventTypes } from "../Dropdown/dropdownLists";
 import { CreateTag } from "../CreateTag";
 import { GuestList } from "../GuestList";
-import { eventCategory, eventTypes } from "../Dropdown/dropdownLists";
+import { UploadFile } from "../UploadFile";
+import { Location } from "../Location";
+import { IEvent } from "@/database/models/Event";
 
-export type EventType = Partial<IEvent>;
+const CREATE_EVENT = gql`
+    mutation CreateEvent($event: EventInput!) {
+        createEvent(event: $event) {
+            _id
+        }
+    }
+`;
 
-interface EventFormProps {
-    eventData: EventType;
-    onSubmit: (event: Partial<IEvent>) => void;
-    ref?: React.RefObject<HTMLFormElement>;
+interface IFormInputs {
+    organizer_id: string;
+    name: string;
+    description: string;
+    startDate: string;
+    endDate: string;
+    time: string;
+    location: {
+        type: "Point";
+        coordinates: [number, number];
+        properties: {
+            address: string;
+        };
+    };
+    image: string;
+    status: "public" | "private" | "invation";
+    categories: string[];
+    types: string[];
+    tags: string[];
 }
 
-export const EventForm: FC<EventFormProps> = ({ eventData, onSubmit }) => {
-    let eventName: string,
-        address: string,
-        coordinates: { lat: number; lng: number } | null,
-        startDate: string,
-        finishDate: string,
-        startTime: string,
-        description: string,
-        eventStatus: string,
-        selectedCategories: string[],
-        selectedTypes: string[],
-        selectedTags: string[],
-        imageUrl: string;
+interface IEventFormProps {
+    eventData: EventType;
+    onSubmit: (event: EventType) => void;
+    //onSubmitCreate: (event: EventType) => void;
+}
+export const EventForm = ({ eventData }: IEventFormProps) => {
+    const router = useRouter();
+    const { data: session } = useSession();
+    const [createEvent] = useMutation(CREATE_EVENT);
+    const organizerId = (session?.user as { id: string })?.id;
+    const { control, handleSubmit, watch } = useForm<IFormInputs>();
 
-    const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => (eventName = e.target.value);
-    const handlePlaceChange = (selectedPlace: google.maps.places.PlaceResult | null) => {
-        const newAddress = selectedPlace?.formatted_address;
-        if (newAddress !== address) address = newAddress ?? "";
-
-        const newCoord = {
-            lat: selectedPlace?.geometry?.location?.lat() as number,
-            lng: selectedPlace?.geometry?.location?.lng() as number,
-        };
-
-        if (newCoord.lat !== coordinates?.lat || newCoord.lng !== coordinates?.lng) coordinates = newCoord;
-    };
-
-    const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => (startDate = e.target.value);
-    const handleFinishDateChange = (e: React.ChangeEvent<HTMLInputElement>) => (finishDate = e.target.value);
-    const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => (startTime = e.target.value);
-    const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => (description = e.target.value);
-    const handleStatusChange = (status: string) => (eventStatus = status);
-    const handleCategoriesChange = (categories: string[]) => (selectedCategories = categories);
-    const handleTypesChange = (types: string[]) => (selectedTypes = types);
-    const handleTagsChange = (tags: string[]) => (selectedTags = tags);
-    const handleImageUrl = (selectedImageUrl: string) => (imageUrl = selectedImageUrl);
-
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
-        //const formData = Object.fromEntries(new FormData(e.currentTarget).entries());
-        const onSubmitData: Partial<IEvent> = {
-            organizer_id: eventData.organizer?._id,
-            name: eventName,
-            description: description,
-            startDate: startDate,
-            endDate: finishDate,
-            time: startTime,
-            location: {
-                type: "Point",
-                coordinates: [coordinates?.lat ?? 0, coordinates?.lng ?? 0],
-                properties: {
-                    address: address,
-                },
+    const onSubmit: SubmitHandler<IFormInputs> = (event: EventType) => {
+        //onSubmitCreate(event);
+        createEvent({
+            variables: {
+                event: { ...event, organizer_id: organizerId },
             },
-            image: imageUrl,
-            status: eventStatus,
-            categories: selectedCategories,
-            types: selectedTypes,
-            tags: selectedTags,
-        };
-        onSubmit(onSubmitData);
+        }).then((response) => {
+            router.push(`/events/${response.data?.createEvent?._id}`);
+        });
+
+        console.log(event);
     };
+
+    enum Status {
+        PUBLIC = "public",
+        INVATION = "invation",
+        PRIVATE = "private",
+    }
+
+    //console.log(watch("location"));
 
     return (
         <div className={classes.container}>
-            <form className={classes.form} onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
                 <div className={classes.formWrapper}>
-                    {/* <TitleField defaultValue={eventData.name} onTitleChange={handleTitleChange} /> */}
-                    <Location
-                        onPlaceChange={handlePlaceChange}
-                        address={eventData.location?.properties?.address}
-                        coord={
-                            eventData.location?.coordinates
-                                ? { lat: eventData.location.coordinates[0], lng: eventData.location.coordinates[1] }
-                                : null
-                        }
-                    />
-                    <div className={classes.inputsDate}>
-                        {/* <Date date={eventData.startDate} title={"Start date"} onDateChange={handleStartDateChange} />
-                        <Date date={eventData.endDate} title={"Finish Date"} onDateChange={handleFinishDateChange} />
-                        <Time time={eventData.time} onTimeChange={handleTimeChange} /> */}
-                    </div>
-                    {/* <EventStatus status={eventData.status} onStatusChange={handleStatusChange} /> */}
-                    {/* <Description text={eventData.description} onDescriptionChange={handleDescriptionChange} /> */}
-                    {/* <SelectCategory
-                        categoryList={eventCategory}
-                        //onCategoriesChange={handleCategoriesChange}
-                        eventCategories={eventData.categories ?? []}
-                        titleCategories={"Select category"}
-                    /> */}
-                    {/* <SelectCategory
-                        categoryList={eventTypes}
-                        //onCategoriesChange={handleTypesChange}
-                        eventCategories={eventData.types ?? []}
-                        titleCategories={"Select subject"}
-                    /> */}
-                    {/* <CreateTag onTagsChange={handleTagsChange} eventTags={eventData.tags ?? []} /> */}
-                    <GuestList />
-                    <Button className={classes.buttonSaveChange} type="submit" text={"Save changes"} />
-                </div>
-            </form>
+                    <div className={classes.formField}>
+                        <Controller
+                            name="name"
+                            control={control}
+                            defaultValue={eventData.name || ""}
+                            render={({ field }) => <TitleField {...field} />}
+                            rules={{ required: true }}
+                        />
 
-            <UploadFile
-                onImageUrl={handleImageUrl} //imageUrl={eventData.image}
-            />
+                        <Controller
+                            name="location"
+                            control={control}
+                            render={({ field }) => <Location onChange={field.onChange} />}
+                        />
+
+                        <Controller
+                            name="status"
+                            control={control}
+                            render={({ field }) => <EventStatus options={Status} selected={field.value} {...field} />}
+                        />
+
+                        <Controller
+                            name="description"
+                            control={control}
+                            defaultValue={eventData.description || ""}
+                            render={({ field }) => <Description {...field} />}
+                        />
+
+                        <div className={classes.inputsDate}>
+                            <Controller
+                                name="startDate"
+                                control={control}
+                                render={({ field }) => (
+                                    <Date title={"Start date"} date={eventData.startDate} {...field} />
+                                )}
+                            />
+                            <Controller
+                                name="endDate"
+                                control={control}
+                                render={({ field }) => (
+                                    <Date title={"Finish date"} date={eventData.endDate} {...field} />
+                                )}
+                            />
+                            <Controller
+                                name="time"
+                                control={control}
+                                render={({ field }) => <Time time={eventData.time} {...field} />}
+                            />
+                        </div>
+
+                        <Controller
+                            name="categories"
+                            control={control}
+                            render={({ field }) => (
+                                <SelectCategory
+                                    categoryList={eventCategory}
+                                    eventCategories={eventData.categories || []}
+                                    titleCategories={"Select category"}
+                                    onChange={field.onChange}
+                                />
+                            )}
+                        />
+
+                        <Controller
+                            name="types"
+                            control={control}
+                            render={({ field }) => (
+                                <SelectCategory
+                                    categoryList={eventTypes}
+                                    eventCategories={eventData.types || []}
+                                    titleCategories={"Select subject"}
+                                    onChange={field.onChange}
+                                />
+                            )}
+                        />
+
+                        <Controller
+                            name="tags"
+                            control={control}
+                            render={({ field }) => (
+                                <CreateTag onChange={field.onChange} eventTags={eventData.tags || []} />
+                            )}
+                        />
+                    </div>
+
+                    <Controller
+                        name="image"
+                        control={control}
+                        render={({ field }) => <UploadFile imageUrl={eventData.image} onChange={field.onChange} />}
+                    />
+                </div>
+
+                <GuestList />
+
+                <Button className={classes.buttonSaveChange} type="submit" text={"Save changes"} />
+            </form>
         </div>
     );
 };

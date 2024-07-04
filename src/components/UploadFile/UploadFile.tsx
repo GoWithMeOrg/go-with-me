@@ -4,14 +4,15 @@ import Image from "next/image";
 import classes from "./UploadFile.module.css";
 
 interface IUploadFile {
-    onImageUrl?: (selectedImageUrl: string) => void;
+    //onImageUrl?: (selectedImageUrl: string) => void;
     onChange?: (e: string) => void;
+    imageUrl?: string;
 }
 
 export const UploadFile = forwardRef(function UploadFile(props: IUploadFile, ref) {
     const uploadRef = useRef<HTMLInputElement>(null);
     const [file, setFile] = useState<File | null>(null);
-    const [url, setUrl] = useState<string | null>();
+    const [url, setUrl] = useState<string>(props.imageUrl || "");
 
     const handleFileChange = (event: any) => {
         setFile(event.target.files[0]);
@@ -52,11 +53,13 @@ export const UploadFile = forwardRef(function UploadFile(props: IUploadFile, ref
         }
     };
 
+    //URL.createObjectURL(file)
     return (
         <div className={classes.uploadFile}>
             <div className={classes.preview}>
                 <div className={classes.previewImage}>
-                    {file && <Image src={url ?? URL.createObjectURL(file)} width={460} height={324} alt="img" />}
+                    {url && !file && <Image src={url} width={460} height={324} alt="img" />}
+                    {url && file && <Image src={URL.createObjectURL(file)} width={460} height={324} alt="img" />}
                 </div>
             </div>
 
