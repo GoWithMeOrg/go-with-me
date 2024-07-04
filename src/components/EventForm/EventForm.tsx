@@ -58,7 +58,7 @@ interface IFormInputs {
 interface IEventFormProps {
     eventData: EventType;
     onSubmit: (event: EventType) => void;
-    //onSubmitCreate: (event: EventType) => void;
+    //onSubmitEvent: (event: EventType) => void;
 }
 export const EventForm = ({ eventData }: IEventFormProps) => {
     const router = useRouter();
@@ -67,10 +67,10 @@ export const EventForm = ({ eventData }: IEventFormProps) => {
     const organizerId = (session?.user as { id: string })?.id;
     const { control, handleSubmit, watch } = useForm<IFormInputs>();
 
-    console.log(eventData.status);
+    // console.log(eventData.location);
 
     const onSubmit: SubmitHandler<IFormInputs> = (event: EventType) => {
-        //onSubmitCreate(event);
+        //onSubmitEvent(event);
         createEvent({
             variables: {
                 event: { ...event, organizer_id: organizerId },
@@ -100,7 +100,9 @@ export const EventForm = ({ eventData }: IEventFormProps) => {
                         <Controller
                             name="location"
                             control={control}
-                            render={({ field }) => <Location onChange={field.onChange} />}
+                            render={({ field }) => (
+                                <Location address={eventData.location?.properties?.address} onChange={field.onChange} />
+                            )}
                         />
 
                         <Controller

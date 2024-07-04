@@ -73,7 +73,7 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
             <Autocomplete
                 className={classes.fieldInput}
                 onPlaceSelect={setSelectedPlace}
-                //address={address}
+                address={props.address || ""}
             />
             <Popup
                 {...{
@@ -103,7 +103,7 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
                         <Autocomplete
                             onPlaceSelect={setSelectedPlace}
                             className={classes.inputFindMap}
-                            //address={address}
+                            address={props.address || ""}
                         />
                     </CustomMapControl>
                     <MapHandler place={selectedPlace} />

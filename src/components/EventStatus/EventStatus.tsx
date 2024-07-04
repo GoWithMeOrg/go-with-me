@@ -1,6 +1,5 @@
 import { forwardRef } from "react";
 import classes from "./EventStatus.module.css";
-import { RefCallBack } from "react-hook-form";
 import { Status } from "@/components/EventForm/EventForm";
 
 interface IEventStatus {
