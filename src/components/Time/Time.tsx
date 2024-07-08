@@ -18,7 +18,7 @@ export const Time = forwardRef(function Time(props: ITime, ref) {
             <input
                 type="time"
                 name="time"
-                defaultValue={dayjs(props.time).format("YYYY-MM-DD")}
+                defaultValue={(props.time || dayjs().format("HH:mm")) as string}
                 className={classes.timeInput}
                 onChange={handleChange}
             />

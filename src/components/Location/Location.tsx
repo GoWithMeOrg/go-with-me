@@ -15,8 +15,13 @@ import {
 import Popup from "../Popup/Popup";
 
 interface ILocation {
-    address?: string;
-    coord?: { lat: number; lng: number } | null;
+    locationEvent: {
+        type: "Point";
+        coordinates: [number, number];
+        properties: {
+            address: string;
+        };
+    };
     onPlaceChange?: (selectedPlace: google.maps.places.PlaceResult | null) => void;
     onChange?: (...event: any[]) => void;
 }
@@ -24,7 +29,10 @@ interface ILocation {
 export const Location = forwardRef(function Location(props: ILocation, ref) {
     const apiIsLoaded = useApiIsLoaded();
     const mapAPI = useContext(APIProviderContext);
-    const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(null);
+    const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>({
+        lat: props.locationEvent?.coordinates[0],
+        lng: props.locationEvent?.coordinates[1],
+    });
     const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
     const prevSelectedPlaceRef = useRef<google.maps.places.PlaceResult | null>(selectedPlace);
     const [showPopup, setShowPopup] = useState<boolean>(false);
@@ -73,7 +81,7 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
             <Autocomplete
                 className={classes.fieldInput}
                 onPlaceSelect={setSelectedPlace}
-                //address={address}
+                address={props.locationEvent?.properties?.address || ""}
             />
             <Popup
                 {...{
@@ -84,9 +92,13 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
             >
                 <Map
                     style={{ height: "600px" }}
-                    defaultZoom={3}
-                    defaultCenter={{ lat: 22.54992, lng: 0 }}
-                    //defaultCenter={coord ? { lat: coord.lat ?? 22.54992, lng: coord.lng ?? 0 } : { lat: 22.54992, lng: 0 }}
+                    defaultZoom={14}
+                    defaultCenter={
+                        { lat: props.locationEvent?.coordinates[0], lng: props.locationEvent?.coordinates[1] } || {
+                            lat: 22.54992,
+                            lng: 0,
+                        }
+                    }
                     gestureHandling={"greedy"}
                     disableDefaultUI={false}
                     mapId={"<Your custom MapId here>"}
@@ -103,7 +115,7 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
                         <Autocomplete
                             onPlaceSelect={setSelectedPlace}
                             className={classes.inputFindMap}
-                            //address={address}
+                            address={props.locationEvent?.properties?.address || ""}
                         />
                     </CustomMapControl>
                     <MapHandler place={selectedPlace} />

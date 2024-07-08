@@ -2,7 +2,6 @@ import { forwardRef, useEffect, useRef, useState } from "react";
 import Plus from "@/assets/icons/plus.svg";
 import Minus from "@/assets/icons/minus.svg";
 import classes from "./CreateTag.module.css";
-import { types } from "util";
 
 interface ICreateTag {
     eventTags: string[];
@@ -12,7 +11,7 @@ interface ICreateTag {
 
 export const CreateTag = forwardRef(function CreateTag(props: ICreateTag, ref) {
     const tagRef = useRef<HTMLInputElement>(null);
-    const [tags, setTags] = useState<string[]>([]);
+    const [tags, setTags] = useState<string[]>(props.eventTags || []);
     const prevTagsRef = useRef<string[]>(tags ?? []);
 
     useEffect(() => {

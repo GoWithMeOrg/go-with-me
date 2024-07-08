@@ -1,6 +1,5 @@
 import { forwardRef } from "react";
 import classes from "./EventStatus.module.css";
-import { RefCallBack } from "react-hook-form";
 
 interface IEventStatus {
     options?: {
@@ -8,7 +7,6 @@ interface IEventStatus {
         INVATION: string;
         PRIVATE: string;
     };
-    ref: RefCallBack;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     selected: string;
 }

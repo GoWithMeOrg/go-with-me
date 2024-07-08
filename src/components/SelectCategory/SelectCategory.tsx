@@ -1,6 +1,7 @@
 import { forwardRef, useEffect, useRef, useState } from "react";
 import { Dropdown } from "../Dropdown";
 import classes from "./SelectCategory.module.css";
+import { eventCategory } from "../Dropdown/dropdownLists";
 
 export interface ICategory {
     label: string;
@@ -37,7 +38,7 @@ export const SelectCategory = forwardRef(function SelectCategory(props: ISelectC
             <Dropdown
                 textButton={"No category"}
                 className={classes.dropdownButton}
-                categoriesData={[]}
+                categoriesData={props.eventCategories || ["No category"]}
                 onSelectedCategories={handleCategoryChange}
                 list={props.categoryList}
             />
