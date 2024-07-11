@@ -29,17 +29,20 @@ interface ILocation {
 export const Location = forwardRef(function Location(props: ILocation, ref) {
     const apiIsLoaded = useApiIsLoaded();
     const mapAPI = useContext(APIProviderContext);
-    const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>({
-        lat: props.locationEvent?.coordinates[0],
-        lng: props.locationEvent?.coordinates[1],
-    });
+    const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(
+        props.locationEvent !== undefined
+            ? {
+                  lat: props.locationEvent?.coordinates[0],
+                  lng: props.locationEvent?.coordinates[1],
+              }
+            : null,
+    );
     const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
     const prevSelectedPlaceRef = useRef<google.maps.places.PlaceResult | null>(selectedPlace);
     const [showPopup, setShowPopup] = useState<boolean>(false);
 
     useEffect(() => {
         if (prevSelectedPlaceRef.current !== selectedPlace && props.onChange) {
-            //props.onChange(selectedPlace?.formatted_address);
             const newPlace = {
                 coordinates: [selectedPlace?.geometry?.location?.lat(), selectedPlace?.geometry?.location?.lng()],
                 properties: {
@@ -48,10 +51,6 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
             };
 
             props.onChange(newPlace);
-            // props.onChange(
-            //     [selectedPlace?.geometry?.location?.lat(), selectedPlace?.geometry?.location?.lng()],
-            //     selectedPlace?.formatted_address,
-            // );
             prevSelectedPlaceRef.current = selectedPlace;
         }
     }, [selectedPlace, props]);
@@ -69,6 +68,7 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
         setMarkerPosition(e.detail.latLng);
     };
 
+    console.log(props.locationEvent);
     return (
         <label className={classes.locationForm}>
             <div className={classes.labelFindMap}>
@@ -92,13 +92,8 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
             >
                 <Map
                     style={{ height: "600px" }}
-                    defaultZoom={14}
-                    defaultCenter={
-                        { lat: props.locationEvent?.coordinates[0], lng: props.locationEvent?.coordinates[1] } || {
-                            lat: 22.54992,
-                            lng: 0,
-                        }
-                    }
+                    defaultZoom={3}
+                    defaultCenter={{ lat: 22.54992, lng: 0 }}
                     gestureHandling={"greedy"}
                     disableDefaultUI={false}
                     mapId={"<Your custom MapId here>"}
