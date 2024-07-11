@@ -59,7 +59,7 @@ export const UploadFile = forwardRef(function UploadFile(props: IUploadFile, ref
             <div className={classes.preview}>
                 <div className={classes.previewImage}>
                     {url && !file && <Image src={url} width={460} height={324} alt="img" priority />}
-                    {url && file && <Image src={URL.createObjectURL(file)} width={460} height={324} alt="img" />}
+                    {file && <Image src={URL.createObjectURL(file)} width={460} height={324} alt="img" />}
                 </div>
             </div>
 
