@@ -57,32 +57,14 @@ interface IFormInputs {
 
 interface IEventFormProps {
     eventData: EventType;
-    //onSubmit: (event: EventType) => void;
     onSubmitEvent: (event: EventType) => void;
 }
 export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
-    //const router = useRouter();
-    //const { data: session } = useSession();
-    //const [createEvent] = useMutation(CREATE_EVENT);
-    //const organizerId = (session?.user as { id: string })?.id;
     const { control, handleSubmit, watch } = useForm<IFormInputs>();
-
-    // console.log(eventData.location);
 
     const onSubmit: SubmitHandler<IFormInputs> = (event: EventType) => {
         onSubmitEvent(event);
-        // createEvent({
-        //     variables: {
-        //         event: { ...event, organizer_id: organizerId },
-        //     },
-        // }).then((response) => {
-        //     router.push(`/events/${response.data?.createEvent?._id}`);
-        // });
-
-        console.log(event);
     };
-
-    //console.log(watch("location"));
 
     return (
         <div className={classes.container}>
