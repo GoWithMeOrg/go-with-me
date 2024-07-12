@@ -7,6 +7,9 @@ interface IUploadFile {
     //onImageUrl?: (selectedImageUrl: string) => void;
     onChange?: (e: string) => void;
     imageUrl?: string;
+    width?: number;
+    height?: number;
+    className: string;
 }
 
 export const UploadFile = forwardRef(function UploadFile(props: IUploadFile, ref) {
@@ -53,13 +56,14 @@ export const UploadFile = forwardRef(function UploadFile(props: IUploadFile, ref
         }
     };
 
-    //URL.createObjectURL(file)
     return (
         <div className={classes.uploadFile}>
-            <div className={classes.preview}>
+            <div className={props.className}>
                 <div className={classes.previewImage}>
-                    {url && !file && <Image src={url} width={460} height={324} alt="img" priority />}
-                    {file && <Image src={URL.createObjectURL(file)} width={460} height={324} alt="img" />}
+                    {url && !file && <Image src={url} width={props.width} height={props.height} alt="img" priority />}
+                    {file && (
+                        <Image src={URL.createObjectURL(file)} width={props.width} height={props.height} alt="img" />
+                    )}
                 </div>
             </div>
 

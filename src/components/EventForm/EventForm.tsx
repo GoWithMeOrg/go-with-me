@@ -75,7 +75,7 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                             name="name"
                             control={control}
                             defaultValue={eventData.name || ""}
-                            render={({ field }) => <TitleField {...field} />}
+                            render={({ field }) => <TitleField title={"Event title"} />}
                             rules={{ required: true }}
                         />
 
@@ -98,7 +98,7 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                             name="description"
                             control={control}
                             defaultValue={eventData.description || ""}
-                            render={({ field }) => <Description {...field} />}
+                            render={({ field }) => <Description title={"Description"} />}
                         />
 
                         <div className={classes.inputsDate}>
@@ -161,7 +161,15 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                     <Controller
                         name="image"
                         control={control}
-                        render={({ field }) => <UploadFile imageUrl={eventData.image} onChange={field.onChange} />}
+                        render={({ field }) => (
+                            <UploadFile
+                                imageUrl={eventData.image}
+                                className={classes.preview}
+                                width={460}
+                                height={324}
+                                onChange={field.onChange}
+                            />
+                        )}
                     />
                 </div>
 
