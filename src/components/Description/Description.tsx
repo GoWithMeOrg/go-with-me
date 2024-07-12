@@ -2,7 +2,11 @@ import { forwardRef } from "react";
 import classes from "./Description.module.css";
 import { Textarea } from "../Textarea";
 
-export const Description = forwardRef(function Description(props, ref) {
+interface IDescriptionProps {
+    title: string;
+}
+
+export const Description = forwardRef(function Description(props: IDescriptionProps, ref) {
     return (
         <label className={classes.descriptionLabel}>
             <span className={classes.descriptionTitle}>Description</span>
