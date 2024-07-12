@@ -5,8 +5,7 @@ import { Button } from "@/components/Button";
 import { TitleH2 } from "@/components/TitleH2";
 import Image from "next/image";
 import profile from "@/assets/images/profile.png";
-import { ProfileForm } from "@/components/ProfileForm";
-import { IEvent } from "@/database/models/Event";
+import { ProfileTabs } from "@/components/ProfileTabs";
 
 export const Profile = () => {
     return (
@@ -25,7 +24,7 @@ export const Profile = () => {
                     </div>
                     <TitleH2 className={classes.formTitle} title="MY ACCOUNT" />
                 </div>
-                <ProfileForm eventData={undefined} />
+                <ProfileTabs />
             </div>
         </div>
     );
