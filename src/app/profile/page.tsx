@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import classes from "./page.module.css";
 import Arrow from "@/assets/icons/arrow.svg";
@@ -6,8 +8,9 @@ import { TitleH2 } from "@/components/TitleH2";
 import Image from "next/image";
 import profile from "@/assets/images/profile.png";
 import { ProfileTabs } from "@/components/ProfileTabs";
+import { NextPage } from "next";
 
-export const Profile = () => {
+const Profile: NextPage = () => {
     return (
         <div className={classes.container}>
             <div className={classes.formWrapper}>

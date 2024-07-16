@@ -67,3 +67,9 @@
     text-align: center;
     cursor: pointer;
 }
+
+.buttonCreateLink:hover {
+    border: 0.13rem solid var(--hover-color);
+    border-radius: 0.25rem;
+    color: var(--hover-color);
+}

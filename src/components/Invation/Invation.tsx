@@ -48,7 +48,7 @@ export const Invation = ({ id, organizer, name, coord, startDate, time, image, c
         <div
             id={id}
             className={`
-                ${classes.notification} 
+                ${classes.invation} 
                 ${invationStatus === "accepted" && classes.invationActive} 
                 ${invationStatus === "refused" && classes.invationActive}`}
         >
@@ -112,7 +112,7 @@ export const Invation = ({ id, organizer, name, coord, startDate, time, image, c
                 </div>
             </div>
 
-            <div className={classes.invation}>
+            <div className={classes.invationStatus}>
                 <div className={classes.invationPlaque}>
                     <div
                         className={`
@@ -129,4 +129,4 @@ export const Invation = ({ id, organizer, name, coord, startDate, time, image, c
     );
 };
 
-export default Invation;
+export default Notification;

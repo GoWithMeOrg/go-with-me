@@ -1,8 +1,9 @@
-.invation {
+.notification {
     display: flex;
     width: 48.75rem;
-    height: 14.44rem;
+    min-height: 14.44rem;
     background: var(--white-color);
+    padding: 32px 32px 28px 32px;
 }
 
 .invationActive {
@@ -13,8 +14,7 @@
 .image {
     width: 6.25rem;
     height: 6.25rem;
-    margin: 2rem 1rem 0rem 2rem;
-    border: 0.25rem solid var(--background-color);
+    border-radius: 100%;
 }
 
 .title {
@@ -23,6 +23,41 @@
     font-weight: 700;
     line-height: 1.38rem;
     text-align: left;
+}
+
+.description {
+    width: 33.25rem;
+    color: var(--text-color);
+    font-size: 0.88rem;
+    font-weight: 400;
+    line-height: 1.38rem;
+    letter-spacing: 0%;
+    text-align: left;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.expanded {
+    display: block;
+}
+
+.buttonRead {
+    color: var(--additional-color);
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.19rem;
+    text-align: center;
+    text-transform: uppercase;
+    background: none;
+    margin-top: 1.25rem;
+    cursor: pointer;
+}
+
+.buttonRead:hover {
+    color: var(--main-color);
 }
 
 .location {
@@ -42,7 +77,7 @@
 }
 
 .info {
-    margin-top: 2rem;
+    margin-left: 1rem;
 }
 
 .plaque {
@@ -164,7 +199,6 @@
 }
 
 .invationPlaque {
-    width: 7.94rem;
     display: flex;
     flex-direction: column;
     align-items: center;
