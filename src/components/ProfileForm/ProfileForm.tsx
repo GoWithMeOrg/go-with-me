@@ -54,6 +54,7 @@ export const ProfileForm = ({ profileData, onSubmitEvent }: IEventFormProps) => 
                             width={180}
                             height={180}
                             className={classes.preview}
+                            flexDirection={"revert-layer"}
                         />
                     )}
                 />

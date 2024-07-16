@@ -18,9 +18,13 @@
 }
 
 .list {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     width: 17.5rem;
     height: 30.81rem;
-    border: 2px solid red;
+    border-radius: 0.25rem;
+    padding: 30px 32px 45px 32px;
     background: var(--white-color);
     margin-right: 7.5rem;
 }
@@ -41,7 +45,7 @@
 }
 
 .buttonCreate {
-    width: 10.88rem;
+    width: 13.5rem;
     height: 3.13rem;
     background: none;
     cursor: pointer;

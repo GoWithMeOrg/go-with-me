@@ -33,6 +33,12 @@ export const ProfileTabs = () => {
                 </div>
             </div>
             {activeTab === "personal" && <ProfileForm />}
+            {/* {activeTab === "notifications" && <Notification />}
+            {activeTab === "events" && <ProfileForm />}
+            {activeTab === "trips" && <ProfileForm />}
+            {activeTab === "companions" && <ProfileForm />}
+            {activeTab === "chat" && <ProfileForm />}
+            {activeTab === "confidentiality" && <ProfileForm />} */}
         </div>
     );
 };

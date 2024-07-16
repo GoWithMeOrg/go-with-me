@@ -1,6 +1,6 @@
 .uploadFile {
     display: flex;
-    flex-direction: column;
+    /* flex-direction: column; */
     gap: 1.25rem;
     margin-right: 1.25rem;
     margin-bottom: 1rem;
