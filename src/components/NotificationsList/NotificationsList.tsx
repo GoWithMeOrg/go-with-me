@@ -4,6 +4,7 @@ import { Invation } from "../Invation";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/client";
 import { IEvent } from "@/database/models/Event";
+import { SystemNotification } from "@/components/SystemNotification";
 
 export type EventListProps = {
     events?: IEvent[];
@@ -55,6 +56,9 @@ export const NotificationsList = () => {
                     organizer={organizer}
                 />
             ))}
+
+            <SystemNotification />
+            <SystemNotification />
         </div>
     );
 };
