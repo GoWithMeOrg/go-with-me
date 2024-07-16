@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { Navbar } from "../Navbar";
 import { ProfileForm } from "../ProfileForm";
+import { NotificationsList } from "../NotificationsList";
 
 export const ProfileTabs = () => {
     const [activeTab, setActiveTab] = useState("personal");
@@ -33,8 +34,8 @@ export const ProfileTabs = () => {
                 </div>
             </div>
             {activeTab === "personal" && <ProfileForm />}
-            {/* {activeTab === "notifications" && <Notification />}
-            {activeTab === "events" && <ProfileForm />}
+            {activeTab === "notifications" && <NotificationsList />}
+            {/* {activeTab === "events" && <ProfileForm />}
             {activeTab === "trips" && <ProfileForm />}
             {activeTab === "companions" && <ProfileForm />}
             {activeTab === "chat" && <ProfileForm />}
