@@ -1,3 +1,7 @@
+.form {
+    margin-bottom: 10.625rem;
+}
+
 .profile {
     display: flex;
 }
@@ -42,6 +46,7 @@
     display: flex;
     width: 11.25rem;
     height: 11.25rem;
+    border-radius: 0.25rem;
     background-color: var(--additional-color);
 }
 

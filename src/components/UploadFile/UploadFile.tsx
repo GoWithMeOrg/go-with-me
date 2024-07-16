@@ -3,6 +3,7 @@ import { forwardRef, useRef, useState } from "react";
 import Image from "next/image";
 import classes from "./UploadFile.module.css";
 
+type FlexDirection = "revert-layer" | "column";
 interface IUploadFile {
     //onImageUrl?: (selectedImageUrl: string) => void;
     onChange?: (e: string) => void;
@@ -10,6 +11,7 @@ interface IUploadFile {
     width?: number;
     height?: number;
     className: string;
+    flexDirection?: FlexDirection | undefined;
 }
 
 export const UploadFile = forwardRef(function UploadFile(props: IUploadFile, ref) {
@@ -57,7 +59,7 @@ export const UploadFile = forwardRef(function UploadFile(props: IUploadFile, ref
     };
 
     return (
-        <div className={classes.uploadFile}>
+        <div className={classes.uploadFile} style={{ flexDirection: props.flexDirection }}>
             <div className={props.className}>
                 <div className={classes.previewImage}>
                     {url && !file && <Image src={url} width={props.width} height={props.height} alt="img" priority />}

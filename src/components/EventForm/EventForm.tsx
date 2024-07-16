@@ -168,6 +168,7 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                                 width={460}
                                 height={324}
                                 onChange={field.onChange}
+                                flexDirection={"column"}
                             />
                         )}
                     />

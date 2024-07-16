@@ -7,24 +7,24 @@ interface INavbar {
 }
 export const Navbar = ({ onTabClick, activeTab }: INavbar) => {
     return (
-        <div className={classes.cNav}>
+        <div className={classes.navbar}>
             <div
                 data-profile="profile-personal"
                 onClick={() => onTabClick("personal")}
-                className={`${classes.cNavItem} ${activeTab === "personal" && classes.cNavItemActive}`}
+                className={`${classes.navbarItem} ${activeTab === "personal" && classes.navbarItemActive}`}
             >
                 {"Personal info"}
             </div>
             <div
                 data-profile="profile-notifications"
                 onClick={() => onTabClick("notifications")}
-                className={`${classes.cNavItem} ${activeTab === "notifications" && classes.cNavItemActive}`}
+                className={`${classes.navbarItem} ${activeTab === "notifications" && classes.navbarItemActive}`}
             >
                 {"Notifications"}
             </div>
             <div
                 data-profile="profile-events"
-                className={`${classes.cNavItem} ${activeTab === "events" && classes.cNavItemActive}`}
+                className={`${classes.navbarItem} ${activeTab === "events" && classes.navbarItemActive}`}
                 onClick={() => onTabClick("events")}
             >
                 {"Events"}
@@ -32,7 +32,7 @@ export const Navbar = ({ onTabClick, activeTab }: INavbar) => {
 
             <div
                 data-profile="profile-trips"
-                className={`${classes.cNavItem} ${activeTab === "trips" && classes.cNavItemActive}`}
+                className={`${classes.navbarItem} ${activeTab === "trips" && classes.navbarItemActive}`}
                 onClick={() => onTabClick("trips")}
             >
                 {"Trips"}
@@ -40,7 +40,7 @@ export const Navbar = ({ onTabClick, activeTab }: INavbar) => {
 
             <div
                 data-profile="profile-companions"
-                className={`${classes.cNavItem} ${activeTab === "companions" && classes.cNavItemActive}`}
+                className={`${classes.navbarItem} ${activeTab === "companions" && classes.navbarItemActive}`}
                 onClick={() => onTabClick("companions")}
             >
                 {"Companion List"}
@@ -48,7 +48,7 @@ export const Navbar = ({ onTabClick, activeTab }: INavbar) => {
 
             <div
                 data-profile="profile-chat"
-                className={`${classes.cNavItem} ${activeTab === "chat" && classes.cNavItemActive}`}
+                className={`${classes.navbarItem} ${activeTab === "chat" && classes.navbarItemActive}`}
                 onClick={() => onTabClick("chat")}
             >
                 {"Chat"}
@@ -56,7 +56,7 @@ export const Navbar = ({ onTabClick, activeTab }: INavbar) => {
 
             <div
                 data-profile="profile-confidentiality"
-                className={`${classes.cNavItem} ${activeTab === "confidentiality" && classes.cNavItemActive}`}
+                className={`${classes.navbarItem} ${activeTab === "confidentiality" && classes.navbarItemActive}`}
                 onClick={() => onTabClick("confidentiality")}
             >
                 {"Confidentiality"}
