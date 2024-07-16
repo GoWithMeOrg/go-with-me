@@ -16,8 +16,6 @@ interface CardEventProps {
     image?: string;
 }
 
-//разобраться с ошибкой размера картинки.
-
 export const CardEvent = ({ id, name, description, coord, startDate, time, image }: CardEventProps) => {
     return (
         <div id={id} className={classes.card}>
