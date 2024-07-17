@@ -58,7 +58,6 @@ export const NotificationsList = () => {
             ))}
 
             <SystemNotification />
-            <SystemNotification />
         </div>
     );
 };
