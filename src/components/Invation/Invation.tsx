@@ -9,7 +9,15 @@ import { Button } from "../Button";
 import Joined from "@/assets/icons/joined.svg";
 import Cancel from "@/assets/icons/cancel.svg";
 
-type EventCondition = "canceled" | "ended" | "";
+export enum Condition {
+    CANCELED = "canceled",
+    ENDED = "ended",
+}
+
+export enum InvationStatus {
+    ACCEPTED = "accepted",
+    REFUSED = "refused",
+}
 
 interface InvationProps {
     id: string;
@@ -20,7 +28,7 @@ interface InvationProps {
     startDate: string | Date | undefined;
     time: string | undefined;
     image?: string;
-    condition?: EventCondition;
+    condition?: Condition;
 }
 
 // Accepted - принял, Refesuded - отказался
@@ -28,10 +36,10 @@ interface InvationProps {
 
 export const Invation = ({ id, organizer, name, coord, startDate, time, image, condition }: InvationProps) => {
     const [invationStatus, setInvationStatus] = useState<string>("");
-    const [eventStatus, setEventStatus] = useState<string>("");
+    //const [eventStatus, setEventStatus] = useState<string>("");
 
     const handleClickAccept = () => {
-        setInvationStatus("accepted");
+        setInvationStatus(InvationStatus.ACCEPTED);
     };
 
     const handleClickCanceled = () => {
@@ -39,7 +47,7 @@ export const Invation = ({ id, organizer, name, coord, startDate, time, image, c
     };
 
     const handleClickRefuse = () => {
-        setInvationStatus("refused");
+        setInvationStatus(InvationStatus.REFUSED);
     };
 
     console.log(invationStatus);
@@ -49,8 +57,8 @@ export const Invation = ({ id, organizer, name, coord, startDate, time, image, c
             id={id}
             className={`
                 ${classes.invation} 
-                ${invationStatus === "accepted" && classes.invationActive} 
-                ${invationStatus === "refused" && classes.invationActive}`}
+                ${invationStatus === InvationStatus.ACCEPTED && classes.invationActive} 
+                ${invationStatus === InvationStatus.REFUSED && classes.invationActive}`}
         >
             <div className={classes.image}>
                 {image && (
@@ -73,7 +81,7 @@ export const Invation = ({ id, organizer, name, coord, startDate, time, image, c
                 <div className={classes.organizer}>Invited by Violetta Capybara </div>
 
                 <div className={classes.buttonsBlock}>
-                    {invationStatus !== "accepted" && invationStatus !== "refused" ? (
+                    {invationStatus !== InvationStatus.ACCEPTED && invationStatus !== InvationStatus.REFUSED ? (
                         <div className={classes.buttons}>
                             <Button onClick={handleClickAccept} className={classes.buttonAccept} text={"Accept"} />
                             <Link href={`/events/${id}`}>
@@ -82,7 +90,7 @@ export const Invation = ({ id, organizer, name, coord, startDate, time, image, c
                             <Button onClick={handleClickRefuse} className={classes.buttonRefuse} text={"Refuse"} />
                         </div>
                     ) : (
-                        invationStatus !== "refused" && (
+                        invationStatus !== InvationStatus.REFUSED && (
                             <div className={classes.buttons}>
                                 <div className={classes.invationAccepted}>
                                     <Joined style={{ transform: "scale(1.2)" }} />
@@ -98,7 +106,7 @@ export const Invation = ({ id, organizer, name, coord, startDate, time, image, c
                         )
                     )}
 
-                    {invationStatus === "refused" && (
+                    {invationStatus === InvationStatus.REFUSED && (
                         <div className={classes.buttons}>
                             <div className={classes.invationAccepted}>
                                 <Cancel />
@@ -117,7 +125,7 @@ export const Invation = ({ id, organizer, name, coord, startDate, time, image, c
                     <div
                         className={`
                         ${classes.plaque} 
-                        ${invationStatus === "refused" && classes.plaqueActive}
+                        ${invationStatus === InvationStatus.REFUSED && classes.plaqueActive}
                         `}
                     >
                         Invation

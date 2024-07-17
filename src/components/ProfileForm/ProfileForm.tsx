@@ -20,7 +20,7 @@ export type ProfileType = Partial<IUser>;
 interface IFormProfile {
     _id: string;
     firstName: string;
-    LastName: string;
+    lastName: string;
     mail: string;
     location: string;
     aboutMe: string;
@@ -68,7 +68,7 @@ export const ProfileForm = ({ profileData, onSubmitEvent }: IEventFormProps) => 
                 />
 
                 <Controller
-                    name="LastName"
+                    name="lastName"
                     control={control}
                     defaultValue={""}
                     render={({ field }) => <TitleField title={"Last name"} />}
