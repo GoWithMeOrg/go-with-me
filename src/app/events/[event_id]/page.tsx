@@ -11,6 +11,7 @@ import classes from "./page.module.css";
 import Arrow from "@/assets/icons/arrow.svg";
 import { Button } from "@/components/Button";
 import { Loader } from "@/components/Loader";
+import { CommentsList } from "@/components/CommentsList";
 
 type PageParams = {
     params: { event_id: string };
@@ -53,6 +54,19 @@ const GET_EVENT_BY_ID = gql`
             content
             createdAt
             updatedAt
+            likes
+            replies {
+                _id
+                author {
+                    _id
+                    name
+                    email
+                }
+                content
+                createdAt
+                updatedAt
+                likes
+            }
         }
     }
 `;
@@ -106,7 +120,8 @@ const EventPage: NextPage<PageParams> = (context) => {
             });
     };
 
-    console.log(data);
+    console.log(data.comments);
+
     return (
         <div className={classes.container}>
             <div className={classes.eventWrapper}>
@@ -115,14 +130,14 @@ const EventPage: NextPage<PageParams> = (context) => {
                 </Button>
 
                 <Event event={data.event} />
+
+                {/* <CommentsList
+                    comments={data.comments}
+                    //onSave={handleSaveComment}
+                /> */}
+
+                <Comments comments={data.comments} onSave={handleSaveComment} />
             </div>
-
-            {/* <Link href={`/events/${context.params.event_id}/edit`}>Edit</Link> */}
-
-            {/* <div>{data.event.time}</div> */}
-
-            {/* <h3>Comments</h3>
-            <Comments comments={data.comments} onSave={handleSaveComment} /> */}
         </div>
     );
 };

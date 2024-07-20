@@ -6,6 +6,10 @@ import type { IComment } from "@/database/models/Comment";
 import { formatDate } from "@/utils/formatDate";
 
 import classes from "./Comments.module.css";
+import { TitleH3 } from "../TitleH3";
+import { Avatar } from "../Avatar";
+import { useSession } from "next-auth/react";
+import { UserImage } from "../UserImage";
 
 type CommentsProps = {
     comments: IComment[];
@@ -13,13 +17,17 @@ type CommentsProps = {
 };
 
 const Comments: FC<CommentsProps> = ({ comments, onSave }) => {
+    const { data: session } = useSession();
     const handleSaveComment = (event: any) => {
         event.preventDefault();
         onSave(event.target.content.value);
     };
 
+    console.log(session);
     return (
         <div className={classes.container}>
+            <TitleH3 title={"Comments"} className={classes.title} />
+            <UserImage className={classes.userImage} />
             <section>
                 <h6>Написать комментарий</h6>
                 <form onSubmit={handleSaveComment}>

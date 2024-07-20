@@ -1,28 +1,19 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 20%;
+    width: 48.75rem;
+    margin-top: 6.25rem;
 }
 
-.form {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+.title {
+    color: var(--main-color);
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.88rem;
+    text-align: left;
+    margin-bottom: 2.75rem;
 }
 
-.header {
-    font-size: 1.3em;
-}
-
-.label {
-    display: flex;
-}
-
-.label > span {
-    width: 200px;
-}
-
-.button {
-    margin-top: 12px;
+.userImage {
+    border-radius: 100%;
+    width: 3.125rem;
+    height: auto;
 }
