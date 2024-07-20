@@ -6,6 +6,7 @@ export interface INewComment {
     author_id: mongoose.Types.ObjectId;
     event_id: mongoose.Types.ObjectId;
     content: string;
+<<<<<<< HEAD
     replyTo?: {
         id: mongoose.Types.ObjectId;
         userName: string;
@@ -19,6 +20,12 @@ export interface IComment extends INewComment {
     createdAt: string;
     updatedAt: string;
     likes: number;
+=======
+    createdAt: Date;
+    updatedAt: Date;
+    likes: number;
+    replies_id: mongoose.Types.ObjectId[];
+>>>>>>> update shema comments and added userImage
     replies: IComment[];
 }
 
@@ -43,6 +50,7 @@ const CommentSchema = new Schema<ICommentDocument>(
             type: Number,
             default: 0,
         },
+<<<<<<< HEAD
         parentId: {
             type: Schema.Types.ObjectId,
             required: false,
@@ -54,6 +62,14 @@ const CommentSchema = new Schema<ICommentDocument>(
             },
             required: false,
         },
+=======
+        replies_id: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Comment",
+            },
+        ],
+>>>>>>> update shema comments and added userImage
     },
     {
         timestamps: true,

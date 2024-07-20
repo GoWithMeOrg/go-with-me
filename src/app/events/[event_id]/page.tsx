@@ -5,17 +5,10 @@ import Link from "next/link";
 import { gql, useQuery } from "@apollo/client";
 
 import { Event } from "@/components/Event";
-<<<<<<< HEAD
 import { CommentsList } from "@/components/CommentsList";
+import { Loader } from "@/components/Loader";
 
 import styles from "./EventPage.module.css";
-=======
-import { Comments } from "@/components/Comments";
-import classes from "./page.module.css";
-import Arrow from "@/assets/icons/arrow.svg";
-import { Button } from "@/components/Button";
-import { Loader } from "@/components/Loader";
->>>>>>> added event page
 
 type PageParams = {
     params: { event_id: string };
@@ -70,7 +63,10 @@ const EventPage: NextPage<PageParams> = ({ params: { event_id } }) => {
 
             {/* <Link href={`/events/${context.params.event_id}/edit`}>Edit</Link> */}
 
-            {/* <div>{data.event.time}</div> */}
+            {/* <CommentsList
+                    comments={data.comments}
+                    //onSave={handleSaveComment}
+                /> */}
 
             <CommentsList {...{ event_id }} />
         </section>

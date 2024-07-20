@@ -20,6 +20,7 @@ import { TitleH3 } from "../TitleH3";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { GuestList } from "../GuestList";
+import { UserImage } from "../UserImage";
 
 export interface EventProps {
     event: IEvent;
@@ -172,13 +173,7 @@ const Event: FC<EventProps> = ({ event }) => {
 
                     <div className={classes.eventOrganizer}>
                         <div className={classes.organizerImage}>
-                            <Image
-                                className={classes.image}
-                                width={148}
-                                height={148}
-                                src={session?.user?.image ?? ""}
-                                alt="img"
-                            />
+                            <UserImage className={classes.image} />
                         </div>
 
                         <div className={classes.organizerName}>
