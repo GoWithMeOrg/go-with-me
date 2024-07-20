@@ -57,6 +57,8 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
         onSubmitEvent(event);
     };
 
+    //console.log(eventData.name);
+
     return (
         <div className={classes.container}>
             <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
@@ -65,8 +67,13 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                         <Controller
                             name="name"
                             control={control}
-                            defaultValue={eventData.name || ""}
-                            render={({ field }) => <TitleField title={"Event title"} />}
+                            render={({ field }) => (
+                                <TitleField
+                                    title={"Event title"}
+                                    defaultValue={eventData.name || ""}
+                                    onChange={field.onChange}
+                                />
+                            )}
                             rules={{ required: true }}
                         />
 
@@ -88,8 +95,13 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                         <Controller
                             name="description"
                             control={control}
-                            defaultValue={eventData.description || ""}
-                            render={({ field }) => <Description title={"Description"} />}
+                            render={({ field }) => (
+                                <Description
+                                    title={"Description"}
+                                    defaultValue={eventData.description || ""}
+                                    onChange={field.onChange}
+                                />
+                            )}
                         />
 
                         <div className={classes.inputsDate}>

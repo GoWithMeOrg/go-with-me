@@ -4,6 +4,8 @@ import { Textarea } from "../Textarea";
 
 interface IDescriptionProps {
     title: string;
+    defaultValue?: string;
+    onChange?: (...event: any[]) => void;
 }
 
 export const Description = forwardRef(function Description(props: IDescriptionProps, ref) {
