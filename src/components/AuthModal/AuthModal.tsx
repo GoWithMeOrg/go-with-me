@@ -24,7 +24,6 @@ export const AuthModal = ({ onClose }: IAuthModal) => {
         userEmail = formData.email as string;
     };
 
-    //console.log(userEmail);
     //генерируем одноразовый пароль
 
     let OTP;

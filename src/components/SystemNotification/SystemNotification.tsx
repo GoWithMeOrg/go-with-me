@@ -12,7 +12,7 @@ export const SystemNotification = () => {
     };
 
     return (
-        <div className={classes.notification}>
+        <div className={`${classes.notification} ${expanded ? classes.notificationActive : ""}`}>
             <div className={classes.image}>
                 <Logogwm />
             </div>

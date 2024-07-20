@@ -16,7 +16,7 @@ export enum Condition {
 
 export enum InvationStatus {
     ACCEPTED = "accepted",
-    REFUSED = "refused",
+    DECLINED = "declined",
 }
 
 interface InvationProps {
@@ -34,6 +34,8 @@ interface InvationProps {
 // Accepted - принял, Refesuded - отказался
 // Canceled - отменено, Ended - закончилось
 
+// Как мы будем отменять событие. В событие предусмотреть процедуру отмены. В описание интерфесай события добавить варианты (отменено, закончено, активно)
+//
 export const Invation = ({ id, organizer, name, coord, startDate, time, image, condition }: InvationProps) => {
     const [invationStatus, setInvationStatus] = useState<string>("");
     //const [eventStatus, setEventStatus] = useState<string>("");
@@ -47,7 +49,7 @@ export const Invation = ({ id, organizer, name, coord, startDate, time, image, c
     };
 
     const handleClickRefuse = () => {
-        setInvationStatus(InvationStatus.REFUSED);
+        setInvationStatus(InvationStatus.DECLINED);
     };
 
     console.log(invationStatus);
@@ -58,7 +60,7 @@ export const Invation = ({ id, organizer, name, coord, startDate, time, image, c
             className={`
                 ${classes.invation} 
                 ${invationStatus === InvationStatus.ACCEPTED && classes.invationActive} 
-                ${invationStatus === InvationStatus.REFUSED && classes.invationActive}`}
+                ${invationStatus === InvationStatus.DECLINED && classes.invationActive}`}
         >
             <div className={classes.image}>
                 {image && (
@@ -81,16 +83,16 @@ export const Invation = ({ id, organizer, name, coord, startDate, time, image, c
                 <div className={classes.organizer}>Invited by Violetta Capybara </div>
 
                 <div className={classes.buttonsBlock}>
-                    {invationStatus !== InvationStatus.ACCEPTED && invationStatus !== InvationStatus.REFUSED ? (
+                    {invationStatus !== InvationStatus.ACCEPTED && invationStatus !== InvationStatus.DECLINED ? (
                         <div className={classes.buttons}>
                             <Button onClick={handleClickAccept} className={classes.buttonAccept} text={"Accept"} />
                             <Link href={`/events/${id}`}>
                                 <Button className={classes.buttonSee} text={"See more details"} />
                             </Link>
-                            <Button onClick={handleClickRefuse} className={classes.buttonRefuse} text={"Refuse"} />
+                            <Button onClick={handleClickRefuse} className={classes.buttonRefuse} text={"Decline"} />
                         </div>
                     ) : (
-                        invationStatus !== InvationStatus.REFUSED && (
+                        invationStatus !== InvationStatus.DECLINED && (
                             <div className={classes.buttons}>
                                 <div className={classes.invationAccepted}>
                                     <Joined style={{ transform: "scale(1.2)" }} />
@@ -106,13 +108,8 @@ export const Invation = ({ id, organizer, name, coord, startDate, time, image, c
                         )
                     )}
 
-                    {invationStatus === InvationStatus.REFUSED && (
+                    {invationStatus === InvationStatus.DECLINED && (
                         <div className={classes.buttons}>
-                            <div className={classes.invationAccepted}>
-                                <Cancel />
-                                <div style={{ marginLeft: "0.5rem" }}>Refused</div>
-                            </div>
-
                             <Button onClick={handleClickAccept} className={classes.buttonAccept} text={"Accept"} />
                             <Button className={classes.buttonSee} text={"See more details"} />
                         </div>
@@ -122,14 +119,17 @@ export const Invation = ({ id, organizer, name, coord, startDate, time, image, c
 
             <div className={classes.invationStatus}>
                 <div className={classes.invationPlaque}>
-                    <div
-                        className={`
-                        ${classes.plaque} 
-                        ${invationStatus === InvationStatus.REFUSED && classes.plaqueActive}
-                        `}
-                    >
-                        Invation
-                    </div>
+                    {invationStatus === InvationStatus.ACCEPTED ? (
+                        <div className={classes.plaque}>Accepted</div>
+                    ) : invationStatus === InvationStatus.DECLINED ? (
+                        <div className={`${classes.plaque} ${classes.plaqueActive}`}>Declined</div>
+                    ) : (
+                        <div
+                            className={`${classes.plaque} ${invationStatus === InvationStatus.DECLINED && classes.plaqueActive}`}
+                        >
+                            Invited
+                        </div>
+                    )}
                     <div className={classes.invationDate}>{dayjs().format("DD.MM.YY")}</div>
                 </div>
             </div>

@@ -7,6 +7,10 @@ import { gql, useMutation, useQuery } from "@apollo/client";
 
 import { Event } from "@/components/Event";
 import { Comments } from "@/components/Comments";
+import classes from "./page.module.css";
+import Arrow from "@/assets/icons/arrow.svg";
+import { Button } from "@/components/Button";
+import { Loader } from "@/components/Loader";
 
 type PageParams = {
     params: { event_id: string };
@@ -16,6 +20,7 @@ const GET_EVENT_BY_ID = gql`
     #graphql
     query GetEventById($id: ID!) {
         event(id: $id) {
+            _id
             organizer_id
             organizer {
                 _id
@@ -23,10 +28,19 @@ const GET_EVENT_BY_ID = gql`
                 email
             }
             name
+            location {
+                coordinates
+                properties {
+                    address
+                }
+            }
+            status
             description
             startDate
             endDate
             time
+            categories
+            types
             image
         }
         comments(event_id: $id) {
@@ -66,7 +80,7 @@ const EventPage: NextPage<PageParams> = (context) => {
     const [saveComment] = useMutation(SAVE_COMMENT);
 
     if (loading && !error) {
-        return <div>Loading...</div>;
+        return <Loader />;
     }
 
     if (error) {
@@ -92,18 +106,23 @@ const EventPage: NextPage<PageParams> = (context) => {
             });
     };
 
+    console.log(data);
     return (
-        <div className="EventPage">
-            <h3>EventPage</h3>
+        <div className={classes.container}>
+            <div className={classes.eventWrapper}>
+                <Button className={classes.arrowButton}>
+                    <Arrow />
+                </Button>
 
-            <Link href={`/events/${context.params.event_id}/edit`}>Edit</Link>
+                <Event event={data.event} />
+            </div>
 
-            <Event event={data.event} />
+            {/* <Link href={`/events/${context.params.event_id}/edit`}>Edit</Link> */}
 
-            <div>{data.event.time}</div>
+            {/* <div>{data.event.time}</div> */}
 
-            <h3>Comments</h3>
-            <Comments comments={data.comments} onSave={handleSaveComment} />
+            {/* <h3>Comments</h3>
+            <Comments comments={data.comments} onSave={handleSaveComment} /> */}
         </div>
     );
 };
