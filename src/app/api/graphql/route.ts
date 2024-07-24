@@ -192,7 +192,7 @@ const typeDefs = gql`
         createdAt: ISODate
         updatedAt: ISODate
         likes: Int
-        replies_id: [ID]
+        replyToId: String
         replies: [Comment]
     }
 
@@ -201,7 +201,7 @@ const typeDefs = gql`
         author_id: ID!
         content: String
         likes: Int
-        replies_id: [ID]
+        replyToId: String
     }
 
     input EventInput {
