@@ -191,12 +191,17 @@ const typeDefs = gql`
         content: String
         createdAt: ISODate
         updatedAt: ISODate
+        likes: Int
+        replies_id: [ID]
+        replies: [Comment]
     }
 
     input CommentInput {
         event_id: ID!
         author_id: ID!
         content: String
+        likes: Int
+        replies_id: [ID]
     }
 
     input EventInput {
