@@ -15,6 +15,8 @@ export interface IComment {
     createdAt: Date;
     updatedAt: Date;
     likes: number;
+    replies_id: mongoose.Types.ObjectId[];
+    replies: IComment[];
     replyToId: string | null;
 }
 
@@ -39,6 +41,12 @@ const CommentSchema = new Schema<ICommentDocument>(
             type: Number,
             default: 0,
         },
+        replies_id: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Comment",
+            },
+        ],
         replyToId: [
             {
                 type: String,

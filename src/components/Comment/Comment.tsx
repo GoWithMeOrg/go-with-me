@@ -25,7 +25,9 @@ export const Comment: FC<ICommentProps> = ({ author, content, likes, _id, replyT
                     <span>{name}</span>
                     <span>{_id}</span>
                     {replyToId ? <Link href={`#comment-id-${replyToId}`}>reply to {replyToId}</Link> : null}
-                    <span>{createdAt.toISOString()}</span>
+
+                    {/* здесь используем dayjs */}
+                    {/* <span>{createdAt.toISOString()}</span> */}
                 </div>
                 <p className={styles.commentText}>{content}</p>
                 <div className={styles.likesContainer}>

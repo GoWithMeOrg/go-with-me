@@ -36,6 +36,19 @@ const GET_EVENT_BY_ID = gql`
                 name
                 email
             }
+            # replies_id
+            replies {
+                _id
+                author {
+                    _id
+                    name
+                    email
+                }
+                content
+                createdAt
+                updatedAt
+            }
+            replyToId
             content
             createdAt
             updatedAt
