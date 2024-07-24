@@ -4,25 +4,31 @@ import { Like } from "./svg";
 import { Avatar } from "../Avatar";
 
 import styles from "./Comment.module.css";
-import { IComment } from "./types";
 import Link from "next/link";
+import { IComment } from "@/database/models/Comment";
+import { IUser } from "@/database/models/User";
 
-type CommentProps = IComment;
+export interface ICommentProps extends Pick<IComment, "content" | "_id" | "createdAt"> {
+    author: Pick<IUser, "name">;
+    replyToId?: string;
+    likesNumber: number;
+}
 
-export const Comment: FC<CommentProps> = ({ userName, text, likesNumber, commentId, replyToId, date }) => {
+export const Comment: FC<ICommentProps> = ({ author, content, likesNumber, _id, replyToId, createdAt }) => {
+    const { name } = author;
     return (
-        <li className={styles.comment} id={`comment-id-${commentId}`}>
+        <li className={styles.comment} id={`comment-id-${_id}`}>
             <div className={styles.avatarContainer}>
-                <Avatar className={styles.avatar} {...{ userName }} />
+                <Avatar className={styles.avatar} {...{ name }} />
             </div>
             <div className={styles.contentContainer}>
                 <div className={styles.userName}>
-                    <span>{userName}</span>
-                    <span>{commentId}</span>
+                    <span>{name}</span>
+                    <span>{_id}</span>
                     {replyToId ? <Link href={`#comment-id-${replyToId}`}>reply to {replyToId}</Link> : null}
-                    <span>{date.toISOString()}</span>
+                    <span>{createdAt.toISOString()}</span>
                 </div>
-                <p className={styles.commentText}>{text}</p>
+                <p className={styles.commentText}>{content}</p>
                 <div className={styles.likesContainer}>
                     <Like className={likesNumber ? styles.liked : undefined} />
                     <span className={styles.number}>{likesNumber ? likesNumber : ""}</span>

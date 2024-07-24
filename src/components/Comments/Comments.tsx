@@ -17,6 +17,7 @@ const Comments: FC<CommentsProps> = ({ comments, onSave }) => {
         event.preventDefault();
         onSave(event.target.content.value);
     };
+    console.log("comments", comments);
 
     return (
         <div className={classes.container}>
