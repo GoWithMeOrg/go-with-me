@@ -15,7 +15,6 @@ export interface IComment {
     createdAt: Date;
     updatedAt: Date;
     likes: number;
-    replies_id: mongoose.Types.ObjectId[];
     replyToId: string | null;
 }
 
