@@ -5,12 +5,8 @@ import { Comment, ICommentProps } from "../Comment";
 
 import styles from "./CommentsList.module.css";
 
-interface CommentWithReplies extends ICommentProps {
-    replies: ICommentProps[];
-}
-
 interface CommentsListProps {
-    comments: CommentWithReplies[];
+    comments: ICommentProps[];
 }
 
 export const CommentsList: FC<CommentsListProps> = ({ comments }) => {
@@ -23,16 +19,18 @@ export const CommentsList: FC<CommentsListProps> = ({ comments }) => {
                     return (
                         <Fragment key={_id}>
                             <Comment {...{ ...comment, likesNumber: 999, replyToId: "999" }} />
-                            <ul className={styles.replies}>
-                                {replies.map((comment) => {
-                                    const { _id } = comment;
-                                    return (
-                                        <Fragment key={_id}>
-                                            <Comment {...{ ...comment, likesNumber: 999, replyToId: "999" }} />
-                                        </Fragment>
-                                    );
-                                })}
-                            </ul>
+                            {replies ? (
+                                <ul className={styles.replies}>
+                                    {replies.map((comment) => {
+                                        const { _id } = comment;
+                                        return (
+                                            <Fragment key={_id}>
+                                                <Comment {...{ ...comment, likesNumber: 999, replyToId: "999" }} />
+                                            </Fragment>
+                                        );
+                                    })}
+                                </ul>
+                            ) : null}
                         </Fragment>
                     );
                 })}

@@ -8,13 +8,12 @@ import Link from "next/link";
 import { IComment } from "@/database/models/Comment";
 import { IUser } from "@/database/models/User";
 
-export interface ICommentProps extends Pick<IComment, "content" | "_id" | "createdAt"> {
+export interface ICommentProps extends Pick<IComment, "content" | "_id" | "createdAt" | "likes" | "replyToId"> {
     author: Pick<IUser, "name">;
-    replyToId?: string;
-    likesNumber: number;
+    replies?: ICommentProps[];
 }
 
-export const Comment: FC<ICommentProps> = ({ author, content, likesNumber, _id, replyToId, createdAt }) => {
+export const Comment: FC<ICommentProps> = ({ author, content, likes, _id, replyToId, createdAt }) => {
     const { name } = author;
     return (
         <li className={styles.comment} id={`comment-id-${_id}`}>
@@ -30,8 +29,8 @@ export const Comment: FC<ICommentProps> = ({ author, content, likesNumber, _id, 
                 </div>
                 <p className={styles.commentText}>{content}</p>
                 <div className={styles.likesContainer}>
-                    <Like className={likesNumber ? styles.liked : undefined} />
-                    <span className={styles.number}>{likesNumber ? likesNumber : ""}</span>
+                    <Like className={likes ? styles.liked : undefined} />
+                    <span className={styles.number}>{likes ? likes : ""}</span>
                 </div>
             </div>
         </li>
