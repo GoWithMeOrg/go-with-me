@@ -1,26 +1,14 @@
-import classes from "./Button.module.css";
+import { ButtonHTMLAttributes, FC } from "react";
+import styles from "./Button.module.css";
 
-interface IButton {
-    id?: string;
-    onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-    className?: string;
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     text?: string;
-    children?: React.ReactNode;
     icon?: React.ReactNode;
-    type?: "submit" | "reset" | "button" | undefined;
-    onMouseEnter?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-    onMouseLeave?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-export const Button = ({ className, onClick, text, children, icon, onMouseEnter, onMouseLeave, type }: IButton) => {
+export const Button: FC<ButtonProps> = ({ text, icon, children, className, ...rest }) => {
     return (
-        <button
-            type={type}
-            className={className}
-            onClick={onClick}
-            onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-        >
+        <button className={`${styles.button} ${className ?? ""}`} {...{ ...rest }}>
             {icon}
             {children}
             {text}
