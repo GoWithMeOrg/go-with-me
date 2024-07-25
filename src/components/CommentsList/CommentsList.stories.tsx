@@ -24,7 +24,7 @@ export const CommentsListComponent: Story = {
                 content:
                     "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni, voluptate, provident iste illo velit eius sed numquam porro similique, dolore quisquam saepe dolorum corrupti beatae quos deserunt nostrum laboriosam nihil earum libero. Esse delectus harum dignissimos quia molestias repellat, praesentium velit consectetur facilis non rerum eos rem officiis minima laudantium quas cumque quasi inventore nobis laborum atque dolorum! Nesciunt error temporibus nihil iure laboriosam officiis reprehenderit explicabo ex, dolores aut eum natus deleniti, debitis dolor labore eveniet impedit! Cumque labore voluptates quibusdam earum id praesentium asperiores dolore, vitae est in, possimus, aliquid sit. Perferendis neque ea veritatis mollitia sequi pariatur.",
                 likes: 999,
-                createdAt: new Date(),
+                createdAt: new Date().toString(),
                 replyToId: null,
                 replies: [
                     {
@@ -35,7 +35,7 @@ export const CommentsListComponent: Story = {
                         content:
                             "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni, voluptate, provident iste illo velit eius sed numquam porro similique, dolore quisquam saepe dolorum corrupti beatae quos deserunt nostrum laboriosam nihil earum libero. Esse delectus harum dignissimos quia molestias repellat, praesentium velit consectetur facilis non rerum eos rem officiis minima laudantium quas cumque quasi inventore nobis laborum atque dolorum! Nesciunt error temporibus nihil iure laboriosam officiis reprehenderit explicabo ex, dolores aut eum natus deleniti, debitis dolor labore eveniet impedit! Cumque labore voluptates quibusdam earum id praesentium asperiores dolore, vitae est in, possimus, aliquid sit. Perferendis neque ea veritatis mollitia sequi pariatur.",
                         likes: 55555555555555,
-                        createdAt: new Date(),
+                        createdAt: new Date().toString(),
                         replyToId: "1234",
                         replies: [],
                     },
@@ -49,7 +49,7 @@ export const CommentsListComponent: Story = {
                 content:
                     "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni, voluptate, provident iste illo velit eius sed numquam porro similique, dolore quisquam saepe dolorum corrupti beatae quos deserunt nostrum laboriosam nihil earum libero. Esse delectus harum dignissimos quia molestias repellat, praesentium velit consectetur facilis non rerum eos rem officiis minima laudantium quas cumque quasi inventore nobis laborum atque dolorum! Nesciunt error temporibus nihil iure laboriosam officiis reprehenderit explicabo ex, dolores aut eum natus deleniti, debitis dolor labore eveniet impedit! Cumque labore voluptates quibusdam earum id praesentium asperiores dolore, vitae est in, possimus, aliquid sit. Perferendis neque ea veritatis mollitia sequi pariatur.",
                 likes: 55555555555555,
-                createdAt: new Date(),
+                createdAt: new Date().toString(),
                 replyToId: null,
                 replies: [
                     {
@@ -60,55 +60,55 @@ export const CommentsListComponent: Story = {
                         content:
                             "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni, voluptate, provident iste illo velit eius sed numquam porro similique, dolore quisquam saepe dolorum corrupti beatae quos deserunt nostrum laboriosam nihil earum libero. Esse delectus harum dignissimos quia molestias repellat, praesentium velit consectetur facilis non rerum eos rem officiis minima laudantium quas cumque quasi inventore nobis laborum atque dolorum! Nesciunt error temporibus nihil iure laboriosam officiis reprehenderit explicabo ex, dolores aut eum natus deleniti, debitis dolor labore eveniet impedit! Cumque labore voluptates quibusdam earum id praesentium asperiores dolore, vitae est in, possimus, aliquid sit. Perferendis neque ea veritatis mollitia sequi pariatur.",
                         likes: 999,
-                        createdAt: new Date(),
+                        createdAt: new Date().toString(),
                         replyToId: "3456",
                         replies: [],
                     },
                     {
-                        _id: "4567",
+                        _id: "4568",
                         author: {
                             name: "Петя",
                         },
                         content:
                             "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni, voluptate, provident iste illo velit eius sed numquam porro similique, dolore quisquam saepe dolorum corrupti beatae quos deserunt nostrum laboriosam nihil earum libero. Esse delectus harum dignissimos quia molestias repellat, praesentium velit consectetur facilis non rerum eos rem officiis minima laudantium quas cumque quasi inventore nobis laborum atque dolorum! Nesciunt error temporibus nihil iure laboriosam officiis reprehenderit explicabo ex, dolores aut eum natus deleniti, debitis dolor labore eveniet impedit! Cumque labore voluptates quibusdam earum id praesentium asperiores dolore, vitae est in, possimus, aliquid sit. Perferendis neque ea veritatis mollitia sequi pariatur.",
                         likes: 999,
-                        createdAt: new Date(),
+                        createdAt: new Date().toString(),
                         replyToId: "3456",
                         replies: [],
                     },
                     {
-                        _id: "4567",
+                        _id: "4569",
                         author: {
                             name: "Петя",
                         },
                         content:
                             "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni, voluptate, provident iste illo velit eius sed numquam porro similique, dolore quisquam saepe dolorum corrupti beatae quos deserunt nostrum laboriosam nihil earum libero. Esse delectus harum dignissimos quia molestias repellat, praesentium velit consectetur facilis non rerum eos rem officiis minima laudantium quas cumque quasi inventore nobis laborum atque dolorum! Nesciunt error temporibus nihil iure laboriosam officiis reprehenderit explicabo ex, dolores aut eum natus deleniti, debitis dolor labore eveniet impedit! Cumque labore voluptates quibusdam earum id praesentium asperiores dolore, vitae est in, possimus, aliquid sit. Perferendis neque ea veritatis mollitia sequi pariatur.",
                         likes: 999,
-                        createdAt: new Date(),
+                        createdAt: new Date().toString(),
                         replyToId: "3456",
                         replies: [],
                     },
                     {
-                        _id: "4567",
+                        _id: "4570",
                         author: {
                             name: "Петя",
                         },
                         content:
                             "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni, voluptate, provident iste illo velit eius sed numquam porro similique, dolore quisquam saepe dolorum corrupti beatae quos deserunt nostrum laboriosam nihil earum libero. Esse delectus harum dignissimos quia molestias repellat, praesentium velit consectetur facilis non rerum eos rem officiis minima laudantium quas cumque quasi inventore nobis laborum atque dolorum! Nesciunt error temporibus nihil iure laboriosam officiis reprehenderit explicabo ex, dolores aut eum natus deleniti, debitis dolor labore eveniet impedit! Cumque labore voluptates quibusdam earum id praesentium asperiores dolore, vitae est in, possimus, aliquid sit. Perferendis neque ea veritatis mollitia sequi pariatur.",
                         likes: 999,
-                        createdAt: new Date(),
+                        createdAt: new Date().toString(),
                         replyToId: "3456",
                         replies: [],
                     },
                     {
-                        _id: "4567",
+                        _id: "4571",
                         author: {
                             name: "Петя",
                         },
                         content:
                             "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni, voluptate, provident iste illo velit eius sed numquam porro similique, dolore quisquam saepe dolorum corrupti beatae quos deserunt nostrum laboriosam nihil earum libero. Esse delectus harum dignissimos quia molestias repellat, praesentium velit consectetur facilis non rerum eos rem officiis minima laudantium quas cumque quasi inventore nobis laborum atque dolorum! Nesciunt error temporibus nihil iure laboriosam officiis reprehenderit explicabo ex, dolores aut eum natus deleniti, debitis dolor labore eveniet impedit! Cumque labore voluptates quibusdam earum id praesentium asperiores dolore, vitae est in, possimus, aliquid sit. Perferendis neque ea veritatis mollitia sequi pariatur.",
                         likes: 999,
-                        createdAt: new Date(),
+                        createdAt: new Date().toString(),
                         replyToId: "3456",
                         replies: [],
                     },

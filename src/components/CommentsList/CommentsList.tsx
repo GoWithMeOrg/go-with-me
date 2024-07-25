@@ -18,7 +18,7 @@ export const CommentsList: FC<CommentsListProps> = ({ comments }) => {
                     const { _id, replies } = comment;
                     return (
                         <Fragment key={_id}>
-                            <Comment {...{ ...comment, likesNumber: 999, replyToId: "999" }} />
+                            <Comment {...{ ...comment, likesNumber: 999, replyToId: null }} />
                             {replies ? (
                                 <ul className={styles.replies}>
                                     {replies.map((comment) => {

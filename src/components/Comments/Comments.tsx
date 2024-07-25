@@ -1,13 +1,11 @@
 "use client";
 
-import { FC, useCallback, useMemo } from "react";
+import { FC } from "react";
 
 import type { IComment } from "@/database/models/Comment";
 import { formatDate } from "@/utils/formatDate";
 
 import classes from "./Comments.module.css";
-import { CommentsList } from "../CommentsList";
-import { ICommentProps } from "../Comment/Comment";
 
 type CommentsProps = {
     comments: IComment[];
@@ -19,26 +17,6 @@ const Comments: FC<CommentsProps> = ({ comments, onSave }) => {
         event.preventDefault();
         onSave(event.target.content.value);
     };
-
-    const commentsParsed: ICommentProps[] = useMemo(() => {
-        const highLevelComments: ICommentProps[] = [];
-        const dict: { [key: string]: ICommentProps } = {};
-        comments.forEach((item) => {
-            const { _id, replyToId } = item;
-            dict[_id] = item;
-            if (replyToId === null) highLevelComments.push(dict[_id]);
-        });
-        Object.keys(dict).forEach((item) => {
-            const current = dict[item];
-            const { replyToId } = current;
-            if (replyToId) {
-                const parrent = dict[replyToId];
-                if (!parrent.replies) parrent.replies = [];
-                parrent.replies.push(current);
-            }
-        });
-        return highLevelComments;
-    }, [comments]);
 
     return (
         <>
@@ -69,7 +47,6 @@ const Comments: FC<CommentsProps> = ({ comments, onSave }) => {
                     ))}
                 </ul>
             </div>
-            <CommentsList {...{ comments: commentsParsed }} />
         </>
     );
 };

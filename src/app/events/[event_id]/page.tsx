@@ -7,6 +7,7 @@ import { gql, useMutation, useQuery } from "@apollo/client";
 
 import { Event } from "@/components/Event";
 import { Comments } from "@/components/Comments";
+import { CommentsList } from "@/components/CommentsList";
 
 type PageParams = {
     params: { event_id: string };
@@ -117,6 +118,7 @@ const EventPage: NextPage<PageParams> = (context) => {
 
             <h3>Comments</h3>
             <Comments comments={data.comments} onSave={handleSaveComment} />
+            <CommentsList comments={data.comments} />
         </div>
     );
 };

@@ -1,12 +1,13 @@
 "use client";
 import { FC } from "react";
+import Link from "next/link";
+import dayjs from "dayjs";
 import { Like } from "./svg";
 import { Avatar } from "../Avatar";
-
-import styles from "./Comment.module.css";
-import Link from "next/link";
 import { IComment } from "@/database/models/Comment";
 import { IUser } from "@/database/models/User";
+
+import styles from "./Comment.module.css";
 
 export interface ICommentProps extends Pick<IComment, "content" | "_id" | "createdAt" | "likes" | "replyToId"> {
     author: Pick<IUser, "name">;
@@ -23,11 +24,8 @@ export const Comment: FC<ICommentProps> = ({ author, content, likes, _id, replyT
             <div className={styles.contentContainer}>
                 <div className={styles.userName}>
                     <span>{name}</span>
-                    <span>{_id}</span>
                     {replyToId ? <Link href={`#comment-id-${replyToId}`}>reply to {replyToId}</Link> : null}
-
-                    {/* здесь используем dayjs */}
-                    {/* <span>{createdAt.toISOString()}</span> */}
+                    <span>{dayjs(createdAt).format("DD MMMM YYYY HH:mm")}</span>
                 </div>
                 <p className={styles.commentText}>{content}</p>
                 <div className={styles.likesContainer}>

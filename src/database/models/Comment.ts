@@ -12,8 +12,8 @@ export interface IComment {
     author: IUser;
     event_id: mongoose.Types.ObjectId;
     content: string;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: string;
+    updatedAt: string;
     likes: number;
     replies_id: mongoose.Types.ObjectId[];
     replies: IComment[];
