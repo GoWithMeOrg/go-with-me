@@ -1,21 +1,24 @@
 .button {
-    padding: 0.5rem 1rem;
+    padding: 0.625rem 1rem;
     color: var(--main-color);
-    font-size: 1rem;
+    font-size: 0.875rem;
     font-weight: 700;
     border: 2px solid var(--main-color);
     border-radius: 0.25rem;
     background: none;
     cursor: pointer;
 }
-
 .button:hover {
     color: var(--hover-color);
     border-color: var(--hover-color);
 }
-
 .button:active {
     color: var(--white-color);
     background-color: var(--text-color);
     border-color: var(--text-color);
+}
+
+.big {
+    padding: 0.875rem 1.875rem;
+    font-size: 1.125rem;
 }

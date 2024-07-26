@@ -36,7 +36,7 @@ export const CommentsList: FC<CommentsListProps> = ({ comments }) => {
                     );
                 })}
             </ul>
-            <Button>Load more commentS</Button>
+            <Button>Load more comments</Button>
         </section>
     );
 };
