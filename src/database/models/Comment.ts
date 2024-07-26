@@ -8,7 +8,6 @@ import type { IUser } from "./User";
 // think about createdAt and updatedAt
 export interface IComment {
     _id: string;
-    author_id: mongoose.Types.ObjectId;
     author: IUser;
     event_id: mongoose.Types.ObjectId;
     content: string;
@@ -24,11 +23,6 @@ export interface ICommentDocument extends Omit<IComment, "_id" | "createdAt" | "
 
 const CommentSchema = new Schema<ICommentDocument>(
     {
-        author_id: {
-            type: Schema.Types.ObjectId,
-            ref: UserModel,
-            required: true,
-        },
         event_id: {
             type: Schema.Types.ObjectId,
             required: true,
