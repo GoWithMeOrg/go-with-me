@@ -2,9 +2,10 @@
 
 import { FC, Fragment } from "react";
 import { Comment, ICommentProps } from "../Comment";
+import { Button } from "../Button";
 
 import styles from "./CommentsList.module.css";
-import { Button } from "../Button";
+import { CommentForm } from "./CommentForm";
 
 interface CommentsListProps {
     comments: ICommentProps[];
@@ -37,6 +38,7 @@ export const CommentsList: FC<CommentsListProps> = ({ comments }) => {
                 })}
             </ul>
             <Button>Load more comments</Button>
+            <CommentForm />
         </section>
     );
 };

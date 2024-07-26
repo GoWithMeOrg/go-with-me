@@ -17,6 +17,9 @@
     background-color: var(--text-color);
     border-color: var(--text-color);
 }
+.button:disabled {
+    cursor: not-allowed;
+}
 
 .big {
     padding: 0.875rem 1.875rem;
