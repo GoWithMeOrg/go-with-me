@@ -9,6 +9,7 @@ import { AuthModal } from "../AuthModal";
 import Link from "next/link";
 import { Button } from "../Button";
 import { TitleH2 } from "../TitleH2";
+import { Title } from "../Title";
 
 export const CreateAndInvite = () => {
     const { data: session, status } = useSession();
@@ -23,9 +24,7 @@ export const CreateAndInvite = () => {
         <div className={classes.createAndInvite}>
             <Join className={classes.logoJoin} />
             <div className={classes.createAndInviteWrapper}>
-                <div className={classes.createAndInviteTitle}>
-                    <TitleH2 title={"CREATE AND INVITE"} className={classes.createAndInviteTitle} />
-                </div>
+                <Title title={"CREATE AND INVITE"} className={classes.createAndInviteTitle} tag={"h2"} />
 
                 {status === "unauthenticated" && (
                     <div className={classes.createAndInviteButtons}>

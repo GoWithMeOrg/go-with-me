@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { useQuery, gql } from "@apollo/client";
 import type { IEvent } from "@/database/models/Event";
-import { TitleH1 } from "@/components/TitleH1";
+import { Title } from "@/components/Title";
 
 import classes from "./PopularEventsList.module.css";
 import ArrowCircle from "@/assets/icons/arrowCircle.svg";
@@ -17,6 +17,7 @@ import Link from "next/link";
 import { Button } from "../Button";
 import { TitleH2 } from "../TitleH2";
 import { Loader } from "../Loader";
+import Tag from "@/components/Title/Title";
 
 type EventListProps = {
     events?: IEvent[];
@@ -60,7 +61,7 @@ export const PopularEventList: FC<EventListProps> = () => {
         <div className={classes.container}>
             <div className={classes.promo}>
                 <div className={classes.promoDescription}>
-                    <TitleH1 title={"CRAFT YOUR ADVENTURE HERE"} className={classes.promoTitle} />
+                    <Title title={"CRAFT YOUR ADVENTURE HERE"} tag={"h1"} />
                     <p className={classes.promoDescription}>
                         Craft your trips and events effortlessly. Whether you&#39;re planning a&nbsp;weekend getaway
                         with&nbsp;friends, organizing a&nbsp;cultural exploration, arranging a&nbsp;concert,
@@ -78,7 +79,7 @@ export const PopularEventList: FC<EventListProps> = () => {
                 </div>
             </div>
             <div className={classes.cardsEvents}>
-                <TitleH2 title={"Popular Event List"} className={classes.cardsEventsTitle} />
+                <Title title={"Popular Event List"} className={classes.cardsEventsTitle} tag={"h2"} />
 
                 <div className={classes.cardsEventsList}>
                     {data.events.map(({ _id, description, name, startDate, location, time, image }: IEvent) => (
@@ -102,7 +103,7 @@ export const PopularEventList: FC<EventListProps> = () => {
 
             <div className={classes.cardsWork}>
                 <div className={classes.cardsWorkTitleWrapper}>
-                    <TitleH2 title={"How IT Works"} className={classes.cardsWorkTitle} />
+                    <Title title={"How IT Works"} tag={"h2"} />
                     <Link className={classes.cardsWorkLink} href="/faq">
                         FAQ
                     </Link>

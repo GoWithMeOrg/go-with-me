@@ -9,12 +9,6 @@
     margin-top: 2.8rem;
     margin-bottom: 4.375rem;
     width: 14.25rem;
-    font-size: 1.875rem;
-    line-height: 2.25rem;
-    color: var(--main-color);
-    font-weight: 700;
-    text-align: left;
-    text-transform: uppercase;
 }
 
 .createEventFormWrapper {

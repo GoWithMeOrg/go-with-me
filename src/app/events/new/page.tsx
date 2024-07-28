@@ -13,6 +13,7 @@ import Arrow from "@/assets/icons/arrow.svg";
 import { TitleH2 } from "@/components/TitleH2";
 import { Button } from "@/components/Button";
 import { EventForm } from "@/components/EventForm";
+import { Title } from "@/components/Title";
 
 const CREATE_EVENT = gql`
     mutation CreateEvent($event: EventInput!) {
@@ -46,7 +47,7 @@ const EventNewPage: NextPage = () => {
                     <Arrow />
                 </Button>
 
-                <TitleH2 className={classes.createEventTitle} title="CREATE EVENT" />
+                <Title className={classes.createEventTitle} title="CREATE EVENT" tag={"h2"} />
 
                 <EventForm eventData={{}} onSubmitEvent={handleCreateEvent} />
             </div>

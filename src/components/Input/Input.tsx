@@ -3,22 +3,19 @@ import styles from "./Input.module.css";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     resetDefaultStyles?: boolean;
-    resizeNone?: boolean;
     error?: boolean;
 }
 
-export const Input: FC<InputProps> = forwardRef(({ resetDefaultStyles, className, resizeNone, error, ...rest }) => {
+export const Input: FC<InputProps> = ({ resetDefaultStyles, className, error, ...rest }) => {
     const inputCssString: string = useMemo(() => {
         let cssString = "";
         if (!resetDefaultStyles) cssString += styles.input;
         if (className) cssString += " " + className;
-        if (resizeNone) cssString += " " + styles.resizeNone;
-        if (error) cssString += " " + styles.error;
         return cssString;
-    }, [resetDefaultStyles, className, resizeNone, error]);
+    }, [resetDefaultStyles, className]);
 
     return <input className={inputCssString} {...{ ...rest }} />;
-});
+};
 
 Input.displayName = "Input";
 
