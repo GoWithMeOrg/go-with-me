@@ -9,9 +9,8 @@ import type { IEvent } from "@/database/models/Event";
 import classes from "../../new/page.module.css";
 import { Button } from "@/components/Button";
 import Arrow from "@/assets/icons/arrow.svg";
-import { TitleH2 } from "@/components/TitleH2";
 import { Loader } from "@/components/Loader";
-import { EventType } from "@/components/OldEventForm";
+import { Title } from "@/components/Title";
 
 type PageParams = {
     params: { event_id: string };
@@ -93,7 +92,7 @@ const EventEditPage: NextPage<PageParams> = (context) => {
                     <Arrow />
                 </Button>
 
-                <TitleH2 className={classes.createEventTitle} title="EDIT EVENT" />
+                <Title className={classes.createEventTitle} title="EDIT EVENT" tag={"h2"} />
 
                 {loading && <Loader />}
                 {error && <p>Error : {error.message}</p>}

@@ -8,7 +8,6 @@ import Popup from "../Popup/Popup";
 import { AuthModal } from "../AuthModal";
 import Link from "next/link";
 import { Button } from "../Button";
-import { TitleH2 } from "../TitleH2";
 import { Title } from "../Title";
 
 export const CreateAndInvite = () => {

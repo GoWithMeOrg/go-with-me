@@ -15,9 +15,7 @@ import { CardEvent } from "../CardEvent";
 import { CreateAndInvite } from "../CreateAndInvite";
 import Link from "next/link";
 import { Button } from "../Button";
-import { TitleH2 } from "../TitleH2";
 import { Loader } from "../Loader";
-import Tag from "@/components/Title/Title";
 
 type EventListProps = {
     events?: IEvent[];
