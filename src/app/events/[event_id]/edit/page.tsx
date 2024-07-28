@@ -89,7 +89,7 @@ const EventEditPage: NextPage<PageParams> = (context) => {
     return (
         <div className={classes.container}>
             <div className={classes.createEventFormWrapper}>
-                <Button className={classes.createEventButton}>
+                <Button className={classes.createEventButton} resetDefaultStyles={true}>
                     <Arrow />
                 </Button>
 

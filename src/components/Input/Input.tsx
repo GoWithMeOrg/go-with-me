@@ -1,35 +1,23 @@
-import React, { forwardRef } from "react";
+import { FC, useMemo, forwardRef, InputHTMLAttributes } from "react";
+import styles from "./Input.module.css";
 
-interface Props {
-    id?: string;
-    type: string;
-    placeholder?: string;
-    className?: string;
-    value?: string;
-    defaultChecked?: boolean;
-    name?: string;
-    onClick?: () => void;
-    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    checked?: boolean;
-    defaultValue?: string;
-    required?: boolean;
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+    resetDefaultStyles?: boolean;
+    resizeNone?: boolean;
+    error?: boolean;
 }
 
-export const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
-    return (
-        <input
-            ref={ref}
-            type={props.type}
-            placeholder={props.placeholder}
-            className={props.className}
-            value={props.value}
-            defaultChecked={props.defaultChecked}
-            name={props.name}
-            onClick={props.onClick}
-            defaultValue={props.defaultValue}
-            required={props.required}
-        />
-    );
+export const Input: FC<InputProps> = forwardRef(({ resetDefaultStyles, className, resizeNone, error, ...rest }) => {
+    const inputCssString: string = useMemo(() => {
+        let cssString = "";
+        if (!resetDefaultStyles) cssString += styles.input;
+        if (className) cssString += " " + className;
+        if (resizeNone) cssString += " " + styles.resizeNone;
+        if (error) cssString += " " + styles.error;
+        return cssString;
+    }, [resetDefaultStyles, className, resizeNone, error]);
+
+    return <input className={inputCssString} {...{ ...rest }} />;
 });
 
 Input.displayName = "Input";

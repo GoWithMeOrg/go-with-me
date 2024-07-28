@@ -18,15 +18,6 @@ import { CreateTag } from "../CreateTag";
 import { GuestList } from "../GuestList";
 import { UploadFile } from "../UploadFile";
 import { Location } from "../Location";
-import { IEvent } from "@/database/models/Event";
-
-// const CREATE_EVENT = gql`
-//     mutation CreateEvent($event: EventInput!) {
-//         createEvent(event: $event) {
-//             _id
-//         }
-//     }
-// `;
 
 export enum Status {
     PUBLIC = "public",
