@@ -16,6 +16,7 @@ import { CreateAndInvite } from "../CreateAndInvite";
 import Link from "next/link";
 import { Button } from "../Button";
 import { TitleH2 } from "../TitleH2";
+import { Loader } from "../Loader";
 
 type EventListProps = {
     events?: IEvent[];
@@ -52,7 +53,7 @@ const GET_EVENTS = gql`
 export const PopularEventList: FC<EventListProps> = () => {
     const { loading, error, data } = useQuery(GET_EVENTS);
 
-    if (loading) return <p>Loading...</p>;
+    if (loading) return <Loader />;
     if (error) return <p>Error : {error.message}</p>;
 
     return (
@@ -67,7 +68,7 @@ export const PopularEventList: FC<EventListProps> = () => {
                         to&nbsp;help you every step of&nbsp;the way. Join us today and unlock a&nbsp;world
                         of&nbsp;endless possibilities. Start crafting your adventure now!
                     </p>
-                    <Button text={"Join"} className={classes.promoButton}>
+                    <Button text={"Join"} className={classes.promoButton} resetDefaultStyles={true}>
                         <ArrowCircle style={{ marginLeft: "0.7rem" }} />
                     </Button>
                 </div>
@@ -94,7 +95,7 @@ export const PopularEventList: FC<EventListProps> = () => {
                     ))}
                 </div>
 
-                <Button className={classes.eventsButton} text={"More Events"}>
+                <Button className={classes.eventsButton} text={"More Events"} resetDefaultStyles={true}>
                     <ArrowCircle style={{ marginRight: "1.25rem", marginLeft: "1rem" }} />
                 </Button>
             </div>

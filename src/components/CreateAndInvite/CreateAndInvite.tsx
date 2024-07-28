@@ -32,11 +32,13 @@ export const CreateAndInvite = () => {
                         <Button
                             onClick={handleShowAuth}
                             className={classes.createAndInviteButtonUnAuth}
+                            resetDefaultStyles={true}
                             text={"Create event"}
                         />
                         <Button
                             onClick={handleShowAuth}
                             className={classes.createAndInviteButtonUnAuth}
+                            resetDefaultStyles={true}
                             text={"Create trip"}
                         />
                     </div>
@@ -62,12 +64,12 @@ export const CreateAndInvite = () => {
 
                 {status === "authenticated" && (
                     <div className={classes.createAndInviteButtons}>
-                        <Button className={classes.createAndInviteButton}>
+                        <Button className={classes.createAndInviteButton} resetDefaultStyles={true}>
                             <Link className={classes.createAndInviteButtonLink} href="/events/new">
                                 Create event
                             </Link>
                         </Button>
-                        <Button className={classes.createAndInviteButton}>
+                        <Button className={classes.createAndInviteButton} resetDefaultStyles={true}>
                             <Link className={classes.createAndInviteButtonLink} href="/trips/new">
                                 Create trip
                             </Link>

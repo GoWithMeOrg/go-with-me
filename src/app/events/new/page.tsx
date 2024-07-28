@@ -42,7 +42,7 @@ const EventNewPage: NextPage = () => {
     return (
         <div className={classes.container}>
             <div className={classes.createEventFormWrapper}>
-                <Button className={classes.createEventButton}>
+                <Button className={classes.createEventButton} resetDefaultStyles={true}>
                     <Arrow />
                 </Button>
 
