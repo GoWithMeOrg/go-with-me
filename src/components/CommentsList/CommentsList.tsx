@@ -3,9 +3,9 @@
 import { FC, Fragment } from "react";
 import { Comment, ICommentProps } from "../Comment";
 import { Button } from "../Button";
+import { CommentForm } from "./CommentForm";
 
 import styles from "./CommentsList.module.css";
-import { CommentForm } from "./CommentForm";
 
 interface CommentsListProps {
     comments: ICommentProps[];
@@ -14,8 +14,9 @@ interface CommentsListProps {
 export const CommentsList: FC<CommentsListProps> = ({ comments }) => {
     console.log("comments", comments);
     return (
-        <section className={styles.comments}>
+        <section className={`mainContainer ${styles.container}`}>
             <h3 className={styles.title}>Comments</h3>
+            <CommentForm />
             <ul>
                 {comments.map((comment) => {
                     const { _id, replies } = comment;
@@ -39,7 +40,6 @@ export const CommentsList: FC<CommentsListProps> = ({ comments }) => {
                 })}
             </ul>
             <Button>Load more comments</Button>
-            <CommentForm />
         </section>
     );
 };

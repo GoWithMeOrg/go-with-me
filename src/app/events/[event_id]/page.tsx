@@ -2,28 +2,17 @@
 
 import type { NextPage } from "next";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
-import { ApolloQueryResult, FetchResult, gql, OperationVariables, useMutation, useQuery } from "@apollo/client";
+import { useMemo } from "react";
+import { gql, useQuery } from "@apollo/client";
 
 import { Event } from "@/components/Event";
 import { Comments } from "@/components/Comments";
 import { CommentsList } from "@/components/CommentsList";
-import { createContext, useCallback, useMemo } from "react";
+import { IPageStateContext, PageStateContext } from "./context";
 
 type PageParams = {
     params: { event_id: string };
 };
-
-interface IPageActionsContext {
-    handleSaveComment: (commentContent: string) => Promise<FetchResult<any>>;
-}
-
-interface IPageStateContext {
-    refetch: (variables?: Partial<OperationVariables> | undefined) => Promise<ApolloQueryResult<any>>;
-}
-
-export const PageActionsContext = createContext<IPageActionsContext | null>(null);
-export const PageStateContext = createContext<IPageStateContext | null>(null);
 
 const GET_EVENT_BY_ID = gql`
     #graphql
@@ -69,45 +58,10 @@ const GET_EVENT_BY_ID = gql`
     }
 `;
 
-const SAVE_COMMENT = gql`
-    #graphql
-    mutation SaveComment($comment: CommentInput!) {
-        saveComment(comment: $comment) {
-            _id
-            author {
-                _id
-                name
-                email
-            }
-            content
-            createdAt
-            updatedAt
-        }
-    }
-`;
+const EventPage: NextPage<PageParams> = ({ params: { event_id } }) => {
+    const { data, error, loading, refetch } = useQuery(GET_EVENT_BY_ID, { variables: { id: event_id } });
 
-const EventPage: NextPage<PageParams> = (context) => {
-    const { data: session } = useSession();
-    const { data, error, loading, refetch } = useQuery(GET_EVENT_BY_ID, { variables: { id: context.params.event_id } });
-    const [saveComment] = useMutation(SAVE_COMMENT);
-
-    const handleSaveComment = useCallback(
-        (commentContent: string) =>
-            saveComment({
-                variables: {
-                    comment: {
-                        event_id: context.params.event_id,
-                        // @ts-ignore TODO: fix type
-                        author_id: session?.user?.id,
-                        content: commentContent,
-                    },
-                },
-            }),
-        [context.params.event_id, saveComment, session?.user],
-    );
-
-    const pageActionsContextValue = useMemo(() => ({ handleSaveComment }), [handleSaveComment]);
-    const PageStateContextValue = useMemo(() => ({ refetch }), [refetch]);
+    const PageStateContextValue: IPageStateContext = useMemo(() => ({ event_id, refetch }), [event_id, refetch]);
 
     if (loading && !error) {
         return <div>Loading...</div>;
@@ -121,18 +75,15 @@ const EventPage: NextPage<PageParams> = (context) => {
         <div className="EventPage">
             <h3>EventPage</h3>
 
-            <Link href={`/events/${context.params.event_id}/edit`}>Edit</Link>
+            <Link href={`/events/${event_id}/edit`}>Edit</Link>
 
             <Event event={data.event} />
 
             <div>{data.event.time}</div>
 
-            {/* <Comments comments={data.comments} onSave={handleSaveComment} /> */}
-            <PageActionsContext.Provider value={pageActionsContextValue}>
-                <PageStateContext.Provider value={PageStateContextValue}>
-                    <CommentsList comments={data.comments} />
-                </PageStateContext.Provider>
-            </PageActionsContext.Provider>
+            <PageStateContext.Provider value={PageStateContextValue}>
+                <CommentsList comments={data.comments} />
+            </PageStateContext.Provider>
         </div>
     );
 };
