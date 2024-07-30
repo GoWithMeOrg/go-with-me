@@ -40,16 +40,14 @@ const EventNewPage: NextPage = () => {
     };
 
     return (
-        <div className={classes.container}>
-            <div className={classes.createEventFormWrapper}>
-                <Button className={classes.createEventButton} resetDefaultStyles={true}>
-                    <Arrow />
-                </Button>
+        <div className={classes.createEventFormWrapper}>
+            <Button className={classes.createEventButton} resetDefaultStyles={true}>
+                <Arrow />
+            </Button>
 
-                <Title className={classes.createEventTitle} title="CREATE EVENT" tag={"h2"} />
+            <Title className={classes.createEventTitle} title="CREATE EVENT" tag={"h2"} />
 
-                <EventForm eventData={{}} onSubmitEvent={handleCreateEvent} />
-            </div>
+            <EventForm eventData={{}} onSubmitEvent={handleCreateEvent} />
         </div>
     );
 };

@@ -86,19 +86,17 @@ const EventEditPage: NextPage<PageParams> = (context) => {
     };
 
     return (
-        <div className={classes.container}>
-            <div className={classes.createEventFormWrapper}>
-                <Button className={classes.createEventButton} resetDefaultStyles={true}>
-                    <Arrow />
-                </Button>
+        <div className={classes.createEventFormWrapper}>
+            <Button className={classes.createEventButton} resetDefaultStyles={true}>
+                <Arrow />
+            </Button>
 
-                <Title className={classes.createEventTitle} title="EDIT EVENT" tag={"h2"} />
+            <Title className={classes.createEventTitle} title="EDIT EVENT" tag={"h2"} />
 
-                {loading && <Loader />}
-                {error && <p>Error : {error.message}</p>}
+            {loading && <Loader />}
+            {error && <p>Error : {error.message}</p>}
 
-                {!error && data?.event && <EventForm eventData={data.event} onSubmitEvent={handleEditEvent} />}
-            </div>
+            {!error && data?.event && <EventForm eventData={data.event} onSubmitEvent={handleEditEvent} />}
         </div>
     );
 };
