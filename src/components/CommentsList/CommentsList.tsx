@@ -12,6 +12,7 @@ interface CommentsListProps {
 }
 
 export const CommentsList: FC<CommentsListProps> = ({ comments }) => {
+    console.log("comments", comments);
     return (
         <section className={styles.comments}>
             <h3 className={styles.title}>Comments</h3>
