@@ -71,3 +71,7 @@ button:focus,
 button:active {
     outline: none;
 }
+
+button {
+    background: none;
+}
