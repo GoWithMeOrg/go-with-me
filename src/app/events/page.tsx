@@ -4,13 +4,13 @@ import { EventList } from "@/components/EventList/EventList";
 import classes from "./page.module.css";
 const EventListPage: NextPage = async () => {
     return (
-        <div className={classes.eventListPage}>
+        <section className={classes.eventListPage}>
             <h1>Event List Page</h1>
             <div>
                 <Link href="/events/new">Create New Event</Link>
             </div>
             <EventList />
-        </div>
+        </section>
     );
 };
 

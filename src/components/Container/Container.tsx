@@ -1,7 +1,7 @@
-import React, { FC, useMemo } from "react";
+import { FC, HTMLAttributes, useMemo } from "react";
 import styles from "./Container.module.css";
 
-interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {
+interface ContainerProps extends HTMLAttributes<HTMLElement> {
     children: React.ReactNode;
 }
 export const Container: FC<ContainerProps> = ({ children, className, ...rest }) => {
@@ -14,7 +14,7 @@ export const Container: FC<ContainerProps> = ({ children, className, ...rest }) 
 
     return (
         <main className={containerCssString} {...{ ...rest }}>
-            <div className={styles.containerWidth}>{children}</div>
+            {children}
         </main>
     );
 };

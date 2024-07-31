@@ -8,6 +8,8 @@
     --additional-color: #a4a7bc;
     --hover-color: #495aa8;
     --error-color: #ff2f3b;
+
+    --desktop-width-container: 73.75rem;
 }
 
 body {

@@ -10,6 +10,8 @@ import { Comments } from "@/components/Comments";
 import { CommentsList } from "@/components/CommentsList";
 import { IPageStateContext, PageStateContext } from "./context";
 
+import styles from "./EventPage.module.css";
+
 type PageParams = {
     params: { event_id: string };
 };
@@ -72,7 +74,7 @@ const EventPage: NextPage<PageParams> = ({ params: { event_id } }) => {
     }
 
     return (
-        <div className="EventPage">
+        <section className={styles.eventPage}>
             <h3>EventPage</h3>
 
             <Link href={`/events/${event_id}/edit`}>Edit</Link>
@@ -84,7 +86,7 @@ const EventPage: NextPage<PageParams> = ({ params: { event_id } }) => {
             <PageStateContext.Provider value={PageStateContextValue}>
                 <CommentsList comments={data.comments} />
             </PageStateContext.Provider>
-        </div>
+        </section>
     );
 };
 
