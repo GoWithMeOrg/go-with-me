@@ -11,6 +11,7 @@ import { CommentsList } from "@/components/CommentsList";
 import { IPageStateContext, PageStateContext } from "./context";
 
 import styles from "./EventPage.module.css";
+import { CommentForm } from "@/components/CommentForm";
 
 type PageParams = {
     params: { event_id: string };
@@ -84,8 +85,9 @@ const EventPage: NextPage<PageParams> = ({ params: { event_id } }) => {
             <div>{data.event.time}</div>
 
             <PageStateContext.Provider value={PageStateContextValue}>
-                <CommentsList comments={data.comments} />
+                <CommentForm />
             </PageStateContext.Provider>
+            <CommentsList comments={data.comments} />
         </section>
     );
 };

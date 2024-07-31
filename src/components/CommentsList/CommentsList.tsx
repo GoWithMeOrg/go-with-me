@@ -3,7 +3,6 @@
 import { FC, Fragment } from "react";
 import { Comment, ICommentProps } from "../Comment";
 import { Button } from "../Button";
-import { CommentForm } from "./CommentForm";
 
 import styles from "./CommentsList.module.css";
 
@@ -16,7 +15,6 @@ export const CommentsList: FC<CommentsListProps> = ({ comments }) => {
     return (
         <section className={`mainContainer ${styles.container}`}>
             <h3 className={styles.title}>Comments</h3>
-            <CommentForm />
             <ul>
                 {comments.map((comment) => {
                     const { _id, replies } = comment;
