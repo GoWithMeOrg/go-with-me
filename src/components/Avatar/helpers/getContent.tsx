@@ -1,4 +1,6 @@
-export const getContent = (userName: string): string | null => {
-    if (userName[0] && userName[1]) return `${userName[0]}${userName[1]}`.toUpperCase();
+import { IUser } from "@/database/models/User";
+
+export const getContent = (name: string): string | null => {
+    if (name[0] && name[1]) return `${name[0]}${name[1]}`.toUpperCase();
     return "-";
 };

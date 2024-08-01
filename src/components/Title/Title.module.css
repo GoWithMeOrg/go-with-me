@@ -1,0 +1,25 @@
+.h1 {
+    color: var(--main-color);
+    font-size: 2.875rem;
+    line-height: 3.625rem;
+    font-weight: 700;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+.h2 {
+    color: var(--main-color);
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+    font-weight: 700;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+.h3 {
+    color: var(--main-color);
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.875rem;
+    text-align: left;
+}

@@ -12,22 +12,13 @@
 }
 
 .createAndInviteTitle {
-    color: var(--main-color);
-    font-size: 1.875rem;
-    line-height: 2.25rem;
-    font-weight: 700;
-    text-align: left;
-    text-transform: uppercase;
+    margin-bottom: 2.5rem;
 }
 
 .logoJoin {
     position: absolute;
     right: -3rem;
     top: 2.5rem;
-}
-
-.createAndInviteTitle {
-    margin-bottom: 2.5rem;
 }
 
 .createAndInviteButtons {

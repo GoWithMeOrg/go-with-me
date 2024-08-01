@@ -1,5 +1,5 @@
-import { TitleH3 } from "@/components/TitleH3";
 import classes from "./CardWork.module.css";
+import { Title } from "../Title";
 interface CardWorkProps {
     title: string;
     description: React.ReactNode;
@@ -10,7 +10,7 @@ export const CardWork = ({ title, description, picture }: CardWorkProps) => {
     return (
         <div className={classes.cardWork}>
             <div className={classes.cardWorkWrapper}>
-                <TitleH3 title={title} className={classes.cardWorkTitle} />
+                <Title title={title} className={classes.cardWorkTitle} tag={"h3"} />
                 <div className={classes.cardWorkDescription}>{description}</div>
                 <div className={classes.cardWorkPicture}>{picture}</div>
             </div>

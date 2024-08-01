@@ -1,11 +1,12 @@
 import { forwardRef } from "react";
 import classes from "./TitleField.module.css";
+import { Input } from "../Input";
 
 export const TitleField = forwardRef(function TitleField(props, ref) {
     return (
-        <label className={classes.titleForm}>
+        <label>
             <span className={classes.titleInput}>Event title</span>
-            <input {...props} className={classes.fieldInput} />
+            <Input {...props} />
         </label>
     );
 });

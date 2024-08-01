@@ -1,26 +1,26 @@
-import classes from "./Button.module.css";
+import { ButtonHTMLAttributes, FC, useMemo } from "react";
+import styles from "./Button.module.css";
 
-interface IButton {
-    id?: string;
-    onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-    className?: string;
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     text?: string;
-    children?: React.ReactNode;
     icon?: React.ReactNode;
-    type?: "submit" | "reset" | "button" | undefined;
-    onMouseEnter?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-    onMouseLeave?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+    resetDefaultStyles?: boolean;
+    size?: "normal" | "big";
 }
 
-export const Button = ({ className, onClick, text, children, icon, onMouseEnter, onMouseLeave, type }: IButton) => {
+export const Button: FC<ButtonProps> = ({ text, icon, children, className, resetDefaultStyles, size, ...rest }) => {
+    const buttonCssString: string = useMemo(() => {
+        let cssString = "";
+        if (!resetDefaultStyles) cssString += styles.button;
+        if (size) {
+            if (size === "big") cssString += " " + styles.big;
+        }
+        if (className) cssString += " " + className;
+        return cssString;
+    }, [resetDefaultStyles, className, size]);
+
     return (
-        <button
-            type={type}
-            className={className}
-            onClick={onClick}
-            onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-        >
+        <button className={buttonCssString} {...{ ...rest }}>
             {icon}
             {children}
             {text}

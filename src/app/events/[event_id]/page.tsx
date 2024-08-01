@@ -2,11 +2,13 @@
 
 import type { NextPage } from "next";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { useMemo } from "react";
+import { gql, useQuery } from "@apollo/client";
 
 import { Event } from "@/components/Event";
-import { Comments } from "@/components/Comments";
+import { CommentsList } from "@/components/CommentsList";
+
+import styles from "./EventPage.module.css";
 
 type PageParams = {
     params: { event_id: string };
@@ -36,23 +38,19 @@ const GET_EVENT_BY_ID = gql`
                 name
                 email
             }
-            content
-            createdAt
-            updatedAt
-        }
-    }
-`;
-
-const SAVE_COMMENT = gql`
-    #graphql
-    mutation SaveComment($comment: CommentInput!) {
-        saveComment(comment: $comment) {
-            _id
-            author {
+            # replies_id
+            replies {
                 _id
-                name
-                email
+                author {
+                    _id
+                    name
+                    email
+                }
+                content
+                createdAt
+                updatedAt
             }
+            replyToId
             content
             createdAt
             updatedAt
@@ -60,10 +58,10 @@ const SAVE_COMMENT = gql`
     }
 `;
 
-const EventPage: NextPage<PageParams> = (context) => {
-    const { data: session } = useSession();
-    const { data, error, loading } = useQuery(GET_EVENT_BY_ID, { variables: { id: context.params.event_id } });
-    const [saveComment] = useMutation(SAVE_COMMENT);
+const EventPage: NextPage<PageParams> = ({ params: { event_id } }) => {
+    const { data, error, loading, refetch } = useQuery(GET_EVENT_BY_ID, { variables: { id: event_id } });
+
+    console.log("data", data);
 
     if (loading && !error) {
         return <div>Loading...</div>;
@@ -73,38 +71,18 @@ const EventPage: NextPage<PageParams> = (context) => {
         return <div>Error: {error.message}</div>;
     }
 
-    const handleSaveComment = (commentContent: string) => {
-        saveComment({
-            variables: {
-                comment: {
-                    event_id: context.params.event_id,
-                    // @ts-ignore TODO: fix type
-                    author_id: session?.user?.id,
-                    content: commentContent,
-                },
-            },
-        })
-            .then((response) => {
-                console.log("EventPage: ", response); // eslint-disable-line
-            })
-            .catch((error) => {
-                console.error("EventPage: ", error); // eslint-disable-line
-            });
-    };
-
     return (
-        <div className="EventPage">
+        <section className={styles.eventPage}>
             <h3>EventPage</h3>
 
-            <Link href={`/events/${context.params.event_id}/edit`}>Edit</Link>
+            <Link href={`/events/${event_id}/edit`}>Edit</Link>
 
             <Event event={data.event} />
 
             <div>{data.event.time}</div>
 
-            <h3>Comments</h3>
-            <Comments comments={data.comments} onSave={handleSaveComment} />
-        </div>
+            <CommentsList {...{ comments: data.comments, event_id, refetch }} />
+        </section>
     );
 };
 

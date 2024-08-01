@@ -5,6 +5,7 @@ import "@/styles/global.css";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { Suspense } from "react";
+import { Container } from "@/components/Container";
 
 const inter = Inter({
     weight: ["400", "500", "600", "700"],
@@ -26,7 +27,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     <NextAuthProvider>
                         <Suspense>
                             <Header />
-                            <APIProviderGoogleMaps>{children}</APIProviderGoogleMaps>
+                            <Container>
+                                <APIProviderGoogleMaps>{children}</APIProviderGoogleMaps>
+                            </Container>
                             <Footer />
                         </Suspense>
                     </NextAuthProvider>

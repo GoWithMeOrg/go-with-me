@@ -22,21 +22,56 @@ export const Footer = () => {
             {status === "unauthenticated" && (
                 <div className={classes.footerContainer}>
                     <div className={classes.footerLogIn}>
-                        <Button onClick={handleShowAuth} className={classes.footerLink} text={"Sign In"} />
+                        <Button
+                            onClick={handleShowAuth}
+                            className={classes.footerLink}
+                            text={"Sign In"}
+                            resetDefaultStyles={true}
+                        />
                         <LogoFooter />
                     </div>
                     <div className={classes.footerBlockLinks}>
                         <div className={classes.footerBlock}>
-                            <Button onClick={handleShowAuth} className={classes.footerLink} text={"Events"} />
-                            <Button onClick={handleShowAuth} className={classes.footerLink} text={"Profile"} />
+                            <Button
+                                onClick={handleShowAuth}
+                                className={classes.footerLink}
+                                text={"Events"}
+                                resetDefaultStyles={true}
+                            />
+                            <Button
+                                onClick={handleShowAuth}
+                                className={classes.footerLink}
+                                text={"Profile"}
+                                resetDefaultStyles={true}
+                            />
                         </div>
                         <div className={classes.footerBlock}>
-                            <Button onClick={handleShowAuth} className={classes.footerLink} text={"Privacy policy"} />
-                            <Button onClick={handleShowAuth} className={classes.footerLink} text={"Terms of use"} />
+                            <Button
+                                onClick={handleShowAuth}
+                                className={classes.footerLink}
+                                text={"Privacy policy"}
+                                resetDefaultStyles={true}
+                            />
+                            <Button
+                                onClick={handleShowAuth}
+                                className={classes.footerLink}
+                                text={"Terms of use"}
+                                resetDefaultStyles={true}
+                            />
                         </div>
                         <div className={classes.footerBlock}>
-                            <Button onClick={handleShowAuth} className={classes.footerLink} text={"FAQ"} />
-                            <Button onClick={handleShowAuth} className={classes.footerLink} text={"Write to use"} />
+                            <Button
+                                onClick={handleShowAuth}
+                                className={classes.footerLink}
+                                text={"FAQ"}
+                                resetDefaultStyles={true}
+                            />
+                            <Button
+                                onClick={handleShowAuth}
+                                className={classes.footerLink}
+                                text={"Write to use"}
+                                resetDefaultStyles={true}
+                            />
                         </div>
 
                         <Popup
@@ -63,7 +98,7 @@ export const Footer = () => {
             {status === "authenticated" && (
                 <div className={classes.footerContainer}>
                     <div className={classes.footerLogIn}>
-                        <Button onClick={() => signOut()} className={classes.footerLink}>
+                        <Button onClick={() => signOut()} className={classes.footerLink} resetDefaultStyles={true}>
                             Sign Out
                         </Button>
                         <LogoFooter />

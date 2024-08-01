@@ -18,15 +18,6 @@ import { CreateTag } from "../CreateTag";
 import { GuestList } from "../GuestList";
 import { UploadFile } from "../UploadFile";
 import { Location } from "../Location";
-import { IEvent } from "@/database/models/Event";
-
-// const CREATE_EVENT = gql`
-//     mutation CreateEvent($event: EventInput!) {
-//         createEvent(event: $event) {
-//             _id
-//         }
-//     }
-// `;
 
 export enum Status {
     PUBLIC = "public",
@@ -167,7 +158,12 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
 
                 <GuestList />
 
-                <Button className={classes.buttonSaveChange} type="submit" text={"Save changes"} />
+                <Button
+                    className={classes.buttonSaveChange}
+                    type="submit"
+                    text={"Save changes"}
+                    resetDefaultStyles={true}
+                />
             </form>
         </div>
     );

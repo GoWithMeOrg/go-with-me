@@ -18,13 +18,7 @@
 }
 
 .cardWorkTitle {
-    display: flex;
-    font-size: 1.25rem;
-    font-weight: 700;
-    line-height: 1.875rem;
-    text-align: left;
     margin-bottom: 1.56rem;
-    color: var(--main-color);
 }
 
 .cardWorkDescription {

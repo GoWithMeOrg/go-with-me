@@ -10,9 +10,9 @@ import { useMutation, gql } from "@apollo/client";
 import type { EventType } from "@/components/OldEventForm";
 import classes from "./page.module.css";
 import Arrow from "@/assets/icons/arrow.svg";
-import { TitleH2 } from "@/components/TitleH2";
 import { Button } from "@/components/Button";
 import { EventForm } from "@/components/EventForm";
+import { Title } from "@/components/Title";
 
 const CREATE_EVENT = gql`
     mutation CreateEvent($event: EventInput!) {
@@ -40,16 +40,14 @@ const EventNewPage: NextPage = () => {
     };
 
     return (
-        <div className={classes.container}>
-            <div className={classes.createEventFormWrapper}>
-                <Button className={classes.createEventButton}>
-                    <Arrow />
-                </Button>
+        <div className={classes.createEventFormWrapper}>
+            <Button className={classes.createEventButton} resetDefaultStyles={true}>
+                <Arrow />
+            </Button>
 
-                <TitleH2 className={classes.createEventTitle} title="CREATE EVENT" />
+            <Title className={classes.createEventTitle} title="CREATE EVENT" tag={"h2"} />
 
-                <EventForm eventData={{}} onSubmitEvent={handleCreateEvent} />
-            </div>
+            <EventForm eventData={{}} onSubmitEvent={handleCreateEvent} />
         </div>
     );
 };
