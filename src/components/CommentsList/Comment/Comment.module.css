@@ -51,3 +51,7 @@
 .liked {
     fill: var(--text-color);
 }
+
+.replyButton {
+    cursor: pointer;
+}

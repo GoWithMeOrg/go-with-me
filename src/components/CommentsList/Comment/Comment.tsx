@@ -1,13 +1,16 @@
 "use client";
-import { FC } from "react";
+import { FC, ReactNode, useContext, useState } from "react";
 import Link from "next/link";
 import dayjs from "dayjs";
 import { Like } from "./svg";
-import { Avatar } from "../Avatar";
+import { Avatar } from "../../Avatar";
 import { IComment } from "@/database/models/Comment";
 import { IUser } from "@/database/models/User";
+import { Reply } from "./svg/Reply";
+import { CommentForm } from "../CommentForm";
 
 import styles from "./Comment.module.css";
+import { CommentsListContext } from "../context";
 
 export interface ICommentProps extends Pick<IComment, "content" | "_id" | "createdAt" | "likes" | "replyToId"> {
     author: Pick<IUser, "name">;
@@ -16,6 +19,11 @@ export interface ICommentProps extends Pick<IComment, "content" | "_id" | "creat
 
 export const Comment: FC<ICommentProps> = ({ author, content, likes, _id, replyToId, createdAt }) => {
     const { name } = author;
+
+    const commentsListContext = useContext(CommentsListContext);
+    if (!commentsListContext) return null;
+    const { replyIdForm, setReplyIdForm } = commentsListContext;
+
     return (
         <li className={styles.comment} id={`comment-id-${_id}`}>
             <div className={styles.avatarContainer}>
@@ -31,7 +39,20 @@ export const Comment: FC<ICommentProps> = ({ author, content, likes, _id, replyT
                 <div className={styles.likesContainer}>
                     <Like className={likes ? styles.liked : undefined} />
                     <span className={styles.number}>{likes ? likes : ""}</span>
+                    <button
+                        className={styles.replyButton}
+                        onClick={() => {
+                            if (replyIdForm === _id) {
+                                setReplyIdForm(null);
+                            } else {
+                                setReplyIdForm(_id);
+                            }
+                        }}
+                    >
+                        <Reply />
+                    </button>
                 </div>
+                {replyIdForm === _id ? <CommentForm /> : null}
             </div>
         </li>
     );

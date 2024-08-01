@@ -1,13 +1,13 @@
 "use client";
 
-import { FC } from "react";
+import { FC, useContext } from "react";
 import { SubmitHandler, useController, useForm } from "react-hook-form";
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/client";
 import { useSession } from "next-auth/react";
-import { usePageStateContext } from "@/app/events/[event_id]/hooks";
 import { Button } from "@/components/Button";
 import { Textarea } from "@/components/Textarea";
+import { CommentsListContext } from "../context";
 
 import styles from "./CommentForm.module.css";
 
@@ -34,7 +34,6 @@ const SAVE_COMMENT = gql`
 
 export const CommentForm: FC = () => {
     const session = useSession();
-    const { event_id, refetch } = usePageStateContext();
     const [saveComment] = useMutation(SAVE_COMMENT);
 
     const {
@@ -48,6 +47,10 @@ export const CommentForm: FC = () => {
         field: { onChange, onBlur, value, name },
     } = useController({ name: "comment", control, rules: { required: "Please write a comment" } });
 
+    const commentsListContext = useContext(CommentsListContext);
+    if (!commentsListContext) return null;
+    const { replyIdForm, event_id, refetch } = commentsListContext;
+
     const onSubmit: SubmitHandler<Inputs> = async ({ comment }) => {
         try {
             const res = await saveComment({
@@ -57,6 +60,7 @@ export const CommentForm: FC = () => {
                         // @ts-ignore TODO: fix type
                         author_id: session.data?.user?.id,
                         content: comment,
+                        replyToId: replyIdForm ?? null,
                     },
                 },
             });
