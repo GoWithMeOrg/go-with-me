@@ -2,45 +2,21 @@
 
 import { FC } from "react";
 import { SubmitHandler, useController, useForm } from "react-hook-form";
-import gql from "graphql-tag";
-import { ApolloQueryResult, OperationVariables, useMutation } from "@apollo/client";
-import { useSession } from "next-auth/react";
+import { FetchResult } from "@apollo/client";
 import { Button } from "@/components/Button";
 import { Textarea } from "@/components/Textarea";
 
 import styles from "./CommentForm.module.css";
 
 interface CommentFormProps {
-    refetch: (variables?: Partial<OperationVariables> | undefined) => Promise<ApolloQueryResult<any>>;
-    event_id: string;
-    replyIdState: string | null;
+    onSaveComment: (content: string) => Promise<FetchResult<any> | undefined>;
 }
 
 interface Inputs {
     comment: string;
 }
 
-const SAVE_COMMENT = gql`
-    #graphql
-    mutation SaveComment($comment: CommentInput!) {
-        saveComment(comment: $comment) {
-            _id
-            author {
-                _id
-                name
-                email
-            }
-            content
-            createdAt
-            updatedAt
-        }
-    }
-`;
-
-export const CommentForm: FC<CommentFormProps> = ({ event_id, refetch, replyIdState }) => {
-    const session = useSession();
-    const [saveComment] = useMutation(SAVE_COMMENT);
-
+export const CommentForm: FC<CommentFormProps> = ({ onSaveComment }) => {
     const {
         handleSubmit,
         control,
@@ -54,21 +30,10 @@ export const CommentForm: FC<CommentFormProps> = ({ event_id, refetch, replyIdSt
 
     const onSubmit: SubmitHandler<Inputs> = async ({ comment }) => {
         try {
-            const res = await saveComment({
-                variables: {
-                    comment: {
-                        event_id,
-                        // @ts-ignore TODO: fix type
-                        author_id: session.data?.user?.id,
-                        content: comment,
-                        replyToId: replyIdState ?? null,
-                    },
-                },
-            });
+            const res = await onSaveComment(comment);
             if (!res) return;
             console.log("EventPage: ", res);
             reset();
-            refetch();
         } catch (error) {
             console.error("EventPage: ", error);
         }
