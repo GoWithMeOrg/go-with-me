@@ -1,13 +1,13 @@
 "use client";
 
-import { FC, Fragment, useContext, useMemo, useState } from "react";
-import { Comment, ICommentProps } from "./Comment";
+import { FC, useState } from "react";
+import { ApolloQueryResult, OperationVariables } from "@apollo/client";
+import { Comment } from "./Comment";
 import { Button } from "../Button";
 import { CommentForm } from "./CommentForm";
-import { CommentsListContext, ICommentsListContext } from "./context";
-import { ApolloQueryResult, OperationVariables } from "@apollo/client";
 
 import styles from "./CommentsList.module.css";
+import { ICommentProps } from "./styles";
 
 interface CommentsListProps {
     comments: ICommentProps[];
@@ -16,38 +16,39 @@ interface CommentsListProps {
 }
 
 export const CommentsList: FC<CommentsListProps> = ({ comments, event_id, refetch }) => {
-    const [replyIdForm, setReplyIdForm] = useState<string | null>(null);
-
-    const contextValue: ICommentsListContext = { event_id, refetch, replyIdForm, setReplyIdForm };
+    const [replyIdState, setReplyIdState] = useState<string | null>(null);
 
     return (
-        <CommentsListContext.Provider value={contextValue}>
-            <section className={`mainContainer ${styles.container}`}>
-                <h3 className={styles.title}>Comments</h3>
-                {!replyIdForm ? <CommentForm /> : null}
-                <ul>
-                    {comments.map((comment) => {
-                        const { _id, replies } = comment;
-                        return (
-                            <Fragment key={_id}>
-                                <Comment {...{ ...comment }} />
-                                {replies ? (
-                                    <ul className={styles.replies}>
-                                        {replies.map((comment) => {
-                                            return (
-                                                <Fragment key={_id}>
-                                                    <Comment {...{ ...comment }} />
-                                                </Fragment>
-                                            );
-                                        })}
-                                    </ul>
-                                ) : null}
-                            </Fragment>
-                        );
-                    })}
-                </ul>
-                <Button>Load more comments</Button>
-            </section>
-        </CommentsListContext.Provider>
+        <section className={`mainContainer ${styles.container}`}>
+            <h3 className={styles.title}>Comments</h3>
+            <CommentForm {...{ event_id, refetch, replyIdState: null }} />
+            <ul>
+                {comments.map((comment) => {
+                    const { _id, replies } = comment;
+                    return (
+                        <li key={_id}>
+                            <Comment {...{ ...comment, replyIdState, setReplyIdState }} />
+                            {replyIdState === _id ? <CommentForm {...{ event_id, refetch, replyIdState }} /> : null}
+                            {replies ? (
+                                <ul className={styles.replies}>
+                                    {replies.map((comment) => {
+                                        const { _id } = comment;
+                                        return (
+                                            <li key={_id}>
+                                                <Comment {...{ ...comment, replyIdState, setReplyIdState }} />
+                                                {replyIdState === _id ? (
+                                                    <CommentForm {...{ event_id, refetch, replyIdState }} />
+                                                ) : null}
+                                            </li>
+                                        );
+                                    })}
+                                </ul>
+                            ) : null}
+                        </li>
+                    );
+                })}
+            </ul>
+            <Button>Load more comments</Button>
+        </section>
     );
 };

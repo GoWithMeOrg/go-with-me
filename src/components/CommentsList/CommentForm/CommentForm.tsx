@@ -1,15 +1,20 @@
 "use client";
 
-import { FC, useContext } from "react";
+import { FC } from "react";
 import { SubmitHandler, useController, useForm } from "react-hook-form";
 import gql from "graphql-tag";
-import { useMutation } from "@apollo/client";
+import { ApolloQueryResult, OperationVariables, useMutation } from "@apollo/client";
 import { useSession } from "next-auth/react";
 import { Button } from "@/components/Button";
 import { Textarea } from "@/components/Textarea";
-import { CommentsListContext } from "../context";
 
 import styles from "./CommentForm.module.css";
+
+interface CommentFormProps {
+    refetch: (variables?: Partial<OperationVariables> | undefined) => Promise<ApolloQueryResult<any>>;
+    event_id: string;
+    replyIdState: string | null;
+}
 
 interface Inputs {
     comment: string;
@@ -32,7 +37,7 @@ const SAVE_COMMENT = gql`
     }
 `;
 
-export const CommentForm: FC = () => {
+export const CommentForm: FC<CommentFormProps> = ({ event_id, refetch, replyIdState }) => {
     const session = useSession();
     const [saveComment] = useMutation(SAVE_COMMENT);
 
@@ -47,10 +52,6 @@ export const CommentForm: FC = () => {
         field: { onChange, onBlur, value, name },
     } = useController({ name: "comment", control, rules: { required: "Please write a comment" } });
 
-    const commentsListContext = useContext(CommentsListContext);
-    if (!commentsListContext) return null;
-    const { replyIdForm, event_id, refetch } = commentsListContext;
-
     const onSubmit: SubmitHandler<Inputs> = async ({ comment }) => {
         try {
             const res = await saveComment({
@@ -60,7 +61,7 @@ export const CommentForm: FC = () => {
                         // @ts-ignore TODO: fix type
                         author_id: session.data?.user?.id,
                         content: comment,
-                        replyToId: replyIdForm ?? null,
+                        replyToId: replyIdState ?? null,
                     },
                 },
             });

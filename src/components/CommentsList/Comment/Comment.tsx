@@ -1,31 +1,28 @@
 "use client";
-import { FC, ReactNode, useContext, useState } from "react";
+import { FC } from "react";
 import Link from "next/link";
 import dayjs from "dayjs";
 import { Like } from "./svg";
 import { Avatar } from "../../Avatar";
-import { IComment } from "@/database/models/Comment";
-import { IUser } from "@/database/models/User";
 import { Reply } from "./svg/Reply";
-import { CommentForm } from "../CommentForm";
+import { ICommentProps, ICommentsListState } from "../styles";
 
 import styles from "./Comment.module.css";
-import { CommentsListContext } from "../context";
 
-export interface ICommentProps extends Pick<IComment, "content" | "_id" | "createdAt" | "likes" | "replyToId"> {
-    author: Pick<IUser, "name">;
-    replies?: ICommentProps[];
-}
-
-export const Comment: FC<ICommentProps> = ({ author, content, likes, _id, replyToId, createdAt }) => {
+export const Comment: FC<ICommentProps & ICommentsListState> = ({
+    author,
+    content,
+    likes,
+    _id,
+    replyToId,
+    createdAt,
+    replyIdState,
+    setReplyIdState,
+}) => {
     const { name } = author;
 
-    const commentsListContext = useContext(CommentsListContext);
-    if (!commentsListContext) return null;
-    const { replyIdForm, setReplyIdForm } = commentsListContext;
-
     return (
-        <li className={styles.comment} id={`comment-id-${_id}`}>
+        <div className={styles.comment} id={`comment-id-${_id}`}>
             <div className={styles.avatarContainer}>
                 <Avatar className={styles.avatar} {...{ name }} />
             </div>
@@ -42,18 +39,17 @@ export const Comment: FC<ICommentProps> = ({ author, content, likes, _id, replyT
                     <button
                         className={styles.replyButton}
                         onClick={() => {
-                            if (replyIdForm === _id) {
-                                setReplyIdForm(null);
+                            if (replyIdState === _id) {
+                                setReplyIdState(null);
                             } else {
-                                setReplyIdForm(_id);
+                                setReplyIdState(_id);
                             }
                         }}
                     >
                         <Reply />
                     </button>
                 </div>
-                {replyIdForm === _id ? <CommentForm /> : null}
             </div>
-        </li>
+        </div>
     );
 };
