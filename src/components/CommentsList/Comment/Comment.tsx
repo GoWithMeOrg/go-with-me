@@ -5,19 +5,22 @@ import dayjs from "dayjs";
 import { Like } from "./svg";
 import { Avatar } from "../../Avatar";
 import { Reply } from "./svg/Reply";
-import { ICommentProps, ICommentsListState } from "../styles";
+import { ICommentProps } from "../styles";
 
 import styles from "./Comment.module.css";
 
-export const Comment: FC<ICommentProps & ICommentsListState> = ({
+interface CommentProps {
+    onClickReplyButton: ({ _id }: { _id: string }) => void;
+}
+
+export const Comment: FC<ICommentProps & CommentProps> = ({
     author,
     content,
     likes,
     _id,
     replyToId,
     createdAt,
-    replyIdState,
-    setReplyIdState,
+    onClickReplyButton,
 }) => {
     const { name } = author;
 
@@ -39,11 +42,7 @@ export const Comment: FC<ICommentProps & ICommentsListState> = ({
                     <button
                         className={styles.replyButton}
                         onClick={() => {
-                            if (replyIdState === _id) {
-                                setReplyIdState(null);
-                            } else {
-                                setReplyIdState(_id);
-                            }
+                            onClickReplyButton({ _id });
                         }}
                     >
                         <Reply />

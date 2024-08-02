@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useState } from "react";
+import { FC, useCallback, useState } from "react";
 import { ApolloQueryResult, OperationVariables } from "@apollo/client";
 import { Comment } from "./Comment";
 import { Button } from "../Button";
@@ -18,6 +18,17 @@ interface CommentsListProps {
 export const CommentsList: FC<CommentsListProps> = ({ comments, event_id, refetch }) => {
     const [replyIdState, setReplyIdState] = useState<string | null>(null);
 
+    const onClickReplyButton = useCallback(
+        ({ _id }: { _id: string }) => {
+            if (replyIdState === _id) {
+                setReplyIdState(null);
+            } else {
+                setReplyIdState(_id);
+            }
+        },
+        [setReplyIdState, replyIdState],
+    );
+
     return (
         <section className={`mainContainer ${styles.container}`}>
             <h3 className={styles.title}>Comments</h3>
@@ -27,7 +38,7 @@ export const CommentsList: FC<CommentsListProps> = ({ comments, event_id, refetc
                     const { _id, replies } = comment;
                     return (
                         <li key={_id}>
-                            <Comment {...{ ...comment, replyIdState, setReplyIdState }} />
+                            <Comment {...{ ...comment, onClickReplyButton }} />
                             {replyIdState === _id ? <CommentForm {...{ event_id, refetch, replyIdState }} /> : null}
                             {replies ? (
                                 <ul className={styles.replies}>
@@ -35,7 +46,7 @@ export const CommentsList: FC<CommentsListProps> = ({ comments, event_id, refetc
                                         const { _id } = comment;
                                         return (
                                             <li key={_id}>
-                                                <Comment {...{ ...comment, replyIdState, setReplyIdState }} />
+                                                <Comment {...{ ...comment, onClickReplyButton }} />
                                                 {replyIdState === _id ? (
                                                     <CommentForm {...{ event_id, refetch, replyIdState }} />
                                                 ) : null}

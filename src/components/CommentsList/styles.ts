@@ -6,8 +6,3 @@ export interface ICommentProps extends Pick<IComment, "content" | "_id" | "creat
     author: Pick<IUser, "name">;
     replies?: ICommentProps[];
 }
-
-export interface ICommentsListState {
-    replyIdState: string | null;
-    setReplyIdState: Dispatch<SetStateAction<string | null>>;
-}
