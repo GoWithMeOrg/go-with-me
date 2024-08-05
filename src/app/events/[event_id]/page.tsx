@@ -31,37 +31,11 @@ const GET_EVENT_BY_ID = gql`
             time
             image
         }
-        comments(event_id: $id) {
-            _id
-            author {
-                _id
-                name
-                email
-            }
-            # replies_id
-            replies {
-                _id
-                author {
-                    _id
-                    name
-                    email
-                }
-                content
-                createdAt
-                updatedAt
-            }
-            replyToId
-            content
-            createdAt
-            updatedAt
-        }
     }
 `;
 
 const EventPage: NextPage<PageParams> = ({ params: { event_id } }) => {
-    const { data, error, loading, refetch } = useQuery(GET_EVENT_BY_ID, { variables: { id: event_id } });
-
-    console.log("data", data);
+    const { data, error, loading } = useQuery(GET_EVENT_BY_ID, { variables: { id: event_id } });
 
     if (loading && !error) {
         return <div>Loading...</div>;
@@ -81,7 +55,7 @@ const EventPage: NextPage<PageParams> = ({ params: { event_id } }) => {
 
             <div>{data.event.time}</div>
 
-            <CommentsList {...{ comments: data.comments, event_id, refetch }} />
+            <CommentsList {...{ event_id }} />
         </section>
     );
 };

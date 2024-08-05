@@ -1,8 +1,7 @@
 "use client";
 
 import { FC, useCallback, useState } from "react";
-import { ApolloQueryResult, gql, OperationVariables, useMutation } from "@apollo/client";
-import { useSession } from "next-auth/react";
+import { useComments } from "./hooks";
 import { Comment } from "./Comment";
 import { Button } from "../Button";
 import { CommentForm } from "./CommentForm";
@@ -12,31 +11,11 @@ import { ICommentProps } from "./styles";
 import styles from "./CommentsList.module.css";
 
 interface CommentsListProps {
-    comments: ICommentProps[];
     event_id: string;
-    refetch: (variables?: Partial<OperationVariables> | undefined) => Promise<ApolloQueryResult<any>>;
 }
 
-const SAVE_COMMENT = gql`
-    #graphql
-    mutation SaveComment($comment: CommentInput!) {
-        saveComment(comment: $comment) {
-            _id
-            author {
-                _id
-                name
-                email
-            }
-            content
-            createdAt
-            updatedAt
-        }
-    }
-`;
-
-export const CommentsList: FC<CommentsListProps> = ({ comments, event_id, refetch }) => {
-    const session = useSession();
-    const [saveComment] = useMutation(SAVE_COMMENT);
+export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
+    const { comments, refetch, saveComment, author_id } = useComments(event_id);
 
     const [replyIdState, setReplyIdState] = useState<string | null>(null);
 
@@ -54,8 +33,7 @@ export const CommentsList: FC<CommentsListProps> = ({ comments, event_id, refetc
                 variables: {
                     comment: {
                         event_id,
-                        // @ts-ignore TODO: fix type
-                        author_id: session.data?.user?.id,
+                        author_id,
                         content,
                         replyToId,
                     },
@@ -66,7 +44,7 @@ export const CommentsList: FC<CommentsListProps> = ({ comments, event_id, refetc
             setReplyIdState(null);
             return res;
         },
-        [event_id, refetch, saveComment, session],
+        [event_id, refetch, saveComment, author_id],
     );
 
     const onSaveCommentTop = (content: string) => onSaveComment({ content, replyToId: null });
