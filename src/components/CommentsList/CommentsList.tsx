@@ -6,8 +6,6 @@ import { Comment } from "./Comment";
 import { Button } from "../Button";
 import { CommentForm } from "./CommentForm";
 
-import { ICommentProps } from "./styles";
-
 import styles from "./CommentsList.module.css";
 
 interface CommentsListProps {
@@ -15,17 +13,9 @@ interface CommentsListProps {
 }
 
 export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
-    const { comments, refetch, saveComment, author_id } = useComments(event_id);
+    const { data, loading, error, refetch, saveComment, author_id } = useComments(event_id);
 
     const [replyIdState, setReplyIdState] = useState<string | null>(null);
-
-    const onClickReplyButton = ({ _id }: { _id: string }) => {
-        if (replyIdState === _id) {
-            setReplyIdState(null);
-        } else {
-            setReplyIdState(_id);
-        }
-    };
 
     const onSaveComment = useCallback(
         async ({ content, replyToId }: { content: string; replyToId: string | null }) => {
@@ -47,6 +37,18 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
         [event_id, refetch, saveComment, author_id],
     );
 
+    if (loading && !error) return <div>Loading...</div>;
+    if (error) return <div>Error: {error.message}</div>;
+    if (!data) return <div>Error: comments error</div>;
+    const { comments } = data;
+
+    const onClickReplyButton = ({ _id }: { _id: string }) => {
+        if (replyIdState === _id) {
+            setReplyIdState(null);
+        } else {
+            setReplyIdState(_id);
+        }
+    };
     const onSaveCommentTop = (content: string) => onSaveComment({ content, replyToId: null });
     const onSaveCommentReply = (content: string) => onSaveComment({ content, replyToId: replyIdState });
 
