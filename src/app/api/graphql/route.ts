@@ -102,6 +102,14 @@ const resolvers = {
             const newComment = new CommentModel(comment);
             return await newComment.save();
         },
+
+        updateComment: async (parent: any, { id, comment }: { id: string; comment: IComment }) => {
+            await CommentModel.updateOne({ _id: id }, comment);
+            return await CommentModel.findById(id);
+        },
+        deleteComment: async (parent: any, { id }: { id: string }) => {
+            return await CommentModel.deleteOne({ _id: id });
+        },
     },
 };
 
@@ -242,6 +250,8 @@ const typeDefs = gql`
         deleteTrip(id: ID!): Trip
 
         saveComment(comment: CommentInput): Comment
+        updateComment(id: ID!, comment: CommentInput): Comment
+        deleteComment(id: ID!): Comment
     }
 `;
 
