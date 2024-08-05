@@ -14,7 +14,7 @@ export const GuestList = () => {
                 <CardUser width={100} userName="Mike Scoones" status={"joined"} />
                 <CardUser width={100} userName="Mike Scoones" status={"joined"} />
             </div>
-            <Button className={classes.questListArrow}>
+            <Button className={classes.questListArrow} resetDefaultStyles={true}>
                 <Arrow
                 //style={{ transform: "rotate(180deg)" }}
                 />

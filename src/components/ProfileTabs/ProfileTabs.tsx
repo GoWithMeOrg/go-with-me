@@ -21,12 +21,12 @@ export const ProfileTabs = () => {
                 <Navbar onTabClick={handleTabClick} activeTab={activeTab} />
 
                 <div className={classes.buttonsCreate}>
-                    <Button className={classes.buttonCreate}>
+                    <Button className={classes.buttonCreate} resetDefaultStyles={true}>
                         <Link className={classes.buttonCreateLink} href="/events/new">
                             Create event
                         </Link>
                     </Button>
-                    <Button className={classes.buttonCreate}>
+                    <Button className={classes.buttonCreate} resetDefaultStyles={true}>
                         <Link className={classes.buttonCreateLink} href="/trips/new">
                             Create trip
                         </Link>

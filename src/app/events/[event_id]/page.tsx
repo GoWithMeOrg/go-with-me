@@ -1,17 +1,13 @@
 "use client";
 
 import type { NextPage } from "next";
-import Link from "next/link";
-import { useSession } from "next-auth/react";
-import { gql, useMutation, useQuery } from "@apollo/client";
-
+import { gql, useQuery } from "@apollo/client";
 import { Event } from "@/components/Event";
-import { Comments } from "@/components/Comments";
-import classes from "./page.module.css";
 import Arrow from "@/assets/icons/arrow.svg";
 import { Button } from "@/components/Button";
 import { Loader } from "@/components/Loader";
 import { CommentsList } from "@/components/CommentsList";
+import classes from "./page.module.css";
 
 type PageParams = {
     params: { event_id: string };
@@ -71,27 +67,10 @@ const GET_EVENT_BY_ID = gql`
     }
 `;
 
-const SAVE_COMMENT = gql`
-    #graphql
-    mutation SaveComment($comment: CommentInput!) {
-        saveComment(comment: $comment) {
-            _id
-            author {
-                _id
-                name
-                email
-            }
-            content
-            createdAt
-            updatedAt
-        }
-    }
-`;
+const EventPage: NextPage<PageParams> = ({ params: { event_id } }) => {
+    const { data, error, loading, refetch } = useQuery(GET_EVENT_BY_ID, { variables: { id: event_id } });
 
-const EventPage: NextPage<PageParams> = (context) => {
-    const { data: session } = useSession();
-    const { data, error, loading } = useQuery(GET_EVENT_BY_ID, { variables: { id: context.params.event_id } });
-    const [saveComment] = useMutation(SAVE_COMMENT);
+    console.log("data", data);
 
     if (loading && !error) {
         return <Loader />;
@@ -101,44 +80,18 @@ const EventPage: NextPage<PageParams> = (context) => {
         return <div>Error: {error.message}</div>;
     }
 
-    const handleSaveComment = (commentContent: string) => {
-        saveComment({
-            variables: {
-                comment: {
-                    event_id: context.params.event_id,
-                    // @ts-ignore TODO: fix type
-                    author_id: session?.user?.id,
-                    content: commentContent,
-                },
-            },
-        })
-            .then((response) => {
-                console.log("EventPage: ", response); // eslint-disable-line
-            })
-            .catch((error) => {
-                console.error("EventPage: ", error); // eslint-disable-line
-            });
-    };
-
-    console.log(data.comments);
-
     return (
-        <div className={classes.container}>
+        <section className={classes.eventPage}>
             <div className={classes.eventWrapper}>
-                <Button className={classes.arrowButton}>
+                <Button className={classes.arrowButton} resetDefaultStyles={true}>
                     <Arrow />
                 </Button>
 
                 <Event event={data.event} />
 
-                {/* <CommentsList
-                    comments={data.comments}
-                    //onSave={handleSaveComment}
-                /> */}
-
-                <Comments comments={data.comments} onSave={handleSaveComment} />
+                <CommentsList {...{ comments: data.comments, event_id, refetch }} />
             </div>
-        </div>
+        </section>
     );
 };
 

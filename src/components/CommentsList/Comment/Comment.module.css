@@ -1,7 +1,6 @@
 .comment {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
     color: var(--text-color);
     font-weight: 400;
     font-size: 0.875rem;
@@ -14,15 +13,21 @@
     min-width: 3.5rem;
 }
 .contentContainer {
+    flex-grow: 1;
     padding: 0.25rem;
 }
 
 .userName {
+    display: flex;
     margin-bottom: 0.75rem;
     font-weight: 600;
 }
 .userName > *:not(:last-child) {
     margin-right: 1rem;
+}
+.userName > *:last-child {
+    flex-grow: 1;
+    text-align: end;
 }
 
 .commentText {
@@ -44,5 +49,9 @@
 }
 
 .liked {
-    fill: var(--text-color)
+    fill: var(--text-color);
+}
+
+.replyButton {
+    cursor: pointer;
 }

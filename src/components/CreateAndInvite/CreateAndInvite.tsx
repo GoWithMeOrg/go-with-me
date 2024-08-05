@@ -8,7 +8,7 @@ import Popup from "../Popup/Popup";
 import { AuthModal } from "../AuthModal";
 import Link from "next/link";
 import { Button } from "../Button";
-import { TitleH2 } from "../TitleH2";
+import { Title } from "../Title";
 
 export const CreateAndInvite = () => {
     const { data: session, status } = useSession();
@@ -23,20 +23,20 @@ export const CreateAndInvite = () => {
         <div className={classes.createAndInvite}>
             <Join className={classes.logoJoin} />
             <div className={classes.createAndInviteWrapper}>
-                <div className={classes.createAndInviteTitle}>
-                    <TitleH2 title={"CREATE AND INVITE"} className={classes.createAndInviteTitle} />
-                </div>
+                <Title title={"CREATE AND INVITE"} className={classes.createAndInviteTitle} tag={"h2"} />
 
                 {status === "unauthenticated" && (
                     <div className={classes.createAndInviteButtons}>
                         <Button
                             onClick={handleShowAuth}
                             className={classes.createAndInviteButtonUnAuth}
+                            resetDefaultStyles={true}
                             text={"Create event"}
                         />
                         <Button
                             onClick={handleShowAuth}
                             className={classes.createAndInviteButtonUnAuth}
+                            resetDefaultStyles={true}
                             text={"Create trip"}
                         />
                     </div>
@@ -62,12 +62,12 @@ export const CreateAndInvite = () => {
 
                 {status === "authenticated" && (
                     <div className={classes.createAndInviteButtons}>
-                        <Button className={classes.createAndInviteButton}>
+                        <Button className={classes.createAndInviteButton} resetDefaultStyles={true}>
                             <Link className={classes.createAndInviteButtonLink} href="/events/new">
                                 Create event
                             </Link>
                         </Button>
-                        <Button className={classes.createAndInviteButton}>
+                        <Button className={classes.createAndInviteButton} resetDefaultStyles={true}>
                             <Link className={classes.createAndInviteButtonLink} href="/trips/new">
                                 Create trip
                             </Link>

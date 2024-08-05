@@ -194,6 +194,7 @@ const typeDefs = gql`
         likes: Int
         replies_id: [ID]
         replies: [Comment]
+        replyToId: [String]
     }
 
     input CommentInput {
@@ -202,6 +203,7 @@ const typeDefs = gql`
         content: String
         likes: Int
         replies_id: [ID]
+        replyToId: [String]
     }
 
     input EventInput {

@@ -12,11 +12,12 @@ export interface IComment {
     author: IUser;
     event_id: mongoose.Types.ObjectId;
     content: string;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: string;
+    updatedAt: string;
     likes: number;
     replies_id: mongoose.Types.ObjectId[];
     replies: IComment[];
+    replyToId: string | null;
 }
 
 export interface ICommentDocument extends Omit<IComment, "_id" | "createdAt" | "updatedAt">, Document {}
@@ -44,6 +45,12 @@ const CommentSchema = new Schema<ICommentDocument>(
             {
                 type: Schema.Types.ObjectId,
                 ref: "Comment",
+            },
+        ],
+        replyToId: [
+            {
+                type: String,
+                required: false,
             },
         ],
     },
