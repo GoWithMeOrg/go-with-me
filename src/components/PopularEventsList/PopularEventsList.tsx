@@ -17,7 +17,7 @@ import Link from "next/link";
 import { Button } from "../Button";
 import { Loader } from "../Loader";
 
-type EventListProps = {
+export type EventListProps = {
     events?: IEvent[];
 };
 

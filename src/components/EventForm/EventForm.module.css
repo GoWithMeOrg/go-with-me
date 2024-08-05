@@ -50,41 +50,6 @@
     padding: 0.84rem 0.94rem;
 }
 
-/* .labelFindMap {
-    display: flex;
-    justify-content: space-between;
-}
-
-.btnFindMap {
-    display: flex;
-    flex-direction: row-reverse;
-    border: none;
-    height: auto;
-    color: var(--additional-color);
-    font-size: 0.88rem;
-    font-weight: 500;
-    line-height: 1.63rem;
-    text-align: left;
-    font-family: "__Inter_aaf875";
-}
-
-.btnFindMap path {
-    fill: var(--additional-color);
-}
-
-.btnFindMap:hover {
-    border: none;
-    color: var(--hover-color);
-}
-
-.btnFindMap:hover path {
-    fill: var(--hover-color);
-}
-
-.inputFindMap {
-    width: 100%;
-} */
-
 .description {
     width: 100%;
 }
@@ -137,124 +102,6 @@
     gap: 1.25rem;
     width: 11.25rem;
 }
-
-/* .inputsRadio {
-    display: flex;
-    justify-content: flex-start;
-}
-
-.labelRadio {
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.625rem;
-    color: var(--main-color);
-}
-
-.confidentialityRadio {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-top: 0.75rem;
-} */
-
-.companions {
-    margin-top: 3.125rem;
-    display: flex;
-    flex-direction: column;
-}
-
-.companionsTitle {
-    margin-top: 3.125rem;
-    margin-bottom: 0.94rem;
-}
-
-.labelCompanions {
-    display: flex;
-    flex-direction: column;
-    gap: 1.875rem;
-}
-
-.categories {
-    margin-bottom: 1.875rem;
-}
-
-.user {
-    display: flex;
-    justify-content: space-between;
-}
-
-.userWrapper {
-    display: flex;
-    align-items: center;
-}
-
-.userName {
-    color: var(--text-color);
-    font-size: 0.88rem;
-    font-weight: 700;
-    line-height: 1.25;
-    text-align: left;
-    margin-left: 0.625rem;
-}
-
-.buttonPlus {
-    border: none;
-}
-
-.buttonPlus:hover {
-    border: none;
-}
-
-.button {
-    width: 11.44rem;
-    margin-bottom: 10.625rem;
-}
-
-.dropdownButtonCompanions {
-    width: 100%;
-    background: var(--white-color);
-    border: 1px solid var(--additional-color);
-    border-radius: 0.25rem;
-    color: var(--main-color);
-    height: 3.13rem;
-    padding: 0.75rem 1.25rem 0.75rem 1rem;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-}
-
-.dropdownButtonCompanions:hover {
-    background: var(--white-color);
-    border: 1px solid var(--additional-color);
-}
-
-.buttonSaveChange {
-    width: 11.44rem;
-    height: 3.13rem;
-    border: 0.13rem solid var(--main-color);
-    border-radius: 0.25rem;
-    background: rgba(9, 23, 87, 0);
-    color: var(--main-color);
-    font-size: 1.125rem;
-    font-weight: 700;
-    line-height: 1.375rem;
-    text-align: center;
-    cursor: pointer;
-    margin-top: 3rem;
-}
-
-.buttonSaveChange:hover {
-    border: 0.13rem solid var(--hover-color);
-    color: var(--hover-color);
-}
-
-/* Блок с загрузкой фоток */
-/* .uploadFile {
-    width: 28.75rem;
-    height: 24.625rem;
-    background-color: var(--additional-color);
-    margin-right: 1.25rem;
-} */
 
 .uploadFile {
     display: flex;
@@ -333,4 +180,24 @@
     background: none;
     color: var(--hover-color);
     border: 2px solid var(--hover-color);
+}
+
+.buttonSaveChange {
+    width: 11.44rem;
+    height: 3.13rem;
+    border: 0.13rem solid var(--main-color);
+    border-radius: 0.25rem;
+    background: rgba(9, 23, 87, 0);
+    color: var(--main-color);
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.375rem;
+    text-align: center;
+    cursor: pointer;
+    margin-top: 3rem;
+}
+
+.buttonSaveChange:hover {
+    border: 0.13rem solid var(--hover-color);
+    color: var(--hover-color);
 }

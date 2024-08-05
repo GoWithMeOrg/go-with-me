@@ -1,0 +1,38 @@
+.profilePage {
+    width: var(--desktop-width-container);
+}
+
+.formWrapper {
+    margin-top: 1.875rem;
+    width: 73.75rem;
+}
+
+.arrowButton {
+    width: 3.75rem;
+    height: 1.25rem;
+    background: none;
+    cursor: pointer;
+}
+
+.formTitle {
+    width: 14.25rem;
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+    color: var(--main-color);
+    font-weight: 700;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+.userAvatar {
+    width: 3.13rem;
+    height: 3.13rem;
+    margin-right: 1rem;
+}
+
+.avatarTitle {
+    display: flex;
+    align-items: center;
+    margin-top: 2.8rem;
+    margin-bottom: 4.375rem;
+}

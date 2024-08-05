@@ -10,6 +10,7 @@ import Popup from "../Popup/Popup";
 import { AuthModal } from "../AuthModal";
 import { Button } from "../Button";
 import { Loader } from "../Loader";
+import Bell from "@/assets/icons/bell.svg";
 
 export const AuthPanel = () => {
     const { data: session, status } = useSession();
@@ -67,6 +68,7 @@ export const AuthPanel = () => {
                             /> */}
                         </Link>
                         <div className={classes.menu}>
+                            <Bell />
                             <Link href="/profile" className={classes.linkToProfile}>
                                 <Human />
                             </Link>

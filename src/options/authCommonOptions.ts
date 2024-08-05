@@ -35,6 +35,7 @@ export const authCommonOptions = {
     callbacks: {
         // Add user id to session
         async session({ session, user }: { session: Session; user: User }) {
+            console.log(session);
             return {
                 ...session,
                 user: {

@@ -49,8 +49,8 @@
     color: var(--hover-color);
 }
 
-.createAndInviteButton {
-    width: 10.88rem;
+.buttonEdit {
+    width: 5.94rem;
     height: 3.13rem;
     margin-right: 1.25rem;
     background: none;

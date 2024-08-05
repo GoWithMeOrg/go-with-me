@@ -1,11 +1,9 @@
 .uploadFile {
     display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    width: 28.75rem;
-    height: 24.625rem;
+    /* flex-direction: column; */
     gap: 1.25rem;
     margin-right: 1.25rem;
+    margin-bottom: 1rem;
 }
 
 .preview {
