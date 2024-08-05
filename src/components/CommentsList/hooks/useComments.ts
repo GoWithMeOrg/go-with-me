@@ -61,8 +61,6 @@ export const useComments = (event_id: string) => {
     const session = useSession();
     // @ts-ignore TODO: fix type
     const author_id: string = session.data?.user?.id;
-    if (!data) throw new Error("Error fetch comments");
-    const { comments } = data;
 
-    return { comments, error, loading, refetch, saveComment, author_id };
+    return { data, error, loading, refetch, saveComment, author_id };
 };
