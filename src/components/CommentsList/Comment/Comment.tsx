@@ -2,10 +2,10 @@
 import { FC } from "react";
 import Link from "next/link";
 import dayjs from "dayjs";
-import { Like } from "./svg";
 import { Avatar } from "../../Avatar";
-import { Reply } from "./svg/Reply";
 import { ICommentProps } from "../styles";
+import ArrowReply from "@/assets/icons/arrowReply.svg";
+import Heart from "@/assets/icons/heart.svg";
 
 import styles from "./Comment.module.css";
 
@@ -37,7 +37,7 @@ export const Comment: FC<ICommentProps & CommentProps> = ({
                 </div>
                 <p className={styles.commentText}>{content}</p>
                 <div className={styles.likesContainer}>
-                    <Like className={likes ? styles.liked : undefined} />
+                    <Heart className={likes ? styles.liked : undefined} />
                     <span className={styles.number}>{likes ? likes : ""}</span>
                     <button
                         className={styles.replyButton}
@@ -45,7 +45,7 @@ export const Comment: FC<ICommentProps & CommentProps> = ({
                             onClickReplyButton({ _id });
                         }}
                     >
-                        <Reply />
+                        <ArrowReply />
                     </button>
                 </div>
             </div>
