@@ -2,7 +2,6 @@
 
 import type { NextPage } from "next";
 import Link from "next/link";
-import { useMemo } from "react";
 import { gql, useQuery } from "@apollo/client";
 
 import { Event } from "@/components/Event";
