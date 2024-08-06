@@ -1,16 +1,23 @@
 "use client";
 
-import { FC, useCallback, useState } from "react";
+import { FC, HTMLAttributes, useCallback, useState } from "react";
 import { useComments } from "./hooks";
 import { Comment } from "./Comment";
 import { Button } from "../Button";
 import { CommentForm } from "./CommentForm";
+import Spinner from "@/assets/icons/spinner.svg";
 
 import styles from "./CommentsList.module.css";
 
 interface CommentsListProps {
     event_id: string;
 }
+
+const MessageContainer: FC<HTMLAttributes<HTMLDivElement>> = ({ children, className, ...rest }) => (
+    <div className={`${styles.messageContainer} ${className ?? ""}`} {...rest}>
+        {children}
+    </div>
+);
 
 export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
     const { data, loading, error, refetch, saveComment, author_id } = useComments(event_id);
@@ -37,9 +44,14 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
         [event_id, refetch, saveComment, author_id],
     );
 
-    if (loading && !error) return <div>Loading...</div>;
-    if (error) return <div>Error: {error.message}</div>;
-    if (!data) return <div>Error: comments error</div>;
+    if (loading)
+        return (
+            <MessageContainer>
+                <Spinner />
+            </MessageContainer>
+        );
+    if (error) return <MessageContainer>Error: {error.message}</MessageContainer>;
+    if (!data) return <MessageContainer className={styles.error}>Comments error</MessageContainer>;
     const { comments } = data;
 
     const onClickReplyButton = ({ _id }: { _id: string }) => {
