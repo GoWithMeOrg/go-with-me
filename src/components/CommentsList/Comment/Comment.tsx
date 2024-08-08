@@ -10,7 +10,7 @@ import Heart from "@/assets/icons/heart.svg";
 import styles from "./Comment.module.css";
 
 interface CommentProps {
-    onClickReplyButton: ({ _id }: { _id: string }) => void;
+    onClickReplyButton: ({ id, parentId }: { id: string; parentId: string }) => void;
 }
 
 export const Comment: FC<ICommentProps & CommentProps> = ({
@@ -21,6 +21,7 @@ export const Comment: FC<ICommentProps & CommentProps> = ({
     replyToId,
     createdAt,
     onClickReplyButton,
+    parentId,
 }) => {
     const { name } = author;
 
@@ -32,7 +33,7 @@ export const Comment: FC<ICommentProps & CommentProps> = ({
             <div className={styles.contentContainer}>
                 <div className={styles.userName}>
                     <span>{name}</span>
-                    {replyToId ? <Link href={`#comment-id-${replyToId}`}>reply to {replyToId}</Link> : null}
+                    {replyToId ? <Link href={`#comment-id-${replyToId}`}>reply to {replyToId.toString()}</Link> : null}
                     <span>{dayjs(createdAt).format("DD MMMM YYYY HH:mm")}</span>
                 </div>
                 <p className={styles.commentText}>{content}</p>
@@ -42,7 +43,10 @@ export const Comment: FC<ICommentProps & CommentProps> = ({
                     <button
                         className={styles.replyButton}
                         onClick={() => {
-                            onClickReplyButton({ _id });
+                            onClickReplyButton({
+                                id: _id.toString(),
+                                parentId: parentId ? parentId?.toString() : _id.toString(),
+                            });
                         }}
                     >
                         <ArrowReply />

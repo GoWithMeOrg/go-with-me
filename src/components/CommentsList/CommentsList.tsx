@@ -23,9 +23,10 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
     const { data, loading, error, refetch, saveComment, author_id } = useComments(event_id);
 
     const [replyIdState, setReplyIdState] = useState<string | null>(null);
+    const [parentIdState, setParentIdState] = useState<string | null>(null);
 
     const onSaveComment = useCallback(
-        async ({ content, replyToId }: { content: string; replyToId: string | null }) => {
+        async ({ content, replyToId, parentId }: { content: string; replyToId?: string; parentId?: string }) => {
             const res = await saveComment({
                 variables: {
                     comment: {
@@ -33,12 +34,14 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
                         author_id,
                         content,
                         replyToId,
+                        parentId,
                     },
                 },
             });
             if (!res) return;
             refetch();
             setReplyIdState(null);
+            setParentIdState(null);
             return res;
         },
         [event_id, refetch, saveComment, author_id],
@@ -54,15 +57,18 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
     if (!data) return <MessageContainer className={styles.error}>Comments error</MessageContainer>;
     const { comments } = data;
 
-    const onClickReplyButton = ({ _id }: { _id: string }) => {
-        if (replyIdState === _id) {
+    const onClickReplyButton = ({ id, parentId }: { id: string; parentId: string }) => {
+        if (replyIdState === id) {
             setReplyIdState(null);
+            setParentIdState(null);
         } else {
-            setReplyIdState(_id);
+            setReplyIdState(id);
+            setParentIdState(parentId);
         }
     };
-    const onSaveCommentTop = (content: string) => onSaveComment({ content, replyToId: null });
-    const onSaveCommentReply = (content: string) => onSaveComment({ content, replyToId: replyIdState });
+    const onSaveCommentTop = (content: string) => onSaveComment({ content });
+    const onSaveCommentReply = (content: string) =>
+        onSaveComment({ content, replyToId: replyIdState ?? undefined, parentId: parentIdState ?? undefined });
 
     return (
         <section className={`mainContainer ${styles.container}`}>
@@ -71,18 +77,21 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
             <ul>
                 {comments.map((comment) => {
                     const { _id, replies } = comment;
+                    const commentId = _id.toString();
                     return (
-                        <li key={_id}>
+                        <li key={commentId}>
                             <Comment {...{ ...comment, onClickReplyButton }} />
-                            {replyIdState === _id ? <CommentForm {...{ onSaveComment: onSaveCommentReply }} /> : null}
+                            {replyIdState === commentId ? (
+                                <CommentForm {...{ onSaveComment: onSaveCommentReply }} />
+                            ) : null}
                             {replies ? (
                                 <ul className={styles.replies}>
-                                    {replies.map((comment) => {
-                                        const { _id } = comment;
+                                    {replies.map((replyComment) => {
+                                        const replyCommentId = replyComment._id.toString();
                                         return (
-                                            <li key={_id}>
-                                                <Comment {...{ ...comment, onClickReplyButton }} />
-                                                {replyIdState === _id ? (
+                                            <li key={replyCommentId}>
+                                                <Comment {...{ ...replyComment, onClickReplyButton }} />
+                                                {replyIdState === replyCommentId ? (
                                                     <CommentForm {...{ onSaveComment: onSaveCommentReply }} />
                                                 ) : null}
                                             </li>

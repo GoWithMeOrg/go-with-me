@@ -41,7 +41,9 @@ const resolvers = {
         },
 
         comments: async (parent: any, { event_id }: { event_id: string }) => {
-            return CommentModel.find({ event_id }).sort({ createdAt: -1 }).populate("author");
+            const comments = await CommentModel.find({ event_id }).populate("replies").populate("author");
+            const filtered = comments.filter(({ replyToId }) => !replyToId).sort(() => -1);
+            return filtered;
         },
 
         search: async (parent: any, { text }: { text: string }) => {
@@ -192,18 +194,18 @@ const typeDefs = gql`
         createdAt: ISODate
         updatedAt: ISODate
         likes: Int
-        replies_id: [ID]
+        repliesId: [ID]
         replies: [Comment]
-        replyToId: [String]
+        replyToId: ID
+        parentId: ID
     }
 
     input CommentInput {
         event_id: ID!
         author_id: ID!
-        content: String
-        likes: Int
-        replies_id: [ID]
-        replyToId: [String]
+        content: String!
+        replyToId: ID
+        parentId: ID
     }
 
     input EventInput {

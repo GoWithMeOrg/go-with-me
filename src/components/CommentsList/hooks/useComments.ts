@@ -9,26 +9,24 @@ const GET_COMMENTS_BY_EVENT_ID = gql`
         comments(event_id: $id) {
             _id
             author {
-                _id
                 name
-                email
             }
-            # replies_id
             replies {
                 _id
                 author {
-                    _id
                     name
-                    email
                 }
                 content
                 createdAt
-                updatedAt
+                likes
+                replyToId
+                parentId
             }
-            replyToId
             content
             createdAt
-            updatedAt
+            likes
+            parentId
+            replyToId
         }
     }
 `;
@@ -43,9 +41,9 @@ const SAVE_COMMENT = gql`
                 name
                 email
             }
+            replyToId
             content
-            createdAt
-            updatedAt
+            parentId
         }
     }
 `;
