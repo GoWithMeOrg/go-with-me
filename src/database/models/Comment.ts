@@ -6,18 +6,22 @@ import type { IUser } from "./User";
 // - INewComment (without _id, author, createdAt and updatedAt)
 // - IComment (with _id, author, createdAt and updatedAt)
 // think about createdAt and updatedAt
-export interface IComment {
-    _id: string;
+
+export interface INewComment {
     author_id: mongoose.Types.ObjectId;
-    author: IUser;
     event_id: mongoose.Types.ObjectId;
     content: string;
+    replyToId: mongoose.Types.ObjectId | null;
+    parentId: mongoose.Types.ObjectId | null;
+}
+
+export interface IComment extends INewComment {
+    _id: mongoose.Types.ObjectId;
+    author: IUser;
     createdAt: string;
     updatedAt: string;
     likes: number;
-    replies_id: mongoose.Types.ObjectId[];
     replies: IComment[];
-    replyToId: string | null;
 }
 
 export interface ICommentDocument extends Omit<IComment, "_id" | "createdAt" | "updatedAt">, Document {}
@@ -41,18 +45,14 @@ const CommentSchema = new Schema<ICommentDocument>(
             type: Number,
             default: 0,
         },
-        replies_id: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: "Comment",
-            },
-        ],
-        replyToId: [
-            {
-                type: String,
-                required: false,
-            },
-        ],
+        parentId: {
+            type: Schema.Types.ObjectId,
+            required: false,
+        },
+        replyToId: {
+            type: Schema.Types.ObjectId,
+            required: false,
+        },
     },
     {
         timestamps: true,
@@ -65,6 +65,13 @@ CommentSchema.virtual("author", {
     localField: "author_id",
     foreignField: "_id",
     justOne: true,
+});
+
+CommentSchema.virtual("replies", {
+    ref: "Comment",
+    localField: "_id",
+    foreignField: "parentId",
+    justOne: false,
 });
 
 const CommentModel: mongoose.Model<ICommentDocument> =
