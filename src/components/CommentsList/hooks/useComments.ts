@@ -19,14 +19,20 @@ const GET_COMMENTS_BY_EVENT_ID = gql`
                 content
                 createdAt
                 likes
-                replyToId
+                replyTo {
+                    id
+                    userName
+                }
                 parentId
             }
             content
             createdAt
             likes
             parentId
-            replyToId
+            # replyTo {
+            #     id
+            #     userName
+            # }
         }
     }
 `;
@@ -38,10 +44,11 @@ const SAVE_COMMENT = gql`
             _id
             author {
                 _id
-                name
-                email
             }
-            replyToId
+            replyTo {
+                id
+                userName
+            }
             content
             parentId
         }

@@ -2,17 +2,15 @@ import mongoose, { Schema, Document } from "mongoose";
 import UserModel from "./User";
 import type { IUser } from "./User";
 
-// TODO: split to types:
-// - INewComment (without _id, author, createdAt and updatedAt)
-// - IComment (with _id, author, createdAt and updatedAt)
-// think about createdAt and updatedAt
-
 export interface INewComment {
     author_id: mongoose.Types.ObjectId;
     event_id: mongoose.Types.ObjectId;
     content: string;
-    replyToId: mongoose.Types.ObjectId | null;
-    parentId: mongoose.Types.ObjectId | null;
+    replyTo?: {
+        id: mongoose.Types.ObjectId;
+        userName: string;
+    };
+    parentId?: mongoose.Types.ObjectId;
 }
 
 export interface IComment extends INewComment {
@@ -49,8 +47,11 @@ const CommentSchema = new Schema<ICommentDocument>(
             type: Schema.Types.ObjectId,
             required: false,
         },
-        replyToId: {
-            type: Schema.Types.ObjectId,
+        replyTo: {
+            type: {
+                id: { type: Schema.Types.ObjectId, required: true },
+                userName: { type: String, required: true },
+            },
             required: false,
         },
     },
