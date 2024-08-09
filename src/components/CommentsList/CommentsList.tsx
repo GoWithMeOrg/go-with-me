@@ -8,6 +8,7 @@ import { CommentForm } from "./CommentForm";
 import Spinner from "@/assets/icons/spinner.svg";
 
 import styles from "./CommentsList.module.css";
+import { ReplyTo } from "./styles";
 
 interface CommentsListProps {
     event_id: string;
@@ -22,25 +23,25 @@ const MessageContainer: FC<HTMLAttributes<HTMLDivElement>> = ({ children, classN
 export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
     const { data, loading, error, refetch, saveComment, author_id } = useComments(event_id);
 
-    const [replyIdState, setReplyIdState] = useState<string | null>(null);
+    const [replyToState, setReplyToState] = useState<ReplyTo | null>(null);
     const [parentIdState, setParentIdState] = useState<string | null>(null);
 
     const onSaveComment = useCallback(
-        async ({ content, replyToId, parentId }: { content: string; replyToId?: string; parentId?: string }) => {
+        async ({ content, replyTo, parentId }: { content: string; replyTo?: ReplyTo; parentId?: string }) => {
             const res = await saveComment({
                 variables: {
                     comment: {
                         event_id,
                         author_id,
                         content,
-                        replyToId,
+                        replyTo,
                         parentId,
                     },
                 },
             });
             if (!res) return;
             refetch();
-            setReplyIdState(null);
+            setReplyToState(null);
             setParentIdState(null);
             return res;
         },
@@ -57,18 +58,18 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
     if (!data) return <MessageContainer className={styles.error}>Comments error</MessageContainer>;
     const { comments } = data;
 
-    const onClickReplyButton = ({ id, parentId }: { id: string; parentId: string }) => {
-        if (replyIdState === id) {
-            setReplyIdState(null);
+    const onClickReplyButton = ({ replyTo, parentId }: { replyTo: ReplyTo; parentId: string }) => {
+        if (replyToState?.id === replyTo.id) {
+            setReplyToState(null);
             setParentIdState(null);
         } else {
-            setReplyIdState(id);
+            setReplyToState(replyTo);
             setParentIdState(parentId);
         }
     };
     const onSaveCommentTop = (content: string) => onSaveComment({ content });
     const onSaveCommentReply = (content: string) =>
-        onSaveComment({ content, replyToId: replyIdState ?? undefined, parentId: parentIdState ?? undefined });
+        onSaveComment({ content, replyTo: replyToState ?? undefined, parentId: parentIdState ?? undefined });
 
     return (
         <section className={`mainContainer ${styles.container}`}>
@@ -81,7 +82,7 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
                     return (
                         <li key={commentId}>
                             <Comment {...{ ...comment, onClickReplyButton }} />
-                            {replyIdState === commentId ? (
+                            {replyToState?.id === commentId ? (
                                 <CommentForm {...{ onSaveComment: onSaveCommentReply }} />
                             ) : null}
                             {replies ? (
@@ -91,7 +92,7 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
                                         return (
                                             <li key={replyCommentId}>
                                                 <Comment {...{ ...replyComment, onClickReplyButton }} />
-                                                {replyIdState === replyCommentId ? (
+                                                {replyToState?.id === replyCommentId ? (
                                                     <CommentForm {...{ onSaveComment: onSaveCommentReply }} />
                                                 ) : null}
                                             </li>

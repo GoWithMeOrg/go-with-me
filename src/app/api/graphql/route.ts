@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 
 import EventModel, { IEvent } from "@/database/models/Event";
 import mongooseConnect from "@/database/mongooseConnect";
-import CommentModel, { IComment } from "@/database/models/Comment";
+import CommentModel, { IComment, INewComment } from "@/database/models/Comment";
 import TripModel, { ITrip } from "@/database/models/Trip";
 import UserModel from "@/database/models/User";
 
@@ -42,7 +42,7 @@ const resolvers = {
 
         comments: async (parent: any, { event_id }: { event_id: string }) => {
             const comments = await CommentModel.find({ event_id }).populate("replies").populate("author");
-            const filtered = comments.filter(({ replyToId }) => !replyToId).sort(() => -1);
+            const filtered = comments.filter(({ replyTo }) => !replyTo).sort(() => -1);
             return filtered;
         },
 
@@ -98,7 +98,7 @@ const resolvers = {
             return await TripModel.deleteOne({ _id: id });
         },
 
-        saveComment: async (parent: any, { comment }: { comment: IComment }) => {
+        saveComment: async (parent: any, { comment }: { comment: INewComment }) => {
             const newComment = new CommentModel(comment);
             return await newComment.save();
         },
@@ -185,6 +185,11 @@ const typeDefs = gql`
         events_id: [ID]
     }
 
+    type ReplyToType {
+        id: ID
+        userName: String
+    }
+
     type Comment {
         _id: ID
         event_id: ID
@@ -194,17 +199,21 @@ const typeDefs = gql`
         createdAt: ISODate
         updatedAt: ISODate
         likes: Int
-        repliesId: [ID]
         replies: [Comment]
-        replyToId: ID
+        replyTo: ReplyToType
         parentId: ID
+    }
+
+    input ReplyToInput {
+        id: ID!
+        userName: String!
     }
 
     input CommentInput {
         event_id: ID!
         author_id: ID!
         content: String!
-        replyToId: ID
+        replyTo: ReplyToInput
         parentId: ID
     }
 

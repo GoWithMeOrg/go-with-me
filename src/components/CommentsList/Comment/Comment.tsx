@@ -3,14 +3,14 @@ import { FC } from "react";
 import Link from "next/link";
 import dayjs from "dayjs";
 import { Avatar } from "../../Avatar";
-import { ICommentProps } from "../styles";
+import { ICommentProps, ReplyTo } from "../styles";
 import ArrowReply from "@/assets/icons/arrowReply.svg";
 import Heart from "@/assets/icons/heart.svg";
 
 import styles from "./Comment.module.css";
 
 interface CommentProps {
-    onClickReplyButton: ({ id, parentId }: { id: string; parentId: string }) => void;
+    onClickReplyButton: ({ replyTo, parentId }: { replyTo: ReplyTo; parentId: string }) => void;
 }
 
 export const Comment: FC<ICommentProps & CommentProps> = ({
@@ -18,7 +18,7 @@ export const Comment: FC<ICommentProps & CommentProps> = ({
     content,
     likes,
     _id,
-    replyToId,
+    replyTo,
     createdAt,
     onClickReplyButton,
     parentId,
@@ -33,7 +33,7 @@ export const Comment: FC<ICommentProps & CommentProps> = ({
             <div className={styles.contentContainer}>
                 <div className={styles.userName}>
                     <span>{name}</span>
-                    {replyToId ? <Link href={`#comment-id-${replyToId}`}>reply to {replyToId.toString()}</Link> : null}
+                    {replyTo ? <Link href={`#comment-id-${replyTo.id}`}>reply to {replyTo.userName}</Link> : null}
                     <span>{dayjs(createdAt).format("DD MMMM YYYY HH:mm")}</span>
                 </div>
                 <p className={styles.commentText}>{content}</p>
@@ -44,7 +44,8 @@ export const Comment: FC<ICommentProps & CommentProps> = ({
                         className={styles.replyButton}
                         onClick={() => {
                             onClickReplyButton({
-                                id: _id.toString(),
+                                // id: _id.toString(),
+                                replyTo: { id: _id.toString(), userName: name },
                                 parentId: parentId ? parentId?.toString() : _id.toString(),
                             });
                         }}
