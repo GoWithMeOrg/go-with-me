@@ -68,7 +68,6 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
         setMarkerPosition(e.detail.latLng);
     };
 
-    console.log(props.locationEvent);
     return (
         <label className={classes.locationForm}>
             <div className={classes.labelFindMap}>

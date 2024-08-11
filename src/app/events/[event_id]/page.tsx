@@ -1,14 +1,13 @@
 "use client";
 
 import type { NextPage } from "next";
-import Link from "next/link";
-import { useMemo } from "react";
 import { gql, useQuery } from "@apollo/client";
-
 import { Event } from "@/components/Event";
+import Arrow from "@/assets/icons/arrow.svg";
+import { Button } from "@/components/Button";
+import { Loader } from "@/components/Loader";
 import { CommentsList } from "@/components/CommentsList";
-
-import styles from "./EventPage.module.css";
+import classes from "./page.module.css";
 
 type PageParams = {
     params: { event_id: string };
@@ -18,6 +17,7 @@ const GET_EVENT_BY_ID = gql`
     #graphql
     query GetEventById($id: ID!) {
         event(id: $id) {
+            _id
             organizer_id
             organizer {
                 _id
@@ -25,10 +25,19 @@ const GET_EVENT_BY_ID = gql`
                 email
             }
             name
+            location {
+                coordinates
+                properties {
+                    address
+                }
+            }
+            status
             description
             startDate
             endDate
             time
+            categories
+            types
             image
         }
         comments(event_id: $id) {
@@ -38,7 +47,10 @@ const GET_EVENT_BY_ID = gql`
                 name
                 email
             }
-            # replies_id
+            content
+            createdAt
+            updatedAt
+            likes
             replies {
                 _id
                 author {
@@ -49,11 +61,8 @@ const GET_EVENT_BY_ID = gql`
                 content
                 createdAt
                 updatedAt
+                likes
             }
-            replyToId
-            content
-            createdAt
-            updatedAt
         }
     }
 `;
@@ -61,10 +70,10 @@ const GET_EVENT_BY_ID = gql`
 const EventPage: NextPage<PageParams> = ({ params: { event_id } }) => {
     const { data, error, loading, refetch } = useQuery(GET_EVENT_BY_ID, { variables: { id: event_id } });
 
-    console.log("data", data);
+    //console.log("data", data);
 
     if (loading && !error) {
-        return <div>Loading...</div>;
+        return <Loader />;
     }
 
     if (error) {
@@ -72,16 +81,16 @@ const EventPage: NextPage<PageParams> = ({ params: { event_id } }) => {
     }
 
     return (
-        <section className={styles.eventPage}>
-            <h3>EventPage</h3>
+        <section className={classes.eventPage}>
+            <div className={classes.eventWrapper}>
+                <Button className={classes.arrowButton} resetDefaultStyles={true}>
+                    <Arrow />
+                </Button>
 
-            <Link href={`/events/${event_id}/edit`}>Edit</Link>
+                <Event event={data.event} />
 
-            <Event event={data.event} />
-
-            <div>{data.event.time}</div>
-
-            <CommentsList {...{ comments: data.comments, event_id, refetch }} />
+                <CommentsList {...{ comments: data.comments, event_id, refetch }} />
+            </div>
         </section>
     );
 };
