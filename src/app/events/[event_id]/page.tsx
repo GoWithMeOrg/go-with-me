@@ -2,11 +2,11 @@
 
 import type { NextPage } from "next";
 import { gql, useQuery } from "@apollo/client";
-import { Event } from "@/components/Event";
+import { Event } from "@/components/widgets/Event";
 import Arrow from "@/assets/icons/arrow.svg";
-import { Button } from "@/components/Button";
-import { Loader } from "@/components/Loader";
-import { CommentsList } from "@/components/CommentsList";
+import { Button } from "@/components/shared/Button";
+import { Loader } from "@/components/widgets/Loader";
+import { CommentsList } from "@/components/widgets/CommentsList";
 import classes from "./page.module.css";
 
 type PageParams = {

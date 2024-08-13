@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useMutation, gql } from "@apollo/client";
 
-import { TripForm } from "@/components/TripForm";
-import { TripType } from "@/components/TripForm/TripForm";
+import { TripForm } from "@/components/widgets/TripForm";
+import { TripType } from "@/components/widgets/TripForm/TripForm";
 
 const CREATE_TRIP = gql`
     mutation CreateTrip($trip: TripInput) {
