@@ -1,4 +1,5 @@
 import { createElement, FC, HTMLProps, useMemo } from "react";
+
 import styles from "./Title.module.css";
 
 interface TitleProps extends HTMLProps<HTMLHeadingElement> {

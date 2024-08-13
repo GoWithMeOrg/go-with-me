@@ -1,10 +1,12 @@
-import classes from "./AuthModal.module.css";
+import { FormEvent } from "react";
+import { signIn } from "next-auth/react";
+
 import Google from "@/assets/icons/google.svg";
 import Facebook from "@/assets/icons/facebook.svg";
 import Twitter from "@/assets/icons/twitter.svg";
 import Close from "@/assets/icons/close.svg";
-import { FormEvent } from "react";
-import { signIn } from "next-auth/react";
+
+import classes from "./AuthModal.module.css";
 
 interface IAuthModal {
     onClose?: () => void;

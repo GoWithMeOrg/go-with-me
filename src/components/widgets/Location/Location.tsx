@@ -1,7 +1,5 @@
 import { SetStateAction, forwardRef, useContext, useEffect, useRef, useState } from "react";
-import classes from "./Location.module.css";
-import Marker from "@/assets/icons/marker.svg";
-import Autocomplete from "@/components/widgets/GoogleMap/Autocomplete";
+
 import { Button } from "@/components/shared/Button";
 import { CustomMapControl, Geolocation, MapHandler } from "@/components/widgets/GoogleMap";
 import {
@@ -12,7 +10,11 @@ import {
     APIProviderContext,
     ControlPosition,
 } from "@vis.gl/react-google-maps";
-import Popup from "../../shared/Popup/Popup";
+import Popup from "@/components/shared/Popup/Popup";
+import Marker from "@/assets/icons/marker.svg";
+import Autocomplete from "@/components/widgets/GoogleMap/Autocomplete";
+
+import classes from "./Location.module.css";
 
 interface ILocation {
     locationEvent: {

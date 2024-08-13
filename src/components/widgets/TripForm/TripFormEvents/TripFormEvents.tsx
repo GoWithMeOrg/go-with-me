@@ -1,9 +1,9 @@
+import { useState } from "react";
+import Link from "next/link";
 import { useMutation, useQuery } from "@apollo/client";
 import gql from "graphql-tag";
-import classes from "./TripFormEvents.module.css";
-import Link from "next/link";
-import { useState } from "react";
 
+import classes from "./TripFormEvents.module.css";
 type TripFormEventsProps = {
     tripID: string;
 };

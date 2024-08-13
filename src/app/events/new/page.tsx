@@ -1,17 +1,19 @@
 "use client";
-// It can be a server-side rendered page
-// take a look how to pass sessions to the page in `src/app/events/page.tsx`
 
 import type { NextPage } from "next";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useMutation, gql } from "@apollo/client";
-import classes from "./page.module.css";
-import Arrow from "@/assets/icons/arrow.svg";
-import { Button } from "@/components/shared/Button";
+
 import { EventForm } from "@/components/widgets/EventForm";
-import { Title } from "@/components/shared/Title";
 import { EventType } from "@/components/widgets/EventForm/EventForm";
+
+import { Button } from "@/components/shared/Button";
+import { Title } from "@/components/shared/Title";
+
+import Arrow from "@/assets/icons/arrow.svg";
+
+import classes from "./page.module.css";
 
 const CREATE_EVENT = gql`
     mutation CreateEvent($event: EventInput!) {

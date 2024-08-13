@@ -1,7 +1,8 @@
-import dayjs from "dayjs";
-import classes from "./Time.module.css";
 import { forwardRef } from "react";
 
+import dayjs from "dayjs";
+
+import classes from "./Time.module.css";
 interface ITime {
     time?: Date | string | undefined;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;

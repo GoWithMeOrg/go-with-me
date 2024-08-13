@@ -1,7 +1,9 @@
 import { forwardRef } from "react";
-import classes from "./Description.module.css";
-import { Textarea } from "../Textarea";
+
 import { Span } from "../Span";
+import { Textarea } from "@/components/shared/Textarea";
+
+import classes from "./Description.module.css";
 
 interface IDescriptionProps {
     title: string;

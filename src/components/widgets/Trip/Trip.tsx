@@ -1,8 +1,9 @@
 import { FC, useEffect } from "react";
+import { AdvancedMarker, Map, Pin, useMap } from "@vis.gl/react-google-maps";
 
 import { ITrip } from "@/database/models/Trip";
 import { formatDate } from "@/utils/formatDate";
-import { AdvancedMarker, Map, Pin, useMap } from "@vis.gl/react-google-maps";
+
 import classes from "./Trip.module.css";
 
 export interface TripProps {

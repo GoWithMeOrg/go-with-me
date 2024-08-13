@@ -1,17 +1,22 @@
 "use client";
+
 import React, { FC } from "react";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { TitleField } from "@/components/shared/TitleField";
-import classes from "./ProfileForm.module.css";
 import { useSession } from "next-auth/react";
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+
 import { IUser } from "@/database/models/User";
-import { Button } from "@/components/shared/Button";
-import { Description } from "@/components/shared/Description";
-import { SelectCategory } from "@/components/widgets/SelectCategory";
-import { eventCategory, eventTypes } from "@/components/shared/Dropdown/dropdownLists";
+
 import { CreateTag } from "@/components/widgets/CreateTag";
 import { UploadFile } from "@/components/widgets/UploadFile";
+
+import { Button } from "@/components/shared/Button";
+import { Description } from "@/components/shared/Description";
+import { TitleField } from "@/components/shared/TitleField";
+import { eventCategory, eventTypes } from "@/components/shared/Dropdown/dropdownLists";
+import { SelectCategory } from "@/components/widgets/SelectCategory";
+
+import classes from "./ProfileForm.module.css";
 
 export type ProfileType = Partial<IUser>;
 

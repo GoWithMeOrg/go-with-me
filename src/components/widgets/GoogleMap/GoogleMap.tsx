@@ -7,10 +7,12 @@ import {
     Pin,
     useApiIsLoaded,
 } from "@vis.gl/react-google-maps";
+
 import { CustomMapControl } from "./CustomMapControl";
 import MapHandler from "./MapHandler";
+
 import Autocomplete from "./Autocomplete";
-import { Input } from "../../shared/Input";
+
 export const GoogleMap = () => {
     const apiIsLoaded = useApiIsLoaded();
     const ctx = useContext(APIProviderContext);

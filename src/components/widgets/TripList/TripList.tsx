@@ -4,10 +4,11 @@ import { FC } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useQuery, gql, useMutation } from "@apollo/client";
+
 import { formatDate } from "@/utils/formatDate";
+import { ITrip } from "@/database/models/Trip";
 
 import classes from "../TripList/TripList.module.css";
-import { ITrip } from "@/database/models/Trip";
 
 const GET_TRIPS = gql`
     query GetTrips {

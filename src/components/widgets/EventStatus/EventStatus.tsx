@@ -1,4 +1,5 @@
 import { forwardRef } from "react";
+
 import classes from "./EventStatus.module.css";
 
 interface IEventStatus {

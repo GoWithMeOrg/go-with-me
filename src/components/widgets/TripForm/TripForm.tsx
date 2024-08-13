@@ -1,7 +1,9 @@
 import { FC, FormEvent } from "react";
 import dayjs from "dayjs";
+
 import type { ITrip } from "@/database/models/Trip";
 import { TripFormEvents } from "@/components/widgets/TripForm/TripFormEvents/TripFormEvents";
+
 import classes from "./TripForm.module.css";
 
 export type TripType = Partial<ITrip>;

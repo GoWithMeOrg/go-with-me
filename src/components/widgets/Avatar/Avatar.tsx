@@ -1,10 +1,9 @@
 import { FC, HTMLAttributes } from "react";
-import styles from "./Avatar.module.css";
-import { getContent } from "./helpers";
-import { IUser } from "@/database/models/User";
 import { useSession } from "next-auth/react";
-import { gql, useQuery } from "@apollo/client";
 import Image from "next/image";
+import { gql, useQuery } from "@apollo/client";
+
+import { IUser } from "@/database/models/User";
 
 const GET_USER_BY_ID = gql`
     query GetUserById($userId: ID!) {

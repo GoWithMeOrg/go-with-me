@@ -1,6 +1,9 @@
 "use client";
+
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
+
 import Search from "@/assets/icons/search.svg";
+
 import classes from "./SearchEvent.module.css";
 
 interface ISearchEventProps {

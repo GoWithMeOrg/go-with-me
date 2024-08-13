@@ -6,9 +6,9 @@ import { useQuery, gql, useMutation } from "@apollo/client";
 
 import { formatDate } from "@/utils/formatDate";
 import type { IEvent } from "@/database/models/Event";
+import { Geocoding } from "@/components/widgets/GoogleMap";
 
 import classes from "./EventList.module.css";
-import { Geocoding } from "../GoogleMap";
 
 type EventListProps = {
     events?: IEvent[];

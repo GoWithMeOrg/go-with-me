@@ -1,10 +1,12 @@
 import React, { FC } from "react";
-import classes from "./NotificationsList.module.css";
-import { Invation } from "../Invation";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/client";
+
+import { Invation } from "@/components/widgets/Invation";
 import { IEvent } from "@/database/models/Event";
 import { SystemNotification } from "@/components/widgets/SystemNotification";
+
+import classes from "./NotificationsList.module.css";
 
 export type EventListProps = {
     events?: IEvent[];

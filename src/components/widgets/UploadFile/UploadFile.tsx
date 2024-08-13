@@ -1,6 +1,9 @@
 "use client";
+
 import { forwardRef, useEffect, useRef, useState } from "react";
+
 import Image from "next/image";
+
 import classes from "./UploadFile.module.css";
 
 type FlexDirection = "revert-layer" | "column";

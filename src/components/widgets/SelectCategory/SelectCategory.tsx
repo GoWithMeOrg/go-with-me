@@ -1,7 +1,8 @@
 import { forwardRef, useEffect, useRef, useState } from "react";
-import { Dropdown } from "../../shared/Dropdown";
+
+import { Dropdown } from "@/components/shared/Dropdown";
+
 import classes from "./SelectCategory.module.css";
-import { eventCategory } from "../../shared/Dropdown/dropdownLists";
 
 export interface ICategory {
     label: string;

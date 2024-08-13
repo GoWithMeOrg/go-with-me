@@ -2,7 +2,7 @@
 
 import { FC, Fragment, useState } from "react";
 import { Comment, ICommentProps } from "./Comment";
-import { Button } from "../../shared/Button";
+import { Button } from "@/components/shared/Button";
 import { CommentForm } from "./CommentForm";
 import { CommentsListContext, ICommentsListContext } from "./context";
 import { ApolloQueryResult, gql, OperationVariables, useMutation } from "@apollo/client";

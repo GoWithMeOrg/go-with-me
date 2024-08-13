@@ -1,6 +1,7 @@
-import { AuthPanel } from "../AuthPanel";
-import SearchEvent from "../SearchEvent/SearchEvent";
+import { AuthPanel } from "@/components/widgets/AuthPanel";
+import SearchEvent from "@/components/widgets/SearchEvent/SearchEvent";
 import Logo from "@/assets/icons/logo.svg";
+
 import classes from "./Header.module.css";
 
 export const Header = () => {

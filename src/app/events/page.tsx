@@ -1,6 +1,8 @@
 import type { NextPage } from "next";
 import Link from "next/link";
+
 import { EventList } from "@/components/widgets/EventList/EventList";
+
 import classes from "./page.module.css";
 const EventListPage: NextPage = async () => {
     return (

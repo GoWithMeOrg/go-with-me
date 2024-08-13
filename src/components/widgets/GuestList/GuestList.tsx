@@ -1,7 +1,8 @@
-import { CardUser } from "../CardUser";
+import { CardUser } from "@/components/widgets/CardUser";
+import { Button } from "@/components/shared/Button";
 import Arrow from "@/assets/icons/arrow.svg";
+
 import classes from "./GuestList.module.css";
-import { Button } from "../../shared/Button";
 
 export const GuestList = () => {
     return (
