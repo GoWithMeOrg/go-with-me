@@ -1,5 +1,5 @@
-import SearchEvent from "../../../components/SearchEvent/SearchEvent";
-import SearchEventsList from "../../../components/SearchEventsList/SearchEventsList";
+import SearchEvent from "../../../components/widgets/SearchEvent/SearchEvent";
+import SearchEventsList from "../../../components/widgets/SearchEventsList/SearchEventsList";
 import { NextPage } from "next";
 
 const SearchPage: NextPage<{ searchParams: { text: string; tripId: string } }> = ({ searchParams }) => {

@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import Link from "next/link";
 
-import { TripList } from "@/components/TripList";
+import { TripList } from "@/components/widgets/TripList";
 
 const TripListPage: NextPage = () => {
     return (

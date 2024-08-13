@@ -3,11 +3,11 @@
 import React from "react";
 import classes from "./page.module.css";
 import Arrow from "@/assets/icons/arrow.svg";
-import { Button } from "@/components/Button";
-import { Title } from "@/components/Title";
+import { Button } from "@/components/shared/Button";
+import { Title } from "@/components/shared/Title";
 import Image from "next/image";
 import profile from "@/assets/images/profile.png";
-import { ProfileTabs } from "@/components/ProfileTabs";
+import { ProfileTabs } from "@/components/widgets/ProfileTabs";
 import { NextPage } from "next";
 
 const Profile: NextPage = () => {
