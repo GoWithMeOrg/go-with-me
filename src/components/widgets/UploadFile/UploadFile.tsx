@@ -26,7 +26,6 @@ export const UploadFile = forwardRef(function UploadFile(props: IUploadFile, ref
         setUrl(props.imageUrl || "");
     }, [props.imageUrl]);
 
-    console.log(url);
     const handleFileChange = (event: any) => {
         setFile(event.target.files[0]);
 
