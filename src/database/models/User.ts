@@ -5,6 +5,11 @@ export interface IUser {
     name: string;
     email: string;
     image: string;
+    location: string;
+    aboutMe: string;
+    interests: string[];
+    meetings: string[];
+    tags: string[];
     emailVerified: boolean;
     createdAt: Date;
     updatedAt: Date;
@@ -17,12 +22,32 @@ const UserSchema = new Schema<IUserDocument>({
         type: String,
         required: true,
     },
+
     email: {
         type: String,
         unique: true,
         required: true,
     },
+
     image: String,
+    location: String,
+    aboutMe: String,
+
+    interests: {
+        type: [String],
+        required: true,
+    },
+
+    meetings: {
+        type: [String],
+        required: true,
+    },
+
+    tags: {
+        type: [String],
+        required: true,
+    },
+
     emailVerified: {
         type: Boolean,
         default: false,

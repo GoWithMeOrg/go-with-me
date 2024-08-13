@@ -20,17 +20,6 @@ import classes from "./ProfileForm.module.css";
 
 export type ProfileType = Partial<IUser>;
 
-// const GET_USERS = gql`
-//     query GetUsers {
-//         users {
-//             _id
-//             name
-//             email
-//             image
-//         }
-//     }
-// `;
-
 const GET_USER_BY_ID = gql`
     query GetUserById($userId: ID!) {
         user(id: $userId) {
@@ -38,6 +27,11 @@ const GET_USER_BY_ID = gql`
             name
             email
             image
+            location
+            aboutMe
+            interests
+            meetings
+            tags
         }
     }
 `;
@@ -67,7 +61,7 @@ export const ProfileForm: FC<IProfileFormProps> = ({ profileData, onSubmitEvent 
     const userId = session?.user?.id;
     const { data: userData, refetch } = useQuery(GET_USER_BY_ID, { variables: { userId: userId } });
 
-    //console.log(userData.user.name);
+    console.log(userData?.user);
     const fullName = userData?.user?.name || "";
     const [firstName, lastName] = fullName.split(" ");
 

@@ -139,6 +139,11 @@ const typeDefs = gql`
         name: String
         email: String
         image: String
+        location: String
+        aboutMe: String
+        interests: [String]
+        meetings: [String]
+        tags: [String]
         emailVerified: Boolean
     }
 
