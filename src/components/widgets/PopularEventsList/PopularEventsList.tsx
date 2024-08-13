@@ -10,12 +10,12 @@ import CreateEvent from "@/assets/icons/createEvent.svg";
 import CreatePrivateEvent from "@/assets/icons/createPrivateEvent.svg";
 import ExploreEvents from "@/assets/icons/exploreEvents.svg";
 import PlanAdventure from "@/assets/icons/planAdventure.svg";
-import { CardWork } from "../CardWork";
-import { CardEvent } from "../CardEvent";
-import { CreateAndInvite } from "../CreateAndInvite";
+import { CardWork } from "@/components/widgets/CardWork";
+import { CardEvent } from "@/components/widgets/CardEvent";
+import { CreateAndInvite } from "@/components/widgets/CreateAndInvite";
 import Link from "next/link";
-import { Button } from "../../shared/Button";
-import { Loader } from "../Loader";
+import { Button } from "@/components/shared/Button";
+import { Loader } from "@/components/shared/Loader";
 
 export type EventListProps = {
     events?: IEvent[];

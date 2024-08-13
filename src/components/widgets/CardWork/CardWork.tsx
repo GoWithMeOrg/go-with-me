@@ -1,5 +1,5 @@
 import classes from "./CardWork.module.css";
-import { Title } from "../../shared/Title";
+import { Title } from "@/components/shared/Title";
 interface CardWorkProps {
     title: string;
     description: React.ReactNode;

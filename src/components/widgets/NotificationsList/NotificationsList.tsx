@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import classes from "./NotificationsList.module.css";
-import { Invation } from "../Invation";
+import { Invation } from "@/components/widgets/Invation";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/client";
 import { IEvent } from "@/database/models/Event";

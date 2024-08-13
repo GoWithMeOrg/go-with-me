@@ -3,17 +3,17 @@
 import { TitleField } from "@/components/shared/TitleField";
 import classes from "./EventForm.module.css";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
-import { EventStatus } from "../EventStatus";
+import { EventStatus } from "@/components/widgets/EventStatus";
 import { Button } from "@/components/shared/Button";
 import { Date } from "@/components/widgets/Date";
 import { Time } from "@/components/widgets/Time";
 import { Description } from "@/components/shared/Description";
 import { SelectCategory } from "@/components/widgets/SelectCategory";
 import { eventCategory, eventTypes } from "@/components/shared/Dropdown/dropdownLists";
-import { CreateTag } from "../CreateTag";
-import { GuestList } from "../GuestList";
-import { UploadFile } from "../UploadFile";
-import { Location } from "../Location";
+import { CreateTag } from "@/components/widgets/CreateTag";
+import { GuestList } from "@/components/widgets/GuestList";
+import { UploadFile } from "@/components/widgets/UploadFile";
+import { Location } from "@/components/widgets/Location";
 import { IEvent } from "@/database/models/Event";
 
 export type EventType = Partial<IEvent>;

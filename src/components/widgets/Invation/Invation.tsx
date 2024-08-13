@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import classes from "./Invation.module.css";
 import Image from "next/image";
 import Link from "next/link";
-import Geocoding from "../GoogleMap/Geocoding";
+import Geocoding from "@/components/widgets/GoogleMap/Geocoding";
 import dayjs from "dayjs";
 import { IUser } from "@/database/models/User";
-import { Button } from "../../shared/Button";
+import { Button } from "@/components/shared/Button";
 import Joined from "@/assets/icons/joined.svg";
-import Cancel from "@/assets/icons/cancel.svg";
 
 export enum Condition {
     CANCELED = "canceled",

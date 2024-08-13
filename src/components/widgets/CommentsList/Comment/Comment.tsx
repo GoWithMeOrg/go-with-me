@@ -3,7 +3,7 @@ import { FC, ReactNode, useContext, useState } from "react";
 import Link from "next/link";
 import dayjs from "dayjs";
 import { Like } from "./svg";
-import { Avatar } from "../../Avatar";
+import { Avatar } from "@/components/widgets/Avatar";
 import { IComment } from "@/database/models/Comment";
 import { IUser } from "@/database/models/User";
 import { Reply } from "./svg/Reply";

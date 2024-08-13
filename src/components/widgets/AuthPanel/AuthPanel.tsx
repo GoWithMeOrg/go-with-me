@@ -6,10 +6,10 @@ import Link from "next/link";
 import Human from "@/assets/icons/human.svg";
 
 import classes from "./AuthPanel.module.css";
-import Popup from "../../shared/Popup/Popup";
-import { AuthModal } from "../AuthModal";
-import { Button } from "../../shared/Button";
-import { Loader } from "../Loader";
+import Popup from "@/components/shared/Popup/Popup";
+import { AuthModal } from "@/components/widgets/AuthModal";
+import { Button } from "@/components/shared/Button";
+import { Loader } from "@/components/shared/Loader";
 import Bell from "@/assets/icons/bell.svg";
 
 export const AuthPanel = () => {

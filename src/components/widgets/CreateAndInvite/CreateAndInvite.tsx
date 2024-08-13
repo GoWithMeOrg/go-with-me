@@ -4,11 +4,11 @@ import { useSession } from "next-auth/react";
 import classes from "./CreateAndInvite.module.css";
 import Join from "@/assets/icons/join.svg";
 import { useState } from "react";
-import Popup from "../../shared/Popup/Popup";
-import { AuthModal } from "../AuthModal";
+import Popup from "@/components/shared/Popup/Popup";
+import { AuthModal } from "@/components/widgets/AuthModal";
 import Link from "next/link";
-import { Button } from "../../shared/Button";
-import { Title } from "../../shared/Title";
+import { Button } from "@/components/shared/Button";
+import { Title } from "@/components/shared/Title";
 
 export const CreateAndInvite = () => {
     const { data: session, status } = useSession();

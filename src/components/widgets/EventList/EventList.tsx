@@ -8,7 +8,7 @@ import { formatDate } from "@/utils/formatDate";
 import type { IEvent } from "@/database/models/Event";
 
 import classes from "./EventList.module.css";
-import { Geocoding } from "../GoogleMap";
+import { Geocoding } from "@/components/widgets/GoogleMap";
 
 type EventListProps = {
     events?: IEvent[];

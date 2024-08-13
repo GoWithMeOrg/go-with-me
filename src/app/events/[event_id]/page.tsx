@@ -5,7 +5,7 @@ import { gql, useQuery } from "@apollo/client";
 import { Event } from "@/components/widgets/Event";
 import Arrow from "@/assets/icons/arrow.svg";
 import { Button } from "@/components/shared/Button";
-import { Loader } from "@/components/widgets/Loader";
+import { Loader } from "@/components/shared/Loader";
 import { CommentsList } from "@/components/widgets/CommentsList";
 import classes from "./page.module.css";
 

@@ -1,7 +1,7 @@
 import classes from "./CardEvent.module.css";
 import Image from "next/image";
 import Link from "next/link";
-import Geocoding from "../GoogleMap/Geocoding";
+import { Geocoding } from "@/components/widgets/GoogleMap/Geocoding";
 import dayjs from "dayjs";
 import Marker from "@/assets/icons/marker.svg";
 import Clock from "@/assets/icons/clock.svg";

@@ -1,12 +1,12 @@
 "use client";
 
 import classes from "./ProfileTabs.module.css";
-import { Button } from "../../shared/Button";
+import { Button } from "@/components/shared/Button";
 import Link from "next/link";
 import { useState } from "react";
-import { Navbar } from "../Navbar";
-import { ProfileForm } from "../ProfileForm";
-import { NotificationsList } from "../NotificationsList";
+import { Navbar } from "@/components/widgets/Navbar";
+import { ProfileForm } from "@/components/widgets/ProfileForm";
+import { NotificationsList } from "@/components/widgets/NotificationsList";
 
 export const ProfileTabs = () => {
     const [activeTab, setActiveTab] = useState("personal");

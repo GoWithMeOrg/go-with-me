@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import classes from "./SystemNotification.module.css";
 import Logogwm from "@/assets/icons/logogwm.svg";
 import dayjs from "dayjs";
-import { Button } from "../../shared/Button";
+import { Button } from "@/components/shared/Button";
 
 export const SystemNotification = () => {
     const [expanded, setExpanded] = useState(false);
