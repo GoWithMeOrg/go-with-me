@@ -6,13 +6,12 @@ import type { NextPage } from "next";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useMutation, gql } from "@apollo/client";
-
-import type { EventType } from "@/components/OldEventForm";
 import classes from "./page.module.css";
 import Arrow from "@/assets/icons/arrow.svg";
-import { Button } from "@/components/shared/Input/Button";
+import { Button } from "@/components/shared/Button";
 import { EventForm } from "@/components/widgets/EventForm";
 import { Title } from "@/components/shared/Title";
+import { EventType } from "@/components/widgets/EventForm/EventForm";
 
 const CREATE_EVENT = gql`
     mutation CreateEvent($event: EventInput!) {

@@ -5,7 +5,7 @@ import { SubmitHandler, useController, useForm } from "react-hook-form";
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/client";
 import { useSession } from "next-auth/react";
-import { Button } from "@/components/shared/Input/Button";
+import { Button } from "@/components/shared/Button";
 import { Textarea } from "@/components/shared/Textarea";
 import { CommentsListContext } from "../context";
 

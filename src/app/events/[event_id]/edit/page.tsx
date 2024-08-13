@@ -3,7 +3,6 @@
 import { NextPage } from "next";
 import { useRouter } from "next/navigation";
 import { gql, useMutation, useQuery } from "@apollo/client";
-
 import { EventForm } from "@/components/widgets/EventForm/EventForm";
 import type { IEvent } from "@/database/models/Event";
 import classes from "../../new/page.module.css";
