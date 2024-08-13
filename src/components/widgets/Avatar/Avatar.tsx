@@ -1,7 +1,9 @@
 import { FC, HTMLAttributes } from "react";
-import styles from "./Avatar.module.css";
-import { getContent } from "./helpers";
+
 import { IUser } from "@/database/models/User";
+import { getContent } from "./helpers";
+
+import styles from "./Avatar.module.css";
 
 interface AvatarProps extends HTMLAttributes<HTMLDivElement>, Pick<IUser, "name"> {
     scale?: number;

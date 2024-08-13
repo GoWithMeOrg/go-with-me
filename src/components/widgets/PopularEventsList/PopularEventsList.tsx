@@ -1,21 +1,25 @@
 import { FC } from "react";
+import Link from "next/link";
 import { useQuery, gql } from "@apollo/client";
-import type { IEvent } from "@/database/models/Event";
-import { Title } from "@/components/shared/Title";
 
-import classes from "./PopularEventsList.module.css";
+import type { IEvent } from "@/database/models/Event";
+
+import { Title } from "@/components/shared/Title";
+import { Button } from "@/components/shared/Button";
+import { Loader } from "@/components/shared/Loader";
+
+import { CardWork } from "@/components/widgets/CardWork";
+import { CardEvent } from "@/components/widgets/CardEvent";
+import { CreateAndInvite } from "@/components/widgets/CreateAndInvite";
+
 import ArrowCircle from "@/assets/icons/arrowCircle.svg";
 import Promo from "@/assets/icons/promo.svg";
 import CreateEvent from "@/assets/icons/createEvent.svg";
 import CreatePrivateEvent from "@/assets/icons/createPrivateEvent.svg";
 import ExploreEvents from "@/assets/icons/exploreEvents.svg";
 import PlanAdventure from "@/assets/icons/planAdventure.svg";
-import { CardWork } from "@/components/widgets/CardWork";
-import { CardEvent } from "@/components/widgets/CardEvent";
-import { CreateAndInvite } from "@/components/widgets/CreateAndInvite";
-import Link from "next/link";
-import { Button } from "@/components/shared/Button";
-import { Loader } from "@/components/shared/Loader";
+
+import classes from "./PopularEventsList.module.css";
 
 export type EventListProps = {
     events?: IEvent[];

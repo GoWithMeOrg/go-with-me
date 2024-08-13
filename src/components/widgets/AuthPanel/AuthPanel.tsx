@@ -3,14 +3,15 @@
 import React, { useState } from "react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-import Human from "@/assets/icons/human.svg";
 
-import classes from "./AuthPanel.module.css";
+import Human from "@/assets/icons/human.svg";
 import Popup from "@/components/shared/Popup/Popup";
 import { AuthModal } from "@/components/widgets/AuthModal";
 import { Button } from "@/components/shared/Button";
 import { Loader } from "@/components/shared/Loader";
 import Bell from "@/assets/icons/bell.svg";
+
+import classes from "./AuthPanel.module.css";
 
 export const AuthPanel = () => {
     const { data: session, status } = useSession();

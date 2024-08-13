@@ -1,4 +1,5 @@
 import { FC, useRef, useState } from "react";
+
 import Popup from "@/components/shared/Popup/Popup";
 
 export const PopupContainer: FC = () => {

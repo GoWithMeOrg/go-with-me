@@ -1,6 +1,8 @@
 import Image from "next/image";
+
 import Joined from "@/assets/icons/joined.svg";
 import profile from "@/assets/images/profile.png";
+
 import classes from "./UserCard.module.css";
 
 interface CardUserProps {

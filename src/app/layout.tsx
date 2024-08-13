@@ -1,10 +1,11 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { NextAuthProvider, ApolloWrapper, APIProviderGoogleMaps } from "./providers";
-import "@/styles/global.css";
+
 import { Footer } from "@/components/widgets/Footer";
 import { Header } from "@/components/widgets/Header";
-import { Suspense } from "react";
+
 import { Container } from "@/components/shared/Container";
 
 const inter = Inter({

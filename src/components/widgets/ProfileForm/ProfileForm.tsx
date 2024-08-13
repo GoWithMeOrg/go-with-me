@@ -1,15 +1,19 @@
 "use client";
 import React from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+
 import { TitleField } from "@/components/shared/TitleField";
-import classes from "./ProfileForm.module.css";
 import { Button } from "@/components/shared/Button";
 import { Description } from "@/components/shared/Description";
-import { SelectCategory } from "@/components/widgets/SelectCategory";
 import { eventCategory, eventTypes } from "@/components/shared/Dropdown/dropdownLists";
+
 import { CreateTag } from "@/components/widgets/CreateTag";
 import { UploadFile } from "@/components/widgets/UploadFile";
+import { SelectCategory } from "@/components/widgets/SelectCategory";
+
 import { IUser } from "@/database/models/User";
+
+import classes from "./ProfileForm.module.css";
 
 export type ProfileType = Partial<IUser>;
 

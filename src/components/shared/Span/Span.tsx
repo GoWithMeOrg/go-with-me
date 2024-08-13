@@ -1,4 +1,5 @@
 import React, { FC, HTMLAttributes, useMemo } from "react";
+
 import classes from "./Span.module.css";
 
 export interface SpanProps extends HTMLAttributes<HTMLSpanElement> {

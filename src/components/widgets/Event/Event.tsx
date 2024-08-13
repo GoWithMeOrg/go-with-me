@@ -1,14 +1,15 @@
 import React, { FC, SetStateAction, useEffect, useState } from "react";
-import type { IEvent } from "@/database/models/Event";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
 import Image from "next/image";
-import { formatDate } from "@/utils/formatDate";
-import Marker from "@/assets/icons/marker.svg";
 
-import classes from "./Event.module.css";
+import type { IEvent } from "@/database/models/Event";
+import { formatDate } from "@/utils/formatDate";
 import { Title } from "@/components/shared/Title";
 import { Geocoding } from "@/components/widgets/GoogleMap/Geocoding";
 import { Button } from "@/components/shared/Button";
 import { Map, AdvancedMarker, Pin } from "@vis.gl/react-google-maps";
+import { UserImage } from "@/components/widgets/UserImage";
 import Popup from "@/components/shared/Popup/Popup";
 import ArrowMaps from "@/assets/icons/arrowMaps.svg";
 import dayjs from "dayjs";
@@ -16,9 +17,9 @@ import Checkbox from "@/assets/icons/checkbox.svg";
 import Lock from "@/assets/icons/lock.svg";
 import ShareLink from "@/assets/icons/shareLink.svg";
 import Heart from "@/assets/icons/heart.svg";
-import { useSession } from "next-auth/react";
-import Link from "next/link";
-import { UserImage } from "@/components/widgets/UserImage";
+import Marker from "@/assets/icons/marker.svg";
+
+import classes from "./Event.module.css";
 
 export interface EventProps {
     event: IEvent;

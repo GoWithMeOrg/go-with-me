@@ -1,6 +1,8 @@
 import { forwardRef, useEffect, useRef, useState } from "react";
+
 import Plus from "@/assets/icons/plus.svg";
 import Minus from "@/assets/icons/minus.svg";
+
 import classes from "./CreateTag.module.css";
 
 interface ICreateTag {

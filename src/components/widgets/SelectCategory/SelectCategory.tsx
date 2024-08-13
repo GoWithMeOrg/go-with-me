@@ -1,5 +1,7 @@
 import { forwardRef, useEffect, useRef, useState } from "react";
+
 import { Dropdown } from "@/components/shared/Dropdown";
+
 import classes from "./SelectCategory.module.css";
 
 export interface ICategory {

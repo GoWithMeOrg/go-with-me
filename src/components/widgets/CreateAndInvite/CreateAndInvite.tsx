@@ -1,14 +1,16 @@
 "use client";
 
-import { useSession } from "next-auth/react";
-import classes from "./CreateAndInvite.module.css";
-import Join from "@/assets/icons/join.svg";
 import { useState } from "react";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
+
+import Join from "@/assets/icons/join.svg";
 import Popup from "@/components/shared/Popup/Popup";
 import { AuthModal } from "@/components/widgets/AuthModal";
-import Link from "next/link";
 import { Button } from "@/components/shared/Button";
 import { Title } from "@/components/shared/Title";
+
+import classes from "./CreateAndInvite.module.css";
 
 export const CreateAndInvite = () => {
     const { data: session, status } = useSession();

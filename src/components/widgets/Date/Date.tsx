@@ -1,7 +1,7 @@
-import dayjs from "dayjs";
-import classes from "./Date.module.css";
 import { forwardRef } from "react";
+import dayjs from "dayjs";
 
+import classes from "./Date.module.css";
 export interface IDate {
     date?: Date | string | undefined;
     title: string;

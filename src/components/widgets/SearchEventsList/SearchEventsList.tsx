@@ -1,8 +1,11 @@
 "use client";
+
 import { useMutation, useQuery } from "@apollo/client";
 import gql from "graphql-tag";
-import styles from "./SearchEventsList.module.css";
+
 import Link from "next/link";
+
+import styles from "./SearchEventsList.module.css";
 
 const GET_SEARCH = gql`
     query Search($text: String!) {

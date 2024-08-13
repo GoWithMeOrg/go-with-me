@@ -1,12 +1,14 @@
 "use client";
 import React, { useState } from "react";
-import classes from "./Footer.module.css";
 import Link from "next/link";
-import LogoFooter from "@/assets/icons/logoFooter.svg";
 import { signOut, useSession } from "next-auth/react";
+
+import LogoFooter from "@/assets/icons/logoFooter.svg";
 import Popup from "@/components/shared/Popup/Popup";
 import { AuthModal } from "@/components/widgets/AuthModal";
 import { Button } from "@/components/shared/Button";
+
+import classes from "./Footer.module.css";
 
 export const Footer = () => {
     const { data: session, status } = useSession();

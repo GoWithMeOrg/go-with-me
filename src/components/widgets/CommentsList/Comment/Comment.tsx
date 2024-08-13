@@ -2,15 +2,16 @@
 import { FC, ReactNode, useContext, useState } from "react";
 import Link from "next/link";
 import dayjs from "dayjs";
+
 import { Like } from "./svg";
 import { Avatar } from "@/components/widgets/Avatar";
 import { IComment } from "@/database/models/Comment";
 import { IUser } from "@/database/models/User";
 import { Reply } from "./svg/Reply";
-import { CommentForm } from "../CommentForm";
+import { CommentForm } from "@/components/widgets/CommentsList/CommentForm";
+import { CommentsListContext } from "../context";
 
 import styles from "./Comment.module.css";
-import { CommentsListContext } from "../context";
 
 export interface ICommentProps extends Pick<IComment, "content" | "_id" | "createdAt" | "likes" | "replyToId"> {
     author: Pick<IUser, "name">;

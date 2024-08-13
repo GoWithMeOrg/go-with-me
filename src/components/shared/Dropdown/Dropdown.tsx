@@ -1,9 +1,12 @@
-import { forwardRef, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+import { ICategory } from "@/components/widgets/SelectCategory/SelectCategory";
+
 import Plus from "@/assets/icons/plus.svg";
 import Minus from "@/assets/icons/minus.svg";
 import ArrowMenu from "@/assets/icons/arrowMenu.svg";
+
 import classes from "./Dropdown.module.css";
-import { ICategory } from "@/components/widgets/SelectCategory/SelectCategory";
 
 interface DropdownProps {
     textButton?: string;

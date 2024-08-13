@@ -1,5 +1,7 @@
 import { useMap } from "@vis.gl/react-google-maps";
+
 import { Button } from "@/components/shared/Button";
+
 import classes from "./Autocomlete.module.css";
 
 export const Geolocation = () => {
