@@ -22,12 +22,7 @@
     font-weight: 700;
     text-align: left;
     text-transform: uppercase;
-}
-
-.userAvatar {
-    width: 3.13rem;
-    height: 3.13rem;
-    margin-right: 1rem;
+    margin-left: 1rem;
 }
 
 .avatarTitle {

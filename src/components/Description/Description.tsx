@@ -1,6 +1,7 @@
 import { forwardRef } from "react";
 import classes from "./Description.module.css";
 import { Textarea } from "../Textarea";
+import { Span } from "../Span";
 
 interface IDescriptionProps {
     title: string;
@@ -11,7 +12,7 @@ interface IDescriptionProps {
 export const Description = forwardRef(function Description(props: IDescriptionProps, ref) {
     return (
         <label className={classes.descriptionLabel}>
-            <span className={classes.descriptionTitle}>Description</span>
+            <Span title={props.title} />
             <Textarea
                 {...{
                     rows: 6,

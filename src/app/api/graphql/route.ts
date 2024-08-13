@@ -26,6 +26,14 @@ const resolvers = {
     },
 
     Query: {
+        users: async () => {
+            return UserModel.find({});
+        },
+
+        user: async (parent: any, { id, ...rest }: { id: string }) => {
+            return UserModel.findById(id);
+        },
+
         events: async () => {
             return EventModel.find({});
         },
@@ -116,6 +124,8 @@ const typeDefs = gql`
 
     type Query {
         hello: String
+        users: [User]
+        user(id: ID!): User
         events: [Event]
         event(id: ID!): Event
         trips: [Trip]

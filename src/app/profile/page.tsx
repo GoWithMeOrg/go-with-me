@@ -5,10 +5,9 @@ import classes from "./page.module.css";
 import Arrow from "@/assets/icons/arrow.svg";
 import { Button } from "@/components/Button";
 import { Title } from "@/components/Title";
-import Image from "next/image";
-import profile from "@/assets/images/profile.png";
 import { ProfileTabs } from "@/components/ProfileTabs";
 import { NextPage } from "next";
+import { Avatar } from "@/components/Avatar";
 
 const Profile: NextPage = () => {
     return (
@@ -18,13 +17,7 @@ const Profile: NextPage = () => {
                     <Arrow />
                 </Button>
                 <div className={classes.avatarTitle}>
-                    <div className={classes.userAvatar}>
-                        <Image
-                            style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }}
-                            src={profile}
-                            alt="img"
-                        />
-                    </div>
+                    <Avatar name={""} />
                     <Title className={classes.formTitle} title="MY ACCOUNT" tag={"h2"} />
                 </div>
                 <ProfileTabs />
