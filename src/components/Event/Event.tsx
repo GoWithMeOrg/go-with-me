@@ -5,7 +5,7 @@ import { formatDate } from "@/utils/formatDate";
 import Marker from "@/assets/icons/marker.svg";
 
 import classes from "./Event.module.css";
-import { TitleH2 } from "../TitleH2";
+import { Title } from "../Title";
 import { Geocoding } from "../GoogleMap";
 import { Button } from "../Button";
 import { Map, AdvancedMarker, Pin } from "@vis.gl/react-google-maps";
@@ -16,10 +16,8 @@ import Checkbox from "@/assets/icons/checkbox.svg";
 import Lock from "@/assets/icons/lock.svg";
 import ShareLink from "@/assets/icons/shareLink.svg";
 import Heart from "@/assets/icons/heart.svg";
-import { TitleH3 } from "../TitleH3";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { GuestList } from "../GuestList";
 import { UserImage } from "../UserImage";
 
 export interface EventProps {
@@ -60,7 +58,7 @@ const Event: FC<EventProps> = ({ event }) => {
         <div className={classes.event}>
             <div className={classes.eventWrapper}>
                 <div className={classes.eventInfo}>
-                    <TitleH2 title={event.name} className={classes.eventTitle} />
+                    <Title title={event.name} className={classes.eventTitle} tag={"h2"} />
 
                     <div className={classes.location}>
                         <Marker style={{ transform: "scale(0.937)", marginRight: "0.5rem" }} />
@@ -68,7 +66,7 @@ const Event: FC<EventProps> = ({ event }) => {
                             <Geocoding coordinates={coord} />
                         </div>
 
-                        <Button className={classes.buttonGoogleMaps} onClick={handleShowMap}>
+                        <Button className={classes.buttonGoogleMaps} onClick={handleShowMap} resetDefaultStyles={true}>
                             <ArrowMaps style={{ marginRight: "0.25rem" }} />
                             {"Google maps"}
                         </Button>
@@ -166,7 +164,7 @@ const Event: FC<EventProps> = ({ event }) => {
             </div>
 
             <div className={classes.descriptionAndOrganizer}>
-                <TitleH3 title={"Description"} className={classes.description} />
+                <Title title={"Description"} className={classes.description} tag={"h3"} />
                 <div className={classes.eventDescription}>
                     <span className={classes.descriptionText}>{event.description}</span>
 
