@@ -1,14 +1,15 @@
 "use client";
 
-import { FC, HTMLAttributes, MouseEventHandler, useCallback, useState } from "react";
+import { FC, HTMLAttributes, useCallback, useState } from "react";
+
 import { useComments } from "./hooks";
 import { Comment } from "./Comment";
 import { Button } from "../Button";
 import { CommentForm } from "./CommentForm";
 import Spinner from "@/assets/icons/spinner.svg";
+import { ReplyTo } from "./types";
 
 import styles from "./CommentsList.module.css";
-import { ReplyTo } from "./types";
 
 interface CommentsListProps {
     event_id: string;
