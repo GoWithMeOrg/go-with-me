@@ -11,14 +11,6 @@ import { ReplyTo } from "./types";
 
 import styles from "./CommentsList.module.css";
 
-const DELETE_COMMENT_MUTATION = gql`
-    mutation DeleteComment($id: ID!) {
-        deleteComment(id: $id) {
-            _id
-        }
-    }
-`;
-
 interface CommentsListProps {
     event_id: string;
 }
@@ -80,19 +72,6 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
     const onSaveCommentTop = (content: string) => onSaveComment({ content });
     const onSaveCommentReply = (content: string) =>
         onSaveComment({ content, replyTo: replyToState ?? undefined, parentId: parentIdState ?? undefined });
-
-    const handleRemoveComment = async (commentId: string) => {
-        await refetch();
-
-        try {
-            await deleteCommentMutation({
-                variables: { id: commentId },
-            });
-            await refetch();
-        } catch (error) {
-            console.error("Error deleting event: ", error);
-        }
-    };
 
     return (
         <section className={`mainContainer ${styles.container}`}>
