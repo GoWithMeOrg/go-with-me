@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, HTMLAttributes, useCallback, useState } from "react";
+import { FC, HTMLAttributes, MouseEventHandler, useCallback, useState } from "react";
 import { useComments } from "./hooks";
 import { Comment } from "./Comment";
 import { Button } from "../Button";
@@ -8,7 +8,7 @@ import { CommentForm } from "./CommentForm";
 import Spinner from "@/assets/icons/spinner.svg";
 
 import styles from "./CommentsList.module.css";
-import { ReplyTo } from "./styles";
+import { ReplyTo } from "./types";
 
 interface CommentsListProps {
     event_id: string;
@@ -28,7 +28,7 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
 
     const onSaveComment = useCallback(
         async ({ content, replyTo, parentId }: { content: string; replyTo?: ReplyTo; parentId?: string }) => {
-            const res = await saveComment({
+            const saveCommentResponse = await saveComment({
                 variables: {
                     comment: {
                         event_id,
@@ -39,11 +39,11 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
                     },
                 },
             });
-            if (!res) return;
+            if (!saveCommentResponse) return;
             refetch();
             setReplyToState(null);
             setParentIdState(null);
-            return res;
+            return saveCommentResponse;
         },
         [event_id, refetch, saveComment, author_id],
     );
@@ -67,6 +67,7 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
             setParentIdState(parentId);
         }
     };
+
     const onSaveCommentTop = (content: string) => onSaveComment({ content });
     const onSaveCommentReply = (content: string) =>
         onSaveComment({ content, replyTo: replyToState ?? undefined, parentId: parentIdState ?? undefined });

@@ -30,9 +30,9 @@ export const CommentForm: FC<CommentFormProps> = ({ onSaveComment }) => {
 
     const onSubmit: SubmitHandler<Inputs> = async ({ comment }) => {
         try {
-            const res = await onSaveComment(comment);
-            if (!res) return;
-            console.log("EventPage: ", res);
+            const saveCommentResponse = await onSaveComment(comment);
+            if (!saveCommentResponse) return;
+            console.log("EventPage: ", saveCommentResponse);
             reset();
         } catch (error) {
             console.error("EventPage: ", error);

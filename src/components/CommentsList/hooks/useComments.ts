@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@apollo/client";
 import gql from "graphql-tag";
-import { ICommentProps } from "../styles";
 import { useSession } from "next-auth/react";
+import { ICommentProps } from "../types";
 
 const GET_COMMENTS_BY_EVENT_ID = gql`
     #graphql
@@ -29,10 +29,6 @@ const GET_COMMENTS_BY_EVENT_ID = gql`
             createdAt
             likes
             parentId
-            # replyTo {
-            #     id
-            #     userName
-            # }
         }
     }
 `;

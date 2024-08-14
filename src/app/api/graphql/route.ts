@@ -42,8 +42,8 @@ const resolvers = {
 
         comments: async (parent: any, { event_id }: { event_id: string }) => {
             const comments = await CommentModel.find({ event_id }).populate("replies").populate("author");
-            const filtered = comments.filter(({ replyTo }) => !replyTo).sort(() => -1);
-            return filtered;
+            const firstLevelComments = comments.filter(({ replyTo }) => !replyTo).sort(() => -1);
+            return firstLevelComments;
         },
 
         search: async (parent: any, { text }: { text: string }) => {
