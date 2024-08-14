@@ -1,7 +1,6 @@
 "use client";
 
 import type { NextPage } from "next";
-import Link from "next/link";
 import { gql, useQuery } from "@apollo/client";
 
 import { Event } from "@/components/Event";
@@ -68,7 +67,8 @@ const EventPage: NextPage<PageParams> = ({ params: { event_id } }) => {
                     //onSave={handleSaveComment}
                 /> */}
 
-            <CommentsList {...{ event_id }} />
+                <CommentsList {...{ event_id }} />
+            </div>
         </section>
     );
 };
