@@ -6,12 +6,12 @@ interface TitleProps extends HTMLProps<HTMLHeadingElement> {
     tag: "h1" | "h2" | "h3";
 }
 
-export const Title: FC<TitleProps> = ({ className, title, tag, ...rest }) => {
+export const Title: FC<TitleProps> = ({ className, title, tag, children, ...rest }) => {
     const headingCssString: string = useMemo(() => {
         let cssString = styles[tag];
         if (className) cssString += " " + className;
         return cssString;
     }, [className, tag]);
 
-    return createElement(tag, { className: headingCssString, ...rest }, title);
+    return createElement(tag, { className: headingCssString, ...rest }, title ?? children);
 };
