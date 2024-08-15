@@ -67,7 +67,7 @@ const EventPage: NextPage<PageParams> = ({ params: { event_id } }) => {
                     <Event event={data.event} />
                 </div>
             </section>
-            <CommentsList {...{ event_id }} />
+            <CommentsList event_id={event_id} />
         </>
     );
 };

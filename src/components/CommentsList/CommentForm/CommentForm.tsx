@@ -44,13 +44,14 @@ export const CommentForm: FC<CommentFormProps> = ({ onSaveComment }) => {
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
             <label>
                 <Textarea
-                    {...{
-                        rows: 8,
-                        resizeNone: true,
-                        error: errors.comment ? true : false,
-                        placeholder: "Text of your comment ...",
-                    }}
-                    {...{ onChange, onBlur, value, name }}
+                    rows={8}
+                    resizeNone={true}
+                    error={errors.comment ? true : false}
+                    placeholder="Text of your comment ..."
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    value={value}
+                    name={name}
                 ></Textarea>
             </label>
             <Button disabled={errors.comment ? true : false}>Comment</Button>

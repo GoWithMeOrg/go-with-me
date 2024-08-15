@@ -76,26 +76,24 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
     return (
         <section className={`mainContainer ${styles.container}`}>
             <h3 className={styles.title}>Comments</h3>
-            <CommentForm {...{ onSaveComment: onSaveCommentTop }} />
+            <CommentForm onSaveComment={onSaveCommentTop} />
             <ul>
                 {comments.map((comment) => {
                     const { _id, replies } = comment;
                     const commentId = _id.toString();
                     return (
                         <li key={commentId}>
-                            <Comment {...{ ...comment, onClickReplyButton }} />
-                            {replyToState?.id === commentId ? (
-                                <CommentForm {...{ onSaveComment: onSaveCommentReply }} />
-                            ) : null}
+                            <Comment {...comment} onClickReplyButton={onClickReplyButton} />
+                            {replyToState?.id === commentId ? <CommentForm onSaveComment={onSaveCommentReply} /> : null}
                             {replies ? (
                                 <ul className={styles.replies}>
                                     {replies.map((replyComment) => {
                                         const replyCommentId = replyComment._id.toString();
                                         return (
                                             <li key={replyCommentId}>
-                                                <Comment {...{ ...replyComment, onClickReplyButton }} />
+                                                <Comment {...replyComment} onClickReplyButton={onClickReplyButton} />
                                                 {replyToState?.id === replyCommentId ? (
-                                                    <CommentForm {...{ onSaveComment: onSaveCommentReply }} />
+                                                    <CommentForm onSaveComment={onSaveCommentReply} />
                                                 ) : null}
                                             </li>
                                         );
