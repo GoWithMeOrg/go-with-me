@@ -2,6 +2,7 @@
 
 import { FC, HTMLAttributes, useCallback, useState } from "react";
 
+import { Title } from "../Title";
 import { useComments } from "./hooks";
 import { Comment } from "./Comment";
 import { Button } from "../Button";
@@ -16,9 +17,11 @@ interface CommentsListProps {
 }
 
 const MessageContainer: FC<HTMLAttributes<HTMLDivElement>> = ({ children, className, ...rest }) => (
-    <div className={`${classes.messageContainer} ${className ?? ""}`} {...rest}>
-        {children}
-    </div>
+    <section className={classes.container}>
+        <div className={`${classes.messageContainer} ${className ?? ""}`} {...rest}>
+            {children}
+        </div>
+    </section>
 );
 
 export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
@@ -74,8 +77,10 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
         onSaveComment({ content, replyTo: replyToState ?? undefined, parentId: parentIdState ?? undefined });
 
     return (
-        <section className={`mainContainer ${classes.container}`}>
-            <h3 className={classes.title}>Comments</h3>
+        <section className={classes.container}>
+            <Title tag="h3" className={classes.title}>
+                Comments
+            </Title>
             <CommentForm onSaveComment={onSaveCommentTop} />
             <ul>
                 {comments.map((comment) => {
