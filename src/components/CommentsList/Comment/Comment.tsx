@@ -8,7 +8,7 @@ import { ICommentProps, ReplyTo } from "../types";
 import ArrowReply from "@/assets/icons/arrowReply.svg";
 import Heart from "@/assets/icons/heart.svg";
 
-import styles from "./Comment.module.css";
+import classes from "./Comment.module.css";
 
 interface CommentProps {
     onClickReplyButton: ({}: { replyTo: ReplyTo; parentId: string }) => void;
@@ -30,24 +30,24 @@ export const Comment: FC<ICommentProps & CommentProps> = ({
     const id = _id.toString();
 
     return (
-        <div className={styles.comment} id={`comment-id-${id}`}>
-            <div className={styles.avatarContainer}>
-                <Avatar className={styles.avatar} name={name} />
+        <div className={classes.comment} id={`comment-id-${id}`}>
+            <div className={classes.avatarContainer}>
+                <Avatar className={classes.avatar} name={name} />
             </div>
-            <div className={styles.contentContainer}>
-                <div className={styles.userName}>
+            <div className={classes.contentContainer}>
+                <div className={classes.userName}>
                     <span>{name}</span>
                     {replyTo ? <Link href={`#comment-id-${replyTo.id}`}>reply to {replyTo.userName}</Link> : null}
                     <span>{dayjs(createdAt).format("DD MMMM YYYY HH:mm")}</span>
                 </div>
-                <p className={styles.commentText}>{content}</p>
-                <div className={styles.likesContainer}>
+                <p className={classes.commentText}>{content}</p>
+                <div className={classes.likesContainer}>
                     <button onClick={onClickLikeButton}>
-                        <Heart className={likes ? styles.liked : undefined} />
+                        <Heart className={likes ? classes.liked : undefined} />
                     </button>
-                    <span className={styles.number}>{likes ? likes : ""}</span>
+                    <span className={classes.number}>{likes ? likes : ""}</span>
                     <button
-                        className={styles.replyButton}
+                        className={classes.replyButton}
                         onClick={() =>
                             onClickReplyButton({
                                 replyTo: { id, userName: name },

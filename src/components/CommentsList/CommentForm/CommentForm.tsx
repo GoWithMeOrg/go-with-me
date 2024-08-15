@@ -7,7 +7,7 @@ import { FetchResult } from "@apollo/client";
 import { Button } from "@/components/Button";
 import { Textarea } from "@/components/Textarea";
 
-import styles from "./CommentForm.module.css";
+import classes from "./CommentForm.module.css";
 
 interface CommentFormProps {
     onSaveComment: (content: string) => Promise<FetchResult<any> | undefined>;
@@ -41,7 +41,7 @@ export const CommentForm: FC<CommentFormProps> = ({ onSaveComment }) => {
     };
 
     return (
-        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+        <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
             <label>
                 <Textarea
                     rows={8}

@@ -9,14 +9,14 @@ import { CommentForm } from "./CommentForm";
 import Spinner from "@/assets/icons/spinner.svg";
 import { ReplyTo } from "./types";
 
-import styles from "./CommentsList.module.css";
+import classes from "./CommentsList.module.css";
 
 interface CommentsListProps {
     event_id: string;
 }
 
 const MessageContainer: FC<HTMLAttributes<HTMLDivElement>> = ({ children, className, ...rest }) => (
-    <div className={`${styles.messageContainer} ${className ?? ""}`} {...rest}>
+    <div className={`${classes.messageContainer} ${className ?? ""}`} {...rest}>
         {children}
     </div>
 );
@@ -56,7 +56,7 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
             </MessageContainer>
         );
     if (error) return <MessageContainer>Error: {error.message}</MessageContainer>;
-    if (!data) return <MessageContainer className={styles.error}>Comments error</MessageContainer>;
+    if (!data) return <MessageContainer className={classes.error}>Comments error</MessageContainer>;
     const { comments } = data;
 
     const onClickReplyButton = ({ replyTo, parentId }: { replyTo: ReplyTo; parentId: string }) => {
@@ -74,8 +74,8 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
         onSaveComment({ content, replyTo: replyToState ?? undefined, parentId: parentIdState ?? undefined });
 
     return (
-        <section className={`mainContainer ${styles.container}`}>
-            <h3 className={styles.title}>Comments</h3>
+        <section className={`mainContainer ${classes.container}`}>
+            <h3 className={classes.title}>Comments</h3>
             <CommentForm onSaveComment={onSaveCommentTop} />
             <ul>
                 {comments.map((comment) => {
@@ -86,7 +86,7 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
                             <Comment {...comment} onClickReplyButton={onClickReplyButton} />
                             {replyToState?.id === commentId ? <CommentForm onSaveComment={onSaveCommentReply} /> : null}
                             {replies ? (
-                                <ul className={styles.replies}>
+                                <ul className={classes.replies}>
                                     {replies.map((replyComment) => {
                                         const replyCommentId = replyComment._id.toString();
                                         return (

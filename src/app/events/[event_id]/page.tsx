@@ -9,7 +9,7 @@ import { Button } from "@/components/Button";
 import { Loader } from "@/components/Loader";
 import { CommentsList } from "@/components/CommentsList";
 
-import styles from "./EventPage.module.css";
+import classes from "./EventPage.module.css";
 
 type PageParams = {
     params: { event_id: string };
@@ -58,9 +58,9 @@ const EventPage: NextPage<PageParams> = ({ params: { event_id } }) => {
 
     return (
         <>
-            <section className={styles.eventPage}>
-                <div className={styles.eventWrapper}>
-                    <Button className={styles.arrowButton} resetDefaultStyles={true}>
+            <section className={classes.eventPage}>
+                <div className={classes.eventWrapper}>
+                    <Button className={classes.arrowButton} resetDefaultStyles={true}>
                         <Arrow />
                     </Button>
 
