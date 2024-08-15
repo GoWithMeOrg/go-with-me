@@ -1,13 +1,5 @@
-<<<<<<< HEAD
-.container {
-    display: grid;
-    grid-template-columns: repeat(12, 80px);
-    column-gap: 20px;
-    justify-content: center;
-=======
 .eventPage {
     width: var(--desktop-width-container);
->>>>>>> 531b9d78e9bd5f0338e20457feeaa74dddf9a794
 }
 
 .eventWrapper {
