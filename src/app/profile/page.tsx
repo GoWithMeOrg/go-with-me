@@ -1,14 +1,18 @@
 "use client";
 
 import React from "react";
-import classes from "./page.module.css";
-import Arrow from "@/assets/icons/arrow.svg";
-import { Button } from "@/components/Button";
-import { Title } from "@/components/Title";
-import Image from "next/image";
-import profile from "@/assets/images/profile.png";
-import { ProfileTabs } from "@/components/ProfileTabs";
 import { NextPage } from "next";
+import Image from "next/image";
+
+import { ProfileTabs } from "@/components/widgets/ProfileTabs";
+
+import { Button } from "@/components/shared/Button";
+import { Title } from "@/components/shared/Title";
+
+import Arrow from "@/assets/icons/arrow.svg";
+import profile from "@/assets/images/profile.png";
+
+import classes from "./page.module.css";
 
 const Profile: NextPage = () => {
     return (

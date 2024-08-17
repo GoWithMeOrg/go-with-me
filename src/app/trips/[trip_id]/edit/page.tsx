@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { gql, useMutation, useQuery } from "@apollo/client";
 
 import type { ITrip } from "@/database/models/Trip";
-import { TripForm } from "@/components/TripForm";
+import { TripForm } from "@/components/widgets/TripForm";
 
 type PageParams = {
     params: {

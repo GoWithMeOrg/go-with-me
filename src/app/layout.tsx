@@ -1,11 +1,14 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { NextAuthProvider, ApolloWrapper, APIProviderGoogleMaps } from "./providers";
+
+import { Footer } from "@/components/widgets/Footer";
+import { Header } from "@/components/widgets/Header";
+
+import { Container } from "@/components/shared/Container";
+
 import "@/styles/global.css";
-import { Footer } from "@/components/Footer";
-import { Header } from "@/components/Header";
-import { Suspense } from "react";
-import { Container } from "@/components/Container";
 
 const inter = Inter({
     weight: ["400", "500", "600", "700"],

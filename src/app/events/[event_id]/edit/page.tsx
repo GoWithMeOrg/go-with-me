@@ -4,13 +4,16 @@ import { NextPage } from "next";
 import { useRouter } from "next/navigation";
 import { gql, useMutation, useQuery } from "@apollo/client";
 
-import { EventForm } from "@/components/EventForm/EventForm";
 import type { IEvent } from "@/database/models/Event";
-import classes from "../../new/page.module.css";
-import { Button } from "@/components/Button";
+
+import { EventForm } from "@/components/widgets/EventForm/EventForm";
+
+import { Button } from "@/components/shared/Button";
+import { Loader } from "@/components/shared/Loader";
+import { Title } from "@/components/shared/Title";
+
 import Arrow from "@/assets/icons/arrow.svg";
-import { Loader } from "@/components/Loader";
-import { Title } from "@/components/Title";
+import classes from "../../new/page.module.css";
 
 type PageParams = {
     params: { event_id: string };
