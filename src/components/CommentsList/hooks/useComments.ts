@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@apollo/client";
 import gql from "graphql-tag";
-
 import { useSession } from "next-auth/react";
+
 import { ICommentProps } from "../types";
 
 const GET_COMMENTS_BY_EVENT_ID = gql`
