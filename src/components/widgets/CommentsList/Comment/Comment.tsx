@@ -1,60 +1,64 @@
 "use client";
-import { FC, ReactNode, useContext, useState } from "react";
+import { FC, MouseEventHandler } from "react";
 import Link from "next/link";
 import dayjs from "dayjs";
 
-import { Like } from "./svg";
-import { Avatar } from "@/components/widgets/Avatar";
-import { IComment } from "@/database/models/Comment";
-import { IUser } from "@/database/models/User";
-import { Reply } from "./svg/Reply";
-import { CommentForm } from "@/components/widgets/CommentsList/CommentForm";
-import { CommentsListContext } from "../context";
+import { Avatar } from "../../Avatar";
+import { ICommentProps, ReplyTo } from "../types";
+import ArrowReply from "@/assets/icons/arrowReply.svg";
+import Heart from "@/assets/icons/heart.svg";
 
-import styles from "./Comment.module.css";
+import classes from "./Comment.module.css";
 
-export interface ICommentProps extends Pick<IComment, "content" | "_id" | "createdAt" | "likes" | "replyToId"> {
-    author: Pick<IUser, "name">;
-    replies?: ICommentProps[];
+interface CommentProps {
+    onClickReplyButton: ({}: { replyTo: ReplyTo; parentId: string }) => void;
+    onClickLikeButton?: MouseEventHandler<HTMLButtonElement>;
 }
 
-export const Comment: FC<ICommentProps> = ({ author, content, likes, _id, replyToId, createdAt }) => {
+export const Comment: FC<ICommentProps & CommentProps> = ({
+    author,
+    content,
+    likes,
+    _id,
+    replyTo,
+    createdAt,
+    onClickReplyButton,
+    onClickLikeButton,
+    parentId,
+}) => {
     const { name } = author;
-
-    const commentsListContext = useContext(CommentsListContext);
-    if (!commentsListContext) return null;
-    const { replyIdForm, setReplyIdForm } = commentsListContext;
+    const id = _id.toString();
 
     return (
-        <li className={styles.comment} id={`comment-id-${_id}`}>
-            <div className={styles.avatarContainer}>
-                <Avatar className={styles.avatar} {...{ name }} />
+        <div className={classes.comment} id={`comment-id-${id}`}>
+            <div className={classes.avatarContainer}>
+                <Avatar className={classes.avatar} name={name} />
             </div>
-            <div className={styles.contentContainer}>
-                <div className={styles.userName}>
+            <div className={classes.contentContainer}>
+                <div className={classes.userName}>
                     <span>{name}</span>
-                    {replyToId ? <Link href={`#comment-id-${replyToId}`}>reply to {replyToId}</Link> : null}
+                    {replyTo ? <Link href={`#comment-id-${replyTo.id}`}>reply to {replyTo.userName}</Link> : null}
                     <span>{dayjs(createdAt).format("DD MMMM YYYY HH:mm")}</span>
                 </div>
-                <p className={styles.commentText}>{content}</p>
-                <div className={styles.likesContainer}>
-                    <Like className={likes ? styles.liked : undefined} />
-                    <span className={styles.number}>{likes ? likes : ""}</span>
+                <p className={classes.commentText}>{content}</p>
+                <div className={classes.likesContainer}>
+                    <button onClick={onClickLikeButton}>
+                        <Heart className={likes ? classes.liked : undefined} />
+                    </button>
+                    <span className={classes.number}>{likes ? likes : ""}</span>
                     <button
-                        className={styles.replyButton}
-                        onClick={() => {
-                            if (replyIdForm === _id) {
-                                setReplyIdForm(null);
-                            } else {
-                                setReplyIdForm(_id);
-                            }
-                        }}
+                        className={classes.replyButton}
+                        onClick={() =>
+                            onClickReplyButton({
+                                replyTo: { id, userName: name },
+                                parentId: parentId ? parentId?.toString() : id,
+                            })
+                        }
                     >
-                        <Reply />
+                        <ArrowReply />
                     </button>
                 </div>
-                {replyIdForm === _id ? <CommentForm /> : null}
             </div>
-        </li>
+        </div>
     );
 };

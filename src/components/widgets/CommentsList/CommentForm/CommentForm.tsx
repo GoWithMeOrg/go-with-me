@@ -1,41 +1,23 @@
 "use client";
 
-import { FC, useContext } from "react";
+import { FC } from "react";
 import { SubmitHandler, useController, useForm } from "react-hook-form";
-import gql from "graphql-tag";
-import { useMutation } from "@apollo/client";
-import { useSession } from "next-auth/react";
+import { FetchResult } from "@apollo/client";
+
 import { Button } from "@/components/shared/Button";
 import { Textarea } from "@/components/shared/Textarea";
-import { CommentsListContext } from "../context";
 
-import styles from "./CommentForm.module.css";
+import classes from "./CommentForm.module.css";
+
+interface CommentFormProps {
+    onSaveComment: (content: string) => Promise<FetchResult<any> | undefined>;
+}
 
 interface Inputs {
     comment: string;
 }
 
-const SAVE_COMMENT = gql`
-    #graphql
-    mutation SaveComment($comment: CommentInput!) {
-        saveComment(comment: $comment) {
-            _id
-            author {
-                _id
-                name
-                email
-            }
-            content
-            createdAt
-            updatedAt
-        }
-    }
-`;
-
-export const CommentForm: FC = () => {
-    const session = useSession();
-    const [saveComment] = useMutation(SAVE_COMMENT);
-
+export const CommentForm: FC<CommentFormProps> = ({ onSaveComment }) => {
     const {
         handleSubmit,
         control,
@@ -47,43 +29,29 @@ export const CommentForm: FC = () => {
         field: { onChange, onBlur, value, name },
     } = useController({ name: "comment", control, rules: { required: "Please write a comment" } });
 
-    const commentsListContext = useContext(CommentsListContext);
-    if (!commentsListContext) return null;
-    const { replyIdForm, event_id, refetch } = commentsListContext;
-
     const onSubmit: SubmitHandler<Inputs> = async ({ comment }) => {
         try {
-            const res = await saveComment({
-                variables: {
-                    comment: {
-                        event_id,
-                        // @ts-ignore TODO: fix type
-                        author_id: session.data?.user?.id,
-                        content: comment,
-                        replyToId: replyIdForm ?? null,
-                    },
-                },
-            });
-            if (!res) return;
-            console.log("EventPage: ", res);
+            const saveCommentResponse = await onSaveComment(comment);
+            if (!saveCommentResponse) return;
+            console.log("EventPage: ", saveCommentResponse);
             reset();
-            refetch();
         } catch (error) {
             console.error("EventPage: ", error);
         }
     };
 
     return (
-        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+        <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
             <label>
                 <Textarea
-                    {...{
-                        rows: 8,
-                        resizeNone: true,
-                        error: errors.comment ? true : false,
-                        placeholder: "Text of your comment ...",
-                    }}
-                    {...{ onChange, onBlur, value, name }}
+                    rows={8}
+                    resizeNone={true}
+                    error={errors.comment ? true : false}
+                    placeholder="Text of your comment ..."
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    value={value}
+                    name={name}
                 ></Textarea>
             </label>
             <Button disabled={errors.comment ? true : false}>Comment</Button>
