@@ -3,10 +3,11 @@ import { FC, MouseEventHandler } from "react";
 import Link from "next/link";
 import dayjs from "dayjs";
 
-import { Avatar } from "../../Avatar";
-import { ICommentProps, ReplyTo } from "../types";
+import { Avatar } from "@/components/widgets/Avatar";
 import ArrowReply from "@/assets/icons/arrowReply.svg";
 import Heart from "@/assets/icons/heart.svg";
+
+import { ICommentProps, ReplyTo } from "../types";
 
 import classes from "./Comment.module.css";
 

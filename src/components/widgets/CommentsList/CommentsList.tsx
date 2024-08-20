@@ -3,13 +3,15 @@
 import { FC, HTMLAttributes, useCallback, useState } from "react";
 
 import { Title } from "@/components/shared/Title";
-import { useComments } from "./hooks";
-import { Comment } from "./Comment";
 import { Button } from "@/components/shared/Button";
-import { CommentForm } from "./CommentForm";
 import Spinner from "@/assets/icons/spinner.svg";
 
+import { useComments } from "./hooks";
+import { Comment } from "./Comment";
+import { CommentForm } from "./CommentForm";
+
 import { ReplyTo } from "./types";
+
 import classes from "./CommentsList.module.css";
 
 interface CommentsListProps {

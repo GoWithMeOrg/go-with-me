@@ -46,7 +46,7 @@ export const CommentForm: FC<CommentFormProps> = ({ onSaveComment }) => {
                 <Textarea
                     rows={8}
                     resizeNone={true}
-                    error={errors.comment ? true : false}
+                    error={Boolean(errors.comment)}
                     placeholder="Text of your comment ..."
                     onChange={onChange}
                     onBlur={onBlur}
