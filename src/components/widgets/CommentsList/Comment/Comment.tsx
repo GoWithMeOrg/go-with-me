@@ -46,7 +46,7 @@ export const Comment: FC<ICommentProps & CommentProps> = ({
                     <button onClick={onClickLikeButton}>
                         <Heart className={likes ? classes.liked : undefined} />
                     </button>
-                    <span className={classes.number}>{likes ? likes : ""}</span>
+                    <span className={classes.number}>{likes.length ? likes.length : ""}</span>
                     <button
                         className={classes.replyButton}
                         onClick={() =>
