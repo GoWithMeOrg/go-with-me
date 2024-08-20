@@ -2,7 +2,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import gql from "graphql-tag";
 import { useSession } from "next-auth/react";
 
-import { ICommentProps } from "../types";
+import { ICommentData } from "../types";
 
 const GET_COMMENTS_BY_EVENT_ID = gql`
     #graphql
@@ -55,7 +55,7 @@ const SAVE_COMMENT = gql`
 `;
 
 export const useComments = (event_id: string) => {
-    const { data, error, loading, refetch } = useQuery<{ comments: ICommentProps[] } | undefined>(
+    const { data, error, loading, refetch } = useQuery<{ comments: ICommentData[] } | undefined>(
         GET_COMMENTS_BY_EVENT_ID,
         {
             variables: { id: event_id },

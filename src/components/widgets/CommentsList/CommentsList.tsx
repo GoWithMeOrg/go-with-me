@@ -90,7 +90,7 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
                     const commentId = _id.toString();
                     return (
                         <li key={commentId}>
-                            <Comment {...comment} onClickReplyButton={onClickReplyButton} />
+                            <Comment comment={comment} onClickReplyButton={onClickReplyButton} />
                             {replyToState?.id === commentId ? <CommentForm onSaveComment={onSaveCommentReply} /> : null}
                             {replies ? (
                                 <ul className={classes.replies}>
@@ -98,7 +98,10 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
                                         const replyCommentId = replyComment._id.toString();
                                         return (
                                             <li key={replyCommentId}>
-                                                <Comment {...replyComment} onClickReplyButton={onClickReplyButton} />
+                                                <Comment
+                                                    comment={replyComment}
+                                                    onClickReplyButton={onClickReplyButton}
+                                                />
                                                 {replyToState?.id === replyCommentId ? (
                                                     <CommentForm onSaveComment={onSaveCommentReply} />
                                                 ) : null}

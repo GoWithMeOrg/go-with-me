@@ -7,25 +7,20 @@ import { Avatar } from "@/components/shared/Avatar";
 import ArrowReply from "@/assets/icons/arrowReply.svg";
 import Heart from "@/assets/icons/heart.svg";
 
-import { ICommentProps, ReplyTo } from "../types";
+import { ICommentData, ReplyTo } from "../types";
 
 import classes from "./Comment.module.css";
 
-interface CommentProps {
+interface IProps {
+    comment: ICommentData;
     onClickReplyButton: ({}: { replyTo: ReplyTo; parentId: string }) => void;
     onClickLikeButton?: MouseEventHandler<HTMLButtonElement>;
 }
 
-export const Comment: FC<ICommentProps & CommentProps> = ({
-    author,
-    content,
-    likes,
-    _id,
-    replyTo,
-    createdAt,
+export const Comment: FC<IProps> = ({
+    comment: { author, content, likes, _id, replyTo, createdAt, parentId },
     onClickReplyButton,
     onClickLikeButton,
-    parentId,
 }) => {
     const { name } = author;
     const id = _id.toString();
