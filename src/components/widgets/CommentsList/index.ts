@@ -1,1 +1,1 @@
-export * from "./CommentsList"
+export { CommentsList } from "./CommentsList";
