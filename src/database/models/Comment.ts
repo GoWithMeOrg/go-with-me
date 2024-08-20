@@ -19,9 +19,9 @@ export interface IComment extends INewComment {
     author: IUser;
     createdAt: Date;
     updatedAt: Date;
-    likes: number;
-    replies_id: mongoose.Types.ObjectId[];
+    likes: mongoose.Types.ObjectId[];
     replies: IComment[];
+    replyToList: mongoose.Types.ObjectId[];
 }
 
 export interface ICommentDocument extends Omit<IComment, "_id" | "createdAt" | "updatedAt">, Document {}
@@ -41,10 +41,7 @@ const CommentSchema = new Schema<ICommentDocument>(
             type: String,
             required: true,
         },
-        likes: {
-            type: Number,
-            default: 0,
-        },
+        likes: { type: [Schema.Types.ObjectId], required: true, default: [] },
         parentId: {
             type: Schema.Types.ObjectId,
             required: false,
@@ -56,6 +53,7 @@ const CommentSchema = new Schema<ICommentDocument>(
             },
             required: false,
         },
+        replyToList: { type: [Schema.Types.ObjectId], required: true, default: [] },
     },
     {
         timestamps: true,

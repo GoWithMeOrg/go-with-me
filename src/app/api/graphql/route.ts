@@ -206,10 +206,11 @@ const typeDefs = gql`
         content: String
         createdAt: ISODate
         updatedAt: ISODate
-        likes: Int
+        likes: [ID]
         replies: [Comment]
         replyTo: ReplyToType
         parentId: ID
+        replyToList: [ID]
     }
 
     input ReplyToInput {

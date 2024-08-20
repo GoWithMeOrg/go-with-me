@@ -25,11 +25,13 @@ const GET_COMMENTS_BY_EVENT_ID = gql`
                     userName
                 }
                 parentId
+                replyToList
             }
             content
             createdAt
             likes
             parentId
+            replyToList
         }
     }
 `;
