@@ -3,6 +3,8 @@ import mongoose, { Schema, Document } from "mongoose";
 export interface IUser {
     _id: string;
     name: string;
+    firstName: string;
+    lastName: string;
     email: string;
     image: string;
     location: string;
@@ -19,6 +21,16 @@ export interface IUserDocument extends Omit<IUser, "_id" | "createdAt" | "update
 
 const UserSchema = new Schema<IUserDocument>({
     name: {
+        type: String,
+        required: true,
+    },
+
+    firstName: {
+        type: String,
+        required: true,
+    },
+
+    lastName: {
         type: String,
         required: true,
     },
