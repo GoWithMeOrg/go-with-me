@@ -1,1 +1,1 @@
-export * from "./Comment";
+export { Comment } from "./Comment";
