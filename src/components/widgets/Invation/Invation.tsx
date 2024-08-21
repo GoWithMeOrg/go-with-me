@@ -139,4 +139,4 @@ export const Invation = ({ id, organizer, name, coord, startDate, time, image, c
     );
 };
 
-export default Notification;
+export default Invation;
