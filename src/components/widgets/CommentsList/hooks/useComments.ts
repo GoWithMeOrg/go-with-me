@@ -54,6 +54,17 @@ const SAVE_COMMENT = gql`
     }
 `;
 
+const LIKE_COMMENT = gql`
+    #graphql
+    mutation LikeComment($commentId: ID!, $userId: ID!) {
+        likeComment(commentId: $commentId, userId: $userId) {
+            _id
+            content
+            likes
+        }
+    }
+`;
+
 export const useComments = (event_id: string) => {
     const { data, error, loading, refetch } = useQuery<{ comments: ICommentData[] } | undefined>(
         GET_COMMENTS_BY_EVENT_ID,
@@ -62,9 +73,10 @@ export const useComments = (event_id: string) => {
         },
     );
     const [saveComment] = useMutation(SAVE_COMMENT);
+    const [likeComment] = useMutation(LIKE_COMMENT);
     const session = useSession();
     // @ts-ignore TODO: fix type
     const author_id: string = session.data?.user?.id;
 
-    return { data, error, loading, refetch, saveComment, author_id };
+    return { data, error, loading, refetch, saveComment, likeComment, author_id };
 };

@@ -110,6 +110,20 @@ const resolvers = {
         deleteComment: async (parent: any, { id }: { id: string }) => {
             return await CommentModel.deleteOne({ _id: id });
         },
+        likeComment: async (parent: any, { commentId, userId }: { commentId: string; userId: string }) => {
+            const comment = await CommentModel.findById(commentId);
+            if (!comment) return;
+            const { likes } = comment;
+            const userLikeIndex = likes.findIndex((item) => {
+                return item.toString() === userId;
+            });
+            if (userLikeIndex === -1) {
+                likes.push(userId);
+            } else {
+                likes.splice(userLikeIndex, 1);
+            }
+            return await comment.save();
+        },
     },
 };
 
@@ -253,6 +267,7 @@ const typeDefs = gql`
         saveComment(comment: CommentInput): Comment
         updateComment(id: ID!, comment: CommentInput): Comment
         deleteComment(id: ID!): Comment
+        likeComment(commentId: ID!, userId: ID!): Comment
     }
 `;
 

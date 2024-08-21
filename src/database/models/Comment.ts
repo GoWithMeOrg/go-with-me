@@ -19,7 +19,7 @@ export interface IComment extends INewComment {
     author: IUser;
     createdAt: Date;
     updatedAt: Date;
-    likes: mongoose.Types.ObjectId[];
+    likes: string[];
     replies: IComment[];
     replyToList: mongoose.Types.ObjectId[];
 }
@@ -41,7 +41,7 @@ const CommentSchema = new Schema<ICommentDocument>(
             type: String,
             required: true,
         },
-        likes: { type: [Schema.Types.ObjectId], required: true, default: [] },
+        likes: { type: [String], required: true, default: [] },
         parentId: {
             type: Schema.Types.ObjectId,
             required: false,
