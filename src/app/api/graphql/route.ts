@@ -8,7 +8,6 @@ import mongooseConnect from "@/database/mongooseConnect";
 import CommentModel, { IComment, INewComment } from "@/database/models/Comment";
 import TripModel, { ITrip } from "@/database/models/Trip";
 import UserModel from "@/database/models/User";
-import mongoose from "mongoose";
 
 const resolvers = {
     ISODate: {
