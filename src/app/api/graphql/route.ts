@@ -7,7 +7,7 @@ import EventModel, { IEvent } from "@/database/models/Event";
 import mongooseConnect from "@/database/mongooseConnect";
 import CommentModel, { IComment, INewComment } from "@/database/models/Comment";
 import TripModel, { ITrip } from "@/database/models/Trip";
-import UserModel from "@/database/models/User";
+import UserModel, { IUser } from "@/database/models/User";
 
 const resolvers = {
     ISODate: {
@@ -82,6 +82,10 @@ const resolvers = {
     },
 
     Mutation: {
+        updateUser: async (parent: IUser, { id, user }: { id: string; user: IUser }) => {
+            await UserModel.updateOne({ _id: id }, user);
+            return await UserModel.findById(id);
+        },
         createEvent: async (parent: any, { event }: { event: IEvent }) => {
             const newEvent = new EventModel(event);
             return await newEvent.save();
@@ -139,6 +143,23 @@ const typeDefs = gql`
     type User {
         _id: ID
         name: String
+        firstName: String
+        lastName: String
+        email: String
+        image: String
+        location: String
+        aboutMe: String
+        interests: [String]
+        meetings: [String]
+        tags: [String]
+        emailVerified: Boolean
+    }
+
+    input UserInput {
+        _id: ID
+        name: String
+        firstName: String
+        lastName: String
         email: String
         image: String
         location: String
@@ -257,6 +278,8 @@ const typeDefs = gql`
     }
 
     type Mutation {
+        updateUser(id: ID!, user: UserInput): User
+
         createEvent(event: EventInput): Event
         updateEvent(id: ID!, event: EventInput): Event
         deleteEvent(id: ID!): Event

@@ -4,7 +4,7 @@ import React from "react";
 import { NextPage } from "next";
 
 import { ProfileTabs } from "@/components/widgets/ProfileTabs";
-import { Avatar } from "@/components/widgets/Avatar";
+//import { Avatar } from "@/components/widgets/";
 
 import { Button } from "@/components/shared/Button";
 import { Title } from "@/components/shared/Title";
@@ -21,7 +21,7 @@ const Profile: NextPage = () => {
                     <Arrow />
                 </Button>
                 <div className={classes.avatarTitle}>
-                    <Avatar name={""} />
+                    {/* <Avatar name={""} /> */}
                     <Title className={classes.formTitle} title="MY ACCOUNT" tag={"h2"} />
                 </div>
                 <ProfileTabs />
