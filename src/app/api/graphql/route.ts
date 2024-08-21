@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 
 import EventModel, { IEvent } from "@/database/models/Event";
 import mongooseConnect from "@/database/mongooseConnect";
-import CommentModel, { IComment } from "@/database/models/Comment";
+import CommentModel, { IComment, INewComment } from "@/database/models/Comment";
 import TripModel, { ITrip } from "@/database/models/Trip";
 import UserModel from "@/database/models/User";
 
@@ -41,7 +41,9 @@ const resolvers = {
         },
 
         comments: async (parent: any, { event_id }: { event_id: string }) => {
-            return CommentModel.find({ event_id }).sort({ createdAt: -1 }).populate("author");
+            const comments = await CommentModel.find({ event_id }).populate("replies").populate("author");
+            const firstLevelComments = comments.filter(({ replyTo }) => !replyTo).sort(() => -1);
+            return firstLevelComments;
         },
 
         search: async (parent: any, { text }: { text: string }) => {
@@ -96,7 +98,7 @@ const resolvers = {
             return await TripModel.deleteOne({ _id: id });
         },
 
-        saveComment: async (parent: any, { comment }: { comment: IComment }) => {
+        saveComment: async (parent: any, { comment }: { comment: INewComment }) => {
             const newComment = new CommentModel(comment);
             return await newComment.save();
         },
@@ -191,6 +193,11 @@ const typeDefs = gql`
         events_id: [ID]
     }
 
+    type ReplyToType {
+        id: ID
+        userName: String
+    }
+
     type Comment {
         _id: ID
         event_id: ID
@@ -199,19 +206,24 @@ const typeDefs = gql`
         content: String
         createdAt: ISODate
         updatedAt: ISODate
-        likes: Int
-        replies_id: [ID]
+        likes: [ID]
         replies: [Comment]
-        replyToId: [String]
+        replyTo: ReplyToType
+        parentId: ID
+        replyToList: [ID]
+    }
+
+    input ReplyToInput {
+        id: ID!
+        userName: String!
     }
 
     input CommentInput {
         event_id: ID!
         author_id: ID!
-        content: String
-        likes: Int
-        replies_id: [ID]
-        replyToId: [String]
+        content: String!
+        replyTo: ReplyToInput
+        parentId: ID
     }
 
     input EventInput {

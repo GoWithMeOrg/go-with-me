@@ -1,23 +1,27 @@
 import mongoose, { Schema, Document } from "mongoose";
+
 import UserModel from "./User";
 import type { IUser } from "./User";
 
-// TODO: split to types:
-// - INewComment (without _id, author, createdAt and updatedAt)
-// - IComment (with _id, author, createdAt and updatedAt)
-// think about createdAt and updatedAt
-export interface IComment {
-    _id: string;
+export interface INewComment {
     author_id: mongoose.Types.ObjectId;
-    author: IUser;
     event_id: mongoose.Types.ObjectId;
     content: string;
-    createdAt: string;
-    updatedAt: string;
-    likes: number;
-    replies_id: mongoose.Types.ObjectId[];
+    replyTo?: {
+        id: mongoose.Types.ObjectId;
+        userName: string;
+    };
+    parentId?: mongoose.Types.ObjectId;
+}
+
+export interface IComment extends INewComment {
+    _id: mongoose.Types.ObjectId;
+    author: IUser;
+    createdAt: Date;
+    updatedAt: Date;
+    likes: mongoose.Types.ObjectId[];
     replies: IComment[];
-    replyToId: string | null;
+    replyToList: mongoose.Types.ObjectId[];
 }
 
 export interface ICommentDocument extends Omit<IComment, "_id" | "createdAt" | "updatedAt">, Document {}
@@ -37,22 +41,19 @@ const CommentSchema = new Schema<ICommentDocument>(
             type: String,
             required: true,
         },
-        likes: {
-            type: Number,
-            default: 0,
+        likes: { type: [Schema.Types.ObjectId], required: true, default: [] },
+        parentId: {
+            type: Schema.Types.ObjectId,
+            required: false,
         },
-        replies_id: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: "Comment",
+        replyTo: {
+            type: {
+                id: { type: Schema.Types.ObjectId, required: true },
+                userName: { type: String, required: true },
             },
-        ],
-        replyToId: [
-            {
-                type: String,
-                required: false,
-            },
-        ],
+            required: false,
+        },
+        replyToList: { type: [Schema.Types.ObjectId], required: true, default: [] },
     },
     {
         timestamps: true,
@@ -65,6 +66,13 @@ CommentSchema.virtual("author", {
     localField: "author_id",
     foreignField: "_id",
     justOne: true,
+});
+
+CommentSchema.virtual("replies", {
+    ref: "Comment",
+    localField: "_id",
+    foreignField: "parentId",
+    justOne: false,
 });
 
 const CommentModel: mongoose.Model<ICommentDocument> =
