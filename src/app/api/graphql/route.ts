@@ -111,18 +111,13 @@ const resolvers = {
         deleteComment: async (parent: any, { id }: { id: string }) => {
             return await CommentModel.deleteOne({ _id: id });
         },
-        likeComment: async (
-            parent: any,
-            { commentId, userId }: { commentId: mongoose.Types.ObjectId; userId: string },
-        ) => {
+        likeComment: async (parent: any, { commentId, userId }: { commentId: string; userId: string }) => {
             const comment = await CommentModel.findById(commentId);
             if (!comment) return;
             const { likes } = comment;
             const userLikeIndex = likes.findIndex((item) => {
-                console.log(item, userId);
                 return item.toString() === userId;
             });
-            console.log("userLikeIndex", userLikeIndex);
             if (userLikeIndex === -1) {
                 likes.push(userId);
             } else {

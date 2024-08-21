@@ -14,7 +14,7 @@ import classes from "./Comment.module.css";
 interface IProps {
     comment: ICommentData;
     onClickReplyButton: ({}: { replyTo: ReplyTo; parentId: string }) => void;
-    onClickLikeButton?: MouseEventHandler<HTMLButtonElement>;
+    onClickLikeButton: ({}: { commentId: string }) => void;
 }
 
 export const Comment: FC<IProps> = ({
@@ -38,7 +38,7 @@ export const Comment: FC<IProps> = ({
                 </div>
                 <p className={classes.commentText}>{content}</p>
                 <div className={classes.likesContainer}>
-                    <button onClick={onClickLikeButton}>
+                    <button onClick={() => onClickLikeButton({ commentId: id })}>
                         <Heart className={likes.length ? classes.liked : undefined} />
                     </button>
                     <span className={classes.number}>{likes.length ? likes.length : ""}</span>
