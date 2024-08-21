@@ -27,7 +27,7 @@ const MessageContainer: FC<HTMLAttributes<HTMLDivElement>> = ({ children, classN
 );
 
 export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
-    const { data, loading, error, refetch, saveComment, author_id } = useComments(event_id);
+    const { data, loading, error, refetch, saveComment, likeComment, author_id } = useComments(event_id);
 
     const [replyToState, setReplyToState] = useState<ReplyTo | null>(null);
     const [parentIdState, setParentIdState] = useState<string | null>(null);
@@ -74,6 +74,16 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
         }
     };
 
+    const onClickLikeButton = async ({ commentId }: { commentId: string }) => {
+        const likeCommentResponse = await likeComment({
+            variables: {
+                userId: author_id,
+                commentId,
+            },
+        });
+        if (likeCommentResponse) refetch();
+    };
+
     const onSaveCommentTop = (content: string) => onSaveComment({ content });
     const onSaveCommentReply = (content: string) =>
         onSaveComment({ content, replyTo: replyToState ?? undefined, parentId: parentIdState ?? undefined });
@@ -90,7 +100,11 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
                     const commentId = _id.toString();
                     return (
                         <li key={commentId}>
-                            <Comment comment={comment} onClickReplyButton={onClickReplyButton} />
+                            <Comment
+                                comment={comment}
+                                onClickReplyButton={onClickReplyButton}
+                                onClickLikeButton={onClickLikeButton}
+                            />
                             {replyToState?.id === commentId ? <CommentForm onSaveComment={onSaveCommentReply} /> : null}
                             {replies ? (
                                 <ul className={classes.replies}>
@@ -101,6 +115,7 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
                                                 <Comment
                                                     comment={replyComment}
                                                     onClickReplyButton={onClickReplyButton}
+                                                    onClickLikeButton={onClickLikeButton}
                                                 />
                                                 {replyToState?.id === replyCommentId ? (
                                                     <CommentForm onSaveComment={onSaveCommentReply} />
