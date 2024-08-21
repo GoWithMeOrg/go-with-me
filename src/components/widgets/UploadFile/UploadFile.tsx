@@ -1,6 +1,7 @@
 "use client";
 
-import { forwardRef, useRef, useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
+
 import Image from "next/image";
 
 import classes from "./UploadFile.module.css";
@@ -20,6 +21,10 @@ export const UploadFile = forwardRef(function UploadFile(props: IUploadFile, ref
     const uploadRef = useRef<HTMLInputElement>(null);
     const [file, setFile] = useState<File | null>(null);
     const [url, setUrl] = useState<string>(props.imageUrl || "");
+
+    useEffect(() => {
+        setUrl(props.imageUrl || "");
+    }, [props.imageUrl]);
 
     const handleFileChange = (event: any) => {
         setFile(event.target.files[0]);
@@ -64,9 +69,24 @@ export const UploadFile = forwardRef(function UploadFile(props: IUploadFile, ref
         <div className={classes.uploadFile} style={{ flexDirection: props.flexDirection }}>
             <div className={props.className}>
                 <div className={classes.previewImage}>
-                    {url && !file && <Image src={url} width={props.width} height={props.height} alt="img" priority />}
+                    {url && !file && (
+                        <Image
+                            style={{ borderRadius: "0.25rem" }}
+                            src={url}
+                            width={props.width}
+                            height={props.height}
+                            alt="img"
+                            priority
+                        />
+                    )}
                     {file && (
-                        <Image src={URL.createObjectURL(file)} width={props.width} height={props.height} alt="img" />
+                        <Image
+                            style={{ borderRadius: "0.25rem" }}
+                            src={URL.createObjectURL(file)}
+                            width={props.width}
+                            height={props.height}
+                            alt="img"
+                        />
                     )}
                 </div>
             </div>

@@ -1,8 +1,8 @@
 import { forwardRef } from "react";
 
+import { Span } from "@/components/shared/Span";
 import { Input } from "@/components/shared/Input";
 
-import classes from "./TitleField.module.css";
 interface TitleFieldProps {
     title: string;
     defaultValue?: string;
@@ -12,8 +12,8 @@ interface TitleFieldProps {
 export const TitleField = forwardRef(function TitleField(props: TitleFieldProps, ref) {
     return (
         <label>
-            <span className={classes.titleInput}>Event title</span>
-            <Input {...props} />
+            <Span title={props.title} />
+            <Input {...props} defaultValue={props.defaultValue} />
         </label>
     );
 });

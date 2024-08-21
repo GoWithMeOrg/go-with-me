@@ -2,15 +2,14 @@
 
 import React from "react";
 import { NextPage } from "next";
-import Image from "next/image";
 
 import { ProfileTabs } from "@/components/widgets/ProfileTabs";
+//import { Avatar } from "@/components/widgets/";
 
 import { Button } from "@/components/shared/Button";
 import { Title } from "@/components/shared/Title";
 
 import Arrow from "@/assets/icons/arrow.svg";
-import profile from "@/assets/images/profile.png";
 
 import classes from "./page.module.css";
 
@@ -22,13 +21,7 @@ const Profile: NextPage = () => {
                     <Arrow />
                 </Button>
                 <div className={classes.avatarTitle}>
-                    <div className={classes.userAvatar}>
-                        <Image
-                            style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }}
-                            src={profile}
-                            alt="img"
-                        />
-                    </div>
+                    {/* <Avatar name={""} /> */}
                     <Title className={classes.formTitle} title="MY ACCOUNT" tag={"h2"} />
                 </div>
                 <ProfileTabs />
