@@ -8,6 +8,7 @@ import mongooseConnect from "@/database/mongooseConnect";
 import CommentModel, { IComment, INewComment } from "@/database/models/Comment";
 import TripModel, { ITrip } from "@/database/models/Trip";
 import UserModel from "@/database/models/User";
+import mongoose from "mongoose";
 
 const resolvers = {
     ISODate: {
@@ -109,6 +110,25 @@ const resolvers = {
         },
         deleteComment: async (parent: any, { id }: { id: string }) => {
             return await CommentModel.deleteOne({ _id: id });
+        },
+        likeComment: async (
+            parent: any,
+            { commentId, userId }: { commentId: mongoose.Types.ObjectId; userId: string },
+        ) => {
+            const comment = await CommentModel.findById(commentId);
+            if (!comment) return;
+            const { likes } = comment;
+            const userLikeIndex = likes.findIndex((item) => {
+                console.log(item, userId);
+                return item.toString() === userId;
+            });
+            console.log("userLikeIndex", userLikeIndex);
+            if (userLikeIndex === -1) {
+                likes.push(userId);
+            } else {
+                likes.splice(userLikeIndex, 1);
+            }
+            return await comment.save();
         },
     },
 };
@@ -253,6 +273,7 @@ const typeDefs = gql`
         saveComment(comment: CommentInput): Comment
         updateComment(id: ID!, comment: CommentInput): Comment
         deleteComment(id: ID!): Comment
+        likeComment(commentId: ID!, userId: ID!): Comment
     }
 `;
 
