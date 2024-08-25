@@ -167,7 +167,9 @@ export const ProfileForm: FC<IProfileFormProps> = ({ profileData, onSubmitEvent 
                 />
             </div>
 
-            <Button className={classes.buttonSaveChange} type="submit" text={"Save changes"} />
+            <Button className={classes.buttonSaveChange} size="big" type="submit">
+                Save changes
+            </Button>
         </form>
     );
 };
