@@ -32,11 +32,9 @@ export const SystemNotification = () => {
                     id mollitia quia at?
                 </div>
 
-                <Button
-                    className={classes.buttonRead}
-                    text={expanded ? "CLOSE" : "READ MORE"}
-                    onClick={toggleDescription}
-                />
+                <Button className={classes.buttonRead} onClick={toggleDescription}>
+                    {expanded ? "CLOSE" : "READ MORE"}
+                </Button>
             </div>
 
             <div className={classes.invationStatus}>

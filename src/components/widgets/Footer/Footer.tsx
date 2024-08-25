@@ -24,56 +24,35 @@ export const Footer = () => {
             {status === "unauthenticated" && (
                 <div className={classes.footerContainer}>
                     <div className={classes.footerLogIn}>
-                        <Button
-                            onClick={handleShowAuth}
-                            className={classes.footerLink}
-                            text={"Sign In"}
-                            resetDefaultStyles={true}
-                        />
+                        <Button onClick={handleShowAuth} className={classes.footerLink} resetDefaultStyles={true}>
+                            Sign In
+                        </Button>
                         <LogoFooter />
                     </div>
                     <div className={classes.footerBlockLinks}>
                         <div className={classes.footerBlock}>
-                            <Button
-                                onClick={handleShowAuth}
-                                className={classes.footerLink}
-                                text={"Events"}
-                                resetDefaultStyles={true}
-                            />
-                            <Button
-                                onClick={handleShowAuth}
-                                className={classes.footerLink}
-                                text={"Profile"}
-                                resetDefaultStyles={true}
-                            />
+                            <Button onClick={handleShowAuth} className={classes.footerLink} resetDefaultStyles={true}>
+                                Events
+                            </Button>
+                            <Button onClick={handleShowAuth} className={classes.footerLink} resetDefaultStyles={true}>
+                                Profile
+                            </Button>
                         </div>
                         <div className={classes.footerBlock}>
-                            <Button
-                                onClick={handleShowAuth}
-                                className={classes.footerLink}
-                                text={"Privacy policy"}
-                                resetDefaultStyles={true}
-                            />
-                            <Button
-                                onClick={handleShowAuth}
-                                className={classes.footerLink}
-                                text={"Terms of use"}
-                                resetDefaultStyles={true}
-                            />
+                            <Button onClick={handleShowAuth} className={classes.footerLink} resetDefaultStyles={true}>
+                                Privacy policy
+                            </Button>
+                            <Button onClick={handleShowAuth} className={classes.footerLink} resetDefaultStyles={true}>
+                                Terms of use
+                            </Button>
                         </div>
                         <div className={classes.footerBlock}>
-                            <Button
-                                onClick={handleShowAuth}
-                                className={classes.footerLink}
-                                text={"FAQ"}
-                                resetDefaultStyles={true}
-                            />
-                            <Button
-                                onClick={handleShowAuth}
-                                className={classes.footerLink}
-                                text={"Write to use"}
-                                resetDefaultStyles={true}
-                            />
+                            <Button onClick={handleShowAuth} className={classes.footerLink} resetDefaultStyles={true}>
+                                FAQ
+                            </Button>
+                            <Button onClick={handleShowAuth} className={classes.footerLink} resetDefaultStyles={true}>
+                                Write to use
+                            </Button>
                         </div>
 
                         <Popup

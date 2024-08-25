@@ -31,28 +31,6 @@
     width: 100%;
 }
 
-.createAndInviteButtonUnAuth {
-    width: 10.88rem;
-    height: 3.13rem;
-    margin-right: 1.25rem;
-    background: none;
-    border: 0.13rem solid var(--main-color);
-    border-radius: 0.25rem;
-    background: none;
-    color: var(--main-color);
-    font-size: 1.13rem;
-    font-weight: 700;
-    line-height: 1.38rem;
-    text-align: center;
-    cursor: pointer;
-}
-
-.createAndInviteButtonUnAuth:hover {
-    border: 0.13rem solid var(--hover-color);
-    border-radius: 0.25rem;
-    color: var(--hover-color);
-}
-
 .buttonEdit {
     width: 5.94rem;
     height: 3.13rem;

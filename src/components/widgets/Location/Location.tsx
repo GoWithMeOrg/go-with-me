@@ -118,7 +118,9 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
                 </Map>
                 <div className={classes.buttonBlockMap}>
                     <Geolocation />
-                    <Button className={classes.buttonMap} onClick={() => setShowPopup(false)} text={"Закрыть карту"} />
+                    <Button className={classes.buttonMap} onClick={() => setShowPopup(false)}>
+                        Закрыть карту
+                    </Button>
                 </div>
             </Popup>
         </label>
