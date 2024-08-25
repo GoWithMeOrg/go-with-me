@@ -25,11 +25,8 @@
 
 .promoButton {
     display: flex;
-    flex-direction: row-reverse;
     justify-content: flex-end;
     align-items: center;
-    font-family: "__Inter_469f07", "__Inter_Fallback_469f07";
-    font-style: normal;
     color: var(--main-color);
     font-size: 1.75rem;
     font-weight: 700;
@@ -37,6 +34,8 @@
     text-align: left;
     background: none;
     cursor: pointer;
+    font-family: "__Inter_1870e5", "__Inter_Fallback_1870e5";
+    font-style: normal;
 }
 
 .titleArrow {
@@ -115,7 +114,7 @@
 .eventsButton {
     width: 100%;
     display: flex;
-    justify-content: flex-start;
+    justify-content: flex-end;
     align-items: center;
     background: none;
     font-size: 1rem;
@@ -126,7 +125,5 @@
     color: var(--main-color);
     margin-right: 0.7rem;
     cursor: pointer;
-    flex-direction: row-reverse;
-    font-family: "__Inter_469f07", "__Inter_Fallback_469f07";
-    font-style: normal;
+    font-family: "__Inter_1870e5", "__Inter_Fallback_1870e5";
 }

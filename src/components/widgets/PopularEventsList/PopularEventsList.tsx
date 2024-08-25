@@ -71,7 +71,8 @@ export const PopularEventList: FC<EventListProps> = () => {
                         to&nbsp;help you every step of&nbsp;the way. Join us today and unlock a&nbsp;world
                         of&nbsp;endless possibilities. Start crafting your adventure now!
                     </p>
-                    <Button text={"Join"} className={classes.promoButton} resetDefaultStyles={true}>
+                    <Button className={classes.promoButton} resetDefaultStyles={true}>
+                        Join
                         <ArrowCircle style={{ marginLeft: "0.7rem" }} />
                     </Button>
                 </div>
@@ -98,7 +99,8 @@ export const PopularEventList: FC<EventListProps> = () => {
                     ))}
                 </div>
 
-                <Button className={classes.eventsButton} text={"More Events"} resetDefaultStyles={true}>
+                <Button className={classes.eventsButton} resetDefaultStyles={true}>
+                    More Events
                     <ArrowCircle style={{ marginRight: "1.25rem", marginLeft: "1rem" }} />
                 </Button>
             </div>
