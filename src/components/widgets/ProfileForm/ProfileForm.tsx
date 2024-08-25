@@ -17,6 +17,8 @@ import { eventCategory, eventTypes } from "@/components/shared/Dropdown/dropdown
 import { SelectCategory } from "@/components/widgets/SelectCategory";
 
 import classes from "./ProfileForm.module.css";
+import { Label } from "@/components/shared/Label";
+import { Input } from "@/components/shared/Input";
 
 export type ProfileType = Partial<IUser>;
 
@@ -61,7 +63,7 @@ export const ProfileForm: FC<IProfileFormProps> = ({ profileData, onSubmitEvent 
     const userId = session?.user?.id;
     const { data: userData, refetch } = useQuery(GET_USER_BY_ID, { variables: { userId: userId } });
 
-    console.log(userData?.user);
+    //console.log(userData?.user);
     const fullName = userData?.user?.name || "";
     const [firstName, lastName] = fullName.split(" ");
 
@@ -101,6 +103,18 @@ export const ProfileForm: FC<IProfileFormProps> = ({ profileData, onSubmitEvent 
                     control={control}
                     defaultValue={lastName}
                     render={({ field }) => <TitleField defaultValue={lastName} title={"Last name"} />}
+                    rules={{ required: true }}
+                />
+
+                <Controller
+                    name="mail"
+                    control={control}
+                    defaultValue={userData?.user?.email}
+                    render={({ field }) => (
+                        <Label label={"Email"}>
+                            <Input defaultValue={userData?.user?.email} onChange={field.onChange} />
+                        </Label>
+                    )}
                     rules={{ required: true }}
                 />
 

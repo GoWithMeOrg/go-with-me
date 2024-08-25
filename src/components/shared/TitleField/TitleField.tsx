@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 
-import { Span } from "@/components/shared/Span";
+import { Span } from "@/components/shared/Span/Span";
 import { Input } from "@/components/shared/Input";
 
 interface TitleFieldProps {

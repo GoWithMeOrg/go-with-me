@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 
-import { Span } from "@/components/shared/Span";
+import { Span } from "@/components/shared/Span/Span";
 import { Textarea } from "@/components/shared/Textarea";
 
 import classes from "./Description.module.css";
