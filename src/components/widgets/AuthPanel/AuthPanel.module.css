@@ -35,22 +35,3 @@
     cursor: pointer;
     background-color: unset;
 }
-
-.buttonLogIn {
-    width: 10.5rem;
-    height: 3.13rem;
-    border: 0.13rem solid var(--main-color);
-    border-radius: 0.25rem;
-    background: rgba(9, 23, 87, 0);
-    color: var(--main-color);
-    font-size: 1.13rem;
-    font-weight: 700;
-    line-height: 1.38rem;
-    text-align: center;
-    cursor: pointer;
-}
-
-.buttonLogIn:hover {
-    border: 0.13rem solid var(--hover-color);
-    color: var(--hover-color);
-}
