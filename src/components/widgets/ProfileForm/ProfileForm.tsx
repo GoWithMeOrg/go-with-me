@@ -16,9 +16,10 @@ import { TitleField } from "@/components/shared/TitleField";
 import { eventCategory, eventTypes } from "@/components/shared/Dropdown/dropdownLists";
 import { SelectCategory } from "@/components/widgets/SelectCategory";
 
-import classes from "./ProfileForm.module.css";
 import { Label } from "@/components/shared/Label";
 import { Input } from "@/components/shared/Input";
+
+import classes from "./ProfileForm.module.css";
 
 export type ProfileType = Partial<IUser>;
 
