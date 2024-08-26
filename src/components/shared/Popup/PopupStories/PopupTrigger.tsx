@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 
-import { Button } from "../../Button";
-import { Popup } from "../Popup";
+import { Popup } from "@/components/shared/Popup";
+import { Button } from "@/components/shared/Button";
 
 export const PopupTrigger: FC = () => {
     const [showPopup, setShowPopup] = useState(false);
