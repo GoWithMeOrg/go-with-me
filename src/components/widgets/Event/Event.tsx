@@ -10,7 +10,7 @@ import { Geocoding } from "@/components/widgets/GoogleMap/Geocoding";
 import { Button } from "@/components/shared/Button";
 import { Map, AdvancedMarker, Pin } from "@vis.gl/react-google-maps";
 import { UserImage } from "@/components/widgets/UserImage";
-import Popup from "@/components/shared/Popup/Popup";
+import { Popup } from "@/components/shared/Popup";
 import ArrowMaps from "@/assets/icons/arrowMaps.svg";
 import dayjs from "dayjs";
 import Checkbox from "@/assets/icons/checkbox.svg";

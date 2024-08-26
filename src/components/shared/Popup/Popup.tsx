@@ -10,7 +10,14 @@ interface PopupProps extends React.HTMLAttributes<HTMLDivElement> {
     containerElement?: HTMLElement;
 }
 
-const Popup: FC<PopupProps> = ({ showPopup, setShowPopup, wrapperProps, containerElement, children, ...rest }) => {
+export const Popup: FC<PopupProps> = ({
+    showPopup,
+    setShowPopup,
+    wrapperProps,
+    containerElement,
+    children,
+    ...rest
+}) => {
     const [containerState, setContainerState] = useState<HTMLDivElement | null>(null);
     const refPopup = useRef<HTMLDivElement>(null);
 
@@ -49,5 +56,3 @@ const Popup: FC<PopupProps> = ({ showPopup, setShowPopup, wrapperProps, containe
 
     return <>{createPortal(render, containerState)}</>;
 };
-
-export default Popup;

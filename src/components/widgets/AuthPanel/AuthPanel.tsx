@@ -5,7 +5,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 
 import Human from "@/assets/icons/human.svg";
-import Popup from "@/components/shared/Popup/Popup";
+import { Popup } from "@/components/shared/Popup";
 import { AuthModal } from "@/components/widgets/AuthModal";
 import { Button } from "@/components/shared/Button";
 import { Loader } from "@/components/shared/Loader";
