@@ -1,20 +1,21 @@
 import { FC, useRef, useState } from "react";
 
-import Popup from "../Popup";
+import { Popup } from "../Popup";
+import { Button } from "../../Button";
 
 export const PopupContainer: FC = () => {
     const [showPopup, setShowPopup] = useState(false);
     const container = useRef<HTMLDivElement>(null);
     return (
         <>
-            <button
+            <Button
                 onClick={(event) => {
                     event.stopPropagation();
                     setShowPopup(true);
                 }}
             >
                 ShowPopup
-            </button>
+            </Button>
             <div ref={container} style={{ position: "relative", zIndex: 0 }}>
                 container
             </div>
