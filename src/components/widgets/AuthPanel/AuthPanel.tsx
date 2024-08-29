@@ -30,12 +30,9 @@ export const AuthPanel = () => {
                 // </button>
 
                 <>
-                    <Button
-                        className={classes.buttonLogIn}
-                        onClick={handleShowAuth}
-                        text={"Sign In"}
-                        resetDefaultStyles={true}
-                    />
+                    <Button size="big" onClick={handleShowAuth}>
+                        Sign In
+                    </Button>
                     <Popup
                         {...{
                             showPopup,
@@ -74,13 +71,13 @@ export const AuthPanel = () => {
                                 <Human />
                             </Link>
                             <Button
-                                className={classes.buttonLogIn}
+                                size="big"
                                 onClick={() => {
                                     confirm("Вы уверены, что хотите выйти?") && signOut();
                                 }}
-                                text={"Sign Out"}
-                                resetDefaultStyles={true}
-                            />
+                            >
+                                Sign Out
+                            </Button>
                         </div>
                     </div>
                 </>

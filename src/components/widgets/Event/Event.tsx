@@ -116,12 +116,12 @@ const Event: FC<EventProps> = ({ event }) => {
                                     Edit
                                 </Link>
                             </Button>
-                            <Button className={classes.invite} text={"Invite"} />
+                            <Button className={classes.invite}>Invite</Button>
                         </div>
                     ) : (
                         <div className={classes.buttons}>
-                            <Button className={classes.join} text={"Join"} />
-                            <Button className={classes.waitingList} text={"Waiting list"} />
+                            <Button className={classes.join}>Join</Button>
+                            <Button className={classes.waitingList}>Waiting list</Button>
                             <Button className={classes.favorite}>
                                 <Heart />
                             </Button>
@@ -155,11 +155,9 @@ const Event: FC<EventProps> = ({ event }) => {
                         </AdvancedMarker>
                     </Map>
                     <div className={classes.buttonBlockMap}>
-                        <Button
-                            className={classes.buttonMap}
-                            onClick={() => setShowPopup(false)}
-                            text={"Закрыть карту"}
-                        />
+                        <Button className={classes.buttonMap} onClick={() => setShowPopup(false)}>
+                            Закрыть карту
+                        </Button>
                     </div>
                 </Popup>
             </div>

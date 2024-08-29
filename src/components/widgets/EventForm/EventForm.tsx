@@ -180,12 +180,9 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
 
                 <GuestList />
 
-                <Button
-                    className={classes.buttonSaveChange}
-                    type="submit"
-                    text={"Save changes"}
-                    resetDefaultStyles={true}
-                />
+                <Button size="big" type="submit">
+                    Save changes
+                </Button>
             </form>
         </div>
     );

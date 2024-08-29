@@ -1,30 +1,30 @@
 import { ButtonHTMLAttributes, FC, useMemo } from "react";
 
-import styles from "./Button.module.css";
+import classes from "./Button.module.css";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-    text?: string;
-    icon?: React.ReactNode;
     resetDefaultStyles?: boolean;
     size?: "normal" | "big";
+    stretch?: boolean;
 }
 
-export const Button: FC<ButtonProps> = ({ text, icon, children, className, resetDefaultStyles, size, ...rest }) => {
-    const buttonCssString: string = useMemo(() => {
-        let cssString = "";
-        if (!resetDefaultStyles) cssString += styles.button;
-        if (size) {
-            if (size === "big") cssString += " " + styles.big;
-        }
-        if (className) cssString += " " + className;
-        return cssString;
-    }, [resetDefaultStyles, className, size]);
+export const Button: FC<ButtonProps> = ({ stretch, children, className, resetDefaultStyles, size, ...rest }) => {
+    const buttonCssString = useMemo(
+        () =>
+            [
+                !resetDefaultStyles && classes.button,
+                size === "big" && classes.big,
+                stretch && classes.stretch,
+                className,
+            ]
+                .filter(Boolean)
+                .join(" "),
+        [resetDefaultStyles, className, size, stretch],
+    );
 
     return (
-        <button className={buttonCssString} {...{ ...rest }}>
-            {icon}
+        <button className={buttonCssString} {...rest}>
             {children}
-            {text}
         </button>
     );
 };

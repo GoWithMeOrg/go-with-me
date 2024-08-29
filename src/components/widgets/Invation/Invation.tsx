@@ -87,11 +87,15 @@ export const Invation = ({ id, organizer, name, coord, startDate, time, image, c
                 <div className={classes.buttonsBlock}>
                     {invationStatus !== InvationStatus.ACCEPTED && invationStatus !== InvationStatus.DECLINED ? (
                         <div className={classes.buttons}>
-                            <Button onClick={handleClickAccept} className={classes.buttonAccept} text={"Accept"} />
+                            <Button onClick={handleClickAccept} className={classes.buttonAccept}>
+                                Accept
+                            </Button>
                             <Link href={`/events/${id}`}>
-                                <Button className={classes.buttonSee} text={"See more details"} />
+                                <Button className={classes.buttonSee}>See more details</Button>
                             </Link>
-                            <Button onClick={handleClickRefuse} className={classes.buttonRefuse} text={"Decline"} />
+                            <Button onClick={handleClickRefuse} className={classes.buttonRefuse}>
+                                Decline
+                            </Button>
                         </div>
                     ) : (
                         invationStatus !== InvationStatus.DECLINED && (
@@ -101,19 +105,19 @@ export const Invation = ({ id, organizer, name, coord, startDate, time, image, c
                                     <div style={{ marginLeft: "0.5rem" }}>Invation accepted</div>
                                 </div>
 
-                                <Button
-                                    onClick={handleClickCanceled}
-                                    className={classes.buttonCancel}
-                                    text={"Cancel conset"}
-                                />
+                                <Button onClick={handleClickCanceled} className={classes.buttonCancel}>
+                                    Cancel conset
+                                </Button>
                             </div>
                         )
                     )}
 
                     {invationStatus === InvationStatus.DECLINED && (
                         <div className={classes.buttons}>
-                            <Button onClick={handleClickAccept} className={classes.buttonAccept} text={"Accept"} />
-                            <Button className={classes.buttonSee} text={"See more details"} />
+                            <Button onClick={handleClickAccept} className={classes.buttonAccept}>
+                                Accept
+                            </Button>
+                            <Button className={classes.buttonSee}>See more details</Button>
                         </div>
                     )}
                 </div>
