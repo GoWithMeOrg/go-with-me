@@ -10,7 +10,7 @@ import {
     APIProviderContext,
     ControlPosition,
 } from "@vis.gl/react-google-maps";
-import Popup from "@/components/shared/Popup/Popup";
+import { Popup } from "@/components/shared/Popup";
 import Marker from "@/assets/icons/marker.svg";
 import Autocomplete from "@/components/widgets/GoogleMap/Autocomplete";
 

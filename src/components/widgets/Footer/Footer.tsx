@@ -4,7 +4,7 @@ import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 
 import LogoFooter from "@/assets/icons/logoFooter.svg";
-import Popup from "@/components/shared/Popup/Popup";
+import { Popup } from "@/components/shared/Popup";
 import { AuthModal } from "@/components/widgets/AuthModal";
 import { Button } from "@/components/shared/Button";
 

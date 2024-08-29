@@ -1,21 +1,27 @@
 import { FC, HTMLAttributes } from "react";
+import Image from "next/image";
 
 import { IUser } from "@/database/models/User";
 import { getContent } from "./helpers";
 
-import styles from "./Avatar.module.css";
+import classes from "./Avatar.module.css";
 
 interface AvatarProps extends HTMLAttributes<HTMLDivElement>, Pick<IUser, "name"> {
     scale?: number;
+    image?: string;
 }
 
-export const Avatar: FC<AvatarProps> = ({ name, scale = 1 }) => {
+export const Avatar: FC<AvatarProps> = ({ image, name, scale = 1 }) => {
     return (
         <div style={{ width: `calc(${scale} * 3.5rem)` }}>
-            <div className={styles.avatar}>
-                <div className={styles.content} style={{ transform: `scale(${scale})` }}>
-                    {getContent(name)}
-                </div>
+            <div className={classes.avatar}>
+                {image ? (
+                    <Image className={classes.image} alt={name} src={image} fill></Image>
+                ) : (
+                    <p className={classes.content} style={{ fontSize: `calc(${scale} * 1rem)` }}>
+                        {getContent(name)}
+                    </p>
+                )}
             </div>
         </div>
     );

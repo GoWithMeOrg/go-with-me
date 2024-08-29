@@ -1,19 +1,20 @@
 import { FC, useState } from "react";
 
-import Popup from "@/components/shared/Popup/Popup";
+import { Popup } from "@/components/shared/Popup";
+import { Button } from "@/components/shared/Button";
 
 export const PopupTrigger: FC = () => {
     const [showPopup, setShowPopup] = useState(false);
     return (
         <>
-            <button
+            <Button
                 onClick={(event) => {
                     event.stopPropagation();
                     setShowPopup(true);
                 }}
             >
                 ShowPopup
-            </button>
+            </Button>
             <Popup {...{ setShowPopup, showPopup }}>
                 <div style={{ backgroundColor: "white", padding: "1rem" }}>
                     <p>PopupText</p>

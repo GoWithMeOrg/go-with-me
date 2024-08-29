@@ -1,3 +1,5 @@
+import path from "path";
+
 import type { StorybookConfig } from "@storybook/nextjs";
 
 const config: StorybookConfig = {
@@ -17,5 +19,14 @@ const config: StorybookConfig = {
         autodocs: "tag",
     },
     staticDirs: ["../public"],
+    webpackFinal: async (config) => {
+        config.resolve = config.resolve || {};
+        config.resolve.alias = {
+            ...config.resolve.alias,
+            "@/components": path.resolve(__dirname, "../src/components"),
+        };
+
+        return config;
+    },
 };
 export default config;
