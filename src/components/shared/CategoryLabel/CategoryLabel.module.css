@@ -1,0 +1,21 @@
+.selectedCategories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.selectedCategory {
+    height: 2.75rem;
+    background: var(--accent-color);
+    border-radius: 0.25rem;
+    color: var(--main-color);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 2.375rem;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+    cursor: pointer;
+}

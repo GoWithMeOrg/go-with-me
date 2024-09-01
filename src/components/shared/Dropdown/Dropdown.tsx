@@ -7,8 +7,9 @@ import Minus from "@/assets/icons/minus.svg";
 import ArrowMenu from "@/assets/icons/arrowMenu.svg";
 
 import classes from "./Dropdown.module.css";
+import { CategoryLabel } from "../CategoryLabel";
 
-interface DropdownProps {
+interface DropdownProps extends React.PropsWithChildren {
     textButton?: string;
     className?: string;
     categoriesData: string[];
@@ -114,14 +115,15 @@ export const Dropdown = ({ list, textButton, className, categoriesData, onSelect
                 </ul>
             )}
 
-            <ul className={classes.selectedCategories}>
-                {selectedCategories.map((category, index) => (
-                    <li key={index} className={classes.selectedCategory}>
-                        {category}
-                        <Minus style={{ marginLeft: "0.5rem" }} onClick={() => handleDeleteCategory(category)} />
-                    </li>
-                ))}
-            </ul>
+            <CategoryLabel
+                selectedCategories={selectedCategories}
+                icon={
+                    <Minus
+                        style={{ marginLeft: "0.5rem" }}
+                        onClick={() => handleDeleteCategory(selectedCategories[0])}
+                    />
+                }
+            />
         </div>
     );
 };
