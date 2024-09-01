@@ -37,8 +37,7 @@ export const SelectCategory = forwardRef(function SelectCategory(props: ISelectC
         <div className={classes.selectedCategoriesLabel}>
             <span className={classes.selectedCategoriesTitle}>{props.titleCategories}</span>
             <Dropdown
-                textButton={"No category"}
-                className={classes.dropdownButton}
+                label={"No category"}
                 categoriesData={props.eventCategories || ["No category"]}
                 onSelectedCategories={handleCategoryChange}
                 list={props.categoryList}

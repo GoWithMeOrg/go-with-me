@@ -2,17 +2,17 @@ import React, { FC } from "react";
 
 import classes from "./CategoryLabel.module.css";
 
-interface ICategoryLabel extends React.PropsWithChildren {
+interface IBadges extends React.PropsWithChildren {
     selectedCategories: string[];
     icon: React.ReactNode;
 }
 
-export const CategoryLabel: FC<ICategoryLabel> = ({ selectedCategories, icon }) => {
+export const Badges: FC<IBadges> = ({ selectedCategories, icon }) => {
     return (
         <ul className={classes.selectedCategories}>
-            {selectedCategories.map((category, index) => (
+            {selectedCategories.map((badge, index) => (
                 <li key={index} className={classes.selectedCategory}>
-                    {category}
+                    {badge}
                     {icon}
                 </li>
             ))}
@@ -20,4 +20,4 @@ export const CategoryLabel: FC<ICategoryLabel> = ({ selectedCategories, icon }) 
     );
 };
 
-export default CategoryLabel;
+export default Badges;
