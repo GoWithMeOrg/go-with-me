@@ -4,6 +4,8 @@ import { Dropdown } from "@/components/shared/Dropdown";
 import { Label } from "@/components/shared/Label";
 
 import classes from "./SelectCategory.module.css";
+import { Badges } from "@/components/shared/Badges";
+import Minus from "@/assets/icons/minus.svg";
 
 interface ISelectCategory {
     categoryList: string[];
@@ -16,7 +18,6 @@ export const SelectCategory = forwardRef(function SelectCategory(props: ISelectC
     const [categories, setCategories] = useState<string[]>([]);
     const prevCategoriesRef = useRef<string[]>(categories ?? []);
 
-    //Отслеживаем изменившиеся категории. Если категории изменились, то вызываем onChange. При вызове OnChange в функции handleCategoryChange получаем бесконечный цикл.
     useEffect(() => {
         if (prevCategoriesRef.current !== categories) {
             props.onChange(categories || []);
@@ -31,11 +32,18 @@ export const SelectCategory = forwardRef(function SelectCategory(props: ISelectC
     return (
         <div className={classes.selectedCategoriesLabel}>
             <Label className={classes.selectedCategoriesTitle} label={props.titleCategories} />
+
             <Dropdown
                 label={"No category"}
                 categoriesData={props.eventCategories || ["No category"]}
                 onSelectedCategories={handleCategoryChange}
                 list={props.categoryList}
+            />
+
+            <Badges
+                badges={categories}
+                icon={<Minus style={{ marginLeft: "0.5rem", cursor: "pointer" }} />}
+                onDeleteBadge={handleCategoryChange}
             />
         </div>
     );

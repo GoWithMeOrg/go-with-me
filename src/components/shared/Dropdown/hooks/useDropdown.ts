@@ -16,7 +16,6 @@ interface useDropdownReturn extends PropsWithChildren {
     showIcon: (index: number, value: boolean) => void;
     handleDropdown: () => void;
     handleAddCategory: (e: any) => void;
-    handleDeleteCategory: (category: string) => void;
     dropdownRef: RefObject<HTMLDivElement>;
 }
 
@@ -61,12 +60,6 @@ export const useDropdown = ({
         });
     };
 
-    const handleDeleteCategory = (category: string) => {
-        setSelectedCategories((prevSelectedCategories) => {
-            return prevSelectedCategories.filter((cat) => cat !== category);
-        });
-    };
-
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (
@@ -104,7 +97,6 @@ export const useDropdown = ({
         showIcon,
         handleDropdown,
         handleAddCategory,
-        handleDeleteCategory,
         dropdownRef,
     };
 };

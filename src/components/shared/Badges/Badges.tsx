@@ -3,17 +3,22 @@ import React, { FC } from "react";
 import classes from "./Badges.module.css";
 
 interface IBadges extends React.PropsWithChildren {
-    selectedCategories: string[];
-    icon: React.ReactNode;
+    badges: string[];
+    icon?: React.ReactNode;
+    onDeleteBadge?: (badge: string[]) => void;
 }
 
-export const Badges: FC<IBadges> = ({ selectedCategories, icon }) => {
+export const Badges: FC<IBadges> = ({ onDeleteBadge, badges, icon }) => {
+    const handleDeleteBadge = (badge: string) => {
+        onDeleteBadge?.(badges.splice(badges.indexOf(badge), 1));
+    };
+
     return (
-        <ul className={classes.selectedCategories}>
-            {selectedCategories.map((badge, index) => (
-                <li key={index} className={classes.selectedCategory}>
+        <ul className={classes.badgeList}>
+            {badges.map((badge, index) => (
+                <li key={index} className={classes.badgeItem}>
                     {badge}
-                    {icon}
+                    <button onClick={() => handleDeleteBadge(badge)}>{icon}</button>
                 </li>
             ))}
         </ul>

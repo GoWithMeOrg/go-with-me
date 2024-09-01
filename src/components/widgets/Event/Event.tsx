@@ -55,6 +55,8 @@ const Event: FC<EventProps> = ({ event }) => {
     const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const day = days[dayOfWeek];
 
+    console.log(event);
+
     return (
         <div className={classes.event}>
             <div className={classes.eventWrapper}>

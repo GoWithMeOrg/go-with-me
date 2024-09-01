@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-import { Badges } from "@/components/shared/Badges";
+import { Button } from "@/components/shared/Button";
 import { useDropdown } from "./hooks";
 
 import Plus from "@/assets/icons/plus.svg";
@@ -8,33 +8,23 @@ import Minus from "@/assets/icons/minus.svg";
 import ArrowMenu from "@/assets/icons/arrowMenu.svg";
 
 import classes from "./Dropdown.module.css";
-
 interface DropdownProps extends React.PropsWithChildren {
     label?: string;
     categoriesData: string[];
     onSelectedCategories?: (categories: string[]) => void;
     list: string[];
-    onChange?: (categories: string[]) => void;
 }
 
 export const Dropdown: FC<DropdownProps> = ({ list, label, categoriesData, onSelectedCategories }) => {
-    const {
-        isOpen,
-        selectedCategories,
-        isHovered,
-        showIcon,
-        handleDropdown,
-        handleAddCategory,
-        handleDeleteCategory,
-        dropdownRef,
-    } = useDropdown({ list, categoriesData, onSelectedCategories });
+    const { isOpen, selectedCategories, isHovered, showIcon, handleDropdown, handleAddCategory, dropdownRef } =
+        useDropdown({ list, categoriesData, onSelectedCategories });
 
     return (
         <div className={classes.dropdown} ref={dropdownRef}>
-            <div className={classes.dropdownButton} onClick={handleDropdown}>
+            <Button className={classes.dropdownButton} onClick={handleDropdown}>
                 {selectedCategories.length === 0 ? label : selectedCategories.length + " category"}
                 <ArrowMenu style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)" }} />
-            </div>
+            </Button>
             {isOpen && (
                 <ul className={classes.dropdownList}>
                     {list.map((category, index) => (
@@ -55,18 +45,6 @@ export const Dropdown: FC<DropdownProps> = ({ list, label, categoriesData, onSel
                         </li>
                     ))}
                 </ul>
-            )}
-
-            {!isOpen && (
-                <Badges
-                    selectedCategories={selectedCategories}
-                    icon={
-                        <Minus
-                            style={{ marginLeft: "0.5rem" }}
-                            onClick={() => handleDeleteCategory(selectedCategories[0])}
-                        />
-                    }
-                />
             )}
         </div>
     );
