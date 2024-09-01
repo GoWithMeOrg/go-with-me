@@ -1,7 +1,5 @@
 import { FC } from "react";
 
-import { ICategory } from "@/components/widgets/SelectCategory/SelectCategory";
-
 import Plus from "@/assets/icons/plus.svg";
 import Minus from "@/assets/icons/minus.svg";
 import ArrowMenu from "@/assets/icons/arrowMenu.svg";
@@ -15,7 +13,7 @@ interface DropdownProps extends React.PropsWithChildren {
     label?: string;
     categoriesData: string[];
     onSelectedCategories?: (categories: string[]) => void;
-    list: ICategory[];
+    list: string[];
     onChange?: (categories: string[]) => void;
 }
 
@@ -40,15 +38,15 @@ export const Dropdown: FC<DropdownProps> = ({ list, label, categoriesData, onSel
             {isOpen && (
                 <ul className={classes.dropdownList}>
                     {list.map((category, index) => (
-                        <li key={index} data-category={category.label}>
+                        <li key={index} data-category={category}>
                             <button
                                 className={classes.dropdownItem}
                                 onClick={handleAddCategory}
                                 onMouseEnter={() => showIcon(index, true)}
                                 onMouseLeave={() => showIcon(index, false)}
                             >
-                                {category.label}
-                                {selectedCategories.includes(category.label) ? (
+                                {category}
+                                {selectedCategories.includes(category) ? (
                                     <Minus className={classes.dropdownItemMinus} />
                                 ) : isHovered[index] ? (
                                     <Plus className={classes.dropdownItemPlus} />

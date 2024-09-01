@@ -4,14 +4,8 @@ import { Dropdown } from "@/components/shared/Dropdown";
 
 import classes from "./SelectCategory.module.css";
 
-export interface ICategory {
-    label: string;
-    icon?: JSX.Element;
-    onClick?: () => void;
-    className?: string;
-}
 interface ISelectCategory {
-    categoryList: ICategory[];
+    categoryList: string[];
     titleCategories: string;
     eventCategories?: string[];
     onChange: (e: string[]) => void;

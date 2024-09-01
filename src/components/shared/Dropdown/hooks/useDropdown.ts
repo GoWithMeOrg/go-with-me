@@ -1,9 +1,7 @@
 import { Dispatch, PropsWithChildren, RefObject, SetStateAction, useEffect, useRef, useState } from "react";
 
-import { ICategory } from "@/components/widgets/SelectCategory/SelectCategory";
-
 interface useDropdownProps extends PropsWithChildren {
-    list: ICategory[];
+    list: string[];
     categoriesData: string[];
     onSelectedCategories?: (categories: string[]) => void;
     onChange?: (categories: string[]) => void;

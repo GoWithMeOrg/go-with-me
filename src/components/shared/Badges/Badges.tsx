@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 
-import classes from "./CategoryLabel.module.css";
+import classes from "./Badges.module.css";
 
 interface IBadges extends React.PropsWithChildren {
     selectedCategories: string[];
