@@ -11,6 +11,7 @@ import { Button } from "@/components/shared/Button";
 import { Map, AdvancedMarker, Pin } from "@vis.gl/react-google-maps";
 import { UserImage } from "@/components/widgets/UserImage";
 import { Popup } from "@/components/shared/Popup";
+import { Badges } from "@/components/shared/Badges";
 import ArrowMaps from "@/assets/icons/arrowMaps.svg";
 import dayjs from "dayjs";
 import Checkbox from "@/assets/icons/checkbox.svg";
@@ -89,15 +90,7 @@ const Event: FC<EventProps> = ({ event }) => {
                         </div>
                     </div>
 
-                    <div className={classes.categories}>
-                        <ul className={classes.selectedCategories}>
-                            {event.types?.map((category, index) => (
-                                <li key={index} className={classes.selectedCategory}>
-                                    {category}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
+                    <Badges badges={event.types || []} size="small" />
 
                     <div className={classes.invitations}>
                         <div className={classes.invited}>
