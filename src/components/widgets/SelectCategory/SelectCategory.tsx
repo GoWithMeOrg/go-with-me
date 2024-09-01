@@ -1,6 +1,7 @@
 import { forwardRef, useEffect, useRef, useState } from "react";
 
 import { Dropdown } from "@/components/shared/Dropdown";
+import { Label } from "@/components/shared/Label";
 
 import classes from "./SelectCategory.module.css";
 
@@ -29,7 +30,7 @@ export const SelectCategory = forwardRef(function SelectCategory(props: ISelectC
 
     return (
         <div className={classes.selectedCategoriesLabel}>
-            <span className={classes.selectedCategoriesTitle}>{props.titleCategories}</span>
+            <Label className={classes.selectedCategoriesTitle} label={props.titleCategories} />
             <Dropdown
                 label={"No category"}
                 categoriesData={props.eventCategories || ["No category"]}

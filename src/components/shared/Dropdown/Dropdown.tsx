@@ -1,11 +1,11 @@
 import { FC } from "react";
 
+import { Badges } from "@/components/shared/Badges";
+import { useDropdown } from "./hooks";
+
 import Plus from "@/assets/icons/plus.svg";
 import Minus from "@/assets/icons/minus.svg";
 import ArrowMenu from "@/assets/icons/arrowMenu.svg";
-
-import { Badges } from "@/components/shared/Badges";
-import { useDropdown } from "./hooks";
 
 import classes from "./Dropdown.module.css";
 
