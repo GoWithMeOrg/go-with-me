@@ -9,7 +9,7 @@ interface IBadges extends HTMLAttributes<HTMLUListElement> {
     size?: Sizes;
 }
 
-enum Sizes {
+export enum Sizes {
     NORMAL = "normal",
     SMALL = "small",
 }

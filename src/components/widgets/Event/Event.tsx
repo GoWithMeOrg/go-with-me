@@ -21,6 +21,8 @@ import Heart from "@/assets/icons/heart.svg";
 import Marker from "@/assets/icons/marker.svg";
 
 import classes from "./Event.module.css";
+import { Sizes } from "@/components/shared/Badges/Badges";
+
 import { Avatar } from "@/components/shared/Avatar";
 
 export interface EventProps {
@@ -91,7 +93,7 @@ const Event: FC<EventProps> = ({ event }) => {
                         </div>
                     </div>
 
-                    <Badges badges={event.types || []} size="small" />
+                    <Badges badges={event.types || []} size={Sizes.SMALL} />
 
                     <div className={classes.invitations}>
                         <div className={classes.invited}>
