@@ -21,6 +21,7 @@ import Heart from "@/assets/icons/heart.svg";
 import Marker from "@/assets/icons/marker.svg";
 
 import classes from "./Event.module.css";
+import { Avatar } from "@/components/shared/Avatar";
 
 export interface EventProps {
     event: IEvent;
@@ -124,7 +125,7 @@ const Event: FC<EventProps> = ({ event }) => {
                     )}
                 </div>
                 <div className={classes.eventImage}>
-                    {event.image === undefined && event.image !== null && (
+                    {event.image !== null && (
                         <Image src={event.image || ""} width={680} height={480} alt="img" priority />
                     )}
                 </div>
@@ -166,7 +167,7 @@ const Event: FC<EventProps> = ({ event }) => {
 
                     <div className={classes.eventOrganizer}>
                         <div className={classes.organizerImage}>
-                            <UserImage className={classes.image} />
+                            <Avatar image={event.organizer?.image} name={event.organizer?.name} scale={2.7} />
                         </div>
 
                         <div className={classes.organizerName}>

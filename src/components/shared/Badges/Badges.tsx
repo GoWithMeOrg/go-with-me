@@ -6,12 +6,17 @@ interface IBadges extends HTMLAttributes<HTMLUListElement> {
     badges: string[];
     icon?: React.ReactNode;
     onDeleteBadge?: (badge: string[]) => void;
-    size?: "normal" | "small";
+    size?: Sizes;
+}
+
+enum Sizes {
+    NORMAL = "normal",
+    SMALL = "small",
 }
 
 export const Badges: FC<IBadges> = ({ onDeleteBadge, badges, icon, className, size, ...rest }) => {
     const badgeCssString = useMemo(
-        () => [classes.badge, size === "small" && classes.small, className].filter(Boolean).join(" "),
+        () => [classes.badge, size === Sizes.SMALL && classes.small, className].filter(Boolean).join(" "),
         [className, size],
     );
 
@@ -21,8 +26,8 @@ export const Badges: FC<IBadges> = ({ onDeleteBadge, badges, icon, className, si
 
     return (
         <ul className={classes.badgeList} {...rest}>
-            {badges.map((badge, index) => (
-                <li key={index} className={badgeCssString}>
+            {badges.map((badge) => (
+                <li key={badge} className={badgeCssString}>
                     {badge}
                     <button onClick={() => handleDeleteBadge(badge)}>{icon}</button>
                 </li>
