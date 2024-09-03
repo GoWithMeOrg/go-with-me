@@ -38,7 +38,7 @@ export const Comment: FC<IProps> = ({
                 </div>
                 <p className={classes.commentText}>{content}</p>
                 <div className={classes.likesContainer}>
-                    <button onClick={() => onClickLikeButton({ commentId: id })}>
+                    <button className={classes.likeButton} onClick={() => onClickLikeButton({ commentId: id })}>
                         <Heart className={likes.length ? classes.liked : undefined} />
                     </button>
                     <span className={classes.number}>{likes.length ? likes.length : ""}</span>
