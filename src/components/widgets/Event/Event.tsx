@@ -11,6 +11,7 @@ import { Button } from "@/components/shared/Button";
 import { Map, AdvancedMarker, Pin } from "@vis.gl/react-google-maps";
 import { UserImage } from "@/components/widgets/UserImage";
 import { Popup } from "@/components/shared/Popup";
+import { Badges } from "@/components/shared/Badges";
 import ArrowMaps from "@/assets/icons/arrowMaps.svg";
 import dayjs from "dayjs";
 import Checkbox from "@/assets/icons/checkbox.svg";
@@ -20,6 +21,9 @@ import Heart from "@/assets/icons/heart.svg";
 import Marker from "@/assets/icons/marker.svg";
 
 import classes from "./Event.module.css";
+import { Sizes } from "@/components/shared/Badges/Badges";
+
+import { Avatar } from "@/components/shared/Avatar";
 
 export interface EventProps {
     event: IEvent;
@@ -55,6 +59,8 @@ const Event: FC<EventProps> = ({ event }) => {
     const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const day = days[dayOfWeek];
 
+    console.log(event);
+
     return (
         <div className={classes.event}>
             <div className={classes.eventWrapper}>
@@ -87,15 +93,7 @@ const Event: FC<EventProps> = ({ event }) => {
                         </div>
                     </div>
 
-                    <div className={classes.categories}>
-                        <ul className={classes.selectedCategories}>
-                            {event.types?.map((category, index) => (
-                                <li key={index} className={classes.selectedCategory}>
-                                    {category}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
+                    <Badges badges={event.types || []} size={Sizes.SMALL} />
 
                     <div className={classes.invitations}>
                         <div className={classes.invited}>
@@ -129,7 +127,9 @@ const Event: FC<EventProps> = ({ event }) => {
                     )}
                 </div>
                 <div className={classes.eventImage}>
-                    <Image src={event.image ?? ""} width={680} height={480} alt="img" priority />
+                    {event.image !== null && (
+                        <Image src={event.image || ""} width={680} height={480} alt="img" priority />
+                    )}
                 </div>
                 <Popup
                     {...{
@@ -169,7 +169,7 @@ const Event: FC<EventProps> = ({ event }) => {
 
                     <div className={classes.eventOrganizer}>
                         <div className={classes.organizerImage}>
-                            <UserImage className={classes.image} />
+                            <Avatar image={event.organizer?.image} name={event.organizer?.name} scale={2.7} />
                         </div>
 
                         <div className={classes.organizerName}>

@@ -73,6 +73,7 @@ export const ProfileForm: FC<IProfileFormProps> = ({ profileData, onSubmitEvent 
         //onSubmitEvent(event);
     };
 
+    console.log(session);
     return (
         <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
             <div className={classes.formField}>
