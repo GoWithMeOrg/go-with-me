@@ -1,10 +1,11 @@
-import { FC, useMemo, InputHTMLAttributes } from "react";
+import { FC, useMemo, InputHTMLAttributes, RefObject } from "react";
 
 import styles from "./Input.module.css";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     resetDefaultStyles?: boolean;
     error?: boolean;
+    inputRef?: RefObject<HTMLInputElement>;
 }
 
 export const Input: FC<InputProps> = ({ resetDefaultStyles, className, error, ...rest }) => {
@@ -15,7 +16,7 @@ export const Input: FC<InputProps> = ({ resetDefaultStyles, className, error, ..
         return cssString;
     }, [resetDefaultStyles, className]);
 
-    return <input className={inputCssString} {...{ ...rest }} />;
+    return <input className={inputCssString} {...rest} />;
 };
 
 Input.displayName = "Input";
