@@ -168,7 +168,7 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                         render={({ field }) => (
                             <UploadFile
                                 imageUrl={eventData.image}
-                                className={classes.preview}
+                                //className={classes.preview}
                                 width={460}
                                 height={324}
                                 onChange={field.onChange}

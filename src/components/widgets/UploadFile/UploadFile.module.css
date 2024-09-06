@@ -1,21 +1,26 @@
 .uploadFile {
     display: flex;
-    /* flex-direction: column; */
+    flex-direction: column;
     gap: 1.25rem;
     margin-right: 1.25rem;
     margin-bottom: 1rem;
 }
 
-.preview {
+.previewBackground {
     display: flex;
     width: 28.75rem;
     height: 20.25rem;
+    border-radius: 0.25rem;
     background-color: var(--additional-color);
 }
 
 .previewImage {
     width: auto;
     height: auto;
+}
+
+.image {
+    border-radius: 0.25rem;
 }
 
 .customFileInput {
@@ -30,7 +35,7 @@
     z-index: -1;
 }
 
-.customFileInput label {
+.customFileInput {
     display: flex;
     width: 12.75rem;
     height: 3.13rem;
@@ -46,7 +51,7 @@
     justify-content: center;
 }
 
-.customFileInput label:hover {
+.customFileInput:hover {
     background: none;
     color: var(--hover-color);
     border: 2px solid var(--hover-color);
