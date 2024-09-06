@@ -9,6 +9,7 @@ interface LabelProps extends HTMLProps<HTMLLabelElement> {
     children?: React.ReactNode;
     ref?: Ref<HTMLLabelElement>;
     className?: string;
+    htmlFor?: string;
 }
 
 export const Label: FC<LabelProps> = forwardRef(function LabelProps(props: LabelProps, ref) {
@@ -20,7 +21,7 @@ export const Label: FC<LabelProps> = forwardRef(function LabelProps(props: Label
     }, [props.className]);
 
     return (
-        <label className={labelCssString}>
+        <label className={labelCssString} htmlFor={props.htmlFor}>
             {props.label}
             {props.children}
         </label>
