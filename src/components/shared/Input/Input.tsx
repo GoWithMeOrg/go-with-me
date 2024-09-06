@@ -5,7 +5,6 @@ import styles from "./Input.module.css";
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     resetDefaultStyles?: boolean;
     error?: boolean;
-    inputRef?: RefObject<HTMLInputElement>;
 }
 
 export const Input: FC<InputProps> = ({ resetDefaultStyles, className, error, ...rest }) => {
