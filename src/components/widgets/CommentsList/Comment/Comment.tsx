@@ -15,12 +15,14 @@ interface IProps {
     comment: ICommentData;
     onClickReplyButton: ({}: { replyTo: ReplyTo; parentId: string }) => void;
     onClickLikeButton: ({}: { commentId: string }) => void;
+    isLiked: boolean;
 }
 
 export const Comment: FC<IProps> = ({
     comment: { author, content, likes, _id, replyTo, createdAt, parentId },
     onClickReplyButton,
     onClickLikeButton,
+    isLiked,
 }) => {
     const { name } = author;
     const id = _id.toString();
@@ -39,7 +41,7 @@ export const Comment: FC<IProps> = ({
                 <p className={classes.commentText}>{content}</p>
                 <div className={classes.likesContainer}>
                     <button className={classes.likeButton} onClick={() => onClickLikeButton({ commentId: id })}>
-                        <Heart className={likes.length ? classes.liked : undefined} />
+                        <Heart className={isLiked ? classes.liked : ""} />
                     </button>
                     <span className={classes.number}>{likes.length ? likes.length : ""}</span>
                     <button
