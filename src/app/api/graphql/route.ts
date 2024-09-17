@@ -48,10 +48,11 @@ const resolvers = {
             return TripModel.findById(id);
         },
 
-        comments: async (parent: any, { event_id }: { event_id: string }) => {
+        comments: async (parent: any, { event_id, limit }: { event_id: string; limit?: number }) => {
+            console.log(event_id, limit);
             const comments = await CommentModel.find({ event_id }).populate("replies").populate("author");
             const firstLevelComments = comments.filter(({ replyTo }) => !replyTo).sort(() => -1);
-            return firstLevelComments;
+            return firstLevelComments.slice(0, limit ?? firstLevelComments.length);
         },
 
         search: async (parent: any, { text }: { text: string }) => {
@@ -150,7 +151,7 @@ const typeDefs = gql`
         event(id: ID!): Event
         trips: [Trip]
         trip(id: ID!): Trip
-        comments(event_id: ID!): [Comment]
+        comments(event_id: ID!, limit: Int): [Comment]
         search(text: String!): [Event]
     }
 

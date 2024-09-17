@@ -3,11 +3,12 @@ import gql from "graphql-tag";
 import { useSession } from "next-auth/react";
 
 import { ICommentData } from "../types";
+import { useState } from "react";
 
 const GET_COMMENTS_BY_EVENT_ID = gql`
     #graphql
-    query GetEventById($id: ID!) {
-        comments(event_id: $id) {
+    query GetEventById($id: ID!, $limit: Int) {
+        comments(event_id: $id, limit: $limit) {
             _id
             author {
                 name
@@ -68,10 +69,11 @@ const LIKE_COMMENT = gql`
 `;
 
 export const useComments = (event_id: string) => {
+    const [limit, setLimit] = useState<number>(5);
     const { data, error, loading, refetch } = useQuery<{ comments: ICommentData[] } | undefined>(
         GET_COMMENTS_BY_EVENT_ID,
         {
-            variables: { id: event_id },
+            variables: { id: event_id, limit },
         },
     );
     const [saveComment] = useMutation(SAVE_COMMENT);
@@ -80,5 +82,5 @@ export const useComments = (event_id: string) => {
     // @ts-ignore TODO: fix type
     const author_id: string = session.data?.user?.id;
 
-    return { data, error, loading, refetch, saveComment, likeComment, author_id };
+    return { data, error, loading, refetch, saveComment, likeComment, author_id, limit, setLimit };
 };

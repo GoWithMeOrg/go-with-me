@@ -27,10 +27,12 @@ const MessageContainer: FC<HTMLAttributes<HTMLDivElement>> = ({ children, classN
 );
 
 export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
-    const { data, loading, error, refetch, saveComment, likeComment, author_id } = useComments(event_id);
+    const { data, loading, error, refetch, saveComment, likeComment, author_id, setLimit, limit } =
+        useComments(event_id);
 
     const [replyToState, setReplyToState] = useState<ReplyTo | null>(null);
     const [parentIdState, setParentIdState] = useState<string | null>(null);
+    const [isPaginationDisabled, setIsPaginationDisabled] = useState<boolean>(false);
 
     const onSaveComment = useCallback(
         async ({ content, replyTo, parentId }: { content: string; replyTo?: ReplyTo; parentId?: string }) => {
@@ -53,6 +55,14 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
         },
         [event_id, refetch, saveComment, author_id],
     );
+
+    const OnLoadMoreComments = () => {
+        setLimit((state) => state + 5);
+        refetch();
+        const commentsLength = data?.comments.length;
+        console.log(commentsLength, limit);
+        setIsPaginationDisabled(Boolean(commentsLength && commentsLength < limit));
+    };
 
     if (loading)
         return (
@@ -131,7 +141,9 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
                     );
                 })}
             </ul>
-            <Button>Load more comments</Button>
+            <Button disabled={isPaginationDisabled} onClick={OnLoadMoreComments}>
+                Load more comments
+            </Button>
         </section>
     );
 };
