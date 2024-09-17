@@ -24,13 +24,13 @@ export const Comment: FC<IProps> = ({
     onClickLikeButton,
     isLiked,
 }) => {
-    const { name } = author;
+    const { name, image } = author;
     const id = _id.toString();
 
     return (
         <div className={classes.comment} id={`comment-id-${id}`}>
             <div className={classes.avatarContainer}>
-                <Avatar className={classes.avatar} name={name} />
+                <Avatar className={classes.avatar} name={name} image={image ?? undefined} />
             </div>
             <div className={classes.contentContainer}>
                 <div className={classes.userName}>

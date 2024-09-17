@@ -63,7 +63,6 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
     if (error) return <MessageContainer>Error: {error.message}</MessageContainer>;
     if (!data) return <MessageContainer className={classes.error}>Comments error</MessageContainer>;
     const { comments } = data;
-    console.log(comments);
 
     const onClickReplyButton = ({ replyTo, parentId }: { replyTo: ReplyTo; parentId: string }) => {
         if (replyToState?.id === replyTo.id) {
