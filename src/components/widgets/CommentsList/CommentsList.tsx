@@ -120,6 +120,7 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
                             {replies ? (
                                 <ul className={classes.replies}>
                                     {replies.map((replyComment) => {
+                                        const { likes } = replyComment;
                                         const replyCommentId = replyComment._id.toString();
                                         return (
                                             <li key={replyCommentId}>
