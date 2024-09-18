@@ -5,7 +5,6 @@
     border-radius: 50%;
     color: #fff;
     font-weight: 600;
-    background-color: #000;
 }
 
 .content {
@@ -22,4 +21,8 @@
 
 .image {
     object-fit: cover;
+}
+
+.background {
+    background-color: #000;
 }
