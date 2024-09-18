@@ -27,8 +27,7 @@ const MessageContainer: FC<HTMLAttributes<HTMLDivElement>> = ({ children, classN
 );
 
 export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
-    const { data, loading, error, refetch, saveComment, likeComment, author_id, setLimit, limit } =
-        useComments(event_id);
+    const { comments, loading, error, refetch, saveComment, likeComment, author_id, limit } = useComments(event_id);
 
     const [replyToState, setReplyToState] = useState<ReplyTo | null>(null);
     const [parentIdState, setParentIdState] = useState<string | null>(null);
@@ -57,16 +56,12 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
     );
 
     const OnLoadMoreComments = () => {
-        setLimit((state) => state + 5);
+        limit.current = limit.current + 5;
         refetch();
-        const commentsLength = data?.comments.length;
-        console.log(commentsLength, limit);
-        setIsPaginationDisabled(Boolean(commentsLength && commentsLength < limit));
+        setIsPaginationDisabled(Boolean(comments.length && comments.length < limit.current));
     };
 
     if (error) return <MessageContainer>Error: {error.message}</MessageContainer>;
-    // if (!data) return <MessageContainer className={classes.error}>Comments error</MessageContainer>;
-    // const { comments } = data;
 
     const onClickReplyButton = ({ replyTo, parentId }: { replyTo: ReplyTo; parentId: string }) => {
         if (replyToState?.id === replyTo.id) {
@@ -92,6 +87,8 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
     const onSaveCommentReply = (content: string) =>
         onSaveComment({ content, replyTo: replyToState ?? undefined, parentId: parentIdState ?? undefined });
 
+    console.log("render");
+
     return (
         <section className={classes.container}>
             <Title tag="h3" className={classes.title}>
@@ -99,7 +96,7 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
             </Title>
             <CommentForm onSaveComment={onSaveCommentTop} />
             <ul>
-                {data?.comments.map((comment) => {
+                {comments.map((comment) => {
                     const { _id, replies, likes } = comment;
                     const commentId = _id.toString();
                     return (

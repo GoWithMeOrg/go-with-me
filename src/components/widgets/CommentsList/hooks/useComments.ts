@@ -1,9 +1,9 @@
+import { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import gql from "graphql-tag";
 import { useSession } from "next-auth/react";
 
 import { ICommentData } from "../types";
-import { useState } from "react";
 
 const GET_COMMENTS_BY_EVENT_ID = gql`
     #graphql
@@ -69,11 +69,12 @@ const LIKE_COMMENT = gql`
 `;
 
 export const useComments = (event_id: string) => {
-    const [limit, setLimit] = useState<number>(5);
+    const limit = useRef<number>(5);
+    const [comments, setComments] = useState<ICommentData[]>([]);
     const { data, error, loading, refetch } = useQuery<{ comments: ICommentData[] } | undefined>(
         GET_COMMENTS_BY_EVENT_ID,
         {
-            variables: { id: event_id, limit },
+            variables: { id: event_id, limit: limit.current },
         },
     );
     const [saveComment] = useMutation(SAVE_COMMENT);
@@ -82,5 +83,9 @@ export const useComments = (event_id: string) => {
     // @ts-ignore TODO: fix type
     const author_id: string = session.data?.user?.id;
 
-    return { data, error, loading, refetch, saveComment, likeComment, author_id, limit, setLimit };
+    useEffect(() => {
+        if (data) setComments(data.comments);
+    }, [data]);
+
+    return { comments, error, loading, refetch, saveComment, likeComment, author_id, limit };
 };
