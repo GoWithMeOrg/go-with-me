@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, HTMLAttributes, useCallback, useState } from "react";
+import { FC, HTMLAttributes, useCallback, useEffect, useState } from "react";
 
 import { Title } from "@/components/shared/Title";
 import { Button } from "@/components/shared/Button";
@@ -10,7 +10,7 @@ import { useComments } from "./hooks";
 import { Comment } from "./Comment";
 import { CommentForm } from "./CommentForm";
 
-import { ReplyTo } from "./types";
+import { ICommentData, ReplyTo } from "./types";
 
 import classes from "./CommentsList.module.css";
 
@@ -27,11 +27,16 @@ const MessageContainer: FC<HTMLAttributes<HTMLDivElement>> = ({ children, classN
 );
 
 export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
-    const { comments, loading, error, refetch, saveComment, likeComment, author_id, limit } = useComments(event_id);
+    const { data, loading, error, refetch, saveComment, likeComment, author_id, limit, setLimit } =
+        useComments(event_id);
 
     const [replyToState, setReplyToState] = useState<ReplyTo | null>(null);
     const [parentIdState, setParentIdState] = useState<string | null>(null);
-    const [isPaginationDisabled, setIsPaginationDisabled] = useState<boolean>(false);
+    const [comments, setComments] = useState<ICommentData[]>([]);
+
+    useEffect(() => {
+        if (data) setComments(data.comments);
+    }, [data]);
 
     const onSaveComment = useCallback(
         async ({ content, replyTo, parentId }: { content: string; replyTo?: ReplyTo; parentId?: string }) => {
@@ -54,12 +59,6 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
         },
         [event_id, refetch, saveComment, author_id],
     );
-
-    const OnLoadMoreComments = () => {
-        limit.current = limit.current + 5;
-        refetch();
-        setIsPaginationDisabled(Boolean(comments.length && comments.length < limit.current));
-    };
 
     if (error) return <MessageContainer>Error: {error.message}</MessageContainer>;
 
@@ -86,8 +85,6 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
     const onSaveCommentTop = (content: string) => onSaveComment({ content });
     const onSaveCommentReply = (content: string) =>
         onSaveComment({ content, replyTo: replyToState ?? undefined, parentId: parentIdState ?? undefined });
-
-    console.log("render");
 
     return (
         <section className={classes.container}>
@@ -138,7 +135,7 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
                     <Spinner />
                 </MessageContainer>
             )}
-            <Button disabled={loading || isPaginationDisabled} onClick={OnLoadMoreComments}>
+            <Button disabled={loading || comments.length < limit} onClick={() => setLimit((state) => state + 5)}>
                 Load more comments
             </Button>
         </section>
