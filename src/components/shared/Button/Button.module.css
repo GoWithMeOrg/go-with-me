@@ -12,12 +12,11 @@
     color: var(--hover-color);
     border-color: var(--hover-color);
 }
-.button:active {
-    color: var(--white-color);
-    background-color: var(--text-color);
-    border-color: var(--text-color);
-}
+
 .button:disabled {
+    color: var(--white-color);
+    background-color: var(--additional-color);
+    border-color: var(--additional-color);
     cursor: not-allowed;
 }
 
