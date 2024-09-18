@@ -49,7 +49,6 @@ const resolvers = {
         },
 
         comments: async (parent: any, { event_id, limit }: { event_id: string; limit?: number }) => {
-            console.log(event_id, limit);
             const comments = await CommentModel.find({ event_id }).populate("replies").populate("author");
             const firstLevelComments = comments.filter(({ replyTo }) => !replyTo).sort(() => -1);
             return firstLevelComments.slice(0, limit ?? firstLevelComments.length);
