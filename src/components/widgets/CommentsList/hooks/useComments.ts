@@ -13,12 +13,14 @@ const GET_COMMENTS_BY_EVENT_ID = gql`
             author {
                 name
                 image
+                _id
             }
             replies {
                 _id
                 author {
                     name
                     image
+                    _id
                 }
                 content
                 createdAt

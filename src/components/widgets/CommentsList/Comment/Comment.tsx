@@ -15,8 +15,9 @@ interface IProps {
     comment: ICommentData;
     onClickReplyButton: ({}: { replyTo: ReplyTo; parentId: string }) => void;
     onClickLikeButton: ({}: { commentId: string }) => void;
+    onClickDeleteButton: ({}: { commentId: string }) => void;
     isLiked: boolean;
-    // isDeletable: boolean;
+    isDeletable?: boolean;
 }
 
 export const Comment: FC<IProps> = ({
@@ -24,6 +25,7 @@ export const Comment: FC<IProps> = ({
     onClickReplyButton,
     onClickLikeButton,
     isLiked,
+    isDeletable,
 }) => {
     const { name, image } = author;
     const id = _id.toString();
@@ -56,7 +58,7 @@ export const Comment: FC<IProps> = ({
                     >
                         <ArrowReply />
                     </button>
-                    <button className={classes.deleteButton}>delete</button>
+                    {isDeletable && <button className={classes.deleteButton}>delete</button>}
                 </div>
             </div>
         </div>

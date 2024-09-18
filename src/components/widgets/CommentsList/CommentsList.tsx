@@ -82,6 +82,8 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
         if (likeCommentResponse) refetch();
     };
 
+    const onClickDeleteButton = () => {};
+
     const onSaveCommentTop = (content: string) => onSaveComment({ content });
     const onSaveCommentReply = (content: string) =>
         onSaveComment({ content, replyTo: replyToState ?? undefined, parentId: parentIdState ?? undefined });
@@ -94,7 +96,7 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
             <CommentForm onSaveComment={onSaveCommentTop} />
             <ul>
                 {comments.map((comment) => {
-                    const { _id, replies, likes } = comment;
+                    const { _id, replies, likes, author } = comment;
                     const commentId = _id.toString();
                     return (
                         <li key={commentId}>
@@ -102,13 +104,15 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
                                 comment={comment}
                                 onClickReplyButton={onClickReplyButton}
                                 onClickLikeButton={onClickLikeButton}
+                                onClickDeleteButton={onClickDeleteButton}
                                 isLiked={Boolean(likes.find((id) => id === author_id))}
+                                isDeletable={author._id === author_id}
                             />
                             {replyToState?.id === commentId ? <CommentForm onSaveComment={onSaveCommentReply} /> : null}
                             {replies ? (
                                 <ul className={classes.replies}>
                                     {replies.map((replyComment) => {
-                                        const { likes } = replyComment;
+                                        const { likes, author } = replyComment;
                                         const replyCommentId = replyComment._id.toString();
                                         return (
                                             <li key={replyCommentId}>
@@ -116,7 +120,9 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
                                                     comment={replyComment}
                                                     onClickReplyButton={onClickReplyButton}
                                                     onClickLikeButton={onClickLikeButton}
+                                                    onClickDeleteButton={onClickDeleteButton}
                                                     isLiked={Boolean(likes.find((id) => id === author_id))}
+                                                    isDeletable={author._id === author_id}
                                                 />
                                                 {replyToState?.id === replyCommentId ? (
                                                     <CommentForm onSaveComment={onSaveCommentReply} />
