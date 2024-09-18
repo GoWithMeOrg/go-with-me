@@ -16,6 +16,7 @@ interface IProps {
     onClickReplyButton: ({}: { replyTo: ReplyTo; parentId: string }) => void;
     onClickLikeButton: ({}: { commentId: string }) => void;
     isLiked: boolean;
+    // isDeletable: boolean;
 }
 
 export const Comment: FC<IProps> = ({
@@ -55,6 +56,7 @@ export const Comment: FC<IProps> = ({
                     >
                         <ArrowReply />
                     </button>
+                    <button className={classes.deleteButton}>delete</button>
                 </div>
             </div>
         </div>

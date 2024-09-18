@@ -53,6 +53,14 @@
 }
 
 .replyButton,
-.likeButton {
+.likeButton,
+.deleteButton {
     cursor: pointer;
+}
+
+.deleteButton {
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--text-color);
 }
