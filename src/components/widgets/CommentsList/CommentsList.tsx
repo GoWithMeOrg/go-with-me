@@ -64,15 +64,9 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
         setIsPaginationDisabled(Boolean(commentsLength && commentsLength < limit));
     };
 
-    if (loading)
-        return (
-            <MessageContainer>
-                <Spinner />
-            </MessageContainer>
-        );
     if (error) return <MessageContainer>Error: {error.message}</MessageContainer>;
-    if (!data) return <MessageContainer className={classes.error}>Comments error</MessageContainer>;
-    const { comments } = data;
+    // if (!data) return <MessageContainer className={classes.error}>Comments error</MessageContainer>;
+    // const { comments } = data;
 
     const onClickReplyButton = ({ replyTo, parentId }: { replyTo: ReplyTo; parentId: string }) => {
         if (replyToState?.id === replyTo.id) {
@@ -105,7 +99,7 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
             </Title>
             <CommentForm onSaveComment={onSaveCommentTop} />
             <ul>
-                {comments.map((comment) => {
+                {data?.comments.map((comment) => {
                     const { _id, replies, likes } = comment;
                     const commentId = _id.toString();
                     return (
@@ -142,7 +136,12 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
                     );
                 })}
             </ul>
-            <Button disabled={isPaginationDisabled} onClick={OnLoadMoreComments}>
+            {loading && (
+                <MessageContainer>
+                    <Spinner />
+                </MessageContainer>
+            )}
+            <Button disabled={loading || isPaginationDisabled} onClick={OnLoadMoreComments}>
                 Load more comments
             </Button>
         </section>
