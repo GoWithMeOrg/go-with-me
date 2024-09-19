@@ -1,9 +1,13 @@
 import { useMutation, useQuery } from "@apollo/client";
 import gql from "graphql-tag";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
 
 import { ICommentData } from "../types";
+
+interface IUseComments {
+    event_id: string;
+    limit: number;
+}
 
 const GET_COMMENTS_BY_EVENT_ID = gql`
     #graphql
@@ -79,8 +83,7 @@ const DELETE_COMMENT = gql`
     }
 `;
 
-export const useComments = (event_id: string) => {
-    const [limit, setLimit] = useState<number>(5);
+export const useComments = ({ event_id, limit }: IUseComments) => {
     const { data, error, loading, refetch } = useQuery<{ comments: ICommentData[] } | undefined>(
         GET_COMMENTS_BY_EVENT_ID,
         {
@@ -94,5 +97,5 @@ export const useComments = (event_id: string) => {
     // @ts-ignore TODO: fix type
     const author_id: string = session.data?.user?.id;
 
-    return { data, error, loading, refetch, saveComment, likeComment, deleteComment, author_id, limit, setLimit };
+    return { data, error, loading, refetch, saveComment, likeComment, deleteComment, author_id };
 };

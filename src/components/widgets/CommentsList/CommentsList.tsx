@@ -27,29 +27,28 @@ const MessageContainer: FC<HTMLAttributes<HTMLDivElement>> = ({ children, classN
 );
 
 export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
-    const { data, loading, error, refetch, saveComment, likeComment, deleteComment, author_id, limit, setLimit } =
-        useComments(event_id);
+    const [limit, setLimit] = useState<number>(5);
+    const { data, error, refetch, saveComment, likeComment, deleteComment, author_id } = useComments({
+        event_id,
+        limit,
+    });
 
     const [replyToState, setReplyToState] = useState<ReplyTo | null>(null);
     const [parentIdState, setParentIdState] = useState<string | null>(null);
     const [comments, setComments] = useState<ICommentData[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
-        if (data) setComments(data.comments);
+        if (data) {
+            setComments(data.comments);
+            setLoading(false);
+        }
     }, [data]);
 
     const onSaveComment = useCallback(
         async ({ content, replyTo, parentId }: { content: string; replyTo?: ReplyTo; parentId?: string }) => {
             const saveCommentResponse = await saveComment({
-                variables: {
-                    comment: {
-                        event_id,
-                        author_id,
-                        content,
-                        replyTo,
-                        parentId,
-                    },
-                },
+                variables: { comment: { event_id, author_id, content, replyTo, parentId } },
             });
             if (!saveCommentResponse) return;
             refetch();
@@ -73,23 +72,30 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
     };
 
     const onClickLikeButton = async ({ commentId }: { commentId: string }) => {
-        const likeCommentResponse = await likeComment({
+        setLoading(true);
+        await likeComment({
             variables: {
                 userId: author_id,
                 commentId,
             },
         });
-        if (likeCommentResponse) refetch();
     };
 
     const onClickDeleteButton = async ({ commentId }: { commentId: string }) => {
-        const deleteCommentResponse = await deleteComment({
+        setLoading(true);
+        await deleteComment({
             variables: {
                 userId: author_id,
                 commentId,
             },
         });
-        if (deleteCommentResponse) refetch();
+        refetch();
+    };
+
+    const onClickLoadMore = async () => {
+        setLimit((state) => state + 1);
+        setLoading(true);
+        await refetch({ id: event_id, limit });
     };
 
     const onSaveCommentTop = (content: string) => onSaveComment({ content });
@@ -149,7 +155,7 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
                     <Spinner />
                 </MessageContainer>
             )}
-            <Button disabled={loading || comments.length < limit} onClick={() => setLimit((state) => state + 5)}>
+            <Button disabled={loading || comments.length < limit} onClick={onClickLoadMore}>
                 Load more comments
             </Button>
         </section>
