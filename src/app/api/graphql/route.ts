@@ -121,11 +121,10 @@ const resolvers = {
         },
         deleteComment: async (parent: any, { commentId, userId }: { commentId: string; userId: string }) => {
             const currentComment = await CommentModel.findById(commentId);
-            if (!currentComment) return "comment id not found";
-            if (currentComment.author_id.toString() !== userId) return "no matching author";
+            if (!currentComment) return;
+            if (currentComment.author_id.toString() !== userId) return;
             await CommentModel.deleteMany({ parentId: currentComment.id });
-            await CommentModel.deleteOne({ _id: commentId });
-            return `comment ${commentId} is deleted`;
+            return await CommentModel.deleteOne({ _id: commentId });
         },
         likeComment: async (parent: any, { commentId, userId }: { commentId: string; userId: string }) => {
             const comment = await CommentModel.findById(commentId);
