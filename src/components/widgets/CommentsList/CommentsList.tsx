@@ -93,9 +93,9 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
     };
 
     const onClickLoadMore = async () => {
-        setLimit((state) => state + 1);
+        setLimit((state) => state + 5);
         setLoading(true);
-        await refetch({ id: event_id, limit });
+        await refetch();
     };
 
     const onSaveCommentTop = (content: string) => onSaveComment({ content });
