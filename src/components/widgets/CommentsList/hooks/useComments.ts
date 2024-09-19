@@ -70,6 +70,15 @@ const LIKE_COMMENT = gql`
     }
 `;
 
+const DELETE_COMMENT = gql`
+    #graphql
+    mutation deleteComment($commentId: ID!, $userId: ID!) {
+        deleteComment(commentId: $commentId, userId: $userId) {
+            _id
+        }
+    }
+`;
+
 export const useComments = (event_id: string) => {
     const [limit, setLimit] = useState<number>(5);
     const { data, error, loading, refetch } = useQuery<{ comments: ICommentData[] } | undefined>(
@@ -80,9 +89,10 @@ export const useComments = (event_id: string) => {
     );
     const [saveComment] = useMutation(SAVE_COMMENT);
     const [likeComment] = useMutation(LIKE_COMMENT);
+    const [deleteComment] = useMutation(DELETE_COMMENT);
     const session = useSession();
     // @ts-ignore TODO: fix type
     const author_id: string = session.data?.user?.id;
 
-    return { data, error, loading, refetch, saveComment, likeComment, author_id, limit, setLimit };
+    return { data, error, loading, refetch, saveComment, likeComment, deleteComment, author_id, limit, setLimit };
 };

@@ -119,8 +119,13 @@ const resolvers = {
             await CommentModel.updateOne({ _id: id }, comment);
             return await CommentModel.findById(id);
         },
-        deleteComment: async (parent: any, { id }: { id: string }) => {
-            return await CommentModel.deleteOne({ _id: id });
+        deleteComment: async (parent: any, { commentId, userId }: { commentId: string; userId: string }) => {
+            const currentComment = await CommentModel.findById(commentId);
+            if (!currentComment) return "comment id not found";
+            if (currentComment.author_id.toString() !== userId) return "no matching author";
+            await CommentModel.deleteMany({ parentId: currentComment.id });
+            await CommentModel.deleteOne({ _id: commentId });
+            return `comment ${commentId} is deleted`;
         },
         likeComment: async (parent: any, { commentId, userId }: { commentId: string; userId: string }) => {
             const comment = await CommentModel.findById(commentId);
@@ -304,7 +309,7 @@ const typeDefs = gql`
 
         saveComment(comment: CommentInput): Comment
         updateComment(id: ID!, comment: CommentInput): Comment
-        deleteComment(id: ID!): Comment
+        deleteComment(commentId: ID!, userId: ID!): Comment
         likeComment(commentId: ID!, userId: ID!): Comment
     }
 `;

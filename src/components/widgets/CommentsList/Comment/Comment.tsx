@@ -24,6 +24,7 @@ export const Comment: FC<IProps> = ({
     comment: { author, content, likes, _id, replyTo, createdAt, parentId },
     onClickReplyButton,
     onClickLikeButton,
+    onClickDeleteButton,
     isLiked,
     isDeletable,
 }) => {
@@ -58,7 +59,11 @@ export const Comment: FC<IProps> = ({
                     >
                         <ArrowReply />
                     </button>
-                    {isDeletable && <button className={classes.deleteButton}>delete</button>}
+                    {isDeletable && (
+                        <button className={classes.deleteButton} onClick={() => onClickDeleteButton({ commentId: id })}>
+                            delete
+                        </button>
+                    )}
                 </div>
             </div>
         </div>

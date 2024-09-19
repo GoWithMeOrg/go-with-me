@@ -27,7 +27,7 @@ const MessageContainer: FC<HTMLAttributes<HTMLDivElement>> = ({ children, classN
 );
 
 export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
-    const { data, loading, error, refetch, saveComment, likeComment, author_id, limit, setLimit } =
+    const { data, loading, error, refetch, saveComment, likeComment, deleteComment, author_id, limit, setLimit } =
         useComments(event_id);
 
     const [replyToState, setReplyToState] = useState<ReplyTo | null>(null);
@@ -82,7 +82,15 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
         if (likeCommentResponse) refetch();
     };
 
-    const onClickDeleteButton = () => {};
+    const onClickDeleteButton = async ({ commentId }: { commentId: string }) => {
+        const deleteCommentResponse = await deleteComment({
+            variables: {
+                userId: author_id,
+                commentId,
+            },
+        });
+        if (deleteCommentResponse) refetch();
+    };
 
     const onSaveCommentTop = (content: string) => onSaveComment({ content });
     const onSaveCommentReply = (content: string) =>
