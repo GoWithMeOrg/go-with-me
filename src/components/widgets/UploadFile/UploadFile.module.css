@@ -1,6 +1,14 @@
-.uploadFile {
+.event {
     display: flex;
     flex-direction: column;
+    gap: 1.25rem;
+    margin-right: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.profile {
+    display: flex;
+    flex-direction: row;
     gap: 1.25rem;
     margin-right: 1.25rem;
     margin-bottom: 1rem;

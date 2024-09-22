@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 
 import { TitleField } from "@/components/shared/TitleField";
@@ -16,9 +17,10 @@ import { UploadFile } from "@/components/widgets/UploadFile";
 import { Location } from "@/components/widgets/Location";
 import { IEvent } from "@/database/models/Event";
 
+import { useUploadFile } from "@/components/widgets/UploadFile/hooks";
+import { UploadFileSizes } from "@/components/widgets/UploadFile/UploadFile";
+
 import classes from "./EventForm.module.css";
-import { useUploadFile } from "../UploadFile/hooks";
-import { useState } from "react";
 
 export type EventType = Partial<IEvent>;
 
@@ -179,12 +181,12 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                         control={control}
                         render={({ field }) => (
                             <UploadFile
-                                //imageUrl={eventData.image}
-                                //className={classes.preview}
+                                imageUrl={eventData.image}
                                 width={460}
                                 height={324}
                                 onUploadedFile={handleUploadedFile}
                                 {...field}
+                                sizeType={UploadFileSizes.event}
                             />
                         )}
                     />

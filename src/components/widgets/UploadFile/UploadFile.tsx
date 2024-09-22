@@ -1,27 +1,32 @@
 "use client";
 
-import { ChangeEvent, FC, forwardRef, useEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useMemo } from "react";
 import Image from "next/image";
 
 import { Label } from "@/components/shared/Label";
 
-import classes from "./UploadFile.module.css";
 import { useUploadFile } from "@/components/widgets/UploadFile/hooks/useUploadFile";
 
-type FlexDirection = "revert-layer" | "column";
+import classes from "./UploadFile.module.css";
+
 interface IUploadFile {
     onImageUrl?: (onSubmitFile: (file: File, preUrl: string) => void) => void;
     width?: number;
     height?: number;
-    //onUploadFileChange?: (file: File) => void;
-    // imageUrl?: string;
-    // onChange?: (e: string) => void;
+    imageUrl?: string;
     onChange?: (...event: any[]) => void;
     onUploadedFile?: (file: File, preUrl: string, onSubmitFile: (file: File, preUrl: string) => void) => void;
+    sizeType?: UploadFileSizes;
+    className?: string;
+}
+
+export enum UploadFileSizes {
+    event = "event",
+    profile = "profile",
 }
 
 export const UploadFile = forwardRef(function UploadFile(props: IUploadFile, ref) {
-    const { url, uploadedFile, uploadRef, handleFileChange, onSubmitFile, presignUrl } = useUploadFile({
+    const { uploadedFile, uploadRef, handleFileChange, onSubmitFile, presignUrl } = useUploadFile({
         onChange: props.onChange,
     });
 
@@ -31,14 +36,26 @@ export const UploadFile = forwardRef(function UploadFile(props: IUploadFile, ref
         }
     }, [onSubmitFile, presignUrl, props, uploadedFile]);
 
+    const uploadFileCssString = useMemo(
+        () =>
+            [
+                props.sizeType === "event" && classes.event,
+                props.sizeType === "profile" && classes.profile,
+                props.className,
+            ]
+                .filter(Boolean)
+                .join(" "),
+        [props.className, props.sizeType],
+    );
+
     return (
-        <div className={classes.uploadFile}>
-            {!url && !uploadedFile && <div className={classes.previewBackground}></div>}
+        <div className={uploadFileCssString}>
+            {!props.imageUrl && !uploadedFile && <div className={classes.previewBackground}></div>}
             <div className={classes.previewImage}>
-                {url && !uploadedFile && (
+                {props.imageUrl && !uploadedFile && (
                     <Image
                         className={classes.image}
-                        src={url}
+                        src={props.imageUrl}
                         width={props.width}
                         height={props.height}
                         alt="img"
@@ -63,8 +80,6 @@ export const UploadFile = forwardRef(function UploadFile(props: IUploadFile, ref
                     id="fileInput"
                     className={classes.customFile}
                     onChange={handleFileChange}
-
-                    // onImageUrl={onUploadFile}
                 />
             </Label>
         </div>
