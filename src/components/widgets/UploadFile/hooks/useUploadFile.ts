@@ -1,64 +1,79 @@
-import { useState, useEffect, PropsWithChildren, useRef } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 
-interface IUseUploadFile extends PropsWithChildren {
-    //onImageUrl?: (selectedImageUrl: string) => void;
-    onChange?: (e: string) => void;
-    imageUrl?: string;
-    className?: string;
-    //flexDirection?: FlexDirection | undefined;
+interface IUploadFile {
+    onChange?: (...event: any[]) => void;
 }
-export const useUploadFile = ({ ...props }: IUseUploadFile) => {
+export const useUploadFile = ({ onChange }: IUploadFile) => {
     const uploadRef = useRef<HTMLInputElement>(null);
-    const [url, setUrl] = useState(props.imageUrl || "");
-    const [file, setFile] = useState(null);
+    const [url, setUrl] = useState<string | null>(null);
+    const [presignUrl, setPresignUrl] = useState<string | null>(null);
+    const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
+    //отслеживаем и возвращаем url
     useEffect(() => {
-        setUrl(props.imageUrl || "");
-    }, [props.imageUrl]);
+        if (url !== null) {
+            onChange?.(url);
+        }
+    }, [onChange, url]);
 
-    // Загружаем файл и получаем ссылку на него до отправки в бд
-    // Отправляем файл в бд по ранее полученой ссылке после сохраннения события и записываем ссылку в бд
-
-    const handleFileChange = (event: any) => {
-        setFile(event.target.files[0]);
+    const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+        if (!event.target.files) return;
+        const file = event.target.files[0];
 
         const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
 
-        if (!validImageTypes.includes(event.target.files[0].type)) {
+        if (!validImageTypes.includes(file.type)) {
             console.error("Invalid file type. Please select an image.");
             return;
+        } else {
+            setUploadedFile(file);
+            getSignedUrl(file);
         }
     };
 
-    const onSubmitFile = async (file: File) => {
-        if (!file) return;
-
+    //Получаем предварительную ссылку для файла до загрузки его в бд
+    const getSignedUrl = async (uploadedFile: File) => {
         const formData = new FormData();
-        formData.append("file", file);
+        formData.append("file", uploadedFile);
 
-        try {
-            const response = await fetch("/api/upload", {
-                method: "POST",
-                body: formData,
-            });
+        const response = await fetch("/api/upload", {
+            method: "POST",
+            body: formData,
+        });
 
-            if (!response.ok) {
-                throw new Error("Error uploading file");
-            }
+        const dataUrl = await response.json();
 
-            const data = await response.json();
-            setUrl(data.url);
+        setPresignUrl(dataUrl.presignUrl); // предварительная ссылка для записи файла в бд
+        setUrl(dataUrl.fileUrl); // публичная ссылка по которой можно достать файл
+        //onSubmitFile(uploadedFile, data.presignUrl);
+    };
 
-            console.log(data.fileUrl);
-            if (props.onChange) {
-                props.onChange(data.url);
-            }
-        } catch (error) {
-            console.error(error);
+    //Отправляем файл в бд по ранее полученной ссылке
+    // Доработать вызов функции onSubmitFile с сохранением файлов в бд и одновременной записью ссылки в бд
+    const onSubmitFile = async (uploadedFile: File, preUrl: string) => {
+        if (!uploadedFile && !preUrl) return;
+
+        const response = await fetch(preUrl, {
+            method: "PUT",
+            body: uploadedFile,
+            headers: {
+                "x-amz-acl": "public-read",
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error("Error saving file");
         }
     };
 
-    return { url, file, handleFileChange, onSubmitFile, uploadRef };
+    return {
+        url,
+        presignUrl,
+        uploadedFile,
+        setUploadedFile,
+        uploadRef,
+        handleFileChange,
+        getSignedUrl,
+        onSubmitFile,
+    };
 };
-
-export default useUploadFile;

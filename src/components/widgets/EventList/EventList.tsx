@@ -1,6 +1,7 @@
 "use client";
 
 import { FC } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useQuery, gql, useMutation } from "@apollo/client";
 
@@ -80,14 +81,14 @@ const EventList: FC<EventListProps> = () => {
         <div className={classes.component}>
             <h3>Event List</h3>
             <ul>
-                {data.events.map(({ _id, description, name, startDate, endDate, location }: IEvent) => (
+                {data.events.map(({ _id, description, name, startDate, endDate, location, image }: IEvent) => (
                     <li key={_id} className={classes.item}>
                         <h3>
                             <Link className={classes.edit} href={`/events/${_id}`}>
                                 {name}
                             </Link>
                         </h3>
-
+                        <Image src={image || ""} width={100} height={100} alt={name} priority />
                         <div className={classes.item}>{description}</div>
 
                         <div className={classes.location}>

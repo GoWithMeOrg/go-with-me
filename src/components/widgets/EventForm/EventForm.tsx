@@ -17,6 +17,8 @@ import { Location } from "@/components/widgets/Location";
 import { IEvent } from "@/database/models/Event";
 
 import classes from "./EventForm.module.css";
+import { useUploadFile } from "../UploadFile/hooks";
+import { useState } from "react";
 
 export type EventType = Partial<IEvent>;
 
@@ -53,12 +55,22 @@ interface IEventFormProps {
 }
 export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
     const { control, handleSubmit, watch } = useForm<IFormInputs>();
+    const [file, setFile] = useState<File | null>(null);
+    const [presignUrl, setPresignUrl] = useState<string | null>(null);
+    const { onSubmitFile, url } = useUploadFile({});
 
     const onSubmit: SubmitHandler<IFormInputs> = (event: EventType) => {
         onSubmitEvent(event);
+
+        if (file && presignUrl) {
+            onSubmitFile(file, presignUrl);
+        }
     };
 
-    //console.log(eventData.name);
+    const handleUploadedFile = (file: File, preUrl: string, onSubmitFile: (file: File, preUrl: string) => void) => {
+        setFile(file);
+        setPresignUrl(preUrl);
+    };
 
     return (
         <div className={classes.container}>
@@ -161,18 +173,18 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                             )}
                         />
                     </div>
-
+                    {/* здесь нужно вернуть только Url */}
                     <Controller
                         name="image"
                         control={control}
                         render={({ field }) => (
                             <UploadFile
-                                imageUrl={eventData.image}
+                                //imageUrl={eventData.image}
                                 //className={classes.preview}
                                 width={460}
                                 height={324}
-                                onChange={field.onChange}
-                                flexDirection={"column"}
+                                onUploadedFile={handleUploadedFile}
+                                {...field}
                             />
                         )}
                     />

@@ -1,29 +1,41 @@
 "use client";
 
-import { FC } from "react";
+import { ChangeEvent, FC, forwardRef, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 import { Label } from "@/components/shared/Label";
-import { Input } from "@/components/shared/Input";
 
 import classes from "./UploadFile.module.css";
-import useUploadFile from "./hooks/useUploadFile";
+import { useUploadFile } from "@/components/widgets/UploadFile/hooks/useUploadFile";
 
 type FlexDirection = "revert-layer" | "column";
 interface IUploadFile {
-    //onImageUrl?: (selectedImageUrl: string) => void;
+    onImageUrl?: (onSubmitFile: (file: File, preUrl: string) => void) => void;
     width?: number;
     height?: number;
+    //onUploadFileChange?: (file: File) => void;
+    // imageUrl?: string;
+    // onChange?: (e: string) => void;
+    onChange?: (...event: any[]) => void;
+    onUploadedFile?: (file: File, preUrl: string, onSubmitFile: (file: File, preUrl: string) => void) => void;
 }
 
-export const UploadFile: FC<IUploadFile> = (props) => {
-    const { url, file, handleFileChange, uploadRef } = useUploadFile({});
+export const UploadFile = forwardRef(function UploadFile(props: IUploadFile, ref) {
+    const { url, uploadedFile, uploadRef, handleFileChange, onSubmitFile, presignUrl } = useUploadFile({
+        onChange: props.onChange,
+    });
+
+    useEffect(() => {
+        if (uploadedFile && presignUrl) {
+            props.onUploadedFile?.(uploadedFile, presignUrl, onSubmitFile);
+        }
+    }, [onSubmitFile, presignUrl, props, uploadedFile]);
 
     return (
         <div className={classes.uploadFile}>
-            {!url && !file && <div className={classes.previewBackground}></div>}
+            {!url && !uploadedFile && <div className={classes.previewBackground}></div>}
             <div className={classes.previewImage}>
-                {url && !file && (
+                {url && !uploadedFile && (
                     <Image
                         className={classes.image}
                         src={url}
@@ -33,10 +45,10 @@ export const UploadFile: FC<IUploadFile> = (props) => {
                         priority
                     />
                 )}
-                {file && (
+                {uploadedFile && (
                     <Image
                         className={classes.image}
-                        src={URL.createObjectURL(file)}
+                        src={URL.createObjectURL(uploadedFile)}
                         width={props.width}
                         height={props.height}
                         alt="img"
@@ -51,10 +63,12 @@ export const UploadFile: FC<IUploadFile> = (props) => {
                     id="fileInput"
                     className={classes.customFile}
                     onChange={handleFileChange}
+
+                    // onImageUrl={onUploadFile}
                 />
             </Label>
         </div>
     );
-};
+});
 
 export default UploadFile;

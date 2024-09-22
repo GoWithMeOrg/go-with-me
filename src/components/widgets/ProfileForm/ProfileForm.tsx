@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { gql, useQuery } from "@apollo/client";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
@@ -20,6 +20,7 @@ import { Label } from "@/components/shared/Label";
 import { Input } from "@/components/shared/Input";
 
 import classes from "./ProfileForm.module.css";
+import { useUploadFile } from "../UploadFile/hooks";
 
 export type ProfileType = Partial<IUser>;
 
@@ -83,11 +84,11 @@ export const ProfileForm: FC<IProfileFormProps> = ({ profileData, onSubmitEvent 
                     render={({ field }) => (
                         <UploadFile
                             imageUrl={userData?.user?.image}
-                            onChange={field.onChange}
+                            //onChange={field.onChange}
                             width={180}
                             height={180}
-                            className={classes.preview}
-                            flexDirection={"revert-layer"}
+                            //className={classes.preview}
+                            //flexDirection={"revert-layer"}
                         />
                     )}
                 />

@@ -2,14 +2,30 @@
 
 const nextConfig = {
     images: {
-        domains: ["lh3.googleusercontent.com", "platform-lookaside.fbsbx.com", "abs.twimg.com"],
-
         remotePatterns: [
             {
                 protocol: "https",
                 hostname: "fra1.digitaloceanspaces.com",
                 port: "",
                 pathname: "/gowithme/**",
+            },
+            {
+                protocol: "https",
+                hostname: "lh3.googleusercontent.com",
+                port: "",
+                pathname: "/**",
+            },
+            {
+                protocol: "https",
+                hostname: "platform-lookaside.fbsbx.com",
+                port: "",
+                pathname: "/**",
+            },
+            {
+                protocol: "https",
+                hostname: "abs.twimg.com",
+                port: "",
+                pathname: "/**",
             },
         ],
     },
