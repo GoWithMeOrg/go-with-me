@@ -14,7 +14,7 @@ interface AvatarProps extends HTMLAttributes<HTMLDivElement>, Pick<IUser, "name"
 export const Avatar: FC<AvatarProps> = ({ image, name, scale = 1 }) => {
     return (
         <div style={{ width: `calc(${scale} * 3.5rem)` }}>
-            <div className={classes.avatar}>
+            <div className={[classes.avatar, !image && classes.background].filter(Boolean).join(" ")}>
                 {image ? (
                     <Image className={classes.image} alt={name} src={image} fill></Image>
                 ) : (

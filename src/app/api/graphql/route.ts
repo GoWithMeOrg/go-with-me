@@ -48,10 +48,10 @@ const resolvers = {
             return TripModel.findById(id);
         },
 
-        comments: async (parent: any, { event_id }: { event_id: string }) => {
+        comments: async (parent: any, { event_id, limit }: { event_id: string; limit?: number }) => {
             const comments = await CommentModel.find({ event_id }).populate("replies").populate("author");
             const firstLevelComments = comments.filter(({ replyTo }) => !replyTo).sort(() => -1);
-            return firstLevelComments;
+            return firstLevelComments.slice(0, limit ?? firstLevelComments.length);
         },
 
         search: async (parent: any, { text }: { text: string }) => {
@@ -119,8 +119,13 @@ const resolvers = {
             await CommentModel.updateOne({ _id: id }, comment);
             return await CommentModel.findById(id);
         },
-        deleteComment: async (parent: any, { id }: { id: string }) => {
-            return await CommentModel.deleteOne({ _id: id });
+        deleteComment: async (parent: any, { commentId, userId }: { commentId: string; userId: string }) => {
+            const currentComment = await CommentModel.findById(commentId);
+            if (!currentComment) return "comment id not found";
+            if (currentComment.author_id.toString() !== userId) return "author can't delete comment";
+            const childrenDeleteResult = await CommentModel.deleteMany({ parentId: currentComment.id });
+            await CommentModel.deleteOne({ _id: commentId });
+            return `deleted comment id - ${commentId}, deleted children: ${childrenDeleteResult.deletedCount}`;
         },
         likeComment: async (parent: any, { commentId, userId }: { commentId: string; userId: string }) => {
             const comment = await CommentModel.findById(commentId);
@@ -150,7 +155,7 @@ const typeDefs = gql`
         event(id: ID!): Event
         trips: [Trip]
         trip(id: ID!): Trip
-        comments(event_id: ID!): [Comment]
+        comments(event_id: ID!, limit: Int): [Comment]
         search(text: String!): [Event]
     }
 
@@ -304,7 +309,7 @@ const typeDefs = gql`
 
         saveComment(comment: CommentInput): Comment
         updateComment(id: ID!, comment: CommentInput): Comment
-        deleteComment(id: ID!): Comment
+        deleteComment(commentId: ID!, userId: ID!): String
         likeComment(commentId: ID!, userId: ID!): Comment
     }
 `;
