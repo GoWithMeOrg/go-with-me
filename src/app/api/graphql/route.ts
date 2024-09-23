@@ -121,10 +121,11 @@ const resolvers = {
         },
         deleteComment: async (parent: any, { commentId, userId }: { commentId: string; userId: string }) => {
             const currentComment = await CommentModel.findById(commentId);
-            if (!currentComment) return;
-            if (currentComment.author_id.toString() !== userId) return;
-            await CommentModel.deleteMany({ parentId: currentComment.id });
-            return await CommentModel.deleteOne({ _id: commentId });
+            if (!currentComment) return "comment id not found";
+            if (currentComment.author_id.toString() !== userId) return "author can't delete comment";
+            const childrenDeleteResult = await CommentModel.deleteMany({ parentId: currentComment.id });
+            await CommentModel.deleteOne({ _id: commentId });
+            return `deleted comment id - ${commentId}, deleted children: ${childrenDeleteResult.deletedCount}`;
         },
         likeComment: async (parent: any, { commentId, userId }: { commentId: string; userId: string }) => {
             const comment = await CommentModel.findById(commentId);
@@ -308,7 +309,7 @@ const typeDefs = gql`
 
         saveComment(comment: CommentInput): Comment
         updateComment(id: ID!, comment: CommentInput): Comment
-        deleteComment(commentId: ID!, userId: ID!): Comment
+        deleteComment(commentId: ID!, userId: ID!): String
         likeComment(commentId: ID!, userId: ID!): Comment
     }
 `;

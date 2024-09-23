@@ -77,9 +77,7 @@ const LIKE_COMMENT = gql`
 const DELETE_COMMENT = gql`
     #graphql
     mutation deleteComment($commentId: ID!, $userId: ID!) {
-        deleteComment(commentId: $commentId, userId: $userId) {
-            _id
-        }
+        deleteComment(commentId: $commentId, userId: $userId)
     }
 `;
 
