@@ -74,8 +74,6 @@ const GET_EVENT_BY_ID = gql`
 const EventPage: NextPage<PageParams> = ({ params: { event_id } }) => {
     const { data, error, loading, refetch } = useQuery(GET_EVENT_BY_ID, { variables: { id: event_id } });
 
-    //console.log("data", data);
-
     if (loading && !error) {
         return <Loader />;
     }

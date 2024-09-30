@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, HTMLAttributes, useCallback, useState } from "react";
+import { FC, HTMLAttributes, useCallback, useEffect, useState } from "react";
 
 import { Title } from "@/components/shared/Title";
 import { Button } from "@/components/shared/Button";
@@ -10,7 +10,7 @@ import { useComments } from "./hooks";
 import { Comment } from "./Comment";
 import { CommentForm } from "./CommentForm";
 
-import { ReplyTo } from "./types";
+import { ICommentData, ReplyTo } from "./types";
 
 import classes from "./CommentsList.module.css";
 
@@ -27,23 +27,28 @@ const MessageContainer: FC<HTMLAttributes<HTMLDivElement>> = ({ children, classN
 );
 
 export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
-    const { data, loading, error, refetch, saveComment, likeComment, author_id } = useComments(event_id);
+    const [limit, setLimit] = useState<number>(5);
+    const { data, error, refetch, saveComment, likeComment, deleteComment, author_id } = useComments({
+        event_id,
+        limit,
+    });
 
     const [replyToState, setReplyToState] = useState<ReplyTo | null>(null);
     const [parentIdState, setParentIdState] = useState<string | null>(null);
+    const [comments, setComments] = useState<ICommentData[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+
+    useEffect(() => {
+        if (data) {
+            setComments(data.comments);
+            setLoading(false);
+        }
+    }, [data]);
 
     const onSaveComment = useCallback(
         async ({ content, replyTo, parentId }: { content: string; replyTo?: ReplyTo; parentId?: string }) => {
             const saveCommentResponse = await saveComment({
-                variables: {
-                    comment: {
-                        event_id,
-                        author_id,
-                        content,
-                        replyTo,
-                        parentId,
-                    },
-                },
+                variables: { comment: { event_id, author_id, content, replyTo, parentId } },
             });
             if (!saveCommentResponse) return;
             refetch();
@@ -54,15 +59,7 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
         [event_id, refetch, saveComment, author_id],
     );
 
-    if (loading)
-        return (
-            <MessageContainer>
-                <Spinner />
-            </MessageContainer>
-        );
     if (error) return <MessageContainer>Error: {error.message}</MessageContainer>;
-    if (!data) return <MessageContainer className={classes.error}>Comments error</MessageContainer>;
-    const { comments } = data;
 
     const onClickReplyButton = ({ replyTo, parentId }: { replyTo: ReplyTo; parentId: string }) => {
         if (replyToState?.id === replyTo.id) {
@@ -75,13 +72,30 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
     };
 
     const onClickLikeButton = async ({ commentId }: { commentId: string }) => {
-        const likeCommentResponse = await likeComment({
+        setLoading(true);
+        await likeComment({
             variables: {
                 userId: author_id,
                 commentId,
             },
         });
-        if (likeCommentResponse) refetch();
+    };
+
+    const onClickDeleteButton = async ({ commentId }: { commentId: string }) => {
+        setLoading(true);
+        await deleteComment({
+            variables: {
+                userId: author_id,
+                commentId,
+            },
+        });
+        refetch();
+    };
+
+    const onClickLoadMore = async () => {
+        setLimit((state) => state + 5);
+        setLoading(true);
+        await refetch();
     };
 
     const onSaveCommentTop = (content: string) => onSaveComment({ content });
@@ -96,7 +110,7 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
             <CommentForm onSaveComment={onSaveCommentTop} />
             <ul>
                 {comments.map((comment) => {
-                    const { _id, replies } = comment;
+                    const { _id, replies, likes, author } = comment;
                     const commentId = _id.toString();
                     return (
                         <li key={commentId}>
@@ -104,11 +118,15 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
                                 comment={comment}
                                 onClickReplyButton={onClickReplyButton}
                                 onClickLikeButton={onClickLikeButton}
+                                onClickDeleteButton={onClickDeleteButton}
+                                isLiked={Boolean(likes.find((id) => id === author_id))}
+                                isDeletable={author._id === author_id}
                             />
                             {replyToState?.id === commentId ? <CommentForm onSaveComment={onSaveCommentReply} /> : null}
                             {replies ? (
                                 <ul className={classes.replies}>
                                     {replies.map((replyComment) => {
+                                        const { likes, author } = replyComment;
                                         const replyCommentId = replyComment._id.toString();
                                         return (
                                             <li key={replyCommentId}>
@@ -116,6 +134,9 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
                                                     comment={replyComment}
                                                     onClickReplyButton={onClickReplyButton}
                                                     onClickLikeButton={onClickLikeButton}
+                                                    onClickDeleteButton={onClickDeleteButton}
+                                                    isLiked={Boolean(likes.find((id) => id === author_id))}
+                                                    isDeletable={author._id === author_id}
                                                 />
                                                 {replyToState?.id === replyCommentId ? (
                                                     <CommentForm onSaveComment={onSaveCommentReply} />
@@ -129,7 +150,14 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
                     );
                 })}
             </ul>
-            <Button>Load more comments</Button>
+            {loading && (
+                <MessageContainer>
+                    <Spinner />
+                </MessageContainer>
+            )}
+            <Button disabled={loading || comments.length < limit} onClick={onClickLoadMore}>
+                Load more comments
+            </Button>
         </section>
     );
 };

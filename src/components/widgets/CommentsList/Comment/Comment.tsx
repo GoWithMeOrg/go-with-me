@@ -15,20 +15,26 @@ interface IProps {
     comment: ICommentData;
     onClickReplyButton: ({}: { replyTo: ReplyTo; parentId: string }) => void;
     onClickLikeButton: ({}: { commentId: string }) => void;
+    onClickDeleteButton: ({}: { commentId: string }) => void;
+    isLiked: boolean;
+    isDeletable?: boolean;
 }
 
 export const Comment: FC<IProps> = ({
     comment: { author, content, likes, _id, replyTo, createdAt, parentId },
     onClickReplyButton,
     onClickLikeButton,
+    onClickDeleteButton,
+    isLiked,
+    isDeletable,
 }) => {
-    const { name } = author;
+    const { name, image } = author;
     const id = _id.toString();
 
     return (
         <div className={classes.comment} id={`comment-id-${id}`}>
             <div className={classes.avatarContainer}>
-                <Avatar className={classes.avatar} name={name} />
+                <Avatar className={classes.avatar} name={name} image={image ?? undefined} />
             </div>
             <div className={classes.contentContainer}>
                 <div className={classes.userName}>
@@ -38,8 +44,8 @@ export const Comment: FC<IProps> = ({
                 </div>
                 <p className={classes.commentText}>{content}</p>
                 <div className={classes.likesContainer}>
-                    <button onClick={() => onClickLikeButton({ commentId: id })}>
-                        <Heart className={likes.length ? classes.liked : undefined} />
+                    <button className={classes.likeButton} onClick={() => onClickLikeButton({ commentId: id })}>
+                        <Heart className={isLiked ? classes.liked : ""} />
                     </button>
                     <span className={classes.number}>{likes.length ? likes.length : ""}</span>
                     <button
@@ -53,6 +59,11 @@ export const Comment: FC<IProps> = ({
                     >
                         <ArrowReply />
                     </button>
+                    {isDeletable && (
+                        <button className={classes.deleteButton} onClick={() => onClickDeleteButton({ commentId: id })}>
+                            delete
+                        </button>
+                    )}
                 </div>
             </div>
         </div>
