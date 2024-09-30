@@ -59,17 +59,20 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
     const { control, handleSubmit, watch } = useForm<IFormInputs>();
     const [file, setFile] = useState<File | null>(null);
     const [presignUrl, setPresignUrl] = useState<string | null>(null);
-    const { onSubmitFile, url } = useUploadFile({});
+    const { onSubmitFile, getDeleteFile } = useUploadFile({});
 
     const onSubmit: SubmitHandler<IFormInputs> = (event: EventType) => {
         onSubmitEvent(event);
 
         if (file && presignUrl) {
             onSubmitFile(file, presignUrl);
+            if (eventData.image && file) {
+                getDeleteFile(eventData.image);
+            }
         }
     };
 
-    const handleUploadedFile = (file: File, preUrl: string, onSubmitFile: (file: File, preUrl: string) => void) => {
+    const handleUploadedFile = (file: File, preUrl: string) => {
         setFile(file);
         setPresignUrl(preUrl);
     };

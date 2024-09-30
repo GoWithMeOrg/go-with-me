@@ -27,12 +27,12 @@ export const useUploadFile = ({ onChange }: IUploadFile) => {
             return;
         } else {
             setUploadedFile(file);
-            getSignedUrl(file);
+            getPresignedUrl(file);
         }
     };
 
     //Получаем предварительную ссылку для файла до загрузки его в бд
-    const getSignedUrl = async (uploadedFile: File) => {
+    const getPresignedUrl = async (uploadedFile: File) => {
         const formData = new FormData();
         formData.append("file", uploadedFile);
 
@@ -45,14 +45,11 @@ export const useUploadFile = ({ onChange }: IUploadFile) => {
 
         setPresignUrl(dataUrl.presignUrl); // предварительная ссылка для записи файла в бд
         setUrl(dataUrl.fileUrl); // публичная ссылка по которой можно достать файл
-        //onSubmitFile(uploadedFile, data.presignUrl);
     };
 
     //Отправляем файл в бд по ранее полученной ссылке
-    // Доработать вызов функции onSubmitFile с сохранением файлов в бд и одновременной записью ссылки в бд
     const onSubmitFile = async (uploadedFile: File, preUrl: string) => {
         if (!uploadedFile && !preUrl) return;
-
         const response = await fetch(preUrl, {
             method: "PUT",
             body: uploadedFile,
@@ -60,10 +57,23 @@ export const useUploadFile = ({ onChange }: IUploadFile) => {
                 "x-amz-acl": "public-read",
             },
         });
-
         if (!response.ok) {
             throw new Error("Error saving file");
         }
+    };
+
+    const getDeleteFile = async (fileUrl: string) => {
+        const fileName = fileUrl.split("/").pop();
+        const response = await fetch("/api/upload", {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ fileName }),
+        });
+
+        const dataUrl = await response.json();
+        console.log(dataUrl);
     };
 
     return {
@@ -73,7 +83,8 @@ export const useUploadFile = ({ onChange }: IUploadFile) => {
         setUploadedFile,
         uploadRef,
         handleFileChange,
-        getSignedUrl,
+        getPresignedUrl,
         onSubmitFile,
+        getDeleteFile,
     };
 };

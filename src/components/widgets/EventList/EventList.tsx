@@ -10,6 +10,7 @@ import type { IEvent } from "@/database/models/Event";
 import { Geocoding } from "@/components/widgets/GoogleMap";
 
 import classes from "./EventList.module.css";
+import { useUploadFile } from "../UploadFile/hooks";
 
 type EventListProps = {
     events?: IEvent[];
@@ -54,9 +55,9 @@ const DELETE_EVENT_MUTATION = gql`
 `;
 
 const EventList: FC<EventListProps> = () => {
-    //const router = useRouter();
     const { loading, error, data, refetch } = useQuery(GET_EVENTS);
     const [deleteEventMutation] = useMutation(DELETE_EVENT_MUTATION);
+    const { getDeleteFile } = useUploadFile({});
 
     console.log(data);
 
@@ -64,13 +65,16 @@ const EventList: FC<EventListProps> = () => {
     if (error) return <p>Error : {error.message}</p>;
 
     const handleDelete = async (eventId: string) => {
+        console.log(eventId);
         try {
             await deleteEventMutation({
                 variables: { id: eventId },
             });
 
-            // Обновляем страницу после успешного удаления
-            //router.refresh();
+            //Находим картинку события
+            const imageUrl = data.events.find((event: any) => event._id === eventId).image;
+            //удаляем картинку
+            await getDeleteFile(imageUrl);
             await refetch();
         } catch (error) {
             console.error("Error deleting event: ", error);
