@@ -108,7 +108,7 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
                 Comments
             </Title>
             <CommentForm onSaveComment={onSaveCommentTop} />
-            <ul>
+            <ul className={classes.commentsList}>
                 {comments.map((comment) => {
                     const { _id, replies, likes, author } = comment;
                     const commentId = _id.toString();

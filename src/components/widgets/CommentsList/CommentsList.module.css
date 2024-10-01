@@ -31,3 +31,7 @@
     font-weight: 600;
     color: var(--error-color);
 }
+
+.commentsList {
+    margin-bottom: 1.5rem;
+}
