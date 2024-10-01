@@ -108,7 +108,7 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
                 Comments
             </Title>
             <CommentForm onSaveComment={onSaveCommentTop} />
-            <ul>
+            <ul className={classes.commentsList}>
                 {comments.map((comment) => {
                     const { _id, replies, likes, author } = comment;
                     const commentId = _id.toString();
@@ -155,7 +155,11 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
                     <Spinner />
                 </MessageContainer>
             )}
-            <Button disabled={loading || comments.length < limit} onClick={onClickLoadMore}>
+            <Button
+                className={classes.loadButton}
+                disabled={loading || comments.length < limit}
+                onClick={onClickLoadMore}
+            >
                 Load more comments
             </Button>
         </section>
