@@ -1,5 +1,5 @@
 .form {
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
 }
 .form > *:not(:last-child) {
     display: block;
