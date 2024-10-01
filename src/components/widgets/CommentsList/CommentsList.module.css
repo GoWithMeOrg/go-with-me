@@ -35,3 +35,9 @@
 .commentsList {
     margin-bottom: 1.5rem;
 }
+
+.loadButton {
+    border: none;
+    text-transform: uppercase;
+    font-size: 1rem;
+}

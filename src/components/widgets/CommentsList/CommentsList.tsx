@@ -155,7 +155,11 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
                     <Spinner />
                 </MessageContainer>
             )}
-            <Button disabled={loading || comments.length < limit} onClick={onClickLoadMore}>
+            <Button
+                className={classes.loadButton}
+                disabled={loading || comments.length < limit}
+                onClick={onClickLoadMore}
+            >
                 Load more comments
             </Button>
         </section>
