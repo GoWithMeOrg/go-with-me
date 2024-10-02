@@ -3,7 +3,7 @@
 }
 
 .title {
-    margin-bottom: 2rem;
+    margin-bottom: 2.75rem;
     font-size: 1.25rem;
     line-height: 2rem;
     font-weight: 700;
@@ -11,7 +11,7 @@
 }
 
 .replies {
-    margin-left: 8rem;
+    margin-left: 6rem;
 }
 
 .messageContainer {
@@ -30,4 +30,14 @@
     font-size: 1.3rem;
     font-weight: 600;
     color: var(--error-color);
+}
+
+.commentsList {
+    margin-bottom: 1.5rem;
+}
+
+.loadButton {
+    border: none;
+    text-transform: uppercase;
+    font-size: 1rem;
 }
