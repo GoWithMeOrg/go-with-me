@@ -126,9 +126,7 @@ const Event: FC<EventProps> = ({ event }) => {
                     )}
                 </div>
                 <div className={classes.eventImage}>
-                    {event.image !== null && (
-                        <Image src={event.image || ""} width={680} height={480} alt="img" priority />
-                    )}
+                    {event.image && <Image src={event.image} width={680} height={480} alt="img" priority />}
                 </div>
                 <Popup
                     {...{

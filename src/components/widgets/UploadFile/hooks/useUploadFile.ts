@@ -1,5 +1,7 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 
+import { validImageTypes } from "@/constants/constants";
+
 interface IUploadFile {
     onChange?: (...event: any[]) => void;
 }
@@ -20,7 +22,7 @@ export const useUploadFile = ({ onChange }: IUploadFile) => {
         if (!event.target.files) return;
         const file = event.target.files[0];
 
-        const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
+        validImageTypes;
 
         if (!validImageTypes.includes(file.type)) {
             console.error("Invalid file type. Please select an image.");

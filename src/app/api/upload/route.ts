@@ -3,11 +3,12 @@ import { DeleteObjectCommand, GetObjectCommand, ObjectCannedACL, PutObjectComman
 import { customAlphabet } from "nanoid";
 import { s3Client } from "@/app/api/upload/s3client";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { validImageTypes } from "@/constants/constants";
 export const POST = async (req: NextRequest) => {
     const data = await req.formData();
     const file = (data.get("file") as File) || null;
 
-    const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
+    validImageTypes;
 
     if (!(file instanceof File) || !validImageTypes.includes(file.type)) {
         return NextResponse.json("Invalid file type", { status: 400 });
@@ -40,7 +41,7 @@ export const PUT = async (req: NextRequest) => {
     const data = await req.formData();
     const file = (data.get("file") as File) || null;
 
-    const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
+    validImageTypes;
 
     if (!(file instanceof File) || !validImageTypes.includes(file.type)) {
         return NextResponse.json("Invalid file type", { status: 400 });
@@ -76,10 +77,9 @@ export const DELETE = async (req: NextRequest) => {
         Key: fileName,
     };
 
-    const deleteFile = new DeleteObjectCommand(bucketDelete);
-    const sendDeleteFile = await s3Client.send(deleteFile);
-
     if (req.method === "DELETE") {
+        const deleteFile = new DeleteObjectCommand(bucketDelete);
+        const sendDeleteFile = await s3Client.send(deleteFile);
         return NextResponse.json({ message: `Файл ${fileName} удален` });
     }
 };

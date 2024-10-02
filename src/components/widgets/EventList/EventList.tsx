@@ -9,8 +9,9 @@ import { formatDate } from "@/utils/formatDate";
 import type { IEvent } from "@/database/models/Event";
 import { Geocoding } from "@/components/widgets/GoogleMap";
 
-import classes from "./EventList.module.css";
 import { useUploadFile } from "../UploadFile/hooks";
+
+import classes from "./EventList.module.css";
 
 type EventListProps = {
     events?: IEvent[];
@@ -65,7 +66,6 @@ const EventList: FC<EventListProps> = () => {
     if (error) return <p>Error : {error.message}</p>;
 
     const handleDelete = async (eventId: string) => {
-        console.log(eventId);
         try {
             await deleteEventMutation({
                 variables: { id: eventId },
@@ -92,7 +92,7 @@ const EventList: FC<EventListProps> = () => {
                                 {name}
                             </Link>
                         </h3>
-                        <Image src={image || ""} width={100} height={100} alt={name} priority />
+                        {image && <Image src={image} width={100} height={100} alt={name} priority />}
                         <div className={classes.item}>{description}</div>
 
                         <div className={classes.location}>
