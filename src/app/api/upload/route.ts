@@ -8,8 +8,6 @@ export const POST = async (req: NextRequest) => {
     const data = await req.formData();
     const file = (data.get("file") as File) || null;
 
-    validImageTypes;
-
     if (!(file instanceof File) || !validImageTypes.includes(file.type)) {
         return NextResponse.json("Invalid file type", { status: 400 });
     }
@@ -40,8 +38,6 @@ export const POST = async (req: NextRequest) => {
 export const PUT = async (req: NextRequest) => {
     const data = await req.formData();
     const file = (data.get("file") as File) || null;
-
-    validImageTypes;
 
     if (!(file instanceof File) || !validImageTypes.includes(file.type)) {
         return NextResponse.json("Invalid file type", { status: 400 });

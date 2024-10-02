@@ -22,8 +22,6 @@ export const useUploadFile = ({ onChange }: IUploadFile) => {
         if (!event.target.files) return;
         const file = event.target.files[0];
 
-        validImageTypes;
-
         if (!validImageTypes.includes(file.type)) {
             console.error("Invalid file type. Please select an image.");
             return;
