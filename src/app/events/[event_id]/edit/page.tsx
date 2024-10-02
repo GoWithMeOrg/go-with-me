@@ -71,7 +71,7 @@ const UPDATE_EVENT = gql`
 const EventEditPage: NextPage<PageParams> = (context) => {
     const router = useRouter();
     const eventId = context.params.event_id;
-    const { loading, error, data } = useQuery(GET_EVENT, {
+    const { loading, error, data, refetch } = useQuery(GET_EVENT, {
         variables: { id: eventId },
     });
     const [updateEvent] = useMutation(UPDATE_EVENT);
@@ -86,6 +86,7 @@ const EventEditPage: NextPage<PageParams> = (context) => {
             console.log("EventEditPage: ", response); // eslint-disable-line
             router.push(`/events/${eventId}`);
         });
+        refetch();
     };
 
     return (

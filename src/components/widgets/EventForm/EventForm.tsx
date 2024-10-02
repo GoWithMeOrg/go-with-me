@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 
 import { TitleField } from "@/components/shared/TitleField";
@@ -15,6 +16,9 @@ import { GuestList } from "@/components/widgets/GuestList";
 import { UploadFile } from "@/components/widgets/UploadFile";
 import { Location } from "@/components/widgets/Location";
 import { IEvent } from "@/database/models/Event";
+
+import { useUploadFile } from "@/components/widgets/UploadFile/hooks";
+import { UploadFileSizes } from "@/components/widgets/UploadFile/UploadFile";
 
 import classes from "./EventForm.module.css";
 
@@ -53,12 +57,25 @@ interface IEventFormProps {
 }
 export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
     const { control, handleSubmit, watch } = useForm<IFormInputs>();
+    const [file, setFile] = useState<File | null>(null);
+    const [presignUrl, setPresignUrl] = useState<string | null>(null);
+    const { onSubmitFile, getDeleteFile } = useUploadFile({});
 
     const onSubmit: SubmitHandler<IFormInputs> = (event: EventType) => {
         onSubmitEvent(event);
+
+        if (file && presignUrl) {
+            onSubmitFile(file, presignUrl);
+            if (eventData.image && file) {
+                getDeleteFile(eventData.image);
+            }
+        }
     };
 
-    //console.log(eventData.name);
+    const handleUploadedFile = (file: File, preUrl: string) => {
+        setFile(file);
+        setPresignUrl(preUrl);
+    };
 
     return (
         <div className={classes.container}>
@@ -161,18 +178,18 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                             )}
                         />
                     </div>
-
+                    {/* здесь нужно вернуть только Url */}
                     <Controller
                         name="image"
                         control={control}
                         render={({ field }) => (
                             <UploadFile
                                 imageUrl={eventData.image}
-                                className={classes.preview}
                                 width={460}
                                 height={324}
-                                onChange={field.onChange}
-                                flexDirection={"column"}
+                                onUploadedFile={handleUploadedFile}
+                                {...field}
+                                sizeType={UploadFileSizes.event}
                             />
                         )}
                     />

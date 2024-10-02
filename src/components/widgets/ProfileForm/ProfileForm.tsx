@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { gql, useQuery } from "@apollo/client";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
@@ -19,6 +19,9 @@ import { SelectCategory } from "@/components/widgets/SelectCategory";
 import { Label } from "@/components/shared/Label";
 import { Input } from "@/components/shared/Input";
 
+import { UploadFileSizes } from "@/components/widgets/UploadFile/UploadFile";
+
+import { useUploadFile } from "@/components/widgets/UploadFile/hooks";
 import classes from "./ProfileForm.module.css";
 
 export type ProfileType = Partial<IUser>;
@@ -60,6 +63,9 @@ export const ProfileForm: FC<IProfileFormProps> = ({ profileData, onSubmitEvent 
     const { control, handleSubmit, watch } = useForm<IFormProfile>();
     //const { data: usersData } = useQuery(GET_USERS);
     const { data: session } = useSession();
+    const [file, setFile] = useState<File | null>(null);
+    const [presignUrl, setPresignUrl] = useState<string | null>(null);
+    const { onSubmitFile } = useUploadFile({});
     //@ts-ignore
     const userId = session?.user?.id;
     const { data: userData, refetch } = useQuery(GET_USER_BY_ID, { variables: { userId: userId } });
@@ -71,6 +77,14 @@ export const ProfileForm: FC<IProfileFormProps> = ({ profileData, onSubmitEvent 
     // /console.log(userData?.user?.image);
     const onSubmit: SubmitHandler<IFormProfile> = (event: ProfileType) => {
         //onSubmitEvent(event);
+        // if (file && presignUrl) {
+        //     onSubmitFile(file, presignUrl);
+        // }
+    };
+
+    const handleUploadedFile = (file: File, preUrl: string, onSubmitFile: (file: File, preUrl: string) => void) => {
+        setFile(file);
+        setPresignUrl(preUrl);
     };
 
     console.log(session);
@@ -83,11 +97,11 @@ export const ProfileForm: FC<IProfileFormProps> = ({ profileData, onSubmitEvent 
                     render={({ field }) => (
                         <UploadFile
                             imageUrl={userData?.user?.image}
-                            onChange={field.onChange}
                             width={180}
                             height={180}
-                            className={classes.preview}
-                            flexDirection={"revert-layer"}
+                            sizeType={UploadFileSizes.profile}
+                            onUploadedFile={handleUploadedFile}
+                            {...field}
                         />
                     )}
                 />

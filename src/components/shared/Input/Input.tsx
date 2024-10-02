@@ -1,4 +1,4 @@
-import { FC, useMemo, InputHTMLAttributes } from "react";
+import { FC, useMemo, InputHTMLAttributes, RefObject } from "react";
 
 import styles from "./Input.module.css";
 
@@ -15,7 +15,7 @@ export const Input: FC<InputProps> = ({ resetDefaultStyles, className, error, ..
         return cssString;
     }, [resetDefaultStyles, className]);
 
-    return <input className={inputCssString} {...{ ...rest }} />;
+    return <input className={inputCssString} {...rest} />;
 };
 
 Input.displayName = "Input";

@@ -1,4 +1,4 @@
-import React, { FC, SetStateAction, useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";
@@ -9,7 +9,6 @@ import { Title } from "@/components/shared/Title";
 import { Geocoding } from "@/components/widgets/GoogleMap/Geocoding";
 import { Button } from "@/components/shared/Button";
 import { Map, AdvancedMarker, Pin } from "@vis.gl/react-google-maps";
-import { UserImage } from "@/components/widgets/UserImage";
 import { Popup } from "@/components/shared/Popup";
 import { Badges } from "@/components/shared/Badges";
 import ArrowMaps from "@/assets/icons/arrowMaps.svg";
@@ -20,10 +19,10 @@ import ShareLink from "@/assets/icons/shareLink.svg";
 import Heart from "@/assets/icons/heart.svg";
 import Marker from "@/assets/icons/marker.svg";
 
-import classes from "./Event.module.css";
 import { Sizes } from "@/components/shared/Badges/Badges";
-
 import { Avatar } from "@/components/shared/Avatar";
+
+import classes from "./Event.module.css";
 
 export interface EventProps {
     event: IEvent;
@@ -127,9 +126,7 @@ const Event: FC<EventProps> = ({ event }) => {
                     )}
                 </div>
                 <div className={classes.eventImage}>
-                    {event.image !== null && (
-                        <Image src={event.image || ""} width={680} height={480} alt="img" priority />
-                    )}
+                    {event.image && <Image src={event.image} width={680} height={480} alt="img" priority />}
                 </div>
                 <Popup
                     {...{

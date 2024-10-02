@@ -1,12 +1,15 @@
 "use client";
 
 import { FC } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useQuery, gql, useMutation } from "@apollo/client";
 
 import { formatDate } from "@/utils/formatDate";
 import type { IEvent } from "@/database/models/Event";
 import { Geocoding } from "@/components/widgets/GoogleMap";
+
+import { useUploadFile } from "../UploadFile/hooks";
 
 import classes from "./EventList.module.css";
 
@@ -53,9 +56,9 @@ const DELETE_EVENT_MUTATION = gql`
 `;
 
 const EventList: FC<EventListProps> = () => {
-    //const router = useRouter();
     const { loading, error, data, refetch } = useQuery(GET_EVENTS);
     const [deleteEventMutation] = useMutation(DELETE_EVENT_MUTATION);
+    const { getDeleteFile } = useUploadFile({});
 
     console.log(data);
 
@@ -68,8 +71,10 @@ const EventList: FC<EventListProps> = () => {
                 variables: { id: eventId },
             });
 
-            // Обновляем страницу после успешного удаления
-            //router.refresh();
+            //Находим картинку события
+            const imageUrl = data.events.find((event: any) => event._id === eventId).image;
+            //удаляем картинку
+            await getDeleteFile(imageUrl);
             await refetch();
         } catch (error) {
             console.error("Error deleting event: ", error);
@@ -80,14 +85,14 @@ const EventList: FC<EventListProps> = () => {
         <div className={classes.component}>
             <h3>Event List</h3>
             <ul>
-                {data.events.map(({ _id, description, name, startDate, endDate, location }: IEvent) => (
+                {data.events.map(({ _id, description, name, startDate, endDate, location, image }: IEvent) => (
                     <li key={_id} className={classes.item}>
                         <h3>
                             <Link className={classes.edit} href={`/events/${_id}`}>
                                 {name}
                             </Link>
                         </h3>
-
+                        {image && <Image src={image} width={100} height={100} alt={name} priority />}
                         <div className={classes.item}>{description}</div>
 
                         <div className={classes.location}>
