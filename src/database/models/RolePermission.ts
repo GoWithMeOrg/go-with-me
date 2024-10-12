@@ -1,7 +1,7 @@
 import { Role } from "./Role";
 import { Permission } from "./Permission";
 
-const rolePremissions = {
+export const rolePremissions = {
     [Role.ADMIN]: [
         Permission.CREATE_EVENT,
         Permission.EDIT_EVENT,

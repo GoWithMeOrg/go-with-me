@@ -3,6 +3,7 @@ import GoogleProvider from "next-auth/providers/google";
 import TwitterProvider from "next-auth/providers/twitter";
 import FacebookProvider from "next-auth/providers/facebook";
 import EmailProvider from "next-auth/providers/email";
+import { Role } from "@/database/models/Role";
 
 export const authCommonOptions = {
     // Configure one or more authentication providers
@@ -41,6 +42,7 @@ export const authCommonOptions = {
                 user: {
                     ...session.user,
                     id: user.id,
+                    role: Role.USER,
                 },
             };
         },
