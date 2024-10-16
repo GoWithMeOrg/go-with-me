@@ -1,5 +1,6 @@
 import mongoose, { Schema, Document } from "mongoose";
-import { Role } from "./Role";
+import { IRole } from "../types/Role";
+import Role from "./Role";
 export interface IUser {
     _id: string;
     name: string;
@@ -15,7 +16,7 @@ export interface IUser {
     emailVerified: boolean;
     createdAt: Date;
     updatedAt: Date;
-    role: Role;
+    role: IRole;
 }
 
 export interface IUserDocument extends Omit<IUser, "_id" | "createdAt" | "updatedAt">, Document {}
@@ -37,8 +38,8 @@ const UserSchema = new Schema<IUserDocument>({
     },
 
     role: {
-        type: String,
-        required: true,
+        type: Schema.Types.ObjectId,
+        ref: Role,
     },
 
     email: {
