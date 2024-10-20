@@ -3,7 +3,6 @@ import GoogleProvider from "next-auth/providers/google";
 import TwitterProvider from "next-auth/providers/twitter";
 import FacebookProvider from "next-auth/providers/facebook";
 import EmailProvider from "next-auth/providers/email";
-import { Role } from "@/database/models/Role";
 
 export const authCommonOptions = {
     // Configure one or more authentication providers
@@ -34,15 +33,14 @@ export const authCommonOptions = {
     secret: process.env.NEXTAUTH_SECRET,
 
     callbacks: {
-        // Add user id to session
         async session({ session, user }: { session: Session; user: User }) {
-            console.log(session);
+            console.log(user);
             return {
                 ...session,
                 user: {
                     ...session.user,
                     id: user.id,
-                    role: Role.USER,
+                    role: user.role,
                 },
             };
         },

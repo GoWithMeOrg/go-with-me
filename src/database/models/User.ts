@@ -1,23 +1,6 @@
 import mongoose, { Schema, Document } from "mongoose";
-import { IRole } from "../types/Role";
 import Role from "./Role";
-export interface IUser {
-    _id: string;
-    name: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    image: string;
-    location: string;
-    aboutMe: string;
-    interests: string[];
-    meetings: string[];
-    tags: string[];
-    emailVerified: boolean;
-    createdAt: Date;
-    updatedAt: Date;
-    role: IRole;
-}
+import { IUser } from "@/database/types/User";
 
 export interface IUserDocument extends Omit<IUser, "_id" | "createdAt" | "updatedAt">, Document {}
 
