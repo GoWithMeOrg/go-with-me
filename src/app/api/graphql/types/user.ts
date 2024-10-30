@@ -17,7 +17,6 @@ export const userTypeDefs = gql`
     }
 
     input UserInput {
-        _id: ID
         name: String
         firstName: String
         lastName: String

@@ -1,4 +1,5 @@
 import UserModel from "@/database/models/User";
+import { IUser } from "@/database/types/User";
 
 export const userResolvers = {
     Query: {
@@ -11,7 +12,7 @@ export const userResolvers = {
     },
 
     Mutation: {
-        updateUser: async (parent: any, { id, user }: { id: string; user: any }) => {
+        updateUser: async (parent: any, { id, user }: { id: string; user: IUser }) => {
             await UserModel.updateOne({ _id: id }, user);
             return await UserModel.findById(id);
         },
