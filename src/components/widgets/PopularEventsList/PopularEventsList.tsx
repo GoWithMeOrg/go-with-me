@@ -85,7 +85,7 @@ export const PopularEventList: FC<EventListProps> = () => {
                 <Title title={"Popular Event List"} className={classes.cardsEventsTitle} tag={"h2"} />
 
                 <div className={classes.cardsEventsList}>
-                    {data.events.map(({ _id, description, name, startDate, location, time, image }: IEvent) => (
+                    {data?.events.map(({ _id, description, name, startDate, location, time, image }: IEvent) => (
                         <CardEvent
                             key={_id}
                             id={_id}

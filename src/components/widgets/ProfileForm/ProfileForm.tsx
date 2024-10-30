@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { gql, useQuery } from "@apollo/client";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
-import { IUser } from "@/database/models/User";
+import { IUser } from "@/database/types/User";
 
 import { CreateTag } from "@/components/widgets/CreateTag";
 import { UploadFile } from "@/components/widgets/UploadFile";

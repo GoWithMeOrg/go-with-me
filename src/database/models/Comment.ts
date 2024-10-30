@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document } from "mongoose";
 
 import UserModel from "./User";
-import type { IUser } from "./User";
+import type { IUser } from "@/database/types/User";
 
 export interface INewComment {
     author_id: mongoose.Types.ObjectId;

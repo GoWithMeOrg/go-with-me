@@ -1,21 +1,6 @@
 import mongoose, { Schema, Document } from "mongoose";
-
-export interface IUser {
-    _id: string;
-    name: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    image: string;
-    location: string;
-    aboutMe: string;
-    interests: string[];
-    meetings: string[];
-    tags: string[];
-    emailVerified: boolean;
-    createdAt: Date;
-    updatedAt: Date;
-}
+import Role from "./Role";
+import { IUser } from "@/database/types/User";
 
 export interface IUserDocument extends Omit<IUser, "_id" | "createdAt" | "updatedAt">, Document {}
 
@@ -33,6 +18,11 @@ const UserSchema = new Schema<IUserDocument>({
     lastName: {
         type: String,
         required: true,
+    },
+
+    role: {
+        type: Schema.Types.ObjectId,
+        ref: Role,
     },
 
     email: {

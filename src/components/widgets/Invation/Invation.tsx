@@ -5,7 +5,7 @@ import Link from "next/link";
 import dayjs from "dayjs";
 
 import Geocoding from "@/components/widgets/GoogleMap/Geocoding";
-import { IUser } from "@/database/models/User";
+import { IUser } from "@/database/types/User";
 import { Button } from "@/components/shared/Button";
 import Joined from "@/assets/icons/joined.svg";
 

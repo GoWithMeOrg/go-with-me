@@ -1,5 +1,6 @@
 import mongoose, { Schema, Document } from "mongoose";
-import UserModel, { IUser } from "./User";
+import { IUser } from "@/database/types/User";
+import UserModel from "./User";
 
 export interface IEvent {
     _id: string;

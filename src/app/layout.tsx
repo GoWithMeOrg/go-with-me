@@ -11,7 +11,6 @@ import { Container } from "@/components/shared/Container";
 import "@/styles/global.css";
 
 const inter = Inter({
-    weight: ["400", "500", "600", "700"],
     style: ["normal"],
     subsets: ["latin"],
     display: "swap",

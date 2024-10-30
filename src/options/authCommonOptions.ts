@@ -33,14 +33,14 @@ export const authCommonOptions = {
     secret: process.env.NEXTAUTH_SECRET,
 
     callbacks: {
-        // Add user id to session
         async session({ session, user }: { session: Session; user: User }) {
-            console.log(session);
+            console.log(user);
             return {
                 ...session,
                 user: {
                     ...session.user,
                     id: user.id,
+                    role: user.role,
                 },
             };
         },

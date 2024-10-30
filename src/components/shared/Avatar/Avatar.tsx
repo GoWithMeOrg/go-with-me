@@ -1,7 +1,7 @@
 import { FC, HTMLAttributes } from "react";
 import Image from "next/image";
 
-import { IUser } from "@/database/models/User";
+import { IUser } from "@/database/types/User";
 import { getContent } from "./helpers";
 
 import classes from "./Avatar.module.css";
