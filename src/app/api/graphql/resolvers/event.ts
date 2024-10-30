@@ -36,5 +36,3 @@ export const eventResolvers = {
         },
     },
 };
-
-export default eventResolvers;

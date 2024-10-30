@@ -16,5 +16,3 @@ export const isoDateResolvers = {
         },
     },
 };
-
-export default isoDateResolvers;

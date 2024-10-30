@@ -36,5 +36,3 @@ export const tripResolvers = {
         },
     },
 };
-
-export default tripResolvers;

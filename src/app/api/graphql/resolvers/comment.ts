@@ -50,5 +50,3 @@ export const commentResolvers = {
         },
     },
 };
-
-export default commentResolvers;

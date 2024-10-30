@@ -17,5 +17,3 @@ export const userResolvers = {
         },
     },
 };
-
-export default userResolvers;
