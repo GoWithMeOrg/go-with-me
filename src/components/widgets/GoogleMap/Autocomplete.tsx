@@ -5,12 +5,13 @@ interface Props {
     onPlaceSelect: (place: google.maps.places.PlaceResult | null) => void;
     className?: string;
     address?: string;
+    setSelectedPlace?: (place: google.maps.places.PlaceResult | null) => void;
 }
 export const Autocomplete = ({ onPlaceSelect, className, address }: Props) => {
     const places = useMapsLibrary("places");
     const originRef = useRef<HTMLInputElement>(null);
     const [placeAutocomplete, setPlaceAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
-    const newAdress = placeAutocomplete?.getPlace()?.formatted_address;
+    const newAdress = placeAutocomplete?.getPlace()?.formatted_address || address;
 
     useEffect(() => {
         if (!places || !originRef || !originRef.current) return;
