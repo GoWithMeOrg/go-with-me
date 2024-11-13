@@ -5,7 +5,6 @@ import classes from "./EventStatus.module.css";
 interface IEventStatus {
     options?: {
         PUBLIC: string;
-        INVATION: string;
         PRIVATE: string;
     };
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -30,21 +29,6 @@ export const EventStatus = forwardRef(function EventStatus(props: IEventStatus, 
                     />
                     <label className={classes.confidentialityLabel} htmlFor={props.options?.PUBLIC}>
                         Public event
-                    </label>
-                </div>
-
-                <div className={classes.confidentialityRadio}>
-                    <input
-                        type="radio"
-                        name="eventStatus"
-                        id={props.options?.INVATION}
-                        value={props.options?.INVATION}
-                        onChange={(e) => props.onChange(e)}
-                        checked={props.selected === props.options?.INVATION}
-                        className={classes.confidentialityInput}
-                    />
-                    <label className={classes.confidentialityLabel} htmlFor={props.options?.INVATION}>
-                        By invation only
                     </label>
                 </div>
 

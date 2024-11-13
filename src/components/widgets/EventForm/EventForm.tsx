@@ -29,7 +29,6 @@ export type EventType = Partial<IEvent>;
 
 export enum Status {
     PUBLIC = "public",
-    INVATION = "invation",
     PRIVATE = "private",
 }
 
