@@ -43,12 +43,9 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
     );
 
     const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
-    //При редактировании события нужно очистить данные о локации из объекта и подставить данные из локального состояния
 
     const prevSelectedPlaceRef = useRef<google.maps.places.PlaceResult | null>(selectedPlace);
     const [showPopup, setShowPopup] = useState<boolean>(false);
-
-    //console.log(selectedPlace?.formatted_address);
 
     useEffect(() => {
         if (prevSelectedPlaceRef.current !== selectedPlace && props.onChange) {
@@ -62,8 +59,6 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
             props.onChange(newPlace);
             prevSelectedPlaceRef.current = selectedPlace;
         }
-
-        //if (selectedPlace) setSelectedPlace(selectedPlace);
     }, [selectedPlace, props]);
 
     if (!apiIsLoaded || !mapAPI) {
