@@ -21,6 +21,9 @@ import { useUploadFile } from "@/components/widgets/UploadFile/hooks";
 import { UploadFileSizes } from "@/components/widgets/UploadFile/UploadFile";
 
 import classes from "./EventForm.module.css";
+import { Label } from "@/components/shared/Label";
+import { Input } from "@/components/shared/Input";
+import { Textarea } from "@/components/shared/Textarea";
 
 export type EventType = Partial<IEvent>;
 
@@ -86,11 +89,9 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                             name="name"
                             control={control}
                             render={({ field }) => (
-                                <TitleField
-                                    title={"Event title"}
-                                    defaultValue={eventData.name || ""}
-                                    onChange={field.onChange}
-                                />
+                                <Label label={"Event title"}>
+                                    <Input defaultValue={eventData.name || ""} onChange={field.onChange} />
+                                </Label>
                             )}
                             rules={{ required: true }}
                         />
@@ -114,11 +115,9 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                             name="description"
                             control={control}
                             render={({ field }) => (
-                                <Description
-                                    title={"Description"}
-                                    defaultValue={eventData.description || ""}
-                                    onChange={field.onChange}
-                                />
+                                <Label label={"Description"}>
+                                    <Textarea defaultValue={eventData.description || ""} onChange={field.onChange} />
+                                </Label>
                             )}
                         />
 
@@ -194,7 +193,7 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                     />
                 </div>
 
-                <GuestList />
+                {/* <GuestList /> */}
 
                 <Button size="big" type="submit">
                     Save changes
