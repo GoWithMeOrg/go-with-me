@@ -43,11 +43,12 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
     );
 
     const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
-    const [updateAddress, setUpdateAddress] = useState<string>(selectedPlace?.formatted_address || "");
+    //При редактировании события нужно очистить данные о локации из объекта и подставить данные из локального состояния
 
-    console.log(selectedPlace);
     const prevSelectedPlaceRef = useRef<google.maps.places.PlaceResult | null>(selectedPlace);
     const [showPopup, setShowPopup] = useState<boolean>(false);
+
+    //console.log(selectedPlace?.formatted_address);
 
     useEffect(() => {
         if (prevSelectedPlaceRef.current !== selectedPlace && props.onChange) {
@@ -62,9 +63,7 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
             prevSelectedPlaceRef.current = selectedPlace;
         }
 
-        if (selectedPlace) {
-            setUpdateAddress(selectedPlace?.formatted_address || "");
-        }
+        //if (selectedPlace) setSelectedPlace(selectedPlace);
     }, [selectedPlace, props]);
 
     if (!apiIsLoaded || !mapAPI) {
@@ -74,9 +73,14 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
     const handleShowMap = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         setShowPopup(true);
+        setSelectedPlace(null);
+    };
+    const handleMapClose = () => {
+        setShowPopup(false);
     };
 
     const handleMapClick = (e: { detail: { latLng: SetStateAction<google.maps.LatLngLiteral | null> } }) => {
+        setSelectedPlace(null);
         setMarkerPosition(e.detail.latLng);
         if (!geocoding) return;
         const geocoder = new geocoding.Geocoder();
@@ -102,7 +106,9 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
             <Autocomplete
                 className={classes.fieldInput}
                 onPlaceSelect={setSelectedPlace}
-                address={props.locationEvent?.properties?.address || updateAddress}
+                address={
+                    selectedPlace !== null ? selectedPlace.formatted_address : props.locationEvent?.properties?.address
+                }
             />
 
             <Popup
@@ -114,8 +120,8 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
             >
                 <Map
                     style={{ height: "600px" }}
-                    defaultZoom={3}
-                    defaultCenter={{ lat: 22.54992, lng: 0 }}
+                    defaultZoom={markerPosition !== null ? 15 : 3}
+                    defaultCenter={markerPosition || { lat: 22.54992, lng: 0 }}
                     gestureHandling={"greedy"}
                     disableDefaultUI={false}
                     mapId={"<Your custom MapId here>"}
@@ -128,15 +134,19 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
                         <Autocomplete
                             onPlaceSelect={setSelectedPlace}
                             className={classes.inputFindMap}
-                            address={props.locationEvent?.properties?.address || updateAddress}
+                            address={
+                                selectedPlace !== null
+                                    ? selectedPlace.formatted_address
+                                    : props.locationEvent?.properties?.address
+                            }
                         />
                     </CustomMapControl>
                     <MapHandler place={selectedPlace} />
                 </Map>
                 <div className={classes.buttonBlockMap}>
                     <Geolocation />
-                    <Button className={classes.buttonMap} onClick={() => setShowPopup(false)}>
-                        Закрыть карту
+                    <Button className={classes.buttonMap} onClick={handleMapClose}>
+                        Закрыть
                     </Button>
                 </div>
             </Popup>

@@ -5,13 +5,14 @@ interface Props {
     onPlaceSelect: (place: google.maps.places.PlaceResult | null) => void;
     className?: string;
     address?: string;
-    setSelectedPlace?: (place: google.maps.places.PlaceResult | null) => void;
 }
 export const Autocomplete = ({ onPlaceSelect, className, address }: Props) => {
     const places = useMapsLibrary("places");
     const originRef = useRef<HTMLInputElement>(null);
     const [placeAutocomplete, setPlaceAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
     const newAdress = placeAutocomplete?.getPlace()?.formatted_address || address;
+    console.log(newAdress); // adвress b newAdress адрес в режиме редатирования приходить правильный
+    // если заменить defaultValue на value то адресс меняется.
 
     useEffect(() => {
         if (!places || !originRef || !originRef.current) return;
@@ -37,15 +38,13 @@ export const Autocomplete = ({ onPlaceSelect, className, address }: Props) => {
         });
     }, [onPlaceSelect, placeAutocomplete]);
 
-    return (
-        <input
-            className={className}
-            type={"text"}
-            placeholder={""}
-            ref={originRef}
-            defaultValue={address ?? newAdress}
-        />
-    );
+    useEffect(() => {
+        if (originRef.current) {
+            originRef.current.value = newAdress || "";
+        }
+    }, [newAdress]);
+
+    return <input className={className} type={"text"} placeholder={""} ref={originRef} defaultValue={newAdress} />;
 };
 
 export default Autocomplete;
