@@ -94,7 +94,7 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
                 <span className={classes.titleInput}>Location/Address</span>
                 <Button className={classes.btnFindMap} onClick={handleShowMap}>
                     <Marker style={{ marginRight: "0.25rem" }} />
-                    {"Find on Map"}
+                    Find on Map
                 </Button>
             </div>
 
