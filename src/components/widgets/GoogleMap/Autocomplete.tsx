@@ -45,7 +45,7 @@ export const Autocomplete = ({ onPlaceSelect, className, address }: Props) => {
         }
     }, [onPlaceSelect, placeAutocomplete, newAdress]);
 
-    return <input className={className} type={"text"} placeholder={""} ref={originRef} defaultValue={newAdress} />;
+    return <input className={className} type="text" placeholder="" ref={originRef} defaultValue={newAdress} />;
 };
 
 export default Autocomplete;
