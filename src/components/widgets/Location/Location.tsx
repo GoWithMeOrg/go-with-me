@@ -1,4 +1,4 @@
-import { SetStateAction, forwardRef, useContext, useEffect, useRef, useState } from "react";
+import { forwardRef, SetStateAction, useContext, useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/shared/Button";
 import { CustomMapControl, Geolocation, MapHandler } from "@/components/widgets/GoogleMap";
@@ -9,6 +9,7 @@ import {
     useApiIsLoaded,
     APIProviderContext,
     ControlPosition,
+    useMapsLibrary,
 } from "@vis.gl/react-google-maps";
 import { Popup } from "@/components/shared/Popup";
 import Marker from "@/assets/icons/marker.svg";
@@ -30,6 +31,7 @@ interface ILocation {
 
 export const Location = forwardRef(function Location(props: ILocation, ref) {
     const apiIsLoaded = useApiIsLoaded();
+    const geocoding = useMapsLibrary("geocoding");
     const mapAPI = useContext(APIProviderContext);
     const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(
         props.locationEvent !== undefined
@@ -39,7 +41,9 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
               }
             : null,
     );
+
     const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
+
     const prevSelectedPlaceRef = useRef<google.maps.places.PlaceResult | null>(selectedPlace);
     const [showPopup, setShowPopup] = useState<boolean>(false);
 
@@ -64,10 +68,24 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
     const handleShowMap = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         setShowPopup(true);
+        setSelectedPlace(null);
+    };
+    const handleMapClose = () => {
+        setShowPopup(false);
     };
 
-    const handleMarkerPosition = (e: { detail: { latLng: SetStateAction<google.maps.LatLngLiteral | null> } }) => {
+    const handleMapClick = (e: { detail: { latLng: SetStateAction<google.maps.LatLngLiteral | null> } }) => {
+        setSelectedPlace(null);
         setMarkerPosition(e.detail.latLng);
+        if (!geocoding) return;
+        const geocoder = new geocoding.Geocoder();
+        const pos = e.detail.latLng as any;
+        geocoder.geocode({ location: pos }, (results, status) => {
+            if (status === "OK" && results !== null) {
+                const place = results[0];
+                setSelectedPlace(place);
+            }
+        });
     };
 
     return (
@@ -76,14 +94,18 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
                 <span className={classes.titleInput}>Location/Address</span>
                 <Button className={classes.btnFindMap} onClick={handleShowMap}>
                     <Marker style={{ marginRight: "0.25rem" }} />
-                    {"Find on Map"}
+                    Find on Map
                 </Button>
             </div>
+
             <Autocomplete
                 className={classes.fieldInput}
                 onPlaceSelect={setSelectedPlace}
-                address={props.locationEvent?.properties?.address || ""}
+                address={
+                    selectedPlace !== null ? selectedPlace.formatted_address : props.locationEvent?.properties?.address
+                }
             />
+
             <Popup
                 {...{
                     showPopup,
@@ -93,33 +115,33 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
             >
                 <Map
                     style={{ height: "600px" }}
-                    defaultZoom={3}
-                    defaultCenter={{ lat: 22.54992, lng: 0 }}
+                    defaultZoom={markerPosition !== null ? 15 : 3}
+                    defaultCenter={markerPosition || { lat: 22.54992, lng: 0 }}
                     gestureHandling={"greedy"}
                     disableDefaultUI={false}
                     mapId={"<Your custom MapId here>"}
-                    onClick={handleMarkerPosition}
+                    onClick={handleMapClick}
                 >
-                    <AdvancedMarker
-                        position={markerPosition}
-                        // draggable={true}
-                        title={"AdvancedMarker with customized pin."}
-                    >
+                    <AdvancedMarker position={markerPosition} title={"AdvancedMarker with customized pin."}>
                         <Pin background={"#FBBC04"} borderColor={"#1e89a1"} glyphColor={"#0f677a"}></Pin>
                     </AdvancedMarker>
                     <CustomMapControl controlPosition={ControlPosition.TOP}>
                         <Autocomplete
                             onPlaceSelect={setSelectedPlace}
                             className={classes.inputFindMap}
-                            address={props.locationEvent?.properties?.address || ""}
+                            address={
+                                selectedPlace !== null
+                                    ? selectedPlace.formatted_address
+                                    : props.locationEvent?.properties?.address
+                            }
                         />
                     </CustomMapControl>
                     <MapHandler place={selectedPlace} />
                 </Map>
                 <div className={classes.buttonBlockMap}>
                     <Geolocation />
-                    <Button className={classes.buttonMap} onClick={() => setShowPopup(false)}>
-                        Закрыть карту
+                    <Button className={classes.buttonMap} onClick={handleMapClose}>
+                        Закрыть
                     </Button>
                 </div>
             </Popup>

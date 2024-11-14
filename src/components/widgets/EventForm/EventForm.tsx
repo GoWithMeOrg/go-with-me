@@ -178,7 +178,6 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                             )}
                         />
                     </div>
-                    {/* здесь нужно вернуть только Url */}
                     <Controller
                         name="image"
                         control={control}
