@@ -3,12 +3,10 @@
 import { useState } from "react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 
-import { TitleField } from "@/components/shared/TitleField";
 import { EventStatus } from "@/components/widgets/EventStatus";
 import { Button } from "@/components/shared/Button";
 import { Date } from "@/components/widgets/Date";
 import { Time } from "@/components/widgets/Time";
-import { Description } from "@/components/shared/Description";
 import { SelectCategory } from "@/components/widgets/SelectCategory";
 import { eventCategory, eventTypes } from "@/components/shared/Dropdown/dropdownLists";
 import { CreateTag } from "@/components/widgets/CreateTag";
@@ -19,11 +17,11 @@ import { IEvent } from "@/database/models/Event";
 
 import { useUploadFile } from "@/components/widgets/UploadFile/hooks";
 import { UploadFileSizes } from "@/components/widgets/UploadFile/UploadFile";
-
-import classes from "./EventForm.module.css";
 import { Label } from "@/components/shared/Label";
 import { Input } from "@/components/shared/Input";
 import { Textarea } from "@/components/shared/Textarea";
+
+import classes from "./EventForm.module.css";
 
 export type EventType = Partial<IEvent>;
 
