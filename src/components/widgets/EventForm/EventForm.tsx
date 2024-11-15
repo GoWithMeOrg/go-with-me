@@ -70,6 +70,7 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                 getDeleteFile(eventData.image);
             }
         }
+        console.log("click");
     };
 
     const handleUploadedFile = (file: File, preUrl: string) => {
@@ -90,7 +91,6 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                                     <Input defaultValue={eventData.name || ""} onChange={field.onChange} />
                                 </Label>
                             )}
-                            rules={{ required: true }}
                         />
 
                         <Controller
