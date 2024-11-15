@@ -70,7 +70,6 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                 getDeleteFile(eventData.image);
             }
         }
-        console.log("click");
     };
 
     const handleUploadedFile = (file: File, preUrl: string) => {

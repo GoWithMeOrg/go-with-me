@@ -34,7 +34,7 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
     const geocoding = useMapsLibrary("geocoding");
     const mapAPI = useContext(APIProviderContext);
     const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(
-        props.locationEvent !== undefined
+        props.locationEvent.coordinates !== undefined
             ? {
                   lat: props.locationEvent?.coordinates[0],
                   lng: props.locationEvent?.coordinates[1],
@@ -115,7 +115,7 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
             >
                 <Map
                     style={{ height: "600px" }}
-                    defaultZoom={markerPosition !== null ? 15 : 3}
+                    defaultZoom={markerPosition ? 15 : 3}
                     defaultCenter={markerPosition || { lat: 22.54992, lng: 0 }}
                     gestureHandling={"greedy"}
                     disableDefaultUI={false}
