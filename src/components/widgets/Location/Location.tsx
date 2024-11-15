@@ -92,7 +92,7 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
         <label className={classes.locationForm}>
             <div className={classes.labelFindMap}>
                 <span className={classes.titleInput}>Location/Address</span>
-                <Button className={classes.btnFindMap} onClick={handleShowMap}>
+                <Button className={classes.btnFindMap} onClick={handleShowMap} resetDefaultStyles={true}>
                     <Marker style={{ marginRight: "0.25rem" }} />
                     Find on Map
                 </Button>
