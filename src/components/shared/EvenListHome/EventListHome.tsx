@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 
 import { Title } from "../Title";
 import { CardEvent } from "@/components/widgets/CardEvent";
@@ -9,6 +9,7 @@ import ArrowCircle from "@/assets/icons/arrowCircle.svg";
 
 import { gql, useQuery } from "@apollo/client";
 import { Loader } from "../Loader";
+import { SizeCard } from "@/components/widgets/CardEvent/CardEvent";
 
 import classes from "./EventListHome.module.css";
 
@@ -40,7 +41,11 @@ const GET_EVENTS = gql`
     }
 `;
 
-export const EventListHome = () => {
+interface EventListHomeProps {
+    sizeCard: SizeCard;
+}
+
+export const EventListHome: FC<EventListHomeProps> = ({ sizeCard }) => {
     const { loading, error, data } = useQuery(GET_EVENTS);
 
     if (loading) return <Loader />;
@@ -61,6 +66,7 @@ export const EventListHome = () => {
                         startDate={startDate}
                         time={time}
                         image={image}
+                        size={sizeCard}
                     />
                 ))}
             </div>

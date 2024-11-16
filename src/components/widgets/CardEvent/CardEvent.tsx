@@ -1,12 +1,22 @@
 import Image from "next/image";
 import Link from "next/link";
+import dayjs from "dayjs";
 
 import { Geocoding } from "@/components/widgets/GoogleMap/Geocoding";
-import dayjs from "dayjs";
+
 import Marker from "@/assets/icons/marker.svg";
 import Clock from "@/assets/icons/clock.svg";
 
 import classes from "./CardEvent.module.css";
+import { useMemo } from "react";
+
+export enum SizeCard {
+    M = "medium",
+    ML = "medium-large",
+    L = "large",
+    SL = "small-large",
+    S = "small",
+}
 
 interface CardEventProps {
     id: string;
@@ -16,39 +26,56 @@ interface CardEventProps {
     startDate: string | Date | undefined;
     time: string | undefined;
     image?: string;
+    size?: SizeCard;
 }
 
-export const CardEvent = ({ id, name, description, coord, startDate, time, image }: CardEventProps) => {
+export const CardEvent = ({ id, name, description, coord, startDate, time, image, size }: CardEventProps) => {
+    const imageSizes = {
+        medium: { width: 444, height: 292 },
+        "medium-large": { width: 380, height: 250 },
+        large: { width: 354, height: 233 },
+        "small-large": { width: 324, height: 213 },
+        small: { width: 312, height: 205 },
+    };
+
+    const cardCssString = useMemo(
+        () =>
+            [
+                classes.card,
+                size === "medium" && classes.medium,
+                size === "medium-large" && classes.mediumLarge,
+                size === "large" && classes.large,
+                size === "small-large" && classes.smallLarge,
+                size === "small" && classes.small,
+            ]
+                .filter(Boolean)
+                .join(" "),
+        [size],
+    );
+
     return (
-        <div id={id} className={classes.card}>
-            <div className={classes.imageContainer}>
-                <div className={classes.image}>
-                    {image && (
-                        <Link href={`/events/${id}`}>
-                            <Image src={image} alt="img" width={380} height={250} />
-                        </Link>
-                    )}
-                </div>
-            </div>
+        <div id={id} className={cardCssString}>
+            {image && size && (
+                <Link href={`/events/${id}`}>
+                    <Image src={image} alt="img" width={imageSizes[size].width} height={imageSizes[size].height} />
+                </Link>
+            )}
 
             <div className={classes.location}>
-                <Marker />
-                <div className={classes.geocoding}>
-                    <Geocoding coordinates={coord} />
-                </div>
+                <Marker style={{ marginRight: "0.75rem" }} />
+                <Geocoding coordinates={coord} />
             </div>
 
             <div className={classes.date}>
-                <Clock />
-                <div className={classes.time}>
-                    {dayjs(startDate).format("DD.MM.YY")} | {time}
-                </div>
+                <Clock style={{ marginRight: "0.75rem" }} />
+                {dayjs(startDate).format("DD.MM.YY")} | {time}
             </div>
+
             <Link href={`/events/${id}`}>
-                <span className={classes.title}>{name}</span>
+                <h3 className={classes.title}>{name}</h3>
             </Link>
 
-            <div className={classes.description}>{description}</div>
+            <p className={classes.description}>{description}</p>
         </div>
     );
 };
