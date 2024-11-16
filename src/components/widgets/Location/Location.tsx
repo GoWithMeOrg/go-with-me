@@ -34,7 +34,7 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
     const geocoding = useMapsLibrary("geocoding");
     const mapAPI = useContext(APIProviderContext);
     const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(
-        props.locationEvent.coordinates !== undefined
+        props.locationEvent?.coordinates !== undefined
             ? {
                   lat: props.locationEvent?.coordinates[0],
                   lng: props.locationEvent?.coordinates[1],
