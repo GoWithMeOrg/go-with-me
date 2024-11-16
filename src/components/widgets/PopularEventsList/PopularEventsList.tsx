@@ -13,7 +13,7 @@ import { CardEvent } from "@/components/widgets/CardEvent";
 import { CreateAndInvite } from "@/components/widgets/CreateAndInvite";
 
 import ArrowCircle from "@/assets/icons/arrowCircle.svg";
-import Promo from "@/assets/icons/promo.svg";
+import PromoIcon from "@/assets/icons/promoIcon.svg";
 import CreateEvent from "@/assets/icons/createEvent.svg";
 import CreatePrivateEvent from "@/assets/icons/createPrivateEvent.svg";
 import ExploreEvents from "@/assets/icons/exploreEvents.svg";
@@ -78,7 +78,7 @@ export const PopularEventList: FC<EventListProps> = () => {
                 </div>
 
                 <div className={classes.promoPicture}>
-                    <Promo />
+                    <PromoIcon />
                 </div>
             </div>
             <div className={classes.cardsEvents}>

@@ -14,7 +14,7 @@ export const Container: FC<ContainerProps> = ({ children, className, ...rest }) 
     }, [className]);
 
     return (
-        <main className={containerCssString} {...{ ...rest }}>
+        <main className={containerCssString} {...rest}>
             {children}
         </main>
     );
