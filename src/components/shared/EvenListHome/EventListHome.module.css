@@ -1,0 +1,31 @@
+.cardsEvents {
+    /* width: 100%; */
+    /* --desktop-width-container: 73.75rem; */
+    margin-bottom: 6.3rem;
+    background-attachment: fff;
+}
+
+.cardsEventsTitle {
+    margin-bottom: 4.375rem;
+}
+
+.cardsEventsList {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-content: center;
+    position: relative;
+    margin-bottom: 0.875rem;
+}
+
+/* .cardsEventsList::after {
+    content: "";
+    position: absolute;
+    top: 4%;
+    left: -40%;
+    width: 170.5%;
+    height: 76%;
+    background-color: var(--white-color);
+    z-index: -1;
+} */
