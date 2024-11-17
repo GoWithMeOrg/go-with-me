@@ -5,19 +5,6 @@
     color: var(--main-color);
 }
 
-.imageContainer {
-    width: 23.75rem;
-    height: 15.63rem;
-    /* overflow: hidden; */
-}
-
-.image {
-    /* display: block; */
-    width: auto;
-    height: auto;
-    /* object-fit: cover; */
-}
-
 .location {
     display: flex;
     margin-top: 1.31rem;
@@ -37,10 +24,6 @@
     text-align: left;
     margin-bottom: 1.31rem;
     margin-top: 0.25rem;
-}
-
-.time {
-    margin-left: 0.8rem;
 }
 
 .title {
@@ -66,10 +49,6 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-}
-
-.checkboxDate {
-    margin-right: 0.31rem;
 }
 
 .medium {

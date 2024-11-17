@@ -14,16 +14,16 @@
     flex-wrap: wrap;
     align-content: center;
     position: relative;
-    margin-bottom: 0.875rem;
+    margin-bottom: 0.88rem;
 }
 
-/* .cardsEventsList::after {
+.cardsEventsList::before {
     content: "";
     position: absolute;
-    top: 4%;
+    top: 6%;
     left: -40%;
-    width: 170.5%;
-    height: 76%;
+    width: 99vw;
+    height: 70%;
     background-color: var(--white-color);
     z-index: -1;
-} */
+}

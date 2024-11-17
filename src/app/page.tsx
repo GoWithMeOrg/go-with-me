@@ -12,7 +12,7 @@ export default function HomePage() {
     return (
         <div className={classes.homePage}>
             <Promo />
-            <EventListHome sizeCard={SizeCard.ML} />
+            <EventListHome sizeCard={SizeCard.L} />
         </div>
     );
     //return <PopularEventList />;

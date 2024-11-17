@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import dayjs from "dayjs";
@@ -8,7 +9,6 @@ import Marker from "@/assets/icons/marker.svg";
 import Clock from "@/assets/icons/clock.svg";
 
 import classes from "./CardEvent.module.css";
-import { useMemo } from "react";
 
 export enum SizeCard {
     M = "medium",
