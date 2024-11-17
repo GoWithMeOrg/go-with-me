@@ -3,8 +3,9 @@ import UserModel from "@/database/models/User";
 
 export const eventResolvers = {
     Query: {
-        events: async () => {
-            return EventModel.find({});
+        events: async (parent: any, { limit, offset, sort }: { limit: number; offset: number; sort?: string }) => {
+            const events = await EventModel.find().sort(sort).limit(limit);
+            return events;
         },
         event: async (parent: any, { id, ...rest }: { id: string }) => {
             return EventModel.findById(id);

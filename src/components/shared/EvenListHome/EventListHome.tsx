@@ -7,49 +7,50 @@ import { Button } from "../Button";
 
 import ArrowCircle from "@/assets/icons/arrowCircle.svg";
 
-import { gql, useQuery } from "@apollo/client";
 import { Loader } from "../Loader";
 import { SizeCard } from "@/components/widgets/CardEvent/CardEvent";
+import { useEventListHome } from "./hook/useEventListHome";
 
 import classes from "./EventListHome.module.css";
 
-const GET_EVENTS = gql`
-    query GetEvents {
-        events {
-            _id
-            organizer {
-                _id
-                name
-                email
-                image
-            }
+//         events {
+//             _id
+//             organizer {
+//                 _id
+//                 name
+//                 email
+//                 image
+//             }
 
-            name
-            description
-            startDate
-            endDate
-            time
-            location {
-                type
-                coordinates
-                properties {
-                    address
-                }
-            }
-            image
-        }
-    }
-`;
+//             name
+//             description
+//             startDate
+//             endDate
+//             time
+//             location {
+//                 type
+//                 coordinates
+//                 properties {
+//                     address
+//                 }
+//             }
+//             image
+//         }
+//     }
+// `;
 
 interface EventListHomeProps {
     sizeCard: SizeCard;
 }
 
 export const EventListHome: FC<EventListHomeProps> = ({ sizeCard }) => {
-    const { loading, error, data } = useQuery(GET_EVENTS);
+    const { data, error, loading, refetch } = useEventListHome();
 
+    refetch();
     if (loading) return <Loader />;
     if (error) return <p>Error : {error.message}</p>;
+
+    console.log("EventListHome: ", data);
 
     return (
         <section className={classes.cardsEvents}>
