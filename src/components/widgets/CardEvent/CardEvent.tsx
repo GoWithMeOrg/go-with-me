@@ -27,16 +27,16 @@ interface CardEventProps {
     startDate: string | Date | undefined;
     time: string | undefined;
     image?: string;
-    size?: SizeCard;
+    size: SizeCard;
 }
 
 export const CardEvent = ({ id, name, description, coord, startDate, time, image, size }: CardEventProps) => {
     const imageSizes = {
-        medium: { width: 444, height: 292 },
+        medium: { width: 440, height: 290 },
         "medium-large": { width: 380, height: 250 },
-        large: { width: 354, height: 233 },
-        "small-large": { width: 324, height: 213 },
-        small: { width: 312, height: 205 },
+        large: { width: 350, height: 230 },
+        "small-large": { width: 320, height: 210 },
+        small: { width: 310, height: 200 },
     };
 
     const cardCssString = useMemo(
@@ -56,20 +56,21 @@ export const CardEvent = ({ id, name, description, coord, startDate, time, image
 
     return (
         <div id={id} className={cardCssString}>
-            {image && size && (
+            {(image && size && (
                 <Link href={`/events/${id}`}>
                     <Image src={image} alt="img" width={imageSizes[size].width} height={imageSizes[size].height} />
                 </Link>
-            )}
+            )) ||
+                (!image && <div style={{ background: "#a4a7bc", height: `${imageSizes[size].height}px` }} />)}
 
             <div className={classes.location}>
                 <Marker style={{ marginRight: "0.75rem" }} />
-                <Geocoding coordinates={coord} />
+                {coord && <Geocoding coordinates={coord} />}
             </div>
 
             <div className={classes.date}>
                 <Clock style={{ marginRight: "0.75rem" }} />
-                {dayjs(startDate).format("DD.MM.YY")} | {time}
+                {startDate && dayjs(startDate).format("DD.MM.YYYY")} {time && `| ${time}`}
             </div>
 
             <Link href={`/events/${id}`}>

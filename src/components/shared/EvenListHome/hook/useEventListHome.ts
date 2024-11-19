@@ -7,22 +7,13 @@ const GET_EVENTS = gql`
             _id
             organizer {
                 _id
-                name
-                email
-                image
             }
-
             name
             description
             startDate
-            endDate
             time
             location {
-                type
                 coordinates
-                properties {
-                    address
-                }
             }
             image
         }

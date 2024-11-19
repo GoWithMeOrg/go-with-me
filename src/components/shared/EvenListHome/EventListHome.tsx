@@ -47,11 +47,10 @@ export const EventListHome: FC<EventListHomeProps> = ({ sizeCard }) => {
     const { data, error, loading, refetch } = useEventListHome();
 
     refetch();
-    if (loading) return <Loader />;
+    // if (loading) return <Loader />;
     if (error) return <p>Error : {error.message}</p>;
 
-    console.log("EventListHome: ", data);
-
+    //Решить вопрос расположение карточек по всей ширене сетки
     return (
         <section className={classes.cardsEvents}>
             <Title title={"Popular Event List"} className={classes.cardsEventsTitle} tag={"h2"} />
