@@ -7,6 +7,7 @@ import { PopularEventList } from "@/components/widgets/PopularEventsList/Popular
 import { SizeCard } from "@/components/widgets/CardEvent/CardEvent";
 
 import classes from "./page.module.css";
+import { MoreLink } from "@/components/shared/MoreLink";
 
 export default function HomePage() {
     return (

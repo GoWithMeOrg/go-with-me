@@ -1,41 +1,28 @@
-.container {
-    display: grid;
-}
-
 .promo {
-    margin-top: 11.25rem;
-    margin-bottom: 14.84rem;
-    display: flex;
-    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+    margin: 11.25rem 0 14.84rem 0;
 }
 
 .promoDescription {
-    display: flex;
+    display: grid;
+}
+
+.promoText {
+    display: grid;
     width: 30rem;
-    height: 100%;
     color: var(--main-color);
-    margin-top: 2.5rem;
     font-size: 1.25rem;
     font-weight: 400;
     line-height: 1.88rem;
-    text-align: left;
-    flex-direction: column;
-    justify-content: space-between;
 }
 
-.promoButton {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    color: var(--main-color);
-    font-size: 1.75rem;
-    font-weight: 700;
-    line-height: 2.125rem;
-    text-align: left;
-    background: none;
-    cursor: pointer;
-    font-family: "__Inter_1870e5", "__Inter_Fallback_1870e5";
-    font-style: normal;
+.promoLink {
+    display: grid;
+    justify-content: end;
+    width: 30rem;
+    align-items: end;
 }
 
 .titleArrow {
@@ -46,11 +33,6 @@
     text-transform: uppercase;
     color: var(--main-color);
     margin-right: 0.7rem;
-}
-
-.promoPicture {
-    width: 33.9rem;
-    margin-left: 8.75rem;
 }
 
 .cardsEvents {

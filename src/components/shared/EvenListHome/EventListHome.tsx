@@ -12,6 +12,8 @@ import { SizeCard } from "@/components/widgets/CardEvent/CardEvent";
 import { useEventListHome } from "./hook/useEventListHome";
 
 import classes from "./EventListHome.module.css";
+import Link from "next/link";
+import { MoreLink } from "../MoreLink";
 
 //         events {
 //             _id
@@ -53,7 +55,13 @@ export const EventListHome: FC<EventListHomeProps> = ({ sizeCard }) => {
     //Решить вопрос расположение карточек по всей ширене сетки
     return (
         <section className={classes.cardsEvents}>
-            <Title title={"Popular Event List"} className={classes.cardsEventsTitle} tag={"h2"} />
+            <div>
+                <Title title={"Popular Event List"} className={classes.cardsEventsTitle} tag={"h2"} />
+                <div>
+                    <Link href={""}>More</Link>
+                    <Link href={""}>Map</Link>
+                </div>
+            </div>
 
             <div className={classes.cardsEventsList}>
                 {data?.events.map(({ _id, description, name, startDate, location, time, image }: IEvent) => (
@@ -71,10 +79,7 @@ export const EventListHome: FC<EventListHomeProps> = ({ sizeCard }) => {
                 ))}
             </div>
 
-            <Button className={classes.eventsButton} resetDefaultStyles={true}>
-                More Events
-                <ArrowCircle style={{ marginRight: "1.25rem", marginLeft: "1rem" }} />
-            </Button>
+            <MoreLink link={""} text={"more events"} />
         </section>
     );
 };
