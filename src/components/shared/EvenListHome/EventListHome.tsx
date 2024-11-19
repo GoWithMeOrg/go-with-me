@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 
 import { Title } from "../Title";
 import { CardEvent } from "@/components/widgets/CardEvent";
@@ -46,20 +46,22 @@ interface EventListHomeProps {
 }
 
 export const EventListHome: FC<EventListHomeProps> = ({ sizeCard }) => {
-    const { data, error, loading, refetch } = useEventListHome();
+    const { data, error, refetch } = useEventListHome();
 
     refetch();
-    // if (loading) return <Loader />;
     if (error) return <p>Error : {error.message}</p>;
 
-    //Решить вопрос расположение карточек по всей ширене сетки
     return (
         <section className={classes.cardsEvents}>
-            <div>
-                <Title title={"Popular Event List"} className={classes.cardsEventsTitle} tag={"h2"} />
-                <div>
-                    <Link href={""}>More</Link>
-                    <Link href={""}>Map</Link>
+            <div className={classes.cardsEventsHeader}>
+                <Title title={"Popular Event List"} tag={"h2"} />
+                <div className={classes.cardsEventsHeaderLinks}>
+                    <Link href={""} className={classes.cardsEventsHeaderLink}>
+                        More
+                    </Link>
+                    <Link href={""} className={classes.cardsEventsHeaderLink}>
+                        Map
+                    </Link>
                 </div>
             </div>
 

@@ -23,7 +23,7 @@ export const Promo = () => {
                 </div>
             </div>
 
-            <PromoIcon />
+            <PromoIcon style={{ marginBottom: "10px" }} />
         </section>
     );
 };

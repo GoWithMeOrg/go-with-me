@@ -2,18 +2,19 @@
 
 import { EventListHome } from "@/components/shared/EvenListHome";
 import { Promo } from "@/components/shared/Promo";
-import { EventList } from "@/components/widgets/EventList";
-import { PopularEventList } from "@/components/widgets/PopularEventsList/PopularEventsList";
 import { SizeCard } from "@/components/widgets/CardEvent/CardEvent";
 
 import classes from "./page.module.css";
-import { MoreLink } from "@/components/shared/MoreLink";
+import { HowITWorks } from "@/components/shared/HowITWorks";
+import { CreateAndInvite } from "@/components/widgets/CreateAndInvite";
 
 export default function HomePage() {
     return (
         <div className={classes.homePage}>
             <Promo />
             <EventListHome sizeCard={SizeCard.ML} />
+            <HowITWorks />
+            <CreateAndInvite />
         </div>
     );
     //return <PopularEventList />;

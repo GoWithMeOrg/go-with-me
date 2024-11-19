@@ -22,7 +22,7 @@ export const CreateAndInvite = () => {
     };
 
     return (
-        <div className={classes.createAndInvite}>
+        <section className={classes.createAndInvite}>
             <Join className={classes.logoJoin} />
             <div className={classes.createAndInviteWrapper}>
                 <Title title={"CREATE AND INVITE"} className={classes.createAndInviteTitle} tag={"h2"} />
@@ -74,7 +74,7 @@ export const CreateAndInvite = () => {
                     et dolore magna aliqua. Ut enim ad minim!
                 </p>
             </div>
-        </div>
+        </section>
     );
 };
 

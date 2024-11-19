@@ -63,21 +63,25 @@ export const CardEvent = ({ id, name, description, coord, startDate, time, image
             )) ||
                 (!image && <div style={{ background: "#a4a7bc", height: `${imageSizes[size].height}px` }} />)}
 
-            <div className={classes.location}>
-                <Marker style={{ marginRight: "0.75rem" }} />
-                {coord && <Geocoding coordinates={coord} />}
+            <div className={classes.details}>
+                <div>
+                    <Marker style={{ marginRight: "0.75rem" }} />
+                    {coord && <Geocoding coordinates={coord} />}
+                </div>
+
+                <div>
+                    <Clock style={{ marginRight: "0.75rem" }} />
+                    {startDate && dayjs(startDate).format("DD.MM.YYYY")} {time && `| ${time}`}
+                </div>
             </div>
 
-            <div className={classes.date}>
-                <Clock style={{ marginRight: "0.75rem" }} />
-                {startDate && dayjs(startDate).format("DD.MM.YYYY")} {time && `| ${time}`}
+            <div className={classes.descriptionWrapper}>
+                <Link href={`/events/${id}`}>
+                    <h3 className={classes.title}>{name}</h3>
+                </Link>
+
+                <p className={classes.description}>{description}</p>
             </div>
-
-            <Link href={`/events/${id}`}>
-                <h3 className={classes.title}>{name}</h3>
-            </Link>
-
-            <p className={classes.description}>{description}</p>
         </div>
     );
 };

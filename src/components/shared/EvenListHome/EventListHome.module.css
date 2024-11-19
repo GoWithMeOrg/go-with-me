@@ -1,10 +1,26 @@
 .cardsEvents {
     margin-bottom: 6.3rem;
-    background-attachment: fff;
 }
 
-.cardsEventsTitle {
-    margin-bottom: 4.375rem;
+.cardsEventsHeader {
+    display: flex;
+    margin-bottom: 4.38rem;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.cardsEventsHeaderLinks {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.cardsEventsHeaderLink {
+    color: var(--additional-color);
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.19rem;
+    text-align: center;
+    text-transform: uppercase;
 }
 
 .cardsEventsList {
@@ -14,7 +30,7 @@
     flex-wrap: wrap;
     align-content: center;
     position: relative;
-    margin-bottom: 0.88rem;
+    margin-bottom: 1.4rem;
 }
 
 .cardsEventsList::before {
