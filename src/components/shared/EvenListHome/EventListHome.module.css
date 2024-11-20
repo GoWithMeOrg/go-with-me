@@ -39,7 +39,7 @@
     top: 6%;
     left: 50%;
     transform: translateX(-50%);
-    width: 100vw;
+    width: 99vw;
     height: 70%;
     background-color: var(--white-color);
     z-index: -1;

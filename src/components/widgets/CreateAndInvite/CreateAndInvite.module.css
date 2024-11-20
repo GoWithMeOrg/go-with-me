@@ -1,4 +1,4 @@
-.createAndInvite {
+.container {
     display: flex;
     align-items: flex-end;
     background-color: var(--accent-color);
@@ -11,35 +11,27 @@
     position: relative;
 }
 
-.createAndInviteWrapper {
+.wrapper {
     width: 21.88rem;
 }
 
-.createAndInviteTitle {
+.title {
     margin-bottom: 2.5rem;
 }
 
-.logoJoin {
+.logo {
     position: absolute;
     right: -3rem;
     top: 2.5rem;
 }
 
-.createAndInviteButtons {
+.buttons {
     display: flex;
     justify-content: space-between;
     width: 100%;
 }
 
-.buttonEdit {
-    width: 5.94rem;
-    height: 3.13rem;
-    margin-right: 1.25rem;
-    background: none;
-    cursor: pointer;
-}
-
-.createAndInviteButtonLink {
+.link {
     padding: 0.88rem 1.88rem;
     color: var(--main-color);
     font-size: 1.13rem;
@@ -49,19 +41,25 @@
     cursor: pointer;
 }
 
-.createAndInviteButtonLink:active {
+.one {
+    display: flex;
+    justify-content: center;
+    width: 80%;
+}
+
+.link:active {
     color: var(--white-color);
     background-color: var(--text-color);
     border-color: var(--text-color);
 }
 
-.createAndInviteButtonLink:hover {
+.link:hover {
     border: 0.13rem solid var(--hover-color);
     border-radius: 0.25rem;
     color: var(--hover-color);
 }
 
-.createAndInviteDescr {
+.description {
     font-size: inherit;
     font-weight: inherit;
     width: 23.63rem;

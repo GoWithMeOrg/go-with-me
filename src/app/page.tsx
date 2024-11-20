@@ -4,9 +4,11 @@ import { EventListHome } from "@/components/shared/EvenListHome";
 import { Promo } from "@/components/shared/Promo";
 import { SizeCard } from "@/components/widgets/CardEvent/CardEvent";
 
-import classes from "./page.module.css";
 import { HowITWorks } from "@/components/shared/HowITWorks";
 import { CreateAndInvite } from "@/components/widgets/CreateAndInvite";
+import { Mode } from "@/components/widgets/CreateAndInvite/CreateAndInvite";
+
+import classes from "./page.module.css";
 
 export default function HomePage() {
     return (
@@ -14,8 +16,7 @@ export default function HomePage() {
             <Promo />
             <EventListHome sizeCard={SizeCard.ML} />
             <HowITWorks />
-            <CreateAndInvite />
+            <CreateAndInvite mode={Mode.BOTH} />
         </div>
     );
-    //return <PopularEventList />;
 }

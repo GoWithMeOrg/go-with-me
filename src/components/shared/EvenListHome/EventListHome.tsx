@@ -1,19 +1,16 @@
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
+import Link from "next/link";
 
 import { Title } from "../Title";
 import { CardEvent } from "@/components/widgets/CardEvent";
 import { IEvent } from "@/database/models/Event";
-import { Button } from "../Button";
 
-import ArrowCircle from "@/assets/icons/arrowCircle.svg";
-
-import { Loader } from "../Loader";
 import { SizeCard } from "@/components/widgets/CardEvent/CardEvent";
 import { useEventListHome } from "./hook/useEventListHome";
 
+import { MoreLink } from "@/components/shared/MoreLink";
+
 import classes from "./EventListHome.module.css";
-import Link from "next/link";
-import { MoreLink } from "../MoreLink";
 
 //         events {
 //             _id

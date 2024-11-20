@@ -2,6 +2,7 @@ import React from "react";
 
 import { MoreLink } from "@/components/shared/MoreLink";
 import { Title } from "@/components/shared/Title";
+
 import PromoIcon from "@/assets/icons/promoIcon.svg";
 
 import classes from "./Promo.module.css";
