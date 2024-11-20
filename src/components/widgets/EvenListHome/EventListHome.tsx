@@ -1,14 +1,13 @@
 import React, { FC } from "react";
 import Link from "next/link";
 
-import { Title } from "../Title";
+import { Title } from "@/components/shared/Title";
 import { CardEvent } from "@/components/widgets/CardEvent";
 import { IEvent } from "@/database/models/Event";
-
 import { SizeCard } from "@/components/widgets/CardEvent/CardEvent";
-import { useEventListHome } from "./hook/useEventListHome";
-
 import { MoreLink } from "@/components/shared/MoreLink";
+
+import { useEventListHome } from "./hook/useEventListHome";
 
 import classes from "./EventListHome.module.css";
 

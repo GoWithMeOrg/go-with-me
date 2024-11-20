@@ -1,6 +1,6 @@
 "use client";
 
-import { EventListHome } from "@/components/shared/EvenListHome";
+import { EventListHome } from "@/components/widgets/EvenListHome";
 import { Promo } from "@/components/shared/Promo";
 import { SizeCard } from "@/components/widgets/CardEvent/CardEvent";
 
