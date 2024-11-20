@@ -64,7 +64,7 @@ const EventSchema = new Schema<IEventDocument>(
 
         status: {
             type: String,
-            enum: ["public", "invation", "private"],
+            enum: ["public", "private"],
             required: true,
         },
 

@@ -3,12 +3,10 @@
 import { useState } from "react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 
-import { TitleField } from "@/components/shared/TitleField";
 import { EventStatus } from "@/components/widgets/EventStatus";
 import { Button } from "@/components/shared/Button";
 import { Date } from "@/components/widgets/Date";
 import { Time } from "@/components/widgets/Time";
-import { Description } from "@/components/shared/Description";
 import { SelectCategory } from "@/components/widgets/SelectCategory";
 import { eventCategory, eventTypes } from "@/components/shared/Dropdown/dropdownLists";
 import { CreateTag } from "@/components/widgets/CreateTag";
@@ -19,6 +17,9 @@ import { IEvent } from "@/database/models/Event";
 
 import { useUploadFile } from "@/components/widgets/UploadFile/hooks";
 import { UploadFileSizes } from "@/components/widgets/UploadFile/UploadFile";
+import { Label } from "@/components/shared/Label";
+import { Input } from "@/components/shared/Input";
+import { Textarea } from "@/components/shared/Textarea";
 
 import classes from "./EventForm.module.css";
 
@@ -26,7 +27,6 @@ export type EventType = Partial<IEvent>;
 
 export enum Status {
     PUBLIC = "public",
-    INVATION = "invation",
     PRIVATE = "private",
 }
 
@@ -86,13 +86,10 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                             name="name"
                             control={control}
                             render={({ field }) => (
-                                <TitleField
-                                    title={"Event title"}
-                                    defaultValue={eventData.name || ""}
-                                    onChange={field.onChange}
-                                />
+                                <Label label={"Event title"}>
+                                    <Input defaultValue={eventData.name || ""} onChange={field.onChange} />
+                                </Label>
                             )}
-                            rules={{ required: true }}
                         />
 
                         <Controller
@@ -114,11 +111,9 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                             name="description"
                             control={control}
                             render={({ field }) => (
-                                <Description
-                                    title={"Description"}
-                                    defaultValue={eventData.description || ""}
-                                    onChange={field.onChange}
-                                />
+                                <Label label={"Description"}>
+                                    <Textarea defaultValue={eventData.description || ""} onChange={field.onChange} />
+                                </Label>
                             )}
                         />
 
@@ -194,7 +189,7 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                     />
                 </div>
 
-                <GuestList />
+                {/* <GuestList /> */}
 
                 <Button size="big" type="submit">
                     Save changes

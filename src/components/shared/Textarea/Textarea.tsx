@@ -18,5 +18,5 @@ export const Textarea: FC<TextareaProps> = ({ resetDefaultStyles, className, res
         return cssString;
     }, [resetDefaultStyles, className, resizeNone, error]);
 
-    return <textarea className={textareaCssString} {...{ ...rest }} />;
+    return <textarea className={textareaCssString} {...rest} rows={6} />;
 };
