@@ -18,8 +18,8 @@ type EventListProps = {
 };
 
 const GET_EVENTS = gql`
-    query GetEvents {
-        events {
+    query GetEvents($limit: Int!, $offset: Int!, $sort: String!) {
+        events(limit: $limit, offset: $offset, sort: $sort) {
             _id
             organizer {
                 _id
@@ -56,7 +56,13 @@ const DELETE_EVENT_MUTATION = gql`
 `;
 
 const EventList: FC<EventListProps> = () => {
-    const { loading, error, data, refetch } = useQuery(GET_EVENTS);
+    const { loading, error, data, refetch } = useQuery(GET_EVENTS, {
+        variables: {
+            limit: 0,
+            offset: 0,
+            sort: "startDate",
+        },
+    });
     const [deleteEventMutation] = useMutation(DELETE_EVENT_MUTATION);
     const { getDeleteFile } = useUploadFile({});
 

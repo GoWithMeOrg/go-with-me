@@ -53,7 +53,7 @@ export const AuthPanel = () => {
                 </>
             )}
 
-            {status === "loading" && <Loader />}
+            {/* {status === "loading" && <Loader />} */}
             {status === "authenticated" && (
                 <>
                     {/* <p className={classes.title}>Привет, {session?.user?.name}</p> */}
