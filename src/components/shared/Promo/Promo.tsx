@@ -1,12 +1,12 @@
 import React from "react";
 
-import { MoreLink } from "@/components/shared/MoreLink";
-import { Title } from "@/components/shared/Title";
-
+import ArrowCircle from "@/assets/icons/arrowCircle.svg";
 import PromoIcon from "@/assets/icons/promoIcon.svg";
 
-import classes from "./Promo.module.css";
+import { Title } from "@/components/shared/Title";
+import { Button } from "@/components/shared/Button";
 
+import classes from "./Promo.module.css";
 export const Promo = () => {
     return (
         <section className={classes.promo}>
@@ -19,8 +19,16 @@ export const Promo = () => {
                     of&nbsp;the way. Join us today and unlock a&nbsp;world of&nbsp;endless possibilities. Start crafting
                     your adventure now!
                 </p>
-                <div className={classes.promoLink}>
-                    <MoreLink link={""} text={"Join"} size={"big"} />
+
+                <div className={classes.promoButton}>
+                    <Button
+                        className={classes.promoLink}
+                        resetDefaultStyles={true}
+                        onClick={() => console.log("click")}
+                    >
+                        Join
+                        <ArrowCircle style={{ marginLeft: "0.75rem" }} />
+                    </Button>
                 </div>
             </div>
 

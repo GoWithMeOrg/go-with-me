@@ -18,11 +18,23 @@
     line-height: 1.88rem;
 }
 
+.promoButton {
+    display: flex;
+    align-items: flex-end;
+}
+
 .promoLink {
-    display: grid;
+    display: flex;
     justify-content: end;
     width: 30rem;
-    align-items: end;
+    align-items: center;
+    color: var(--main-color);
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 2.13rem;
+    text-transform: none;
+    font-family: inherit;
+    cursor: pointer;
 }
 
 .titleArrow {
