@@ -1,8 +1,14 @@
 .eventListPage {
-    width: 73.75rem;
+    /* width: 73.75rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
+    gap: 1rem; */
+    display: grid;
+    grid-column: 1 / -1;
+}
+
+.title {
+    margin-top: 5.63rem;
 }

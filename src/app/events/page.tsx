@@ -4,14 +4,16 @@ import Link from "next/link";
 import { EventList } from "@/components/widgets/EventList/EventList";
 
 import classes from "./page.module.css";
+import { Title } from "@/components/shared/Title";
 const EventListPage: NextPage = async () => {
     return (
         <section className={classes.eventListPage}>
-            <h1>Event List Page</h1>
+            <Title tag={"h1"} title="Join the adventure" className={classes.title} />
+            {/* <h1>Event List Page</h1>
             <div>
                 <Link href="/events/new">Create New Event</Link>
             </div>
-            <EventList />
+            <EventList /> */}
         </section>
     );
 };
