@@ -25,7 +25,7 @@
 
 .promoLink {
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     width: 30rem;
     align-items: center;
     color: var(--main-color);
