@@ -23,8 +23,6 @@ export default function HomePage() {
                     <CreateAndInvite mode={Mode.BOTH} status={status} />
                 </>
             )}
-
-            {status === "authenticated" && <div>привет ПОЛЬЗОВАТЕЛЬ</div>}
         </div>
     );
 }
