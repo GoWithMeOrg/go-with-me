@@ -11,32 +11,6 @@ import { useEventListHome } from "./hook/useEventListHome";
 
 import classes from "./EventListHome.module.css";
 
-//         events {
-//             _id
-//             organizer {
-//                 _id
-//                 name
-//                 email
-//                 image
-//             }
-
-//             name
-//             description
-//             startDate
-//             endDate
-//             time
-//             location {
-//                 type
-//                 coordinates
-//                 properties {
-//                     address
-//                 }
-//             }
-//             image
-//         }
-//     }
-// `;
-
 interface EventListHomeProps {
     sizeCard: SizeCard;
 }
@@ -51,14 +25,14 @@ export const EventListHome: FC<EventListHomeProps> = ({ sizeCard }) => {
         <section className={classes.cardsEvents}>
             <div className={classes.cardsEventsHeader}>
                 <Title title={"Popular Event List"} tag={"h2"} />
-                <div className={classes.cardsEventsHeaderLinks}>
+                {/* <div className={classes.cardsEventsHeaderLinks}>
                     <Link href={""} className={classes.cardsEventsHeaderLink}>
                         More
                     </Link>
                     <Link href={""} className={classes.cardsEventsHeaderLink}>
                         Map
                     </Link>
-                </div>
+                </div> */}
             </div>
 
             <div className={classes.cardsEventsList}>
@@ -77,7 +51,7 @@ export const EventListHome: FC<EventListHomeProps> = ({ sizeCard }) => {
                 ))}
             </div>
 
-            <MoreLink link={""} text={"more events"} />
+            <MoreLink link={"/events"} text={"more events"} />
         </section>
     );
 };

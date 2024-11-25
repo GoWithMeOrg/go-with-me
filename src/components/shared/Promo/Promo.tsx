@@ -6,8 +6,14 @@ import PromoIcon from "@/assets/icons/promoIcon.svg";
 import { Title } from "@/components/shared/Title";
 import { Button } from "@/components/shared/Button";
 
+import { AuthModal } from "@/components/widgets/AuthModal";
+import { Popup } from "../Popup";
+import { usePopup } from "@/app/hooks/usePopup";
+
 import classes from "./Promo.module.css";
 export const Promo = () => {
+    const { handleShowAuth, showPopup, setShowPopup } = usePopup();
+
     return (
         <section className={classes.promo}>
             <div className={classes.promoDescription}>
@@ -21,15 +27,29 @@ export const Promo = () => {
                 </p>
 
                 <div className={classes.promoButton}>
-                    <Button
-                        className={classes.promoLink}
-                        resetDefaultStyles={true}
-                        onClick={() => console.log("click")}
-                    >
+                    <Button className={classes.promoLink} resetDefaultStyles={true} onClick={handleShowAuth}>
                         Join
                         <ArrowCircle style={{ marginLeft: "0.75rem" }} />
                     </Button>
                 </div>
+
+                <Popup
+                    {...{
+                        showPopup,
+                        setShowPopup,
+                    }}
+                    style={{
+                        backgroundColor: "#F7F7FA",
+                        width: "30rem",
+                        height: "34.2rem",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        position: "absolute",
+                    }}
+                >
+                    <AuthModal onClose={() => setShowPopup(false)} />
+                </Popup>
             </div>
 
             <PromoIcon style={{ marginBottom: "10px" }} />

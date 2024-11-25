@@ -9,14 +9,22 @@ import { CreateAndInvite } from "@/components/widgets/CreateAndInvite";
 import { Mode } from "@/components/widgets/CreateAndInvite/CreateAndInvite";
 
 import classes from "./page.module.css";
+import { useSession } from "next-auth/react";
 
 export default function HomePage() {
+    const { data: session, status } = useSession();
     return (
         <div className={classes.homePage}>
-            <Promo />
-            <EventListHome sizeCard={SizeCard.ML} />
-            <HowITWorks />
-            <CreateAndInvite mode={Mode.BOTH} />
+            {status === "unauthenticated" && (
+                <>
+                    <Promo />
+                    <EventListHome sizeCard={SizeCard.ML} />
+                    <HowITWorks />
+                    <CreateAndInvite mode={Mode.BOTH} status={status} />
+                </>
+            )}
+
+            {status === "authenticated" && <div>привет ПОЛЬЗОВАТЕЛЬ</div>}
         </div>
     );
 }

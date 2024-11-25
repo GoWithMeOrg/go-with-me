@@ -1,15 +1,18 @@
 "use client";
 
-import { FC, useMemo, useState } from "react";
+import { FC, useMemo } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 
 import { Popup } from "@/components/shared/Popup";
-import { AuthModal } from "@/components/widgets/AuthModal";
 import { Button } from "@/components/shared/Button";
 import { Title } from "@/components/shared/Title";
 
+import { AuthModal } from "@/components/widgets/AuthModal";
+
 import Join from "@/assets/icons/join.svg";
+
+import { usePopup } from "@/app/hooks/usePopup";
 
 import classes from "./CreateAndInvite.module.css";
 
@@ -21,16 +24,11 @@ export enum Mode {
 
 interface CreateAndInviteProps {
     mode: Mode;
+    status: string;
 }
 
-export const CreateAndInvite: FC<CreateAndInviteProps> = ({ mode }) => {
-    const { data: session, status } = useSession();
-    const [showPopup, setShowPopup] = useState<boolean>(false);
-
-    const handleShowAuth = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        setShowPopup(true);
-    };
+export const CreateAndInvite: FC<CreateAndInviteProps> = ({ mode, status }) => {
+    const { handleShowAuth, showPopup, setShowPopup } = usePopup();
 
     const linkCssString = useMemo(
         () =>
