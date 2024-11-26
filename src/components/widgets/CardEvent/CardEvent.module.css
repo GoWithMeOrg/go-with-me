@@ -1,62 +1,32 @@
 .card {
-    width: 23.75rem;
-    max-height: 27.875rem;
     margin-bottom: 4.5rem;
     white-space: normal;
-    overflow: hidden;
     color: var(--main-color);
 }
 
-.imageContainer {
-    width: 23.75rem;
-    height: 15.63rem;
-    /* overflow: hidden; */
-}
-
-.image {
-    /* display: block; */
-    width: auto;
-    height: auto;
-    /* object-fit: cover; */
-}
-
-.location {
+.details {
     display: flex;
-    margin-top: 1.31rem;
-    font-size: 1rem;
+    flex-direction: column;
+    gap: 0.88rem;
+    margin-top: 1.3rem;
+    font-size: 0.88rem;
     font-weight: 500;
-    line-height: 1.63rem;
-    text-align: left;
 }
 
-.geocoding {
-    margin-left: 0.8rem;
-    font-size: 0.875rem;
-    font-weight: 500;
-    line-height: 1.625rem;
-}
-
-.date {
+.details div {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    font-size: 0.875rem;
-    font-weight: 500;
-    line-height: 1.625rem;
-    text-align: left;
-    margin-bottom: 1.31rem;
-    margin-top: 0.25rem;
 }
 
-.time {
-    margin-left: 0.8rem;
+.descriptionWrapper {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1.56rem;
 }
 
 .title {
     font-size: 1.13rem;
-    font-weight: 700;
     line-height: 1.38rem;
-    text-align: left;
     color: var(--main-color);
     cursor: pointer;
 }
@@ -66,7 +36,7 @@
 }
 
 .description {
-    margin-top: 0.625rem;
+    margin-top: 0.63rem;
     color: var(--text-color);
     font-size: 0.88rem;
     font-weight: 400;
@@ -79,6 +49,22 @@
     text-overflow: ellipsis;
 }
 
-.checkboxDate {
-    margin-right: 0.31rem;
+.medium {
+    width: 27.75rem;
+}
+
+.mediumLarge {
+    width: 23.75rem;
+}
+
+.large {
+    width: 22.13rem;
+}
+
+.smallLarge {
+    width: 20.25rem;
+}
+
+.small {
+    width: 19.5rem;
 }

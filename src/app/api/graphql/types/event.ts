@@ -1,6 +1,10 @@
 import { gql } from "graphql-tag";
 
 export const eventTypeDefs = gql`
+    type Query {
+        events(limit: Int!, offset: Int, sort: String!): [Event!]!
+    }
+
     type Event {
         _id: ID
         organizer_id: ID

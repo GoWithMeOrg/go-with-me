@@ -1,12 +1,11 @@
 .cardWork {
     border: 0.13rem solid var(--main-color);
     border-radius: 1.25rem;
-    width: 35.8rem;
-    height: 35.8rem;
+    width: 35.62rem;
+    height: 35.62rem;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 2.5rem;
     padding: 3.81rem 5.59rem 4.88rem 6.22rem;
 }
 

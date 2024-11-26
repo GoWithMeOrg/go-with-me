@@ -12,7 +12,6 @@ import { UploadFile } from "@/components/widgets/UploadFile";
 
 import { Button } from "@/components/shared/Button";
 import { Description } from "@/components/shared/Description";
-import { TitleField } from "@/components/shared/TitleField";
 import { eventCategory, eventTypes } from "@/components/shared/Dropdown/dropdownLists";
 import { SelectCategory } from "@/components/widgets/SelectCategory";
 
@@ -110,7 +109,11 @@ export const ProfileForm: FC<IProfileFormProps> = ({ profileData, onSubmitEvent 
                     name="firstName"
                     control={control}
                     defaultValue={firstName}
-                    render={({ field }) => <TitleField defaultValue={firstName} title={"First name"} />}
+                    render={({ field }) => (
+                        <Label label={"First Name"}>
+                            <Input defaultValue={firstName} onChange={field.onChange} />
+                        </Label>
+                    )}
                     rules={{ required: true }}
                 />
 
@@ -118,7 +121,11 @@ export const ProfileForm: FC<IProfileFormProps> = ({ profileData, onSubmitEvent 
                     name="lastName"
                     control={control}
                     defaultValue={lastName}
-                    render={({ field }) => <TitleField defaultValue={lastName} title={"Last name"} />}
+                    render={({ field }) => (
+                        <Label label={"Last Name"}>
+                            <Input defaultValue={lastName} onChange={field.onChange} />
+                        </Label>
+                    )}
                     rules={{ required: true }}
                 />
 
@@ -138,7 +145,11 @@ export const ProfileForm: FC<IProfileFormProps> = ({ profileData, onSubmitEvent 
                     name="location"
                     control={control}
                     defaultValue={""}
-                    render={({ field }) => <TitleField title={"Location"} />}
+                    render={({ field }) => (
+                        <Label label={"Location"}>
+                            <Input defaultValue={lastName} />
+                        </Label>
+                    )}
                     rules={{ required: true }}
                 />
 
