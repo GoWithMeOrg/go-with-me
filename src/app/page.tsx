@@ -11,8 +11,20 @@ import { Mode } from "@/components/widgets/CreateAndInvite/CreateAndInvite";
 import classes from "./page.module.css";
 import { useSession } from "next-auth/react";
 
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+
 export default function HomePage() {
     const { data: session, status } = useSession();
+
+    const router = useRouter();
+
+    useEffect(() => {
+        if (status === "authenticated") {
+            router.push("/events");
+        }
+    }, [status, router]);
+
     return (
         <div className={classes.homePage}>
             {status === "unauthenticated" && (

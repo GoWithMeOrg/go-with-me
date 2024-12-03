@@ -1,0 +1,38 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    max-width: 72.5rem;
+    margin-bottom: 2.81rem;
+}
+
+.hide {
+    color: var(--additional-color);
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.19rem;
+}
+
+.hide:hover {
+    color: var(--main-color);
+}
+
+.container {
+    position: relative;
+    border-radius: 0.75rem;
+    grid-column: 1 / -1;
+    clip-path: inset(0 0 0 calc((100vw - 1920px) / 2));
+}
+
+.slides {
+    display: flex;
+    gap: 1.25rem;
+    transition: transform 500ms ease-out;
+}
+
+.slide {
+    position: relative;
+    height: 100%;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}

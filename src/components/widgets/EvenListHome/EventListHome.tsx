@@ -19,6 +19,9 @@ export const EventListHome: FC<EventListHomeProps> = ({ sizeCard }) => {
     const { data, error, refetch } = useEventListHome();
 
     refetch();
+
+    console.log("EventListHome: ", data);
+
     if (error) return <p>Error : {error.message}</p>;
 
     return (
