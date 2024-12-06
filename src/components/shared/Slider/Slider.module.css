@@ -21,7 +21,8 @@
     position: relative;
     border-radius: 0.75rem;
     grid-column: 1 / -1;
-    clip-path: inset(0 0 0 calc((100vw - 1920px) / 2));
+    clip-path: inset(0 0 0 calc((100vw - 100%) / 2));
+    max-width: 100vw;
 }
 
 .slides {
