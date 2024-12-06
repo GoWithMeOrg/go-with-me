@@ -1,18 +1,18 @@
-import type { NextPage } from "next";
-import Link from "next/link";
+"use client";
 
-import { EventList } from "@/components/widgets/EventList/EventList";
+import type { NextPage } from "next";
+
+import { Title } from "@/components/shared/Title";
+import { Slider } from "@/components/shared/Slider";
 
 import classes from "./page.module.css";
-const EventListPage: NextPage = async () => {
+
+const EventListPage: NextPage = () => {
     return (
-        <section className={classes.eventListPage}>
-            <h1>Event List Page</h1>
-            <div>
-                <Link href="/events/new">Create New Event</Link>
-            </div>
-            <EventList />
-        </section>
+        <div className={classes.eventListPage}>
+            <Title tag={"h1"} title="Join the adventure" className={classes.title} />
+            <Slider />
+        </div>
     );
 };
 

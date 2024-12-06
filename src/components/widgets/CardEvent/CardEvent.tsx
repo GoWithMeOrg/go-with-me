@@ -65,7 +65,7 @@ export const CardEvent = ({ id, name, description, coord, startDate, time, image
 
             <div className={classes.details}>
                 <div>
-                    <Marker style={{ marginRight: "0.75rem" }} />
+                    <Marker style={{ marginRight: "0.75rem", fill: "#575B75" }} />
                     {coord && <Geocoding coordinates={coord} />}
                 </div>
 

@@ -17,6 +17,7 @@ body {
     flex-direction: column;
     min-height: 100vh;
     background: var(--background-color);
+    overflow-x: hidden;
 }
 
 * {
