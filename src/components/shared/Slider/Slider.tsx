@@ -14,7 +14,7 @@ export const Slider: FC = () => {
 
     return (
         <>
-            {hideSlider && (
+            {!hideSlider && (
                 <div>
                     <div className={classes.header}>
                         <Title tag={"h3"} title="Recommended events" />

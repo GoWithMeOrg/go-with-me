@@ -4,12 +4,12 @@ import { useEventListHome } from "@/components/widgets/EvenListHome/hook/useEven
 
 export const useSlider = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [hideSlider, setHideSlider] = useState(true);
+    const [hideSlider, setHideSlider] = useState(false);
 
     const { data } = useEventListHome();
 
     const hideSliderHandler = () => {
-        setHideSlider(false);
+        setHideSlider(true);
     };
 
     const filterEventsImage = data?.events.filter((event: any) => event.image !== null && event.image !== "");
