@@ -9,6 +9,17 @@ import { useSlider } from "./hook/useSlider";
 
 import classes from "./Slider.module.css";
 
+interface SlideData {
+    _id: string;
+    name: string;
+    image: string;
+    location: {
+        coordinates: [number, number];
+    };
+    startDate: string;
+    time: string;
+}
+
 export const Slider: FC = () => {
     const { hideSliderHandler, hideSlider, currentIndex, filterEventsImage, slideWidth, nextSlide } = useSlider();
 
@@ -30,9 +41,16 @@ export const Slider: FC = () => {
                                 width: `${filterEventsImage?.length * slideWidth}vw`,
                             }}
                         >
-                            {filterEventsImage?.map((slide: any, index: number) => (
-                                <div key={index} className={classes.slide}>
-                                    <Slide {...slide} />
+                            {filterEventsImage?.map((slide: SlideData, index: number) => (
+                                <div key={slide._id} className={classes.slide}>
+                                    <Slide
+                                        _id={slide._id}
+                                        name={slide.name}
+                                        image={slide.image}
+                                        startDate={slide.startDate}
+                                        time={slide.time}
+                                        coord={[slide.location.coordinates[1], slide.location.coordinates[0]]}
+                                    />
                                 </div>
                             ))}
                         </div>
