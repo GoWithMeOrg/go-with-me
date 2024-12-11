@@ -1,0 +1,16 @@
+.navbar {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.navbarItem {
+    color: var(--additional-color);
+    font-weight: 700;
+    line-height: 1.19rem;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.navbarItemActive {
+    color: var(--main-color);
+}

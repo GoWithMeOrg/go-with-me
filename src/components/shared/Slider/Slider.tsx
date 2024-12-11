@@ -26,14 +26,14 @@ export const Slider: FC = () => {
     return (
         <>
             {!hideSlider && (
-                <div>
+                <div className={classes.container}>
                     <div className={classes.header}>
                         <Title tag={"h3"} title="Recommended events" />
                         <Button resetDefaultStyles={true} className={classes.hide} onClick={hideSliderHandler}>
                             HIDE
                         </Button>
                     </div>
-                    <div className={classes.container}>
+                    <div>
                         <div
                             className={classes.slides}
                             style={{

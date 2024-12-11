@@ -11,7 +11,7 @@ import { useEventListHome } from "./hook/useEventListHome";
 
 import classes from "./EventListHome.module.css";
 
-interface EventListHomeProps {
+export interface EventListHomeProps {
     sizeCard: SizeCard;
 }
 
