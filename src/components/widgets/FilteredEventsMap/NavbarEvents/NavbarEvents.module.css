@@ -1,6 +1,8 @@
 .navbar {
     display: flex;
     gap: 0.75rem;
+    align-items: center;
+    margin-bottom: 1rem;
 }
 
 .navbarItem {
@@ -9,6 +11,7 @@
     line-height: 1.19rem;
     text-align: center;
     text-transform: uppercase;
+    cursor: pointer;
 }
 
 .navbarItemActive {

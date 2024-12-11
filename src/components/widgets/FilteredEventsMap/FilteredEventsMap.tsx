@@ -1,16 +1,13 @@
 import React, { useState } from "react";
 
 import { Title } from "@/components/shared/Title";
-import { Button } from "@/components/shared/Button";
 
-import { SizeCard } from "@/components/widgets/CardEvent/CardEvent";
-import { EventListHome } from "../EvenListHome";
-
-import classes from "./FilteredEvents.module.css";
 import { GoogleMap } from "../GoogleMap";
 import NavbarEvents from "./NavbarEvents/NavbarEvents";
+import { FilterEvents } from "./FilterEvents";
 
-export const FilteredEvents = () => {
+import classes from "./FilteredEventsMap.module.css";
+export const FilteredEventsMap = () => {
     const [activeTab, setActiveTab] = useState("list");
 
     const handleTabClick = (tab: string) => {
@@ -25,10 +22,20 @@ export const FilteredEvents = () => {
                     <NavbarEvents onTabClick={handleTabClick} activeTab={activeTab} />
                 </div>
             </div>
-            {activeTab === "list" && <EventListHome sizeCard={SizeCard.L} />}
+            <div className={classes.line}></div>
+
+            <div className={classes.filters}>
+                <div>Data</div>
+                <div>Locations</div>
+                <div>Categories</div>
+                <div>Subjects</div>
+                <div>Add tags</div>
+            </div>
+
+            {activeTab === "list" && <FilterEvents />}
             {activeTab === "map" && <GoogleMap />}
         </div>
     );
 };
 
-export default FilteredEvents;
+export default FilteredEventsMap;
