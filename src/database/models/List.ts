@@ -30,14 +30,14 @@ const ListSchema = new Schema<IList>(
     {
         timestamps: true,
         toJSON: { virtuals: true },
+        toObject: { virtuals: true },
     },
 );
 
-ListSchema.virtual("author", {
+ListSchema.virtual("users", {
     ref: UserModel,
-    localField: "author_id",
+    localField: "users_id",
     foreignField: "_id",
-    justOne: true,
 });
 
 const ListModel: mongoose.Model<IList> = mongoose.models.List || mongoose.model<IList>("List", ListSchema);

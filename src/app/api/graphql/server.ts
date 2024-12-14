@@ -1,6 +1,8 @@
+import { NextRequest } from "next/server";
 import { startServerAndCreateNextHandler } from "@as-integrations/next";
 import { ApolloServer } from "@apollo/server";
 import mongooseConnect from "@/database/mongooseConnect";
+import { getUserFromRequest } from "@/utils/getUserFromRequest";
 import { typeDefs } from "./typeDefs";
 import { resolvers } from "./resolvers";
 
@@ -10,11 +12,10 @@ export const server = new ApolloServer({
 });
 
 export const handler = startServerAndCreateNextHandler(server, {
-    // Похоже, что в @as-integrations/next типы не совсем корректные
-    // @ts-ignore
-    context: async (nextApiRequest) => {
-        // Этот вызов будет выполняться перед любым запросом
+    // @ts-ignore-next-line
+    context: async (nextRequest: NextRequest) => {
         await mongooseConnect();
-        return { req: { cookies: nextApiRequest.cookies._parsed } };
+        const currentUser = await getUserFromRequest(nextRequest);
+        return { nextRequest, currentUser };
     },
 });

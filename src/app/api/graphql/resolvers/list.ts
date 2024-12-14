@@ -3,8 +3,12 @@ import { IListInput } from "@/database/types/List";
 
 export const listResolvers = {
     Query: {
-        lists: async () => {
-            return ListModel.find({});
+        lists: async (parent: any, args: any, context: any) => {
+            const author_id = context.currentUser?._id;
+            if (!author_id) {
+                throw new Error("User not found");
+            }
+            return ListModel.find({ author_id }).populate("users").lean();
         },
         listItem: async (parent: any, { id }: { id: string }) => {
             return ListModel.findById(id);
@@ -12,13 +16,25 @@ export const listResolvers = {
     },
 
     Mutation: {
-        createList: async (parent: any, { list }: { list: IListInput }) => {
+        createList: async (parent: any, { list }: { list: IListInput }, context: any) => {
             // https://mongoosejs.com/docs/api/model.html#Model.create()
             // Shortcut for saving one or more documents to the database.
             // MyModel.create(docs) does new MyModel(doc).save() for every doc in docs.
-            return ListModel.create(list);
+            const author_id = context.currentUser?._id;
+            if (!author_id) {
+                throw new Error("User not found");
+            }
+            return ListModel.create({ ...list, author_id });
         },
-        updateList: async (parent: any, { id, list }: { id: string; list: Omit<IListInput, "author_id"> }) => {
+        updateList: async (
+            parent: any,
+            { id, list }: { id: string; list: Omit<IListInput, "author_id"> },
+            context: any,
+        ) => {
+            const author_id = context.currentUser?._id;
+            if (!author_id) {
+                throw new Error("User not found");
+            }
             return ListModel.findByIdAndUpdate(
                 id,
                 {

@@ -1,5 +1,5 @@
 import { gql } from "graphql-tag";
-
+import { userTypeDefs } from "./user";
 export const listTypeDefs = gql`
     type Query {
         lists: [List!]!
@@ -11,10 +11,10 @@ export const listTypeDefs = gql`
         name: String
         description: String
         users_id: [ID]
+        users: [User]
     }
 
     input ListInput {
-        author_id: ID!
         name: String!
         description: String
         users_id: [ID]
