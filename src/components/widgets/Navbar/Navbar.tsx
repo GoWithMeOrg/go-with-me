@@ -1,5 +1,3 @@
-import React from "react";
-
 import { NavbarTabs } from "@/components/widgets/Navbar/models";
 
 import classes from "./Navbar.module.css";
