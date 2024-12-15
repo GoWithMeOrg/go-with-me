@@ -16,7 +16,7 @@ export const Geocoding = ({ coordinates }: Props) => {
     const geocoding = useMapsLibrary("geocoding");
 
     useEffect(() => {
-        if (!apiIsLoaded || !geocoding || !coordinates) return;
+        if (!apiIsLoaded || !geocoding || !coordinates || isNaN(lat) || isNaN(lng)) return;
         const geocoder = new geocoding.Geocoder();
         geocoder.geocode({ location: { lng, lat } }, (results, status) => {
             if (status === "OK" && results !== null) {
