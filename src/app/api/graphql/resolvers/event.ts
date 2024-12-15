@@ -15,6 +15,31 @@ export const eventResolvers = {
             const events = await EventModel.find({ $text: { $search: text } });
             return [...events];
         },
+
+        // eventsByDate: async (parrent: any, { date }, { date: any }) => {
+        //     const startOfDay = new Date(date); // начало дня
+        //     const endOfDay = new Date(date); // конец дня
+        //     endOfDay.setDate(endOfDay.getDate() + 1);
+
+        //     // MongoDB запрос с использованием диапазона
+        //     return EventModel.find({
+        //         date: {
+        //             $gte: startOfDay.toISOString(),
+        //             $lt: endOfDay.toISOString(),
+        //         },
+        //     });
+        // },
+
+        eventsByDate: async (parent: any, { date }: { date: any }) => {
+            const startOfDay = new Date(date);
+            startOfDay.setHours(0, 0, 0, 0);
+            const endOfDay = new Date(date);
+            endOfDay.setHours(23, 59, 59, 999);
+            const events = await EventModel.find({
+                startDate: { $gte: startOfDay, $lt: endOfDay },
+            });
+            return [...events];
+        },
     },
 
     Event: {

@@ -18,6 +18,7 @@ export const rootTypeDefs = gql`
         trip(id: ID!): Trip
         comments(event_id: ID!, limit: Int): [Comment]
         search(text: String!): [Event]
+        eventsByDate(date: String!): [Event!]!
     }
 
     type Mutation {
