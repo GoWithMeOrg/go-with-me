@@ -3,18 +3,18 @@
 import { useState } from "react";
 import Link from "next/link";
 
-import { Button } from "@/components/shared/Button";
-
 import { Navbar } from "@/components/widgets/Navbar";
+import { NavbarTabs } from "@/components/widgets/Navbar/models";
 import { ProfileForm } from "@/components/widgets/ProfileForm";
 import { NotificationsList } from "@/components/widgets/NotificationsList";
+import { UserLists } from "@/components/widgets/UserLists";
 
 import classes from "./ProfileTabs.module.css";
 
 export const ProfileTabs = () => {
-    const [activeTab, setActiveTab] = useState("personal");
+    const [activeTab, setActiveTab] = useState(NavbarTabs.PERSONAL);
 
-    const handleTabClick = (tab: string) => {
+    const handleTabClick = (tab: NavbarTabs) => {
         setActiveTab(tab);
     };
 
@@ -33,8 +33,9 @@ export const ProfileTabs = () => {
                     </Link>
                 </div>
             </div>
-            {activeTab === "personal" && <ProfileForm userId={""} />}
-            {activeTab === "notifications" && <NotificationsList />}
+            {activeTab === NavbarTabs.PERSONAL && <ProfileForm userId={""} />}
+            {activeTab === NavbarTabs.NOTIFICATIONS && <NotificationsList />}
+            {activeTab === NavbarTabs.LIST && <UserLists />}
             {/* {activeTab === "events" && <ProfileForm />}
             {activeTab === "trips" && <ProfileForm />}
             {activeTab === "companions" && <ProfileForm />}

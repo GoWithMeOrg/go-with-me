@@ -1,4 +1,3 @@
-import { User } from "next-auth";
 import { IRole } from "./Role";
 
 export interface IUser {
