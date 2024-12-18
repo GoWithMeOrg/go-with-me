@@ -25,6 +25,8 @@ export const rootTypeDefs = gql`
 
         search(text: String!): [Event]
 
+        eventsByDate(date: String!): [Event!]!
+
         lists: [List]
         listItem(id: ID!): List
     }

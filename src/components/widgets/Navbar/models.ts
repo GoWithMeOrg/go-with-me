@@ -7,4 +7,10 @@ export enum NavbarTabs {
     CHAT = "chat",
     CONFIDENTIALITY = "confidentiality",
     LIST = "list",
+    MAP = "map",
+}
+
+export enum NavbarEventTabs {
+    LIST = "list",
+    MAP = "map",
 }

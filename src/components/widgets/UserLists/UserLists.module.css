@@ -1,0 +1,20 @@
+.userList {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.item {
+    display: flex;
+    align-items: center;
+}
+
+.name {
+    color: var(--additional-color);
+    font-size: 0.88rem;
+    font-weight: 700;
+    line-height: 1.25rem;
+    margin-left: 0.63rem;
+}

@@ -18,7 +18,7 @@ import Autocomplete from "@/components/widgets/GoogleMap/Autocomplete";
 import classes from "./Location.module.css";
 
 interface ILocation {
-    locationEvent: {
+    locationEvent?: {
         type: "Point";
         coordinates: [number, number];
         properties: {
@@ -27,12 +27,14 @@ interface ILocation {
     };
     onPlaceChange?: (selectedPlace: google.maps.places.PlaceResult | null) => void;
     onChange?: (...event: any[]) => void;
+    hideButtonMap?: boolean;
 }
 
 export const Location = forwardRef(function Location(props: ILocation, ref) {
     const apiIsLoaded = useApiIsLoaded();
     const geocoding = useMapsLibrary("geocoding");
     const mapAPI = useContext(APIProviderContext);
+    const [hideButton, setHideButton] = useState<boolean>(props.hideButtonMap || false);
     const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(
         props.locationEvent?.coordinates !== undefined
             ? {
@@ -92,10 +94,12 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
         <label className={classes.locationForm}>
             <div className={classes.labelFindMap}>
                 <span className={classes.titleInput}>Location/Address</span>
-                <Button className={classes.btnFindMap} onClick={handleShowMap} resetDefaultStyles={true}>
-                    <Marker style={{ marginRight: "0.25rem" }} />
-                    Find on Map
-                </Button>
+                {!hideButton && (
+                    <Button className={classes.btnFindMap} onClick={handleShowMap} resetDefaultStyles={true}>
+                        <Marker style={{ marginRight: "0.25rem" }} />
+                        Find on Map
+                    </Button>
+                )}
             </div>
 
             <Autocomplete

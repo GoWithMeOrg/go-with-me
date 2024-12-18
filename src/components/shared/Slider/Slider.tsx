@@ -9,20 +9,31 @@ import { useSlider } from "./hook/useSlider";
 
 import classes from "./Slider.module.css";
 
+interface SlideData {
+    _id: string;
+    name: string;
+    image: string;
+    location: {
+        coordinates: [number, number];
+    };
+    startDate: string;
+    time: string;
+}
+
 export const Slider: FC = () => {
     const { hideSliderHandler, hideSlider, currentIndex, filterEventsImage, slideWidth, nextSlide } = useSlider();
-
+    console.log(filterEventsImage);
     return (
         <>
             {!hideSlider && (
-                <div>
+                <div className={classes.container}>
                     <div className={classes.header}>
                         <Title tag={"h3"} title="Recommended events" />
                         <Button resetDefaultStyles={true} className={classes.hide} onClick={hideSliderHandler}>
                             HIDE
                         </Button>
                     </div>
-                    <div className={classes.container}>
+                    <div>
                         <div
                             className={classes.slides}
                             style={{
@@ -30,9 +41,16 @@ export const Slider: FC = () => {
                                 width: `${filterEventsImage?.length * slideWidth}vw`,
                             }}
                         >
-                            {filterEventsImage?.map((slide: any, index: number) => (
-                                <div key={index} className={classes.slide}>
-                                    <Slide {...slide} />
+                            {filterEventsImage?.map((slide: SlideData, index: number) => (
+                                <div key={slide._id} className={classes.slide}>
+                                    <Slide
+                                        id={slide._id}
+                                        name={slide.name}
+                                        image={slide.image}
+                                        startDate={slide.startDate}
+                                        time={slide.time}
+                                        coord={[slide.location.coordinates[1], slide.location.coordinates[0]]}
+                                    />
                                 </div>
                             ))}
                         </div>
