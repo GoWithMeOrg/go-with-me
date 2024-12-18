@@ -12,7 +12,7 @@ import Checkbox from "@/assets/icons/checkbox.svg";
 import classes from "./Slide.module.css";
 
 interface SlideProps {
-    _id: string;
+    id: string;
     name: string;
     image: string;
     coord: [number, number];
@@ -20,12 +20,12 @@ interface SlideProps {
     time: string;
 }
 
-export const Slide: FC<SlideProps> = ({ _id, name, image, coord, startDate, time }) => {
+export const Slide: FC<SlideProps> = ({ id, name, image, coord, startDate, time }) => {
     return (
         <>
             <div>
-                <Link href={`/events/${_id}`}>
-                    <Image src={image} alt={"img"} width={580} height={408} priority style={{ objectFit: "cover" }} />
+                <Link href={`/events/${id}`}>
+                    <Image src={image} alt={name} width={580} height={408} priority style={{ objectFit: "cover" }} />
                 </Link>
 
                 <div className={classes.content}>

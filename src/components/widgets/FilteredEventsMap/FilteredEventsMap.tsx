@@ -5,7 +5,7 @@ import gql from "graphql-tag";
 
 import { Title } from "@/components/shared/Title";
 
-import { Autocomplete, GoogleMap } from "../GoogleMap";
+import { GoogleMap } from "../GoogleMap";
 import { NavbarEvents } from "@/components/widgets/FilteredEventsMap/NavbarEvents";
 import { FilterEvents } from "@/components/widgets/FilteredEventsMap/FilterEvents";
 
@@ -15,9 +15,11 @@ import { CreateTag } from "@/components/widgets/CreateTag";
 import { Location } from "@/components/widgets/Location";
 import { Date } from "@/components/widgets/Date";
 
-import classes from "./FilteredEventsMap.module.css";
 import { SizeCard } from "../CardEvent/CardEvent";
-import { set } from "mongoose";
+import { NavbarEventTabs } from "../Navbar/models";
+
+import classes from "./FilteredEventsMap.module.css";
+import { Navbar } from "../Navbar";
 
 const GET_EVENTS_BY_DATE = gql`
     query EventsByDate($date: String!) {
@@ -43,24 +45,20 @@ const GET_EVENTS_BY_DATE = gql`
 `;
 
 export const FilteredEventsMap = () => {
-    const [activeTab, setActiveTab] = useState("list");
+    const [activeTab, setActiveTab] = useState(NavbarEventTabs.LIST);
     const [selectedDate, setSelectedDate] = useState<string>("");
 
     const { data: searchDate } = useQuery(GET_EVENTS_BY_DATE, {
         variables: { date: selectedDate },
     });
 
-    // console.log(searchDate);
-    const handleTabClick = (tab: string) => {
+    const handleTabClick = (tab: NavbarEventTabs) => {
         setActiveTab(tab);
     };
 
     const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        //преобразуем дату обратно в iso
-        const inputDate = e.target.value;
-        // проверка даты на валидность иначе ошибка
-        const isValidDate = /^\d{4}-\d{2}-\d{2}$/.test(inputDate);
-        if (isValidDate) {
+        const isDateFormatValid = /^\d{4}-\d{2}-\d{2}$/.test(e.target.value);
+        if (isDateFormatValid) {
             setSelectedDate(dayjs(e.target.value).toISOString());
         }
     };
@@ -70,22 +68,22 @@ export const FilteredEventsMap = () => {
             <div className={classes.header}>
                 <Title tag={"h3"} title="Find events" />
                 <div className={classes.buttons}>
-                    <NavbarEvents onTabClick={handleTabClick} activeTab={activeTab} />
+                    <NavbarEvents
+                        onTabClick={handleTabClick}
+                        activeTab={activeTab}
+                        dataAtributes={["list", "map"]}
+                        nameAtribute={"data-filtered"}
+                    />
                 </div>
             </div>
             <div className={classes.line}></div>
 
             <div className={classes.filters}>
                 <Date title={"Date"} onChange={handleDateChange} />
-                <Location onChange={() => {}} locationEvent={undefined} hideButtonMap={true} />
+                <Location onChange={() => {}} hideButtonMap={true} />
                 <SelectCategory categoryList={eventCategory} titleCategories={"Category"} onChange={() => {}} />
                 <SelectCategory categoryList={eventTypes} titleCategories={"Select category"} onChange={() => {}} />
-                <CreateTag
-                    eventTags={[]}
-                    onChange={function (e: string[]): void {
-                        throw new Error("Function not implemented.");
-                    }}
-                />
+                <CreateTag eventTags={[]} onChange={console.warn} />
             </div>
 
             {activeTab === "list" && <FilterEvents data={searchDate} sizeCard={SizeCard.ML} />}

@@ -7,7 +7,6 @@ export const useSlider = () => {
     const [hideSlider, setHideSlider] = useState(false);
 
     const { data } = useEventListHome();
-
     const hideSliderHandler = () => {
         setHideSlider(true);
     };

@@ -22,7 +22,7 @@ interface SlideData {
 
 export const Slider: FC = () => {
     const { hideSliderHandler, hideSlider, currentIndex, filterEventsImage, slideWidth, nextSlide } = useSlider();
-
+    console.log(filterEventsImage);
     return (
         <>
             {!hideSlider && (
@@ -44,7 +44,7 @@ export const Slider: FC = () => {
                             {filterEventsImage?.map((slide: SlideData, index: number) => (
                                 <div key={slide._id} className={classes.slide}>
                                     <Slide
-                                        _id={slide._id}
+                                        id={slide._id}
                                         name={slide.name}
                                         image={slide.image}
                                         startDate={slide.startDate}
