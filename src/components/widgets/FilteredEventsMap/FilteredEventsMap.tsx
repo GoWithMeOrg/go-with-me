@@ -5,7 +5,7 @@ import gql from "graphql-tag";
 
 import { Title } from "@/components/shared/Title";
 
-import { GoogleMap } from "../GoogleMap";
+import { Autocomplete, GoogleMap } from "../GoogleMap";
 import { NavbarEvents } from "@/components/widgets/FilteredEventsMap/NavbarEvents";
 import { FilterEvents } from "@/components/widgets/FilteredEventsMap/FilterEvents";
 
@@ -20,6 +20,7 @@ import { NavbarEventTabs } from "../Navbar/models";
 
 import classes from "./FilteredEventsMap.module.css";
 import { Navbar } from "../Navbar";
+import { FilteredEventsLocation } from "../FilteredEventsLocation";
 
 const GET_EVENTS_BY_DATE = gql`
     query EventsByDate($date: String!) {
@@ -80,7 +81,9 @@ export const FilteredEventsMap = () => {
 
             <div className={classes.filters}>
                 <Date title={"Date"} onChange={handleDateChange} />
-                <Location onChange={() => {}} hideButtonMap={true} />
+                {/* <Location onChange={() => {}} hideButtonMap={true} /> */}
+                <FilteredEventsLocation />
+
                 <SelectCategory categoryList={eventCategory} titleCategories={"Category"} onChange={() => {}} />
                 <SelectCategory categoryList={eventTypes} titleCategories={"Select category"} onChange={() => {}} />
                 <CreateTag eventTags={[]} onChange={console.warn} />

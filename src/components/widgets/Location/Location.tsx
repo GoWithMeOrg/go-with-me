@@ -14,6 +14,7 @@ import {
 import { Popup } from "@/components/shared/Popup";
 import Marker from "@/assets/icons/marker.svg";
 import Autocomplete from "@/components/widgets/GoogleMap/Autocomplete";
+import { optionsFullAdress } from "@/components/widgets/GoogleMap/OptionsAutocomplete";
 
 import classes from "./Location.module.css";
 
@@ -108,6 +109,7 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
                 address={
                     selectedPlace !== null ? selectedPlace.formatted_address : props.locationEvent?.properties?.address
                 }
+                options={optionsFullAdress}
             />
 
             <Popup
@@ -138,6 +140,7 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
                                     ? selectedPlace.formatted_address
                                     : props.locationEvent?.properties?.address
                             }
+                            options={optionsFullAdress}
                         />
                     </CustomMapControl>
                     <MapHandler place={selectedPlace} />
