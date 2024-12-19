@@ -10,7 +10,7 @@ interface INavbarEvents {
     dataAtributes: string[];
 }
 export const NavbarEvents = ({ onTabClick, activeTab, dataAtributes, nameAtribute }: INavbarEvents) => {
-    const handleTabClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    const handleTabClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         const tab = event.currentTarget.getAttribute(nameAtribute);
         if (tab) {
             onTabClick(tab as NavbarEventTabs);
@@ -21,14 +21,14 @@ export const NavbarEvents = ({ onTabClick, activeTab, dataAtributes, nameAtribut
     return (
         <div className={classes.navbar}>
             {dataAtributes.map((tab) => (
-                <div
+                <button
                     key={tab}
                     data-filtered={tab}
                     onClick={handleTabClick}
                     className={`${classes.navbarItem} ${activeTab === tab ? classes.navbarItemActive : ""}`}
                 >
                     {tab.toUpperCase()}
-                </div>
+                </button>
             ))}
         </div>
     );

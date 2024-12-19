@@ -7,6 +7,8 @@
 
 .navbarItem {
     color: var(--additional-color);
+    font-size: 1rem;
+    font-family: inherit;
     font-weight: 700;
     line-height: 1.19rem;
     text-align: center;
