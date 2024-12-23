@@ -12,6 +12,8 @@ import { CustomMapControl } from "./CustomMapControl";
 import MapHandler from "./MapHandler";
 
 import Autocomplete from "./Autocomplete";
+import { optionsFullAdress } from "./OptionsAutocomplete";
+import MapHandlerBounds from "./MapHandlerBounds";
 
 export const GoogleMap = () => {
     const apiIsLoaded = useApiIsLoaded();
@@ -57,9 +59,9 @@ export const GoogleMap = () => {
                 </AdvancedMarker>
             </Map>
             <CustomMapControl controlPosition={ControlPosition.TOP}>
-                <Autocomplete onPlaceSelect={setSelectedPlace} />
+                <Autocomplete onPlaceSelect={setSelectedPlace} options={optionsFullAdress} />
             </CustomMapControl>
-            <MapHandler place={selectedPlace} />
+            <MapHandlerBounds place={selectedPlace} />
         </>
     );
 };

@@ -28,14 +28,13 @@ interface ILocation {
     };
     onPlaceChange?: (selectedPlace: google.maps.places.PlaceResult | null) => void;
     onChange?: (...event: any[]) => void;
-    hideButtonMap?: boolean;
 }
 
 export const Location = forwardRef(function Location(props: ILocation, ref) {
     const apiIsLoaded = useApiIsLoaded();
     const geocoding = useMapsLibrary("geocoding");
     const mapAPI = useContext(APIProviderContext);
-    const [hideButton, setHideButton] = useState<boolean>(props.hideButtonMap || false);
+    const [hideButton, setHideButton] = useState<boolean>(false);
     const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(
         props.locationEvent?.coordinates !== undefined
             ? {

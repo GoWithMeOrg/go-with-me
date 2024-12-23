@@ -22,7 +22,6 @@ interface SlideData {
 
 export const Slider: FC = () => {
     const { hideSliderHandler, hideSlider, currentIndex, filterEventsImage, slideWidth, nextSlide } = useSlider();
-    console.log(filterEventsImage);
     return (
         <>
             {!hideSlider && (

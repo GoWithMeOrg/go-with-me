@@ -23,6 +23,7 @@ export const Geocoding = ({ coordinates }: Props) => {
                 setCity(results[0].address_components[3]?.short_name);
                 //setStreet(results[0].address_components[1].long_name);
                 // setHouseNumber(results[0].address_components[0].long_name);
+                // console.log(results[1]);
             }
         });
     }, [apiIsLoaded, coordinates, geocoding, lat, lng]);

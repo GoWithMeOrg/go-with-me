@@ -5,22 +5,21 @@ import gql from "graphql-tag";
 
 import { Title } from "@/components/shared/Title";
 
-import { Autocomplete, GoogleMap } from "../GoogleMap";
+import { Autocomplete, Geocoding, GoogleMap } from "../GoogleMap";
 import { NavbarEvents } from "@/components/widgets/FilteredEventsMap/NavbarEvents";
 import { FilterEvents } from "@/components/widgets/FilteredEventsMap/FilterEvents";
 
 import { SelectCategory } from "@/components/widgets/SelectCategory";
 import { eventCategory, eventTypes } from "@/components/shared/Dropdown/dropdownLists";
 import { CreateTag } from "@/components/widgets/CreateTag";
-import { Location } from "@/components/widgets/Location";
+
 import { Date } from "@/components/widgets/Date";
 
 import { SizeCard } from "../CardEvent/CardEvent";
 import { NavbarEventTabs } from "../Navbar/models";
+import { FilteredEventsLocation } from "../FilteredEventsLocation";
 
 import classes from "./FilteredEventsMap.module.css";
-import { Navbar } from "../Navbar";
-import { FilteredEventsLocation } from "../FilteredEventsLocation";
 
 const GET_EVENTS_BY_DATE = gql`
     query EventsByDate($date: String!) {
@@ -48,9 +47,11 @@ const GET_EVENTS_BY_DATE = gql`
 export const FilteredEventsMap = () => {
     const [activeTab, setActiveTab] = useState(NavbarEventTabs.LIST);
     const [selectedDate, setSelectedDate] = useState<string>("");
+    const [selectedLocation, setSelectedLocation] = useState<google.maps.places.PlaceResult | null>(null);
 
     const { data: searchDate } = useQuery(GET_EVENTS_BY_DATE, {
         variables: { date: selectedDate },
+        //Добавить переменную с location
     });
 
     const handleTabClick = (tab: NavbarEventTabs) => {
@@ -64,6 +65,11 @@ export const FilteredEventsMap = () => {
         }
     };
 
+    if (selectedLocation?.geometry?.location) {
+        const coord = [selectedLocation?.geometry?.location?.lat(), selectedLocation?.geometry?.location?.lng()];
+    }
+
+    // console.log(selectedLocation?.geometry?.location?.lat(), selectedLocation?.geometry?.location?.lng());
     return (
         <div className={classes.filteredEvents}>
             <div className={classes.header}>
@@ -81,8 +87,18 @@ export const FilteredEventsMap = () => {
 
             <div className={classes.filters}>
                 <Date title={"Date"} onChange={handleDateChange} />
-                {/* <Location onChange={() => {}} hideButtonMap={true} /> */}
-                <FilteredEventsLocation />
+
+                <FilteredEventsLocation
+                    onChange={setSelectedLocation}
+                    coordinates={
+                        [selectedLocation?.geometry?.location?.lng(), selectedLocation?.geometry?.location?.lat()] as [
+                            number,
+                            number,
+                        ]
+                    }
+                />
+
+                {/* <Geocoding coordinates={coord} /> */}
 
                 <SelectCategory categoryList={eventCategory} titleCategories={"Category"} onChange={() => {}} />
                 <SelectCategory categoryList={eventTypes} titleCategories={"Select category"} onChange={() => {}} />
@@ -91,6 +107,7 @@ export const FilteredEventsMap = () => {
 
             {activeTab === "list" && <FilterEvents data={searchDate} sizeCard={SizeCard.ML} />}
             {activeTab === "map" && <GoogleMap />}
+            <GoogleMap />
         </div>
     );
 };
