@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import { NextAuthProvider, ApolloWrapper, APIProviderGoogleMaps } from "./providers";
 
 import { Footer } from "@/components/widgets/Footer";
+import { Footer2 } from "@/components/widgets/Footer2";
 import { Header } from "@/components/widgets/Header";
 
 import { Container } from "@/components/shared/Container";
@@ -33,6 +34,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                                 <APIProviderGoogleMaps>{children}</APIProviderGoogleMaps>
                             </Container>
                             <Footer />
+                            <Footer2 />
                         </Suspense>
                     </NextAuthProvider>
                 </ApolloWrapper>
