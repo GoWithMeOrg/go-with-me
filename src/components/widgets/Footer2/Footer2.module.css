@@ -1,0 +1,20 @@
+.footer {
+    background-color: var(--text-color);
+}
+
+.container {
+    display: flex;
+    width: 1180px;
+    margin: 0 auto;
+    align-items: center;
+    text-align: center;
+    height: 11.88rem;
+    justify-content: space-between;
+}
+
+@media screen and (max-width: 1200px) {
+    .container {
+        width: 600px;
+        flex-direction: column;
+    }
+}

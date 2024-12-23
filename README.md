@@ -69,6 +69,6 @@ git status
 git add . 
 git status 
 git commit -m "add/update/return file.js" 
-git push -u origin main
+git push --set-upstream origin ksyushinaVetka
 ```
 потом надо создать пулл-реквест
