@@ -46,8 +46,9 @@ const EventSchema = new Schema<IEventDocument>(
         location: {
             type: {
                 type: String,
-                enum: ["Point"],
-                //required: true,
+                enum: ["Point", "Polygon", "LineString"],
+                required: true,
+                default: "Point",
             },
             coordinates: {
                 type: [Number],

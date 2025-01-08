@@ -34,7 +34,7 @@ export const GoogleMap = () => {
     //     };
     // }
 
-    console.log(markerPosition);
+    // console.log(markerPosition);
 
     return (
         <>

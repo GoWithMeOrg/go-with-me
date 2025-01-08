@@ -8,11 +8,12 @@ import { HowITWorks } from "@/components/shared/HowITWorks";
 import { CreateAndInvite } from "@/components/widgets/CreateAndInvite";
 import { Mode } from "@/components/widgets/CreateAndInvite/CreateAndInvite";
 
-import classes from "./page.module.css";
 import { useSession } from "next-auth/react";
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+
+import classes from "./page.module.css";
 
 export default function HomePage() {
     const { data: session, status } = useSession();
