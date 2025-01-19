@@ -1,4 +1,5 @@
 export const optionsCities = {
+    fields: ["geometry", "name", "formatted_address"],
     types: ["(cities)"],
 };
 

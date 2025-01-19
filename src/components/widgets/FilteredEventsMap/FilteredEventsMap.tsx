@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
 import dayjs from "dayjs";
 import gql from "graphql-tag";
@@ -20,6 +20,7 @@ import { NavbarEventTabs } from "../Navbar/models";
 import { FilteredEventsLocation } from "../FilteredEventsLocation";
 
 import classes from "./FilteredEventsMap.module.css";
+import { set } from "mongoose";
 
 const GET_EVENTS_BY_DATE = gql`
     query EventsByDate($date: String!) {
@@ -44,20 +45,67 @@ const GET_EVENTS_BY_DATE = gql`
     }
 `;
 
+type Bounds = {
+    south: number;
+    west: number;
+    north: number;
+    east: number;
+};
+
+const GET_EVENTS_BY_LOCATION = gql`
+    query GetEventsByLocation($bounds: Bounds!) {
+        eventSearchByLocation(bounds: $bounds) {
+            _id
+            name
+            startDate
+            location {
+                coordinates
+                properties {
+                    address
+                }
+            }
+            organizer {
+                image
+                firstName
+            }
+            description
+            time
+            image
+        }
+    }
+`;
+
 export const FilteredEventsMap = () => {
     const [activeTab, setActiveTab] = useState(NavbarEventTabs.LIST);
     const [selectedDate, setSelectedDate] = useState<string>("");
     const [selectedLocation, setSelectedLocation] = useState<google.maps.places.PlaceResult | null>(null);
+    const [bounds, setBounds] = useState<Bounds | null>(null);
 
     const { data: searchDate } = useQuery(GET_EVENTS_BY_DATE, {
         variables: { date: selectedDate },
-        //Добавить переменную с location
     });
+
+    const { data: searchEventByLocation } = useQuery(GET_EVENTS_BY_LOCATION, {
+        variables: { bounds },
+    });
+
+    const normalizeViewport = (viewport: any) => {
+        return {
+            south: viewport?.ei?.lo,
+            west: viewport?.Hh?.lo,
+            north: viewport?.ei?.hi,
+            east: viewport?.Hh?.hi,
+        };
+    };
+
+    useEffect(() => {
+        const viewport = normalizeViewport(selectedLocation?.geometry?.viewport);
+        setBounds(viewport);
+    }, [selectedLocation]);
 
     const handleTabClick = (tab: NavbarEventTabs) => {
         setActiveTab(tab);
     };
-
     const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const isDateFormatValid = /^\d{4}-\d{2}-\d{2}$/.test(e.target.value);
         if (isDateFormatValid) {
@@ -65,11 +113,6 @@ export const FilteredEventsMap = () => {
         }
     };
 
-    if (selectedLocation?.geometry?.location) {
-        const coord = [selectedLocation?.geometry?.location?.lat(), selectedLocation?.geometry?.location?.lng()];
-    }
-
-    // console.log(selectedLocation?.geometry?.location?.lat(), selectedLocation?.geometry?.location?.lng());
     return (
         <div className={classes.filteredEvents}>
             <div className={classes.header}>
@@ -88,26 +131,20 @@ export const FilteredEventsMap = () => {
             <div className={classes.filters}>
                 <Date title={"Date"} onChange={handleDateChange} />
 
-                <FilteredEventsLocation
-                    onChange={setSelectedLocation}
-                    coordinates={
-                        [selectedLocation?.geometry?.location?.lng(), selectedLocation?.geometry?.location?.lat()] as [
-                            number,
-                            number,
-                        ]
-                    }
-                />
-
-                {/* <Geocoding coordinates={coord} /> */}
+                <FilteredEventsLocation onChange={setSelectedLocation} />
 
                 <SelectCategory categoryList={eventCategory} titleCategories={"Category"} onChange={() => {}} />
                 <SelectCategory categoryList={eventTypes} titleCategories={"Select category"} onChange={() => {}} />
                 <CreateTag eventTags={[]} onChange={console.warn} />
             </div>
 
-            {activeTab === "list" && <FilterEvents data={searchDate} sizeCard={SizeCard.ML} />}
+            {activeTab === "list" && (
+                <FilterEvents
+                    data={searchDate?.eventsByDate || searchEventByLocation?.eventSearchByLocation}
+                    sizeCard={SizeCard.ML}
+                />
+            )}
             {activeTab === "map" && <GoogleMap />}
-            <GoogleMap />
         </div>
     );
 };
