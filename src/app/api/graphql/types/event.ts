@@ -3,6 +3,7 @@ import { gql } from "graphql-tag";
 export const eventTypeDefs = gql`
     type Query {
         events(limit: Int!, offset: Int, sort: String!): [Event!]!
+        eventSearchByLocation(bounds: BoundsInput!): [Event]
     }
 
     type Event {
@@ -35,6 +36,13 @@ export const eventTypeDefs = gql`
         types: [String]
         status: String
         image: String
+    }
+
+    input BoundsInput {
+        south: Float!
+        west: Float!
+        north: Float!
+        east: Float!
     }
 `;
 

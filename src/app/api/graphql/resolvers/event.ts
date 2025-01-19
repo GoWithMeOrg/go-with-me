@@ -16,6 +16,30 @@ export const eventResolvers = {
             return [...events];
         },
 
+        eventSearchByLocation: async (
+            parent: any,
+            { bounds }: { bounds: { south: number; west: number; north: number; east: number } },
+        ) => {
+            const { south, west, north, east } = bounds;
+
+            // Запрос для поиска в прямоугольнике
+            const query = {
+                location: {
+                    $geoWithin: {
+                        $box: [
+                            [west, south], // Юго-западный угол
+                            [east, north], // Северо-восточный угол
+                        ],
+                    },
+                },
+            };
+
+            // Запрос к MongoDB
+            const events = await EventModel.find(query);
+
+            return [...events];
+        },
+
         eventsByDate: async (parent: any, { date }: { date: any }) => {
             const startOfDay = new Date(date);
             const endOfDay = new Date(date);

@@ -24,6 +24,7 @@ export const MapHandlerBounds = ({ place }: Props) => {
         if (place.geometry?.viewport) {
             map.fitBounds(place.geometry?.viewport);
             const viewport = normalizeViewport(place?.geometry?.viewport);
+            console.log(viewport);
             if (
                 viewport.north !== undefined &&
                 viewport.south !== undefined &&

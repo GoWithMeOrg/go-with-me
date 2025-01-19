@@ -105,16 +105,6 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
         }
     };
 
-    const handleMapPlaceSelect = (selectedPlace: google.maps.places.PlaceResult | null) => {
-        setSelectedPlace(selectedPlace);
-        if (selectedPlace?.geometry?.location) {
-            setMarkerPosition({
-                lat: selectedPlace.geometry.location.lat(),
-                lng: selectedPlace.geometry.location.lng(),
-            });
-        }
-    };
-
     return (
         <label className={classes.locationForm}>
             <div className={classes.labelFindMap}>
