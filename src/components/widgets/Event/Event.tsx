@@ -34,8 +34,8 @@ const Event: FC<EventProps> = ({ event }) => {
     const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(
         event.location !== undefined
             ? {
-                  lat: event.location?.coordinates[0],
-                  lng: event.location.coordinates[1],
+                  lat: event.location?.coordinates[1],
+                  lng: event.location.coordinates[0],
               }
             : null,
     );
@@ -47,7 +47,7 @@ const Event: FC<EventProps> = ({ event }) => {
         //@ts-ignore
     }, [event.organizer_id, session?.user?.id]);
 
-    const coord: [number, number] = [event.location.coordinates[1] as number, event.location.coordinates[0] as number];
+    const coord: [number, number] = [event.location.coordinates[0] as number, event.location.coordinates[1] as number];
 
     const handleShowMap = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
@@ -138,7 +138,7 @@ const Event: FC<EventProps> = ({ event }) => {
                     <Map
                         style={{ height: "600px" }}
                         defaultZoom={14}
-                        defaultCenter={{ lat: event.location?.coordinates[0], lng: event.location?.coordinates[1] }}
+                        defaultCenter={{ lat: event.location?.coordinates[1], lng: event.location?.coordinates[0] }}
                         gestureHandling={"greedy"}
                         disableDefaultUI={false}
                         mapId={"<Your custom MapId here>"}

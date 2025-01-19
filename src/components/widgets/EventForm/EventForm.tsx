@@ -23,6 +23,7 @@ import { Textarea } from "@/components/shared/Textarea";
 
 import classes from "./EventForm.module.css";
 
+
 export type EventType = Partial<IEvent>;
 
 export enum Status {
@@ -63,7 +64,6 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
 
     const onSubmit: SubmitHandler<IFormInputs> = (event: EventType) => {
         onSubmitEvent(event);
-
         if (file && presignUrl) {
             onSubmitFile(file, presignUrl);
             if (eventData.image && file) {

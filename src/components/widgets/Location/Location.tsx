@@ -34,12 +34,12 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
     const apiIsLoaded = useApiIsLoaded();
     const geocoding = useMapsLibrary("geocoding");
     const mapAPI = useContext(APIProviderContext);
-    const [hideButton, setHideButton] = useState<boolean>(false);
+
     const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(
         props.locationEvent?.coordinates !== undefined
             ? {
-                  lat: props.locationEvent?.coordinates[0],
-                  lng: props.locationEvent?.coordinates[1],
+                  lat: props.locationEvent?.coordinates[1],
+                  lng: props.locationEvent?.coordinates[0],
               }
             : null,
     );
@@ -75,36 +75,59 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
     const handleMapClose = () => {
         setShowPopup(false);
     };
-
     const handleMapClick = (e: { detail: { latLng: SetStateAction<google.maps.LatLngLiteral | null> } }) => {
-        setSelectedPlace(null);
         setMarkerPosition(e.detail.latLng);
+
         if (!geocoding) return;
         const geocoder = new geocoding.Geocoder();
         const pos = e.detail.latLng as any;
         geocoder.geocode({ location: pos }, (results, status) => {
             if (status === "OK" && results !== null) {
-                const place = results[0];
-                setSelectedPlace(place);
+                const newPlace = results[0];
+                setSelectedPlace(newPlace);
+                if (newPlace.geometry?.location) {
+                    setMarkerPosition({
+                        lat: newPlace.geometry.location.lat(),
+                        lng: newPlace.geometry.location.lng(),
+                    });
+                }
             }
         });
+    };
+
+    const handlePlaceSelect = (selectedPlace: google.maps.places.PlaceResult | null) => {
+        setSelectedPlace(selectedPlace);
+        if (selectedPlace?.geometry?.location) {
+            setMarkerPosition({
+                lat: selectedPlace.geometry.location.lat(),
+                lng: selectedPlace.geometry.location.lng(),
+            });
+        }
+    };
+
+    const handleMapPlaceSelect = (selectedPlace: google.maps.places.PlaceResult | null) => {
+        setSelectedPlace(selectedPlace);
+        if (selectedPlace?.geometry?.location) {
+            setMarkerPosition({
+                lat: selectedPlace.geometry.location.lat(),
+                lng: selectedPlace.geometry.location.lng(),
+            });
+        }
     };
 
     return (
         <label className={classes.locationForm}>
             <div className={classes.labelFindMap}>
                 <span className={classes.titleInput}>Location/Address</span>
-                {!hideButton && (
-                    <Button className={classes.btnFindMap} onClick={handleShowMap} resetDefaultStyles={true}>
-                        <Marker style={{ marginRight: "0.25rem" }} />
-                        Find on Map
-                    </Button>
-                )}
+                <Button className={classes.btnFindMap} onClick={handleShowMap} resetDefaultStyles={true}>
+                    <Marker style={{ marginRight: "0.25rem" }} />
+                    Find on Map
+                </Button>
             </div>
 
             <Autocomplete
                 className={classes.fieldInput}
-                onPlaceSelect={setSelectedPlace}
+                onPlaceSelect={handlePlaceSelect}
                 address={
                     selectedPlace !== null ? selectedPlace.formatted_address : props.locationEvent?.properties?.address
                 }
@@ -132,7 +155,7 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
                     </AdvancedMarker>
                     <CustomMapControl controlPosition={ControlPosition.TOP}>
                         <Autocomplete
-                            onPlaceSelect={setSelectedPlace}
+                            onPlaceSelect={handlePlaceSelect}
                             className={classes.inputFindMap}
                             address={
                                 selectedPlace !== null

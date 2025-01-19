@@ -22,6 +22,7 @@ interface SlideData {
 
 export const Slider: FC = () => {
     const { hideSliderHandler, hideSlider, currentIndex, filterEventsImage, slideWidth, nextSlide } = useSlider();
+
     return (
         <>
             {!hideSlider && (
@@ -48,7 +49,7 @@ export const Slider: FC = () => {
                                         image={slide.image}
                                         startDate={slide.startDate}
                                         time={slide.time}
-                                        coord={[slide.location.coordinates[1], slide.location.coordinates[0]]}
+                                        coord={[slide.location.coordinates[0], slide.location.coordinates[1]]}
                                     />
                                 </div>
                             ))}
