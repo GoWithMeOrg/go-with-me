@@ -17,8 +17,13 @@ export const Autocomplete = ({ onPlaceSelect, className, address, options }: Pro
     const createAutocomplete = useCallback(() => {
         if (!places || !originRef || !originRef.current) return;
 
+        const options = {
+            fields: ["geometry", "name", "formatted_address", "place_id"],
+            types: ["(cities)"],
+        };
+
         setPlaceAutocomplete(new places.Autocomplete(originRef.current, options));
-    }, [places, originRef, options]);
+    }, [places, originRef]);
 
     useEffect(() => {
         createAutocomplete();
@@ -30,6 +35,7 @@ export const Autocomplete = ({ onPlaceSelect, className, address, options }: Pro
         const placeChangedListener = placeAutocomplete.addListener("place_changed", () => {
             const place = placeAutocomplete.getPlace();
             onPlaceSelect(place);
+            // console.log(place.geometry?.location?.lng(), place.geometry?.location?.lat());
 
             return () => {
                 placeChangedListener.remove();

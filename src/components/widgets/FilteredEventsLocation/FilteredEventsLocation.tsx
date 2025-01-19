@@ -11,7 +11,7 @@ interface FilteredEventsLocationProps {
 }
 
 export const FilteredEventsLocation: FC<FilteredEventsLocationProps> = ({ onChange, coordinates }) => {
-    //console.log(coordinates);
+    // console.log(coordinates);
     return (
         <div className={classes.location}>
             <Label label={"Location"} />
