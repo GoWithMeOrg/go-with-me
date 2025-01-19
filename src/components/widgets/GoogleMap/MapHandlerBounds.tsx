@@ -1,20 +1,49 @@
+import { useQuery } from "@apollo/client";
 import { useMap } from "@vis.gl/react-google-maps";
-import React, { useEffect, useRef } from "react";
+import gql from "graphql-tag";
+import React, { useEffect, useRef, useState } from "react";
 
 interface Props {
     place: google.maps.places.PlaceResult | null;
 }
 
+type Bounds = {
+    south: number;
+    west: number;
+    north: number;
+    east: number;
+};
+
+const GET_EVENTS_BY_LOCATION = gql`
+    query GetEventsByLocation($bounds: Bounds!) {
+        eventSearchByLocation(bounds: $bounds) {
+            name
+            location {
+                properties {
+                    address
+                }
+                coordinates
+            }
+        }
+    }
+`;
+
 export const MapHandlerBounds = ({ place }: Props) => {
     const map = useMap();
     const rectangleRef = useRef<google.maps.Rectangle | null>(null);
+    const [bounds, setBounds] = useState<Bounds | null>(null);
+
+    const { data: SearchEventByLocation } = useQuery(GET_EVENTS_BY_LOCATION, {
+        variables: { bounds },
+    });
+    console.log(SearchEventByLocation);
 
     const normalizeViewport = (viewport: any) => {
         return {
-            north: viewport.ei?.hi,
             south: viewport.ei?.lo,
-            east: viewport.Hh?.hi,
             west: viewport.Hh?.lo,
+            north: viewport.ei?.hi,
+            east: viewport.Hh?.hi,
         };
     };
 
@@ -24,7 +53,7 @@ export const MapHandlerBounds = ({ place }: Props) => {
         if (place.geometry?.viewport) {
             map.fitBounds(place.geometry?.viewport);
             const viewport = normalizeViewport(place?.geometry?.viewport);
-            console.log(viewport);
+            setBounds(viewport);
             if (
                 viewport.north !== undefined &&
                 viewport.south !== undefined &&
