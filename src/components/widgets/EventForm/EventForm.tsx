@@ -12,7 +12,7 @@ import { eventCategory, eventTypes } from "@/components/shared/Dropdown/dropdown
 import { CreateTag } from "@/components/widgets/CreateTag";
 import { GuestList } from "@/components/widgets/GuestList";
 import { UploadFile } from "@/components/widgets/UploadFile";
-import { Location } from "@/components/widgets/Location";
+import { Location } from "../Location";
 import { IEvent } from "@/database/models/Event";
 
 import { useUploadFile } from "@/components/widgets/UploadFile/hooks";
@@ -63,7 +63,6 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
 
     const onSubmit: SubmitHandler<IFormInputs> = (event: EventType) => {
         onSubmitEvent(event);
-
         if (file && presignUrl) {
             onSubmitFile(file, presignUrl);
             if (eventData.image && file) {
@@ -72,6 +71,7 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
         }
     };
 
+    console.log(watch("location"));
     const handleUploadedFile = (file: File, preUrl: string) => {
         setFile(file);
         setPresignUrl(preUrl);

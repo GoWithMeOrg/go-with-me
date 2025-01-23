@@ -5,9 +5,10 @@ interface Props {
     onPlaceSelect: (place: google.maps.places.PlaceResult | null) => void;
     className?: string;
     address?: string;
+    options: google.maps.places.AutocompleteOptions;
 }
 
-export const Autocomplete = ({ onPlaceSelect, className, address }: Props) => {
+export const Autocomplete = ({ onPlaceSelect, className, address, options }: Props) => {
     const places = useMapsLibrary("places");
     const originRef = useRef<HTMLInputElement>(null);
     const [placeAutocomplete, setPlaceAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
@@ -16,12 +17,10 @@ export const Autocomplete = ({ onPlaceSelect, className, address }: Props) => {
     const createAutocomplete = useCallback(() => {
         if (!places || !originRef || !originRef.current) return;
 
-        const options = {
-            fields: ["geometry", "name", "formatted_address"],
-        };
+        options;
 
         setPlaceAutocomplete(new places.Autocomplete(originRef.current, options));
-    }, [places, originRef]);
+    }, [places, originRef, options]);
 
     useEffect(() => {
         createAutocomplete();

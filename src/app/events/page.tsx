@@ -14,7 +14,9 @@ import classes from "./page.module.css";
 
 const EventListPage: NextPage = () => {
     const { status } = useSession();
+    //TODO: реализовать поиск внутри 4-х угольника
 
+    //TODO: добавить индекс поиска в mongoDB - db.events.createIndex({ location: "2dsphere" });
     return (
         <div className={classes.eventListPage}>
             <Title tag={"h1"} title="Join the adventure" className={classes.title} />

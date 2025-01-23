@@ -16,6 +16,28 @@ export const eventResolvers = {
             return [...events];
         },
 
+        eventSearchByLocation: async (
+            parent: any,
+            { bounds }: { bounds: { south: number; west: number; north: number; east: number } },
+        ) => {
+            const { south, west, north, east } = bounds;
+
+            const query = {
+                location: {
+                    $geoWithin: {
+                        $box: [
+                            [west, south],
+                            [east, north],
+                        ],
+                    },
+                },
+            };
+
+            const events = await EventModel.find(query);
+
+            return [...events];
+        },
+
         eventsByDate: async (parent: any, { date }: { date: any }) => {
             const startOfDay = new Date(date);
             const endOfDay = new Date(date);
