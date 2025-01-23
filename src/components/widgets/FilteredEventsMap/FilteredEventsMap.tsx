@@ -5,7 +5,7 @@ import gql from "graphql-tag";
 
 import { Title } from "@/components/shared/Title";
 
-import { Autocomplete, Geocoding, GoogleMap } from "../GoogleMap";
+import { GoogleMap } from "../GoogleMap";
 import { NavbarEvents } from "@/components/widgets/FilteredEventsMap/NavbarEvents";
 import { FilterEvents } from "@/components/widgets/FilteredEventsMap/FilterEvents";
 
@@ -20,7 +20,6 @@ import { NavbarEventTabs } from "../Navbar/models";
 import { FilteredEventsLocation } from "../FilteredEventsLocation";
 
 import classes from "./FilteredEventsMap.module.css";
-import { set } from "mongoose";
 
 const GET_EVENTS_BY_DATE = gql`
     query EventsByDate($date: String!) {

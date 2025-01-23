@@ -51,7 +51,7 @@ export const MapHandlerBounds = ({ place }: Props) => {
         if (!map || !place) return;
 
         if (place.geometry?.viewport) {
-            map.fitBounds(place.geometry?.viewport);
+            map.fitBounds(place.geometry.viewport);
             const viewport = normalizeViewport(place?.geometry?.viewport);
             setBounds(viewport);
             if (
@@ -66,7 +66,7 @@ export const MapHandlerBounds = ({ place }: Props) => {
                 );
 
                 if (map && rectangleRef?.current) {
-                    map?.fitBounds(latLngBounds);
+                    map.fitBounds(latLngBounds);
                     rectangleRef.current.setMap(null);
                 }
 

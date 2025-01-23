@@ -11,11 +11,7 @@ interface FilterEventsProps {
 }
 
 export const FilterEvents: FC<FilterEventsProps> = ({ data, sizeCard }) => {
-    useEffect(() => {
-        if (data?.length === 0) {
-            console.log("По вашему запросу ничего не найдено");
-        }
-    }, [data]);
+    if (data?.length === 0) return <p>По вашему запросу ничего не найдено</p>;
 
     return (
         <div className={classes.filteredEvents}>

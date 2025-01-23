@@ -22,19 +22,17 @@ export const eventResolvers = {
         ) => {
             const { south, west, north, east } = bounds;
 
-            // Запрос для поиска в прямоугольнике
             const query = {
                 location: {
                     $geoWithin: {
                         $box: [
-                            [west, south], // Юго-западный угол
-                            [east, north], // Северо-восточный угол
+                            [west, south],
+                            [east, north],
                         ],
                     },
                 },
             };
 
-            // Запрос к MongoDB
             const events = await EventModel.find(query);
 
             return [...events];

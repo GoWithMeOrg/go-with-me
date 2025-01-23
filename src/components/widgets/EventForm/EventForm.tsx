@@ -12,7 +12,7 @@ import { eventCategory, eventTypes } from "@/components/shared/Dropdown/dropdown
 import { CreateTag } from "@/components/widgets/CreateTag";
 import { GuestList } from "@/components/widgets/GuestList";
 import { UploadFile } from "@/components/widgets/UploadFile";
-import { Location } from "@/components/widgets/Location";
+import { Location } from "../Location";
 import { IEvent } from "@/database/models/Event";
 
 import { useUploadFile } from "@/components/widgets/UploadFile/hooks";
