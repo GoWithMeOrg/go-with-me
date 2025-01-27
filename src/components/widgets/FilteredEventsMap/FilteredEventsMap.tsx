@@ -79,6 +79,7 @@ export const FilteredEventsMap = () => {
     const [selectedDate, setSelectedDate] = useState<string>("");
     const [selectedLocation, setSelectedLocation] = useState<google.maps.places.PlaceResult | null>(null);
     const [bounds, setBounds] = useState<Bounds | null>(null);
+    const [categories, setCategories] = useState<string[]>([]);
 
     const { data: searchDate } = useQuery(GET_EVENTS_BY_DATE, {
         variables: { date: selectedDate },
@@ -112,6 +113,10 @@ export const FilteredEventsMap = () => {
         }
     };
 
+    const handleCategoriesChange = (categories: string[]) => {
+        setCategories(categories);
+    };
+
     return (
         <div className={classes.filteredEvents}>
             <div className={classes.header}>
@@ -132,8 +137,18 @@ export const FilteredEventsMap = () => {
 
                 <FilteredEventsLocation onChange={setSelectedLocation} />
 
-                <SelectCategory categoryList={eventCategory} titleCategories={"Category"} onChange={() => {}} />
-                <SelectCategory categoryList={eventTypes} titleCategories={"Select category"} onChange={() => {}} />
+                <SelectCategory
+                    categoryList={eventCategory}
+                    titleCategories={"Category"}
+                    badgesShow={false}
+                    onChange={handleCategoriesChange}
+                />
+                <SelectCategory
+                    categoryList={eventTypes}
+                    titleCategories={"Select category"}
+                    badgesShow={false}
+                    onChange={handleCategoriesChange}
+                />
                 <CreateTag eventTags={[]} onChange={console.warn} />
             </div>
 

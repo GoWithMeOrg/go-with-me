@@ -12,6 +12,7 @@ interface ISelectCategory {
     titleCategories: string;
     eventCategories?: string[];
     onChange: (e: string[]) => void;
+    badgesShow: boolean;
 }
 
 export const SelectCategory = forwardRef(function SelectCategory(props: ISelectCategory, ref) {
@@ -40,11 +41,13 @@ export const SelectCategory = forwardRef(function SelectCategory(props: ISelectC
                 list={props.categoryList}
             />
 
-            <Badges
-                badges={categories}
-                icon={<Minus style={{ marginLeft: "0.5rem", cursor: "pointer" }} />}
-                onDeleteBadge={handleCategoryChange}
-            />
+            {props.badgesShow && (
+                <Badges
+                    badges={categories}
+                    icon={<Minus style={{ marginLeft: "0.5rem", cursor: "pointer" }} />}
+                    onDeleteBadge={handleCategoryChange}
+                />
+            )}
         </div>
     );
 });
