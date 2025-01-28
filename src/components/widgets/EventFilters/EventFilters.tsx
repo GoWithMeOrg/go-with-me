@@ -6,8 +6,8 @@ import gql from "graphql-tag";
 import { Title } from "@/components/shared/Title";
 
 import { GoogleMap } from "../GoogleMap";
-import { NavbarEvents } from "@/components/widgets/FilteredEventsMap/NavbarEvents";
-import { FilterEvents } from "@/components/widgets/FilteredEventsMap/FilterEvents";
+import { NavbarEvents } from "@/components/widgets/EventFilters/NavbarEvents";
+import { FilterEvents } from "@/components/widgets/EventFilters/FilterEvents";
 
 import { SelectCategory } from "@/components/widgets/SelectCategory";
 import { eventCategory, eventTypes } from "@/components/shared/Dropdown/dropdownLists";
@@ -121,7 +121,7 @@ const GET_EVENTS_BY_TYPES = gql`
     }
 `;
 
-export const FilteredEventsMap = () => {
+export const EventFilters = () => {
     const [activeTab, setActiveTab] = useState(NavbarEventTabs.LIST);
     const [selectedDate, setSelectedDate] = useState<string>("");
     const [selectedLocation, setSelectedLocation] = useState<google.maps.places.PlaceResult | null>(null);
@@ -226,4 +226,4 @@ export const FilteredEventsMap = () => {
     );
 };
 
-export default FilteredEventsMap;
+export default EventFilters;
