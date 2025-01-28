@@ -31,7 +31,6 @@ export const SelectCategory = forwardRef(function SelectCategory(props: ISelectC
         setCategories(selectedCategories);
     };
 
-    console.log(categories);
     return (
         <div className={classes.selectedCategoriesLabel}>
             <Label className={classes.selectedCategoriesTitle} label={props.titleCategories} />

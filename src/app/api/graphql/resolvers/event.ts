@@ -38,6 +38,29 @@ export const eventResolvers = {
             return [...events];
         },
 
+        eventSearchByCategories: async (parent: any, { categories }: { categories: string[] }) => {
+            // const query = {
+            //     location: {
+            //         $geoWithin: {
+            //             $box: [
+            //                 [west, south],
+            //                 [east, north],
+            //             ],
+            //         },
+            //     },
+            // };
+
+            const query = {
+                categories: {
+                    $in: categories,
+                },
+            };
+
+            const events = await EventModel.find(query);
+
+            return [...events];
+        },
+
         eventsByDate: async (parent: any, { date }: { date: any }) => {
             const startOfDay = new Date(date);
             const endOfDay = new Date(date);
