@@ -7,20 +7,18 @@ import { Title } from "@/components/shared/Title";
 
 import { GoogleMap } from "../GoogleMap";
 import { NavbarEvents } from "@/components/widgets/EventFilters/NavbarEvents";
-import { FilterEvents } from "@/components/widgets/EventFilters/FilterEvents";
-
+import { FilteredEvents } from "@/components/widgets/EventFilters/FilteredEvents";
 import { SelectCategory } from "@/components/widgets/SelectCategory";
-import { eventCategory, eventTypes } from "@/components/shared/Dropdown/dropdownLists";
 import { CreateTag } from "@/components/widgets/CreateTag";
-
 import { Date } from "@/components/widgets/Date";
+
+import { eventCategory, eventTypes } from "@/components/shared/Dropdown/dropdownLists";
 
 import { SizeCard } from "../CardEvent/CardEvent";
 import { NavbarEventTabs } from "../Navbar/models";
 import { FilteredEventsLocation } from "../FilteredEventsLocation";
 
-import classes from "./FilteredEventsMap.module.css";
-import { types } from "util";
+import classes from "./EventFilters.module.css";
 
 type Bounds = {
     south: number;
@@ -210,7 +208,7 @@ export const EventFilters = () => {
             </div>
 
             {activeTab === "list" && (
-                <FilterEvents
+                <FilteredEvents
                     // Подумать разделить на компоненты, под разные дата данные
                     data={
                         searchDate?.eventsByDate ||
