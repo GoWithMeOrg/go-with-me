@@ -22,7 +22,7 @@ export const Dropdown: FC<DropdownProps> = ({ list, label, categoriesData, onSel
     return (
         <div className={classes.dropdown} ref={dropdownRef}>
             <Button className={classes.dropdownButton} onClick={handleDropdown} type="button">
-                {selectedCategories.length === 0 ? label : selectedCategories.length + " category"}
+                {selectedCategories.length === 0 ? label : selectedCategories.length + " categories"}
                 <ArrowMenu style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)" }} />
             </Button>
             {isOpen && (

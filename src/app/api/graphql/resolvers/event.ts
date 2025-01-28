@@ -8,12 +8,11 @@ export const eventResolvers = {
             return events;
         },
         event: async (parent: any, { id, ...rest }: { id: string }) => {
-            return EventModel.findById(id);
+            return await EventModel.findById(id);
         },
 
         search: async (parent: any, { text }: { text: string }) => {
-            const events = await EventModel.find({ $text: { $search: text } });
-            return [...events];
+            return await EventModel.find({ $text: { $search: text } });
         },
 
         eventSearchByLocation: async (
@@ -33,11 +32,28 @@ export const eventResolvers = {
                 },
             };
 
-            const events = await EventModel.find(query);
-
-            return [...events];
+            return await EventModel.find(query);
         },
 
+        eventSearchByCategories: async (parent: any, { categories }: { categories: string[] }) => {
+            const query = {
+                categories: {
+                    $in: categories,
+                },
+            };
+
+            return await EventModel.find(query);
+        },
+
+        eventSearchByTypes: async (parent: any, { types }: { types: string[] }) => {
+            const query = {
+                types: {
+                    $in: types,
+                },
+            };
+
+            return await EventModel.find(query);
+        },
         eventsByDate: async (parent: any, { date }: { date: any }) => {
             const startOfDay = new Date(date);
             const endOfDay = new Date(date);
@@ -45,10 +61,9 @@ export const eventResolvers = {
             startOfDay.setHours(0, 0, 0, 0);
             endOfDay.setHours(23, 59, 59, 999);
 
-            const events = await EventModel.find({
+            return await EventModel.find({
                 startDate: { $gte: startOfDay, $lt: endOfDay },
             });
-            return [...events];
         },
     },
 

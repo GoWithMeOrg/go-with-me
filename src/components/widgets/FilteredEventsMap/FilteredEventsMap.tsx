@@ -20,6 +20,14 @@ import { NavbarEventTabs } from "../Navbar/models";
 import { FilteredEventsLocation } from "../FilteredEventsLocation";
 
 import classes from "./FilteredEventsMap.module.css";
+import { types } from "util";
+
+type Bounds = {
+    south: number;
+    west: number;
+    north: number;
+    east: number;
+};
 
 const GET_EVENTS_BY_DATE = gql`
     query EventsByDate($date: String!) {
@@ -44,16 +52,55 @@ const GET_EVENTS_BY_DATE = gql`
     }
 `;
 
-type Bounds = {
-    south: number;
-    west: number;
-    north: number;
-    east: number;
-};
-
 const GET_EVENTS_BY_LOCATION = gql`
     query GetEventsByLocation($bounds: Bounds!) {
         eventSearchByLocation(bounds: $bounds) {
+            _id
+            name
+            startDate
+            location {
+                coordinates
+                properties {
+                    address
+                }
+            }
+            organizer {
+                image
+                firstName
+            }
+            description
+            time
+            image
+        }
+    }
+`;
+
+const GET_EVENTS_BY_CATEGORIES = gql`
+    query GetEventsByCategories($categories: [String]!) {
+        eventSearchByCategories(categories: $categories) {
+            _id
+            name
+            startDate
+            location {
+                coordinates
+                properties {
+                    address
+                }
+            }
+            organizer {
+                image
+                firstName
+            }
+            description
+            time
+            image
+        }
+    }
+`;
+
+const GET_EVENTS_BY_TYPES = gql`
+    query GetEventsByTypes($types: [String]!) {
+        eventSearchByTypes(types: $types) {
             _id
             name
             startDate
@@ -79,6 +126,7 @@ export const FilteredEventsMap = () => {
     const [selectedDate, setSelectedDate] = useState<string>("");
     const [selectedLocation, setSelectedLocation] = useState<google.maps.places.PlaceResult | null>(null);
     const [bounds, setBounds] = useState<Bounds | null>(null);
+    const [categories, setCategories] = useState<string[]>([]);
 
     const { data: searchDate } = useQuery(GET_EVENTS_BY_DATE, {
         variables: { date: selectedDate },
@@ -87,6 +135,16 @@ export const FilteredEventsMap = () => {
     const { data: searchEventByLocation } = useQuery(GET_EVENTS_BY_LOCATION, {
         variables: { bounds },
     });
+
+    const { data: searchEventByCategories } = useQuery(GET_EVENTS_BY_CATEGORIES, {
+        variables: { categories },
+    });
+
+    const { data: searchEventByTypes } = useQuery(GET_EVENTS_BY_TYPES, {
+        variables: { types: categories },
+    });
+
+    console.log(searchEventByTypes?.eventSearchByTypes);
 
     const normalizeViewport = (viewport: any) => {
         return {
@@ -112,6 +170,10 @@ export const FilteredEventsMap = () => {
         }
     };
 
+    const handleCategoriesChange = (categories: string[]) => {
+        setCategories(categories);
+    };
+
     return (
         <div className={classes.filteredEvents}>
             <div className={classes.header}>
@@ -132,14 +194,30 @@ export const FilteredEventsMap = () => {
 
                 <FilteredEventsLocation onChange={setSelectedLocation} />
 
-                <SelectCategory categoryList={eventCategory} titleCategories={"Category"} onChange={() => {}} />
-                <SelectCategory categoryList={eventTypes} titleCategories={"Select category"} onChange={() => {}} />
+                <SelectCategory
+                    categoryList={eventCategory}
+                    titleCategories={"Category"}
+                    badgesShow={false}
+                    onChange={handleCategoriesChange}
+                />
+                <SelectCategory
+                    categoryList={eventTypes}
+                    titleCategories={"Types"}
+                    badgesShow={false}
+                    onChange={handleCategoriesChange}
+                />
                 <CreateTag eventTags={[]} onChange={console.warn} />
             </div>
 
             {activeTab === "list" && (
                 <FilterEvents
-                    data={searchDate?.eventsByDate || searchEventByLocation?.eventSearchByLocation}
+                    // Подумать разделить на компоненты, под разные дата данные
+                    data={
+                        searchDate?.eventsByDate ||
+                        searchEventByLocation?.eventSearchByLocation ||
+                        searchEventByCategories?.eventSearchByCategories ||
+                        searchEventByTypes?.eventSearchByTypes
+                    }
                     sizeCard={SizeCard.ML}
                 />
             )}

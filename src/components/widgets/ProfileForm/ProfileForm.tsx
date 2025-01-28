@@ -168,6 +168,7 @@ export const ProfileForm: FC<IProfileFormProps> = ({ profileData, onSubmitEvent 
                             categoryList={eventCategory}
                             eventCategories={[]}
                             titleCategories={"What categories are you interested in?"}
+                            badgesShow
                             onChange={field.onChange}
                         />
                     )}
@@ -181,6 +182,7 @@ export const ProfileForm: FC<IProfileFormProps> = ({ profileData, onSubmitEvent 
                             categoryList={eventTypes}
                             eventCategories={[]}
                             titleCategories={"What subjects are you interested in?"}
+                            badgesShow
                             onChange={field.onChange}
                         />
                     )}

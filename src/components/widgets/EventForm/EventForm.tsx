@@ -147,6 +147,7 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                                     categoryList={eventCategory}
                                     eventCategories={eventData.categories || []}
                                     titleCategories={"Select category"}
+                                    badgesShow
                                     onChange={field.onChange}
                                 />
                             )}
@@ -160,6 +161,7 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                                     categoryList={eventTypes}
                                     eventCategories={eventData.types || []}
                                     titleCategories={"Select subject"}
+                                    badgesShow
                                     onChange={field.onChange}
                                 />
                             )}
