@@ -20,6 +20,14 @@ import { NavbarEventTabs } from "../Navbar/models";
 import { FilteredEventsLocation } from "../FilteredEventsLocation";
 
 import classes from "./FilteredEventsMap.module.css";
+import { types } from "util";
+
+type Bounds = {
+    south: number;
+    west: number;
+    north: number;
+    east: number;
+};
 
 const GET_EVENTS_BY_DATE = gql`
     query EventsByDate($date: String!) {
@@ -44,16 +52,55 @@ const GET_EVENTS_BY_DATE = gql`
     }
 `;
 
-type Bounds = {
-    south: number;
-    west: number;
-    north: number;
-    east: number;
-};
-
 const GET_EVENTS_BY_LOCATION = gql`
     query GetEventsByLocation($bounds: Bounds!) {
         eventSearchByLocation(bounds: $bounds) {
+            _id
+            name
+            startDate
+            location {
+                coordinates
+                properties {
+                    address
+                }
+            }
+            organizer {
+                image
+                firstName
+            }
+            description
+            time
+            image
+        }
+    }
+`;
+
+const GET_EVENTS_BY_CATEGORIES = gql`
+    query GetEventsByCategories($categories: [String]!) {
+        eventSearchByCategories(categories: $categories) {
+            _id
+            name
+            startDate
+            location {
+                coordinates
+                properties {
+                    address
+                }
+            }
+            organizer {
+                image
+                firstName
+            }
+            description
+            time
+            image
+        }
+    }
+`;
+
+const GET_EVENTS_BY_TYPES = gql`
+    query GetEventsByTypes($types: [String]!) {
+        eventSearchByTypes(types: $types) {
             _id
             name
             startDate
@@ -88,6 +135,16 @@ export const FilteredEventsMap = () => {
     const { data: searchEventByLocation } = useQuery(GET_EVENTS_BY_LOCATION, {
         variables: { bounds },
     });
+
+    const { data: searchEventByCategories } = useQuery(GET_EVENTS_BY_CATEGORIES, {
+        variables: { categories },
+    });
+
+    const { data: searchEventByTypes } = useQuery(GET_EVENTS_BY_TYPES, {
+        variables: { types: categories },
+    });
+
+    console.log(searchEventByTypes?.eventSearchByTypes);
 
     const normalizeViewport = (viewport: any) => {
         return {
@@ -145,7 +202,7 @@ export const FilteredEventsMap = () => {
                 />
                 <SelectCategory
                     categoryList={eventTypes}
-                    titleCategories={"Select category"}
+                    titleCategories={"Types"}
                     badgesShow={false}
                     onChange={handleCategoriesChange}
                 />
@@ -154,7 +211,13 @@ export const FilteredEventsMap = () => {
 
             {activeTab === "list" && (
                 <FilterEvents
-                    data={searchDate?.eventsByDate || searchEventByLocation?.eventSearchByLocation}
+                    // Подумать разделить на компоненты, под разные дата данные
+                    data={
+                        searchDate?.eventsByDate ||
+                        searchEventByLocation?.eventSearchByLocation ||
+                        searchEventByCategories?.eventSearchByCategories ||
+                        searchEventByTypes?.eventSearchByTypes
+                    }
                     sizeCard={SizeCard.ML}
                 />
             )}

@@ -5,6 +5,7 @@ export const eventTypeDefs = gql`
         events(limit: Int!, offset: Int, sort: String!): [Event!]!
         eventSearchByLocation(bounds: Bounds!): [Event]
         eventSearchByCategories(categories: [String]!): [Event!]!
+        eventSearchByTypes(types: [String]!): [Event!]!
     }
 
     type Event {
@@ -48,6 +49,9 @@ export const eventTypeDefs = gql`
 
     input CategoriesInput {
         categories: [String]
+    }
+    input TypesInput {
+        types: [String]
     }
 `;
 
