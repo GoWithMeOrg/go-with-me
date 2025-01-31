@@ -68,7 +68,15 @@ export const eventResolvers = {
 
         eventFilters: async (
             parent: any,
-            { date, bounds }: { date: Date; bounds: { south: number; west: number; north: number; east: number } },
+            {
+                date,
+                bounds,
+                categories,
+            }: {
+                date: Date;
+                bounds: { south: number; west: number; north: number; east: number };
+                categories: string[];
+            },
         ) => {
             const query: any = {};
 
@@ -90,6 +98,10 @@ export const eventResolvers = {
                         ],
                     },
                 };
+            }
+
+            if (categories) {
+                query.categories = { $in: categories };
             }
 
             return await EventModel.find(query);
