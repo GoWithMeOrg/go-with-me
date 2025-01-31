@@ -73,11 +73,13 @@ export const eventResolvers = {
                 bounds,
                 categories,
                 types,
+                tags,
             }: {
                 date: Date;
                 bounds: { south: number; west: number; north: number; east: number };
                 categories: string[];
                 types: string[];
+                tags: string[];
             },
         ) => {
             const query: any = {};
@@ -108,6 +110,10 @@ export const eventResolvers = {
 
             if (types) {
                 query.types = { $in: types };
+            }
+
+            if (tags) {
+                query.tags = { $in: tags };
             }
 
             return await EventModel.find(query);
