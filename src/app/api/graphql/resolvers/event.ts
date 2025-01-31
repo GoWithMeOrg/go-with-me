@@ -66,7 +66,10 @@ export const eventResolvers = {
         //     });
         // },
 
-        eventFilters: async (parent: any, { date }: { date: Date }) => {
+        eventFilters: async (
+            parent: any,
+            { date, bounds }: { date: Date; bounds: { south: number; west: number; north: number; east: number } },
+        ) => {
             const query: any = {};
 
             if (date) {
@@ -75,6 +78,18 @@ export const eventResolvers = {
                 startOfDay.setHours(0, 0, 0, 0);
                 endOfDay.setHours(23, 59, 59, 999);
                 query.startDate = { $gte: startOfDay, $lt: endOfDay };
+            }
+
+            if (bounds) {
+                const { south, west, north, east } = bounds;
+                query.location = {
+                    $geoWithin: {
+                        $box: [
+                            [west, south],
+                            [east, north],
+                        ],
+                    },
+                };
             }
 
             return await EventModel.find(query);
