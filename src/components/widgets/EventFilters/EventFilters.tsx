@@ -27,6 +27,31 @@ type Bounds = {
     east: number;
 };
 
+// const GET_EVENTS_BY_FILTER = gql`
+//     query EventByFilters($date: String!) # , $bounds: Bounds, $categories: [String], $types: [String]
+//     {
+//         eventsByDate(date: $date) # , bounds: $bounds, categories: $categories, types: $types
+//         {
+//             _id
+//             name
+//             startDate
+//             location {
+//                 coordinates
+//                 properties {
+//                     address
+//                 }
+//             }
+//             organizer {
+//                 image
+//                 firstName
+//             }
+//             description
+//             time
+//             image
+//         }
+//     }
+// `;
+
 const GET_EVENTS_BY_DATE = gql`
     query EventsByDate($date: String!) {
         eventsByDate(date: $date) {
@@ -125,6 +150,12 @@ export const EventFilters = () => {
     const [selectedLocation, setSelectedLocation] = useState<google.maps.places.PlaceResult | null>(null);
     const [bounds, setBounds] = useState<Bounds | null>(null);
     const [categories, setCategories] = useState<string[]>([]);
+    const [types, setTypes] = useState<string[]>([]);
+
+    console.log(selectedDate);
+    // const { data } = useQuery(GET_EVENTS_BY_FILTER, {
+    //     variables: { date: selectedDate },
+    // });
 
     const { data: searchDate } = useQuery(GET_EVENTS_BY_DATE, {
         variables: { date: selectedDate },

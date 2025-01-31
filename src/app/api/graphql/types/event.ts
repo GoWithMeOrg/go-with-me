@@ -6,6 +6,7 @@ export const eventTypeDefs = gql`
         eventSearchByLocation(bounds: Bounds!): [Event]
         eventSearchByCategories(categories: [String]!): [Event!]!
         eventSearchByTypes(types: [String]!): [Event!]!
+        eventFilters(date: String): [Event!]!
     }
 
     type Event {
@@ -38,6 +39,10 @@ export const eventTypeDefs = gql`
         types: [String]
         status: String
         image: String
+    }
+
+    input Date {
+        date: String!
     }
 
     input Bounds {

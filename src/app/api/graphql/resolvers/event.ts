@@ -54,16 +54,30 @@ export const eventResolvers = {
 
             return await EventModel.find(query);
         },
-        eventsByDate: async (parent: any, { date }: { date: any }) => {
-            const startOfDay = new Date(date);
-            const endOfDay = new Date(date);
+        // eventsByDate: async (parent: any, { date }: { date: any }) => {
+        //     const startOfDay = new Date(date);
+        //     const endOfDay = new Date(date);
 
-            startOfDay.setHours(0, 0, 0, 0);
-            endOfDay.setHours(23, 59, 59, 999);
+        //     startOfDay.setHours(0, 0, 0, 0);
+        //     endOfDay.setHours(23, 59, 59, 999);
 
-            return await EventModel.find({
-                startDate: { $gte: startOfDay, $lt: endOfDay },
-            });
+        //     return await EventModel.find({
+        //         startDate: { $gte: startOfDay, $lt: endOfDay },
+        //     });
+        // },
+
+        eventFilters: async (parent: any, { date }: { date: Date }) => {
+            const query: any = {};
+
+            if (date) {
+                const startOfDay = new Date(date);
+                const endOfDay = new Date(date);
+                startOfDay.setHours(0, 0, 0, 0);
+                endOfDay.setHours(23, 59, 59, 999);
+                query.startDate = { $gte: startOfDay, $lt: endOfDay };
+            }
+
+            return await EventModel.find(query);
         },
     },
 
