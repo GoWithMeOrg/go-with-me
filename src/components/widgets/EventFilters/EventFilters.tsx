@@ -27,7 +27,7 @@ type Bounds = {
     east: number;
 };
 
-const GET_EVENT_FILTERS = gql`
+const GET_EVENTS_FILTERED = gql`
     query EventFilters($date: String, $bounds: Bounds, $categories: [String], $types: [String], $tags: [String]) {
         eventFilters(date: $date, bounds: $bounds, categories: $categories, types: $types, tags: $tags) {
             _id
@@ -63,7 +63,7 @@ export const EventFilters = () => {
         data: filteredData,
         error,
         refetch,
-    } = useQuery(GET_EVENT_FILTERS, {
+    } = useQuery(GET_EVENTS_FILTERED, {
         skip: !date && !bounds && !categories?.length && !types?.length && !tags?.length, // Пропуск запроса, если нет фильтров
         variables: {
             date: date || undefined,
