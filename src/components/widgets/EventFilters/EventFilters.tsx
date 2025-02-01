@@ -27,103 +27,9 @@ type Bounds = {
     east: number;
 };
 
-// const GET_EVENTS_BY_FILTER = gql`
-//     query EventByFilters($date: String!) # , $bounds: Bounds, $categories: [String], $types: [String]
-//     {
-//         eventsByDate(date: $date) # , bounds: $bounds, categories: $categories, types: $types
-//         {
-//             _id
-//             name
-//             startDate
-//             location {
-//                 coordinates
-//                 properties {
-//                     address
-//                 }
-//             }
-//             organizer {
-//                 image
-//                 firstName
-//             }
-//             description
-//             time
-//             image
-//         }
-//     }
-// `;
-
-const GET_EVENTS_BY_DATE = gql`
-    query EventsByDate($date: String!) {
-        eventsByDate(date: $date) {
-            _id
-            name
-            startDate
-            location {
-                coordinates
-                properties {
-                    address
-                }
-            }
-            organizer {
-                image
-                firstName
-            }
-            description
-            time
-            image
-        }
-    }
-`;
-
-const GET_EVENTS_BY_LOCATION = gql`
-    query GetEventsByLocation($bounds: Bounds!) {
-        eventSearchByLocation(bounds: $bounds) {
-            _id
-            name
-            startDate
-            location {
-                coordinates
-                properties {
-                    address
-                }
-            }
-            organizer {
-                image
-                firstName
-            }
-            description
-            time
-            image
-        }
-    }
-`;
-
-const GET_EVENTS_BY_CATEGORIES = gql`
-    query GetEventsByCategories($categories: [String]!) {
-        eventSearchByCategories(categories: $categories) {
-            _id
-            name
-            startDate
-            location {
-                coordinates
-                properties {
-                    address
-                }
-            }
-            organizer {
-                image
-                firstName
-            }
-            description
-            time
-            image
-        }
-    }
-`;
-
-const GET_EVENTS_BY_TYPES = gql`
-    query GetEventsByTypes($types: [String]!) {
-        eventSearchByTypes(types: $types) {
+const GET_EVENT_FILTERS = gql`
+    query EventFilters($date: String, $bounds: Bounds, $categories: [String], $types: [String], $tags: [String]) {
+        eventFilters(date: $date, bounds: $bounds, categories: $categories, types: $types, tags: $tags) {
             _id
             name
             startDate
@@ -146,61 +52,77 @@ const GET_EVENTS_BY_TYPES = gql`
 
 export const EventFilters = () => {
     const [activeTab, setActiveTab] = useState(NavbarEventTabs.LIST);
-    const [selectedDate, setSelectedDate] = useState<string>("");
+    const [date, setDate] = useState<string | null>(null);
     const [selectedLocation, setSelectedLocation] = useState<google.maps.places.PlaceResult | null>(null);
     const [bounds, setBounds] = useState<Bounds | null>(null);
-    const [categories, setCategories] = useState<string[]>([]);
-    const [types, setTypes] = useState<string[]>([]);
+    const [categories, setCategories] = useState<string[] | null>(null);
+    const [types, setTypes] = useState<string[] | null>(null);
+    const [tags, setTags] = useState<string[] | null>(null);
 
-    console.log(selectedDate);
-    // const { data } = useQuery(GET_EVENTS_BY_FILTER, {
-    //     variables: { date: selectedDate },
-    // });
-
-    const { data: searchDate } = useQuery(GET_EVENTS_BY_DATE, {
-        variables: { date: selectedDate },
+    const {
+        data: filteredData,
+        error,
+        refetch,
+    } = useQuery(GET_EVENT_FILTERS, {
+        skip: !date && !bounds && !categories?.length && !types?.length && !tags?.length, // Пропуск запроса, если нет фильтров
+        variables: {
+            date: date || undefined,
+            bounds: bounds || undefined,
+            categories: categories?.length ? categories : undefined,
+            types: types?.length ? types : undefined,
+            tags: tags?.length ? tags : undefined,
+        },
     });
-
-    const { data: searchEventByLocation } = useQuery(GET_EVENTS_BY_LOCATION, {
-        variables: { bounds },
-    });
-
-    const { data: searchEventByCategories } = useQuery(GET_EVENTS_BY_CATEGORIES, {
-        variables: { categories },
-    });
-
-    const { data: searchEventByTypes } = useQuery(GET_EVENTS_BY_TYPES, {
-        variables: { types: categories },
-    });
-
-    console.log(searchEventByTypes?.eventSearchByTypes);
-
-    const normalizeViewport = (viewport: any) => {
-        return {
-            south: viewport?.ei?.lo,
-            west: viewport?.Hh?.lo,
-            north: viewport?.ei?.hi,
-            east: viewport?.Hh?.hi,
-        };
-    };
 
     useEffect(() => {
-        const viewport = normalizeViewport(selectedLocation?.geometry?.viewport);
-        setBounds(viewport);
-    }, [selectedLocation]);
+        if (!selectedLocation?.geometry?.viewport) {
+            console.warn("Viewport отсутствует в selectedLocation");
+            return;
+        }
 
+        const viewport = selectedLocation.geometry.viewport;
+
+        const bounds = {
+            south: Number(viewport.getSouthWest()?.lat()) || 0,
+            west: Number(viewport.getSouthWest()?.lng()) || 0,
+            north: Number(viewport.getNorthEast()?.lat()) || 0,
+            east: Number(viewport.getNorthEast()?.lng()) || 0,
+        };
+
+        if ([bounds.south, bounds.west, bounds.north, bounds.east].some(isNaN)) {
+            console.error("Некорректные значения в bounds:", bounds);
+            return;
+        }
+
+        setBounds(bounds);
+        refetch();
+    }, [selectedLocation, refetch]);
+
+    console.log(selectedLocation);
     const handleTabClick = (tab: NavbarEventTabs) => {
         setActiveTab(tab);
     };
     const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const isDateFormatValid = /^\d{4}-\d{2}-\d{2}$/.test(e.target.value);
         if (isDateFormatValid) {
-            setSelectedDate(dayjs(e.target.value).toISOString());
+            setDate(dayjs(e.target.value).toISOString());
         }
+        refetch();
     };
 
     const handleCategoriesChange = (categories: string[]) => {
         setCategories(categories);
+        refetch();
+    };
+
+    const handleTypesChange = (types: string[]) => {
+        setTypes(types);
+        refetch();
+    };
+
+    const handleTagsChange = (tags: string[]) => {
+        setTags(tags);
+        refetch();
     };
 
     return (
@@ -233,23 +155,12 @@ export const EventFilters = () => {
                     categoryList={eventTypes}
                     titleCategories={"Types"}
                     badgesShow={false}
-                    onChange={handleCategoriesChange}
+                    onChange={handleTypesChange}
                 />
-                <CreateTag eventTags={[]} onChange={console.warn} />
+                <CreateTag eventTags={[]} onChange={handleTagsChange} />
             </div>
 
-            {activeTab === "list" && (
-                <FilteredEvents
-                    // Подумать разделить на компоненты, под разные дата данные
-                    data={
-                        searchDate?.eventsByDate ||
-                        searchEventByLocation?.eventSearchByLocation ||
-                        searchEventByCategories?.eventSearchByCategories ||
-                        searchEventByTypes?.eventSearchByTypes
-                    }
-                    sizeCard={SizeCard.ML}
-                />
-            )}
+            {activeTab === "list" && <FilteredEvents data={filteredData?.eventFilters} sizeCard={SizeCard.ML} />}
             {activeTab === "map" && <GoogleMap />}
         </div>
     );

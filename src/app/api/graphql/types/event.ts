@@ -46,10 +46,10 @@ export const eventTypeDefs = gql`
     }
 
     input Bounds {
-        south: Float!
-        west: Float!
-        north: Float!
-        east: Float!
+        south: Float
+        west: Float
+        north: Float
+        east: Float
     }
 
     input CategoriesInput {
