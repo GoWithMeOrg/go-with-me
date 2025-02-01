@@ -7,6 +7,7 @@ export const eventResolvers = {
             const events = await EventModel.find().sort(sort).limit(limit);
             return events;
         },
+
         event: async (parent: any, { id, ...rest }: { id: string }) => {
             return await EventModel.findById(id);
         },
@@ -15,55 +16,49 @@ export const eventResolvers = {
             return await EventModel.find({ $text: { $search: text } });
         },
 
-        eventSearchByLocation: async (
+        eventFilters: async (
             parent: any,
-            { bounds }: { bounds: { south: number; west: number; north: number; east: number } },
+            {
+                date,
+                bounds,
+                categories,
+                types,
+                tags,
+            }: {
+                date: Date;
+                bounds: { south: number; west: number; north: number; east: number };
+                categories: string[];
+                types: string[];
+                tags: string[];
+            },
         ) => {
-            const { south, west, north, east } = bounds;
+            const filters: any = {};
 
-            const query = {
-                location: {
+            if (date) {
+                const startOfDay = new Date(date);
+                const endOfDay = new Date(date);
+                startOfDay.setHours(0, 0, 0, 0);
+                endOfDay.setHours(23, 59, 59, 999);
+                filters.startDate = { $gte: startOfDay, $lt: endOfDay };
+            }
+
+            if (bounds) {
+                const { south, west, north, east } = bounds;
+                filters.location = {
                     $geoWithin: {
                         $box: [
                             [west, south],
                             [east, north],
                         ],
                     },
-                },
-            };
+                };
+            }
 
-            return await EventModel.find(query);
-        },
+            if (categories) filters.categories = { $in: categories };
+            if (types) filters.types = { $in: types };
+            if (tags) filters.tags = { $in: tags };
 
-        eventSearchByCategories: async (parent: any, { categories }: { categories: string[] }) => {
-            const query = {
-                categories: {
-                    $in: categories,
-                },
-            };
-
-            return await EventModel.find(query);
-        },
-
-        eventSearchByTypes: async (parent: any, { types }: { types: string[] }) => {
-            const query = {
-                types: {
-                    $in: types,
-                },
-            };
-
-            return await EventModel.find(query);
-        },
-        eventsByDate: async (parent: any, { date }: { date: any }) => {
-            const startOfDay = new Date(date);
-            const endOfDay = new Date(date);
-
-            startOfDay.setHours(0, 0, 0, 0);
-            endOfDay.setHours(23, 59, 59, 999);
-
-            return await EventModel.find({
-                startDate: { $gte: startOfDay, $lt: endOfDay },
-            });
+            return await EventModel.find(filters);
         },
     },
 

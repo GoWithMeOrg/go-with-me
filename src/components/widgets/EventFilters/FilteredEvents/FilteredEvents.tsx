@@ -1,16 +1,17 @@
+import { FC } from "react";
+
 import { IEvent } from "@/database/models/Event";
 import { CardEvent } from "@/components/widgets/CardEvent";
 import { SizeCard } from "@/components/widgets/CardEvent/CardEvent";
 
-import classes from "./FilterEvents.module.css";
-import { FC, useEffect } from "react";
+import classes from "./FilteredEvents.module.css";
 
-interface FilterEventsProps {
+interface FilteredEventsProps {
     data: any;
     sizeCard: SizeCard;
 }
 
-export const FilterEvents: FC<FilterEventsProps> = ({ data, sizeCard }) => {
+export const FilteredEvents: FC<FilteredEventsProps> = ({ data, sizeCard }) => {
     if (data?.length === 0) return <p>По вашему запросу ничего не найдено</p>;
 
     return (
@@ -36,4 +37,4 @@ export const FilterEvents: FC<FilterEventsProps> = ({ data, sizeCard }) => {
     );
 };
 
-export default FilterEvents;
+export default FilteredEvents;
