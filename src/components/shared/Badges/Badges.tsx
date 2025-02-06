@@ -1,4 +1,6 @@
-import React, { FC, HTMLAttributes, useMemo } from "react";
+import React, { FC, HTMLAttributes } from "react";
+
+import { useBadges } from "./hooks";
 
 import classes from "./Badges.module.css";
 
@@ -14,22 +16,17 @@ export enum Sizes {
     SMALL = "small",
 }
 
-export const Badges: FC<IBadges> = ({ onDeleteBadge, badges, icon, className, size, ...rest }) => {
-    const badgeCssString = useMemo(
-        () => [classes.badge, size === Sizes.SMALL && classes.small, className].filter(Boolean).join(" "),
-        [className, size],
-    );
-
-    const handleDeleteBadge = (badge: string) => {
-        onDeleteBadge?.(badges.splice(badges.indexOf(badge), 1));
-    };
+export const Badges: FC<IBadges> = ({ onDeleteBadge, badges, icon, className, size }) => {
+    const { badgeCssString, handleDeleteBadge } = useBadges({ badges, size, className, onDeleteBadge });
 
     return (
-        <ul className={classes.badgeList} {...rest}>
+        <ul className={classes.badgeList}>
             {badges.map((badge) => (
                 <li key={badge} className={badgeCssString}>
                     {badge}
-                    <button onClick={() => handleDeleteBadge(badge)}>{icon}</button>
+                    <button type="button" onClick={() => handleDeleteBadge(badge)}>
+                        {icon}
+                    </button>
                 </li>
             ))}
         </ul>
