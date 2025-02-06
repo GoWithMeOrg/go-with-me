@@ -12,10 +12,11 @@ import { Loader } from "@/components/shared/Loader";
 import Arrow from "@/assets/icons/arrow.svg";
 
 import classes from "./page.module.css";
+import { useParams } from "next/navigation";
 
-type PageParams = {
-    params: { event_id: string };
-};
+interface PageProps {
+    params: Promise<{ event_id: string }>;
+}
 
 const GET_EVENT_BY_ID = gql`
     #graphql
@@ -71,7 +72,10 @@ const GET_EVENT_BY_ID = gql`
     }
 `;
 
-const EventPage: NextPage<PageParams> = ({ params: { event_id } }) => {
+const EventPage: NextPage = () => {
+    const params = useParams();
+    const event_id = params.event_id;
+
     const { data, error, loading, refetch } = useQuery(GET_EVENT_BY_ID, { variables: { id: event_id } });
 
     if (loading && !error) {
@@ -91,7 +95,7 @@ const EventPage: NextPage<PageParams> = ({ params: { event_id } }) => {
 
                 <Event event={data.event} />
 
-                <CommentsList {...{ comments: data.comments, event_id, refetch }} />
+                {/* <CommentsList {...{ comments: data.comments, event_id, refetch }} /> */}
             </div>
         </section>
     );

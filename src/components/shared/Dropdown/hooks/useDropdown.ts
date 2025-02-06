@@ -29,7 +29,7 @@ export const useDropdown = ({
     const [selectedCategories, setSelectedCategories] = useState<string[]>(categoriesData);
 
     const [isHovered, setIsHovered] = useState(Array(list.length).fill(false));
-    const dropdownRef = useRef<HTMLDivElement>(null);
+    const dropdownRef = useRef<HTMLDivElement | null>(null);
 
     const showIcon = (index: number, value: boolean) => {
         setIsHovered((prevIsHovered) => {
@@ -97,6 +97,6 @@ export const useDropdown = ({
         showIcon,
         handleDropdown,
         handleAddCategory,
-        dropdownRef,
+        dropdownRef: dropdownRef as RefObject<HTMLDivElement>,
     };
 };
