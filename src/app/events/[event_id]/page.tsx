@@ -72,9 +72,9 @@ const GET_EVENT_BY_ID = gql`
     }
 `;
 
-const EventPage: NextPage = () => {
+const EventPage: NextPage<PageProps> = () => {
     const params = useParams();
-    const event_id = params.event_id;
+    const event_id = params.event_id as string;
 
     const { data, error, loading, refetch } = useQuery(GET_EVENT_BY_ID, { variables: { id: event_id } });
 
@@ -86,6 +86,8 @@ const EventPage: NextPage = () => {
         return <div>Error: {error.message}</div>;
     }
 
+    console.log(typeof event_id);
+
     return (
         <section className={classes.eventPage}>
             <div className={classes.eventWrapper}>
@@ -95,7 +97,7 @@ const EventPage: NextPage = () => {
 
                 <Event event={data.event} />
 
-                {/* <CommentsList {...{ comments: data.comments, event_id, refetch }} /> */}
+                <CommentsList {...{ comments: data.comments, event_id, refetch }} />
             </div>
         </section>
     );
