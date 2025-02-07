@@ -1,17 +1,15 @@
 "use client";
 
 import { NextPage } from "next";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { gql, useMutation, useQuery } from "@apollo/client";
 
 import type { ITrip } from "@/database/models/Trip";
 import { TripForm } from "@/components/widgets/TripForm";
 
-type PageParams = {
-    params: {
-        trip_id: string;
-    };
-};
+interface PageProps {
+    params: Promise<{ trip_id: string }>;
+}
 
 const GET_TRIP = gql`
     query GetTrip($id: ID!) {
@@ -56,11 +54,12 @@ const UPDATE_TRIP = gql`
     }
 `;
 
-const TripEditPage: NextPage<PageParams> = (context) => {
+const TripEditPage: NextPage<PageProps> = () => {
     const router = useRouter();
-    const tripId = context.params.trip_id;
+    const params = useParams();
+    const trip_id = params.trip_id;
     const { loading, error, data } = useQuery(GET_TRIP, {
-        variables: { id: tripId },
+        variables: { id: trip_id },
     });
 
     const [updateTrip] = useMutation(UPDATE_TRIP);
@@ -68,12 +67,12 @@ const TripEditPage: NextPage<PageParams> = (context) => {
     const handleEdit = (eventEdited: Partial<ITrip>) => {
         updateTrip({
             variables: {
-                id: tripId,
+                id: trip_id,
                 trip: eventEdited,
             },
         }).then((response) => {
             console.log("TripEditPage: ", response); // eslint-disable-line
-            router.push(`/trips/${tripId}`);
+            router.push(`/trips/${trip_id}`);
         });
     };
 

@@ -4,10 +4,11 @@ import type { NextPage } from "next";
 import { gql, useQuery } from "@apollo/client";
 
 import { Trip } from "@/components/widgets/Trip";
+import { useParams } from "next/navigation";
 
-export type PageParams = {
-    params: { trip_id: string };
-};
+export interface PageProps {
+    params: Promise<{ trip_id: string }>;
+}
 
 const GET_TRIP_BY_ID = gql`
     query GetTripById($id: ID!) {
@@ -31,8 +32,10 @@ const GET_TRIP_BY_ID = gql`
     }
 `;
 
-const TripPage: NextPage<PageParams> = (context) => {
-    const { data, error, loading } = useQuery(GET_TRIP_BY_ID, { variables: { id: context.params.trip_id } });
+const TripPage: NextPage<PageProps> = (context) => {
+    const params = useParams();
+    const trip_id = params.trip_id;
+    const { data, error, loading } = useQuery(GET_TRIP_BY_ID, { variables: { id: trip_id } });
 
     if (loading && !error) {
         return <div>Loading...</div>;

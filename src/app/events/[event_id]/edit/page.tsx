@@ -1,7 +1,7 @@
 "use client";
 
 import { NextPage } from "next";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { gql, useMutation, useQuery } from "@apollo/client";
 
 import type { IEvent } from "@/database/models/Event";
@@ -15,9 +15,9 @@ import { Title } from "@/components/shared/Title";
 import Arrow from "@/assets/icons/arrow.svg";
 import classes from "../../new/page.module.css";
 
-type PageParams = {
-    params: { event_id: string };
-};
+interface PageProps {
+    params: Promise<{ event_id: string }>;
+}
 
 const GET_EVENT = gql`
     query GetEvent($id: ID!) {
@@ -68,23 +68,27 @@ const UPDATE_EVENT = gql`
     }
 `;
 
-const EventEditPage: NextPage<PageParams> = (context) => {
+const EventEditPage: NextPage<PageProps> = () => {
     const router = useRouter();
-    const eventId = context.params.event_id;
+    const params = useParams();
+    const event_id = params.event_id;
+
     const { loading, error, data, refetch } = useQuery(GET_EVENT, {
-        variables: { id: eventId },
+        variables: { id: event_id },
     });
+
+    console.log(params);
     const [updateEvent] = useMutation(UPDATE_EVENT);
 
     const handleEditEvent = (eventEdited: Partial<IEvent>) => {
         updateEvent({
             variables: {
-                id: eventId,
+                id: event_id,
                 event: { ...eventEdited, organizer_id: data?.event?.organizer_id },
             },
         }).then((response) => {
             console.log("EventEditPage: ", response); // eslint-disable-line
-            router.push(`/events/${eventId}`);
+            router.push(`/events/${event_id}`);
         });
         refetch();
     };
