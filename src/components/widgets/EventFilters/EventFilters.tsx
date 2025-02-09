@@ -8,7 +8,7 @@ import { Title } from "@/components/shared/Title";
 import { GoogleMap } from "../GoogleMap";
 import { NavbarEvents } from "@/components/widgets/EventFilters/NavbarEvents";
 import { FilteredEvents } from "@/components/widgets/EventFilters/FilteredEvents";
-import { SelectCategory } from "@/components/widgets/SelectCategory";
+import { SelectItems } from "@/components/widgets/SelectItems";
 import { CreateTag } from "@/components/widgets/CreateTag";
 import { Date } from "@/components/widgets/Date";
 
@@ -145,13 +145,14 @@ export const EventFilters = () => {
 
                 <FilteredEventsLocation onChange={setSelectedLocation} />
 
-                <SelectCategory
+                <SelectItems
                     categoryList={eventCategory}
                     titleCategories={"Category"}
                     badgesShow={false}
                     onChange={handleCategoriesChange}
                 />
-                <SelectCategory
+
+                <SelectItems
                     categoryList={eventTypes}
                     titleCategories={"Types"}
                     badgesShow={false}

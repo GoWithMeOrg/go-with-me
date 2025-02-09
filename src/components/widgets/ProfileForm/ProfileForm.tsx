@@ -13,7 +13,7 @@ import { UploadFile } from "@/components/widgets/UploadFile";
 import { Button } from "@/components/shared/Button";
 import { Description } from "@/components/shared/Description";
 import { eventCategory, eventTypes } from "@/components/shared/Dropdown/dropdownLists";
-import { SelectCategory } from "@/components/widgets/SelectCategory";
+import { SelectItems } from "@/components/widgets/SelectItems";
 
 import { Label } from "@/components/shared/Label";
 import { Input } from "@/components/shared/Input";
@@ -164,7 +164,7 @@ export const ProfileForm: FC<IProfileFormProps> = ({ profileData, onSubmitEvent 
                     name="categories"
                     control={control}
                     render={({ field }) => (
-                        <SelectCategory
+                        <SelectItems
                             categoryList={eventCategory}
                             eventCategories={[]}
                             titleCategories={"What categories are you interested in?"}
@@ -178,7 +178,7 @@ export const ProfileForm: FC<IProfileFormProps> = ({ profileData, onSubmitEvent 
                     name="types"
                     control={control}
                     render={({ field }) => (
-                        <SelectCategory
+                        <SelectItems
                             categoryList={eventTypes}
                             eventCategories={[]}
                             titleCategories={"What subjects are you interested in?"}
