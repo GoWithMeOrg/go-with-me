@@ -9,23 +9,23 @@ export interface ISelectCategory {
 }
 
 export const useSelectCategory = ({ onChange }: ISelectCategory) => {
-    const [categories, setCategories] = useState<string[]>([]);
-    const prevCategoriesRef = useRef<string[]>(categories ?? []);
+    const [items, setItems] = useState<string[]>([]);
+    const prevItemsRef = useRef<string[]>(items ?? []);
 
     useEffect(() => {
-        if (prevCategoriesRef.current !== categories) {
-            onChange(categories || []);
-            prevCategoriesRef.current = categories;
+        if (prevItemsRef.current !== items) {
+            onChange(items);
+            prevItemsRef.current = items;
         }
-    }, [categories, onChange]);
+    }, [items]);
 
-    const handleCategoryChange = (selectedCategories: string[]) => {
-        setCategories(selectedCategories);
+    const handleCategoryChange = (selectedItem: string[]) => {
+        setItems(selectedItem);
     };
 
     return {
-        categories,
-        setCategories,
+        items,
+        setItems,
         handleCategoryChange,
     };
 };

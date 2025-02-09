@@ -43,6 +43,7 @@ const GET_EVENT_BY_ID = gql`
             time
             categories
             types
+            tags
             image
         }
         comments(event_id: $id) {
