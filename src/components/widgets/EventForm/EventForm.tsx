@@ -7,7 +7,7 @@ import { EventStatus } from "@/components/widgets/EventStatus";
 import { Button } from "@/components/shared/Button";
 import { Date } from "@/components/widgets/Date";
 import { Time } from "@/components/widgets/Time";
-import { SelectCategory } from "@/components/widgets/SelectCategory";
+import { SelectItems } from "@/components/widgets/SelectItems";
 import { eventCategory, eventTypes } from "@/components/shared/Dropdown/dropdownLists";
 import { CreateTag } from "@/components/widgets/CreateTag";
 import { GuestList } from "@/components/widgets/GuestList";
@@ -143,7 +143,7 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                             name="categories"
                             control={control}
                             render={({ field }) => (
-                                <SelectCategory
+                                <SelectItems
                                     categoryList={eventCategory}
                                     eventCategories={eventData.categories || []}
                                     titleCategories={"Select category"}
@@ -157,7 +157,7 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                             name="types"
                             control={control}
                             render={({ field }) => (
-                                <SelectCategory
+                                <SelectItems
                                     categoryList={eventTypes}
                                     eventCategories={eventData.types || []}
                                     titleCategories={"Select subject"}
