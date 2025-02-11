@@ -73,10 +73,10 @@ export const EventFilters = () => {
                 <CreateTag eventTags={[]} onChange={handleTagsChange} />
             </div>
 
-            {activeTab === "list" && (
+            {activeTab === NavbarEventTabs.LIST && (
                 <FilteredEvents data={filteredData?.eventFilters || data?.events} sizeCard={SizeCard.ML} />
             )}
-            {activeTab === "map" && <GoogleMap />}
+            {activeTab === NavbarEventTabs.LIST && <GoogleMap />}
         </div>
     );
 };
