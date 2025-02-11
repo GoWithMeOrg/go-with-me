@@ -16,6 +16,7 @@ import { NavbarEventTabs } from "../Navbar/models";
 import { FilteredEventsLocation } from "@/components/widgets/FilteredEventsLocation";
 
 import { useEventFilters } from "./hooks/useEventFilters";
+import { useEventListHome } from "@/components/widgets/EvenListHome/hook/useEventListHome";
 
 import classes from "./EventFilters.module.css";
 
@@ -29,6 +30,8 @@ export const EventFilters = () => {
         handleTagsChange,
         handleTypesChange,
     } = useEventFilters();
+
+    const { data } = useEventListHome();
 
     const handleTabClick = (tab: NavbarEventTabs) => {
         setActiveTab(tab);
@@ -70,7 +73,9 @@ export const EventFilters = () => {
                 <CreateTag eventTags={[]} onChange={handleTagsChange} />
             </div>
 
-            {activeTab === "list" && <FilteredEvents data={filteredData?.eventFilters} sizeCard={SizeCard.ML} />}
+            {activeTab === "list" && (
+                <FilteredEvents data={filteredData?.eventFilters || data?.events} sizeCard={SizeCard.ML} />
+            )}
             {activeTab === "map" && <GoogleMap />}
         </div>
     );

@@ -56,16 +56,15 @@ export const useEventFilters = () => {
     });
 
     useEffect(() => {
-        if (selectedLocation?.geometry?.viewport) {
-            const viewport = selectedLocation.geometry.viewport;
+        if (!selectedLocation?.geometry?.viewport) return;
+        const viewport = selectedLocation.geometry.viewport;
 
-            const bounds = {
-                south: Number(viewport.getSouthWest()?.lat()),
-                west: Number(viewport.getSouthWest()?.lng()),
-                north: Number(viewport.getNorthEast()?.lat()),
-                east: Number(viewport.getNorthEast()?.lng()),
-            };
-        }
+        const bounds = {
+            south: Number(viewport.getSouthWest()?.lat()),
+            west: Number(viewport.getSouthWest()?.lng()),
+            north: Number(viewport.getNorthEast()?.lat()),
+            east: Number(viewport.getNorthEast()?.lng()),
+        };
 
         setBounds(bounds);
         refetch();
