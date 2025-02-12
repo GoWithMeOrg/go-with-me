@@ -14,10 +14,10 @@ export interface IEvent {
     createdAt: Date | string;
     updatedAt: Date | string;
     location: {
-        type: string;
-        coordinates: [number, number];
+        type: { type: String; enum: ["Point"]; default: "Point" };
+        coordinates: { type: [Number]; index: "2dsphere" };
         properties: {
-            address: string;
+            address: String;
         };
     };
     status: string;
