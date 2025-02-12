@@ -7,10 +7,19 @@ import mongoose from "mongoose";
 
 import { eventCategory, eventTypes } from "@/components/shared/Dropdown/dropdownLists";
 
-export async function generateEvents(num: number) {
+export async function generateEvents(num: number, coordinates: [number, number], address: string) {
+    let coordinatesPlace, addressPlace;
+
+    if (coordinates && address) {
+        coordinatesPlace = coordinates;
+        addressPlace = address;
+    } else {
+        coordinatesPlace = [faker.location.longitude(), faker.location.latitude()];
+        addressPlace = faker.location.streetAddress();
+    }
+
     try {
         await mongooseConnect();
-
         for (let i = 0; i < num; i++) {
             const fakeEvent = new EventModel({
                 id: new mongoose.Types.ObjectId(),
@@ -29,15 +38,14 @@ export async function generateEvents(num: number) {
                 updatedAt: new Date(),
                 location: {
                     type: "Point",
-                    coordinates: [faker.location.longitude(), faker.location.latitude()],
+                    coordinates: coordinatesPlace,
                     properties: {
-                        address: faker.location.streetAddress(),
+                        address: addressPlace,
                     },
                 },
                 status: faker.helpers.arrayElement(["public", "private"]),
-
-                categories: faker.helpers.arrayElements(eventCategory, faker.number.int({ min: 1, max: 3 })),
-                types: faker.helpers.arrayElements(eventTypes, faker.number.int({ min: 1, max: 2 })),
+                categories: faker.helpers.arrayElements(eventCategory, faker.number.int({ min: 1, max: 5 })),
+                types: faker.helpers.arrayElements(eventTypes, faker.number.int({ min: 1, max: 5 })),
                 tags: faker.helpers.arrayElements(
                     ["AI", "Blockchain", "Startup", "Networking"],
                     faker.number.int({ min: 1, max: 3 }),

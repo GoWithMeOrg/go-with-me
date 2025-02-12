@@ -21,8 +21,25 @@ const GeneratorEvents = () => {
 
     const handleGenerateEvents = () => {
         if (!eventNumber || eventNumber <= 0) return;
-        console.log("Generating events:", eventNumber);
-        generateEvents(eventNumber);
+        console.log(
+            "Generating events:",
+            eventNumber,
+            "at location:",
+            selectedLocation?.geometry?.location?.lng(),
+            selectedLocation?.geometry?.location?.lat(),
+
+            "address",
+            selectedLocation?.formatted_address,
+        );
+
+        generateEvents(
+            eventNumber,
+            [
+                selectedLocation?.geometry?.location?.lng() as number,
+                selectedLocation?.geometry?.location?.lat() as number,
+            ],
+            selectedLocation?.formatted_address as string,
+        );
     };
 
     return (
