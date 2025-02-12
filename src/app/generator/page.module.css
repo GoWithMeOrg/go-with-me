@@ -1,3 +1,5 @@
 .generator {
     grid-column: 1 / -1;
+    width: 30%;
+    margin: 0 auto;
 }
