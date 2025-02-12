@@ -26,6 +26,6 @@ const RoleSchema = new Schema<IRoleDocument>({
 });
 
 const RoleModel: mongoose.Model<IRoleDocument> =
-    mongoose.models.Role || mongoose.model<IRoleDocument>("Role", RoleSchema);
+    mongoose.models?.Role || mongoose.model<IRoleDocument>("Role", RoleSchema);
 
 export default RoleModel;

@@ -13,6 +13,7 @@ export enum Resource {
     USER = "USER",
     ROLE = "ROLE",
 }
+
 export type Permission = {
     actions: Action[];
     resource: Resource;

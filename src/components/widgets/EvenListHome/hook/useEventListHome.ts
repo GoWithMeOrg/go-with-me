@@ -23,7 +23,7 @@ export const GET_EVENTS = gql`
 export const useEventListHome = () => {
     const { data, error, loading, refetch } = useQuery(GET_EVENTS, {
         variables: {
-            limit: 9,
+            limit: 100,
             offset: 9,
             sort: "startDate",
         },

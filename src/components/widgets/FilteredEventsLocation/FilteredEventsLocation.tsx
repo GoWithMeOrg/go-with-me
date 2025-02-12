@@ -5,7 +5,7 @@ import { optionsCities } from "@/components/widgets/GoogleMap/OptionsAutocomplet
 
 import classes from "./FilteredEventsLocation.module.css";
 
-interface FilteredEventsLocationProps {
+export interface FilteredEventsLocationProps {
     onChange: (...event: any[]) => void;
 }
 

@@ -14,7 +14,7 @@ export interface IEvent {
     createdAt: Date | string;
     updatedAt: Date | string;
     location: {
-        type: string;
+        type: "Point";
         coordinates: [number, number];
         properties: {
             address: string;
@@ -103,6 +103,6 @@ EventSchema.virtual("organizer", {
 });
 
 const EventModel: mongoose.Model<IEventDocument> =
-    mongoose.models.Event || mongoose.model<IEventDocument>("Event", EventSchema);
+    mongoose.models?.Event || mongoose.model<IEventDocument>("Event", EventSchema);
 
 export default EventModel;
