@@ -38,10 +38,10 @@ interface IFormInputs {
     endDate: string;
     time: string;
     location: {
-        type: { type: String; enum: ["Point"]; default: "Point" };
-        coordinates: { type: [Number]; index: "2dsphere" };
+        type: "Point";
+        coordinates: [number, number];
         properties: {
-            address: String;
+            address: string;
         };
     };
     image: string;

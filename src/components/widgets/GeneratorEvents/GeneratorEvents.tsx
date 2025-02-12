@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import { Input } from "@/components/shared/Input";
 import { Label } from "@/components/shared/Label";
 
@@ -8,52 +8,63 @@ import { Button } from "@/components/shared/Button";
 import { FilteredEventsLocation } from "../FilteredEventsLocation";
 
 import classes from "./GeneratorEvents.module.css";
-import { generateEvents } from "@/app/api/generator/route";
 
 const GeneratorEvents = () => {
     const { selectedLocation, setSelectedLocation } = useEventFilters();
     const [eventNumber, setEventNumber] = useState<number>();
+    const [generatedEvents, setGeneratedEvents] = useState(null);
 
     const changeEventNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
         const numberValue = parseInt(e.target.value, 10);
         setEventNumber(numberValue);
     };
 
-    const handleGenerateEvents = () => {
+    const handleGenerateEvents = async () => {
         if (!eventNumber || eventNumber <= 0) return;
-        console.log(
-            "Generating events:",
-            eventNumber,
-            "at location:",
-            selectedLocation?.geometry?.location?.lng(),
-            selectedLocation?.geometry?.location?.lat(),
+        // Параметры для запроса на генерацию событий
+        const payload = {
+            num: eventNumber,
+            coordinates: [selectedLocation?.geometry?.location?.lng(), selectedLocation?.geometry?.location?.lat()],
+            address: selectedLocation?.formatted_address,
+        };
 
-            "address",
-            selectedLocation?.formatted_address,
-        );
+        //запрос
+        try {
+            const res = await fetch("/api/generator", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
+            });
 
-        generateEvents(
-            eventNumber,
-            [
-                selectedLocation?.geometry?.location?.lng() as number,
-                selectedLocation?.geometry?.location?.lat() as number,
-            ],
-            selectedLocation?.formatted_address as string,
-        );
+            const data = await res.json();
+
+            setGeneratedEvents(data);
+
+            if (!res.ok) throw new Error(data.error || "Ошибка при генерации событий");
+
+            console.log("✅ События успешно сгенерированы:", data);
+        } catch (error) {
+            console.error("❌ Ошибка при генерации событий:", error);
+        }
     };
 
     return (
         <>
             <h3>Генератор случайных событий</h3>
-            <Label label="Укажите количество событий">
-                <Input type="number" onChange={changeEventNumber} />
-            </Label>
 
-            <FilteredEventsLocation onChange={setSelectedLocation} />
+            <div>
+                <Label label="Укажите количество событий">
+                    <Input type="number" onChange={changeEventNumber} />
+                </Label>
 
-            <Button className={classes.generateButton} onClick={handleGenerateEvents}>
-                Сгенерировать события
-            </Button>
+                <FilteredEventsLocation onChange={setSelectedLocation} />
+
+                <Button className={classes.generateButton} onClick={handleGenerateEvents}>
+                    Сгенерировать события
+                </Button>
+            </div>
+
+            {generatedEvents && <Label label={"Ваши события сгенерированы"} className={classes.label} />}
         </>
     );
 };
