@@ -103,6 +103,6 @@ EventSchema.virtual("organizer", {
 });
 
 const EventModel: mongoose.Model<IEventDocument> =
-    mongoose.models.Event || mongoose.model<IEventDocument>("Event", EventSchema);
+    mongoose.models?.Event || mongoose.model<IEventDocument>("Event", EventSchema);
 
 export default EventModel;

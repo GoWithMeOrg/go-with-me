@@ -1,29 +1,42 @@
 "use client";
-
+import React, { useState } from "react";
 import { Input } from "@/components/shared/Input";
 import { Label } from "@/components/shared/Label";
-import React, { useState } from "react";
-import { Autocomplete } from "../GoogleMap";
-import { optionsCities } from "../GoogleMap/OptionsAutocomplete";
 
-import classes from "./GeneratorEvents.module.css";
 import { useEventFilters } from "../EventFilters/hooks/useEventFilters";
 import { Button } from "@/components/shared/Button";
 import { FilteredEventsLocation } from "../FilteredEventsLocation";
 
+import classes from "./GeneratorEvents.module.css";
+import { generateEvents } from "@/app/api/generator/route";
+
 const GeneratorEvents = () => {
-    const { setSelectedLocation } = useEventFilters();
+    const { selectedLocation, setSelectedLocation } = useEventFilters();
+    const [eventNumber, setEventNumber] = useState<number>();
+
+    const changeEventNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const numberValue = parseInt(e.target.value, 10);
+        setEventNumber(numberValue);
+    };
+
+    const handleGenerateEvents = () => {
+        if (!eventNumber || eventNumber <= 0) return;
+        console.log("Generating events:", eventNumber);
+        generateEvents(eventNumber);
+    };
 
     return (
         <>
             <h3>Генератор случайных событий</h3>
             <Label label="Укажите количество событий">
-                <Input />
+                <Input type="number" onChange={changeEventNumber} />
             </Label>
 
             <FilteredEventsLocation onChange={setSelectedLocation} />
 
-            <Button className={classes.generateButton}>Сгенерировать события</Button>
+            <Button className={classes.generateButton} onClick={handleGenerateEvents}>
+                Сгенерировать события
+            </Button>
         </>
     );
 };
