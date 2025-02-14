@@ -2,8 +2,10 @@ import { faker } from "@faker-js/faker";
 import EventModel from "@/database/models/Event";
 import mongoose from "mongoose";
 import { eventCategory, eventTypes } from "@/components/shared/Dropdown/dropdownLists";
+import mongooseConnect from "@/database/mongooseConnect";
 
 export async function generateEvents(num: number, coordinates?: [number, number], address?: string) {
+    await mongooseConnect();
     const events = [];
 
     for (let i = 0; i < num; i++) {

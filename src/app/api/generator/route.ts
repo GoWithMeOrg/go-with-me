@@ -6,7 +6,7 @@ import mongooseConnect from "@/database/mongooseConnect";
 
 export async function POST(req: Request) {
     try {
-        await mongooseConnect();
+        //await mongooseConnect();
         const { num, coordinates, address } = await req.json();
 
         if (!num || num <= 0) {
