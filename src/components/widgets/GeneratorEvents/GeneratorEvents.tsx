@@ -8,8 +8,11 @@ import { Button } from "@/components/shared/Button";
 import { FilteredEventsLocation } from "../FilteredEventsLocation";
 
 import classes from "./GeneratorEvents.module.css";
+import { useSession } from "next-auth/react";
 
 const GeneratorEvents = () => {
+    const { data: session, status } = useSession();
+    const userID = session?.user.id;
     const { selectedLocation, setSelectedLocation } = useEventFilters();
     const [eventNumber, setEventNumber] = useState<number>();
     const [generatedEvents, setGeneratedEvents] = useState(null);
@@ -23,6 +26,7 @@ const GeneratorEvents = () => {
         if (!eventNumber || eventNumber <= 0) return;
         // Параметры для запроса на генерацию событий
         const payload = {
+            id: userID,
             num: eventNumber,
             coordinates: [selectedLocation?.geometry?.location?.lng(), selectedLocation?.geometry?.location?.lat()],
             address: selectedLocation?.formatted_address,

@@ -1,21 +1,28 @@
 import { faker } from "@faker-js/faker";
 import EventModel from "@/database/models/Event";
-import mongoose from "mongoose";
 import { eventCategory, eventTypes } from "@/components/shared/Dropdown/dropdownLists";
 import mongooseConnect from "@/database/mongooseConnect";
 
-export async function generateEvents(num: number, coordinates?: [number, number], address?: string) {
+export async function generateEvents(id: string, num: number, coordinates: [number, number], address: string) {
     await mongooseConnect();
+
+    let coordinatesPlace, addressPlace;
+
+    if (coordinates && address) {
+        coordinatesPlace = coordinates;
+        addressPlace = address;
+    } else {
+        coordinatesPlace = [faker.location.longitude(), faker.location.latitude()];
+        addressPlace = faker.location.streetAddress();
+    }
+
     const events = [];
 
     for (let i = 0; i < num; i++) {
-        const fakeEvent = new EventModel({
-            id: new mongoose.Types.ObjectId(),
-            organizer_id: new mongoose.Types.ObjectId(),
+        const fakeEvent = {
+            organizer_id: id,
             organizer: {
-                _id: new mongoose.Types.ObjectId(),
-                name: faker.person.fullName(),
-                email: faker.internet.email(),
+                _id: id,
             },
             name: faker.company.name(),
             description: faker.lorem.paragraph(),
@@ -26,9 +33,9 @@ export async function generateEvents(num: number, coordinates?: [number, number]
             updatedAt: new Date(),
             location: {
                 type: "Point",
-                coordinates: coordinates || [faker.location.longitude(), faker.location.latitude()],
+                coordinates: [faker.location.longitude(), faker.location.latitude()],
                 properties: {
-                    address: address || faker.location.streetAddress(),
+                    address: faker.location.streetAddress(),
                 },
             },
             status: faker.helpers.arrayElement(["public", "private"]),
@@ -39,7 +46,8 @@ export async function generateEvents(num: number, coordinates?: [number, number]
                 faker.number.int({ min: 1, max: 3 }),
             ),
             image: faker.image.url(),
-        });
+        };
+
         events.push(fakeEvent);
     }
 
