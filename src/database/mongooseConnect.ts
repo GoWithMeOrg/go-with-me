@@ -2,8 +2,7 @@ import mongoose, { ConnectOptions } from "mongoose";
 import EventModel from "./models/Event";
 
 if (!process.env.MONGODB_URI) {
-    // throw new Error('Invalid/Missing environment variable: "MONGODB_URI"');
-    console.log("Переменна MONGODB_URI не определена");
+    throw new Error('Invalid/Missing environment variable: "MONGODB_URI"');
 }
 
 /**
