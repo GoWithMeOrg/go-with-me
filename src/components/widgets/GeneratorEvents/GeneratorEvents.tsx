@@ -9,9 +9,10 @@ import { FilteredEventsLocation } from "../FilteredEventsLocation";
 
 import classes from "./GeneratorEvents.module.css";
 import { useSession } from "next-auth/react";
+import { optionsFullAdress } from "../GoogleMap/OptionsAutocomplete";
 
 const GeneratorEvents = () => {
-    const { data: session, status } = useSession();
+    const { data: session } = useSession();
     const userID = session?.user.id;
     const { selectedLocation, setSelectedLocation } = useEventFilters();
     const [eventNumber, setEventNumber] = useState<number>();
@@ -61,14 +62,14 @@ const GeneratorEvents = () => {
                     <Input type="number" onChange={changeEventNumber} />
                 </Label>
 
-                <FilteredEventsLocation onChange={setSelectedLocation} />
+                <FilteredEventsLocation onChange={setSelectedLocation} options={optionsFullAdress} />
 
                 <Button className={classes.generateButton} onClick={handleGenerateEvents}>
                     Сгенерировать события
                 </Button>
             </div>
 
-            {generatedEvents && <Label label={"Ваши события сгенерированы"} className={classes.label} />}
+            {generatedEvents && <Label label={"Cобытия сгенерированы"} className={classes.label} />}
         </>
     );
 };

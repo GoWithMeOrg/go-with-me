@@ -6,15 +6,16 @@ import { optionsCities } from "@/components/widgets/GoogleMap/OptionsAutocomplet
 import classes from "./FilteredEventsLocation.module.css";
 
 export interface FilteredEventsLocationProps {
+    options: google.maps.places.AutocompleteOptions;
     onChange: (...event: any[]) => void;
 }
 
-export const FilteredEventsLocation: FC<FilteredEventsLocationProps> = ({ onChange }) => {
+export const FilteredEventsLocation: FC<FilteredEventsLocationProps> = ({ options, onChange }) => {
     return (
         <div className={classes.location}>
             <Label label={"Location"} />
 
-            <Autocomplete onPlaceSelect={onChange} className={classes.autocomplete} options={optionsCities} />
+            <Autocomplete onPlaceSelect={onChange} className={classes.autocomplete} options={options} />
         </div>
     );
 };
