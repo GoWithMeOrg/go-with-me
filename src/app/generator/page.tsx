@@ -14,6 +14,13 @@ import classes from "./page.module.css";
 import { faker } from "@faker-js/faker";
 import cities from "./world_cities.json";
 
+type City = {
+    country: string;
+    lat: number;
+    lng: number;
+    name: string;
+};
+
 const Generator: NextPage = () => {
     const { data: session } = useSession();
     const userID = session?.user.id;
@@ -22,7 +29,7 @@ const Generator: NextPage = () => {
 
     const [eventNumber, setEventNumber] = useState<number>();
     const [generatedEvents, setGeneratedEvents] = useState(null);
-    const [city, setCity] = useState(null);
+    const [city, setCity] = useState<City | null>(null);
 
     useEffect(() => {
         if (Array.isArray(cities)) {
@@ -37,13 +44,22 @@ const Generator: NextPage = () => {
     };
 
     const handleGenerateEvents = async () => {
+        let coord, addr;
         if (!eventNumber || eventNumber <= 0) return;
+        if (!selectedLocation) {
+            coord = [city?.lng, city?.lat];
+            addr = city?.name;
+        } else {
+            coord = [selectedLocation?.geometry?.location?.lng(), selectedLocation?.geometry?.location?.lat()];
+            addr = selectedLocation?.formatted_address;
+        }
+
         // Параметры для запроса на генерацию событий
         const payload = {
             id: userID,
             num: eventNumber,
-            coordinates: [selectedLocation?.geometry?.location?.lng(), selectedLocation?.geometry?.location?.lat()],
-            address: selectedLocation?.formatted_address,
+            coordinates: coord,
+            address: addr,
         };
 
         //запрос

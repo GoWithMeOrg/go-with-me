@@ -6,16 +6,6 @@ import mongooseConnect from "@/database/mongooseConnect";
 export async function generateEvents(id: string, num: number, coordinates: [number, number], address: string) {
     await mongooseConnect();
 
-    let coordinatesPlace, addressPlace;
-
-    if (coordinates && address) {
-        coordinatesPlace = coordinates;
-        addressPlace = address;
-    } else {
-        coordinatesPlace = [faker.location.longitude(), faker.location.latitude()];
-        addressPlace = faker.location.streetAddress();
-    }
-
     const events = [];
 
     for (let i = 0; i < num; i++) {
@@ -33,9 +23,9 @@ export async function generateEvents(id: string, num: number, coordinates: [numb
             updatedAt: new Date(),
             location: {
                 type: "Point",
-                coordinates: coordinatesPlace,
+                coordinates,
                 properties: {
-                    address: addressPlace,
+                    address,
                 },
             },
             status: faker.helpers.arrayElement(["public", "private"]),
