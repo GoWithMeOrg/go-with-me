@@ -34,7 +34,8 @@ const Generator: NextPage = () => {
     useEffect(() => {
         if (Array.isArray(cities)) {
             const randomCity = faker.helpers.arrayElement(cities);
-            setCity(randomCity);
+            // Нужно преобразовать координаты из строки в число.
+            setCity({ ...randomCity, lng: parseFloat(randomCity.lng), lat: parseFloat(randomCity.lat) });
         }
     }, []);
 

@@ -28,9 +28,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <ApolloWrapper>
                     <NextAuthProvider>
                         <APIProviderGoogleMaps>
-                            <Header />
-                            <Container>{children}</Container>
-                            <Footer />
+                            <Suspense>
+                                <Header />
+                                <Container>{children}</Container>
+                                <Footer />
+                            </Suspense>
                         </APIProviderGoogleMaps>
                     </NextAuthProvider>
                 </ApolloWrapper>
