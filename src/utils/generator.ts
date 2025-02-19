@@ -33,9 +33,9 @@ export async function generateEvents(id: string, num: number, coordinates: [numb
             updatedAt: new Date(),
             location: {
                 type: "Point",
-                coordinates: [faker.location.longitude(), faker.location.latitude()],
+                coordinates: coordinatesPlace,
                 properties: {
-                    address: faker.location.streetAddress(),
+                    address: addressPlace,
                 },
             },
             status: faker.helpers.arrayElement(["public", "private"]),

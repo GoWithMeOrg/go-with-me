@@ -1,15 +1,88 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NextPage } from "next";
 
-import GeneratorEvents from "@/components/widgets/GeneratorEvents/GeneratorEvents";
+import { useSession } from "next-auth/react";
+import { useEventFilters } from "@/components/widgets/EventFilters/hooks/useEventFilters";
+import { Label } from "@/components/shared/Label";
+import { Input } from "@/components/shared/Input";
+import { FilteredEventsLocation } from "@/components/widgets/FilteredEventsLocation";
+import { optionsFullAdress } from "@/components/widgets/GoogleMap/OptionsAutocomplete";
+import { Button } from "@/components/shared/Button";
 
 import classes from "./page.module.css";
+import { faker } from "@faker-js/faker";
+import cities from "./world_cities.json";
 
 const Generator: NextPage = () => {
+    const { data: session } = useSession();
+    const userID = session?.user.id;
+
+    const { selectedLocation, setSelectedLocation } = useEventFilters();
+
+    const [eventNumber, setEventNumber] = useState<number>();
+    const [generatedEvents, setGeneratedEvents] = useState(null);
+    const [city, setCity] = useState(null);
+
+    useEffect(() => {
+        if (Array.isArray(cities)) {
+            const randomCity = faker.helpers.arrayElement(cities);
+            setCity(randomCity);
+        }
+    }, []);
+
+    const changeEventNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const numberValue = parseInt(e.target.value, 10);
+        setEventNumber(numberValue);
+    };
+
+    const handleGenerateEvents = async () => {
+        if (!eventNumber || eventNumber <= 0) return;
+        // Параметры для запроса на генерацию событий
+        const payload = {
+            id: userID,
+            num: eventNumber,
+            coordinates: [selectedLocation?.geometry?.location?.lng(), selectedLocation?.geometry?.location?.lat()],
+            address: selectedLocation?.formatted_address,
+        };
+
+        //запрос
+        try {
+            const res = await fetch("/api/generator", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
+            });
+
+            const data = await res.json();
+
+            setGeneratedEvents(data);
+
+            if (!res.ok) throw new Error(data.error || "Ошибка при генерации событий");
+
+            console.log("✅ События успешно сгенерированы:", data);
+        } catch (error) {
+            console.error("❌ Ошибка при генерации событий:", error);
+        }
+    };
+
     return (
         <div className={classes.generator}>
-            <GeneratorEvents />
+            <h3>Генератор случайных событий</h3>
+
+            <div>
+                <Label label="Укажите количество событий">
+                    <Input type="number" onChange={changeEventNumber} />
+                </Label>
+
+                <FilteredEventsLocation onChange={setSelectedLocation} options={optionsFullAdress} />
+
+                <Button className={classes.generateButton} onClick={handleGenerateEvents}>
+                    Сгенерировать события
+                </Button>
+            </div>
+
+            {generatedEvents && <Label label={"Cобытия сгенерированы"} className={classes.label} />}
         </div>
     );
 };
