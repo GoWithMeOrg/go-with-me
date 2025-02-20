@@ -8,7 +8,7 @@ export async function POST(req: Request) {
         //await mongooseConnect();
         const { id, num, coordinates, address } = await req.json();
 
-        if (!num || num <= 0) {
+        if (num <= 0) {
             return NextResponse.json({ error: "Некорректное количество событий" }, { status: 400 });
         }
 
