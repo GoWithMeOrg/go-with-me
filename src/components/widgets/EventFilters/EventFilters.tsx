@@ -19,6 +19,7 @@ import { useEventFilters } from "./hooks/useEventFilters";
 import { useEventListHome } from "@/components/widgets/EvenListHome/hook/useEventListHome";
 
 import classes from "./EventFilters.module.css";
+import { optionsCities } from "../GoogleMap/OptionsAutocomplete";
 
 export const EventFilters = () => {
     const [activeTab, setActiveTab] = useState(NavbarEventTabs.LIST);
@@ -55,7 +56,7 @@ export const EventFilters = () => {
             <div className={classes.filters}>
                 <Date title={"Date"} onChange={handleDateChange} />
 
-                <FilteredEventsLocation onChange={setSelectedLocation} />
+                <FilteredEventsLocation onChange={setSelectedLocation} options={optionsCities} />
 
                 <SelectItems
                     categoryList={eventCategory}
@@ -73,10 +74,10 @@ export const EventFilters = () => {
                 <CreateTag eventTags={[]} onChange={handleTagsChange} />
             </div>
 
-            {activeTab === NavbarEventTabs.LIST && (
+            {activeTab === "list" && (
                 <FilteredEvents data={filteredData?.eventFilters || data?.events} sizeCard={SizeCard.ML} />
             )}
-            {activeTab === NavbarEventTabs.LIST && <GoogleMap />}
+            {activeTab === "map" && <GoogleMap />}
         </div>
     );
 };

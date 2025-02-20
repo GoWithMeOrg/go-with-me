@@ -16,9 +16,14 @@ export const Geocoding = ({ coordinates }: Props) => {
     const geocoding = useMapsLibrary("geocoding");
 
     useEffect(() => {
-        if (!apiIsLoaded || !geocoding || !coordinates || isNaN(lat) || isNaN(lng)) return;
-        const geocoder = new geocoding.Geocoder();
-        geocoder.geocode({ location: { lng, lat } }, (results, status) => {
+        if (!apiIsLoaded || !geocoding || !Array.isArray(coordinates) || coordinates.length !== 2) return;
+        if (typeof lat !== "number" || typeof lng !== "number" || isNaN(lat) || isNaN(lng)) return;
+
+        const geocoder = new google.maps.Geocoder();
+
+        const location: google.maps.LatLngLiteral = { lat, lng };
+
+        geocoder.geocode({ location: { lng: coordinates[0], lat: coordinates[1] } }, (results, status) => {
             if (status === "OK" && results !== null) {
                 setCity(results[0].address_components[3]?.short_name);
                 //setStreet(results[0].address_components[1].long_name);
@@ -26,7 +31,7 @@ export const Geocoding = ({ coordinates }: Props) => {
                 // console.log(results[1]);
             }
         });
-    }, [apiIsLoaded, coordinates, geocoding, lat, lng]);
+    }, [apiIsLoaded, coordinates, geocoding]);
 
     return (
         <span>

@@ -170,7 +170,7 @@ const Event: FC<EventProps> = ({ event }) => {
                         </div>
 
                         <div className={classes.organizerName}>
-                            <span className={classes.name}>{event.organizer.name}</span>
+                            <span className={classes.name}>{event.organizer?.name}</span>
                             <span className={classes.organizer}>Event Organizer</span>
                             <div className={classes.linkChat}>
                                 <Link href={`/profile`} className={classes.link}>
