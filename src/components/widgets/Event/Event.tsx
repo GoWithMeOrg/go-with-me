@@ -131,7 +131,7 @@ const Event: FC<EventProps> = ({ event }) => {
                             src={event.image}
                             width={680}
                             height={480}
-                            style={{ objectFit: "cover", objectPosition: "top" }}
+                            style={{ objectFit: "cover", objectPosition: "center" }}
                             alt="img"
                             priority
                         />
