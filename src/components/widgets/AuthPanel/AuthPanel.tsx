@@ -41,7 +41,7 @@ export const AuthPanel = () => {
                         style={{
                             backgroundColor: "#F7F7FA",
                             width: "30rem",
-                            height: "34.2rem",
+                            height: "24rem",
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
