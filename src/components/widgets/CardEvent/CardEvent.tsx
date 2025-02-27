@@ -58,7 +58,13 @@ export const CardEvent = ({ id, name, description, coord, startDate, time, image
         <div id={id} className={cardCssString}>
             {(image && size && (
                 <Link href={`/events/${id}`}>
-                    <Image src={image} alt="img" width={imageSizes[size].width} height={imageSizes[size].height} />
+                    <Image
+                        src={image}
+                        alt="img"
+                        width={imageSizes[size].width}
+                        height={imageSizes[size].height}
+                        style={{ objectFit: "cover", objectPosition: "top" }}
+                    />
                 </Link>
             )) ||
                 (!image && <div style={{ background: "#a4a7bc", height: `${imageSizes[size].height}px` }} />)}
