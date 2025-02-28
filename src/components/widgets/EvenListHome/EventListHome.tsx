@@ -9,6 +9,7 @@ import { MoreLink } from "@/components/shared/MoreLink";
 import { useEventListHome } from "./hook/useEventListHome";
 
 import classes from "./EventListHome.module.css";
+import { Backdrop } from "../Backdrop";
 
 export interface EventListHomeProps {
     sizeCard: SizeCard;
@@ -27,7 +28,7 @@ export const EventListHome: FC<EventListHomeProps> = ({ sizeCard }) => {
                 <Title title={"Popular Event List"} tag={"h2"} />
             </div>
 
-            <div className={classes.cardsEventsList}>
+            <Backdrop>
                 {data?.events.map(({ _id, description, name, startDate, location, time, image }: IEvent) => (
                     <CardEvent
                         key={_id}
@@ -41,8 +42,30 @@ export const EventListHome: FC<EventListHomeProps> = ({ sizeCard }) => {
                         size={sizeCard}
                     />
                 ))}
-            </div>
+            </Backdrop>
 
+            {/* <Backdrop>
+                <div className={classes.row}>
+                    <div className={classes.card} />
+                    <div className={classes.card} />
+                    <div className={classes.card} />
+                </div>
+                <div className={classes.row}>
+                    <div className={classes.card} />
+                    <div className={classes.card} />
+                    <div className={classes.card} />
+                </div>
+                <div className={classes.row}>
+                    <div className={classes.card} />
+                    <div className={classes.card} />
+                    <div className={classes.card} />
+                </div>
+                <div className={classes.row}>
+                    <div className={classes.card} />
+                    <div className={classes.card} />
+                    <div className={classes.card} />
+                </div>
+            </Backdrop> */}
             <MoreLink link={"/events"} text={"more events"} />
         </section>
     );

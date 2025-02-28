@@ -1,0 +1,21 @@
+.backdrop {
+    position: relative;
+    width: 100%;
+}
+
+.backdropBG {
+    position: absolute;
+    left: -260px;
+    width: "99.3vw";
+    background-color: white;
+    z-index: 1;
+    transition: "all 0.3s ease";
+}
+
+.containerRef {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
