@@ -5,6 +5,7 @@ import { CardEvent } from "@/components/widgets/CardEvent";
 import { SizeCard } from "@/components/widgets/CardEvent/CardEvent";
 
 import classes from "./FilteredEvents.module.css";
+import { Backdrop } from "../../Backdrop";
 
 interface FilteredEventsProps {
     data: any;
@@ -15,7 +16,7 @@ export const FilteredEvents: FC<FilteredEventsProps> = ({ data, sizeCard }) => {
     if (data?.length === 0) return <p>По вашему запросу ничего не найдено</p>;
 
     return (
-        <div className={classes.filteredEvents}>
+        <Backdrop>
             {data?.length === 0 ? (
                 <div className={classes.noEventsMessage}>По вашему запросу ничего не найдено</div>
             ) : (
@@ -33,7 +34,7 @@ export const FilteredEvents: FC<FilteredEventsProps> = ({ data, sizeCard }) => {
                     />
                 ))
             )}
-        </div>
+        </Backdrop>
     );
 };
 
