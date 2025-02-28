@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import useBackdrop from "./hooks/useBackdrop";
+
 import classes from "./Backdrop.module.css";
 
 interface BackdropProps {
@@ -6,35 +7,7 @@ interface BackdropProps {
 }
 
 export const Backdrop: React.FC<BackdropProps> = ({ children }) => {
-    const containerRef = useRef<HTMLDivElement>(null);
-    const [style, setStyle] = useState({ top: "0px", height: "0px" });
-
-    useEffect(() => {
-        const updateBackground = () => {
-            if (!containerRef.current) return;
-            // Получаем дочерние элементы внутри контейнера
-            const rows = Array.from(containerRef.current.children) as HTMLDivElement[];
-            if (rows.length === 0) return;
-
-            //получаем первую строку c элементами
-            const firstRow = rows[0];
-            const size = firstRow.children[0] as HTMLDivElement;
-            //получаем ппоследюю строку c элементами (длинна массива -1)
-            const lastRow = rows[rows.length - 1];
-
-            const firstRowMiddle = firstRow.offsetTop + firstRow.offsetHeight / 3;
-            const lastRowMiddle = lastRow.offsetTop + lastRow.offsetHeight / 3;
-
-            setStyle({
-                top: `${firstRowMiddle}px`,
-                height: `${lastRowMiddle - firstRowMiddle}px`,
-            });
-        };
-
-        updateBackground();
-        window.addEventListener("resize", updateBackground);
-        return () => window.removeEventListener("resize", updateBackground);
-    }, [children]);
+    const { containerRef, style } = useBackdrop({ children });
 
     return (
         <div className={classes.backdrop}>

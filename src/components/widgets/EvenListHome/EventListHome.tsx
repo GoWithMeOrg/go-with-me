@@ -44,28 +44,6 @@ export const EventListHome: FC<EventListHomeProps> = ({ sizeCard }) => {
                 ))}
             </Backdrop>
 
-            {/* <Backdrop>
-                <div className={classes.row}>
-                    <div className={classes.card} />
-                    <div className={classes.card} />
-                    <div className={classes.card} />
-                </div>
-                <div className={classes.row}>
-                    <div className={classes.card} />
-                    <div className={classes.card} />
-                    <div className={classes.card} />
-                </div>
-                <div className={classes.row}>
-                    <div className={classes.card} />
-                    <div className={classes.card} />
-                    <div className={classes.card} />
-                </div>
-                <div className={classes.row}>
-                    <div className={classes.card} />
-                    <div className={classes.card} />
-                    <div className={classes.card} />
-                </div>
-            </Backdrop> */}
             <MoreLink link={"/events"} text={"more events"} />
         </section>
     );
