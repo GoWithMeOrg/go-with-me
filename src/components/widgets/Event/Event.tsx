@@ -34,8 +34,8 @@ const Event: FC<EventProps> = ({ event }) => {
     const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(
         event.location !== undefined
             ? {
-                  lat: event.location?.coordinates[1],
                   lng: event.location.coordinates[0],
+                  lat: event.location?.coordinates[1],
               }
             : null,
     );
@@ -67,7 +67,7 @@ const Event: FC<EventProps> = ({ event }) => {
                     <Title title={event.name} className={classes.eventTitle} tag={"h2"} />
 
                     <div className={classes.location}>
-                        <Marker style={{ transform: "scale(0.937)", marginRight: "0.5rem" }} />
+                        <Marker style={{ transform: "scale(0.937)", marginRight: "0.5rem", fill: "#575B75" }} />
                         <div className={classes.geocoding}>
                             <Geocoding coordinates={coord} />
                         </div>
@@ -79,7 +79,7 @@ const Event: FC<EventProps> = ({ event }) => {
                     </div>
 
                     <div className={classes.dateAndTime}>
-                        <Checkbox style={{ transform: "scale(0.8)", marginRight: "0.5rem" }} />
+                        <Checkbox style={{ transform: "scale(0.8)", marginRight: "0.5rem", fill: "#575B75" }} />
                         {day} {dayjs(event.startDate).format("DD.MM.YY")} | {formatDate(event.time, "HH:mm")}
                     </div>
 

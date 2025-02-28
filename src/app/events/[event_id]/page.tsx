@@ -28,6 +28,7 @@ const GET_EVENT_BY_ID = gql`
                 _id
                 name
                 email
+                image
             }
             name
             location {
