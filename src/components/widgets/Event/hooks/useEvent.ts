@@ -39,6 +39,7 @@ const GET_EVENTS = gql`
             categories
             tags
             image
+            joined
         }
     }
 `;

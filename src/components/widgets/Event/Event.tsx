@@ -41,53 +41,47 @@ const Event: FC<EventProps> = ({ event }) => {
         event,
     });
 
+    //console.log(event);
     return (
         <div className={classes.event}>
             <div className={classes.eventWrapper}>
                 <div className={classes.eventInfo}>
                     <Title title={event.name} className={classes.eventTitle} tag={"h2"} />
+                    <div className={classes.information}>
+                        <div className={classes.location}>
+                            <Marker style={{ transform: "scale(0.937)", marginRight: "0.5rem", fill: "#575B75" }} />
+                            <div className={classes.geocoding}>
+                                <Geocoding coordinates={coord} />
+                            </div>
 
-                    <div className={classes.location}>
-                        <Marker style={{ transform: "scale(0.937)", marginRight: "0.5rem", fill: "#575B75" }} />
-                        <div className={classes.geocoding}>
-                            <Geocoding coordinates={coord} />
+                            <Button
+                                className={classes.buttonGoogleMaps}
+                                onClick={handleShowMap}
+                                resetDefaultStyles={true}
+                            >
+                                <ArrowMaps style={{ marginRight: "0.25rem" }} />
+                                Google maps
+                            </Button>
                         </div>
 
-                        <Button className={classes.buttonGoogleMaps} onClick={handleShowMap} resetDefaultStyles={true}>
-                            <ArrowMaps style={{ marginRight: "0.25rem" }} />
-                            {"Google maps"}
-                        </Button>
-                    </div>
+                        <div className={classes.dateAndTime}>
+                            <Checkbox style={{ transform: "scale(0.8)", marginRight: "0.5rem", fill: "#575B75" }} />
+                            {day} {dayjs(event.startDate).format("DD.MM.YY")} | {formatDate(event.time, "HH:mm")}
+                        </div>
 
-                    <div className={classes.dateAndTime}>
-                        <Checkbox style={{ transform: "scale(0.8)", marginRight: "0.5rem", fill: "#575B75" }} />
-                        {day} {dayjs(event.startDate).format("DD.MM.YY")} | {formatDate(event.time, "HH:mm")}
-                    </div>
+                        <div className={classes.eventStatus}>
+                            <Lock style={{ transform: "scale(1.1)", marginRight: "0.5rem" }} />
+                            <div className={classes.status}>{event.status}</div>
+                            <Button className={classes.buttonGoogleMaps} resetDefaultStyles onClick={handleCopyLink}>
+                                <ShareLink style={{ marginRight: "0.25rem", marginLeft: "0.88rem" }} />
+                                Share link
+                            </Button>
+                        </div>
 
-                    <div className={classes.eventStatus}>
-                        <Lock style={{ transform: "scale(1.1)", marginRight: "0.5rem" }} />
-                        <div className={classes.status}>{event.status}</div>
-                        <Button className={classes.buttonGoogleMaps} resetDefaultStyles onClick={handleCopyLink}>
-                            <ShareLink style={{ marginRight: "0.25rem", marginLeft: "0.88rem" }} />
-                            {"Share link"}
-                        </Button>
+                        {copied && <Span title={"Ссылка события скопирована в буфер обмена!"} />}
                     </div>
-
-                    {copied && <Span title={"Ссылка события скопирована в буфер обмена!"} />}
 
                     <Badges badges={event.types || []} size={Sizes.SMALL} />
-
-                    {/* <div className={classes.invitations}>
-                        <div className={classes.invited}>
-                            <div>50</div>
-                            <span className={classes.text}>invited</span>
-                        </div>
-
-                        <div className={classes.invited}>
-                            <div>26</div>
-                            <span className={classes.text}>already joined</span>
-                        </div>
-                    </div> */}
 
                     {organizer ? (
                         <div className={classes.buttons}>
@@ -95,7 +89,6 @@ const Event: FC<EventProps> = ({ event }) => {
                                 Edit
                             </Link>
 
-                            <Button size="big">Invite</Button>
                             <Button size="big" onClick={() => handleDelete(event._id)}>
                                 Delete
                             </Button>

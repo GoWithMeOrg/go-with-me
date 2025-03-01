@@ -1,5 +1,6 @@
 import EventModel, { IEvent } from "@/database/models/Event";
 import UserModel from "@/database/models/User";
+import mongoose from "mongoose";
 
 export const eventResolvers = {
     Query: {
@@ -79,6 +80,20 @@ export const eventResolvers = {
         },
         deleteEvent: async (parent: any, { id }: { id: string }) => {
             return await EventModel.deleteOne({ _id: id });
+        },
+
+        joinEvent: async (parent: any, { eventId, userId }: { eventId: string; userId: string }) => {
+            const event = await EventModel.findById(eventId);
+            if (!event) {
+                throw new Error("Event not found");
+            }
+            //@ts-ignore
+            if (!event.joined.includes(userId)) {
+                event.joined.push(new mongoose.Types.ObjectId(userId));
+                await event.save();
+            }
+
+            return event;
         },
     },
 };

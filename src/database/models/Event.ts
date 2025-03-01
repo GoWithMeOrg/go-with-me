@@ -25,6 +25,7 @@ export interface IEvent {
     types?: string[];
     tags?: string[];
     image?: string;
+    joined: mongoose.Types.ObjectId[];
 }
 
 export interface IEventDocument extends Omit<IEvent, "_id" | "organizer" | "createdAt" | "updatedAt">, Document {}
@@ -87,6 +88,13 @@ const EventSchema = new Schema<IEventDocument>(
         image: {
             type: String,
         },
+
+        joined: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: UserModel,
+            },
+        ],
     },
 
     {
