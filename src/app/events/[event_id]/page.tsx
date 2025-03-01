@@ -76,6 +76,7 @@ const GET_EVENT_BY_ID = gql`
 
 const EventPage: NextPage<PageProps> = () => {
     const params = useParams();
+
     const event_id = params.event_id as string;
 
     const { data, error, loading, refetch } = useQuery(GET_EVENT_BY_ID, { variables: { id: event_id } });
@@ -88,8 +89,7 @@ const EventPage: NextPage<PageProps> = () => {
         return <div>Error: {error.message}</div>;
     }
 
-    console.log(typeof event_id);
-
+    // console.log(data.comments.length < 15);
     return (
         <section className={classes.eventPage}>
             <div className={classes.eventWrapper}>

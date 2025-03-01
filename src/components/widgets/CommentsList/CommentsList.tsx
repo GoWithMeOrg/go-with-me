@@ -44,7 +44,7 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
             setLoading(false);
         }
     }, [data]);
-
+    //console.log(data?.comments.length === 0);
     const onSaveComment = useCallback(
         async ({ content, replyTo, parentId }: { content: string; replyTo?: ReplyTo; parentId?: string }) => {
             const saveCommentResponse = await saveComment({
@@ -101,7 +101,7 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
     const onSaveCommentTop = (content: string) => onSaveComment({ content });
     const onSaveCommentReply = (content: string) =>
         onSaveComment({ content, replyTo: replyToState ?? undefined, parentId: parentIdState ?? undefined });
-
+    console.log("Comments length:", comments.length);
     return (
         <section className={classes.container}>
             <Title tag="h3" className={classes.title}>
@@ -155,13 +155,16 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
                     <Spinner />
                 </MessageContainer>
             )}
-            <Button
-                className={classes.loadButton}
-                disabled={loading || comments.length < limit}
-                onClick={onClickLoadMore}
-            >
-                Load more comments
-            </Button>
+
+            {comments.length >= limit && (
+                <Button
+                    className={classes.loadButton}
+                    disabled={loading || comments.length < limit}
+                    onClick={onClickLoadMore}
+                >
+                    Load more comments
+                </Button>
+            )}
         </section>
     );
 };

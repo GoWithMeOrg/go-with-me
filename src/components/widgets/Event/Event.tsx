@@ -1,9 +1,7 @@
-import React, { FC, useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
+import { FC } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
-import type { IEvent } from "@/database/models/Event";
 import { formatDate } from "@/utils/formatDate";
 import { Title } from "@/components/shared/Title";
 import { Geocoding } from "@/components/widgets/GoogleMap/Geocoding";
@@ -22,43 +20,14 @@ import Marker from "@/assets/icons/marker.svg";
 import { Sizes } from "@/components/shared/Badges/Badges";
 import { Avatar } from "@/components/shared/Avatar";
 
+import useEvent, { EventProps } from "./hooks/useEvent";
+
 import classes from "./Event.module.css";
 
-export interface EventProps {
-    event: IEvent;
-}
-
 const Event: FC<EventProps> = ({ event }) => {
-    const { data: session } = useSession();
-    const [showPopup, setShowPopup] = useState<boolean>(false);
-    const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(
-        event.location !== undefined
-            ? {
-                  lng: event.location.coordinates[0],
-                  lat: event.location?.coordinates[1],
-              }
-            : null,
-    );
-
-    const [organizer, setOrganizer] = useState(true);
-    useEffect(() => {
-        //@ts-ignore
-        setOrganizer(session?.user?.id === event.organizer_id);
-        //@ts-ignore
-    }, [event.organizer_id, session?.user?.id]);
-
-    const coord: [number, number] = [event.location.coordinates[0] as number, event.location.coordinates[1] as number];
-
-    const handleShowMap = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        setShowPopup(true);
-    };
-
-    const dayOfWeek = dayjs(event.startDate).day();
-    const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    const day = days[dayOfWeek];
-
-    console.log(event);
+    const { organizer, showPopup, setShowPopup, markerPosition, handleDelete, handleShowMap, coord, day } = useEvent({
+        event,
+    });
 
     return (
         <div className={classes.event}>
@@ -94,7 +63,7 @@ const Event: FC<EventProps> = ({ event }) => {
 
                     <Badges badges={event.types || []} size={Sizes.SMALL} />
 
-                    <div className={classes.invitations}>
+                    {/* <div className={classes.invitations}>
                         <div className={classes.invited}>
                             <div>50</div>
                             <span className={classes.text}>invited</span>
@@ -104,16 +73,18 @@ const Event: FC<EventProps> = ({ event }) => {
                             <div>26</div>
                             <span className={classes.text}>already joined</span>
                         </div>
-                    </div>
+                    </div> */}
 
                     {organizer ? (
                         <div className={classes.buttons}>
-                            <Button className={classes.buttonEdit}>
-                                <Link className={classes.buttonEditLink} href={`/events/${event._id}/edit`}>
-                                    Edit
-                                </Link>
+                            <Link className={classes.buttonEditLink} href={`/events/${event._id}/edit`}>
+                                Edit
+                            </Link>
+
+                            <Button size="big">Invite</Button>
+                            <Button size="big" onClick={() => handleDelete(event._id)}>
+                                Delete
                             </Button>
-                            <Button className={classes.invite}>Invite</Button>
                         </div>
                     ) : (
                         <div className={classes.buttons}>
@@ -125,13 +96,13 @@ const Event: FC<EventProps> = ({ event }) => {
                         </div>
                     )}
                 </div>
-                <div className={classes.eventImage}>
+                <div>
                     {event.image && (
                         <Image
                             src={event.image}
                             width={680}
                             height={480}
-                            style={{ objectFit: "cover", objectPosition: "center" }}
+                            style={{ objectFit: "cover", objectPosition: "center", borderRadius: "0.25rem" }}
                             alt="img"
                             priority
                         />
