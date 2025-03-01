@@ -23,9 +23,21 @@ import { Avatar } from "@/components/shared/Avatar";
 import useEvent, { EventProps } from "./hooks/useEvent";
 
 import classes from "./Event.module.css";
+import { Span } from "@/components/shared/Span";
 
 const Event: FC<EventProps> = ({ event }) => {
-    const { organizer, showPopup, setShowPopup, markerPosition, handleDelete, handleShowMap, coord, day } = useEvent({
+    const {
+        organizer,
+        showPopup,
+        setShowPopup,
+        markerPosition,
+        handleDelete,
+        handleShowMap,
+        coord,
+        day,
+        copied,
+        handleCopyLink,
+    } = useEvent({
         event,
     });
 
@@ -55,11 +67,13 @@ const Event: FC<EventProps> = ({ event }) => {
                     <div className={classes.eventStatus}>
                         <Lock style={{ transform: "scale(1.1)", marginRight: "0.5rem" }} />
                         <div className={classes.status}>{event.status}</div>
-                        <div className={classes.buttonGoogleMaps}>
+                        <Button className={classes.buttonGoogleMaps} resetDefaultStyles onClick={handleCopyLink}>
                             <ShareLink style={{ marginRight: "0.25rem", marginLeft: "0.88rem" }} />
-                            <span>Share link</span>
-                        </div>
+                            {"Share link"}
+                        </Button>
                     </div>
+
+                    {copied && <Span title={"Ссылка события скопирована в буфер обмена!"} />}
 
                     <Badges badges={event.types || []} size={Sizes.SMALL} />
 

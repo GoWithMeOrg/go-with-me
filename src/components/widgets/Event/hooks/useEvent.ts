@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useMutation, useQuery } from "@apollo/client";
 
@@ -54,9 +54,12 @@ const DELETE_EVENT_MUTATION = gql`
 const useEvent = ({ event }: EventProps) => {
     const { data: session } = useSession();
     const router = useRouter();
+    const [deleteEventMutation] = useMutation(DELETE_EVENT_MUTATION);
+    const { getDeleteFile } = useUploadFile({});
 
     const [organizer, setOrganizer] = useState(true);
     const [showPopup, setShowPopup] = useState<boolean>(false);
+    const [copied, setCopied] = useState(false);
     const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(
         event.location !== undefined
             ? {
@@ -66,8 +69,19 @@ const useEvent = ({ event }: EventProps) => {
             : null,
     );
 
-    const [deleteEventMutation] = useMutation(DELETE_EVENT_MUTATION);
-    const { getDeleteFile } = useUploadFile({});
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+    const url = `${window.location.origin}${pathname}${searchParams ? `?${searchParams}` : ""}`;
+
+    const handleCopyLink = async () => {
+        try {
+            await navigator.clipboard.writeText(url);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        } catch (err) {
+            console.error("Ошибка копирования: ", err);
+        }
+    };
 
     useEffect(() => {
         //@ts-ignore
@@ -121,6 +135,8 @@ const useEvent = ({ event }: EventProps) => {
         handleShowMap,
         coord,
         day,
+        copied,
+        handleCopyLink,
     };
 };
 
