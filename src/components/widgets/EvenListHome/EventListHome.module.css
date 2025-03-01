@@ -22,25 +22,3 @@
     text-align: center;
     text-transform: uppercase;
 }
-
-.cardsEventsList {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    align-content: center;
-    position: relative;
-    margin-bottom: 1.4rem;
-}
-
-.cardsEventsList::before {
-    content: "";
-    position: absolute;
-    top: 6%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 99vw;
-    height: 70%;
-    background-color: var(--white-color);
-    z-index: -1;
-}
