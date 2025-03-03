@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useMutation, useQuery } from "@apollo/client";
 
 import dayjs from "dayjs";
@@ -12,6 +11,7 @@ import { useUploadFile } from "@/components/widgets/UploadFile/hooks";
 
 export interface EventProps {
     event: IEvent;
+    sessionUserID?: string | null;
 }
 
 const GET_EVENTS = gql`
@@ -39,7 +39,6 @@ const GET_EVENTS = gql`
             categories
             tags
             image
-            joined
         }
     }
 `;
@@ -52,9 +51,9 @@ const DELETE_EVENT_MUTATION = gql`
     }
 `;
 
-const useEvent = ({ event }: EventProps) => {
-    const { data: session } = useSession();
+const useEvent = ({ event, sessionUserID }: EventProps) => {
     const router = useRouter();
+
     const [deleteEventMutation] = useMutation(DELETE_EVENT_MUTATION);
     const { getDeleteFile } = useUploadFile({});
 
@@ -74,6 +73,14 @@ const useEvent = ({ event }: EventProps) => {
     const searchParams = useSearchParams();
     const url = `${window.location.origin}${pathname}${searchParams ? `?${searchParams}` : ""}`;
 
+    const { loading, error, data, refetch } = useQuery(GET_EVENTS, {
+        variables: {
+            limit: 0,
+            offset: 0,
+            sort: "startDate",
+        },
+    });
+
     const handleCopyLink = async () => {
         try {
             await navigator.clipboard.writeText(url);
@@ -85,18 +92,8 @@ const useEvent = ({ event }: EventProps) => {
     };
 
     useEffect(() => {
-        //@ts-ignore
-        setOrganizer(session?.user?.id === event.organizer_id);
-        //@ts-ignore
-    }, [event.organizer_id, session?.user?.id]);
-
-    const { loading, error, data, refetch } = useQuery(GET_EVENTS, {
-        variables: {
-            limit: 0,
-            offset: 0,
-            sort: "startDate",
-        },
-    });
+        setOrganizer(sessionUserID === event.organizer_id);
+    }, [event.organizer_id, sessionUserID]);
 
     const handleDelete = async (eventId: string) => {
         try {
@@ -109,7 +106,6 @@ const useEvent = ({ event }: EventProps) => {
             //удаляем картинку
             await getDeleteFile(imageUrl);
             router.push("/events");
-            //await refetch();
         } catch (error) {
             console.error("Error deleting event: ", error);
         }

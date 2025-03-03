@@ -46,6 +46,7 @@ const GET_EVENT_BY_ID = gql`
             types
             tags
             image
+            joined
         }
         comments(event_id: $id) {
             _id
@@ -89,7 +90,6 @@ const EventPage: NextPage<PageProps> = () => {
         return <div>Error: {error.message}</div>;
     }
 
-    // console.log(data.comments.length < 15);
     return (
         <section className={classes.eventPage}>
             <div className={classes.eventWrapper}>

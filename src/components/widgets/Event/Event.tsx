@@ -1,6 +1,9 @@
 import { FC } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
+
+import dayjs from "dayjs";
 
 import { formatDate } from "@/utils/formatDate";
 import { Title } from "@/components/shared/Title";
@@ -9,8 +12,9 @@ import { Button } from "@/components/shared/Button";
 import { Map, AdvancedMarker, Pin } from "@vis.gl/react-google-maps";
 import { Popup } from "@/components/shared/Popup";
 import { Badges } from "@/components/shared/Badges";
+import { Span } from "@/components/shared/Span";
+
 import ArrowMaps from "@/assets/icons/arrowMaps.svg";
-import dayjs from "dayjs";
 import Checkbox from "@/assets/icons/checkbox.svg";
 import Lock from "@/assets/icons/lock.svg";
 import ShareLink from "@/assets/icons/shareLink.svg";
@@ -22,10 +26,17 @@ import { Avatar } from "@/components/shared/Avatar";
 
 import useEvent, { EventProps } from "./hooks/useEvent";
 
+import Join from "../Join/Join";
+import useJoin from "../Join/hooks/useJoin";
+
 import classes from "./Event.module.css";
-import { Span } from "@/components/shared/Span";
 
 const Event: FC<EventProps> = ({ event }) => {
+    const { data: session } = useSession();
+    const sessionUserID = session?.user.id ?? null;
+
+    const { handleJoin } = useJoin({ eventID: event._id, userID: sessionUserID });
+
     const {
         organizer,
         showPopup,
@@ -39,9 +50,10 @@ const Event: FC<EventProps> = ({ event }) => {
         handleCopyLink,
     } = useEvent({
         event,
+        sessionUserID,
     });
 
-    //console.log(event);
+    console.log(event.joined);
     return (
         <div className={classes.event}>
             <div className={classes.eventWrapper}>
@@ -83,6 +95,15 @@ const Event: FC<EventProps> = ({ event }) => {
 
                     <Badges badges={event.types || []} size={Sizes.SMALL} />
 
+                    <div className={classes.invitations}>
+                        {/*  <div className={classes.invited}>
+                            <div>50</div>
+                            <span className={classes.text}>invited</span>
+                        </div> */}
+
+                        <Join joined={event.joined.length} />
+                    </div>
+
                     {organizer ? (
                         <div className={classes.buttons}>
                             <Link className={classes.buttonEditLink} href={`/events/${event._id}/edit`}>
@@ -95,7 +116,9 @@ const Event: FC<EventProps> = ({ event }) => {
                         </div>
                     ) : (
                         <div className={classes.buttons}>
-                            <Button className={classes.join}>Join</Button>
+                            <Button className={classes.join} onClick={handleJoin}>
+                                Join
+                            </Button>
                             <Button className={classes.waitingList}>Waiting list</Button>
                             <Button className={classes.favorite}>
                                 <Heart />
