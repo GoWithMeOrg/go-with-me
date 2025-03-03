@@ -101,7 +101,6 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
     const onSaveCommentTop = (content: string) => onSaveComment({ content });
     const onSaveCommentReply = (content: string) =>
         onSaveComment({ content, replyTo: replyToState ?? undefined, parentId: parentIdState ?? undefined });
-    console.log("Comments length:", comments.length);
     return (
         <section className={classes.container}>
             <Title tag="h3" className={classes.title}>
