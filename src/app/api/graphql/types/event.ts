@@ -24,11 +24,6 @@ export const eventTypeDefs = gql`
         types: [String]
         status: String
         image: String
-        joined: [ID]
-    }
-
-    type Mutation {
-        joinEvent(eventId: ID!, userId: ID!): Event
     }
 
     input EventInput {

@@ -53,7 +53,6 @@ const Event: FC<EventProps> = ({ event }) => {
         sessionUserID,
     });
 
-    console.log(event.joined);
     return (
         <div className={classes.event}>
             <div className={classes.eventWrapper}>
@@ -101,7 +100,7 @@ const Event: FC<EventProps> = ({ event }) => {
                             <span className={classes.text}>invited</span>
                         </div> */}
 
-                        <Join joined={event.joined.length} />
+                        {/* <Join joined={event.joined.length} /> */}
                     </div>
 
                     {organizer ? (
