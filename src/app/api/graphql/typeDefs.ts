@@ -5,13 +5,12 @@ import { tripTypeDefs } from "./types/trip";
 import { commentTypeDefs } from "./types/comment";
 import { locationTypeDefs } from "./types/location";
 import { listTypeDefs } from "./types/list";
+import { joinedTypeDefs } from "./types/joined";
 
 export const rootTypeDefs = gql`
     scalar ISODate
 
     type Query {
-        hello: String
-
         users: [User]
         user(id: ID!): User
 
@@ -29,6 +28,8 @@ export const rootTypeDefs = gql`
 
         lists: [List]
         listItem(id: ID!): List
+
+        joined(event_id: ID): [Joined]
     }
 
     type Mutation {
@@ -50,6 +51,8 @@ export const rootTypeDefs = gql`
         createList(list: ListInput): List
         updateList(id: ID!, list: ListInputUpdate): List
         deleteList(id: ID!): List
+
+        joinEvent(event_id: ID!, user_id: ID!): Joined
     }
 `;
 
@@ -61,4 +64,5 @@ export const typeDefs = [
     commentTypeDefs,
     locationTypeDefs,
     listTypeDefs,
+    joinedTypeDefs,
 ];

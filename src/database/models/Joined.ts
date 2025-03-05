@@ -46,6 +46,6 @@ JoinedSchema.virtual("user", {
 });
 
 const JoinedModel: mongoose.Model<IJoinedDocument> =
-    mongoose.models?.Joined || mongoose.model<IJoinedDocument>("Joined", JoinedSchema);
+    mongoose.models.Joined || mongoose.model<IJoinedDocument>("Joined", JoinedSchema);
 
 export default JoinedModel;

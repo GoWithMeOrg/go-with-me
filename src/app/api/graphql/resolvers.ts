@@ -6,6 +6,7 @@ import { eventResolvers } from "./resolvers/event";
 import { tripResolvers } from "./resolvers/trip";
 import { commentResolvers } from "./resolvers/comment";
 import { listResolvers } from "./resolvers/list";
+import { joinedResolvers } from "./resolvers/joined";
 
 export const resolvers = mergeResolvers([
     isoDateResolvers,
@@ -14,4 +15,5 @@ export const resolvers = mergeResolvers([
     tripResolvers,
     commentResolvers,
     listResolvers,
+    joinedResolvers,
 ]);
