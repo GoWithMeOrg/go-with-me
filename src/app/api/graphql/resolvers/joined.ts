@@ -5,9 +5,16 @@ import mongoose from "mongoose";
 
 export const joinedResolvers: IResolvers = {
     Query: {
-        joined: async (parent: any, { event_id }: { event_id: string }) => {
+        joinedByUsers: async (parent: any, { event_id }: { event_id: string }) => {
             const eventObjectId = new mongoose.Types.ObjectId(event_id);
             return await JoinedModel.find({ event_id: eventObjectId });
+        },
+
+        joinedByUser: async (parent: any, { event_id, user_id }: { event_id: string; user_id: string }) => {
+            const eventObjectId = new mongoose.Types.ObjectId(event_id);
+            const userObjectId = new mongoose.Types.ObjectId(user_id);
+
+            return await JoinedModel.findOne({ event_id: eventObjectId, user_id: userObjectId });
         },
     },
 

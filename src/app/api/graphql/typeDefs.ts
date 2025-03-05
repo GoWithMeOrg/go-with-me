@@ -29,7 +29,8 @@ export const rootTypeDefs = gql`
         lists: [List]
         listItem(id: ID!): List
 
-        joined(event_id: ID): [Joined]
+        joinedByUsers(event_id: ID): [Joined]
+        joinedByUser(event_id: ID!, user_id: ID!): Joined
     }
 
     type Mutation {
