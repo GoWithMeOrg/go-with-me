@@ -5,7 +5,7 @@ export const joinedTypeDefs = gql`
         _id: ID
         event_id: ID
         user_id: ID
-        joined: Boolean
+        isJoined: Boolean
         createdAt: ISODate
         updatedAt: ISODate
     }

@@ -19,7 +19,7 @@ const JoinedSchema = new Schema<IJoinedDocument>(
             ref: UserModel,
         },
 
-        joined: {
+        isJoined: {
             type: Boolean,
             default: false,
         },

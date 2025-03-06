@@ -8,11 +8,11 @@ interface JoinProps {
 }
 
 export const Join: FC<JoinProps> = ({ event_id }) => {
-    const { joinedByUsers } = useJoin({ event_id });
+    const { joinedUsers } = useJoin({ event_id });
 
     return (
         <div className={classes.join}>
-            <div>{joinedByUsers?.joinedByUsers.length}</div>
+            <div>{joinedUsers}</div>
             <span className={classes.joinText}>already joined</span>
         </div>
     );

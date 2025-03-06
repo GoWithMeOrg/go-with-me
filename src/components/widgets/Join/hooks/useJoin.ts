@@ -10,7 +10,7 @@ type IJoined = {
     _id: string;
     event_id: string;
     user_id: string;
-    joined: boolean;
+    isJoined: boolean;
     createdAt?: string;
     updatedAt?: string;
 };
@@ -25,7 +25,7 @@ const JOIN_EVENT_MUTATION = gql`
             _id
             event_id
             user_id
-            joined
+            isJoined
             createdAt
             updatedAt
         }
@@ -38,18 +38,38 @@ const JOINED_BY_USERS = gql`
             _id
             event_id
             user_id
-            joined
+            isJoined
         }
     }
 `;
+
+const JOINED_BY_USER = gql`
+    query JoinedByUser($eventId: ID!, $userId: ID!) {
+        joinedByUser(event_id: $eventId, user_id: $userId) {
+            _id
+            event_id
+            user_id
+            isJoined
+            createdAt
+            updatedAt
+        }
+    }
+`;
+
 const useJoin = ({ event_id, user_id }: useJoinProps) => {
-    const {
-        loading,
-        data: joinedByUsers,
-        refetch,
-    } = useQuery<IGetJoinedQuery>(JOINED_BY_USERS, {
+    const { data, refetch: refetchJoinedUsers } = useQuery<IGetJoinedQuery | null>(JOINED_BY_USERS, {
         variables: { eventId: event_id },
     });
+
+    const { data: joinedByUser, refetch: refetchJoinedUser } = useQuery<{ joinedByUser: IJoined | null }>(
+        JOINED_BY_USER,
+        {
+            variables: { eventId: event_id, userId: user_id },
+        },
+    );
+
+    const joinedUsers = data?.joinedByUsers.length;
+    const isJoined = joinedByUser?.joinedByUser?.isJoined;
 
     const [joinEventMutation] = useMutation(JOIN_EVENT_MUTATION);
 
@@ -61,17 +81,14 @@ const useJoin = ({ event_id, user_id }: useJoinProps) => {
         } catch (error) {
             console.error("Error deleting event: ", error);
         }
-        refetch();
+        refetchJoinedUsers();
+        refetchJoinedUser();
     };
-    //проверяем добавлен ли пользователь
-    const joinedUser = loading
-        ? undefined // Пока загружаются данные, не меняем состояние
-        : (joinedByUsers?.joinedByUsers.some((user) => user.user_id === user_id) ?? false);
 
     return {
         handleJoin,
-        joinedByUsers,
-        joinedUser,
+        joinedUsers,
+        isJoined,
     };
 };
 

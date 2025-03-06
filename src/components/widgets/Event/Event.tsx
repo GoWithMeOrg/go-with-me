@@ -35,7 +35,7 @@ const Event: FC<EventProps> = ({ event }) => {
     const { data: session } = useSession();
     const sessionUserID = session?.user.id ?? null;
 
-    const { handleJoin, joinedUser } = useJoin({ event_id: event._id, user_id: sessionUserID });
+    const { handleJoin, isJoined } = useJoin({ event_id: event._id, user_id: sessionUserID });
 
     const {
         organizer,
@@ -116,7 +116,7 @@ const Event: FC<EventProps> = ({ event }) => {
                     ) : (
                         <div className={classes.buttons}>
                             <Button className={classes.join} onClick={handleJoin}>
-                                {joinedUser ? "Joined" : "Join"}
+                                {isJoined ? "Joined" : "Join"}
                             </Button>
                             <Button className={classes.waitingList}>Waiting list</Button>
 

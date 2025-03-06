@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 export interface IJoined {
     event_id: mongoose.Types.ObjectId;
     user_id: mongoose.Types.ObjectId;
-    joined: boolean;
+    isJoined: boolean;
     createdAt: Date;
     updatedAt: Date;
 }
