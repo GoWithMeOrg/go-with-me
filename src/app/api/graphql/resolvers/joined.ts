@@ -1,4 +1,3 @@
-import EventModel from "@/database/models/Event";
 import JoinedModel from "@/database/models/Joined";
 import { IResolvers } from "@graphql-tools/utils";
 import mongoose from "mongoose";
@@ -26,7 +25,6 @@ export const joinedResolvers: IResolvers = {
             const existingJoin = await JoinedModel.findOne({ event_id: eventObjectId, user_id: userObjectId });
 
             if (existingJoin) {
-                console.log("Удаляем пользователя из события:", existingJoin);
                 await JoinedModel.deleteOne({ event_id: eventObjectId, user_id: userObjectId });
                 return null;
             } else {
@@ -37,12 +35,6 @@ export const joinedResolvers: IResolvers = {
                 });
 
                 await newJoin.save();
-
-                // Только возвращаем ID пользователя, а не весь объект
-                // return {
-                //     ...newJoin.toObject(),
-                //     user_id: newJoin.user_id.toString(),
-                // };
                 return await JoinedModel.findOne({ event_id: eventObjectId, user_id: userObjectId });
             }
         },
