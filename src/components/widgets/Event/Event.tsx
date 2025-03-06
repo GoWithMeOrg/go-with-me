@@ -118,8 +118,8 @@ const Event: FC<EventProps> = ({ event }) => {
                             <Button className={classes.join} onClick={handleJoin}>
                                 {isJoined ? "Joined" : "Join"}
                             </Button>
-                            <Button className={classes.waitingList}>Waiting list</Button>
 
+                            {/* <Button className={classes.waitingList}>Waiting list</Button> */}
                             <Like event_id={event._id} user_id={sessionUserID as string} />
                         </div>
                     )}
