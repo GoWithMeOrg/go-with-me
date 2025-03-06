@@ -1,20 +1,16 @@
 import EventModel from "@/database/models/Event";
 import JoinedModel from "@/database/models/Joined";
+import LikeModel from "@/database/models/Like";
 import { IResolvers } from "@graphql-tools/utils";
 import mongoose from "mongoose";
 
 export const likedResolvers: IResolvers = {
     Query: {
-        // liked: async (parent: any, { event_id }: { event_id: string }) => {
-        //     const eventObjectId = new mongoose.Types.ObjectId(event_id);
-        //     return await JoinedModel.find({ event_id: eventObjectId });
-        // },
-
         liked: async (parent: any, { event_id, user_id }: { event_id: string; user_id: string }) => {
             const eventObjectId = new mongoose.Types.ObjectId(event_id);
             const userObjectId = new mongoose.Types.ObjectId(user_id);
 
-            return await JoinedModel.findOne({ event_id: eventObjectId, user_id: userObjectId });
+            return await LikeModel.findOne({ event_id: eventObjectId, user_id: userObjectId });
         },
     },
 
@@ -23,38 +19,21 @@ export const likedResolvers: IResolvers = {
             const userObjectId = new mongoose.Types.ObjectId(user_id);
             const eventObjectId = new mongoose.Types.ObjectId(event_id);
 
-            console.log("Получены данные:", { event_id, user_id });
+            const existingLike = await LikeModel.findOne({ event_id: eventObjectId, user_id: userObjectId });
 
-            // Проверяем, существует ли событие
-            // const eventExists = await EventModel.findById(eventObjectId);
-            // if (!eventExists) {
-            //     throw new Error("Event not found");
-            // }
-
-            // Проверяем, есть ли уже запись
-            const existingJoin = await JoinedModel.findOne({ event_id: eventObjectId, user_id: userObjectId });
-
-            if (existingJoin) {
-                console.log("Удаляем пользователя из события:", existingJoin);
-                await JoinedModel.deleteOne({ event_id: eventObjectId, user_id: userObjectId });
+            if (existingLike) {
+                await LikeModel.deleteOne({ event_id: eventObjectId, user_id: userObjectId });
                 return null;
             } else {
-                // Добавляем запись
-                const newJoin = new JoinedModel({
+                const newLike = new LikeModel({
                     event_id: eventObjectId,
                     user_id: userObjectId,
-                    joined: true,
+                    isLiked: true,
                 });
 
-                console.log("Создаём новую запись:", newJoin);
+                await newLike.save();
 
-                await newJoin.save();
-
-                // Только возвращаем ID пользователя, а не весь объект
-                return {
-                    ...newJoin.toObject(),
-                    user_id: newJoin.user_id.toString(),
-                };
+                return await LikeModel.findOne({ event_id: eventObjectId, user_id: userObjectId });
             }
         },
     },

@@ -1,9 +1,9 @@
 import mongoose, { Schema, Document } from "mongoose";
-import { ILike } from "../types/Like";
+import { Like } from "../types/Like";
 import UserModel from "./User";
 import EventModel from "./Event";
 
-export interface ILikeDocument extends ILike, Document {}
+export interface ILikeDocument extends Like, Document {}
 
 const LikeSchema = new Schema<ILikeDocument>(
     {
@@ -19,7 +19,7 @@ const LikeSchema = new Schema<ILikeDocument>(
             ref: UserModel,
         },
 
-        like: {
+        isLiked: {
             type: Boolean,
             default: false,
         },

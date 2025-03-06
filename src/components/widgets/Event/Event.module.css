@@ -224,18 +224,9 @@
     text-align: center;
 }
 
-.favorite {
-    width: 3.5rem;
-    height: 3.13rem;
-    border: 0.13rem solid var(--main-color);
-    border-radius: 0.25rem;
-    background: none;
-    padding: 0.94rem 0.81rem 0.94rem 0.81rem;
-}
 .invite:hover,
 .join:hover,
-.waitingList:hover,
-.favorite:hover {
+.waitingList:hover {
     border: 0.13rem solid var(--hover-color);
     color: var(--hover-color);
 }

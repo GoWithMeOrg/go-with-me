@@ -5,7 +5,7 @@ export const likeTypeDefs = gql`
         _id: ID
         event_id: ID
         user_id: ID
-        like: Boolean
+        isLiked: Boolean
         createdAt: ISODate
         updatedAt: ISODate
     }
