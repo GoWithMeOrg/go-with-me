@@ -7,6 +7,7 @@ import { JoinProps } from "@/components/widgets/Join/types/JoinProps";
 import { IJoined, IGetJoined } from "@/components/widgets/Join/types/IJoined";
 
 const useJoin = ({ event_id, user_id }: JoinProps) => {
+    const [joinEventMutation] = useMutation(JOIN_MUTATION);
     const { data, refetch: refetchJoinedUsers } = useQuery<IGetJoined | null>(JOINED_BY_USERS, {
         variables: { eventId: event_id },
     });
@@ -20,8 +21,6 @@ const useJoin = ({ event_id, user_id }: JoinProps) => {
 
     const joinedUsers = data?.joinedByUsers.length;
     const isJoined = joinedByUser?.joinedByUser?.isJoined;
-
-    const [joinEventMutation] = useMutation(JOIN_MUTATION);
 
     const handleJoin = async () => {
         try {
