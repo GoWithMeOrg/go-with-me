@@ -1,5 +1,6 @@
 import EventModel, { IEvent } from "@/database/models/Event";
 import UserModel from "@/database/models/User";
+import mongoose from "mongoose";
 
 export const eventResolvers = {
     Query: {
@@ -77,8 +78,32 @@ export const eventResolvers = {
             await EventModel.updateOne({ _id: id }, event);
             return await EventModel.findById(id).populate("organizer");
         },
+
         deleteEvent: async (parent: any, { id }: { id: string }) => {
             return await EventModel.deleteOne({ _id: id });
         },
+
+        // joinEvent: async (parent: any, { eventId, userId }: { eventId: string; userId: string }) => {
+        //     const userObjectId = new mongoose.Types.ObjectId(userId); // преобрауем id из строки в objectID
+        //     // ищем событие
+        //     const event = await EventModel.findById(eventId);
+
+        //     if (!event) {
+        //         throw new Error("Event not found");
+        //     }
+
+        //     // Ищем событие и обновляем (двойной поиск получается)
+        //     const updatedEvent = await EventModel.findOneAndUpdate(
+        //         { _id: eventId },
+        //         //проверяем id пользователя в joined
+        //         event.joined.includes(userObjectId)
+        //             ? { $pull: { joined: userObjectId } } // если есть удаляем
+        //             : { $addToSet: { joined: userObjectId } }, // если нет добавляем
+        //         { new: true },
+        //     );
+
+        //     // TODO: почитать доки mongoose и mongoDB, нужно исключить двойной поиск
+        //     return updatedEvent;
+        // },
     },
 };

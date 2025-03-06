@@ -1,9 +1,10 @@
-import React, { FC, useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
+import { FC } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 
-import type { IEvent } from "@/database/models/Event";
+import dayjs from "dayjs";
+
 import { formatDate } from "@/utils/formatDate";
 import { Title } from "@/components/shared/Title";
 import { Geocoding } from "@/components/widgets/GoogleMap/Geocoding";
@@ -11,8 +12,9 @@ import { Button } from "@/components/shared/Button";
 import { Map, AdvancedMarker, Pin } from "@vis.gl/react-google-maps";
 import { Popup } from "@/components/shared/Popup";
 import { Badges } from "@/components/shared/Badges";
+import { Span } from "@/components/shared/Span";
+
 import ArrowMaps from "@/assets/icons/arrowMaps.svg";
-import dayjs from "dayjs";
 import Checkbox from "@/assets/icons/checkbox.svg";
 import Lock from "@/assets/icons/lock.svg";
 import ShareLink from "@/assets/icons/shareLink.svg";
@@ -22,102 +24,100 @@ import Marker from "@/assets/icons/marker.svg";
 import { Sizes } from "@/components/shared/Badges/Badges";
 import { Avatar } from "@/components/shared/Avatar";
 
-import classes from "./Event.module.css";
+import useEvent, { EventProps } from "./hooks/useEvent";
 
-export interface EventProps {
-    event: IEvent;
-}
+import Join from "../Join/Join";
+import useJoin from "../Join/hooks/useJoin";
+
+import classes from "./Event.module.css";
 
 const Event: FC<EventProps> = ({ event }) => {
     const { data: session } = useSession();
-    const [showPopup, setShowPopup] = useState<boolean>(false);
-    const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(
-        event.location !== undefined
-            ? {
-                  lat: event.location?.coordinates[1],
-                  lng: event.location.coordinates[0],
-              }
-            : null,
-    );
+    const sessionUserID = session?.user.id ?? null;
 
-    const [organizer, setOrganizer] = useState(true);
-    useEffect(() => {
-        //@ts-ignore
-        setOrganizer(session?.user?.id === event.organizer_id);
-        //@ts-ignore
-    }, [event.organizer_id, session?.user?.id]);
+    const { handleJoin, joinedUser } = useJoin({ event_id: event._id, user_id: sessionUserID });
 
-    const coord: [number, number] = [event.location.coordinates[0] as number, event.location.coordinates[1] as number];
-
-    const handleShowMap = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        setShowPopup(true);
-    };
-
-    const dayOfWeek = dayjs(event.startDate).day();
-    const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    const day = days[dayOfWeek];
-
-    console.log(event);
+    const {
+        organizer,
+        showPopup,
+        setShowPopup,
+        markerPosition,
+        handleDelete,
+        handleShowMap,
+        coord,
+        day,
+        copied,
+        handleCopyLink,
+    } = useEvent({
+        event,
+        sessionUserID,
+    });
 
     return (
         <div className={classes.event}>
             <div className={classes.eventWrapper}>
                 <div className={classes.eventInfo}>
                     <Title title={event.name} className={classes.eventTitle} tag={"h2"} />
+                    <div className={classes.information}>
+                        <div className={classes.location}>
+                            <Marker style={{ transform: "scale(0.937)", marginRight: "0.5rem", fill: "#575B75" }} />
+                            <div className={classes.geocoding}>
+                                <Geocoding coordinates={coord} />
+                            </div>
 
-                    <div className={classes.location}>
-                        <Marker style={{ transform: "scale(0.937)", marginRight: "0.5rem" }} />
-                        <div className={classes.geocoding}>
-                            <Geocoding coordinates={coord} />
+                            <Button
+                                className={classes.buttonGoogleMaps}
+                                onClick={handleShowMap}
+                                resetDefaultStyles={true}
+                            >
+                                <ArrowMaps style={{ marginRight: "0.25rem" }} />
+                                Google maps
+                            </Button>
                         </div>
 
-                        <Button className={classes.buttonGoogleMaps} onClick={handleShowMap} resetDefaultStyles={true}>
-                            <ArrowMaps style={{ marginRight: "0.25rem" }} />
-                            {"Google maps"}
-                        </Button>
-                    </div>
-
-                    <div className={classes.dateAndTime}>
-                        <Checkbox style={{ transform: "scale(0.8)", marginRight: "0.5rem" }} />
-                        {day} {dayjs(event.startDate).format("DD.MM.YY")} | {formatDate(event.time, "HH:mm")}
-                    </div>
-
-                    <div className={classes.eventStatus}>
-                        <Lock style={{ transform: "scale(1.1)", marginRight: "0.5rem" }} />
-                        <div className={classes.status}>{event.status}</div>
-                        <div className={classes.buttonGoogleMaps}>
-                            <ShareLink style={{ marginRight: "0.25rem", marginLeft: "0.88rem" }} />
-                            <span>Share link</span>
+                        <div className={classes.dateAndTime}>
+                            <Checkbox style={{ transform: "scale(0.8)", marginRight: "0.5rem", fill: "#575B75" }} />
+                            {day} {dayjs(event.startDate).format("DD.MM.YY")} | {formatDate(event.time, "HH:mm")}
                         </div>
+
+                        <div className={classes.eventStatus}>
+                            <Lock style={{ transform: "scale(1.1)", marginRight: "0.5rem" }} />
+                            <div className={classes.status}>{event.status}</div>
+                            <Button className={classes.buttonGoogleMaps} resetDefaultStyles onClick={handleCopyLink}>
+                                <ShareLink style={{ marginRight: "0.25rem", marginLeft: "0.88rem" }} />
+                                Share link
+                            </Button>
+                        </div>
+
+                        {copied && <Span title={"Ссылка события скопирована в буфер обмена!"} />}
                     </div>
 
                     <Badges badges={event.types || []} size={Sizes.SMALL} />
 
                     <div className={classes.invitations}>
-                        <div className={classes.invited}>
+                        {/*  <div className={classes.invited}>
                             <div>50</div>
                             <span className={classes.text}>invited</span>
-                        </div>
+                        </div> */}
 
-                        <div className={classes.invited}>
-                            <div>26</div>
-                            <span className={classes.text}>already joined</span>
-                        </div>
+                        <Join event_id={event._id} />
                     </div>
 
                     {organizer ? (
                         <div className={classes.buttons}>
-                            <Button className={classes.buttonEdit}>
-                                <Link className={classes.buttonEditLink} href={`/events/${event._id}/edit`}>
-                                    Edit
-                                </Link>
+                            <Link className={classes.buttonEditLink} href={`/events/${event._id}/edit`}>
+                                Edit
+                            </Link>
+
+                            <Button size="big" onClick={() => handleDelete(event._id)}>
+                                Delete
                             </Button>
-                            <Button className={classes.invite}>Invite</Button>
                         </div>
                     ) : (
                         <div className={classes.buttons}>
-                            <Button className={classes.join}>Join</Button>
+                            <Button className={classes.join} onClick={handleJoin}>
+                                {joinedUser ? "Joined" : "Join"}
+                            </Button>
                             <Button className={classes.waitingList}>Waiting list</Button>
                             <Button className={classes.favorite}>
                                 <Heart />
@@ -125,13 +125,13 @@ const Event: FC<EventProps> = ({ event }) => {
                         </div>
                     )}
                 </div>
-                <div className={classes.eventImage}>
+                <div>
                     {event.image && (
                         <Image
                             src={event.image}
                             width={680}
                             height={480}
-                            style={{ objectFit: "cover", objectPosition: "center" }}
+                            style={{ objectFit: "cover", objectPosition: "center", borderRadius: "0.25rem" }}
                             alt="img"
                             priority
                         />
