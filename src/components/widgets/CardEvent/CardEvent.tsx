@@ -63,11 +63,19 @@ export const CardEvent = ({ id, name, description, coord, startDate, time, image
                         alt="img"
                         width={imageSizes[size].width}
                         height={imageSizes[size].height}
-                        style={{ objectFit: "cover", objectPosition: "center" }}
+                        style={{ objectFit: "cover", objectPosition: "center", borderRadius: "0.25rem" }}
                     />
                 </Link>
             )) ||
-                (!image && <div style={{ background: "#a4a7bc", height: `${imageSizes[size].height}px` }} />)}
+                (!image && (
+                    <div
+                        style={{
+                            background: "#a4a7bc",
+                            height: `${imageSizes[size].height}px`,
+                            borderRadius: "0.25rem",
+                        }}
+                    />
+                ))}
 
             <div className={classes.details}>
                 <div>
