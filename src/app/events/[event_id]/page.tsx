@@ -89,15 +89,14 @@ const EventPage: NextPage<PageProps> = () => {
     if (error) {
         return <div>Error: {error.message}</div>;
     }
+
     return (
-        <section className={classes.eventPage}>
-            <div className={classes.eventWrapper}>
-                <ButtonBack />
+        <section>
+            <ButtonBack />
 
-                <Event event={data.event} />
+            <Event event={data.event} />
 
-                <CommentsList {...{ comments: data.comments, event_id, refetch }} />
-            </div>
+            <CommentsList {...{ comments: data.comments, event_id, refetch }} />
         </section>
     );
 };

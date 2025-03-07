@@ -1,15 +1,17 @@
 import { Button } from "@/components/shared/Button";
 
+import { useButtonBack } from "./hooks";
+
 import Arrow from "@/assets/icons/arrow.svg";
 
 import classes from "./ButtonBack.module.css";
 
 export const ButtonBack = () => {
+    const { handleBack } = useButtonBack();
+
     return (
-        <Button resetDefaultStyles={true} className={`${classes.button} ${classes.next}`}>
+        <Button resetDefaultStyles={true} className={`${classes.button} ${classes.next}`} onClick={handleBack}>
             <Arrow />
         </Button>
     );
 };
-
-export default ButtonBack;
