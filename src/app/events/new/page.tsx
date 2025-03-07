@@ -14,6 +14,7 @@ import { Title } from "@/components/shared/Title";
 import Arrow from "@/assets/icons/arrow.svg";
 
 import classes from "./page.module.css";
+import { ButtonBack } from "@/components/shared/ButtonBack";
 
 const CREATE_EVENT = gql`
     mutation CreateEvent($event: EventInput!) {
@@ -42,9 +43,7 @@ const EventNewPage: NextPage = () => {
 
     return (
         <div className={classes.createEventFormWrapper}>
-            <Button className={classes.createEventButton} resetDefaultStyles={true}>
-                <Arrow />
-            </Button>
+            <ButtonBack />
 
             <Title className={classes.createEventTitle} title="CREATE EVENT" tag={"h2"} />
 

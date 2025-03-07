@@ -8,6 +8,7 @@
     justify-content: space-between;
     flex-wrap: nowrap;
     padding: 2.5rem 2.25rem;
+    background: linear-gradient(90deg, #a4a7bc, #a4a7bc1a 100%);
 }
 
 .title {

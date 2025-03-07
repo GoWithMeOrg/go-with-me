@@ -25,6 +25,7 @@ export const Slide: FC<SlideProps> = ({ id, name, image, coord, startDate, time 
         <>
             <div>
                 <Link href={`/events/${id}`}>
+                    <div></div>
                     <Image src={image} alt={name} width={580} height={408} priority style={{ objectFit: "cover" }} />
                 </Link>
 
@@ -36,7 +37,6 @@ export const Slide: FC<SlideProps> = ({ id, name, image, coord, startDate, time 
                             <Marker style={{ marginRight: "0.75rem", fill: "#e3ef41", transform: "scale(0.94)" }} />
                             <Geocoding coordinates={coord} />
                         </div>
-
                         <div>
                             <Checkbox style={{ marginRight: "0.75rem", fill: "#e3ef41", transform: "scale(0.8)" }} />
                             {startDate && dayjs(startDate).format("DD.MM.YYYY")} {time && `| ${time}`}
