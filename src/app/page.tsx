@@ -14,6 +14,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 import classes from "./page.module.css";
+import { EventList } from "@/components/widgets/EventList";
 
 export default function HomePage() {
     const { data: session, status } = useSession();
@@ -31,7 +32,7 @@ export default function HomePage() {
             {status === "unauthenticated" && (
                 <>
                     <Promo />
-                    <EventListHome sizeCard={SizeCard.ML} />
+                    <EventList sizeCard={SizeCard.ML} limit={9} />
                     <HowITWorks />
                     <CreateAndInvite mode={Mode.BOTH} status={status} />
                 </>
