@@ -14,7 +14,7 @@ export const JOINED_BY_USER = gql`
 `;
 
 export const JOINED_BY_USERS = gql`
-    query GetJoinedByUsers($eventId: ID) {
+    query JoinedByUsers($eventId: ID) {
         joinedByUsers(event_id: $eventId) {
             _id
             event_id
