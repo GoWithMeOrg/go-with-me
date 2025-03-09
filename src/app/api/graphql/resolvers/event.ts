@@ -5,7 +5,14 @@ import mongoose from "mongoose";
 export const eventResolvers = {
     Query: {
         events: async (parent: any, { limit, offset, sort }: { limit: number; offset: number; sort?: string }) => {
-            const events = await EventModel.find().sort(sort).limit(limit);
+            const currentDate = new Date();
+            const events = await EventModel.find({
+                //startDate: { $gte: currentDate }, // пропускаем события с стекшей датой
+                status: { $ne: "private" }, // Исключаем события со статусом 'privat'
+            })
+                .sort(sort)
+                .skip(offset)
+                .limit(limit);
             return events;
         },
 

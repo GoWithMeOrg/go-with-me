@@ -12,20 +12,17 @@ import { CardEvent } from "../CardEvent";
 import classes from "./EventList.module.css";
 import { SizeCard } from "../CardEvent/CardEvent";
 import { Backdrop } from "../Backdrop";
+import { useEventList } from "./hooks";
 
 interface EventListProps {
     sizeCard: SizeCard;
     limit: number;
+    offset: number;
+    sort: string;
 }
 
-export const EventList: FC<EventListProps> = ({ sizeCard, limit }) => {
-    const { loading, error, data, refetch } = useQuery(GET_EVENTS, {
-        variables: {
-            limit: limit,
-            offset: 0,
-            sort: "startDate",
-        },
-    });
+export const EventList: FC<EventListProps> = ({ sizeCard, limit, offset, sort }) => {
+    const { loading, error, data, refetch } = useEventList({ limit, offset, sort });
 
     console.log(data);
 

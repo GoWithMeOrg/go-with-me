@@ -32,7 +32,7 @@ export default function HomePage() {
             {status === "unauthenticated" && (
                 <>
                     <Promo />
-                    <EventList sizeCard={SizeCard.ML} limit={9} />
+                    <EventList sizeCard={SizeCard.ML} limit={9} offset={9} sort={"startDate"} />
                     <HowITWorks />
                     <CreateAndInvite mode={Mode.BOTH} status={status} />
                 </>
