@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
-export interface IJoined {
+export interface Like {
     event_id: mongoose.Types.ObjectId;
     user_id: mongoose.Types.ObjectId;
-    isJoined: boolean;
+    isLiked: boolean;
     createdAt: Date;
     updatedAt: Date;
 }

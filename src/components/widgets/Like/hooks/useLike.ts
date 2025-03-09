@@ -1,0 +1,34 @@
+import { useMutation, useQuery } from "@apollo/client";
+
+import { LIKED } from "@/app/api/graphql/queries/liked";
+import { LIKE_MUTATION } from "@/app/api/graphql/mutations/like";
+
+import { ILike } from "@/components/widgets/Like/types/Ilike";
+import { LikeProps } from "@/components/widgets/Like/types/LikeProps";
+
+const useLike = ({ event_id, user_id }: LikeProps) => {
+    const [likeMutation] = useMutation(LIKE_MUTATION);
+    const { data, refetch } = useQuery<{ liked: ILike | null }>(LIKED, {
+        variables: { eventId: event_id, userId: user_id },
+    });
+
+    const isLiked = data?.liked?.isLiked;
+
+    const handleLike = async () => {
+        try {
+            await likeMutation({
+                variables: { eventId: event_id, userId: user_id },
+            });
+        } catch (error) {
+            console.error("Error deleting event: ", error);
+        }
+        refetch();
+    };
+
+    return {
+        handleLike,
+        isLiked,
+    };
+};
+
+export default useLike;

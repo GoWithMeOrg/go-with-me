@@ -1,4 +1,3 @@
-import EventModel from "@/database/models/Event";
 import JoinedModel from "@/database/models/Joined";
 import { IResolvers } from "@graphql-tools/utils";
 import mongoose from "mongoose";
@@ -23,38 +22,20 @@ export const joinedResolvers: IResolvers = {
             const userObjectId = new mongoose.Types.ObjectId(user_id);
             const eventObjectId = new mongoose.Types.ObjectId(event_id);
 
-            console.log("Получены данные:", { event_id, user_id });
-
-            // Проверяем, существует ли событие
-            const eventExists = await EventModel.findById(eventObjectId);
-            if (!eventExists) {
-                throw new Error("Event not found");
-            }
-
-            // Проверяем, есть ли уже запись
             const existingJoin = await JoinedModel.findOne({ event_id: eventObjectId, user_id: userObjectId });
 
             if (existingJoin) {
-                console.log("Удаляем пользователя из события:", existingJoin);
                 await JoinedModel.deleteOne({ event_id: eventObjectId, user_id: userObjectId });
-                return null;
+                return { acknowledged: true, deletedCount: 1 };
             } else {
-                // Добавляем запись
                 const newJoin = new JoinedModel({
                     event_id: eventObjectId,
                     user_id: userObjectId,
-                    joined: true,
+                    isJoined: true,
                 });
 
-                console.log("Создаём новую запись:", newJoin);
-
                 await newJoin.save();
-
-                // Только возвращаем ID пользователя, а не весь объект
-                return {
-                    ...newJoin.toObject(),
-                    user_id: newJoin.user_id.toString(),
-                };
+                return await JoinedModel.findOne({ event_id: eventObjectId, user_id: userObjectId });
             }
         },
     },

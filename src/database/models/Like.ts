@@ -1,11 +1,11 @@
 import mongoose, { Schema, Document } from "mongoose";
-import { IJoined } from "../types/Joined";
+import { Like } from "../types/Like";
 import UserModel from "./User";
 import EventModel from "./Event";
 
-export interface IJoinedDocument extends IJoined, Document {}
+export interface ILikeDocument extends Like, Document {}
 
-const JoinedSchema = new Schema<IJoinedDocument>(
+const LikeSchema = new Schema<ILikeDocument>(
     {
         event_id: {
             type: Schema.Types.ObjectId,
@@ -19,7 +19,7 @@ const JoinedSchema = new Schema<IJoinedDocument>(
             ref: UserModel,
         },
 
-        isJoined: {
+        isLiked: {
             type: Boolean,
             default: false,
         },
@@ -31,21 +31,21 @@ const JoinedSchema = new Schema<IJoinedDocument>(
     },
 );
 
-JoinedSchema.virtual("event", {
+LikeSchema.virtual("event", {
     ref: EventModel,
     localField: "event_id",
     foreignField: "_id",
     justOne: true,
 });
 
-JoinedSchema.virtual("user", {
+LikeSchema.virtual("user", {
     ref: UserModel,
     localField: "user_id",
     foreignField: "_id",
     justOne: true,
 });
 
-const JoinedModel: mongoose.Model<IJoinedDocument> =
-    mongoose.models.Joined || mongoose.model<IJoinedDocument>("Joined", JoinedSchema);
+const LikeModel: mongoose.Model<ILikeDocument> =
+    mongoose.models.Like || mongoose.model<ILikeDocument>("Like", LikeSchema);
 
-export default JoinedModel;
+export default LikeModel;

@@ -1,11 +1,11 @@
 import { gql } from "graphql-tag";
 
-export const joinedTypeDefs = gql`
-    type Joined {
+export const likeTypeDefs = gql`
+    type Like {
         _id: ID
         event_id: ID
         user_id: ID
-        isJoined: Boolean
+        isLiked: Boolean
         createdAt: ISODate
         updatedAt: ISODate
     }

@@ -18,7 +18,6 @@ import ArrowMaps from "@/assets/icons/arrowMaps.svg";
 import Checkbox from "@/assets/icons/checkbox.svg";
 import Lock from "@/assets/icons/lock.svg";
 import ShareLink from "@/assets/icons/shareLink.svg";
-import Heart from "@/assets/icons/heart.svg";
 import Marker from "@/assets/icons/marker.svg";
 
 import { Sizes } from "@/components/shared/Badges/Badges";
@@ -30,12 +29,13 @@ import Join from "../Join/Join";
 import useJoin from "../Join/hooks/useJoin";
 
 import classes from "./Event.module.css";
+import Like from "../Like/Like";
 
 const Event: FC<EventProps> = ({ event }) => {
     const { data: session } = useSession();
     const sessionUserID = session?.user.id ?? null;
 
-    const { handleJoin, joinedUser } = useJoin({ event_id: event._id, user_id: sessionUserID });
+    const { handleJoin, isJoined } = useJoin({ event_id: event._id, user_id: sessionUserID });
 
     const {
         organizer,
@@ -116,12 +116,11 @@ const Event: FC<EventProps> = ({ event }) => {
                     ) : (
                         <div className={classes.buttons}>
                             <Button className={classes.join} onClick={handleJoin}>
-                                {joinedUser ? "Joined" : "Join"}
+                                {isJoined ? "Joined" : "Join"}
                             </Button>
-                            <Button className={classes.waitingList}>Waiting list</Button>
-                            <Button className={classes.favorite}>
-                                <Heart />
-                            </Button>
+
+                            {/* <Button className={classes.waitingList}>Waiting list</Button> */}
+                            <Like event_id={event._id} user_id={sessionUserID as string} />
                         </div>
                     )}
                 </div>

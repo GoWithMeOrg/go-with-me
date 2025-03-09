@@ -6,6 +6,7 @@ import { commentTypeDefs } from "./types/comment";
 import { locationTypeDefs } from "./types/location";
 import { listTypeDefs } from "./types/list";
 import { joinedTypeDefs } from "./types/joined";
+import { likeTypeDefs } from "./types/like";
 
 export const rootTypeDefs = gql`
     scalar ISODate
@@ -31,6 +32,8 @@ export const rootTypeDefs = gql`
 
         joinedByUsers(event_id: ID): [Joined]
         joinedByUser(event_id: ID!, user_id: ID!): Joined
+
+        liked(event_id: ID, user_id: ID): Like
     }
 
     type Mutation {
@@ -54,6 +57,8 @@ export const rootTypeDefs = gql`
         deleteList(id: ID!): List
 
         joinEvent(event_id: ID!, user_id: ID!): Joined
+
+        like(event_id: ID!, user_id: ID!): Like
     }
 `;
 
@@ -66,4 +71,5 @@ export const typeDefs = [
     locationTypeDefs,
     listTypeDefs,
     joinedTypeDefs,
+    likeTypeDefs,
 ];
