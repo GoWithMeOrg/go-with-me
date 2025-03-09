@@ -26,7 +26,7 @@ export const joinedResolvers: IResolvers = {
 
             if (existingJoin) {
                 await JoinedModel.deleteOne({ event_id: eventObjectId, user_id: userObjectId });
-                return null;
+                return { acknowledged: true, deletedCount: 1 };
             } else {
                 const newJoin = new JoinedModel({
                     event_id: eventObjectId,

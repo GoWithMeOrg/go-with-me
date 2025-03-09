@@ -23,7 +23,7 @@ export const likedResolvers: IResolvers = {
 
             if (existingLike) {
                 await LikeModel.deleteOne({ event_id: eventObjectId, user_id: userObjectId });
-                return null;
+                return { acknowledged: true, deletedCount: 1 };
             } else {
                 const newLike = new LikeModel({
                     event_id: eventObjectId,
