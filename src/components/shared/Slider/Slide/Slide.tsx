@@ -25,7 +25,6 @@ export const Slide: FC<SlideProps> = ({ id, name, image, coord, startDate, time 
         <>
             <div>
                 <Link href={`/events/${id}`}>
-                    <div></div>
                     <Image src={image} alt={name} width={580} height={408} priority style={{ objectFit: "cover" }} />
                 </Link>
 
