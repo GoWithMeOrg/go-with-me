@@ -13,6 +13,7 @@ import Arrow from "@/assets/icons/arrow.svg";
 
 import classes from "./page.module.css";
 import { useParams } from "next/navigation";
+import { ButtonBack } from "@/components/shared/ButtonBack";
 
 interface PageProps {
     params: Promise<{ event_id: string }>;
@@ -88,17 +89,14 @@ const EventPage: NextPage<PageProps> = () => {
     if (error) {
         return <div>Error: {error.message}</div>;
     }
+
     return (
-        <section className={classes.eventPage}>
-            <div className={classes.eventWrapper}>
-                <Button className={classes.arrowButton} resetDefaultStyles={true}>
-                    <Arrow />
-                </Button>
+        <section>
+            <ButtonBack />
 
-                <Event event={data.event} />
+            <Event event={data.event} />
 
-                <CommentsList {...{ comments: data.comments, event_id, refetch }} />
-            </div>
+            <CommentsList {...{ comments: data.comments, event_id, refetch }} />
         </section>
     );
 };

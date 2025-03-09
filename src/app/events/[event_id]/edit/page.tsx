@@ -8,11 +8,10 @@ import type { IEvent } from "@/database/models/Event";
 
 import { EventForm } from "@/components/widgets/EventForm/EventForm";
 
-import { Button } from "@/components/shared/Button";
+import { ButtonBack } from "@/components/shared/ButtonBack";
 import { Loader } from "@/components/shared/Loader";
 import { Title } from "@/components/shared/Title";
 
-import Arrow from "@/assets/icons/arrow.svg";
 import classes from "../../new/page.module.css";
 
 interface PageProps {
@@ -95,9 +94,7 @@ const EventEditPage: NextPage<PageProps> = () => {
 
     return (
         <div className={classes.createEventFormWrapper}>
-            <Button className={classes.createEventButton} resetDefaultStyles={true}>
-                <Arrow />
-            </Button>
+            <ButtonBack />
 
             <Title className={classes.createEventTitle} title="EDIT EVENT" tag={"h2"} />
 
