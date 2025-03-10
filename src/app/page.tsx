@@ -1,20 +1,17 @@
 "use client";
-
-import { EventListHome } from "@/components/widgets/EvenListHome";
-import { Promo } from "@/components/shared/Promo";
-import { SizeCard } from "@/components/widgets/CardEvent/CardEvent";
-
-import { HowITWorks } from "@/components/shared/HowITWorks";
-import { CreateAndInvite } from "@/components/widgets/CreateAndInvite";
-import { Mode } from "@/components/widgets/CreateAndInvite/CreateAndInvite";
-
 import { useSession } from "next-auth/react";
-
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-import classes from "./page.module.css";
+import { Promo } from "@/components/shared/Promo";
+import { HowITWorks } from "@/components/shared/HowITWorks";
+
+import { SizeCard } from "@/components/widgets/CardEvent/CardEvent";
+import { CreateAndInvite } from "@/components/widgets/CreateAndInvite";
+import { Mode } from "@/components/widgets/CreateAndInvite/CreateAndInvite";
 import { EventList } from "@/components/widgets/EventList";
+
+import classes from "./page.module.css";
 
 export default function HomePage() {
     const { data: session, status } = useSession();

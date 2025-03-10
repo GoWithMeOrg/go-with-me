@@ -7,7 +7,7 @@ export const eventResolvers = {
         events: async (parent: any, { limit, offset, sort }: { limit: number; offset: number; sort?: string }) => {
             const currentDate = new Date();
             const events = await EventModel.find({
-                //startDate: { $gte: currentDate }, // пропускаем события с стекшей датой
+                startDate: { $gte: currentDate }, // пропускаем события с стекшей датой
                 status: { $ne: "private" }, // Исключаем события со статусом 'privat'
             })
                 .sort(sort)

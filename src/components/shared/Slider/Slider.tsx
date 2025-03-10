@@ -7,18 +7,9 @@ import { Slide } from "@/components/shared/Slider/Slide";
 
 import { useSlider } from "./hook/useSlider";
 
-import classes from "./Slider.module.css";
+import { IEvent } from "@/database/models/Event";
 
-interface SlideData {
-    _id: string;
-    name: string;
-    image: string;
-    location: {
-        coordinates: [number, number];
-    };
-    startDate: string;
-    time: string;
-}
+import classes from "./Slider.module.css";
 
 export const Slider: FC = () => {
     const { hideSliderHandler, hideSlider, currentIndex, filterEventsImage, slideWidth, nextSlide } = useSlider();
@@ -41,17 +32,16 @@ export const Slider: FC = () => {
                                 width: `${filterEventsImage?.length * slideWidth}vw`,
                             }}
                         >
-                            {filterEventsImage?.map((slide: SlideData, index: number) => (
-                                <div key={slide._id} className={classes.slide}>
-                                    <Slide
-                                        id={slide._id}
-                                        name={slide.name}
-                                        image={slide.image}
-                                        startDate={slide.startDate}
-                                        time={slide.time}
-                                        coord={[slide.location.coordinates[0], slide.location.coordinates[1]]}
-                                    />
-                                </div>
+                            {filterEventsImage.map((slide: IEvent) => (
+                                <Slide
+                                    key={slide._id}
+                                    id={slide._id}
+                                    name={slide.name}
+                                    image={slide.image as string}
+                                    startDate={slide.startDate as Date}
+                                    time={slide.time as string}
+                                    coord={[slide.location.coordinates[0], slide.location.coordinates[1]]}
+                                />
                             ))}
                         </div>
                     </div>

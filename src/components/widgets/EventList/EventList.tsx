@@ -2,36 +2,28 @@
 
 import { FC } from "react";
 
-import { useQuery } from "@apollo/client";
-
 import type { IEvent } from "@/database/models/Event";
-import { GET_EVENTS } from "@/app/api/graphql/queries/events";
 
 import { CardEvent } from "../CardEvent";
 
-import classes from "./EventList.module.css";
-import { SizeCard } from "../CardEvent/CardEvent";
-import { Backdrop } from "../Backdrop";
 import { useEventList } from "./hooks";
 
-interface EventListProps {
-    sizeCard: SizeCard;
-    limit: number;
-    offset: number;
-    sort: string;
-}
+import { EventListProps } from "./types/EventList";
 
-export const EventList: FC<EventListProps> = ({ sizeCard, limit, offset, sort }) => {
-    const { loading, error, data, refetch } = useEventList({ limit, offset, sort });
+import classes from "./EventList.module.css";
 
-    console.log(data);
+export const EventList: FC<EventListProps> = ({ sizeCard, limit, sort }) => {
+    const { loading, error, events, refetch } = useEventList({ limit, sort });
+
+    refetch();
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error : {error.message}</p>;
+    if (!events) return;
 
     return (
         <ul className={classes.list}>
-            {data.events.map(({ _id, description, name, startDate, time, location, image }: IEvent) => (
+            {events.map(({ _id, description, name, startDate, time, location, image }: IEvent) => (
                 <li key={_id}>
                     <CardEvent
                         id={_id}
