@@ -16,10 +16,10 @@ import { NavbarEventTabs } from "../Navbar/models";
 import { FilteredEventsLocation } from "@/components/widgets/FilteredEventsLocation";
 
 import { useEventFilters } from "./hooks/useEventFilters";
-import { useEventListHome } from "@/components/widgets/EvenListHome/hook/useEventListHome";
+import { optionsCities } from "@/components/widgets/GoogleMap/OptionsAutocomplete";
+import { useEventList } from "@/components/widgets/EventList/hooks";
 
 import classes from "./EventFilters.module.css";
-import { optionsCities } from "../GoogleMap/OptionsAutocomplete";
 
 export const EventFilters = () => {
     const [activeTab, setActiveTab] = useState(NavbarEventTabs.LIST);
@@ -32,8 +32,7 @@ export const EventFilters = () => {
         handleTypesChange,
     } = useEventFilters();
 
-    const { data } = useEventListHome();
-
+    const { events } = useEventList({});
     const handleTabClick = (tab: NavbarEventTabs) => {
         setActiveTab(tab);
     };
@@ -75,7 +74,7 @@ export const EventFilters = () => {
             </div>
 
             {activeTab === "list" && (
-                <FilteredEvents data={filteredData?.eventFilters || data?.events} sizeCard={SizeCard.ML} />
+                <FilteredEvents data={filteredData?.eventFilters || events} sizeCard={SizeCard.ML} />
             )}
             {activeTab === "map" && <GoogleMap />}
         </div>

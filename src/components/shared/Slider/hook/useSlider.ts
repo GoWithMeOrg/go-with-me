@@ -1,17 +1,21 @@
 import { useEffect, useState } from "react";
 
-import { useEventListHome } from "@/components/widgets/EvenListHome/hook/useEventListHome";
+import { useEventList } from "@/components/widgets/EventList/hooks";
+import { IEvent } from "@/database/models/Event";
 
 export const useSlider = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [hideSlider, setHideSlider] = useState(false);
 
-    const { data } = useEventListHome();
+    const { events } = useEventList({});
+
     const hideSliderHandler = () => {
         setHideSlider(true);
     };
 
-    const filterEventsImage = data?.events.filter((event: any) => event.image !== null && event.image !== "");
+    const filterEventsImage: IEvent[] = events
+        ? events.filter((event: IEvent) => event.image !== undefined && event.image !== "")
+        : [];
 
     const slideWidth = 31.25;
     const maxSlideWidth = 156.26;
