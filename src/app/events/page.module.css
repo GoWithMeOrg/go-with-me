@@ -6,3 +6,9 @@
 .title {
     margin: 5.63rem 0 5.94rem 0;
 }
+
+.spinner {
+    margin-top: 20vh;
+    grid-column: span 2 / span 2;
+    grid-column-start: 6;
+}
