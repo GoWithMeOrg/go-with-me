@@ -145,7 +145,7 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                             render={({ field }) => (
                                 <SelectItems
                                     categoryList={eventCategory}
-                                    eventCategories={eventData.categories || []}
+                                    eventCategories={[...(eventData.categories ?? [])]}
                                     titleCategories={"Select category"}
                                     badgesShow
                                     onChange={field.onChange}
@@ -159,7 +159,7 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                             render={({ field }) => (
                                 <SelectItems
                                     categoryList={eventTypes}
-                                    eventCategories={eventData.types || []}
+                                    eventCategories={[...(eventData.types ?? [])]}
                                     titleCategories={"Select subject"}
                                     badgesShow
                                     onChange={field.onChange}
@@ -171,7 +171,7 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                             name="tags"
                             control={control}
                             render={({ field }) => (
-                                <CreateTag onChange={field.onChange} eventTags={eventData.tags || []} />
+                                <CreateTag onChange={field.onChange} eventTags={[...(eventData.tags ?? [])]} />
                             )}
                         />
                     </div>
