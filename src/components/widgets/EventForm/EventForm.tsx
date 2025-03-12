@@ -10,7 +10,6 @@ import { Time } from "@/components/widgets/Time";
 import { SelectItems } from "@/components/widgets/SelectItems";
 import { eventCategory, eventTypes } from "@/components/shared/Dropdown/dropdownLists";
 import { CreateTag } from "@/components/widgets/CreateTag";
-import { GuestList } from "@/components/widgets/GuestList";
 import { UploadFile } from "@/components/widgets/UploadFile";
 import { Location } from "../Location";
 import { IEvent } from "@/database/models/Event";
@@ -71,7 +70,6 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
         }
     };
 
-    console.log(watch("location"));
     const handleUploadedFile = (file: File, preUrl: string) => {
         setFile(file);
         setPresignUrl(preUrl);
@@ -96,7 +94,7 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                             name="location"
                             control={control}
                             render={({ field }) => (
-                                <Location locationEvent={eventData?.location as any} onChange={field.onChange} />
+                                <Location locationEvent={eventData?.location} onChange={field.onChange} />
                             )}
                         />
 
@@ -190,8 +188,6 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                         )}
                     />
                 </div>
-
-                {/* <GuestList /> */}
 
                 <Button size="big" type="submit">
                     Save changes

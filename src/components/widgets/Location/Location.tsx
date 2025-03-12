@@ -52,6 +52,7 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
     useEffect(() => {
         if (prevSelectedPlaceRef.current !== selectedPlace && props.onChange) {
             const newPlace = {
+                type: "Point",
                 coordinates: [selectedPlace?.geometry?.location?.lng(), selectedPlace?.geometry?.location?.lat()],
                 properties: {
                     address: selectedPlace?.formatted_address,
