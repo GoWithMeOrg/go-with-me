@@ -27,9 +27,7 @@
 }
 
 .dropdownList {
-    width: 36.25rem;
     background: var(--background-color);
-    z-index: 1;
 }
 
 .dropdownItem {
