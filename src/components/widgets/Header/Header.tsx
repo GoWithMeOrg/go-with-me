@@ -8,9 +8,6 @@ export const Header = () => {
     return (
         <header className={classes.header}>
             <Logo />
-            <div className={classes.headerSearch}>
-                <SearchEvent className={classes.headerSearchEvent} />
-            </div>
             <div className={classes.headerAuth}>
                 <AuthPanel />
             </div>

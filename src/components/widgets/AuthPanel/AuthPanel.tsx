@@ -8,8 +8,6 @@ import Human from "@/assets/icons/human.svg";
 import { Popup } from "@/components/shared/Popup";
 import { AuthModal } from "@/components/widgets/AuthModal";
 import { Button } from "@/components/shared/Button";
-import { Loader } from "@/components/shared/Loader";
-import Bell from "@/assets/icons/bell.svg";
 
 import classes from "./AuthPanel.module.css";
 
@@ -25,10 +23,6 @@ export const AuthPanel = () => {
     return (
         <div className={classes.component}>
             {status === "unauthenticated" && (
-                // <button className={classes.buttonLogIn} onClick={() => signIn()}>
-                //     Sign In
-                // </button>
-
                 <>
                     <Button size="big" onClick={handleShowAuth}>
                         Sign In
@@ -53,20 +47,11 @@ export const AuthPanel = () => {
                 </>
             )}
 
-            {/* {status === "loading" && <Loader />} */}
             {status === "authenticated" && (
                 <>
-                    {/* <p className={classes.title}>Привет, {session?.user?.name}</p> */}
                     <div className={classes.avatarAndMenu}>
-                        <Link href="/profile">
-                            {/* <img
-                                className={classes.avatar}
-                                src={session?.user?.image as string}
-                                alt={session?.user?.name as string}
-                            /> */}
-                        </Link>
+                        <Link href="/profile"></Link>
                         <div className={classes.menu}>
-                            <Bell />
                             <Link href="/profile" className={classes.linkToProfile}>
                                 <Human />
                             </Link>
