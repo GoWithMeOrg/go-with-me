@@ -9,9 +9,17 @@
     background: none;
     cursor: pointer;
 }
+
+.button:active {
+    color: var(--white-color);
+    background-color: var(--text-color);
+    border-color: var(--text-color);
+}
+
 .button:hover {
+    border: 0.13rem solid var(--hover-color);
+    border-radius: 0.25rem;
     color: var(--hover-color);
-    border-color: var(--hover-color);
 }
 
 .button:disabled {

@@ -10,7 +10,6 @@ import { Time } from "@/components/widgets/Time";
 import { SelectItems } from "@/components/widgets/SelectItems";
 import { eventCategory, eventTypes } from "@/components/shared/Dropdown/dropdownLists";
 import { CreateTag } from "@/components/widgets/CreateTag";
-import { GuestList } from "@/components/widgets/GuestList";
 import { UploadFile } from "@/components/widgets/UploadFile";
 import { Location } from "../Location";
 import { IEvent } from "@/database/models/Event";
@@ -71,7 +70,6 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
         }
     };
 
-    console.log(watch("location"));
     const handleUploadedFile = (file: File, preUrl: string) => {
         setFile(file);
         setPresignUrl(preUrl);
@@ -96,7 +94,7 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                             name="location"
                             control={control}
                             render={({ field }) => (
-                                <Location locationEvent={eventData?.location as any} onChange={field.onChange} />
+                                <Location locationEvent={eventData?.location} onChange={field.onChange} />
                             )}
                         />
 
@@ -145,7 +143,7 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                             render={({ field }) => (
                                 <SelectItems
                                     categoryList={eventCategory}
-                                    eventCategories={eventData.categories || []}
+                                    eventCategories={[...(eventData.categories ?? [])]}
                                     titleCategories={"Select category"}
                                     badgesShow
                                     onChange={field.onChange}
@@ -159,7 +157,7 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                             render={({ field }) => (
                                 <SelectItems
                                     categoryList={eventTypes}
-                                    eventCategories={eventData.types || []}
+                                    eventCategories={[...(eventData.types ?? [])]}
                                     titleCategories={"Select subject"}
                                     badgesShow
                                     onChange={field.onChange}
@@ -171,7 +169,7 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                             name="tags"
                             control={control}
                             render={({ field }) => (
-                                <CreateTag onChange={field.onChange} eventTags={eventData.tags || []} />
+                                <CreateTag onChange={field.onChange} eventTags={[...(eventData.tags ?? [])]} />
                             )}
                         />
                     </div>
@@ -190,8 +188,6 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                         )}
                     />
                 </div>
-
-                {/* <GuestList /> */}
 
                 <Button size="big" type="submit">
                     Save changes

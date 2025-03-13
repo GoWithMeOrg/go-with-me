@@ -11,9 +11,10 @@ import { Loader } from "@/components/shared/Loader";
 
 import Arrow from "@/assets/icons/arrow.svg";
 
-import classes from "./page.module.css";
+import classes from "../page.module.css";
 import { useParams } from "next/navigation";
 import { ButtonBack } from "@/components/shared/ButtonBack";
+import Spinner from "@/assets/icons/spinner.svg";
 
 interface PageProps {
     params: Promise<{ event_id: string }>;
@@ -82,8 +83,10 @@ const EventPage: NextPage<PageProps> = () => {
 
     const { data, error, loading, refetch } = useQuery(GET_EVENT_BY_ID, { variables: { id: event_id } });
 
+    refetch();
+
     if (loading && !error) {
-        return <Loader />;
+        return <Spinner className={classes.spinner} />;
     }
 
     if (error) {
