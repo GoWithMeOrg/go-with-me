@@ -84,7 +84,7 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                             name="name"
                             control={control}
                             render={({ field }) => (
-                                <Label label={"Event title"}>
+                                <Label label={"Название"}>
                                     <Input defaultValue={eventData.name || ""} onChange={field.onChange} />
                                 </Label>
                             )}
@@ -109,7 +109,7 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                             name="description"
                             control={control}
                             render={({ field }) => (
-                                <Label label={"Description"}>
+                                <Label label={"Описание"}>
                                     <Textarea defaultValue={eventData.description || ""} onChange={field.onChange} />
                                 </Label>
                             )}
@@ -119,15 +119,13 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                             <Controller
                                 name="startDate"
                                 control={control}
-                                render={({ field }) => (
-                                    <Date title={"Start date"} date={eventData.startDate} {...field} />
-                                )}
+                                render={({ field }) => <Date title={"Начало"} date={eventData.startDate} {...field} />}
                             />
                             <Controller
                                 name="endDate"
                                 control={control}
                                 render={({ field }) => (
-                                    <Date title={"Finish date"} date={eventData.endDate} {...field} />
+                                    <Date title={"Завершение"} date={eventData.endDate} {...field} />
                                 )}
                             />
                             <Controller
@@ -144,7 +142,7 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                                 <SelectItems
                                     categoryList={eventCategory}
                                     eventCategories={[...(eventData.categories ?? [])]}
-                                    titleCategories={"Select category"}
+                                    titleCategories={"Выбрать категорию"}
                                     badgesShow
                                     onChange={field.onChange}
                                 />
@@ -158,7 +156,7 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                                 <SelectItems
                                     categoryList={eventTypes}
                                     eventCategories={[...(eventData.types ?? [])]}
-                                    titleCategories={"Select subject"}
+                                    titleCategories={"Выбрать тип"}
                                     badgesShow
                                     onChange={field.onChange}
                                 />
@@ -169,7 +167,11 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                             name="tags"
                             control={control}
                             render={({ field }) => (
-                                <CreateTag onChange={field.onChange} eventTags={[...(eventData.tags ?? [])]} />
+                                <CreateTag
+                                    onChange={field.onChange}
+                                    eventTags={[...(eventData.tags ?? [])]}
+                                    title={"Создать тег"}
+                                />
                             )}
                         />
                     </div>
@@ -190,7 +192,7 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                 </div>
 
                 <Button size="big" type="submit">
-                    Save changes
+                    Сохранить
                 </Button>
             </form>
         </div>

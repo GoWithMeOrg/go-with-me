@@ -15,7 +15,7 @@ export const Time = forwardRef(function Time(props: ITime, ref) {
 
     return (
         <label className={classes.time}>
-            <span className={classes.timeTitle}>Start time</span>
+            <span className={classes.timeTitle}>Время начала</span>
             <input
                 type="time"
                 name="time"

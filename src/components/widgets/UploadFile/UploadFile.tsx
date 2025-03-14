@@ -73,7 +73,7 @@ export const UploadFile = forwardRef(function UploadFile(props: IUploadFile, ref
                 )}
             </div>
 
-            <Label label="Upload photo" htmlFor="fileInput" className={classes.customFileInput}>
+            <Label label="Загрузить фото" htmlFor="fileInput" className={classes.customFileInput}>
                 <input
                     type="file"
                     ref={uploadRef}
