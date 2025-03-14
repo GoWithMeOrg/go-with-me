@@ -104,7 +104,7 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
     return (
         <section className={classes.container}>
             <Title tag="h3" className={classes.title}>
-                Comments
+                Комментарии
             </Title>
             <CommentForm onSaveComment={onSaveCommentTop} />
             <ul className={classes.commentsList}>
@@ -161,7 +161,7 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
                     disabled={loading || comments.length < limit}
                     onClick={onClickLoadMore}
                 >
-                    Load more comments
+                    Больше комментариев
                 </Button>
             )}
         </section>

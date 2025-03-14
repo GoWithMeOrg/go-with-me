@@ -11,7 +11,7 @@ export const Join: FC<JoinProps> = ({ event_id }) => {
     return (
         <div className={classes.join}>
             <div>{joinedUsers}</div>
-            <span className={classes.joinText}>already joined</span>
+            <span className={classes.joinText}>уже присоединились</span>
         </div>
     );
 };

@@ -95,7 +95,7 @@ const EventEditPage: NextPage<PageProps> = () => {
         <div className={classes.createEventFormWrapper}>
             <ButtonBack />
 
-            <Title className={classes.createEventTitle} title="EDIT EVENT" tag={"h2"} />
+            <Title className={classes.createEventTitle} title="РЕДАКТИРОВАНИЕ СОБЫТИЯ" tag={"h2"} />
 
             {loading && <Loader />}
             {error && <p>Error : {error.message}</p>}

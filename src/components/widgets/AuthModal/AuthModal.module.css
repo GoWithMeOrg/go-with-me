@@ -5,7 +5,7 @@
 .authModalClose {
     position: relative;
     color: var(--main-color);
-    top: -50px;
+    top: -30px;
     right: -335px;
     cursor: pointer;
 }

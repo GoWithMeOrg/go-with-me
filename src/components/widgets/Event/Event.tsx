@@ -71,7 +71,7 @@ const Event: FC<EventProps> = ({ event }) => {
                                 resetDefaultStyles={true}
                             >
                                 <ArrowMaps style={{ marginRight: "0.25rem" }} />
-                                Google maps
+                                Google карта
                             </Button>
                         </div>
 
@@ -85,7 +85,7 @@ const Event: FC<EventProps> = ({ event }) => {
                             <div className={classes.status}>{event.status}</div>
                             <Button className={classes.buttonGoogleMaps} resetDefaultStyles onClick={handleCopyLink}>
                                 <ShareLink style={{ marginRight: "0.25rem", marginLeft: "0.88rem" }} />
-                                Share link
+                                Копировать ссылку
                             </Button>
                         </div>
 
@@ -101,17 +101,17 @@ const Event: FC<EventProps> = ({ event }) => {
                     {organizer ? (
                         <div className={classes.buttons}>
                             <Link className={classes.buttonEditLink} href={`/events/${event._id}/edit`}>
-                                Edit
+                                Редактировать
                             </Link>
 
                             <Button size="big" onClick={() => handleDelete(event._id)}>
-                                Delete
+                                Удалить
                             </Button>
                         </div>
                     ) : (
                         <div className={classes.buttons}>
                             <Button className={classes.join} onClick={handleJoin}>
-                                {isJoined ? "Joined" : "Join"}
+                                {isJoined ? "Участник" : "Участвовать"}
                             </Button>
 
                             <Like event_id={event._id} user_id={sessionUserID as string} />
@@ -162,7 +162,7 @@ const Event: FC<EventProps> = ({ event }) => {
             </div>
 
             <div className={classes.descriptionAndOrganizer}>
-                <Title title={"Description"} className={classes.description} tag={"h3"} />
+                <Title title={"Описание"} className={classes.description} tag={"h3"} />
                 <div className={classes.eventDescription}>
                     <span className={classes.descriptionText}>{event.description}</span>
 
@@ -173,7 +173,7 @@ const Event: FC<EventProps> = ({ event }) => {
 
                         <div className={classes.organizerName}>
                             <span className={classes.name}>{event.organizer?.name}</span>
-                            <span className={classes.organizer}>Event Organizer</span>
+                            <span className={classes.organizer}>Организатор</span>
                             {/* <div className={classes.linkChat}>
                                 <Link href={`/profile`} className={classes.link}>
                                     <ArrowMaps style={{ marginRight: "0.25rem" }} /> Chat

@@ -14,7 +14,7 @@ interface IEventStatus {
 export const EventStatus = forwardRef(function EventStatus(props: IEventStatus, ref) {
     return (
         <div className={classes.confidentiality}>
-            <span className={classes.confidentialityTitle}>Confidentiality</span>
+            <span className={classes.confidentialityTitle}>Приватность</span>
 
             <div className={classes.confidentialityWrapper}>
                 <div className={classes.confidentialityRadio}>
@@ -28,7 +28,7 @@ export const EventStatus = forwardRef(function EventStatus(props: IEventStatus, 
                         className={classes.confidentialityInput}
                     />
                     <label className={classes.confidentialityLabel} htmlFor={props.options?.PUBLIC}>
-                        Public event
+                        Публичное событие
                     </label>
                 </div>
 
@@ -43,7 +43,7 @@ export const EventStatus = forwardRef(function EventStatus(props: IEventStatus, 
                         className={classes.confidentialityInput}
                     />
                     <label className={classes.confidentialityLabel} htmlFor={props.options?.PRIVATE}>
-                        Private event
+                        Приватное событие
                     </label>
                 </div>
             </div>

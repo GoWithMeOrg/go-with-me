@@ -32,7 +32,7 @@ export const SelectItems: FC<ISelectItems> = ({
             <Label className={classes.selectedCategoriesTitle} label={titleCategories} />
 
             <Dropdown
-                label={"No category"}
+                label={"Не выбрано"}
                 categoriesData={eventCategories || []}
                 onSelectedCategories={handleItemChange}
                 list={categoryList}

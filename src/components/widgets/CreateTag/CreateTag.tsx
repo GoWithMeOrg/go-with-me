@@ -9,6 +9,7 @@ interface ICreateTag {
     eventTags: string[];
     onTagsChange?: (tags: string[]) => void;
     onChange: (e: string[]) => void;
+    title: string;
 }
 
 export const CreateTag = forwardRef(function CreateTag(props: ICreateTag, ref) {
@@ -46,7 +47,7 @@ export const CreateTag = forwardRef(function CreateTag(props: ICreateTag, ref) {
 
     return (
         <label className={classes.tagLabel}>
-            <span className={classes.tagTitle}>Create your tag</span>
+            <span className={classes.tagTitle}>{props.title}</span>
             <div className={classes.tagInputWrapper}>
                 <input className={classes.tagInput} type="text" name="tag" ref={tagRef} />
                 <Plus transform="scale(0.83)" className={classes.tagButton} onClick={handleAddTag} />
