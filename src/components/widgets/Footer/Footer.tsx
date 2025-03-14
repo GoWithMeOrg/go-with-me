@@ -25,12 +25,12 @@ export const Footer = () => {
                 <div className={classes.footerContainer}>
                     <div className={classes.footerLogIn}>
                         <Button onClick={handleShowAuth} className={classes.footerLink} resetDefaultStyles={true}>
-                            Sign In
+                            Войти
                         </Button>
                         <LogoFooter />
                     </div>
                     <div className={classes.footerBlockLinks}>
-                        <div className={classes.footerBlock}>
+                        {/* <div className={classes.footerBlock}>
                             <Button onClick={handleShowAuth} className={classes.footerLink} resetDefaultStyles={true}>
                                 Events
                             </Button>
@@ -53,7 +53,7 @@ export const Footer = () => {
                             <Button onClick={handleShowAuth} className={classes.footerLink} resetDefaultStyles={true}>
                                 Write to use
                             </Button>
-                        </div>
+                        </div> */}
 
                         <Popup
                             {...{
@@ -80,11 +80,11 @@ export const Footer = () => {
                 <div className={classes.footerContainer}>
                     <div className={classes.footerLogIn}>
                         <Button onClick={() => signOut()} className={classes.footerLink} resetDefaultStyles={true}>
-                            Sign Out
+                            Выйти
                         </Button>
                         <LogoFooter />
                     </div>
-                    <div className={classes.footerBlockLinks}>
+                    {/* <div className={classes.footerBlockLinks}>
                         <div className={classes.footerBlock}>
                             <Link href="/events" className={classes.footerLink}>
                                 Events
@@ -112,7 +112,7 @@ export const Footer = () => {
                                 Write to use
                             </Link>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             )}
         </footer>

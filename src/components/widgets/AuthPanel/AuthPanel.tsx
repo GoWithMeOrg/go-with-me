@@ -25,7 +25,7 @@ export const AuthPanel = () => {
             {status === "unauthenticated" && (
                 <>
                     <Button size="big" onClick={handleShowAuth}>
-                        Sign In
+                        Войти
                     </Button>
                     <Popup
                         {...{
@@ -61,7 +61,7 @@ export const AuthPanel = () => {
                                     confirm("Вы уверены, что хотите выйти?") && signOut();
                                 }}
                             >
-                                Sign Out
+                                Выйти
                             </Button>
                         </div>
                     </div>

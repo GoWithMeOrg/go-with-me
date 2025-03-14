@@ -42,15 +42,15 @@ export const CreateAndInvite: FC<CreateAndInviteProps> = ({ mode, status }) => {
         <section className={classes.container}>
             <Join className={classes.logo} />
             <div className={classes.wrapper}>
-                <Title title={"CREATE AND INVITE"} className={classes.title} tag={"h2"} />
+                <Title title={"СОЗДАТЬ И ПРИГЛАСИТЬ"} className={classes.title} tag={"h2"} />
 
                 {status === "unauthenticated" && (
                     <div className={classes.buttons}>
                         <Button size="big" onClick={handleShowAuth}>
-                            Create event
+                            Создать событие
                         </Button>
                         <Button size="big" onClick={handleShowAuth}>
-                            Create trip
+                            Создать поездку
                         </Button>
                     </div>
                 )}
@@ -77,30 +77,30 @@ export const CreateAndInvite: FC<CreateAndInviteProps> = ({ mode, status }) => {
                     ((mode === Mode.BOTH && (
                         <div className={classes.buttons}>
                             <Link className={classes.link} href="/events/new">
-                                Create event
+                                Создать событие
                             </Link>
 
                             <Link className={classes.link} href="/trips/new">
-                                Create trip
+                                Создать поездку
                             </Link>
                         </div>
                     )) ||
                         (mode === Mode.EVENT && (
                             <Link className={linkCssString} href="/events/new">
-                                Create event
+                                Создать событие
                             </Link>
                         )) ||
                         (mode === Mode.TRIP && (
                             <Link className={linkCssString} href="/trips/new">
-                                Create trip
+                                Созадть поездку
                             </Link>
                         )))}
             </div>
             <div className={classes.description}>
-                <p>
+                {/* <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
                     et dolore magna aliqua. Ut enim ad minim!
-                </p>
+                </p> */}
             </div>
         </section>
     );

@@ -32,10 +32,9 @@ export const AuthModal = ({ onClose }: IAuthModal) => {
             <Close className={classes.authModalClose} onClick={handleClose} />
             <div className={classes.authModalWrapper}>
                 <Title className={classes.authModalTitle} tag={"h3"}>
-                    Hi! <br />
-                    Log in and join the adventure
+                    Войдите в систему и присоединяйтесь к приключениям
                 </Title>
-                <p className={classes.authModalDescription}>via Google account {/* or social networks */}</p>
+                <p className={classes.authModalDescription}>войти с помощью Google {/* or social networks */}</p>
                 <div className={classes.authModalButtons}>
                     <Button className={classes.authModalButton} onClick={() => signIn("google")}>
                         <Google />
