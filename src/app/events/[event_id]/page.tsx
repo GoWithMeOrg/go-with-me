@@ -6,15 +6,11 @@ import { gql, useQuery } from "@apollo/client";
 import { Event } from "@/components/widgets/Event";
 import { CommentsList } from "@/components/widgets/CommentsList";
 
-import { Button } from "@/components/shared/Button";
-import { Loader } from "@/components/shared/Loader";
-
-import Arrow from "@/assets/icons/arrow.svg";
-
-import classes from "../page.module.css";
 import { useParams } from "next/navigation";
 import { ButtonBack } from "@/components/shared/ButtonBack";
 import Spinner from "@/assets/icons/spinner.svg";
+
+import classes from "../page.module.css";
 
 interface PageProps {
     params: Promise<{ event_id: string }>;

@@ -101,7 +101,6 @@
 .inputsDate {
     display: flex;
     gap: 1.25rem;
-    width: 11.25rem;
 }
 
 .uploadFile {

@@ -14,6 +14,7 @@ export interface ISelectItems {
     eventCategories?: string[];
     onChange: (value: string[]) => void;
     badgesShow?: boolean;
+    width?: string;
 }
 
 export const SelectItems: FC<ISelectItems> = ({
@@ -22,11 +23,12 @@ export const SelectItems: FC<ISelectItems> = ({
     eventCategories,
     badgesShow,
     onChange,
+    width,
 }) => {
     const { items, handleItemChange } = useSelectItems({ onChange });
 
     return (
-        <div className={classes.selectedCategoriesLabel}>
+        <div className={classes.selectedCategoriesLabel} style={{ width: width }}>
             <Label className={classes.selectedCategoriesTitle} label={titleCategories} />
 
             <Dropdown

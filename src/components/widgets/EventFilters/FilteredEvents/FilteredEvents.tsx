@@ -16,7 +16,7 @@ export const FilteredEvents: FC<FilteredEventsProps> = ({ data, sizeCard }) => {
     if (data?.length === 0) return <p>По вашему запросу ничего не найдено</p>;
 
     return (
-        <Backdrop>
+        <div className={classes.filteredEvents}>
             {data?.length === 0 ? (
                 <div className={classes.noEventsMessage}>По вашему запросу ничего не найдено</div>
             ) : (
@@ -34,7 +34,7 @@ export const FilteredEvents: FC<FilteredEventsProps> = ({ data, sizeCard }) => {
                     />
                 ))
             )}
-        </Backdrop>
+        </div>
     );
 };
 
