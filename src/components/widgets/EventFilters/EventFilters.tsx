@@ -40,12 +40,12 @@ export const EventFilters = () => {
     return (
         <div className={classes.filteredEvents}>
             <div className={classes.header}>
-                <Title tag={"h3"} title="Find events" />
+                <Title tag={"h3"} title="Найти события" />
                 <div className={classes.buttons}>
                     <NavbarEvents
                         onTabClick={handleTabClick}
                         activeTab={activeTab}
-                        dataAtributes={["list", "map"]}
+                        dataAtributes={["события", "карта"]}
                         nameAtribute={"data-filtered"}
                     />
                 </div>
@@ -53,13 +53,13 @@ export const EventFilters = () => {
             <div className={classes.line}></div>
 
             <div className={classes.filters}>
-                <Date title={"Date"} onChange={handleDateChange} />
+                <Date title={"Дата"} onChange={handleDateChange} />
 
                 <FilteredEventsLocation onChange={setSelectedLocation} options={optionsCities} />
 
                 <SelectItems
                     categoryList={eventCategory}
-                    titleCategories={"Category"}
+                    titleCategories={"Категории"}
                     badgesShow={false}
                     onChange={handleCategoriesChange}
                     width={"14.68rem"}
@@ -67,12 +67,12 @@ export const EventFilters = () => {
 
                 <SelectItems
                     categoryList={eventTypes}
-                    titleCategories={"Types"}
+                    titleCategories={"Типы"}
                     badgesShow={false}
                     onChange={handleTypesChange}
                     width={"14.68rem"}
                 />
-                <CreateTag eventTags={[]} onChange={handleTagsChange} />
+                <CreateTag eventTags={[]} onChange={handleTagsChange} title={"Поиск по тегу"} />
             </div>
 
             {activeTab === "list" && (

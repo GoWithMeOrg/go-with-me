@@ -19,9 +19,9 @@ export const Slider: FC = () => {
             {!hideSlider && (
                 <div className={classes.container}>
                     <div className={classes.header}>
-                        <Title tag={"h3"} title="Recommended events" />
+                        <Title tag={"h3"} title="Рекомендуемые события" />
                         <Button resetDefaultStyles={true} className={classes.hide} onClick={hideSliderHandler}>
-                            HIDE
+                            СКРЫТЬ
                         </Button>
                     </div>
                     <div>

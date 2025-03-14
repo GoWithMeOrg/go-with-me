@@ -13,7 +13,7 @@ export interface FilteredEventsLocationProps {
 export const FilteredEventsLocation: FC<FilteredEventsLocationProps> = ({ options, onChange }) => {
     return (
         <div className={classes.location}>
-            <Label label={"Location"} />
+            <Label label={"Место"} />
 
             <Autocomplete onPlaceSelect={onChange} className={classes.autocomplete} options={options} />
         </div>

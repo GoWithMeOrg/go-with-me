@@ -17,7 +17,7 @@ const EventListPage: NextPage = () => {
 
     return (
         <div className={classes.eventListPage}>
-            <Title tag={"h1"} title="Join the adventure" className={classes.title} />
+            <Title tag={"h1"} title="Присоединяйтесь к приключениям" className={classes.title} />
             <Slider />
             <EventFilters />
             <CreateAndInvite mode={Mode.EVENT} status={status} />
