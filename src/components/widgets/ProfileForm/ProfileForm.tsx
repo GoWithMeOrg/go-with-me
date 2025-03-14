@@ -191,7 +191,9 @@ export const ProfileForm: FC<IProfileFormProps> = ({ profileData, onSubmitEvent 
                 <Controller
                     name="tags"
                     control={control}
-                    render={({ field }) => <CreateTag onChange={field.onChange} eventTags={[]} />}
+                    render={({ field }) => (
+                        <CreateTag onChange={field.onChange} eventTags={[]} title={"Добавить тег"} />
+                    )}
                 />
             </div>
 
