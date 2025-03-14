@@ -41,7 +41,7 @@ export const HowITWorks = () => {
                     picture={<CreateEvent />}
                 />
                 <CardWork
-                    title={"Создайте частное мероприятие для своих близких"}
+                    title={"Создайте приватное мероприятие для своих близких"}
                     description={
                         // <p>
                         //     Organizers can create private events for&nbsp;close friends, family, or&nbsp;select
