@@ -47,14 +47,14 @@ export const CommentForm: FC<CommentFormProps> = ({ onSaveComment }) => {
                     rows={8}
                     resizeNone={true}
                     error={Boolean(errors.comment)}
-                    placeholder="Text of your comment ..."
+                    placeholder="Твой комментарий ..."
                     onChange={onChange}
                     onBlur={onBlur}
                     value={value}
                     name={name}
                 ></Textarea>
             </label>
-            <Button disabled={errors.comment ? true : false}>Comment</Button>
+            <Button disabled={errors.comment ? true : false}>Комментировать</Button>
         </form>
     );
 };

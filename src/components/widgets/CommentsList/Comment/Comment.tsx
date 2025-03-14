@@ -39,7 +39,7 @@ export const Comment: FC<IProps> = ({
             <div className={classes.contentContainer}>
                 <div className={classes.userName}>
                     <span>{name}</span>
-                    {replyTo ? <Link href={`#comment-id-${replyTo.id}`}>reply to {replyTo.userName}</Link> : null}
+                    {replyTo ? <Link href={`#comment-id-${replyTo.id}`}>ответ на {replyTo.userName}</Link> : null}
                     <span>{dayjs(createdAt).format("DD MMMM YYYY HH:mm")}</span>
                 </div>
                 <p className={classes.commentText}>{content}</p>
@@ -61,7 +61,7 @@ export const Comment: FC<IProps> = ({
                     </button>
                     {isDeletable && (
                         <button className={classes.deleteButton} onClick={() => onClickDeleteButton({ commentId: id })}>
-                            delete
+                            удалить
                         </button>
                     )}
                 </div>
