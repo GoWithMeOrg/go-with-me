@@ -62,6 +62,7 @@ export const EventFilters = () => {
                     titleCategories={"Category"}
                     badgesShow={false}
                     onChange={handleCategoriesChange}
+                    width={"14.68rem"}
                 />
 
                 <SelectItems
@@ -69,6 +70,7 @@ export const EventFilters = () => {
                     titleCategories={"Types"}
                     badgesShow={false}
                     onChange={handleTypesChange}
+                    width={"14.68rem"}
                 />
                 <CreateTag eventTags={[]} onChange={handleTagsChange} />
             </div>
