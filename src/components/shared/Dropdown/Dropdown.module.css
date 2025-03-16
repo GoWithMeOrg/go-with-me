@@ -33,6 +33,7 @@
     height: 26.25rem;
     width: 14rem;
     overflow-y: auto;
+    z-index: 1;
 }
 
 .dropdownItem {
