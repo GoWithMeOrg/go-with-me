@@ -90,7 +90,7 @@ const EventPage: NextPage<PageProps> = () => {
     }
 
     return (
-        <section>
+        <section className={classes.event}>
             <ButtonBack />
 
             <Event event={data.event} />

@@ -20,6 +20,7 @@ import { optionsCities } from "@/components/widgets/GoogleMap/OptionsAutocomplet
 import { useEventList } from "@/components/widgets/EventList/hooks";
 
 import classes from "./EventFilters.module.css";
+import { Badges } from "@/components/shared/Badges";
 
 export const EventFilters = () => {
     const [activeTab, setActiveTab] = useState(NavbarEventTabs.LIST);
@@ -63,6 +64,7 @@ export const EventFilters = () => {
                     badgesShow={false}
                     onChange={handleCategoriesChange}
                     width={"14.68rem"}
+                    filter
                 />
 
                 <SelectItems
@@ -71,6 +73,7 @@ export const EventFilters = () => {
                     badgesShow={false}
                     onChange={handleTypesChange}
                     width={"14.68rem"}
+                    filter
                 />
                 <CreateTag eventTags={[]} onChange={handleTagsChange} title={"Поиск по тегу"} />
             </div>

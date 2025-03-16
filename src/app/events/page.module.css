@@ -12,3 +12,7 @@
     grid-column: span 2 / span 2;
     grid-column-start: 6;
 }
+
+.event {
+    margin-bottom: 170px;
+}

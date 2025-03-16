@@ -145,6 +145,7 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                                     titleCategories={"Выбрать категорию"}
                                     badgesShow
                                     onChange={field.onChange}
+                                    filter={false}
                                 />
                             )}
                         />
@@ -159,6 +160,7 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                                     titleCategories={"Выбрать тип"}
                                     badgesShow
                                     onChange={field.onChange}
+                                    filter={false}
                                 />
                             )}
                         />
@@ -192,7 +194,7 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                 </div>
 
                 <Button size="big" type="submit">
-                    Сохранить
+                    {eventData ? "Сохранить" : "Создать"}
                 </Button>
             </form>
         </div>

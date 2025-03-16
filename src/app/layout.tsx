@@ -17,7 +17,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-    title: "Go With Me",
+    title: "Tribe Plans",
     description: "Travel, learn, party",
 };
 

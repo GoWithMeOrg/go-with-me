@@ -82,7 +82,9 @@ export const Footer = () => {
                         <Button onClick={() => signOut()} className={classes.footerLink} resetDefaultStyles={true}>
                             Выйти
                         </Button>
-                        <LogoFooter />
+                        <Link href={"/events"}>
+                            <LogoFooter />
+                        </Link>
                     </div>
                     {/* <div className={classes.footerBlockLinks}>
                         <div className={classes.footerBlock}>
