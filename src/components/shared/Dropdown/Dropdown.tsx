@@ -13,11 +13,22 @@ interface DropdownProps extends React.PropsWithChildren {
     categoriesData: string[];
     onSelectedCategories?: (categories: string[]) => void;
     list: string[];
+    filter: boolean;
 }
 
-export const Dropdown: FC<DropdownProps> = ({ list, label, categoriesData, onSelectedCategories }) => {
-    const { isOpen, selectedCategories, isHovered, showIcon, handleDropdown, handleAddCategory, dropdownRef } =
-        useDropdown({ list, categoriesData, onSelectedCategories });
+export const Dropdown: FC<DropdownProps> = ({ list, label, categoriesData, onSelectedCategories, filter }) => {
+    const {
+        isOpen,
+        selectedCategories,
+        isHovered,
+        showIcon,
+        handleDropdown,
+        handleAddCategory,
+        dropdownRef,
+        dropdownCss,
+        dropdownItemCss,
+        dropdownItemTextCss,
+    } = useDropdown({ list, categoriesData, onSelectedCategories, filter });
 
     return (
         <div className={classes.dropdown} ref={dropdownRef}>
@@ -26,21 +37,24 @@ export const Dropdown: FC<DropdownProps> = ({ list, label, categoriesData, onSel
                 <ArrowMenu style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)" }} />
             </Button>
             {isOpen && (
-                <ul className={classes.dropdownList}>
+                <ul className={dropdownCss}>
                     {list.map((category, index) => (
                         <li key={index} data-category={category}>
                             <button
-                                className={classes.dropdownItem}
+                                className={dropdownItemCss}
                                 onClick={handleAddCategory}
                                 onMouseEnter={() => showIcon(index, true)}
                                 onMouseLeave={() => showIcon(index, false)}
                             >
-                                {category}
-                                {selectedCategories.includes(category) ? (
-                                    <Minus className={classes.dropdownItemMinus} />
-                                ) : isHovered[index] ? (
-                                    <Plus className={classes.dropdownItemPlus} />
-                                ) : null}
+                                <p className={dropdownItemTextCss}>{category}</p>
+
+                                <div>
+                                    {selectedCategories.includes(category) ? (
+                                        <Minus className={classes.dropdownItemMinus} />
+                                    ) : isHovered[index] ? (
+                                        <Plus className={classes.dropdownItemPlus} />
+                                    ) : null}
+                                </div>
                             </button>
                         </li>
                     ))}

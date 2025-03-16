@@ -15,6 +15,7 @@ export interface ISelectItems {
     onChange: (value: string[]) => void;
     badgesShow?: boolean;
     width?: string;
+    filter: boolean;
 }
 
 export const SelectItems: FC<ISelectItems> = ({
@@ -24,6 +25,7 @@ export const SelectItems: FC<ISelectItems> = ({
     badgesShow,
     onChange,
     width,
+    filter,
 }) => {
     const { items, handleItemChange } = useSelectItems({ onChange });
 
@@ -36,6 +38,7 @@ export const SelectItems: FC<ISelectItems> = ({
                 categoriesData={eventCategories || []}
                 onSelectedCategories={handleItemChange}
                 list={categoryList}
+                filter={filter}
             />
 
             {badgesShow && (
