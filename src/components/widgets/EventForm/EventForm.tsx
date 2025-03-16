@@ -74,7 +74,7 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
         setFile(file);
         setPresignUrl(preUrl);
     };
-
+    console.log(eventData);
     return (
         <div className={classes.container}>
             <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>

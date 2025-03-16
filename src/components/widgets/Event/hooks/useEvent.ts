@@ -73,7 +73,10 @@ const useEvent = ({ event, sessionUserID }: EventProps) => {
 
     const pathname = usePathname();
     const searchParams = useSearchParams();
-    const url = `${window.location.origin}${pathname}${searchParams ? `?${searchParams}` : ""}`;
+
+    let url: string;
+    if (typeof window !== "undefined")
+        url = `${window.location.origin}${pathname}${searchParams ? `?${searchParams}` : ""}`;
 
     const { loading, error, data, refetch } = useQuery(GET_EVENTS, {
         variables: {
@@ -121,7 +124,7 @@ const useEvent = ({ event, sessionUserID }: EventProps) => {
     };
 
     const dayOfWeek = dayjs(event.startDate).day();
-    const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const days = ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
     const day = days[dayOfWeek];
 
     return {
