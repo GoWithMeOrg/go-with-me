@@ -3,7 +3,7 @@ import React, { FC } from "react";
 import { Button } from "@/components/shared/Button";
 import { Title } from "@/components/shared/Title";
 import { Control } from "@/components/shared/Slider/Control";
-import { Slide } from "@/components/shared/Slider/Slide";
+import { Slide } from "@/components/shared/Slide";
 
 import { useSlider } from "./hook/useSlider";
 
