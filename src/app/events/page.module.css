@@ -16,3 +16,8 @@
 .event {
     margin-bottom: 170px;
 }
+
+.image {
+    height: 100%;
+    background: green;
+}
