@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 export interface ICarousel {
     children: React.ReactNode[];
+    title?: string;
 }
 export const useCarousel = ({ children }: ICarousel) => {
     const [width, setWidth] = useState<number | null>(null);

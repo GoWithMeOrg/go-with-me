@@ -19,11 +19,12 @@ import classes from "./page.module.css";
 const EventListPage: NextPage = () => {
     const { status } = useSession();
     const { filterEventsImage } = useEventList({});
+    console.log(filterEventsImage);
 
     return (
         <div className={classes.eventListPage}>
             <Title tag={"h1"} title="Присоединяйтесь к приключениям" className={classes.title} />
-            <Carousel>
+            <Carousel title={"Рекомендуемые события"}>
                 {filterEventsImage.map((slide: IEvent) => (
                     <Slide
                         key={slide._id}
@@ -33,6 +34,7 @@ const EventListPage: NextPage = () => {
                         startDate={slide.startDate as Date}
                         time={slide.time as string}
                         coord={[slide.location.coordinates[0], slide.location.coordinates[1]]}
+                        avatar={slide.organizer.image}
                     />
                 ))}
             </Carousel>

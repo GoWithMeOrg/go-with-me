@@ -15,6 +15,9 @@ export const GET_EVENTS = gql`
                 }
             }
             image
+            organizer {
+                image
+            }
         }
     }
 `;

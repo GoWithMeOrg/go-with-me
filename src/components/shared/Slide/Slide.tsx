@@ -10,6 +10,7 @@ import Marker from "@/assets/icons/marker.svg";
 import Checkbox from "@/assets/icons/checkbox.svg";
 
 import classes from "./Slide.module.css";
+import { Avatar } from "../Avatar";
 
 export interface SlideProps {
     key: string;
@@ -19,17 +20,22 @@ export interface SlideProps {
     coord: [number, number];
     startDate: Date;
     time: string;
+    avatar: string;
 }
 
-export const Slide: FC<SlideProps> = ({ id, name, image, coord, startDate, time }) => {
+export const Slide: FC<SlideProps> = ({ id, name, image, coord, startDate, time, avatar }) => {
     return (
         <div className={classes.slide}>
-            <Link href={`/events/${id}`}>
-                <Image src={image} alt={name} width={580} height={408} priority style={{ objectFit: "cover" }} />
-            </Link>
+            <Image src={image} alt={name} width={580} height={408} priority style={{ objectFit: "cover" }} />
+            {/* <Link href={`/events/${id}`}>
+
+            </Link> */}
 
             <div className={classes.content}>
-                <Title tag={"h3"} title={name} className={classes.title} />
+                <div className={classes.header}>
+                    <Title tag={"h3"} title={name} className={classes.title} />
+                    <Avatar name={""} image={avatar} scale={1.8} />
+                </div>
 
                 <div className={classes.details}>
                     <div>
