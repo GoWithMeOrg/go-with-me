@@ -8,8 +8,10 @@ import { ICarousel, useCarousel } from "./hooks/useCarousel";
 
 import classes from "./Carousel.module.css";
 
-export const Carousel: FC<ICarousel> = ({ children, title }) => {
-    const { width, hideSlider, currentIndex, next, hideSliderHandler, length } = useCarousel({ children });
+export const Carousel: FC<ICarousel> = ({ children, title, hideButton }) => {
+    const { width, hideSlider, currentIndex, next, hideSliderHandler, length, showSliderHandler } = useCarousel({
+        children,
+    });
 
     return (
         <>
@@ -17,9 +19,11 @@ export const Carousel: FC<ICarousel> = ({ children, title }) => {
                 <div className={classes.container}>
                     <div className={classes.header}>
                         <Title tag={"h3"} title={title} />
-                        <Button resetDefaultStyles={true} className={classes.hide} onClick={hideSliderHandler}>
-                            СКРЫТЬ
-                        </Button>
+                        {!hideButton && (
+                            <Button resetDefaultStyles={true} className={classes.hide} onClick={hideSliderHandler}>
+                                СКРЫТЬ
+                            </Button>
+                        )}
                     </div>
 
                     <div className={classes.wrapper} style={{ maxWidth: `${width}px` }}>
@@ -31,6 +35,16 @@ export const Carousel: FC<ICarousel> = ({ children, title }) => {
                         </div>
 
                         <ButtonNext onNext={next} />
+                    </div>
+                </div>
+            )}
+
+            {hideSlider && (
+                <div className={classes.hideSlider}>
+                    <div className={classes.header}>
+                        <Button resetDefaultStyles={true} className={classes.hide} onClick={showSliderHandler}>
+                            ПОКАЗАТЬ РЕКОМЕНДАЦИИ
+                        </Button>
                     </div>
                 </div>
             )}

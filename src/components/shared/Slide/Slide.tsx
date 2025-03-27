@@ -21,33 +21,32 @@ export interface SlideProps {
     startDate: Date;
     time: string;
     avatar: string;
+    showAvatar: boolean;
 }
 
-export const Slide: FC<SlideProps> = ({ id, name, image, coord, startDate, time, avatar }) => {
+export const Slide: FC<SlideProps> = ({ id, name, image, coord, startDate, time, avatar, showAvatar }) => {
     return (
         <div className={classes.slide}>
             <Image src={image} alt={name} width={580} height={408} priority style={{ objectFit: "cover" }} />
-            {/* <Link href={`/events/${id}`}>
-
-            </Link> */}
-
-            <div className={classes.content}>
-                <div className={classes.header}>
-                    <Title tag={"h3"} title={name} className={classes.title} />
-                    <Avatar name={""} image={avatar} scale={1.8} />
-                </div>
-
-                <div className={classes.details}>
-                    <div>
-                        <Marker style={{ marginRight: "0.75rem", fill: "#e3ef41", transform: "scale(0.94)" }} />
-                        <Geocoding coordinates={coord} />
+            <Link href={`/events/${id}`}>
+                <div className={classes.content}>
+                    <div className={classes.header}>
+                        <Title tag={"h3"} title={name} className={classes.title} />
+                        {showAvatar && <Avatar name={""} image={avatar} scale={1.8} className={classes.border} />}
                     </div>
-                    <div>
-                        <Checkbox style={{ marginRight: "0.75rem", fill: "#e3ef41", transform: "scale(0.8)" }} />
-                        {startDate && dayjs(startDate).format("DD.MM.YYYY")} {time && `| ${time}`}
+
+                    <div className={classes.details}>
+                        <div>
+                            <Marker style={{ marginRight: "0.75rem", fill: "#e3ef41", transform: "scale(0.94)" }} />
+                            <Geocoding coordinates={coord} />
+                        </div>
+                        <div>
+                            <Checkbox style={{ marginRight: "0.75rem", fill: "#e3ef41", transform: "scale(0.8)" }} />
+                            {startDate && dayjs(startDate).format("DD.MM.YYYY")} {time && `| ${time}`}
+                        </div>
                     </div>
                 </div>
-            </div>
+            </Link>
         </div>
     );
 };

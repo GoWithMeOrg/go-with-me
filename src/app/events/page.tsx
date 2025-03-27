@@ -15,16 +15,17 @@ import { Slide } from "@/components/shared/Slide";
 import { IEvent } from "@/database/models/Event";
 
 import classes from "./page.module.css";
+import { CardEvent } from "@/components/widgets/CardEvent";
+import { SizeCard } from "@/components/widgets/CardEvent/CardEvent";
 
 const EventListPage: NextPage = () => {
     const { status } = useSession();
     const { filterEventsImage } = useEventList({});
-    console.log(filterEventsImage);
 
     return (
         <div className={classes.eventListPage}>
             <Title tag={"h1"} title="Присоединяйтесь к приключениям" className={classes.title} />
-            <Carousel title={"Рекомендуемые события"}>
+            <Carousel title={"Рекомендуемые события"} hideButton={false}>
                 {filterEventsImage.map((slide: IEvent) => (
                     <Slide
                         key={slide._id}
@@ -35,11 +36,45 @@ const EventListPage: NextPage = () => {
                         time={slide.time as string}
                         coord={[slide.location.coordinates[0], slide.location.coordinates[1]]}
                         avatar={slide.organizer.image}
+                        showAvatar={false}
                     />
                 ))}
             </Carousel>
 
             <EventFilters />
+
+            <Carousel title={"События твоих друзей"} hideButton>
+                {filterEventsImage.map((slide: IEvent) => (
+                    <Slide
+                        key={slide._id}
+                        id={slide._id}
+                        name={slide.name}
+                        image={slide.image as string}
+                        startDate={slide.startDate as Date}
+                        time={slide.time as string}
+                        coord={[slide.location.coordinates[0], slide.location.coordinates[1]]}
+                        avatar={slide.organizer.image}
+                        showAvatar
+                    />
+                ))}
+            </Carousel>
+
+            <Carousel title={"События поблизости"} hideButton>
+                {filterEventsImage.map((slide: IEvent) => (
+                    <CardEvent
+                        key={slide._id}
+                        id={slide._id}
+                        name={slide.name}
+                        description={slide.description}
+                        coord={[slide.location.coordinates[0], slide.location.coordinates[1]]}
+                        startDate={slide.startDate}
+                        time={slide.time}
+                        image={slide.image}
+                        size={SizeCard.ML}
+                    />
+                ))}
+            </Carousel>
+
             <CreateAndInvite mode={Mode.EVENT} status={status} />
         </div>
     );

@@ -20,6 +20,7 @@
 .wrapper {
     width: 100vw;
     overflow-x: hidden;
+    margin-bottom: 6.25rem;
 }
 
 .content {
@@ -28,30 +29,13 @@
     width: max-content;
     gap: 20px;
     transition: transform 0.5s ease;
+    margin-bottom: 1.56rem;
 }
 
-.content::-webkit-scrollbar,
-.carousel-content::-webkit-scrollbar {
-    display: none;
-}
-
-.leftArrow,
-.rightArrow {
-    position: absolute;
-    z-index: 1;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 48px;
-    height: 48px;
-    border-radius: 24px;
-    background-color: red;
-    border: 1px solid #ddd;
-}
-
-.leftArrow {
-    left: 24px;
-}
-
-.rightArrow {
-    right: 24px;
+.hideSlider {
+    display: flex;
+    justify-content: flex-end;
+    max-width: 72.5rem;
+    height: 1.25rem;
+    margin-bottom: 3.75rem;
 }

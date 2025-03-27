@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 export interface ICarousel {
     children: React.ReactNode[];
     title?: string;
+    hideButton?: boolean;
 }
 export const useCarousel = ({ children }: ICarousel) => {
     const [width, setWidth] = useState<number | null>(null);
@@ -12,6 +13,10 @@ export const useCarousel = ({ children }: ICarousel) => {
 
     const hideSliderHandler = () => {
         setHideSlider(true);
+    };
+
+    const showSliderHandler = () => {
+        setHideSlider(false);
     };
 
     const next = () => {
@@ -35,5 +40,5 @@ export const useCarousel = ({ children }: ICarousel) => {
         return () => window.removeEventListener("resize", updateWidth);
     }, []);
 
-    return { width, length, hideSlider, currentIndex, next, hideSliderHandler };
+    return { width, length, hideSlider, currentIndex, next, hideSliderHandler, showSliderHandler };
 };

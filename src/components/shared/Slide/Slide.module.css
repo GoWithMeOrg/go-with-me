@@ -53,3 +53,7 @@
     display: flex;
     align-items: center;
 }
+
+.border {
+    border: 2px solid var(--white-color);
+}

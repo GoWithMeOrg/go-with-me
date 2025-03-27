@@ -8,7 +8,7 @@ import classes from "./FilteredEvents.module.css";
 import { Backdrop } from "../../Backdrop";
 
 interface FilteredEventsProps {
-    data: any;
+    data: IEvent[];
     sizeCard: SizeCard;
 }
 
