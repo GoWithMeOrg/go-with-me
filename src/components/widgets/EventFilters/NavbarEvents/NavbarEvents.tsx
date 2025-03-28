@@ -14,7 +14,6 @@ export const NavbarEvents = ({ onTabClick, activeTab, dataAtributes, nameAtribut
         const tab = event.currentTarget.getAttribute(nameAtribute);
         if (tab) {
             onTabClick(tab as NavbarEventTabs);
-            console.log(tab);
         }
     };
 

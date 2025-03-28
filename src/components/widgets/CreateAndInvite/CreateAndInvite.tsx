@@ -92,7 +92,7 @@ export const CreateAndInvite: FC<CreateAndInviteProps> = ({ mode, status }) => {
                         )) ||
                         (mode === Mode.TRIP && (
                             <Link className={linkCssString} href="/trips/new">
-                                Созадть поездку
+                                Создать поездку
                             </Link>
                         )))}
             </div>
