@@ -36,7 +36,6 @@ export const MapHandlerBounds = ({ place }: Props) => {
     const { data: SearchEventByLocation } = useQuery(GET_EVENTS_BY_LOCATION, {
         variables: { bounds },
     });
-    console.log(SearchEventByLocation);
 
     const normalizeViewport = (viewport: any) => {
         return {
