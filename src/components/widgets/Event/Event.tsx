@@ -32,7 +32,7 @@ import classes from "./Event.module.css";
 import Like from "../Like/Like";
 
 const Event: FC<EventProps> = ({ event }) => {
-    const { data: session } = useSession();
+    const { data: session, status } = useSession();
     const sessionUserID = session?.user.id ?? null;
 
     const { handleJoin, isJoined } = useJoin({ event_id: event._id, user_id: sessionUserID });
