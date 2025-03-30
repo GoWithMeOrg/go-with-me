@@ -20,6 +20,7 @@ import { optionsCities } from "@/components/widgets/GoogleMap/OptionsAutocomplet
 import { useEventList } from "@/components/widgets/EventList/hooks";
 
 import classes from "./EventFilters.module.css";
+import { Backdrop } from "../Backdrop";
 
 export const EventFilters = () => {
     const [activeTab, setActiveTab] = useState(NavbarEventTabs.LIST);
@@ -78,7 +79,9 @@ export const EventFilters = () => {
             </div>
 
             {activeTab === "list" && (
-                <FilteredEvents data={filteredData?.eventFilters || events} sizeCard={SizeCard.ML} />
+                <Backdrop marginTop={84} marginBottom={274}>
+                    <FilteredEvents data={filteredData?.eventFilters || events} sizeCard={SizeCard.ML} />
+                </Backdrop>
             )}
             {activeTab === "map" && <GoogleMap />}
         </div>

@@ -12,6 +12,7 @@ import { Mode } from "@/components/widgets/CreateAndInvite/CreateAndInvite";
 import { EventList } from "@/components/widgets/EventList";
 
 import classes from "./page.module.css";
+import { Backdrop } from "@/components/widgets/Backdrop";
 
 export default function HomePage() {
     const { data: session, status } = useSession();

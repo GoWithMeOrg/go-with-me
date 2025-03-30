@@ -2,29 +2,32 @@ import { useEffect, useRef, useState } from "react";
 
 interface useBackdropProps {
     children: React.ReactNode;
+    marginTop: number;
+    marginBottom: number;
 }
-export const useBackdrop = ({ children }: useBackdropProps) => {
+export const useBackdrop = ({ children, marginTop, marginBottom }: useBackdropProps) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const [style, setStyle] = useState({ top: "0px", height: "0px" });
+
+    //отступ сверху 84 снизу 172
+
     useEffect(() => {
         const updateBackground = () => {
             if (!containerRef.current) return;
-            // Получаем дочерние элементы внутри контейнера
-            const rows = Array.from(containerRef.current.children) as HTMLDivElement[];
-            if (rows.length === 0) return;
 
-            //получаем первую строку c элементами
-            const firstRow = rows[0];
-            const size = firstRow.children[0] as HTMLDivElement;
-            //получаем ппоследюю строку c элементами (длинна массива -1)
-            const lastRow = rows[rows.length - 1];
+            const container = containerRef.current;
 
-            const firstRowMiddle = firstRow.offsetTop + firstRow.offsetHeight / 3;
-            const lastRowMiddle = lastRow.offsetTop + lastRow.offsetHeight / 3;
+            const containerTop = container.offsetTop;
+
+            const containerHeight = container.offsetHeight;
+            console.log(containerHeight);
+
+            const adjustedTop = containerTop + marginTop;
+            const adjustedHeight = containerHeight - marginTop - marginBottom;
 
             setStyle({
-                top: `${firstRowMiddle}px`,
-                height: `${lastRowMiddle - firstRowMiddle}px`,
+                top: `${adjustedTop}px`,
+                height: `${adjustedHeight}px`,
             });
         };
 

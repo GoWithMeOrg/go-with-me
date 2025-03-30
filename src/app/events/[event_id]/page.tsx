@@ -12,6 +12,7 @@ import Spinner from "@/assets/icons/spinner.svg";
 
 import classes from "../page.module.css";
 import { useSession } from "next-auth/react";
+import { Backdrop } from "@/components/widgets/Backdrop";
 
 interface PageProps {
     params: Promise<{ event_id: string }>;
@@ -95,9 +96,11 @@ const EventPage: NextPage<PageProps> = () => {
         <section className={classes.event}>
             {status === "authenticated" && <ButtonBack />}
 
-            <Event event={data.event} />
+            <Backdrop marginTop={395} marginBottom={274}>
+                <Event event={data.event} />
 
-            {status === "authenticated" && <CommentsList {...{ comments: data.comments, event_id, refetch }} />}
+                {status === "authenticated" && <CommentsList {...{ comments: data.comments, event_id, refetch }} />}
+            </Backdrop>
         </section>
     );
 };
