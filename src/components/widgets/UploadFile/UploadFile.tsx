@@ -69,6 +69,7 @@ export const UploadFile = forwardRef(function UploadFile(props: IUploadFile, ref
                         width={props.width}
                         height={props.height}
                         alt="img"
+                        style={{ objectFit: "cover", objectPosition: "center", borderRadius: "0.25rem" }}
                     />
                 )}
             </div>
