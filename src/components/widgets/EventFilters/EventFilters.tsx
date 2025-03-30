@@ -33,11 +33,12 @@ export const EventFilters = () => {
         handleTypesChange,
     } = useEventFilters();
 
-    const { events } = useEventList({});
+    const { events, loading } = useEventList({});
     const handleTabClick = (tab: NavbarEventTabs) => {
         setActiveTab(tab);
     };
 
+    console.log(loading);
     return (
         <div className={classes.filteredEvents}>
             <div className={classes.header}>
@@ -79,7 +80,7 @@ export const EventFilters = () => {
             </div>
 
             {activeTab === "list" && (
-                <Backdrop marginTop={84} marginBottom={274}>
+                <Backdrop marginTop={84} marginBottom={274} contentLoading={loading}>
                     <FilteredEvents data={filteredData?.eventFilters || events} sizeCard={SizeCard.ML} />
                 </Backdrop>
             )}

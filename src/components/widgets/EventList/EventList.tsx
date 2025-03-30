@@ -22,8 +22,9 @@ export const EventList: FC<EventListProps> = ({ sizeCard, limit, sort }) => {
     if (error) return <p>Error : {error.message}</p>;
     if (!events) return;
 
+    // решить вопрос с z-index
     return (
-        <Backdrop marginTop={84} marginBottom={172}>
+        <Backdrop marginTop={84} marginBottom={274} contentLoading={loading}>
             <ul className={classes.list}>
                 {events.map(({ _id, description, name, startDate, time, location, image }: IEvent) => (
                     <li key={_id}>
