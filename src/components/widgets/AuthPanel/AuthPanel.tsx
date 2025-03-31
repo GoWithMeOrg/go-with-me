@@ -39,7 +39,8 @@ export const AuthPanel = () => {
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
-                            position: "absolute",
+                            position: "relative",
+                            zIndex: 1001,
                         }}
                     >
                         <AuthModal onClose={() => setShowPopup(false)} />

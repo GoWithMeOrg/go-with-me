@@ -23,7 +23,7 @@ export const Backdrop: React.FC<BackdropProps> = ({ children, marginTop, marginB
                         width: "100vw",
                         minHeight: "100vh",
                         backgroundColor: "red",
-                        zIndex: 1,
+                        zIndex: -1,
                         transition: "all 0.3s ease",
                         ...style,
                     }}

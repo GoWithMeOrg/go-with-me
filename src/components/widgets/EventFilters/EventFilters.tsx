@@ -38,7 +38,6 @@ export const EventFilters = () => {
         setActiveTab(tab);
     };
 
-    console.log(loading);
     return (
         <div className={classes.filteredEvents}>
             <div className={classes.header}>

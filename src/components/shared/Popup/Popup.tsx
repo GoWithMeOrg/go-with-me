@@ -1,58 +1,57 @@
 import { createPortal } from "react-dom";
 import { Dispatch, FC, SetStateAction, useEffect, useRef, useState } from "react";
-
 import styles from "./Popup.module.css";
 
 interface PopupProps extends React.HTMLAttributes<HTMLDivElement> {
     showPopup: boolean;
     setShowPopup: Dispatch<SetStateAction<boolean>>;
     wrapperProps?: React.HTMLAttributes<HTMLDivElement>;
-    containerElement?: HTMLElement;
 }
 
-export const Popup: FC<PopupProps> = ({
-    showPopup,
-    setShowPopup,
-    wrapperProps,
-    containerElement,
-    children,
-    ...rest
-}) => {
-    const [containerState, setContainerState] = useState<HTMLDivElement | null>(null);
+export const Popup: FC<PopupProps> = ({ showPopup, setShowPopup, wrapperProps, children, ...rest }) => {
     const refPopup = useRef<HTMLDivElement>(null);
+    const [container, setContainer] = useState<HTMLElement | null>(null);
 
     useEffect(() => {
+        let popupContainer = document.getElementById("popupContainer");
+
+        if (!popupContainer) {
+            popupContainer = document.createElement("div");
+            popupContainer.id = "popupContainer";
+            document.body.appendChild(popupContainer);
+        }
+
+        setContainer(popupContainer);
+
         const eventListener = (event: MouseEvent) => {
-            if (!refPopup.current?.contains(event.target as Node)) setShowPopup(false);
+            if (!refPopup.current?.contains(event.target as Node)) {
+                setShowPopup(false);
+            }
         };
 
-        const containerExist = document.getElementById("popupContainer");
         if (showPopup) {
-            if (containerExist) return;
-            const container = document.createElement("div");
-            container.id = "popupContainer";
-            if (!containerElement) document.querySelector("body")?.append(container);
-            if (containerElement) containerElement.append(container);
-            setContainerState(container);
-            document.body.addEventListener("click", eventListener);
-            return () => document.body.removeEventListener("click", eventListener);
+            document.body.style.overflow = "hidden";
+            document.addEventListener("mousedown", eventListener);
+        } else {
+            document.body.style.overflow = "";
         }
-        if (!showPopup) {
-            if (containerExist) {
-                containerExist.remove();
-            }
-        }
-    }, [showPopup, setShowPopup, containerElement]);
 
-    const render = (
+        return () => {
+            document.removeEventListener("mousedown", eventListener);
+            if (!document.querySelector("#popupContainer")?.hasChildNodes()) {
+                popupContainer?.remove();
+            }
+        };
+    }, [showPopup, setShowPopup]);
+
+    if (!showPopup || !container) return null;
+
+    return createPortal(
         <div className={styles.wrapper} {...wrapperProps}>
             <div ref={refPopup} {...rest}>
                 {children}
             </div>
-        </div>
+        </div>,
+        container,
     );
-    if (!showPopup) return null;
-    if (!containerState) return null;
-
-    return <>{createPortal(render, containerState)}</>;
 };
