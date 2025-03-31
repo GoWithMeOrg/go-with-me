@@ -1,16 +1,21 @@
 import { createPortal } from "react-dom";
 import { Dispatch, FC, SetStateAction, useEffect, useRef, useState } from "react";
-import styles from "./Popup.module.css";
+import classes from "./Popup.module.css";
 
 interface PopupProps extends React.HTMLAttributes<HTMLDivElement> {
     showPopup: boolean;
     setShowPopup: Dispatch<SetStateAction<boolean>>;
     wrapperProps?: React.HTMLAttributes<HTMLDivElement>;
+    popup: "map" | "auth";
 }
 
-export const Popup: FC<PopupProps> = ({ showPopup, setShowPopup, wrapperProps, children, ...rest }) => {
+export const Popup: FC<PopupProps> = ({ showPopup, setShowPopup, wrapperProps, children, popup }) => {
     const refPopup = useRef<HTMLDivElement>(null);
     const [container, setContainer] = useState<HTMLElement | null>(null);
+
+    const popupCss = [classes.popup, popup === "auth" && classes.auth, popup === "map" && classes.map]
+        .filter(Boolean)
+        .join(" ");
 
     useEffect(() => {
         let popupContainer = document.getElementById("popupContainer");
@@ -47,8 +52,8 @@ export const Popup: FC<PopupProps> = ({ showPopup, setShowPopup, wrapperProps, c
     if (!showPopup || !container) return null;
 
     return createPortal(
-        <div className={styles.wrapper} {...wrapperProps}>
-            <div ref={refPopup} {...rest}>
+        <div className={classes.wrapper} {...wrapperProps}>
+            <div ref={refPopup} className={popupCss}>
                 {children}
             </div>
         </div>,

@@ -32,16 +32,7 @@ export const AuthPanel = () => {
                             showPopup,
                             setShowPopup,
                         }}
-                        style={{
-                            backgroundColor: "#F7F7FA",
-                            width: "30rem",
-                            height: "24rem",
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            position: "relative",
-                            zIndex: 1001,
-                        }}
+                        popup="auth"
                     >
                         <AuthModal onClose={() => setShowPopup(false)} />
                     </Popup>

@@ -92,7 +92,6 @@ const EventPage: NextPage<PageProps> = () => {
         return <div>Error: {error.message}</div>;
     }
 
-    // решить вопрос не показывать backdrop если loading
     return (
         <section className={classes.event}>
             {status === "authenticated" && <ButtonBack />}
