@@ -9,12 +9,13 @@ import classes from "./Avatar.module.css";
 interface AvatarProps extends HTMLAttributes<HTMLDivElement>, Pick<IUser, "name"> {
     scale?: number;
     image?: string;
+    className?: string;
 }
 
-export const Avatar: FC<AvatarProps> = ({ image, name, scale = 1 }) => {
+export const Avatar: FC<AvatarProps> = ({ image, name, scale = 1, className }) => {
     return (
         <div style={{ width: `calc(${scale} * 3.5rem)` }}>
-            <div className={[classes.avatar, !image && classes.background].filter(Boolean).join(" ")}>
+            <div className={[classes.avatar, !image && classes.background, className].filter(Boolean).join(" ")}>
                 {image ? (
                     <Image className={classes.image} alt={name} src={image} fill></Image>
                 ) : (

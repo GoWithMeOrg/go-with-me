@@ -1,7 +1,6 @@
 "use client";
 
 import { FC, useMemo } from "react";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
 
 import { Popup } from "@/components/shared/Popup";
@@ -92,7 +91,7 @@ export const CreateAndInvite: FC<CreateAndInviteProps> = ({ mode, status }) => {
                         )) ||
                         (mode === Mode.TRIP && (
                             <Link className={linkCssString} href="/trips/new">
-                                Созадть поездку
+                                Создать поездку
                             </Link>
                         )))}
             </div>

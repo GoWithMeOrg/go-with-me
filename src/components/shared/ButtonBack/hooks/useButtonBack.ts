@@ -4,7 +4,7 @@ export const useButtonBack = () => {
     const router = useRouter();
 
     const handleBack = () => {
-        router.back();
+        router.push("/events");
     };
 
     return { handleBack };

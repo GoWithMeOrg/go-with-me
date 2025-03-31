@@ -20,7 +20,6 @@ import { optionsCities } from "@/components/widgets/GoogleMap/OptionsAutocomplet
 import { useEventList } from "@/components/widgets/EventList/hooks";
 
 import classes from "./EventFilters.module.css";
-import { Badges } from "@/components/shared/Badges";
 
 export const EventFilters = () => {
     const [activeTab, setActiveTab] = useState(NavbarEventTabs.LIST);
@@ -46,7 +45,7 @@ export const EventFilters = () => {
                     <NavbarEvents
                         onTabClick={handleTabClick}
                         activeTab={activeTab}
-                        dataAtributes={["события", "карта"]}
+                        dataAtributes={["list", "map"]}
                         nameAtribute={"data-filtered"}
                     />
                 </div>

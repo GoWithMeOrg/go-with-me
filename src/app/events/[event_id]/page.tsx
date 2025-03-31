@@ -11,6 +11,7 @@ import { ButtonBack } from "@/components/shared/ButtonBack";
 import Spinner from "@/assets/icons/spinner.svg";
 
 import classes from "../page.module.css";
+import { useSession } from "next-auth/react";
 
 interface PageProps {
     params: Promise<{ event_id: string }>;
@@ -74,6 +75,7 @@ const GET_EVENT_BY_ID = gql`
 
 const EventPage: NextPage<PageProps> = () => {
     const params = useParams();
+    const { data: session, status } = useSession();
 
     const event_id = params.event_id as string;
 
@@ -91,11 +93,11 @@ const EventPage: NextPage<PageProps> = () => {
 
     return (
         <section className={classes.event}>
-            <ButtonBack />
+            {status === "authenticated" && <ButtonBack />}
 
             <Event event={data.event} />
 
-            <CommentsList {...{ comments: data.comments, event_id, refetch }} />
+            {status === "authenticated" && <CommentsList {...{ comments: data.comments, event_id, refetch }} />}
         </section>
     );
 };

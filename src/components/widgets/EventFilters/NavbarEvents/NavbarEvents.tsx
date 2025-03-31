@@ -27,7 +27,8 @@ export const NavbarEvents = ({ onTabClick, activeTab, dataAtributes, nameAtribut
                     onClick={handleTabClick}
                     className={`${classes.navbarItem} ${activeTab === tab ? classes.navbarItemActive : ""}`}
                 >
-                    {tab.toUpperCase()}
+                    {/* {tab.toUpperCase()} */}
+                    {tab === "list" ? "события" : tab === "map" ? "карта" : tab.toUpperCase()}
                 </button>
             ))}
         </div>

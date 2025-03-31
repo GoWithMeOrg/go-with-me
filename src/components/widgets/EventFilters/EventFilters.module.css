@@ -1,6 +1,6 @@
 .filteredEvents {
     display: grid;
-    margin: 6.88rem 0 6.63rem 0;
+    margin: 0 0 6.63rem 0;
     max-width: 73.75rem;
     color: var(--additional-color);
     font-size: 1rem;

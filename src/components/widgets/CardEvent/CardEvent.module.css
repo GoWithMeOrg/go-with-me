@@ -1,5 +1,4 @@
 .card {
-    margin-bottom: 4.5rem;
     white-space: normal;
     color: var(--main-color);
 }
@@ -43,7 +42,7 @@
     line-height: 1.38rem;
     text-align: left;
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -51,20 +50,25 @@
 
 .medium {
     width: 27.75rem;
+    height: 27.88rem;
 }
 
 .mediumLarge {
     width: 23.75rem;
+    height: 27.88rem;
 }
 
 .large {
     width: 22.13rem;
+    height: 26.81rem;
 }
 
 .smallLarge {
     width: 20.25rem;
+    height: 25.56rem;
 }
 
 .small {
     width: 19.5rem;
+    height: 25rem;
 }
