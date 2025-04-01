@@ -1,29 +1,36 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import classes from "../Popup.module.css";
 
 interface IUsePopup {
-    popupMode?: string;
+    popupMode?: "auth" | "map";
 }
+
 export const usePopup = ({ popupMode }: IUsePopup) => {
     const refPopup = useRef<HTMLDivElement>(null);
     const [container, setContainer] = useState<HTMLElement | null>(null);
     const [showPopup, setShowPopup] = useState<boolean>(false);
 
-    const handleShowPopup = () => {
+    const handleShowPopup = useCallback(() => {
         setShowPopup(true);
-    };
+    }, []);
 
-    const handleHidePopup = () => {
+    const handleHidePopup = useCallback(() => {
         setShowPopup(false);
-    };
+    }, []);
 
     const popupCss = [classes.popup, popupMode === "auth" && classes.auth, popupMode === "map" && classes.map]
         .filter(Boolean)
         .join(" ");
 
-    useEffect(() => {
+    const handleOutsideClick = useCallback((event: MouseEvent) => {
+        if (refPopup.current && !refPopup.current.contains(event.target as Node)) {
+            setShowPopup(false);
+        }
+    }, []);
+
+    const managePopupContainer = () => {
         let popupContainer = document.getElementById("popupContainer");
 
         if (!popupContainer) {
@@ -34,26 +41,24 @@ export const usePopup = ({ popupMode }: IUsePopup) => {
 
         setContainer(popupContainer);
 
-        const eventListener = (event: MouseEvent) => {
-            if (!refPopup.current?.contains(event.target as Node)) {
-                setShowPopup(false);
-            }
-        };
-
         if (showPopup) {
             document.body.style.overflow = "hidden";
-            document.addEventListener("mousedown", eventListener);
+            document.addEventListener("mousedown", handleOutsideClick);
         } else {
             document.body.style.overflow = "";
         }
 
         return () => {
-            document.removeEventListener("mousedown", eventListener);
+            document.removeEventListener("mousedown", handleOutsideClick);
             if (!document.querySelector("#popupContainer")?.hasChildNodes()) {
                 popupContainer?.remove();
             }
         };
-    }, []);
+    };
+
+    useEffect(() => {
+        managePopupContainer();
+    }, [showPopup]);
 
     return { refPopup, popupCss, showPopup, setShowPopup, handleShowPopup, handleHidePopup, container, setContainer };
 };

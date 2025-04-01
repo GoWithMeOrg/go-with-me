@@ -45,7 +45,7 @@ const Event: FC<EventProps> = ({ event }) => {
         sessionUserID,
     });
 
-    const popupMode: string = status === "authenticated" ? "map" : "auth";
+    const popupMode = (status === "authenticated" ? "map" : "auth") as "auth" | "map";
 
     const { showPopup, setShowPopup, handleShowPopup, handleHidePopup } = usePopup({ popupMode });
 

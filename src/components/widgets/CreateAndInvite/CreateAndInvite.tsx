@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useMemo } from "react";
+import { FC, SetStateAction, useMemo } from "react";
 import Link from "next/link";
 
 import { Popup } from "@/components/shared/Popup";
@@ -11,9 +11,8 @@ import { AuthModal } from "@/components/widgets/AuthModal";
 
 import Join from "@/assets/icons/join.svg";
 
-import { usePopup } from "@/app/hooks/usePopup";
-
 import classes from "./CreateAndInvite.module.css";
+import { usePopup } from "@/components/shared/Popup/hooks";
 
 export enum Mode {
     EVENT,
@@ -27,7 +26,10 @@ interface CreateAndInviteProps {
 }
 
 export const CreateAndInvite: FC<CreateAndInviteProps> = ({ mode, status }) => {
-    const { handleShowAuth, showPopup, setShowPopup } = usePopup();
+    // const { handleShowAuth, showPopup, setShowPopup } = usePopup();
+
+    const popupMode: string = "auth";
+    const { handleShowPopup, handleHidePopup, showPopup, setShowPopup } = usePopup({ popupMode });
 
     const linkCssString = useMemo(
         () =>
@@ -45,31 +47,17 @@ export const CreateAndInvite: FC<CreateAndInviteProps> = ({ mode, status }) => {
 
                 {status === "unauthenticated" && (
                     <div className={classes.buttons}>
-                        <Button size="big" onClick={handleShowAuth}>
+                        <Button size="big" onClick={handleShowPopup}>
                             Создать событие
                         </Button>
-                        <Button size="big" onClick={handleShowAuth}>
+                        <Button size="big" onClick={handleShowPopup}>
                             Создать поездку
                         </Button>
                     </div>
                 )}
 
-                <Popup
-                    {...{
-                        showPopup,
-                        setShowPopup,
-                    }}
-                    style={{
-                        backgroundColor: "#F7F7FA",
-                        width: "30rem",
-                        height: "24rem",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        position: "absolute",
-                    }}
-                >
-                    <AuthModal onClose={() => setShowPopup(false)} />
+                <Popup popupMode={"auth"} showPopup={showPopup} setShowPopup={setShowPopup}>
+                    <AuthModal onClose={handleHidePopup} />
                 </Popup>
 
                 {status === "authenticated" &&
