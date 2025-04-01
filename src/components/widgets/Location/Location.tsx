@@ -17,6 +17,7 @@ import Autocomplete from "@/components/widgets/GoogleMap/Autocomplete";
 import { optionsFullAdress } from "@/components/widgets/GoogleMap/OptionsAutocomplete";
 
 import classes from "./Location.module.css";
+import { usePopup } from "@/components/shared/Popup/hooks";
 
 interface ILocation {
     locationEvent?: {
@@ -35,6 +36,10 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
     const geocoding = useMapsLibrary("geocoding");
     const mapAPI = useContext(APIProviderContext);
 
+    const popupMode: "map" = "map";
+
+    const { showPopup, setShowPopup, handleShowPopup, handleHidePopup } = usePopup({ popupMode });
+
     const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(
         props.locationEvent?.coordinates !== undefined
             ? {
@@ -47,7 +52,6 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
     const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
 
     const prevSelectedPlaceRef = useRef<google.maps.places.PlaceResult | null>(selectedPlace);
-    const [showPopup, setShowPopup] = useState<boolean>(false);
 
     useEffect(() => {
         if (prevSelectedPlaceRef.current !== selectedPlace && props.onChange) {
@@ -68,14 +72,6 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
         return;
     }
 
-    const handleShowMap = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        setShowPopup(true);
-        setSelectedPlace(null);
-    };
-    const handleMapClose = () => {
-        setShowPopup(false);
-    };
     const handleMapClick = (e: { detail: { latLng: SetStateAction<google.maps.LatLngLiteral | null> } }) => {
         setMarkerPosition(e.detail.latLng);
 
@@ -110,7 +106,7 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
         <label className={classes.locationForm}>
             <div className={classes.labelFindMap}>
                 <span className={classes.titleInput}>Место/Адрес</span>
-                <Button className={classes.btnFindMap} onClick={handleShowMap} resetDefaultStyles={true}>
+                <Button className={classes.btnFindMap} onClick={handleShowPopup} resetDefaultStyles={true}>
                     <Marker style={{ marginRight: "0.25rem" }} />
                     Найти на карте
                 </Button>
@@ -125,13 +121,7 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
                 options={optionsFullAdress}
             />
 
-            <Popup
-                {...{
-                    showPopup,
-                    setShowPopup,
-                }}
-                style={{ backgroundColor: "none", padding: "1rem", borderRadius: "0.5rem", width: "60%" }}
-            >
+            <Popup showPopup={showPopup} setShowPopup={setShowPopup} popupMode={"map"}>
                 <Map
                     style={{ height: "600px" }}
                     defaultZoom={markerPosition ? 15 : 3}
@@ -160,7 +150,7 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
                 </Map>
                 <div className={classes.buttonBlockMap}>
                     <Geolocation />
-                    <Button className={classes.buttonMap} onClick={handleMapClose}>
+                    <Button className={classes.buttonMap} onClick={handleHidePopup}>
                         Закрыть
                     </Button>
                 </div>

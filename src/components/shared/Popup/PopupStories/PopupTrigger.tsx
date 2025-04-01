@@ -15,7 +15,7 @@ export const PopupTrigger: FC = () => {
             >
                 ShowPopup
             </Button>
-            <Popup {...{ setShowPopup, showPopup }}>
+            <Popup popupMode={"map"} {...{ setShowPopup, showPopup }}>
                 <div style={{ backgroundColor: "white", padding: "1rem" }}>
                     <p>PopupText</p>
                 </div>

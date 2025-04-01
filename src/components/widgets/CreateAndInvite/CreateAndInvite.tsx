@@ -28,7 +28,7 @@ interface CreateAndInviteProps {
 export const CreateAndInvite: FC<CreateAndInviteProps> = ({ mode, status }) => {
     // const { handleShowAuth, showPopup, setShowPopup } = usePopup();
 
-    const popupMode: string = "auth";
+    const popupMode: "auth" = "auth";
     const { handleShowPopup, handleHidePopup, showPopup, setShowPopup } = usePopup({ popupMode });
 
     const linkCssString = useMemo(

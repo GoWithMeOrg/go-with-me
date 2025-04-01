@@ -13,7 +13,7 @@ import { usePopup } from "@/components/shared/Popup/hooks";
 
 export const Footer = () => {
     const { data: session, status } = useSession();
-    const popupMode: string = "auth";
+    const popupMode: "auth" = "auth";
 
     const { showPopup, setShowPopup, handleShowPopup, handleHidePopup } = usePopup({ popupMode });
 
@@ -54,7 +54,7 @@ export const Footer = () => {
                         </div>
 
                         <Popup showPopup={showPopup} setShowPopup={setShowPopup} popupMode={"auth"}>
-                            <AuthModal onClose={() => setShowPopup(false)} />
+                            <AuthModal onClose={handleHidePopup} />
                         </Popup>
                     </div>
                 </div>

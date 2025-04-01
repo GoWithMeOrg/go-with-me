@@ -25,6 +25,7 @@ export const PopupContainer: FC = () => {
             <p>SomeText</p>
             {container.current && (
                 <Popup
+                    popupMode={"map"}
                     style={{ backgroundColor: "red", color: "white", padding: "1rem" }}
                     {...{
                         setShowPopup,
