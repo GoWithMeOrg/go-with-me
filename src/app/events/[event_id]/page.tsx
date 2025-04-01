@@ -96,7 +96,7 @@ const EventPage: NextPage<PageProps> = () => {
         <section className={classes.event}>
             {status === "authenticated" && <ButtonBack />}
 
-            <Backdrop marginTop={395} marginBottom={274} contentLoading={loading}>
+            <Backdrop marginTop={430} marginBottom={274} contentLoading={loading}>
                 <Event event={data.event} />
 
                 {status === "authenticated" && <CommentsList {...{ comments: data.comments, event_id, refetch }} />}

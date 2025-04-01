@@ -23,7 +23,8 @@
 }
 
 .information {
-    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
 }
 
 .location {
@@ -350,4 +351,13 @@
     border-radius: 0.25rem;
     color: var(--hover-color);
     stroke: var(--hover-color);
+}
+
+.message {
+    height: 30px;
+}
+
+.badges {
+    height: 4.38rem;
+    overflow: hidden;
 }

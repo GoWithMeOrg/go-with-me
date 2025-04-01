@@ -9,8 +9,6 @@ export const useBackdrop = ({ children, marginTop, marginBottom }: useBackdropPr
     const containerRef = useRef<HTMLDivElement>(null);
     const [style, setStyle] = useState({ top: "0px", height: "0px" });
 
-    //отступ сверху 84 снизу 172
-
     useEffect(() => {
         const updateBackground = () => {
             if (!containerRef.current) return;
@@ -20,7 +18,6 @@ export const useBackdrop = ({ children, marginTop, marginBottom }: useBackdropPr
             const containerTop = container.offsetTop;
 
             const containerHeight = container.offsetHeight;
-            console.log(containerHeight);
 
             const adjustedTop = containerTop + marginTop;
             const adjustedHeight = containerHeight - marginTop - marginBottom;

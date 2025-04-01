@@ -85,10 +85,14 @@ const Event: FC<EventProps> = ({ event }) => {
                             </Button>
                         </div>
 
-                        {copied && <Span title={"Ссылка события скопирована в буфер обмена!"} />}
+                        <div className={classes.message}>
+                            {copied && <Span title={"Ссылка события скопирована в буфер обмена!"} />}
+                        </div>
                     </div>
 
-                    <Badges badges={event.types || []} size={Sizes.SMALL} />
+                    <div className={classes.badges}>
+                        <Badges badges={event.types || []} size={Sizes.SMALL} />
+                    </div>
 
                     <div className={classes.invitations}>
                         <Join event_id={event._id} />
