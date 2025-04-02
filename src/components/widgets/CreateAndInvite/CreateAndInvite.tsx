@@ -1,9 +1,10 @@
 "use client";
 
-import { FC, SetStateAction, useMemo } from "react";
+import { FC, useMemo } from "react";
 import Link from "next/link";
 
 import { Popup } from "@/components/shared/Popup";
+import { usePopup } from "@/components/shared/Popup/hooks";
 import { Button } from "@/components/shared/Button";
 import { Title } from "@/components/shared/Title";
 
@@ -12,7 +13,6 @@ import { AuthModal } from "@/components/widgets/AuthModal";
 import Join from "@/assets/icons/join.svg";
 
 import classes from "./CreateAndInvite.module.css";
-import { usePopup } from "@/components/shared/Popup/hooks";
 
 export enum Mode {
     EVENT,
@@ -26,8 +26,6 @@ interface CreateAndInviteProps {
 }
 
 export const CreateAndInvite: FC<CreateAndInviteProps> = ({ mode, status }) => {
-    // const { handleShowAuth, showPopup, setShowPopup } = usePopup();
-
     const popupMode: "auth" = "auth";
     const { handleShowPopup, handleHidePopup, showPopup, setShowPopup } = usePopup({ popupMode });
 

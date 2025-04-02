@@ -13,6 +13,9 @@ import { Map, AdvancedMarker, Pin } from "@vis.gl/react-google-maps";
 import { Popup } from "@/components/shared/Popup";
 import { Badges } from "@/components/shared/Badges";
 import { Span } from "@/components/shared/Span";
+import { Sizes } from "@/components/shared/Badges/Badges";
+import { Avatar } from "@/components/shared/Avatar";
+import { usePopup } from "@/components/shared/Popup/hooks";
 
 import ArrowMaps from "@/assets/icons/arrowMaps.svg";
 import Checkbox from "@/assets/icons/checkbox.svg";
@@ -21,18 +24,14 @@ import ShareLink from "@/assets/icons/shareLink.svg";
 import Marker from "@/assets/icons/marker.svg";
 import Heart from "@/assets/icons/heart.svg";
 
-import { Sizes } from "@/components/shared/Badges/Badges";
-import { Avatar } from "@/components/shared/Avatar";
-
 import useEvent, { EventProps } from "./hooks/useEvent";
 
-import Join from "../Join/Join";
-import useJoin from "../Join/hooks/useJoin";
+import { Join } from "@/components/widgets/Join";
+import useJoin from "@/components/widgets/Join/hooks/useJoin";
+import { Like } from "@/components/widgets/Like";
+import { AuthModal } from "@/components/widgets/AuthModal";
 
 import classes from "./Event.module.css";
-import Like from "../Like/Like";
-import { AuthModal } from "../AuthModal";
-import { usePopup } from "@/components/shared/Popup/hooks";
 
 const Event: FC<EventProps> = ({ event }) => {
     const { data: session, status } = useSession();

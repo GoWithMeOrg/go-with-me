@@ -1,7 +1,5 @@
 import { forwardRef, SetStateAction, useContext, useEffect, useRef, useState } from "react";
 
-import { Button } from "@/components/shared/Button";
-import { CustomMapControl, Geolocation, MapHandler } from "@/components/widgets/GoogleMap";
 import {
     Map,
     AdvancedMarker,
@@ -11,13 +9,18 @@ import {
     ControlPosition,
     useMapsLibrary,
 } from "@vis.gl/react-google-maps";
-import { Popup } from "@/components/shared/Popup";
-import Marker from "@/assets/icons/marker.svg";
+
+import { Button } from "@/components/shared/Button";
+import { CustomMapControl, Geolocation, MapHandler } from "@/components/widgets/GoogleMap";
 import Autocomplete from "@/components/widgets/GoogleMap/Autocomplete";
 import { optionsFullAdress } from "@/components/widgets/GoogleMap/OptionsAutocomplete";
 
-import classes from "./Location.module.css";
+import { Popup } from "@/components/shared/Popup";
 import { usePopup } from "@/components/shared/Popup/hooks";
+
+import Marker from "@/assets/icons/marker.svg";
+
+import classes from "./Location.module.css";
 
 interface ILocation {
     locationEvent?: {

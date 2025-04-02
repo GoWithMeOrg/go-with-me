@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import { Title } from "@/components/shared/Title";
+import { eventCategory, eventTypes } from "@/components/shared/Dropdown/dropdownLists";
 
 import { GoogleMap } from "../GoogleMap";
 import { NavbarEvents } from "@/components/widgets/EventFilters/NavbarEvents";
@@ -8,19 +9,17 @@ import { FilteredEvents } from "@/components/widgets/EventFilters/FilteredEvents
 import { SelectItems } from "@/components/widgets/SelectItems";
 import { CreateTag } from "@/components/widgets/CreateTag";
 import { Date } from "@/components/widgets/Date";
-
-import { eventCategory, eventTypes } from "@/components/shared/Dropdown/dropdownLists";
-
-import { SizeCard } from "@/components/widgets/CardEvent/CardEvent";
-import { NavbarEventTabs } from "../Navbar/models";
-import { FilteredEventsLocation } from "@/components/widgets/FilteredEventsLocation";
-
-import { useEventFilters } from "./hooks/useEventFilters";
 import { optionsCities } from "@/components/widgets/GoogleMap/OptionsAutocomplete";
 import { useEventList } from "@/components/widgets/EventList/hooks";
+import { SizeCard } from "@/components/widgets/CardEvent/CardEvent";
+import { FilteredEventsLocation } from "@/components/widgets/FilteredEventsLocation";
+import { Backdrop } from "@/components/widgets/Backdrop";
+
+import { NavbarEventTabs } from "../Navbar/models";
+
+import { useEventFilters } from "./hooks/useEventFilters";
 
 import classes from "./EventFilters.module.css";
-import { Backdrop } from "../Backdrop";
 
 export const EventFilters = () => {
     const [activeTab, setActiveTab] = useState(NavbarEventTabs.LIST);

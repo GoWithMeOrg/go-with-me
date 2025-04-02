@@ -4,14 +4,13 @@ import { FC } from "react";
 
 import type { IEvent } from "@/database/models/Event";
 
-import { CardEvent } from "../CardEvent";
+import { CardEvent } from "@/components/widgets/CardEvent";
+import { Backdrop } from "@/components/widgets/Backdrop";
 
 import { useEventList } from "./hooks";
-
 import { EventListProps } from "./types/EventList";
 
 import classes from "./EventList.module.css";
-import { Backdrop } from "../Backdrop";
 
 export const EventList: FC<EventListProps> = ({ sizeCard, limit, sort }) => {
     const { loading, error, events, refetch } = useEventList({ limit, sort });
@@ -22,7 +21,6 @@ export const EventList: FC<EventListProps> = ({ sizeCard, limit, sort }) => {
     if (error) return <p>Error : {error.message}</p>;
     if (!events) return;
 
-    // решить вопрос с z-index
     return (
         <Backdrop marginTop={84} marginBottom={274} contentLoading={loading}>
             <ul className={classes.list}>
