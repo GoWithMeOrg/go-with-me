@@ -30,7 +30,7 @@ export const usePopup = ({ popupMode }: IUsePopup) => {
         }
     }, []);
 
-    const managePopupContainer = () => {
+    const managePopupContainer = useCallback(() => {
         let popupContainer = document.getElementById("popupContainer");
 
         if (!popupContainer) {
@@ -54,11 +54,11 @@ export const usePopup = ({ popupMode }: IUsePopup) => {
                 popupContainer?.remove();
             }
         };
-    };
+    }, [showPopup, handleOutsideClick]);
 
     useEffect(() => {
         managePopupContainer();
-    }, [showPopup]);
+    }, [showPopup, managePopupContainer]);
 
     return { refPopup, popupCss, showPopup, setShowPopup, handleShowPopup, handleHidePopup, container, setContainer };
 };

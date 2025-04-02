@@ -31,7 +31,7 @@ export const useBackdrop = ({ children, marginTop, marginBottom }: useBackdropPr
         updateBackground();
         window.addEventListener("resize", updateBackground);
         return () => window.removeEventListener("resize", updateBackground);
-    }, [children]);
+    }, [children, marginTop, marginBottom]);
 
     return { containerRef, style, setStyle };
 };

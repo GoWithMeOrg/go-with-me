@@ -31,7 +31,7 @@ export const Geocoding = ({ coordinates }: Props) => {
                 // console.log(results[1]);
             }
         });
-    }, [apiIsLoaded, coordinates, geocoding]);
+    }, [apiIsLoaded, coordinates, geocoding, lat, lng]);
 
     return (
         <span>
