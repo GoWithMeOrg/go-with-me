@@ -54,7 +54,7 @@ export const CreateAndInvite: FC<CreateAndInviteProps> = ({ mode, status }) => {
                     </div>
                 )}
 
-                <Popup popupMode={"auth"} showPopup={showPopup} setShowPopup={setShowPopup}>
+                <Popup popupMode={popupMode} showPopup={showPopup} setShowPopup={setShowPopup}>
                     <AuthModal onClose={handleHidePopup} />
                 </Popup>
 
