@@ -9,68 +9,52 @@ import { AuthModal } from "@/components/widgets/AuthModal";
 import { Button } from "@/components/shared/Button";
 
 import classes from "./Footer.module.css";
+import { usePopup } from "@/components/shared/Popup/hooks";
 
 export const Footer = () => {
     const { data: session, status } = useSession();
-    const [showPopup, setShowPopup] = useState<boolean>(false);
+    const popupMode: "auth" = "auth";
 
-    const handleShowAuth = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        setShowPopup(true);
-    };
+    const { showPopup, setShowPopup, handleShowPopup, handleHidePopup } = usePopup({ popupMode });
 
     return (
         <footer className={classes.footer}>
             {status === "unauthenticated" && (
                 <div className={classes.footerContainer}>
                     <div className={classes.footerLogIn}>
-                        <Button onClick={handleShowAuth} className={classes.footerLink} resetDefaultStyles={true}>
+                        <Button onClick={handleShowPopup} className={classes.footerLink} resetDefaultStyles={true}>
                             Войти
                         </Button>
                         <LogoFooter />
                     </div>
                     <div className={classes.footerBlockLinks}>
-                        {/* <div className={classes.footerBlock}>
-                            <Button onClick={handleShowAuth} className={classes.footerLink} resetDefaultStyles={true}>
+                        <div className={classes.footerBlock}>
+                            <Button onClick={handleShowPopup} className={classes.footerLink} resetDefaultStyles={true}>
                                 Events
                             </Button>
-                            <Button onClick={handleShowAuth} className={classes.footerLink} resetDefaultStyles={true}>
+                            <Button onClick={handleShowPopup} className={classes.footerLink} resetDefaultStyles={true}>
                                 Profile
                             </Button>
                         </div>
                         <div className={classes.footerBlock}>
-                            <Button onClick={handleShowAuth} className={classes.footerLink} resetDefaultStyles={true}>
+                            <Button onClick={handleShowPopup} className={classes.footerLink} resetDefaultStyles={true}>
                                 Privacy policy
                             </Button>
-                            <Button onClick={handleShowAuth} className={classes.footerLink} resetDefaultStyles={true}>
+                            <Button onClick={handleShowPopup} className={classes.footerLink} resetDefaultStyles={true}>
                                 Terms of use
                             </Button>
                         </div>
                         <div className={classes.footerBlock}>
-                            <Button onClick={handleShowAuth} className={classes.footerLink} resetDefaultStyles={true}>
+                            <Button onClick={handleShowPopup} className={classes.footerLink} resetDefaultStyles={true}>
                                 FAQ
                             </Button>
-                            <Button onClick={handleShowAuth} className={classes.footerLink} resetDefaultStyles={true}>
+                            <Button onClick={handleShowPopup} className={classes.footerLink} resetDefaultStyles={true}>
                                 Write to use
                             </Button>
-                        </div> */}
+                        </div>
 
-                        <Popup
-                            {...{
-                                showPopup,
-                                setShowPopup,
-                            }}
-                            style={{
-                                backgroundColor: "#F7F7FA",
-                                width: "30rem",
-                                height: "24rem",
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                position: "absolute",
-                            }}
-                        >
-                            <AuthModal onClose={() => setShowPopup(false)} />
+                        <Popup showPopup={showPopup} setShowPopup={setShowPopup} popupMode={"auth"}>
+                            <AuthModal onClose={handleHidePopup} />
                         </Popup>
                     </div>
                 </div>
@@ -86,7 +70,7 @@ export const Footer = () => {
                             <LogoFooter />
                         </Link>
                     </div>
-                    {/* <div className={classes.footerBlockLinks}>
+                    <div className={classes.footerBlockLinks}>
                         <div className={classes.footerBlock}>
                             <Link href="/events" className={classes.footerLink}>
                                 Events
@@ -114,7 +98,7 @@ export const Footer = () => {
                                 Write to use
                             </Link>
                         </div>
-                    </div> */}
+                    </div>
                 </div>
             )}
         </footer>

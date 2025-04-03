@@ -13,23 +13,25 @@ import { Map, AdvancedMarker, Pin } from "@vis.gl/react-google-maps";
 import { Popup } from "@/components/shared/Popup";
 import { Badges } from "@/components/shared/Badges";
 import { Span } from "@/components/shared/Span";
+import { Sizes } from "@/components/shared/Badges/Badges";
+import { Avatar } from "@/components/shared/Avatar";
+import { usePopup } from "@/components/shared/Popup/hooks";
 
 import ArrowMaps from "@/assets/icons/arrowMaps.svg";
 import Checkbox from "@/assets/icons/checkbox.svg";
 import Lock from "@/assets/icons/lock.svg";
 import ShareLink from "@/assets/icons/shareLink.svg";
 import Marker from "@/assets/icons/marker.svg";
-
-import { Sizes } from "@/components/shared/Badges/Badges";
-import { Avatar } from "@/components/shared/Avatar";
+import Heart from "@/assets/icons/heart.svg";
 
 import useEvent, { EventProps } from "./hooks/useEvent";
 
-import Join from "../Join/Join";
-import useJoin from "../Join/hooks/useJoin";
+import { Join } from "@/components/widgets/Join";
+import useJoin from "@/components/widgets/Join/hooks/useJoin";
+import { Like } from "@/components/widgets/Like";
+import { AuthModal } from "@/components/widgets/AuthModal";
 
 import classes from "./Event.module.css";
-import Like from "../Like/Like";
 
 const Event: FC<EventProps> = ({ event }) => {
     const { data: session, status } = useSession();
@@ -37,21 +39,14 @@ const Event: FC<EventProps> = ({ event }) => {
 
     const { handleJoin, isJoined } = useJoin({ event_id: event._id, user_id: sessionUserID });
 
-    const {
-        organizer,
-        showPopup,
-        setShowPopup,
-        markerPosition,
-        handleDelete,
-        handleShowMap,
-        coord,
-        day,
-        copied,
-        handleCopyLink,
-    } = useEvent({
+    const { organizer, markerPosition, handleDelete, coord, day, copied, handleCopyLink } = useEvent({
         event,
         sessionUserID,
     });
+
+    const popupMode = (status === "authenticated" ? "map" : "auth") as "auth" | "map";
+
+    const { showPopup, setShowPopup, handleShowPopup, handleHidePopup } = usePopup({ popupMode });
 
     return (
         <div className={classes.event}>
@@ -67,7 +62,7 @@ const Event: FC<EventProps> = ({ event }) => {
 
                             <Button
                                 className={classes.buttonGoogleMaps}
-                                onClick={handleShowMap}
+                                onClick={handleShowPopup}
                                 resetDefaultStyles={true}
                             >
                                 <ArrowMaps style={{ marginRight: "0.25rem" }} />
@@ -89,10 +84,14 @@ const Event: FC<EventProps> = ({ event }) => {
                             </Button>
                         </div>
 
-                        {copied && <Span title={"Ссылка события скопирована в буфер обмена!"} />}
+                        <div className={classes.message}>
+                            {copied && <Span title={"Ссылка события скопирована в буфер обмена!"} />}
+                        </div>
                     </div>
 
-                    <Badges badges={event.types || []} size={Sizes.SMALL} />
+                    <div className={classes.badges}>
+                        <Badges badges={event.types || []} size={Sizes.SMALL} />
+                    </div>
 
                     <div className={classes.invitations}>
                         <Join event_id={event._id} />
@@ -110,11 +109,25 @@ const Event: FC<EventProps> = ({ event }) => {
                         </div>
                     ) : (
                         <div className={classes.buttons}>
-                            <Button className={classes.join} onClick={handleJoin}>
-                                {isJoined ? "Участник" : "Участвовать"}
-                            </Button>
+                            {status === "unauthenticated" ? (
+                                <>
+                                    <Button className={classes.join} onClick={handleShowPopup}>
+                                        {"Участвовать"}
+                                    </Button>
 
-                            <Like event_id={event._id} user_id={sessionUserID as string} />
+                                    <Button className={classes.like} onClick={handleShowPopup}>
+                                        <Heart className={classes.liked} />
+                                    </Button>
+                                </>
+                            ) : (
+                                <>
+                                    <Button className={classes.join} onClick={handleJoin}>
+                                        {isJoined ? "Участник" : "Участвовать"}
+                                    </Button>
+
+                                    <Like event_id={event._id} user_id={sessionUserID as string} />
+                                </>
+                            )}
                         </div>
                     )}
                 </div>
@@ -130,34 +143,43 @@ const Event: FC<EventProps> = ({ event }) => {
                         />
                     )}
                 </div>
+
                 <Popup
-                    {...{
-                        showPopup,
-                        setShowPopup,
-                    }}
-                    style={{ backgroundColor: "none", padding: "1rem", borderRadius: "0.5rem", width: "60%" }}
+                    showPopup={showPopup}
+                    setShowPopup={setShowPopup}
+                    popupMode={status === "authenticated" ? "map" : "auth"}
                 >
-                    <Map
-                        style={{ height: "600px" }}
-                        defaultZoom={14}
-                        defaultCenter={{ lat: event.location?.coordinates[1], lng: event.location?.coordinates[0] }}
-                        gestureHandling={"greedy"}
-                        disableDefaultUI={false}
-                        mapId={"<Your custom MapId here>"}
-                    >
-                        <AdvancedMarker
-                            position={markerPosition}
-                            // draggable={true}
-                            title={"AdvancedMarker with customized pin."}
-                        >
-                            <Pin background={"#FBBC04"} borderColor={"#1e89a1"} glyphColor={"#0f677a"}></Pin>
-                        </AdvancedMarker>
-                    </Map>
-                    <div className={classes.buttonBlockMap}>
-                        <Button className={classes.buttonMap} onClick={() => setShowPopup(false)}>
-                            Закрыть карту
-                        </Button>
-                    </div>
+                    {status === "authenticated" ? (
+                        <>
+                            <Map
+                                style={{ height: "600px" }}
+                                defaultZoom={14}
+                                defaultCenter={{
+                                    lat: event.location.coordinates[1],
+                                    lng: event.location.coordinates[0],
+                                }}
+                                gestureHandling="greedy"
+                                disableDefaultUI={false}
+                                mapId={"your-map-id-here"}
+                            >
+                                {markerPosition && (
+                                    <AdvancedMarker
+                                        position={markerPosition}
+                                        title="AdvancedMarker with customized pin."
+                                    >
+                                        <Pin background="#FBBC04" borderColor="#1e89a1" glyphColor="#0f677a" />
+                                    </AdvancedMarker>
+                                )}
+                            </Map>
+                            <div className={classes.buttonBlockMap}>
+                                <Button className={classes.buttonMap} onClick={handleHidePopup}>
+                                    Закрыть карту
+                                </Button>
+                            </div>
+                        </>
+                    ) : (
+                        <AuthModal onClose={handleHidePopup} />
+                    )}
                 </Popup>
             </div>
 

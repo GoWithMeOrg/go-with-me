@@ -60,7 +60,6 @@ const useEvent = ({ event, sessionUserID }: EventProps) => {
     const { getDeleteFile } = useUploadFile({});
 
     const [organizer, setOrganizer] = useState(true);
-    const [showPopup, setShowPopup] = useState<boolean>(false);
     const [copied, setCopied] = useState(false);
     const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(
         event.location !== undefined
@@ -118,11 +117,6 @@ const useEvent = ({ event, sessionUserID }: EventProps) => {
 
     const coord: [number, number] = [event.location.coordinates[0] as number, event.location.coordinates[1] as number];
 
-    const handleShowMap = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        setShowPopup(true);
-    };
-
     const dayOfWeek = dayjs(event.startDate).day();
     const days = ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
     const day = days[dayOfWeek];
@@ -130,11 +124,8 @@ const useEvent = ({ event, sessionUserID }: EventProps) => {
     return {
         organizer,
         setOrganizer,
-        showPopup,
-        setShowPopup,
         markerPosition,
         handleDelete,
-        handleShowMap,
         coord,
         day,
         copied,

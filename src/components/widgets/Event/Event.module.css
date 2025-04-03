@@ -23,7 +23,8 @@
 }
 
 .information {
-    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
 }
 
 .location {
@@ -160,7 +161,6 @@
     justify-content: center;
     align-items: center;
     width: 12rem;
-    height: 3.13rem;
     border-radius: 0.25rem;
     border: 2px solid var(--main-color);
     background: none;
@@ -328,4 +328,36 @@
     color: var(--hover-color);
     stroke: var(--hover-color);
     border: none;
+}
+
+.like {
+    width: 3.5rem;
+    height: 3.13rem;
+    border: 0.13rem solid var(--main-color);
+    border-radius: 0.25rem;
+    background: none;
+    padding: 0.94rem 0.81rem 0.94rem 0.81rem;
+}
+
+.like:active {
+    color: var(--white-color);
+    background-color: var(--text-color);
+    border-color: var(--text-color);
+}
+
+.like:hover path,
+.like:hover {
+    border: 0.13rem solid var(--hover-color);
+    border-radius: 0.25rem;
+    color: var(--hover-color);
+    stroke: var(--hover-color);
+}
+
+.message {
+    height: 30px;
+}
+
+.badges {
+    height: 4.38rem;
+    overflow: hidden;
 }

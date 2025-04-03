@@ -12,6 +12,9 @@ import { Mode } from "@/components/widgets/CreateAndInvite/CreateAndInvite";
 import { EventList } from "@/components/widgets/EventList";
 
 import classes from "./page.module.css";
+import { Backdrop } from "@/components/widgets/Backdrop";
+import { MoreLink } from "@/components/shared/MoreLink";
+import { Title } from "@/components/shared/Title";
 
 export default function HomePage() {
     const { data: session, status } = useSession();
@@ -29,7 +32,15 @@ export default function HomePage() {
             {status === "unauthenticated" && (
                 <>
                     <Promo />
-                    <EventList sizeCard={SizeCard.ML} limit={9} offset={9} sort={"startDate"} />
+                    <section className={classes.popularEvents}>
+                        <div className={classes.popularEventsHeader}>
+                            <Title title={"Popular Event List"} tag={"h2"} />
+                        </div>
+
+                        <EventList sizeCard={SizeCard.ML} limit={9} offset={9} sort={"startDate"} />
+
+                        <MoreLink link={"/events"} text={"more events"} />
+                    </section>
                     <HowITWorks />
                     <CreateAndInvite mode={Mode.BOTH} status={status} />
                 </>

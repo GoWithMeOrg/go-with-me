@@ -14,13 +14,8 @@ interface IAuthModal {
 }
 
 export const AuthModal = ({ onClose }: IAuthModal) => {
-    const handleClose = () => {
-        if (onClose) {
-            onClose?.();
-        }
-    };
-
     let userEmail;
+
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = Object.fromEntries(new FormData(e.currentTarget).entries());
@@ -29,7 +24,7 @@ export const AuthModal = ({ onClose }: IAuthModal) => {
 
     return (
         <div className={classes.authModal}>
-            <Close className={classes.authModalClose} onClick={handleClose} />
+            <Close className={classes.authModalClose} onClick={onClose} />
             <div className={classes.authModalWrapper}>
                 <Title className={classes.authModalTitle} tag={"h3"}>
                     Войдите в систему и присоединяйтесь к приключениям

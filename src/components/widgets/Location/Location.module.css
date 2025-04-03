@@ -19,12 +19,14 @@
 
 .btnFindMap {
     display: flex;
-    border: none !important;
+    align-items: center;
+    border: none;
     color: var(--additional-color);
-    font-weight: 500 !important;
+    font: inherit;
+    font-weight: 500;
     line-height: 1.63rem;
     text-align: left;
-    padding: 0 !important;
+    padding: 0;
 }
 
 .fieldInput {

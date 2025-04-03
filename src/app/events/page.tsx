@@ -14,9 +14,10 @@ import { Slide } from "@/components/shared/Slide";
 
 import { IEvent } from "@/database/models/Event";
 
-import classes from "./page.module.css";
 import { CardEvent } from "@/components/widgets/CardEvent";
 import { SizeCard } from "@/components/widgets/CardEvent/CardEvent";
+
+import classes from "./page.module.css";
 
 const EventListPage: NextPage = () => {
     const { status } = useSession();
