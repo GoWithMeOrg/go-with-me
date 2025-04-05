@@ -36,11 +36,10 @@ jobs:
         needs: build-and-push
         runs-on: ubuntu-latest
         steps:
-            - name: Deploy to DigitalOcean App Platform
+            - name: Install doctl
               uses: digitalocean/action-doctl@v2
               with:
                   token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-              env:
-                  APP_ID: ${{ secrets.DIGITALOCEAN_APP_ID }}
-              run: |
-                  doctl apps update $APP_ID --spec .do/app.yaml
+
+            - name: Update App Platform
+              run: doctl apps update ${{ secrets.DIGITALOCEAN_APP_ID }} --spec .do/app.yaml
