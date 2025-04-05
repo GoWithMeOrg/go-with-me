@@ -29,7 +29,7 @@
         "@googlemaps/js-api-loader": "^1.16.8",
         "@googlemaps/routing": "^1.4.0",
         "@graphql-tools/schema": "^10.0.16",
-        "@playwright/experimental-ct-react": "^1.50.1",
+        "@playwright/experimental-ct-react": "^1.51.1",
         "@vis.gl/react-google-maps": "^1.5.1",
         "child_process": "^1.0.2",
         "dayjs": "^1.11.13",
@@ -74,7 +74,7 @@
         "husky": "^9.1.7",
         "lint-staged": "^15.4.3",
         "prettier": "^3.4.2",
-        "storybook": "^8.5.3",
+        "storybook": "^8.6.12",
         "typescript": "^5.7.3"
     }
 }
