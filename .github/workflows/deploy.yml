@@ -12,6 +12,7 @@ env:
 jobs:
     build-and-push:
         runs-on: ubuntu-latest
+        environment: production
         steps:
             - name: Checkout repository
               uses: actions/checkout@v4
@@ -37,6 +38,23 @@ jobs:
                       ${{ env.REGISTRY }}__${{ env.IMAGE_NAME }}:latest
                   cache-from: type=registry,ref=${{ env.REGISTRY }}__${{ env.IMAGE_NAME }}:buildcache
                   cache-to: type=registry,ref=${{ env.REGISTRY }}__${{ env.IMAGE_NAME }}:buildcache,mode=max
+                  build-args: |
+                      BASE_FETCH_URL=${{ secrets.BASE_FETCH_URL }}
+                      DO_SPACES_ACCESS_KEY=${{ secrets.DO_SPACES_ACCESS_KEY }}
+                      DO_SPACES_BUCKET=${{ secrets.DO_SPACES_BUCKET }}
+                      DO_SPACES_SECRET_KEY=${{ secrets.DO_SPACES_SECRET_KEY }}
+                      DO_SPACES_URL=${{ secrets.DO_SPACES_URL }}
+                      FACEBOOK_CLIENT_ID=${{ secrets.FACEBOOK_CLIENT_ID }}
+                      FACEBOOK_CLIENT_SECRET=${{ secrets.FACEBOOK_CLIENT_SECRET }}
+                      GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
+                      GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
+                      MONGODB_URI=${{ secrets.MONGODB_URI }}
+                      NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}
+                      NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL }}
+                      NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=${{ secrets.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY }}
+                      NEXT_PUBLIC_GRAPHQL_ENDPOINT=${{ secrets.NEXT_PUBLIC_GRAPHQL_ENDPOINT }}
+                      TWITTER_CLIENT_ID=${{ secrets.TWITTER_CLIENT_ID }}
+                      TWITTER_CLIENT_SECRET=${{ secrets.TWITTER_CLIENT_SECRET }}
 
     deploy:
         needs: build-and-push
