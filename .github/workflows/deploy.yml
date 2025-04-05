@@ -7,8 +7,7 @@ on:
 
 env:
     REGISTRY: registry.digitalocean.com
-    IMAGE_NAME: ${{ github.repository }}
-    TAG_NAME: ${{ github.ref_name }}
+    IMAGE_NAME: ${{ github.event.repository.name }}
 
 jobs:
     build-and-push:
@@ -16,6 +15,9 @@ jobs:
         steps:
             - name: Checkout repository
               uses: actions/checkout@v4
+
+            - name: Transform tag name
+              run: echo "TAG_NAME=$(echo ${GITHUB_REF#refs/tags/} | sed 's/\//-/g')" >> $GITHUB_ENV
 
             - name: Log in to DigitalOcean Container Registry
               uses: digitalocean/action-doctl@v2
@@ -31,10 +33,10 @@ jobs:
                   context: .
                   push: true
                   tags: |
-                      ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG_NAME }}
-                      ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-                  cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache
-                  cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache,mode=max
+                      ${{ env.REGISTRY }}__${{ env.IMAGE_NAME }}:${{ env.TAG_NAME }}
+                      ${{ env.REGISTRY }}__${{ env.IMAGE_NAME }}:latest
+                  cache-from: type=registry,ref=${{ env.REGISTRY }}__${{ env.IMAGE_NAME }}:buildcache
+                  cache-to: type=registry,ref=${{ env.REGISTRY }}__${{ env.IMAGE_NAME }}:buildcache,mode=max
 
     deploy:
         needs: build-and-push
