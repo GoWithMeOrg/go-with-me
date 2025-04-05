@@ -1,0 +1,46 @@
+name: Deploy to DigitalOcean
+
+on:
+    push:
+        tags:
+            - "release/*"
+
+env:
+    REGISTRY: registry.digitalocean.com
+    IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+    build-and-push:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Log in to DigitalOcean Container Registry
+              uses: digitalocean/action-doctl@v2
+              with:
+                  token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+            - name: Build and push Docker image
+              uses: docker/build-push-action@v5
+              with:
+                  context: .
+                  push: true
+                  tags: |
+                      ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.ref_name }}
+                      ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+                  cache-from: type=gha
+                  cache-to: type=gha,mode=max
+
+    deploy:
+        needs: build-and-push
+        runs-on: ubuntu-latest
+        steps:
+            - name: Deploy to DigitalOcean App Platform
+              uses: digitalocean/action-doctl@v2
+              with:
+                  token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+              env:
+                  APP_ID: ${{ secrets.DIGITALOCEAN_APP_ID }}
+              run: |
+                  doctl apps update $APP_ID --spec .do/app.yaml
