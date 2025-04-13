@@ -21,7 +21,7 @@ jobs:
               with:
                   token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
-            - name: Build container image
+            - name: Build DEV container image
               uses: docker/build-push-action@v5
               with:
                   context: .
@@ -48,5 +48,5 @@ jobs:
             - name: Log in to DigitalOcean Container Registry with short-lived credentials
               run: doctl registry login --expiry-seconds 1200
 
-            - name: Push container image to DigitalOcean Container Registry
+            - name: Push dev container image to DigitalOcean Container Registry
               run: docker push ${{ vars.REGISTRY }}/${{ vars.IMAGE_NAME }}:dev
