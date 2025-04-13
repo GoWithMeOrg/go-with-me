@@ -1,0 +1,52 @@
+name: Deploy to DigitalOcean (Development)
+
+on:
+    pull_request:
+        branches:
+            - "main"
+    push:
+        branches:
+            - "main"
+
+jobs:
+    build-and-push:
+        runs-on: ubuntu-latest
+        environment: development
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Install doctl and log in to DO Registry
+              uses: digitalocean/action-doctl@v2
+              with:
+                  token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+            - name: Build DEV container image
+              uses: docker/build-push-action@v5
+              with:
+                  context: .
+                  push: false
+                  tags: ${{ vars.REGISTRY }}/${{ vars.IMAGE_NAME }}:dev
+                  build-args: |
+                      BASE_FETCH_URL=${{ vars.BASE_FETCH_URL }}
+                      DO_SPACES_ACCESS_KEY=${{ secrets.DO_SPACES_ACCESS_KEY }}
+                      DO_SPACES_BUCKET=${{ vars.DO_SPACES_BUCKET }}
+                      DO_SPACES_SECRET_KEY=${{ secrets.DO_SPACES_SECRET_KEY }}
+                      DO_SPACES_URL=${{ vars.DO_SPACES_URL }}
+                      FACEBOOK_CLIENT_ID=${{ secrets.FACEBOOK_CLIENT_ID }}
+                      FACEBOOK_CLIENT_SECRET=${{ secrets.FACEBOOK_CLIENT_SECRET }}
+                      GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
+                      GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
+                      MONGODB_URI=${{ secrets.MONGODB_URI }}
+                      NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}
+                      NEXTAUTH_URL=${{ vars.NEXTAUTH_URL }}
+                      NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=${{ secrets.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY }}
+                      NEXT_PUBLIC_GRAPHQL_ENDPOINT=${{ vars.NEXT_PUBLIC_GRAPHQL_ENDPOINT }}
+                      TWITTER_CLIENT_ID=${{ secrets.TWITTER_CLIENT_ID }}
+                      TWITTER_CLIENT_SECRET=${{ secrets.TWITTER_CLIENT_SECRET }}
+
+            - name: Log in to DigitalOcean Container Registry with short-lived credentials
+              run: doctl registry login --expiry-seconds 1200
+
+            - name: Push dev container image to DigitalOcean Container Registry
+              run: docker push ${{ vars.REGISTRY }}/${{ vars.IMAGE_NAME }}:dev
