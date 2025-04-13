@@ -37,11 +37,11 @@ jobs:
                       FACEBOOK_CLIENT_SECRET=${{ secrets.FACEBOOK_CLIENT_SECRET }}
                       GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
                       GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
-                      MONGODB_URI=${{ secrets.MONGODB_URI_DEV }}
+                      MONGODB_URI=${{ secrets.MONGODB_URI }}
                       NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}
-                      NEXTAUTH_URL=${{ vars.NEXTAUTH_URL_DEV }}
+                      NEXTAUTH_URL=${{ vars.NEXTAUTH_URL }}
                       NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=${{ secrets.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY }}
-                      NEXT_PUBLIC_GRAPHQL_ENDPOINT=${{ vars.NEXT_PUBLIC_GRAPHQL_ENDPOINT_DEV }}
+                      NEXT_PUBLIC_GRAPHQL_ENDPOINT=${{ vars.NEXT_PUBLIC_GRAPHQL_ENDPOINT }}
                       TWITTER_CLIENT_ID=${{ secrets.TWITTER_CLIENT_ID }}
                       TWITTER_CLIENT_SECRET=${{ secrets.TWITTER_CLIENT_SECRET }}
 
