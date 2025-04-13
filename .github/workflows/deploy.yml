@@ -13,9 +13,6 @@ jobs:
             - name: Checkout repository
               uses: actions/checkout@v4
 
-            - name: Transform tag name
-              run: echo "TAG_NAME=$(echo ${GITHUB_REF#refs/tags/} | sed 's/\//-/g')" >> $GITHUB_ENV
-
             - name: Install doctl and log in to DO Registry
               uses: digitalocean/action-doctl@v2
               with:
@@ -26,7 +23,7 @@ jobs:
               with:
                   context: .
                   push: false
-                  tags: ${{ vars.REGISTRY }}/${{ vars.IMAGE_NAME }}:${{ env.TAG_NAME }}
+                  tags: ${{ vars.REGISTRY }}/${{ vars.IMAGE_NAME }}:latest
                   build-args: |
                       BASE_FETCH_URL=${{ vars.BASE_FETCH_URL }}
                       DO_SPACES_ACCESS_KEY=${{ secrets.DO_SPACES_ACCESS_KEY }}
@@ -49,4 +46,4 @@ jobs:
               run: doctl registry login --expiry-seconds 1200
 
             - name: Push container image to DigitalOcean Container Registry
-              run: docker push ${{ vars.REGISTRY }}/${{ vars.IMAGE_NAME }}:${{ env.TAG_NAME }}
+              run: docker push ${{ vars.REGISTRY }}/${{ vars.IMAGE_NAME }}:latest
