@@ -29,7 +29,6 @@ import { UPDATE_USER } from "@/app/api/graphql/mutations/user";
 
 import classes from "./ProfileForm.module.css";
 import { Textarea } from "@/components/shared/Textarea";
-import { Location } from "@/components/widgets/Location";
 import { Autocomplete } from "../GoogleMap";
 import { optionsFullAdress } from "../GoogleMap/OptionsAutocomplete";
 
@@ -46,7 +45,7 @@ interface IFormProfile {
             address: string;
         };
     };
-    aboutMe: string;
+    description: string;
     image: string;
     categories: string[];
     types: string[];
@@ -178,7 +177,7 @@ export const ProfileForm: FC = () => {
                 />
 
                 <Controller
-                    name="aboutMe"
+                    name="description"
                     control={control}
                     render={({ field }) => (
                         <Label label={"Обо мне"}>
