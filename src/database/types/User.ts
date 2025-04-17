@@ -7,9 +7,15 @@ export interface IUser {
     lastName: string;
     email: string;
     image: string;
-    location: string;
+    location: {
+        type: "Point";
+        coordinates: [number, number];
+        properties: {
+            address: string;
+        };
+    };
     aboutMe: string;
-    interests: string[];
+    categories: string[];
     meetings: string[];
     tags: string[];
     emailVerified: boolean;

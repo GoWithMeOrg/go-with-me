@@ -8,9 +8,9 @@ export const userTypeDefs = gql`
         lastName: String
         email: String
         image: String
-        location: String
+        location: Location
         aboutMe: String
-        interests: [String]
+        categories: [String]
         meetings: [String]
         tags: [String]
         emailVerified: Boolean
@@ -22,12 +22,22 @@ export const userTypeDefs = gql`
         lastName: String
         email: String
         image: String
-        location: String
+        location: LocationInput
         aboutMe: String
-        interests: [String]
-        meetings: [String]
-        tags: [String]
-        emailVerified: Boolean
+        categories: [String]
+        # meetings: [String]
+        # tags: [String]
+        # emailVerified: Boolean
+    }
+
+    input LocationInput {
+        type: String
+        coordinates: [Float]
+        properties: PropertiesInput
+    }
+
+    input PropertiesInput {
+        address: String
     }
 `;
 

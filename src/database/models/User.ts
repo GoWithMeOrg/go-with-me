@@ -32,10 +32,25 @@ const UserSchema = new Schema<IUserDocument>({
     },
 
     image: String,
-    location: String,
+
+    location: {
+        type: {
+            type: String,
+            enum: ["Point"],
+            required: true,
+            default: "Point",
+        },
+        coordinates: {
+            type: [Number],
+            //required: true,
+        },
+        properties: {
+            address: String,
+        },
+    },
     aboutMe: String,
 
-    interests: {
+    categories: {
         type: [String],
         required: true,
     },
