@@ -26,7 +26,7 @@ const PublicProfile = () => {
                 />
             )}
 
-            {/* <Badges badges={userData?.user?.categories} /> */}
+            <Badges badges={userData?.user?.categories} />
         </div>
     );
 };
