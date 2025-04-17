@@ -16,6 +16,7 @@ import classes from "./AuthPanel.module.css";
 export const AuthPanel = () => {
     const { data: session, status } = useSession();
 
+    const user_id = session?.user.id;
     const popupMode: "auth" = "auth";
 
     const { showPopup, setShowPopup, handleShowPopup, handleHidePopup } = usePopup({ popupMode });
@@ -36,9 +37,8 @@ export const AuthPanel = () => {
             {status === "authenticated" && (
                 <>
                     <div className={classes.avatarAndMenu}>
-                        <Link href="/profile"></Link>
                         <div className={classes.menu}>
-                            <Link href="/profile" className={classes.linkToProfile}>
+                            <Link href={`/profile/${user_id}/private`} className={classes.linkToProfile}>
                                 <Human />
                             </Link>
                             <Button
