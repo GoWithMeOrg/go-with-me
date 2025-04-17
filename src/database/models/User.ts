@@ -48,14 +48,14 @@ const UserSchema = new Schema<IUserDocument>({
             address: String,
         },
     },
-    aboutMe: String,
+    description: String,
 
     categories: {
         type: [String],
         required: true,
     },
 
-    meetings: {
+    types: {
         type: [String],
         required: true,
     },

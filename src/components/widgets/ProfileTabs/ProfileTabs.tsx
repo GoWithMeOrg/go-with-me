@@ -33,7 +33,7 @@ export const ProfileTabs = () => {
                     </Link>
                 </div>
             </div>
-            {activeTab === NavbarTabs.PERSONAL && <ProfileForm userId={""} />}
+            {activeTab === NavbarTabs.PERSONAL && <ProfileForm />}
             {activeTab === NavbarTabs.NOTIFICATIONS && <NotificationsList />}
             {activeTab === NavbarTabs.LIST && <UserLists />}
             {/* {activeTab === "events" && <ProfileForm />}

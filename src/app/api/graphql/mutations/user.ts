@@ -16,9 +16,9 @@ export const UPDATE_USER = gql`
                     address
                 }
             }
-            aboutMe
-            interests
-            meetings
+            description
+            categories
+            types
             tags
             emailVerified
         }

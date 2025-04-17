@@ -2,7 +2,7 @@
 
 import React, { FC, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { gql, useQuery } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 import { IUser } from "@/database/types/User";
@@ -21,31 +21,31 @@ import { Input } from "@/components/shared/Input";
 import { UploadFileSizes } from "@/components/widgets/UploadFile/UploadFile";
 
 import { useUploadFile } from "@/components/widgets/UploadFile/hooks";
+
+import { useParams, useRouter } from "next/navigation";
+
+import { GET_USER_BY_ID } from "@/app/api/graphql/queries/user";
+import { UPDATE_USER } from "@/app/api/graphql/mutations/user";
+
 import classes from "./ProfileForm.module.css";
+import { Textarea } from "@/components/shared/Textarea";
+import { Location } from "@/components/widgets/Location";
+import { Autocomplete } from "../GoogleMap";
+import { optionsFullAdress } from "../GoogleMap/OptionsAutocomplete";
 
 export type ProfileType = Partial<IUser>;
-
-const GET_USER_BY_ID = gql`
-    query GetUserById($userId: ID!) {
-        user(id: $userId) {
-            _id
-            name
-            email
-            image
-            location
-            aboutMe
-            interests
-            meetings
-            tags
-        }
-    }
-`;
 interface IFormProfile {
     _id: string;
     firstName: string;
     lastName: string;
-    mail: string;
-    location: string;
+    email: string;
+    location: {
+        type: "Point";
+        coordinates: [number, number];
+        properties: {
+            address: string;
+        };
+    };
     aboutMe: string;
     image: string;
     categories: string[];
@@ -53,40 +53,64 @@ interface IFormProfile {
     tags: string[];
 }
 
-interface IProfileFormProps {
-    profileData?: ProfileType;
-    onSubmitEvent?: (event: ProfileType) => void;
-    userId: string;
-}
-export const ProfileForm: FC<IProfileFormProps> = ({ profileData, onSubmitEvent }) => {
+export const ProfileForm: FC = () => {
     const { control, handleSubmit, watch } = useForm<IFormProfile>();
-    //const { data: usersData } = useQuery(GET_USERS);
     const { data: session } = useSession();
     const [file, setFile] = useState<File | null>(null);
     const [presignUrl, setPresignUrl] = useState<string | null>(null);
-    const { onSubmitFile } = useUploadFile({});
-    //@ts-ignore
-    const userId = session?.user?.id;
-    const { data: userData, refetch } = useQuery(GET_USER_BY_ID, { variables: { userId: userId } });
+    const { onSubmitFile, getDeleteFile } = useUploadFile({});
+    const user_id = session?.user?.id;
+    const { data: userData, refetch } = useQuery(GET_USER_BY_ID, { variables: { userId: user_id } });
+    const [updateUser] = useMutation(UPDATE_USER);
+    const router = useRouter();
 
-    //console.log(userData?.user);
     const fullName = userData?.user?.name || "";
     const [firstName, lastName] = fullName.split(" ");
 
-    // /console.log(userData?.user?.image);
-    const onSubmit: SubmitHandler<IFormProfile> = (event: ProfileType) => {
-        //onSubmitEvent(event);
-        // if (file && presignUrl) {
-        //     onSubmitFile(file, presignUrl);
-        // }
+    const place = watch("location");
+
+    function mapGooglePlaceToLocationInput(place: any) {
+        if (!place || !place.geometry) return null;
+
+        return {
+            type: "Point",
+            coordinates: [place.geometry.location.lng(), place.geometry.location.lat()],
+            properties: {
+                address: place.formatted_address,
+            },
+        };
+    }
+
+    const handleEditProfile = (userEdited: Partial<IUser>) => {
+        const transformedLocation = mapGooglePlaceToLocationInput(place);
+        updateUser({
+            variables: {
+                updateUserId: user_id,
+                user: { ...userEdited, location: transformedLocation },
+            },
+        }).then((response) => {
+            console.log("UserEditPage: ", response); // eslint-disable-line
+            router.push(`/profile/${user_id}/public`);
+        });
+        refetch();
     };
 
-    const handleUploadedFile = (file: File, preUrl: string, onSubmitFile: (file: File, preUrl: string) => void) => {
+    const onSubmit: SubmitHandler<IFormProfile> = (event: ProfileType) => {
+        handleEditProfile(event);
+        if (file && presignUrl) {
+            onSubmitFile(file, presignUrl);
+            if (userData.image && file) {
+                getDeleteFile(userData.image);
+            }
+        }
+    };
+
+    const handleUploadedFile = (file: File, preUrl: string) => {
         setFile(file);
         setPresignUrl(preUrl);
     };
 
-    console.log(session);
+    console.log(userData);
     return (
         <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
             <div className={classes.formField}>
@@ -108,13 +132,11 @@ export const ProfileForm: FC<IProfileFormProps> = ({ profileData, onSubmitEvent 
                 <Controller
                     name="firstName"
                     control={control}
-                    defaultValue={firstName}
                     render={({ field }) => (
                         <Label label={"First Name"}>
-                            <Input defaultValue={firstName} onChange={field.onChange} />
+                            <Input defaultValue={firstName || ""} onChange={field.onChange} />
                         </Label>
                     )}
-                    rules={{ required: true }}
                 />
 
                 <Controller
@@ -126,11 +148,10 @@ export const ProfileForm: FC<IProfileFormProps> = ({ profileData, onSubmitEvent 
                             <Input defaultValue={lastName} onChange={field.onChange} />
                         </Label>
                     )}
-                    rules={{ required: true }}
                 />
 
                 <Controller
-                    name="mail"
+                    name="email"
                     control={control}
                     defaultValue={userData?.user?.email}
                     render={({ field }) => (
@@ -138,26 +159,36 @@ export const ProfileForm: FC<IProfileFormProps> = ({ profileData, onSubmitEvent 
                             <Input defaultValue={userData?.user?.email} onChange={field.onChange} />
                         </Label>
                     )}
-                    rules={{ required: true }}
                 />
 
                 <Controller
                     name="location"
                     control={control}
-                    defaultValue={""}
+                    defaultValue={userData?.user?.location}
                     render={({ field }) => (
-                        <Label label={"Location"}>
-                            <Input defaultValue={lastName} />
+                        <Label label={"Локация"}>
+                            <Autocomplete
+                                className={classes.location}
+                                onPlaceSelect={field.onChange}
+                                address={userData?.user?.location.properties.address}
+                                options={optionsFullAdress}
+                            />
                         </Label>
                     )}
-                    rules={{ required: true }}
                 />
 
                 <Controller
                     name="aboutMe"
                     control={control}
-                    defaultValue={""}
-                    render={({ field }) => <Description title={"About me"} />}
+                    render={({ field }) => (
+                        <Label label={"Обо мне"}>
+                            <Textarea
+                                defaultValue={userData?.user?.aboutMe || ""}
+                                onChange={field.onChange}
+                                resizeNone
+                            />
+                        </Label>
+                    )}
                 />
 
                 <Controller
@@ -166,8 +197,8 @@ export const ProfileForm: FC<IProfileFormProps> = ({ profileData, onSubmitEvent 
                     render={({ field }) => (
                         <SelectItems
                             categoryList={eventCategory}
-                            eventCategories={[]}
-                            titleCategories={"What categories are you interested in?"}
+                            eventCategories={[...(userData?.user?.categories ?? [])]}
+                            titleCategories={"Выбрать категорию"}
                             badgesShow
                             onChange={field.onChange}
                             filter={false}
@@ -175,7 +206,7 @@ export const ProfileForm: FC<IProfileFormProps> = ({ profileData, onSubmitEvent 
                     )}
                 />
 
-                <Controller
+                {/* <Controller
                     name="types"
                     control={control}
                     render={({ field }) => (
@@ -188,15 +219,15 @@ export const ProfileForm: FC<IProfileFormProps> = ({ profileData, onSubmitEvent 
                             filter={false}
                         />
                     )}
-                />
+                /> */}
 
-                <Controller
+                {/* <Controller
                     name="tags"
                     control={control}
                     render={({ field }) => (
                         <CreateTag onChange={field.onChange} eventTags={[]} title={"Добавить тег"} />
                     )}
-                />
+                /> */}
             </div>
 
             <Button className={classes.buttonSaveChange} size="big" type="submit">

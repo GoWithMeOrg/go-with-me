@@ -9,9 +9,9 @@ export const userTypeDefs = gql`
         email: String
         image: String
         location: Location
-        aboutMe: String
+        description: String
         categories: [String]
-        meetings: [String]
+        types: [String]
         tags: [String]
         emailVerified: Boolean
     }
@@ -23,9 +23,9 @@ export const userTypeDefs = gql`
         email: String
         image: String
         location: LocationInput
-        aboutMe: String
+        description: String
         categories: [String]
-        # meetings: [String]
+        # types: [String]
         # tags: [String]
         # emailVerified: Boolean
     }

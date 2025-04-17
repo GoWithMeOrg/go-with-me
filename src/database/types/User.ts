@@ -14,9 +14,9 @@ export interface IUser {
             address: string;
         };
     };
-    aboutMe: string;
+    description: string;
     categories: string[];
-    meetings: string[];
+    types: string[];
     tags: string[];
     emailVerified: boolean;
     createdAt: Date;
