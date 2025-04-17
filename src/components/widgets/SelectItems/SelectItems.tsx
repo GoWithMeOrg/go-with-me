@@ -27,7 +27,7 @@ export const SelectItems: FC<ISelectItems> = ({
     width,
     filter,
 }) => {
-    const { items, handleItemChange } = useSelectItems({ onChange });
+    const { items, handleItemChange } = useSelectItems({ onChange, eventCategories });
 
     return (
         <div className={classes.selectedCategoriesLabel} style={{ width: width }}>

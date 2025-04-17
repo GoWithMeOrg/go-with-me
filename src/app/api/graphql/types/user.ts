@@ -25,9 +25,9 @@ export const userTypeDefs = gql`
         location: LocationInput
         description: String
         categories: [String]
-        # types: [String]
-        # tags: [String]
-        # emailVerified: Boolean
+        types: [String]
+        tags: [String]
+        emailVerified: Boolean
     }
 
     input LocationInput {

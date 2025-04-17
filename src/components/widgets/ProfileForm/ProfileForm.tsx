@@ -59,7 +59,7 @@ export const ProfileForm: FC = () => {
     const [presignUrl, setPresignUrl] = useState<string | null>(null);
     const { onSubmitFile, getDeleteFile } = useUploadFile({});
     const user_id = session?.user?.id;
-    const { data: userData, refetch } = useQuery(GET_USER_BY_ID, { variables: { userId: user_id } });
+    const { data: userData, refetch, loading, error } = useQuery(GET_USER_BY_ID, { variables: { userId: user_id } });
     const [updateUser] = useMutation(UPDATE_USER);
     const router = useRouter();
 
@@ -109,130 +109,137 @@ export const ProfileForm: FC = () => {
         setPresignUrl(preUrl);
     };
 
-    console.log(userData);
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
-            <div className={classes.formField}>
-                <Controller
-                    name="image"
-                    control={control}
-                    render={({ field }) => (
-                        <UploadFile
-                            imageUrl={userData?.user?.image}
-                            width={180}
-                            height={180}
-                            sizeType={UploadFileSizes.profile}
-                            onUploadedFile={handleUploadedFile}
-                            {...field}
+        <>
+            {!error && userData?.user && (
+                <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
+                    <div className={classes.formField}>
+                        <Controller
+                            name="image"
+                            control={control}
+                            render={({ field }) => (
+                                <UploadFile
+                                    imageUrl={userData?.user?.image}
+                                    width={180}
+                                    height={180}
+                                    sizeType={UploadFileSizes.profile}
+                                    onUploadedFile={handleUploadedFile}
+                                    {...field}
+                                />
+                            )}
                         />
-                    )}
-                />
 
-                <Controller
-                    name="firstName"
-                    control={control}
-                    render={({ field }) => (
-                        <Label label={"First Name"}>
-                            <Input defaultValue={firstName || ""} onChange={field.onChange} />
-                        </Label>
-                    )}
-                />
-
-                <Controller
-                    name="lastName"
-                    control={control}
-                    defaultValue={lastName}
-                    render={({ field }) => (
-                        <Label label={"Last Name"}>
-                            <Input defaultValue={lastName} onChange={field.onChange} />
-                        </Label>
-                    )}
-                />
-
-                <Controller
-                    name="email"
-                    control={control}
-                    defaultValue={userData?.user?.email}
-                    render={({ field }) => (
-                        <Label label={"Email"}>
-                            <Input defaultValue={userData?.user?.email} onChange={field.onChange} />
-                        </Label>
-                    )}
-                />
-
-                <Controller
-                    name="location"
-                    control={control}
-                    defaultValue={userData?.user?.location}
-                    render={({ field }) => (
-                        <Label label={"Локация"}>
-                            <Autocomplete
-                                className={classes.location}
-                                onPlaceSelect={field.onChange}
-                                address={userData?.user?.location.properties.address}
-                                options={optionsFullAdress}
-                            />
-                        </Label>
-                    )}
-                />
-
-                <Controller
-                    name="description"
-                    control={control}
-                    render={({ field }) => (
-                        <Label label={"Обо мне"}>
-                            <Textarea
-                                defaultValue={userData?.user?.aboutMe || ""}
-                                onChange={field.onChange}
-                                resizeNone
-                            />
-                        </Label>
-                    )}
-                />
-
-                <Controller
-                    name="categories"
-                    control={control}
-                    render={({ field }) => (
-                        <SelectItems
-                            categoryList={eventCategory}
-                            eventCategories={[...(userData?.user?.categories ?? [])]}
-                            titleCategories={"Выбрать категорию"}
-                            badgesShow
-                            onChange={field.onChange}
-                            filter={false}
+                        <Controller
+                            name="firstName"
+                            control={control}
+                            render={({ field }) => (
+                                <Label label={"First Name"}>
+                                    <Input defaultValue={firstName || ""} onChange={field.onChange} />
+                                </Label>
+                            )}
                         />
-                    )}
-                />
 
-                {/* <Controller
-                    name="types"
-                    control={control}
-                    render={({ field }) => (
-                        <SelectItems
-                            categoryList={eventTypes}
-                            eventCategories={[]}
-                            titleCategories={"What subjects are you interested in?"}
-                            badgesShow
-                            onChange={field.onChange}
-                            filter={false}
+                        <Controller
+                            name="lastName"
+                            control={control}
+                            defaultValue={lastName}
+                            render={({ field }) => (
+                                <Label label={"Last Name"}>
+                                    <Input defaultValue={lastName} onChange={field.onChange} />
+                                </Label>
+                            )}
                         />
-                    )}
-                /> */}
 
-                {/* <Controller
-                    name="tags"
-                    control={control}
-                    render={({ field }) => (
-                        <CreateTag onChange={field.onChange} eventTags={[]} title={"Добавить тег"} />
-                    )}
-                /> */}
-            </div>
+                        <Controller
+                            name="email"
+                            control={control}
+                            defaultValue={userData?.user?.email}
+                            render={({ field }) => (
+                                <Label label={"Email"}>
+                                    <Input defaultValue={userData?.user?.email} onChange={field.onChange} />
+                                </Label>
+                            )}
+                        />
 
-            <Button className={classes.buttonSaveChange} size="big" type="submit">
-                Save changes
-            </Button>
-        </form>
+                        <Controller
+                            name="location"
+                            control={control}
+                            defaultValue={userData?.user?.location}
+                            render={({ field }) => (
+                                <Label label={"Локация"}>
+                                    <Autocomplete
+                                        className={classes.location}
+                                        onPlaceSelect={field.onChange}
+                                        address={userData?.user?.location.properties.address}
+                                        options={optionsFullAdress}
+                                    />
+                                </Label>
+                            )}
+                        />
+
+                        <Controller
+                            name="description"
+                            control={control}
+                            render={({ field }) => (
+                                <Label label={"Обо мне"}>
+                                    <Textarea
+                                        defaultValue={userData?.user?.description}
+                                        onChange={field.onChange}
+                                        resizeNone
+                                    />
+                                </Label>
+                            )}
+                        />
+
+                        <Controller
+                            name="categories"
+                            control={control}
+                            render={({ field }) => (
+                                <SelectItems
+                                    categoryList={eventCategory}
+                                    eventCategories={[...(userData?.user?.categories ?? [])]}
+                                    titleCategories={"Выбрать категорию"}
+                                    badgesShow
+                                    onChange={field.onChange}
+                                    filter={false}
+                                />
+                            )}
+                        />
+
+                        <Controller
+                            name="types"
+                            control={control}
+                            render={({ field }) => (
+                                <SelectItems
+                                    categoryList={eventTypes}
+                                    eventCategories={[...(userData?.user?.types ?? [])]}
+                                    titleCategories={"What subjects are you interested in?"}
+                                    badgesShow
+                                    onChange={field.onChange}
+                                    filter={false}
+                                />
+                            )}
+                        />
+
+                        <Controller
+                            name="tags"
+                            control={control}
+                            render={({ field }) => (
+                                <CreateTag
+                                    onChange={field.onChange}
+                                    eventTags={[...(userData?.user?.tags ?? [])]}
+                                    title={"Добавить тег"}
+                                />
+                            )}
+                        />
+                    </div>
+
+                    <Button className={classes.buttonSaveChange} size="big" type="submit">
+                        Save changes
+                    </Button>
+                </form>
+            )}
+        </>
     );
 };
 

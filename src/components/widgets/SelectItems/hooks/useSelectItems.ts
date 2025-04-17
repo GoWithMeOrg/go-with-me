@@ -6,7 +6,7 @@ interface IUseSelectItems {
 
 export const useSelectItems = ({ onChange }: IUseSelectItems) => {
     const [items, setItems] = useState<string[]>([]);
-    const prevItemsRef = useRef<string[]>(items ?? []);
+    const prevItemsRef = useRef<string[]>(items);
 
     useEffect(() => {
         if (prevItemsRef.current !== items) {
