@@ -1,3 +1,5 @@
+"use client";
+
 import { ButtonHTMLAttributes, FC, useMemo } from "react";
 
 import classes from "./Button.module.css";
