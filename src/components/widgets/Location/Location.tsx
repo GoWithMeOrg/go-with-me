@@ -1,4 +1,4 @@
-import { forwardRef, SetStateAction, useContext, useEffect, useRef, useState } from "react";
+import { forwardRef, SetStateAction, useCallback, useContext, useEffect, useRef, useState } from "react";
 
 import {
     Map,
@@ -34,12 +34,12 @@ interface ILocation {
     onChange?: (...event: any[]) => void;
 }
 
+const popupMode: "map" = "map";
+
 export const Location = forwardRef(function Location(props: ILocation, ref) {
     const apiIsLoaded = useApiIsLoaded();
     const geocoding = useMapsLibrary("geocoding");
     const mapAPI = useContext(APIProviderContext);
-
-    const popupMode: "map" = "map";
 
     const { showPopup, setShowPopup, handleShowPopup, handleHidePopup } = usePopup({ popupMode });
 
@@ -51,7 +51,6 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
               }
             : null,
     );
-
     const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
 
     const prevSelectedPlaceRef = useRef<google.maps.places.PlaceResult | null>(selectedPlace);
@@ -71,45 +70,59 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
         }
     }, [selectedPlace, props]);
 
+    const handleMapButtonClick = useCallback(
+        (e: React.MouseEvent<HTMLButtonElement>) => {
+            e.preventDefault();
+            handleShowPopup();
+        },
+        [handleShowPopup],
+    );
+
+    const handleMapClick = useCallback(
+        (e: { detail: { latLng: SetStateAction<google.maps.LatLngLiteral | null> } }) => {
+            setMarkerPosition(e.detail.latLng);
+
+            if (!geocoding) return;
+            const geocoder = new geocoding.Geocoder();
+            const pos = e.detail.latLng as any;
+            geocoder.geocode({ location: pos }, (results, status) => {
+                if (status === "OK" && results !== null) {
+                    const newPlace = results[0];
+                    setSelectedPlace(newPlace);
+                    if (newPlace.geometry?.location) {
+                        setMarkerPosition({
+                            lat: newPlace.geometry.location.lat(),
+                            lng: newPlace.geometry.location.lng(),
+                        });
+                    }
+                }
+            });
+        },
+        [setMarkerPosition, geocoding],
+    );
+
+    const handlePlaceSelect = useCallback(
+        (selectedPlace: google.maps.places.PlaceResult | null) => {
+            setSelectedPlace(selectedPlace);
+            if (selectedPlace?.geometry?.location) {
+                setMarkerPosition({
+                    lat: selectedPlace.geometry.location.lat(),
+                    lng: selectedPlace.geometry.location.lng(),
+                });
+            }
+        },
+        [setSelectedPlace, setMarkerPosition],
+    );
+
     if (!apiIsLoaded || !mapAPI) {
         return;
     }
-
-    const handleMapClick = (e: { detail: { latLng: SetStateAction<google.maps.LatLngLiteral | null> } }) => {
-        setMarkerPosition(e.detail.latLng);
-
-        if (!geocoding) return;
-        const geocoder = new geocoding.Geocoder();
-        const pos = e.detail.latLng as any;
-        geocoder.geocode({ location: pos }, (results, status) => {
-            if (status === "OK" && results !== null) {
-                const newPlace = results[0];
-                setSelectedPlace(newPlace);
-                if (newPlace.geometry?.location) {
-                    setMarkerPosition({
-                        lat: newPlace.geometry.location.lat(),
-                        lng: newPlace.geometry.location.lng(),
-                    });
-                }
-            }
-        });
-    };
-
-    const handlePlaceSelect = (selectedPlace: google.maps.places.PlaceResult | null) => {
-        setSelectedPlace(selectedPlace);
-        if (selectedPlace?.geometry?.location) {
-            setMarkerPosition({
-                lat: selectedPlace.geometry.location.lat(),
-                lng: selectedPlace.geometry.location.lng(),
-            });
-        }
-    };
 
     return (
         <label className={classes.locationForm}>
             <div className={classes.labelFindMap}>
                 <span className={classes.titleInput}>Место/Адрес</span>
-                <Button className={classes.btnFindMap} onClick={handleShowPopup} resetDefaultStyles={true}>
+                <Button className={classes.btnFindMap} onClick={handleMapButtonClick} resetDefaultStyles={true}>
                     <Marker style={{ marginRight: "0.25rem" }} />
                     Найти на карте
                 </Button>
