@@ -1,114 +1,27 @@
 "use client";
 
-import React, { FC, useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
-import { gql, useMutation, useQuery } from "@apollo/client";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-
-import { IUser } from "@/database/types/User";
+import React, { FC } from "react";
+import { Controller } from "react-hook-form";
 
 import { CreateTag } from "@/components/widgets/CreateTag";
 import { UploadFile } from "@/components/widgets/UploadFile";
+import { SelectItems } from "@/components/widgets/SelectItems";
+import { UploadFileSizes } from "@/components/widgets/UploadFile/UploadFile";
+import { Autocomplete } from "@/components/widgets/GoogleMap";
+import { optionsFullAdress } from "@/components/widgets/GoogleMap/OptionsAutocomplete";
 
 import { Button } from "@/components/shared/Button";
-import { Description } from "@/components/shared/Description";
 import { eventCategory, eventTypes } from "@/components/shared/Dropdown/dropdownLists";
-import { SelectItems } from "@/components/widgets/SelectItems";
-
 import { Label } from "@/components/shared/Label";
 import { Input } from "@/components/shared/Input";
+import { Textarea } from "@/components/shared/Textarea";
 
-import { UploadFileSizes } from "@/components/widgets/UploadFile/UploadFile";
-
-import { useUploadFile } from "@/components/widgets/UploadFile/hooks";
-
-import { useParams, useRouter } from "next/navigation";
-
-import { GET_USER_BY_ID } from "@/app/api/graphql/queries/user";
-import { UPDATE_USER } from "@/app/api/graphql/mutations/user";
+import { useProfileForm } from "./hooks/useProfileForm";
 
 import classes from "./ProfileForm.module.css";
-import { Textarea } from "@/components/shared/Textarea";
-import { Autocomplete } from "../GoogleMap";
-import { optionsFullAdress } from "../GoogleMap/OptionsAutocomplete";
-
-export type ProfileType = Partial<IUser>;
-interface IFormProfile {
-    _id: string;
-    name: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    location: {
-        type: "Point";
-        coordinates: [number, number];
-        properties: {
-            address: string;
-        };
-    };
-    description: string;
-    image: string;
-    categories: string[];
-    types: string[];
-    tags: string[];
-}
 
 export const ProfileForm: FC = () => {
-    const { control, handleSubmit, watch } = useForm<IFormProfile>();
-    const { data: session } = useSession();
-    const [file, setFile] = useState<File | null>(null);
-    const [presignUrl, setPresignUrl] = useState<string | null>(null);
-    const { onSubmitFile, getDeleteFile } = useUploadFile({});
-    //@ts-ignore
-    const user_id = session?.user?.id;
-    const { data: userData, refetch, loading, error } = useQuery(GET_USER_BY_ID, { variables: { userId: user_id } });
-    const [updateUser] = useMutation(UPDATE_USER);
-    const router = useRouter();
-
-    const place = watch("location");
-    const firstName = watch("firstName");
-    const lastName = watch("lastName");
-
-    function mapGooglePlaceToLocationInput(place: any) {
-        if (!place || !place.geometry) return null;
-
-        return {
-            type: "Point",
-            coordinates: [place.geometry.location.lng(), place.geometry.location.lat()],
-            properties: {
-                address: place.formatted_address,
-            },
-        };
-    }
-
-    const handleEditProfile = (userEdited: Partial<IUser>) => {
-        const transformedLocation = mapGooglePlaceToLocationInput(place);
-        updateUser({
-            variables: {
-                updateUserId: user_id,
-                user: { ...userEdited, location: transformedLocation, name: `${firstName} ${lastName}` },
-            },
-        }).then((response) => {
-            console.log("UserEditPage: ", response); // eslint-disable-line
-            router.push(`/profile/${user_id}/public`);
-        });
-        refetch();
-    };
-
-    const onSubmit: SubmitHandler<IFormProfile> = (event: ProfileType) => {
-        handleEditProfile(event);
-        if (file && presignUrl) {
-            onSubmitFile(file, presignUrl);
-            if (userData.image && file) {
-                getDeleteFile(userData.image);
-            }
-        }
-    };
-
-    const handleUploadedFile = (file: File, preUrl: string) => {
-        setFile(file);
-        setPresignUrl(preUrl);
-    };
+    const { error, userData, handleSubmit, onSubmit, control, handleUploadedFile } = useProfileForm();
 
     return (
         <>
