@@ -35,6 +35,7 @@ import { optionsFullAdress } from "../GoogleMap/OptionsAutocomplete";
 export type ProfileType = Partial<IUser>;
 interface IFormProfile {
     _id: string;
+    name: string;
     firstName: string;
     lastName: string;
     email: string;
@@ -58,15 +59,15 @@ export const ProfileForm: FC = () => {
     const [file, setFile] = useState<File | null>(null);
     const [presignUrl, setPresignUrl] = useState<string | null>(null);
     const { onSubmitFile, getDeleteFile } = useUploadFile({});
+    //@ts-ignore
     const user_id = session?.user?.id;
     const { data: userData, refetch, loading, error } = useQuery(GET_USER_BY_ID, { variables: { userId: user_id } });
     const [updateUser] = useMutation(UPDATE_USER);
     const router = useRouter();
 
-    const fullName = userData?.user?.name || "";
-    const [firstName, lastName] = fullName.split(" ");
-
     const place = watch("location");
+    const firstName = watch("firstName");
+    const lastName = watch("lastName");
 
     function mapGooglePlaceToLocationInput(place: any) {
         if (!place || !place.geometry) return null;
@@ -85,7 +86,7 @@ export const ProfileForm: FC = () => {
         updateUser({
             variables: {
                 updateUserId: user_id,
-                user: { ...userEdited, location: transformedLocation },
+                user: { ...userEdited, location: transformedLocation, name: `${firstName} ${lastName}` },
             },
         }).then((response) => {
             console.log("UserEditPage: ", response); // eslint-disable-line
@@ -134,7 +135,7 @@ export const ProfileForm: FC = () => {
                             control={control}
                             render={({ field }) => (
                                 <Label label={"First Name"}>
-                                    <Input defaultValue={firstName || ""} onChange={field.onChange} />
+                                    <Input defaultValue={userData?.user?.firstName} onChange={field.onChange} />
                                 </Label>
                             )}
                         />
@@ -142,10 +143,9 @@ export const ProfileForm: FC = () => {
                         <Controller
                             name="lastName"
                             control={control}
-                            defaultValue={lastName}
                             render={({ field }) => (
                                 <Label label={"Last Name"}>
-                                    <Input defaultValue={lastName} onChange={field.onChange} />
+                                    <Input defaultValue={userData?.user?.lastName} onChange={field.onChange} />
                                 </Label>
                             )}
                         />
