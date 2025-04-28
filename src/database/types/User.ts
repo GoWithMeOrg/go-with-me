@@ -3,8 +3,6 @@ import { IRole } from "./Role";
 export interface IUser {
     _id: string;
     name: string;
-    firstName: string;
-    lastName: string;
     email: string;
     image: string;
     location: {

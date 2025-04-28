@@ -5,8 +5,6 @@ export const UPDATE_USER = gql`
         updateUser(id: $updateUserId, user: $user) {
             _id
             name
-            firstName
-            lastName
             email
             image
             location {
@@ -20,7 +18,6 @@ export const UPDATE_USER = gql`
             categories
             types
             tags
-            emailVerified
         }
     }
 `;

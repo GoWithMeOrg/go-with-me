@@ -10,16 +10,6 @@ const UserSchema = new Schema<IUserDocument>({
         required: true,
     },
 
-    firstName: {
-        type: String,
-        required: true,
-    },
-
-    lastName: {
-        type: String,
-        required: true,
-    },
-
     role: {
         type: Schema.Types.ObjectId,
         ref: Role,

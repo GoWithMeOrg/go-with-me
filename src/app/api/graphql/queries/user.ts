@@ -5,8 +5,6 @@ export const GET_USER_BY_ID = gql`
         user(id: $userId) {
             _id
             name
-            firstName
-            lastName
             email
             image
             location {

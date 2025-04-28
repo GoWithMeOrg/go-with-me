@@ -48,7 +48,10 @@ export const ProfileForm: FC = () => {
                             control={control}
                             render={({ field }) => (
                                 <Label label={"First Name"}>
-                                    <Input defaultValue={userData?.user?.firstName} onChange={field.onChange} />
+                                    <Input
+                                        defaultValue={userData?.user?.name.split(" ")[0]}
+                                        onChange={field.onChange}
+                                    />
                                 </Label>
                             )}
                         />
@@ -58,7 +61,10 @@ export const ProfileForm: FC = () => {
                             control={control}
                             render={({ field }) => (
                                 <Label label={"Last Name"}>
-                                    <Input defaultValue={userData?.user?.lastName} onChange={field.onChange} />
+                                    <Input
+                                        defaultValue={userData?.user?.name.split(" ")[1]}
+                                        onChange={field.onChange}
+                                    />
                                 </Label>
                             )}
                         />

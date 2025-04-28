@@ -8,7 +8,7 @@ declare module "next-auth" {
             // role: IRole;
         } & DefaultSession["user"];
     }
-    // interface User extends DefaultUser {
-    //     role: IRole;
-    // }
+    interface User extends DefaultUser {
+        role: IRole;
+    }
 }
