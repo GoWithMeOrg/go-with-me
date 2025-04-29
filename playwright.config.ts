@@ -44,6 +44,11 @@ export default defineConfig({
             use: { ...devices["Desktop Firefox"] },
         },
 
+        {
+            name: "brave",
+            use: { ...devices["Desktop Brave"] },
+        },
+
         // {
         //   name: 'webkit',
         //   use: { ...devices['Desktop Safari'] },

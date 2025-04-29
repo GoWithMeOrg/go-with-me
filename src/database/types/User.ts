@@ -1,5 +1,6 @@
 import { IRole } from "./Role";
 
+export type ProfileType = Partial<IUser>;
 export interface IUser {
     _id: string;
     name: string;

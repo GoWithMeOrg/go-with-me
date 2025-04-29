@@ -1,14 +1,15 @@
-import { IUser } from "@/database/types/User";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { useUploadFile } from "../../UploadFile/hooks";
-import { useMutation, useQuery } from "@apollo/client";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useMutation, useQuery } from "@apollo/client";
+
+import { useUploadFile } from "@/components/widgets/UploadFile/hooks";
+
 import { GET_USER_BY_ID } from "@/app/api/graphql/queries/user";
 import { UPDATE_USER } from "@/app/api/graphql/mutations/user";
 
-export type ProfileType = Partial<IUser>;
+import { IUser, ProfileType } from "@/database/types/User";
 
 interface IFormProfile {
     _id: string;
@@ -67,7 +68,7 @@ export const useProfileForm = () => {
                 user: { ...userEdited, location: transformedLocation, name: `${firstName} ${lastName}` },
             },
         }).then((response) => {
-            console.log("UserEditPage: ", response); // eslint-disable-line
+            console.log("UserEditPage: ", response);
             router.push(`/profile/${user_id}/public`);
         });
         refetch();
