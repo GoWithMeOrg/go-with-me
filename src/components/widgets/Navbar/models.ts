@@ -6,7 +6,6 @@ export enum NavbarTabs {
     COMPANIONS = "companions",
     CHAT = "chat",
     CONFIDENTIALITY = "confidentiality",
-    LIST = "list",
     MAP = "map",
 }
 

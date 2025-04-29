@@ -7,9 +7,9 @@ import { Navbar } from "@/components/widgets/Navbar";
 import { NavbarTabs } from "@/components/widgets/Navbar/models";
 import { ProfileForm } from "@/components/widgets/ProfileForm";
 import { NotificationsList } from "@/components/widgets/NotificationsList";
-import { UserLists } from "@/components/widgets/UserLists";
 
 import classes from "./ProfileTabs.module.css";
+import { Companions } from "../Companions/Companions";
 
 export const ProfileTabs = () => {
     const [activeTab, setActiveTab] = useState(NavbarTabs.PERSONAL);
@@ -35,7 +35,7 @@ export const ProfileTabs = () => {
             </div>
             {activeTab === NavbarTabs.PERSONAL && <ProfileForm />}
             {activeTab === NavbarTabs.NOTIFICATIONS && <NotificationsList />}
-            {activeTab === NavbarTabs.LIST && <UserLists />}
+            {activeTab === NavbarTabs.COMPANIONS && <Companions />}
             {/* {activeTab === "events" && <ProfileForm />}
             {activeTab === "trips" && <ProfileForm />}
             {activeTab === "companions" && <ProfileForm />}
