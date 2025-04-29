@@ -8,6 +8,7 @@ export const GET_USER_BY_ID = gql`
             email
             image
             location {
+                type
                 coordinates
                 properties {
                     address
