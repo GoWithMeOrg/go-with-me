@@ -19,6 +19,7 @@ const handler = startServerAndCreateNextHandler(server, {
         return { nextRequest, currentUser };
     },
 });
+
 export async function GET(req: NextRequest) {
     return handler(req);
 }

@@ -78,7 +78,7 @@ export const EventFilters = () => {
             </div>
 
             {activeTab === "list" && (
-                <Backdrop marginTop={84} marginBottom={274} contentLoading={loading}>
+                <Backdrop marginTop={84} marginBottom={420} contentLoading={loading}>
                     <FilteredEvents data={filteredData?.eventFilters || events} sizeCard={SizeCard.ML} />
                 </Backdrop>
             )}

@@ -8,10 +8,10 @@ export const userTypeDefs = gql`
         lastName: String
         email: String
         image: String
-        location: String
-        aboutMe: String
-        interests: [String]
-        meetings: [String]
+        location: Location
+        description: String
+        categories: [String]
+        types: [String]
         tags: [String]
         emailVerified: Boolean
     }
@@ -22,12 +22,22 @@ export const userTypeDefs = gql`
         lastName: String
         email: String
         image: String
-        location: String
-        aboutMe: String
-        interests: [String]
-        meetings: [String]
+        location: LocationInput
+        description: String
+        categories: [String]
+        types: [String]
         tags: [String]
         emailVerified: Boolean
+    }
+
+    input LocationInput {
+        type: String
+        coordinates: [Float]
+        properties: PropertiesInput
+    }
+
+    input PropertiesInput {
+        address: String
     }
 `;
 

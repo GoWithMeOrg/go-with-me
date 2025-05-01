@@ -10,16 +10,6 @@ const UserSchema = new Schema<IUserDocument>({
         required: true,
     },
 
-    firstName: {
-        type: String,
-        required: true,
-    },
-
-    lastName: {
-        type: String,
-        required: true,
-    },
-
     role: {
         type: Schema.Types.ObjectId,
         ref: Role,
@@ -32,15 +22,30 @@ const UserSchema = new Schema<IUserDocument>({
     },
 
     image: String,
-    location: String,
-    aboutMe: String,
 
-    interests: {
+    location: {
+        type: {
+            type: String,
+            enum: ["Point"],
+            required: true,
+            default: "Point",
+        },
+        coordinates: {
+            type: [Number],
+            //required: true,
+        },
+        properties: {
+            address: String,
+        },
+    },
+    description: String,
+
+    categories: {
         type: [String],
         required: true,
     },
 
-    meetings: {
+    types: {
         type: [String],
         required: true,
     },
