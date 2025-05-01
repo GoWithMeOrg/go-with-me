@@ -5,7 +5,6 @@ import { CardEvent } from "@/components/widgets/CardEvent";
 import { SizeCard } from "@/components/widgets/CardEvent/CardEvent";
 
 import classes from "./FilteredEvents.module.css";
-import { Backdrop } from "../../Backdrop";
 
 interface FilteredEventsProps {
     data: IEvent[];

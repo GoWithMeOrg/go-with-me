@@ -1,20 +1,15 @@
-.userList {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: flex-start;
+.searchCompanions {
     width: 100%;
 }
 
-.item {
-    display: flex;
-    align-items: center;
+.line {
+    width: 100%;
+    border: 1px solid var(--additional-color);
 }
 
-.name {
-    color: var(--additional-color);
-    font-size: 0.88rem;
-    font-weight: 700;
-    line-height: 1.25rem;
-    margin-left: 0.63rem;
+.filters {
+    display: flex;
+    justify-content: space-between;
+    margin: 1.5rem 0 2.5rem 0;
+    gap: 1.25rem;
 }

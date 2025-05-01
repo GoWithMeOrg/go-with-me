@@ -1,6 +1,10 @@
 import { gql } from "graphql-tag";
 
 export const userTypeDefs = gql`
+    type Query {
+        findUsers(email: String, name: String): [User!]!
+    }
+
     type User {
         _id: ID
         name: String

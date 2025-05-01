@@ -1,3 +1,4 @@
+import User from "@/database/models/User";
 import UserModel from "@/database/models/User";
 import { IUser } from "@/database/types/User";
 
@@ -8,6 +9,18 @@ export const userResolvers = {
         },
         user: async (parent: any, { id, ...rest }: { id: string }) => {
             return UserModel.findById(id);
+        },
+
+        findUsers: async (parent: any, { email, name }: { email?: string; name?: string }) => {
+            const filters: any = {};
+
+            if (email) filters.email = email;
+
+            if (name) {
+                filters.name = { $regex: name, $options: "i" }; // 'i' — игнорировать регистр
+            }
+
+            return await UserModel.find(filters);
         },
     },
 
