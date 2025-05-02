@@ -15,6 +15,7 @@ import { Avatar } from "@/components/shared/Avatar";
 import { Title } from "@/components/shared/Title";
 import { IUser } from "@/database/types/User";
 import Link from "next/link";
+import { ButtonLink } from "@/components/shared/ButtonLink";
 
 const PublicProfile = () => {
     const { data: session } = useSession();
@@ -53,12 +54,12 @@ const PublicProfile = () => {
                                 </div>
                             </div>
                             <div className={classes.links}>
-                                <Link className={classes.linkEdit} href={`/profile/${user_id}/private`}>
-                                    Edit
-                                </Link>
-                                <Link className={classes.linkToAccount} href="/events/new">
-                                    To my account
-                                </Link>
+                                <ButtonLink href={`/profile/${user_id}/private`} text={"Edit"} width="8.31rem" />
+                                <ButtonLink
+                                    href={`/profile/${user_id}/private`}
+                                    text={"To my account"}
+                                    width="11.81rem"
+                                />
                             </div>
                         </div>
 
