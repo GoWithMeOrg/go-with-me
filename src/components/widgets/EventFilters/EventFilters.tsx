@@ -80,27 +80,6 @@ export const EventFilters = () => {
 
             {activeTab === "list" && (
                 <Backdrop marginTop={84} marginBottom={420} contentLoading={loading}>
-                    {/* <FilteredList className={classes.filteredList}>
-                        {(filteredData?.eventFilters || events).length === 0 ? (
-                            <div className={classes.noEventsMessage}>По вашему запросу ничего не найдено</div>
-                        ) : (
-                            (filteredData?.eventFilters || events).map(
-                                ({ _id, description, name, startDate, location, time, image }: IEvent) => (
-                                    <CardEvent
-                                        key={_id}
-                                        id={_id}
-                                        name={name}
-                                        description={description}
-                                        coord={[location.coordinates[0], location.coordinates[1]]}
-                                        startDate={startDate}
-                                        time={time}
-                                        image={image}
-                                        size={SizeCard.ML}
-                                    />
-                                ),
-                            )
-                        )}
-                    </FilteredList> */}
                     <FilteredList className={classes.filteredList}>
                         {(!filteredData?.eventFilters && !events) ||
                         (filteredData?.eventFilters?.length === 0 && events?.length === 0) ? (
