@@ -1,0 +1,115 @@
+.public {
+    grid-column: span 12 / span 12;
+}
+
+.profile {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2.87rem;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30rem;
+    height: 21.06rem;
+    padding: 2.38rem 2.13rem;
+    background: var(--white-color);
+}
+
+.avatar {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.user {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1.25rem;
+}
+
+.mail {
+    color: var(--main-color);
+    text-align: left;
+    align-items: center;
+    font-family: Inter;
+    font-size: 0.88rem;
+    font-weight: 500;
+    line-height: 1.63rem;
+    cursor: pointer;
+}
+
+.mail:hover {
+    color: var(--hover-color);
+}
+
+.details {
+    width: 39.94rem;
+    height: 16.75rem;
+    border: 1px solid red;
+}
+
+.image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 9.25rem;
+    height: 9.25rem;
+}
+
+.info {
+    display: flex;
+    align-items: center;
+    color: var(--main-color);
+    font-family: Inter;
+    font-size: 0.88rem;
+    font-weight: 500;
+    line-height: 1.63rem;
+    text-align: left;
+}
+
+.links {
+    display: flex;
+    gap: 1.25rem;
+}
+
+.linkEdit {
+    padding: 0.88rem 1.88rem;
+    color: var(--main-color);
+    font-size: 1.13rem;
+    font-weight: 700;
+    border: 2px solid var(--main-color);
+    border-radius: 0.25rem;
+    cursor: pointer;
+    height: 3.13rem;
+    width: 8.31rem;
+    display: flex;
+    justify-content: center;
+}
+
+.linkToAccount {
+    padding: 0.88rem 1.88rem;
+    color: var(--main-color);
+    font-size: 1.13rem;
+    font-weight: 700;
+    border: 2px solid var(--main-color);
+    border-radius: 0.25rem;
+    cursor: pointer;
+    width: 11.81rem;
+    height: 3.13rem;
+    display: flex;
+    justify-content: center;
+}
+
+.link:active {
+    color: var(--white-color);
+    background-color: var(--text-color);
+    border-color: var(--text-color);
+}
+
+.link:hover {
+    border: 0.13rem solid var(--hover-color);
+    border-radius: 0.25rem;
+    color: var(--hover-color);
+}

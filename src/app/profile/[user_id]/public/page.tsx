@@ -6,6 +6,15 @@ import { GET_USER_BY_ID } from "@/app/api/graphql/queries/user";
 import { useQuery } from "@apollo/client";
 import { Geocoding } from "@/components/widgets/GoogleMap";
 import { Badges } from "@/components/shared/Badges";
+import { ButtonBack } from "@/components/shared/ButtonBack";
+import Marker from "@/assets/icons/marker.svg";
+import Envelope from "@/assets/icons/envelope.svg";
+
+import classes from "./page.module.css";
+import { Avatar } from "@/components/shared/Avatar";
+import { Title } from "@/components/shared/Title";
+import { IUser } from "@/database/types/User";
+import Link from "next/link";
 
 const PublicProfile = () => {
     const { data: session } = useSession();
@@ -13,21 +22,53 @@ const PublicProfile = () => {
 
     const { data: userData, refetch } = useQuery(GET_USER_BY_ID, { variables: { userId: user_id } });
 
+    console.log(userData?.user?.location?.properties.address.split(",")[0]);
     return (
-        <div>
-            <div>{userData?.user?.firstName}</div>
-            <div>{userData?.user?.lastName}</div>
-            <div>{userData?.user?.email}</div>
-            <img src={userData?.user?.image} alt="" style={{ width: "300px" }} />
-            <div>{userData?.user?.aboutMe}</div>
-            {userData?.user?.location?.coordinates && (
-                <Geocoding
-                    coordinates={[userData.user.location.coordinates[0], userData.user.location.coordinates[1]]}
-                />
-            )}
+        <>
+            {userData?.user && (
+                <div className={classes.public}>
+                    <ButtonBack />
+                    <div className={classes.profile}>
+                        <div className={classes.wrapper}>
+                            <div className={classes.avatar}>
+                                <div className={classes.image}>
+                                    <Avatar name={userData?.user.name} image={userData?.user.image} scale={2.5} />
+                                </div>
 
-            <Badges badges={userData?.user?.categories} />
-        </div>
+                                <div className={classes.user}>
+                                    <Title tag={"h3"} style={{ whiteSpace: "pre-wrap", marginBottom: "2rem" }}>
+                                        {userData?.user?.name.replace(" ", "\n")}
+                                    </Title>
+                                    <div className={classes.info}>
+                                        <Marker style={{ color: "#575B75", marginRight: "0.75rem" }} />
+                                        {userData?.user?.location?.properties.address.split(",")[0]}
+                                    </div>
+
+                                    <div className={classes.info}>
+                                        <Envelope style={{ marginRight: "0.75rem" }} />
+                                        <a href={`mailto:${userData?.user?.email}`} className={classes.mail}>
+                                            {userData?.user?.email}
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className={classes.links}>
+                                <Link className={classes.linkEdit} href={`/profile/${user_id}/private`}>
+                                    Edit
+                                </Link>
+                                <Link className={classes.linkToAccount} href="/events/new">
+                                    To my account
+                                </Link>
+                            </div>
+                        </div>
+
+                        <div className={classes.details}></div>
+                    </div>
+
+                    {/* <Badges badges={userData?.user?.categories} /> */}
+                </div>
+            )}
+        </>
     );
 };
 
