@@ -13,6 +13,7 @@ import { useCompanions } from "./hooks/useCompanions";
 import classes from "./Companions.module.css";
 
 export const Companions: FC = () => {
+    // добавить индекс в дб прода db.getCollection('users').createIndex({ name: 1 })
     const { handleFirstNameChange, handleLastNameChange, handleEmailChange, data } = useCompanions();
     return (
         <div className={classes.searchCompanions}>

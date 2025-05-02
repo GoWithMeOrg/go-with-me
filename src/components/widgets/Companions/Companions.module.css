@@ -19,10 +19,3 @@
     justify-content: flex-start;
     gap: 1.25rem;
 }
-
-.filteredListEvent {
-    flex-wrap: wrap;
-    place-content: space-around space-between;
-    gap: 1.25rem;
-    display: flex;
-}
