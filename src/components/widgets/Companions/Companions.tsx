@@ -5,13 +5,15 @@ import { FC } from "react";
 import { Title } from "@/components/shared/Title";
 import { Label } from "@/components/shared/Label";
 import { Input } from "@/components/shared/Input";
+import { FilteredList } from "@/components/shared/FilteredList/FilteredList";
+import { Avatar } from "@/components/shared/Avatar";
+import { Span } from "@/components/shared/Span";
 import { useCompanions } from "./hooks/useCompanions";
 
 import classes from "./Companions.module.css";
 
 export const Companions: FC = () => {
     const { handleFirstNameChange, handleLastNameChange, handleEmailChange, data } = useCompanions();
-    console.log(data);
     return (
         <div className={classes.searchCompanions}>
             <div className={classes.header}>
@@ -33,7 +35,19 @@ export const Companions: FC = () => {
                     <Input onChange={handleEmailChange} />
                 </Label>
             </div>
-            {/* {data && <div>{data?.userByEmail?.name}</div>} */}
+
+            <FilteredList className={classes.filteredList}>
+                {data?.findUsers.length === 0 ? (
+                    <Span title={"По вашему запросу ничего не найдено"} />
+                ) : (
+                    data?.findUsers.map((card: any) => (
+                        <div key={card._id}>
+                            <Avatar name={card.name} image={card.image} scale={1.8} />
+                            <Span title={card.name} />
+                        </div>
+                    ))
+                )}
+            </FilteredList>
         </div>
     );
 };

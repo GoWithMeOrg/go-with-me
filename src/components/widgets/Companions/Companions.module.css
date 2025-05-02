@@ -13,3 +13,16 @@
     margin: 1.5rem 0 2.5rem 0;
     gap: 1.25rem;
 }
+
+.filteredList {
+    display: flex;
+    justify-content: flex-start;
+    gap: 1.25rem;
+}
+
+.filteredListEvent {
+    flex-wrap: wrap;
+    place-content: space-around space-between;
+    gap: 1.25rem;
+    display: flex;
+}
