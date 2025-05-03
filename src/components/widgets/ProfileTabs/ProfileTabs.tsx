@@ -10,6 +10,7 @@ import { NotificationsList } from "@/components/widgets/NotificationsList";
 
 import classes from "./ProfileTabs.module.css";
 import { Companions } from "../Companions/Companions";
+import { ButtonLink } from "@/components/shared/ButtonLink";
 
 export const ProfileTabs = () => {
     const [activeTab, setActiveTab] = useState(NavbarTabs.PERSONAL);
@@ -24,13 +25,8 @@ export const ProfileTabs = () => {
                 <Navbar onTabClick={handleTabClick} activeTab={activeTab} />
 
                 <div className={classes.buttonsCreate}>
-                    <Link className={classes.buttonCreateLink} href="/events/new">
-                        Create event
-                    </Link>
-
-                    <Link className={classes.buttonCreateLink} href="/trips/new">
-                        Create trip
-                    </Link>
+                    <ButtonLink href={"/events/new"} text={"Create event"} width={"100%"} />
+                    <ButtonLink href={"/trips/new"} text={"Create trip"} width={"100%"} />
                 </div>
             </div>
             {activeTab === NavbarTabs.PERSONAL && <ProfileForm />}

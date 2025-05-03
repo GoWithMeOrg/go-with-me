@@ -51,7 +51,7 @@ export const useProfileForm = () => {
 
     const place = watch("location");
     const firstName = watch("firstName") || userData?.user?.name.split(" ")[0];
-    const lastName = watch("lastName") || userData?.user?.name.split(" ")[0];
+    const lastName = watch("lastName") || userData?.user?.name.split(" ")[1];
 
     function mapGooglePlaceToLocationInput(place: any) {
         if (!place || !place.geometry) return null;
