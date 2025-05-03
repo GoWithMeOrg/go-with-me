@@ -21,3 +21,11 @@ export const GET_EVENTS = gql`
         }
     }
 `;
+
+export const GET_ORGANIZER_EVENTS = gql`
+    query allOrganizerEvents($organizerId: String!) {
+        allOrganizerEvents(organizer_id: $organizerId) {
+            _id
+        }
+    }
+`;

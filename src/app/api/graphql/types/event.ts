@@ -7,6 +7,7 @@ export const eventTypeDefs = gql`
         eventSearchByCategories(categories: [String]!): [Event!]!
         eventSearchByTypes(types: [String]!): [Event!]!
         eventFilters(date: String, bounds: Bounds, categories: [String], types: [String], tags: [String]): [Event!]!
+        allOrganizerEvents(organizer_id: String!): [Event!]!
     }
 
     type Event {

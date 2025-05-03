@@ -55,7 +55,7 @@ const Event: FC<EventProps> = ({ event }) => {
                     <Title title={event.name} className={classes.eventTitle} tag={"h2"} />
                     <div className={classes.information}>
                         <div className={classes.location}>
-                            <Marker style={{ transform: "scale(0.937)", marginRight: "0.5rem", fill: "#575B75" }} />
+                            <Marker style={{ transform: "scale(0.937)", marginRight: "0.5rem", color: "#575B75" }} />
                             <div className={classes.geocoding}>
                                 <Geocoding coordinates={coord} />
                             </div>

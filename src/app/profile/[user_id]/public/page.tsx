@@ -1,30 +1,33 @@
 "use client";
 
 import { useSession } from "next-auth/react";
+import { useQuery } from "@apollo/client";
 
 import { GET_USER_BY_ID } from "@/app/api/graphql/queries/user";
-import { useQuery } from "@apollo/client";
-import { Badges } from "@/components/shared/Badges";
-import { ButtonBack } from "@/components/shared/ButtonBack";
-import Marker from "@/assets/icons/marker.svg";
-import Envelope from "@/assets/icons/envelope.svg";
+import { GET_ORGANIZER_EVENTS } from "@/app/api/graphql/queries/events";
 
 import { Avatar } from "@/components/shared/Avatar";
 import { Title } from "@/components/shared/Title";
 import { Span } from "@/components/shared/Span";
 import { ButtonLink } from "@/components/shared/ButtonLink";
+import { Sizes } from "@/components/shared/Badges/Badges";
+import { Badges } from "@/components/shared/Badges";
+import { ButtonBack } from "@/components/shared/ButtonBack";
+
+import Marker from "@/assets/icons/marker.svg";
+import Envelope from "@/assets/icons/envelope.svg";
 
 import classes from "./page.module.css";
-import { Sizes } from "@/components/shared/Badges/Badges";
-import { Description } from "@/components/shared/Description";
 
 const PublicProfile = () => {
     const { data: session } = useSession();
     const user_id = session?.user.id;
 
     const { data: userData, refetch } = useQuery(GET_USER_BY_ID, { variables: { userId: user_id } });
+    const { data: eventsData, refetch: eventsDataRefetch } = useQuery(GET_ORGANIZER_EVENTS, {
+        variables: { organizerId: user_id },
+    });
 
-    console.log(userData?.user?.types);
     return (
         <>
             {userData?.user && (
@@ -72,7 +75,7 @@ const PublicProfile = () => {
                                 </div>
 
                                 <div className={classes.attended}>
-                                    <div>0</div>
+                                    <div>{eventsData?.allOrganizerEvents.length}</div>
                                     <span className={classes.attendedText}>organized events</span>
                                 </div>
                             </div>

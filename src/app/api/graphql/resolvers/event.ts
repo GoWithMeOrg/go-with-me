@@ -1,6 +1,5 @@
 import EventModel, { IEvent } from "@/database/models/Event";
 import UserModel from "@/database/models/User";
-import mongoose from "mongoose";
 
 export const eventResolvers = {
     Query: {
@@ -18,6 +17,11 @@ export const eventResolvers = {
 
         event: async (parent: any, { id, ...rest }: { id: string }) => {
             return await EventModel.findById(id);
+        },
+
+        allOrganizerEvents: async (_parent: any, args: { organizer_id: string }) => {
+            const events = await EventModel.find({ organizer_id: args.organizer_id });
+            return events;
         },
 
         search: async (parent: any, { text }: { text: string }) => {
