@@ -5,7 +5,7 @@
 .profile {
     display: flex;
     justify-content: space-between;
-    margin-top: 2.87rem;
+    margin: 2.87rem 0 6.25rem 0;
 }
 
 .wrapper {

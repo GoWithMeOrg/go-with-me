@@ -4,6 +4,7 @@ export interface ICarousel {
     children: React.ReactNode[];
     title?: string;
     hideButton?: boolean;
+    marginBottom: string;
 }
 export const useCarousel = ({ children }: ICarousel) => {
     const [width, setWidth] = useState<number | null>(null);

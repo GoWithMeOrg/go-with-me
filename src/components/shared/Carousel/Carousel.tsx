@@ -8,9 +8,10 @@ import { ICarousel, useCarousel } from "./hooks/useCarousel";
 
 import classes from "./Carousel.module.css";
 
-export const Carousel: FC<ICarousel> = ({ children, title, hideButton }) => {
+export const Carousel: FC<ICarousel> = ({ children, title, hideButton, marginBottom }) => {
     const { width, hideSlider, currentIndex, next, hideSliderHandler, length, showSliderHandler } = useCarousel({
         children,
+        marginBottom,
     });
 
     return (
@@ -26,7 +27,7 @@ export const Carousel: FC<ICarousel> = ({ children, title, hideButton }) => {
                         )}
                     </div>
 
-                    <div className={classes.wrapper} style={{ maxWidth: `${width}px` }}>
+                    <div className={classes.wrapper} style={{ maxWidth: `${width}px`, marginBottom }}>
                         <div
                             className={classes.content}
                             style={{ transform: `translateX(-${currentIndex * (100 / length)}%)` }}

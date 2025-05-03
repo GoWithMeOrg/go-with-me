@@ -26,6 +26,18 @@ export const GET_ORGANIZER_EVENTS = gql`
     query allOrganizerEvents($organizerId: String!) {
         allOrganizerEvents(organizer_id: $organizerId) {
             _id
+            name
+            description
+            startDate
+            time
+            location {
+                type
+                coordinates
+                properties {
+                    address
+                }
+            }
+            image
         }
     }
 `;

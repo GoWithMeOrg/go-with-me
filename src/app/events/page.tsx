@@ -26,7 +26,7 @@ const EventListPage: NextPage = () => {
     return (
         <div className={classes.eventListPage}>
             <Title tag={"h1"} title="Присоединяйтесь к приключениям" className={classes.title} />
-            <Carousel title={"Рекомендуемые события"} hideButton={false}>
+            <Carousel title={"Рекомендуемые события"} hideButton={false} marginBottom="7.5rem">
                 {filterEventsImage.map((slide: IEvent) => (
                     <Slide
                         key={slide._id}
@@ -44,7 +44,7 @@ const EventListPage: NextPage = () => {
 
             <EventFilters />
 
-            <Carousel title={"События твоих друзей"} hideButton>
+            <Carousel title={"События твоих друзей"} hideButton marginBottom="4.25rem">
                 {filterEventsImage.map((slide: IEvent) => (
                     <Slide
                         key={slide._id}
@@ -60,7 +60,7 @@ const EventListPage: NextPage = () => {
                 ))}
             </Carousel>
 
-            <Carousel title={"События поблизости"} hideButton>
+            <Carousel title={"События поблизости"} hideButton marginBottom="6.25rem">
                 {filterEventsImage.map((slide: IEvent) => (
                     <CardEvent
                         key={slide._id}

@@ -18,6 +18,10 @@ import Marker from "@/assets/icons/marker.svg";
 import Envelope from "@/assets/icons/envelope.svg";
 
 import classes from "./page.module.css";
+import { IEvent } from "@/database/models/Event";
+import { Carousel } from "@/components/shared/Carousel";
+import { CardEvent } from "@/components/widgets/CardEvent";
+import { SizeCard } from "@/components/widgets/CardEvent/CardEvent";
 
 const PublicProfile = () => {
     const { data: session } = useSession();
@@ -85,6 +89,42 @@ const PublicProfile = () => {
                             <Span title={userData?.user?.description} className={classes.description} />
                         </div>
                     </div>
+
+                    {eventsData?.allOrganizerEvents && (
+                        <Carousel title={"Organized events"} hideButton marginBottom="3.88rem">
+                            {eventsData?.allOrganizerEvents.map((slide: IEvent) => (
+                                <CardEvent
+                                    key={slide._id}
+                                    id={slide._id}
+                                    name={slide.name}
+                                    description={slide.description}
+                                    coord={[slide.location.coordinates[0], slide.location.coordinates[1]]}
+                                    startDate={slide.startDate}
+                                    time={slide.time}
+                                    image={slide.image}
+                                    size={SizeCard.ML}
+                                />
+                            ))}
+                        </Carousel>
+                    )}
+
+                    {eventsData?.allOrganizerEvents && (
+                        <Carousel title={"Upcoming events"} hideButton marginBottom="3.88rem">
+                            {eventsData?.allOrganizerEvents.map((slide: IEvent) => (
+                                <CardEvent
+                                    key={slide._id}
+                                    id={slide._id}
+                                    name={slide.name}
+                                    description={slide.description}
+                                    coord={[slide.location.coordinates[0], slide.location.coordinates[1]]}
+                                    startDate={slide.startDate}
+                                    time={slide.time}
+                                    image={slide.image}
+                                    size={SizeCard.ML}
+                                />
+                            ))}
+                        </Carousel>
+                    )}
                 </div>
             )}
         </>
