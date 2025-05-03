@@ -1,0 +1,21 @@
+.searchCompanions {
+    width: 100%;
+}
+
+.line {
+    width: 100%;
+    border: 1px solid var(--additional-color);
+}
+
+.filters {
+    display: flex;
+    justify-content: space-between;
+    margin: 1.5rem 0 2.5rem 0;
+    gap: 1.25rem;
+}
+
+.filteredList {
+    display: flex;
+    justify-content: flex-start;
+    gap: 1.25rem;
+}

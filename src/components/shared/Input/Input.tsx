@@ -1,13 +1,23 @@
-import { FC, useMemo, InputHTMLAttributes, RefObject } from "react";
+import {
+    FC,
+    useMemo,
+    InputHTMLAttributes,
+    RefObject,
+    RefAttributes,
+    ChangeEvent,
+    useState,
+    ChangeEventHandler,
+} from "react";
 
 import styles from "./Input.module.css";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     resetDefaultStyles?: boolean;
     error?: boolean;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const Input: FC<InputProps> = ({ resetDefaultStyles, className, error, ...rest }) => {
+export const Input: FC<InputProps> = ({ resetDefaultStyles, className, error, onChange, ...rest }) => {
     const inputCssString: string = useMemo(() => {
         let cssString = "";
         if (!resetDefaultStyles) cssString += styles.input;
@@ -15,7 +25,7 @@ export const Input: FC<InputProps> = ({ resetDefaultStyles, className, error, ..
         return cssString;
     }, [resetDefaultStyles, className]);
 
-    return <input className={inputCssString} {...rest} />;
+    return <input className={inputCssString} {...rest} onChange={onChange} />;
 };
 
 Input.displayName = "Input";

@@ -44,7 +44,7 @@ export const Navbar = ({ onTabClick, activeTab }: INavbar) => {
                 className={`${classes.navbarItem} ${activeTab === NavbarTabs.COMPANIONS && classes.navbarItemActive}`}
                 onClick={() => onTabClick(NavbarTabs.COMPANIONS)}
             >
-                {"Companion List"}
+                {"Companions"}
             </div>
 
             <div
@@ -61,14 +61,6 @@ export const Navbar = ({ onTabClick, activeTab }: INavbar) => {
                 onClick={() => onTabClick(NavbarTabs.CONFIDENTIALITY)}
             >
                 {"Confidentiality"}
-            </div>
-
-            <div
-                data-profile="profile-list"
-                className={`${classes.navbarItem} ${activeTab === NavbarTabs.LIST && classes.navbarItemActive}`}
-                onClick={() => onTabClick(NavbarTabs.LIST)}
-            >
-                {"List"}
             </div>
         </div>
     );
