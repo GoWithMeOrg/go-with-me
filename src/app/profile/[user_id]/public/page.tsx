@@ -1,12 +1,6 @@
 "use client";
 
 import { NextPage } from "next";
-import { useParams } from "next/navigation";
-import { useSession } from "next-auth/react";
-import { useQuery } from "@apollo/client";
-
-import { GET_USER_BY_ID } from "@/app/api/graphql/queries/user";
-import { GET_ORGANIZER_EVENTS } from "@/app/api/graphql/queries/events";
 
 import { Avatar } from "@/components/shared/Avatar";
 import { Title } from "@/components/shared/Title";
@@ -16,32 +10,39 @@ import { Sizes } from "@/components/shared/Badges/Badges";
 import { Badges } from "@/components/shared/Badges";
 import { ButtonBack } from "@/components/shared/ButtonBack";
 import { Carousel } from "@/components/shared/Carousel";
+import { Button } from "@/components/shared/Button";
+import { Popup } from "@/components/shared/Popup";
+
+import { AuthModal } from "@/components/widgets/AuthModal";
+import { CardEvent } from "@/components/widgets/CardEvent";
+import { SizeCard } from "@/components/widgets/CardEvent/CardEvent";
+
+import { IEvent } from "@/database/models/Event";
 
 import Marker from "@/assets/icons/marker.svg";
 import Envelope from "@/assets/icons/envelope.svg";
 
-import { IEvent } from "@/database/models/Event";
-
-import { CardEvent } from "@/components/widgets/CardEvent";
-import { SizeCard } from "@/components/widgets/CardEvent/CardEvent";
+import { usePublicProfile } from "./hooks";
 
 import classes from "./page.module.css";
 
 const PublicProfile: NextPage = () => {
-    const { data: session } = useSession();
-    const user_id = session?.user.id;
-
-    const params = useParams();
-    console.log(params.user_id);
-
-    // Подставляется session_id, пользователь видит свою публичную страницу, что если я просто посетитель? Как перейти в аккаунт другого пользователя?
-    const { data: userData, refetch } = useQuery(GET_USER_BY_ID, { variables: { userId: user_id } });
-    const { data: eventsData, refetch: eventsDataRefetch } = useQuery(GET_ORGANIZER_EVENTS, {
-        variables: { organizerId: user_id },
-    });
+    const {
+        user_id,
+        userData,
+        eventsData,
+        status,
+        isOwner,
+        showPopup,
+        setShowPopup,
+        handleShowPopup,
+        handleHidePopup,
+    } = usePublicProfile();
 
     //TO DO: Будет ли какая-то сортивка организованных событий в слайдере? К примеру пропускаем состоявшиеся события?
     //TO DO: Ближайшие события организатора или в которых участвует организатор? Если ближайшие события организатора, то такую сортировку можно сделать в первом слайдере. Что показывать в слайдере будет настраиваться в настройках приватности.
+
+    //TO DO: Кнопкам Chat, Invite and Add добавить соотвествующую логику, после того, как будет реализован данный функционал.
 
     return (
         <>
@@ -75,14 +76,39 @@ const PublicProfile: NextPage = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className={classes.links}>
+
+                            {isOwner ? (
                                 <ButtonLink
                                     href={`/profile/${user_id}/private`}
                                     text={"To my account"}
                                     width="11.81rem"
                                 />
-                            </div>
+                            ) : (
+                                <div className={classes.links}>
+                                    {status === "unauthenticated" ? (
+                                        <>
+                                            <Button onClick={handleShowPopup}>Chat</Button>
+
+                                            <Button onClick={handleShowPopup}>Invite</Button>
+
+                                            <Button onClick={handleShowPopup}>Add</Button>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Button>Chat</Button>
+
+                                            <Button>Invite</Button>
+
+                                            <Button>Add</Button>
+                                        </>
+                                    )}
+                                </div>
+                            )}
                         </div>
+
+                        <Popup showPopup={showPopup} setShowPopup={setShowPopup} popupMode={"auth"}>
+                            <AuthModal onClose={handleHidePopup} />
+                        </Popup>
 
                         <div className={classes.details}>
                             <div className={classes.counters}>

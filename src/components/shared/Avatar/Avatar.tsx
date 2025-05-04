@@ -18,13 +18,15 @@ export const Avatar: FC<AvatarProps> = ({ image, name, scale = 1, className, lin
     return (
         <div style={{ width: `calc(${scale} * 3.5rem)` }}>
             <div className={[classes.avatar, !image && classes.background, className].filter(Boolean).join(" ")}>
-                {image ? (
-                    <Image className={classes.image} alt={name} src={image} fill></Image>
-                ) : (
-                    <p className={classes.content} style={{ fontSize: `calc(${scale} * 1rem)` }}>
-                        {getContent(name)}
-                    </p>
-                )}
+                <Link href={link || ""}>
+                    {image ? (
+                        <Image className={classes.image} alt={name} src={image} fill></Image>
+                    ) : (
+                        <p className={classes.content} style={{ fontSize: `calc(${scale} * 1rem)` }}>
+                            {getContent(name)}
+                        </p>
+                    )}
+                </Link>
             </div>
         </div>
     );
