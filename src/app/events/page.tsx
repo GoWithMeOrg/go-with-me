@@ -31,6 +31,7 @@ const EventListPage: NextPage = () => {
                     <Slide
                         key={slide._id}
                         id={slide._id}
+                        userId={slide.organizer._id}
                         name={slide.name}
                         image={slide.image as string}
                         startDate={slide.startDate as Date}
@@ -49,6 +50,7 @@ const EventListPage: NextPage = () => {
                     <Slide
                         key={slide._id}
                         id={slide._id}
+                        userId={slide.organizer._id}
                         name={slide.name}
                         image={slide.image as string}
                         startDate={slide.startDate as Date}

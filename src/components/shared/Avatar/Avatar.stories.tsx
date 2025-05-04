@@ -16,6 +16,7 @@ export const AvatarWithText: Story = {
     args: {
         name: "User",
         scale: 1,
+        id: "123",
     },
 };
 
@@ -24,5 +25,6 @@ export const AvatarWithImage: Story = {
         name: "User",
         scale: 3,
         image: "https://radiovan.fm/uploads/article/1935cb7c8dc5d25a_5cb7c8dc5a28f.jpg",
+        id: "123",
     },
 };
