@@ -43,7 +43,7 @@ export const Companions: FC = () => {
                 ) : (
                     data?.findUsers.map((card: any) => (
                         <div key={card._id}>
-                            <Avatar name={card.name} image={card.image} scale={1.8} />
+                            <Avatar name={card.name} image={card.image} scale={1.8} id={card._id} />
                             <Span title={card.name} />
                         </div>
                     ))

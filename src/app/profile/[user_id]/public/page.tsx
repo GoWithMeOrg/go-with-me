@@ -53,7 +53,12 @@ const PublicProfile: NextPage = () => {
                         <div className={classes.wrapper}>
                             <div className={classes.avatar}>
                                 <div className={classes.image}>
-                                    <Avatar name={userData?.user.name} image={userData?.user.image} scale={2.5} />
+                                    <Avatar
+                                        name={userData?.user.name}
+                                        image={userData?.user.image}
+                                        scale={2.5}
+                                        id={userData?.user._id}
+                                    />
                                 </div>
 
                                 <div className={classes.user}>

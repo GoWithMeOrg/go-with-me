@@ -196,7 +196,7 @@ const Event: FC<EventProps> = ({ event }) => {
                                 image={event.organizer?.image}
                                 name={event.organizer?.name}
                                 scale={2.7}
-                                link={`/profile/${event.organizer_id}/public`}
+                                id={event.organizer._id}
                             />
                         </div>
 
