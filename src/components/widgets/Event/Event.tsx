@@ -48,6 +48,8 @@ const Event: FC<EventProps> = ({ event }) => {
 
     const { showPopup, setShowPopup, handleShowPopup, handleHidePopup } = usePopup({ popupMode });
 
+    // console.log(`/profile/${event}/public`);
+    console.log(event);
     return (
         <div className={classes.event}>
             <div className={classes.eventWrapper}>
@@ -190,7 +192,12 @@ const Event: FC<EventProps> = ({ event }) => {
 
                     <div className={classes.eventOrganizer}>
                         <div className={classes.organizerImage}>
-                            <Avatar image={event.organizer?.image} name={event.organizer?.name} scale={2.7} />
+                            <Avatar
+                                image={event.organizer?.image}
+                                name={event.organizer?.name}
+                                scale={2.7}
+                                link={`/profile/${event.organizer._id}/public`}
+                            />
                         </div>
 
                         <div className={classes.organizerName}>

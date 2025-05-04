@@ -15,13 +15,14 @@ import { eventCategory, eventTypes } from "@/components/shared/Dropdown/dropdown
 import { Label } from "@/components/shared/Label";
 import { Input } from "@/components/shared/Input";
 import { Textarea } from "@/components/shared/Textarea";
+import { ButtonLink } from "@/components/shared/ButtonLink";
 
 import { useProfileForm } from "./hooks/useProfileForm";
 
 import classes from "./ProfileForm.module.css";
 
 export const ProfileForm: FC = () => {
-    const { error, userData, handleSubmit, onSubmit, control, handleUploadedFile } = useProfileForm();
+    const { error, userData, handleSubmit, onSubmit, control, handleUploadedFile, user_id } = useProfileForm();
 
     return (
         <>
@@ -153,9 +154,12 @@ export const ProfileForm: FC = () => {
                         />
                     </div>
 
-                    <Button className={classes.buttonSaveChange} size="big" type="submit">
-                        Save changes
-                    </Button>
+                    <div className={classes.buttons}>
+                        <Button size="big" type="submit" className={classes.saveChanges}>
+                            Save changes
+                        </Button>
+                        <ButtonLink href={`/profile/${user_id}/public`} text={"View profile"} width="10.38rem" />
+                    </div>
                 </form>
             )}
         </>

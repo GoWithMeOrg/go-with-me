@@ -19,10 +19,6 @@
     flex-direction: row-reverse;
 }
 
-.buttonSaveChange {
-    margin-top: 3rem;
-}
-
 .list {
     width: 17.5rem;
     height: 30.81rem;
@@ -83,4 +79,14 @@
     text-align: left;
     height: 3.13rem;
     padding: 0.75rem 0.94rem;
+}
+
+.buttons {
+    display: flex;
+    margin-top: 3rem;
+    gap: 1.25rem;
+}
+
+.saveChanges {
+    padding: 0.7rem 1.88rem;
 }

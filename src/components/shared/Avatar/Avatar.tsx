@@ -1,5 +1,6 @@
 import { FC, HTMLAttributes } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 import { IUser } from "@/database/types/User";
 import { getContent } from "./helpers";
@@ -10,9 +11,10 @@ interface AvatarProps extends HTMLAttributes<HTMLDivElement>, Pick<IUser, "name"
     scale?: number;
     image?: string;
     className?: string;
+    link?: string;
 }
 
-export const Avatar: FC<AvatarProps> = ({ image, name, scale = 1, className }) => {
+export const Avatar: FC<AvatarProps> = ({ image, name, scale = 1, className, link }) => {
     return (
         <div style={{ width: `calc(${scale} * 3.5rem)` }}>
             <div className={[classes.avatar, !image && classes.background, className].filter(Boolean).join(" ")}>
