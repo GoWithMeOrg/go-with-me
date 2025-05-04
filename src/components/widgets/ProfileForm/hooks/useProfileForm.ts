@@ -51,7 +51,7 @@ export const useProfileForm = () => {
 
     const place = watch("location");
     const firstName = watch("firstName") || userData?.user?.name.split(" ")[0];
-    const lastName = watch("lastName") || userData?.user?.name.split(" ")[0];
+    const lastName = watch("lastName") || userData?.user?.name.split(" ")[1];
 
     function mapGooglePlaceToLocationInput(place: any) {
         if (!place || !place.geometry) return null;
@@ -89,7 +89,6 @@ export const useProfileForm = () => {
             },
         }).then((response) => {
             console.log("UserEditPage: ", response);
-            router.push(`/profile/${user_id}/public`);
         });
         refetch();
     };
@@ -109,5 +108,5 @@ export const useProfileForm = () => {
         setPresignUrl(preUrl);
     };
 
-    return { error, userData, handleSubmit, onSubmit, control, handleUploadedFile };
+    return { error, userData, handleSubmit, onSubmit, control, handleUploadedFile, user_id };
 };

@@ -48,6 +48,8 @@ const Event: FC<EventProps> = ({ event }) => {
 
     const { showPopup, setShowPopup, handleShowPopup, handleHidePopup } = usePopup({ popupMode });
 
+    // console.log(`/profile/${event}/public`);
+    console.log(event);
     return (
         <div className={classes.event}>
             <div className={classes.eventWrapper}>
@@ -55,7 +57,7 @@ const Event: FC<EventProps> = ({ event }) => {
                     <Title title={event.name} className={classes.eventTitle} tag={"h2"} />
                     <div className={classes.information}>
                         <div className={classes.location}>
-                            <Marker style={{ transform: "scale(0.937)", marginRight: "0.5rem", fill: "#575B75" }} />
+                            <Marker style={{ transform: "scale(0.937)", marginRight: "0.5rem", color: "#575B75" }} />
                             <div className={classes.geocoding}>
                                 <Geocoding coordinates={coord} />
                             </div>
@@ -190,7 +192,12 @@ const Event: FC<EventProps> = ({ event }) => {
 
                     <div className={classes.eventOrganizer}>
                         <div className={classes.organizerImage}>
-                            <Avatar image={event.organizer?.image} name={event.organizer?.name} scale={2.7} />
+                            <Avatar
+                                image={event.organizer?.image}
+                                name={event.organizer?.name}
+                                scale={2.7}
+                                id={event.organizer._id}
+                            />
                         </div>
 
                         <div className={classes.organizerName}>

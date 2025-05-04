@@ -21,7 +21,6 @@ const Profile: NextPage = () => {
                     <Arrow />
                 </Button>
                 <div className={classes.avatarTitle}>
-                    {/* <Avatar name={""} /> */}
                     <Title className={classes.formTitle} title="MY ACCOUNT" tag={"h2"} />
                 </div>
                 <ProfileTabs />

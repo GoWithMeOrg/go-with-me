@@ -34,7 +34,13 @@ export const Comment: FC<IProps> = ({
     return (
         <div className={classes.comment} id={`comment-id-${id}`}>
             <div className={classes.avatarContainer}>
-                <Avatar className={classes.avatar} name={name} image={image ?? undefined} scale={0.75} />
+                <Avatar
+                    className={classes.avatar}
+                    name={name}
+                    image={image ?? undefined}
+                    scale={0.75}
+                    id={author._id}
+                />
             </div>
             <div className={classes.contentContainer}>
                 <div className={classes.userName}>
