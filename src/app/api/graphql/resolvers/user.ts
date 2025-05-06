@@ -1,6 +1,5 @@
 import UserModel from "@/database/models/User";
 import { IUser } from "@/database/types/User";
-import CompanionRequest from "@/database/models/CompanionRequest";
 
 export const userResolvers = {
     Query: {

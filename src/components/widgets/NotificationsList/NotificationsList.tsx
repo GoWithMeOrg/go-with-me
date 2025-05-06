@@ -63,13 +63,15 @@ const GET_APPLICATIONS = gql`
 export const NotificationsList = () => {
     const { data: session, status } = useSession();
     const user_id = session?.user.id;
-    const { data } = useQuery(GET_APPLICATIONS, {
+    const { data, refetch } = useQuery(GET_APPLICATIONS, {
         variables: {
             userId: user_id,
         },
     });
 
-    console.log(data?.getApplications[0].id);
+    refetch();
+
+    console.log(data?.getApplications[0]);
 
     return (
         <div className={classes.notificationsList}>
@@ -88,7 +90,7 @@ export const NotificationsList = () => {
             ))} */}
             {data && (
                 <Application
-                    id={data?.getApplications[0].id}
+                    id={data?.getApplications[0]?.id}
                     name={data?.getApplications[0]?.sender.name}
                     senderId={data?.getApplications[0]?.sender._id}
                     image={data?.getApplications[0]?.sender.image}

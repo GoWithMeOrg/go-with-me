@@ -4,7 +4,10 @@ export const companionRequestResolvers = {
     Query: {
         getApplications: async (parent: any, { userId }: { userId: string }) => {
             return await CompanionRequest.find({
-                $or: [{ sender: userId }, { receiver: userId }],
+                $or: [
+                    { sender: userId, status: "pending" },
+                    { receiver: userId, status: "pending" },
+                ],
             })
                 .populate("sender")
                 .populate("receiver");
@@ -19,8 +22,8 @@ export const companionRequestResolvers = {
 
             const existingRequest = await CompanionRequest.findOne({
                 $or: [
-                    { sender: senderId, receiver: receiverId },
-                    { sender: receiverId, receiver: senderId },
+                    { sender: senderId, receiver: receiverId, status: "pending" },
+                    { sender: receiverId, receiver: senderId, status: "pending" },
                 ],
             });
 

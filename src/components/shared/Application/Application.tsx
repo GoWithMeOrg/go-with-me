@@ -2,12 +2,11 @@ import React, { FC } from "react";
 
 import Image from "next/image";
 import Link from "next/link";
-import { useMutation } from "@apollo/client";
 
 import { Button } from "@/components/shared/Button";
 
 import classes from "./Application.module.css";
-import { ACCEPT_COMPANION_MUTATION, REJECT_COMPANION_MUTATION } from "@/app/api/graphql/mutations/companionRequest";
+import { useApplication } from "./hooks";
 
 interface ApplicationProps {
     id: string;
@@ -18,29 +17,7 @@ interface ApplicationProps {
 }
 
 export const Application: FC<ApplicationProps> = ({ id, name, status, image, senderId }) => {
-    const [AcceptCompanionRequest] = useMutation(ACCEPT_COMPANION_MUTATION);
-    const [RejectCompanionRequest] = useMutation(REJECT_COMPANION_MUTATION);
-
-    const acceptRequest = async () => {
-        try {
-            await AcceptCompanionRequest({
-                variables: { requestId: id },
-            });
-        } catch (error) {
-            console.error("Error deleting event: ", error);
-        }
-    };
-
-    const rejectRequest = async () => {
-        try {
-            await RejectCompanionRequest({
-                variables: { requestId: id },
-            });
-        } catch (error) {
-            console.error("Error deleting event: ", error);
-        }
-    };
-
+    const { acceptRequest, rejectRequest } = useApplication({ id });
     return (
         <div id={id} className={classes.invation}>
             <div className={classes.image}>

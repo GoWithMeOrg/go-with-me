@@ -38,7 +38,7 @@ export const rootTypeDefs = gql`
 
         findUsers(email: String, name: String): [User!]!
 
-        getApplications(userId: String): [CompanionRequest]
+        getApplications(userId: String): [CompanionRequest!]!
     }
 
     type Mutation {
