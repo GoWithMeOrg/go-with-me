@@ -1,5 +1,5 @@
 import CompanionRequest from "@/database/models/CompanionRequest";
-import UserModel from "@/database/models/User";
+import CompanionsModel from "@/database/models/Сompanions";
 import mongoose from "mongoose";
 
 export const companionRequestResolvers = {
@@ -22,6 +22,13 @@ export const companionRequestResolvers = {
                 throw new Error("Нельзя отправить запрос самому себе");
             }
 
+            // Проверка на уже существующую дружбу
+            const existingCompanions = await CompanionsModel.findOne({ user_id: senderId });
+            if (existingCompanions?.companions.includes(new mongoose.Types.ObjectId(receiverId))) {
+                throw new Error("Пользователь уже у вас в друзьях");
+            }
+
+            // Проверка на уже существующий активный запрос
             const existingRequest = await CompanionRequest.findOne({
                 $or: [
                     { sender: senderId, receiver: receiverId, status: "pending" },
@@ -33,6 +40,7 @@ export const companionRequestResolvers = {
                 throw new Error("Запрос уже существует");
             }
 
+            // Создание новой заявки
             const newRequest = new CompanionRequest({
                 sender: senderId,
                 receiver: receiverId,
@@ -44,7 +52,6 @@ export const companionRequestResolvers = {
 
         acceptCompanionRequest: async (_: any, { requestId }: { requestId: string }) => {
             const request = await CompanionRequest.findById(requestId);
-            console.log(request);
             if (!request) {
                 throw new Error("Заявка не найдена");
             }
@@ -56,15 +63,33 @@ export const companionRequestResolvers = {
             request.status = "accepted";
             request.updatedAt = new Date();
 
-            await UserModel.updateOne({ _id: request.sender }, { $addToSet: { companions_id: request.receiver } });
+            const senderId = new mongoose.Types.ObjectId(request.sender);
+            const receiverId = new mongoose.Types.ObjectId(request.receiver);
 
-            await UserModel.updateOne({ _id: request.receiver }, { $addToSet: { companions_id: request.sender } });
+            // Обновляем список друзей отправителя
+            await CompanionsModel.updateOne(
+                { user_id: senderId },
+                { $addToSet: { companions: receiverId } },
+                { upsert: true },
+            );
+
+            // Обновляем список друзей получателя
+            await CompanionsModel.updateOne(
+                { user_id: receiverId },
+                { $addToSet: { companions: senderId } },
+                { upsert: true },
+            );
 
             return await request.save();
         },
 
         rejectCompanionRequest: async (_: any, { requestId }: { requestId: string }) => {
-            return await CompanionRequest.findByIdAndDelete({ _id: requestId });
+            const request = await CompanionRequest.findById(requestId);
+
+            if (!request) {
+                throw new Error("Заявка не найдена");
+            }
+            return await CompanionRequest.findByIdAndDelete(requestId);
         },
     },
 };

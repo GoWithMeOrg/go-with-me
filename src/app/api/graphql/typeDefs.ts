@@ -8,6 +8,7 @@ import { listTypeDefs } from "./types/list";
 import { joinedTypeDefs } from "./types/joined";
 import { likeTypeDefs } from "./types/like";
 import companionRequest from "./types/companionRequest";
+import { companionsTypeDefs } from "./types/companions";
 
 export const rootTypeDefs = gql`
     scalar ISODate
@@ -39,6 +40,8 @@ export const rootTypeDefs = gql`
         findUsers(email: String, name: String): [User!]!
 
         getApplications(userId: String): [CompanionRequest!]!
+
+        companions(userId: ID!): [User!]!
     }
 
     type Mutation {
@@ -82,4 +85,5 @@ export const typeDefs = [
     joinedTypeDefs,
     likeTypeDefs,
     companionRequest,
+    companionsTypeDefs,
 ];

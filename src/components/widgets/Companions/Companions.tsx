@@ -14,8 +14,8 @@ import classes from "./Companions.module.css";
 
 export const Companions: FC = () => {
     // добавить индекс в дб прода db.getCollection('users').createIndex({ name: 1 })
-    const { handleFirstNameChange, handleLastNameChange, handleEmailChange, findUsers } = useCompanions();
-    console.log(findUsers);
+    const { handleFirstNameChange, handleLastNameChange, handleEmailChange, findUsers, companions } = useCompanions();
+    console.log(companions);
 
     return (
         <div className={classes.searchCompanions}>
@@ -51,6 +51,16 @@ export const Companions: FC = () => {
                     ))
                 )}
             </FilteredList>
+
+            <div className={classes.line}></div>
+
+            {companions &&
+                companions.map((card: any) => (
+                    <div key={card._id}>
+                        <Avatar name={card.name} image={card.image} scale={1.8} id={card._id} />
+                        <Span title={card.name} />
+                    </div>
+                ))}
         </div>
     );
 };
