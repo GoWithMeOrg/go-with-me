@@ -17,6 +17,8 @@ export const useCompanions = () => {
         },
     });
 
+    const findUsers = data?.findUsers || [];
+
     const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFirstName(e.target.value);
         refetch();
@@ -32,5 +34,5 @@ export const useCompanions = () => {
         refetch();
     };
 
-    return { handleFirstNameChange, handleLastNameChange, handleEmailChange, data };
+    return { handleFirstNameChange, handleLastNameChange, handleEmailChange, findUsers };
 };

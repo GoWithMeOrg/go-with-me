@@ -1,8 +1,9 @@
+import mongoose from "mongoose";
 import { IRole } from "./Role";
 
 export type ProfileType = Partial<IUser>;
 export interface IUser {
-    _id: string;
+    _id: mongoose.Types.ObjectId;
     name: string;
     email: string;
     image: string;

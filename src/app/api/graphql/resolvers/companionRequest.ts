@@ -1,4 +1,6 @@
 import CompanionRequest from "@/database/models/CompanionRequest";
+import UserModel from "@/database/models/User";
+import mongoose from "mongoose";
 
 export const companionRequestResolvers = {
     Query: {
@@ -42,7 +44,7 @@ export const companionRequestResolvers = {
 
         acceptCompanionRequest: async (_: any, { requestId }: { requestId: string }) => {
             const request = await CompanionRequest.findById(requestId);
-
+            console.log(request);
             if (!request) {
                 throw new Error("Заявка не найдена");
             }
@@ -53,6 +55,10 @@ export const companionRequestResolvers = {
 
             request.status = "accepted";
             request.updatedAt = new Date();
+
+            await UserModel.updateOne({ _id: request.sender }, { $addToSet: { companions_id: request.receiver } });
+
+            await UserModel.updateOne({ _id: request.receiver }, { $addToSet: { companions_id: request.sender } });
 
             return await request.save();
         },
