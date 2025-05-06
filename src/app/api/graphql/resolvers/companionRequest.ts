@@ -58,20 +58,7 @@ export const companionRequestResolvers = {
         },
 
         rejectCompanionRequest: async (_: any, { requestId }: { requestId: string }) => {
-            const request = await CompanionRequest.findById(requestId);
-
-            if (!request) {
-                throw new Error("Заявка не найдена");
-            }
-
-            if (request.status !== "pending") {
-                throw new Error("Заявка уже обработана");
-            }
-
-            request.status = "rejected";
-            request.updatedAt = new Date();
-
-            return await request.save();
+            return await CompanionRequest.findByIdAndDelete({ _id: requestId });
         },
     },
 };

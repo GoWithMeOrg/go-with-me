@@ -26,7 +26,7 @@ export const ACCEPT_COMPANION_MUTATION = gql`
 export const REJECT_COMPANION_MUTATION = gql`
     mutation RejectCompanionRequest($requestId: String!) {
         rejectCompanionRequest(requestId: $requestId) {
-            status
+            id
         }
     }
 `;

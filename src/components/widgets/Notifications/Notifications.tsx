@@ -1,17 +1,15 @@
 import React, { FC } from "react";
 import gql from "graphql-tag";
-import { useQuery } from "@apollo/client";
 
 import { Invation } from "@/components/widgets/Invation";
-import { IEvent } from "@/database/models/Event";
-import { SystemNotification } from "@/components/widgets/SystemNotification";
-
-import classes from "./Notifications.module.css";
-import { useSession } from "next-auth/react";
 import { Application } from "@/components/shared/Application";
-import { GET_APPLICATIONS } from "@/app/api/graphql/queries/applications";
+
+import { IEvent } from "@/database/models/Event";
+
 import { useNotifications } from "./hooks";
 import { ApplicationProps } from "@/components/shared/Application/Application";
+
+import classes from "./Notifications.module.css";
 
 export type EventListProps = {
     events?: IEvent[];
@@ -45,8 +43,8 @@ const GET_EVENTS = gql`
     }
 `;
 
-export const Notifications = () => {
-    const { dataApplications, refetch } = useNotifications();
+export const Notifications: FC = () => {
+    const { dataApplications } = useNotifications();
 
     // console.log(dataApplications[0]?.name);
     return (

@@ -14,7 +14,7 @@ const CompanionRequestSchema = new Schema<ICompanionRequestDocument>({
     },
     status: {
         type: String,
-        enum: ["pending", "accepted", "rejected", "blocked"],
+        enum: ["pending", "accepted"],
         default: "pending",
     },
     createdAt: {
