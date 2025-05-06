@@ -8,8 +8,9 @@ import { Button } from "@/components/shared/Button";
 import classes from "./Application.module.css";
 import { useApplication } from "./hooks";
 
-interface ApplicationProps {
+export interface ApplicationProps {
     id: string;
+    key: string;
     senderId?: string;
     name: string;
     image: string;
@@ -18,6 +19,8 @@ interface ApplicationProps {
 
 export const Application: FC<ApplicationProps> = ({ id, name, status, image, senderId }) => {
     const { acceptRequest, rejectRequest } = useApplication({ id });
+
+    console.log(id);
     return (
         <div id={id} className={classes.invation}>
             <div className={classes.image}>

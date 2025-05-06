@@ -1,4 +1,5 @@
 import { ACCEPT_COMPANION_MUTATION, REJECT_COMPANION_MUTATION } from "@/app/api/graphql/mutations/companionRequest";
+import { useNotifications } from "@/components/widgets/Notifications/hooks";
 import { useMutation } from "@apollo/client";
 
 interface useApplicationProps {
@@ -6,6 +7,7 @@ interface useApplicationProps {
 }
 
 export const useApplication = ({ id }: useApplicationProps) => {
+    const { refetch } = useNotifications();
     const [AcceptCompanionRequest] = useMutation(ACCEPT_COMPANION_MUTATION);
     const [RejectCompanionRequest] = useMutation(REJECT_COMPANION_MUTATION);
 
@@ -14,6 +16,8 @@ export const useApplication = ({ id }: useApplicationProps) => {
             await AcceptCompanionRequest({
                 variables: { requestId: id },
             });
+
+            refetch();
         } catch (error) {
             console.error("Error deleting event: ", error);
         }
@@ -24,6 +28,8 @@ export const useApplication = ({ id }: useApplicationProps) => {
             await RejectCompanionRequest({
                 variables: { requestId: id },
             });
+
+            refetch();
         } catch (error) {
             console.error("Error deleting event: ", error);
         }
