@@ -7,6 +7,8 @@ import { IEvent } from "@/database/models/Event";
 import { SystemNotification } from "@/components/widgets/SystemNotification";
 
 import classes from "./NotificationsList.module.css";
+import { useSession } from "next-auth/react";
+import { Application } from "@/components/shared/Application";
 
 export type EventListProps = {
     events?: IEvent[];
@@ -40,12 +42,38 @@ const GET_EVENTS = gql`
     }
 `;
 
+const GET_APPLICATIONS = gql`
+    query GetApplications($userId: String) {
+        getApplications(userId: $userId) {
+            id
+            receiver {
+                _id
+                name
+            }
+            sender {
+                _id
+                name
+                image
+            }
+            status
+        }
+    }
+`;
+
 export const NotificationsList = () => {
-    const { data } = useQuery(GET_EVENTS);
+    const { data: session, status } = useSession();
+    const user_id = session?.user.id;
+    const { data } = useQuery(GET_APPLICATIONS, {
+        variables: {
+            userId: user_id,
+        },
+    });
+
+    console.log(data?.getApplications[0].id);
 
     return (
         <div className={classes.notificationsList}>
-            {data?.events.map(({ _id, organizer, description, name, startDate, location, time, image }: IEvent) => (
+            {/* {data?.events.map(({ _id, organizer, description, name, startDate, location, time, image }: IEvent) => (
                 <Invation
                     key={_id}
                     id={_id}
@@ -57,9 +85,17 @@ export const NotificationsList = () => {
                     image={image}
                     organizer={organizer}
                 />
-            ))}
-
-            <SystemNotification />
+            ))} */}
+            {data && (
+                <Application
+                    id={data?.getApplications[0].id}
+                    name={data?.getApplications[0]?.sender.name}
+                    senderId={data?.getApplications[0]?.sender._id}
+                    image={data?.getApplications[0]?.sender.image}
+                    status={data?.getApplications[0]?.status}
+                />
+            )}
+            {/* <SystemNotification /> */}
         </div>
     );
 };

@@ -25,6 +25,7 @@ import Envelope from "@/assets/icons/envelope.svg";
 import { usePublicProfile } from "./hooks";
 
 import classes from "./page.module.css";
+import { useMutation } from "@apollo/client";
 
 const PublicProfile: NextPage = () => {
     const {
@@ -37,6 +38,7 @@ const PublicProfile: NextPage = () => {
         setShowPopup,
         handleShowPopup,
         handleHidePopup,
+        companionRequest,
     } = usePublicProfile();
 
     //TO DO: Будет ли какая-то сортивка организованных событий в слайдере? К примеру пропускаем состоявшиеся события?
@@ -104,7 +106,7 @@ const PublicProfile: NextPage = () => {
 
                                             <Button>Invite</Button>
 
-                                            <Button>Add</Button>
+                                            <Button onClick={companionRequest}>Add</Button>
                                         </>
                                     )}
                                 </div>

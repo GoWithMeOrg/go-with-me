@@ -8,6 +8,8 @@ export const userTypeDefs = gql`
 
     type Mutation {
         companionRequest(senderId: String!, receiverId: String!): CompanionRequest!
+        acceptFriendRequest(requestId: String!): CompanionRequest!
+        rejectFriendRequest(requestId: String!): CompanionRequest!
     }
 
     enum FriendRequestStatus {

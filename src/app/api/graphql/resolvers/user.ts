@@ -62,5 +62,39 @@ export const userResolvers = {
 
             return await newRequest.save();
         },
+
+        acceptFriendRequest: async (_: any, { requestId }: { requestId: string }) => {
+            const request = await CompanionRequest.findById(requestId);
+
+            if (!request) {
+                throw new Error("Заявка не найдена");
+            }
+
+            if (request.status !== "pending") {
+                throw new Error("Заявка уже обработана");
+            }
+
+            request.status = "accepted";
+            request.updatedAt = new Date();
+
+            return await request.save();
+        },
+
+        rejectFriendRequest: async (_: any, { requestId }: { requestId: string }) => {
+            const request = await CompanionRequest.findById(requestId);
+
+            if (!request) {
+                throw new Error("Заявка не найдена");
+            }
+
+            if (request.status !== "pending") {
+                throw new Error("Заявка уже обработана");
+            }
+
+            request.status = "rejected";
+            request.updatedAt = new Date();
+
+            return await request.save();
+        },
     },
 };
