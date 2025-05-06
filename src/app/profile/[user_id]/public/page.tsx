@@ -25,7 +25,6 @@ import Envelope from "@/assets/icons/envelope.svg";
 import { usePublicProfile } from "./hooks";
 
 import classes from "./page.module.css";
-import { useMutation } from "@apollo/client";
 
 const PublicProfile: NextPage = () => {
     const {

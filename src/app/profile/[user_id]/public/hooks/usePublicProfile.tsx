@@ -1,26 +1,12 @@
 import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 
 import { GET_ORGANIZER_EVENTS } from "@/app/api/graphql/queries/events";
 import { GET_USER_BY_ID } from "@/app/api/graphql/queries/user";
+import { COMPANION_REQUEST_MUTATION } from "@/app/api/graphql/mutations/companionRequest";
 
 import { usePopup } from "@/components/shared/Popup/hooks";
-
-const COMPANION_REQUEST_MUTATION = gql`
-    mutation CompanionRequest($senderId: String!, $receiverId: String!) {
-        companionRequest(senderId: $senderId, receiverId: $receiverId) {
-            id
-            receiver {
-                _id
-            }
-            sender {
-                _id
-            }
-            status
-        }
-    }
-`;
 
 export const usePublicProfile = () => {
     const { data: session, status } = useSession();
