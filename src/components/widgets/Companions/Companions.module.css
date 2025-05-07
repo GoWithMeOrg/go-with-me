@@ -28,3 +28,23 @@
     justify-content: flex-start;
     gap: 1.25rem;
 }
+
+.removeCompanion {
+    top: -30px;
+    left: 0px;
+    position: relative;
+}
+
+.removeCompanion path:hover {
+    stroke: var(--hover-color);
+}
+
+.addCompanion {
+    top: -30px;
+    left: 0px;
+    position: relative;
+}
+
+.addCompanion path:hover {
+    fill: var(--hover-color);
+}

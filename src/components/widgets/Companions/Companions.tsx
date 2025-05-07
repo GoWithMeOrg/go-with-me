@@ -8,17 +8,25 @@ import { Input } from "@/components/shared/Input";
 import { FilteredList } from "@/components/shared/FilteredList/FilteredList";
 import { Avatar } from "@/components/shared/Avatar";
 import { Span } from "@/components/shared/Span";
+import { Button } from "@/components/shared/Button";
 import { useCompanions } from "./hooks/useCompanions";
 import Plus from "@/assets/icons/plus.svg";
-import Minus from "@/assets/icons/plus.svg";
+import Minus from "@/assets/icons/minus.svg";
 
 import classes from "./Companions.module.css";
-import { Button } from "@/components/shared/Button";
 
 export const Companions: FC = () => {
     // добавить индекс в дб прода db.getCollection('users').createIndex({ name: 1 })
-    const { handleFirstNameChange, handleLastNameChange, handleEmailChange, findUsers, companions, called } =
-        useCompanions();
+    const {
+        handleFirstNameChange,
+        handleLastNameChange,
+        handleEmailChange,
+        findUsers,
+        companions,
+        called,
+        removeCompanion,
+        companionRequest,
+    } = useCompanions();
 
     return (
         <div className={classes.searchCompanions}>
@@ -50,12 +58,8 @@ export const Companions: FC = () => {
                         <div key={card._id}>
                             <Avatar name={card.name} image={card.image} scale={1.8} id={card._id} />
                             <Span title={card.name} />
-                            <Button resetDefaultStyles>
-                                {/* {selectedCategories.includes(category) ? (
-                                    <Minus className={classes.dropdownItemMinus} />
-                                ) : isHovered[index] ? (
-                                    <Plus className={classes.dropdownItemPlus} />
-                                ) : null} */}
+                            <Button resetDefaultStyles onClick={companionRequest}>
+                                <Plus className={classes.addCompanion} />
                             </Button>
                         </div>
                     ))
@@ -75,8 +79,8 @@ export const Companions: FC = () => {
                             <div key={card._id}>
                                 <Avatar name={card.name} image={card.image} scale={1.8} id={card._id} />
                                 <Span title={card.name} />
-                                <Button resetDefaultStyles>
-                                    <Minus />
+                                <Button resetDefaultStyles onClick={() => removeCompanion(card._id)}>
+                                    <Minus className={classes.removeCompanion} />
                                 </Button>
                             </div>
                         ))}
