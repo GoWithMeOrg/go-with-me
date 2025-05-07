@@ -10,6 +10,7 @@ export const useCompanions = () => {
 
     //TODO: добавить функию быстрой очитски полей и сброса кэша
     //TODO: добавить кнопки добавлени/удаления пользователя из друзей
+    //TODO: добавить красную точку при появлении уведомлений
 
     const [loadUsers, { loading, error, data, called }] = useLazyQuery(GET_FIND_USERS);
 

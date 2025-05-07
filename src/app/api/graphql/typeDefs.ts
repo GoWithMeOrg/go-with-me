@@ -71,6 +71,7 @@ export const rootTypeDefs = gql`
         companionRequest(senderId: String!, receiverId: String!): CompanionRequest!
         acceptCompanionRequest(requestId: String!): CompanionRequest!
         rejectCompanionRequest(requestId: String!): CompanionRequest!
+        removeCompanion(userId: ID!, companionId: ID!): Boolean
     }
 `;
 
