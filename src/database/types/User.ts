@@ -3,7 +3,7 @@ import { IRole } from "./Role";
 
 export type ProfileType = Partial<IUser>;
 export interface IUser {
-    _id: mongoose.Types.ObjectId;
+    _id: mongoose.Types.ObjectId | string;
     name: string;
     email: string;
     image: string;
