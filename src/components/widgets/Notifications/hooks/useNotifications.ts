@@ -10,9 +10,10 @@ export const useNotifications = () => {
         variables: {
             userId: user_id,
         },
+        pollInterval: 500,
     });
 
-    const dataApplications = data?.getApplications;
+    const dataApplications = data?.getApplications || [];
 
     return { dataApplications, refetch };
 };

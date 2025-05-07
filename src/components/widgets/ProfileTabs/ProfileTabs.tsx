@@ -32,11 +32,6 @@ export const ProfileTabs = () => {
             {activeTab === NavbarTabs.PERSONAL && <ProfileForm />}
             {activeTab === NavbarTabs.NOTIFICATIONS && <Notifications />}
             {activeTab === NavbarTabs.COMPANIONS && <Companions />}
-            {/* {activeTab === "events" && <ProfileForm />}
-            {activeTab === "trips" && <ProfileForm />}
-            {activeTab === "companions" && <ProfileForm />}
-            {activeTab === "chat" && <ProfileForm />}
-            {activeTab === "confidentiality" && <ProfileForm />} */}
         </div>
     );
 };

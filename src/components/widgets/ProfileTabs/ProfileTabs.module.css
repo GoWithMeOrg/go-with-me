@@ -24,7 +24,7 @@
     width: 17.5rem;
     height: 30.81rem;
     border-radius: 0.25rem;
-    padding: 30px 32px 45px 32px;
+    padding: 30px 32px 45px 16px;
     background: var(--white-color);
     margin-right: 7.5rem;
 }

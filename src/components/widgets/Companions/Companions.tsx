@@ -58,7 +58,7 @@ export const Companions: FC = () => {
                         <div key={card._id}>
                             <Avatar name={card.name} image={card.image} scale={1.8} id={card._id} />
                             <Span title={card.name} />
-                            <Button resetDefaultStyles onClick={companionRequest}>
+                            <Button resetDefaultStyles onClick={() => companionRequest(card._id)}>
                                 <Plus className={classes.addCompanion} />
                             </Button>
                         </div>
