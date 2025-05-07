@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { useQuery } from "@apollo/client";
+import { useLazyQuery, useQuery } from "@apollo/client";
 
 import { GET_FIND_USERS } from "@/app/api/graphql/queries/findUsers";
 import { GET_COMPANIONS } from "@/app/api/graphql/queries/companions";
@@ -8,18 +7,11 @@ import { useSession } from "next-auth/react";
 export const useCompanions = () => {
     const { data: session } = useSession();
     const user_id = session?.user.id;
-    const [firstName, setFirstName] = useState<string>("");
-    const [lastName, setLastName] = useState<string>("");
-    const [email, setEmail] = useState<string>("");
 
-    const name = firstName + " " + lastName;
+    //TODO: добавить функию быстрой очитски полей и сброса кэша
+    //TODO: добавить кнопки добавлени/удаления пользователя из друзей
 
-    const { loading, error, data, refetch } = useQuery(GET_FIND_USERS, {
-        variables: {
-            email,
-            name,
-        },
-    });
+    const [loadUsers, { loading, error, data, called }] = useLazyQuery(GET_FIND_USERS);
 
     const {
         loading: errorloading,
@@ -34,19 +26,23 @@ export const useCompanions = () => {
     const companions = dataCompanions?.companions || [];
 
     const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFirstName(e.target.value);
-        refetch();
+        loadUsers({ variables: { name: `${e.target.value}` } });
     };
 
     const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setLastName(e.target.value);
-        refetch();
+        loadUsers({ variables: { name: `${e.target.value}` } });
     };
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setEmail(e.target.value);
-        refetch();
+        loadUsers({ variables: { email: `${e.target.value}` } });
     };
 
-    return { handleFirstNameChange, handleLastNameChange, handleEmailChange, findUsers, companions };
+    return {
+        handleFirstNameChange,
+        handleLastNameChange,
+        handleEmailChange,
+        findUsers,
+        companions,
+        called,
+    };
 };
