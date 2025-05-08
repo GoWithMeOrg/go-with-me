@@ -63,17 +63,16 @@ export const Notifications: FC = () => {
                 />
             ))} */}
 
-            {dataApplications &&
-                dataApplications.map((application: any) => (
-                    <Application
-                        key={application.id}
-                        id={application.id}
-                        name={application.sender.name}
-                        senderId={application.sender._id}
-                        image={application.sender.image}
-                        status={application.status}
-                    />
-                ))}
+            {dataApplications?.map((application: any) => (
+                <Application
+                    key={application.id}
+                    id={application.id}
+                    name={application.sender.name}
+                    senderId={application.sender._id}
+                    image={application.sender.image}
+                    status={application.status}
+                />
+            ))}
             {/* <SystemNotification /> */}
         </div>
     );

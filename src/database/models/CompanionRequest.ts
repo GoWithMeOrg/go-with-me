@@ -1,5 +1,5 @@
 import mongoose, { Schema, Model } from "mongoose";
-import { ICompanionRequestDocument } from "../types/CompanionRequest";
+import { ICompanionRequestDocument, CompanionRequestStatus } from "../types/CompanionRequest";
 
 const CompanionRequestSchema = new Schema<ICompanionRequestDocument>({
     sender: {
@@ -12,11 +12,13 @@ const CompanionRequestSchema = new Schema<ICompanionRequestDocument>({
         ref: "User",
         required: true,
     },
+
     status: {
         type: String,
-        enum: ["pending", "accepted"],
-        default: "pending",
+        enum: CompanionRequestStatus,
+        default: CompanionRequestStatus.PENDING,
     },
+
     createdAt: {
         type: Date,
         default: Date.now,

@@ -74,16 +74,15 @@ export const Companions: FC = () => {
                 <div className={classes.line}></div>
 
                 <FilteredList className={classes.companionsList}>
-                    {companions &&
-                        companions.map((card: any) => (
-                            <div key={card._id}>
-                                <Avatar name={card.name} image={card.image} scale={1.8} id={card._id} />
-                                <Span title={card.name} />
-                                <Button resetDefaultStyles onClick={() => removeCompanion(card._id)}>
-                                    <Minus className={classes.removeCompanion} />
-                                </Button>
-                            </div>
-                        ))}
+                    {companions?.map((card: any) => (
+                        <div key={card._id}>
+                            <Avatar name={card.name} image={card.image} scale={1.8} id={card._id} />
+                            <Span title={card.name} />
+                            <Button resetDefaultStyles onClick={() => removeCompanion(card._id)}>
+                                <Minus className={classes.removeCompanion} />
+                            </Button>
+                        </div>
+                    ))}
                 </FilteredList>
             </div>
         </div>
