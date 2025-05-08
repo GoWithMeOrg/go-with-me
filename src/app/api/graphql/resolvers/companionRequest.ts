@@ -1,5 +1,6 @@
 import CompanionRequest from "@/database/models/CompanionRequest";
 import CompanionsModel from "@/database/models/Сompanions";
+import { CompanionRequestStatus } from "@/database/types/CompanionRequest";
 import mongoose from "mongoose";
 
 export const companionRequestResolvers = {
@@ -44,7 +45,7 @@ export const companionRequestResolvers = {
             const newRequest = new CompanionRequest({
                 sender: senderId,
                 receiver: receiverId,
-                status: "pending",
+                status: CompanionRequestStatus.PENDING,
             });
 
             return await newRequest.save();
@@ -60,7 +61,7 @@ export const companionRequestResolvers = {
                 throw new Error("Заявка уже обработана");
             }
 
-            request.status = "accepted";
+            request.status = CompanionRequestStatus.ACCEPTED;
             request.updatedAt = new Date();
 
             const senderId = new mongoose.Types.ObjectId(request.sender);
