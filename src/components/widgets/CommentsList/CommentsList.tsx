@@ -119,7 +119,7 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
                                 onClickLikeButton={onClickLikeButton}
                                 onClickDeleteButton={onClickDeleteButton}
                                 isLiked={Boolean(likes.find((id) => id === author_id))}
-                                isDeletable={author._id === author_id}
+                                isDeletable={(author._id as string) === author_id}
                             />
                             {replyToState?.id === commentId ? <CommentForm onSaveComment={onSaveCommentReply} /> : null}
                             {replies ? (
@@ -135,7 +135,7 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
                                                     onClickLikeButton={onClickLikeButton}
                                                     onClickDeleteButton={onClickDeleteButton}
                                                     isLiked={Boolean(likes.find((id) => id === author_id))}
-                                                    isDeletable={author._id === author_id}
+                                                    isDeletable={(author._id as string) === author_id}
                                                 />
                                                 {replyToState?.id === replyCommentId ? (
                                                     <CommentForm onSaveComment={onSaveCommentReply} />

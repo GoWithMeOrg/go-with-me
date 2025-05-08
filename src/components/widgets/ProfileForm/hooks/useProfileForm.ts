@@ -32,7 +32,6 @@ interface IFormProfile {
 }
 
 export const useProfileForm = () => {
-    const router = useRouter();
     const { control, handleSubmit, watch } = useForm<IFormProfile>();
     const { data: session } = useSession();
     const { onSubmitFile, getDeleteFile } = useUploadFile({});

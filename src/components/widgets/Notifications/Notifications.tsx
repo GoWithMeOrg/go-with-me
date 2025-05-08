@@ -1,12 +1,15 @@
 import React, { FC } from "react";
 import gql from "graphql-tag";
-import { useQuery } from "@apollo/client";
 
 import { Invation } from "@/components/widgets/Invation";
-import { IEvent } from "@/database/models/Event";
-import { SystemNotification } from "@/components/widgets/SystemNotification";
+import { Application } from "@/components/shared/Application";
 
-import classes from "./NotificationsList.module.css";
+import { IEvent } from "@/database/models/Event";
+
+import { useNotifications } from "./hooks";
+import { ApplicationProps } from "@/components/shared/Application/Application";
+
+import classes from "./Notifications.module.css";
 
 export type EventListProps = {
     events?: IEvent[];
@@ -40,12 +43,13 @@ const GET_EVENTS = gql`
     }
 `;
 
-export const NotificationsList = () => {
-    const { data } = useQuery(GET_EVENTS);
+export const Notifications: FC = () => {
+    const { dataApplications } = useNotifications();
 
+    // console.log(dataApplications[0]?.name);
     return (
         <div className={classes.notificationsList}>
-            {data?.events.map(({ _id, organizer, description, name, startDate, location, time, image }: IEvent) => (
+            {/* {data?.events.map(({ _id, organizer, description, name, startDate, location, time, image }: IEvent) => (
                 <Invation
                     key={_id}
                     id={_id}
@@ -57,11 +61,19 @@ export const NotificationsList = () => {
                     image={image}
                     organizer={organizer}
                 />
-            ))}
+            ))} */}
 
-            <SystemNotification />
+            {dataApplications?.map((application: any) => (
+                <Application
+                    key={application.id}
+                    id={application.id}
+                    name={application.sender.name}
+                    senderId={application.sender._id}
+                    image={application.sender.image}
+                    status={application.status}
+                />
+            ))}
+            {/* <SystemNotification /> */}
         </div>
     );
 };
-
-export default NotificationsList;

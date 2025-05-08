@@ -7,6 +7,8 @@ import { locationTypeDefs } from "./types/location";
 import { listTypeDefs } from "./types/list";
 import { joinedTypeDefs } from "./types/joined";
 import { likeTypeDefs } from "./types/like";
+import companionRequest from "./types/companionRequest";
+import { companionsTypeDefs } from "./types/companions";
 
 export const rootTypeDefs = gql`
     scalar ISODate
@@ -34,6 +36,12 @@ export const rootTypeDefs = gql`
         joinedByUser(event_id: ID!, user_id: ID!): Joined
 
         liked(event_id: ID, user_id: ID): Like
+
+        findUsers(email: String, name: String): [User!]!
+
+        getApplications(userId: String): [CompanionRequest!]!
+
+        companions(userId: ID!): [User!]!
     }
 
     type Mutation {
@@ -59,6 +67,11 @@ export const rootTypeDefs = gql`
         joinEvent(event_id: ID!, user_id: ID!): Joined
 
         like(event_id: ID!, user_id: ID!): Like
+
+        companionRequest(senderId: String!, receiverId: String!): CompanionRequest!
+        acceptCompanionRequest(requestId: String!): CompanionRequest!
+        rejectCompanionRequest(requestId: String!): CompanionRequest!
+        removeCompanion(userId: ID!, companionId: ID!): Boolean
     }
 `;
 
@@ -72,4 +85,6 @@ export const typeDefs = [
     listTypeDefs,
     joinedTypeDefs,
     likeTypeDefs,
+    companionRequest,
+    companionsTypeDefs,
 ];

@@ -196,7 +196,7 @@ const Event: FC<EventProps> = ({ event }) => {
                                 image={event.organizer?.image}
                                 name={event.organizer?.name}
                                 scale={2.7}
-                                id={event.organizer._id}
+                                id={event.organizer._id as string}
                             />
                         </div>
 

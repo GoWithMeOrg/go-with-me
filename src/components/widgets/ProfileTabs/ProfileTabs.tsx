@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Navbar } from "@/components/widgets/Navbar";
 import { NavbarTabs } from "@/components/widgets/Navbar/models";
 import { ProfileForm } from "@/components/widgets/ProfileForm";
-import { NotificationsList } from "@/components/widgets/NotificationsList";
+import { Notifications } from "@/components/widgets/Notifications";
 
 import classes from "./ProfileTabs.module.css";
 import { Companions } from "../Companions/Companions";
@@ -30,13 +30,8 @@ export const ProfileTabs = () => {
                 </div>
             </div>
             {activeTab === NavbarTabs.PERSONAL && <ProfileForm />}
-            {activeTab === NavbarTabs.NOTIFICATIONS && <NotificationsList />}
+            {activeTab === NavbarTabs.NOTIFICATIONS && <Notifications />}
             {activeTab === NavbarTabs.COMPANIONS && <Companions />}
-            {/* {activeTab === "events" && <ProfileForm />}
-            {activeTab === "trips" && <ProfileForm />}
-            {activeTab === "companions" && <ProfileForm />}
-            {activeTab === "chat" && <ProfileForm />}
-            {activeTab === "confidentiality" && <ProfileForm />} */}
         </div>
     );
 };

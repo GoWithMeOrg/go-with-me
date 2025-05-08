@@ -1,4 +1,3 @@
-import User from "@/database/models/User";
 import UserModel from "@/database/models/User";
 import { IUser } from "@/database/types/User";
 

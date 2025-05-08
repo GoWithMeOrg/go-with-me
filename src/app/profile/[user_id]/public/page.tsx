@@ -37,6 +37,7 @@ const PublicProfile: NextPage = () => {
         setShowPopup,
         handleShowPopup,
         handleHidePopup,
+        companionRequest,
     } = usePublicProfile();
 
     //TO DO: Будет ли какая-то сортивка организованных событий в слайдере? К примеру пропускаем состоявшиеся события?
@@ -104,7 +105,7 @@ const PublicProfile: NextPage = () => {
 
                                             <Button>Invite</Button>
 
-                                            <Button>Add</Button>
+                                            <Button onClick={companionRequest}>Add</Button>
                                         </>
                                     )}
                                 </div>

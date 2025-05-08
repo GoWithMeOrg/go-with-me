@@ -39,7 +39,7 @@ export const Comment: FC<IProps> = ({
                     name={name}
                     image={image ?? undefined}
                     scale={0.75}
-                    id={author._id}
+                    id={author._id as string}
                 />
             </div>
             <div className={classes.contentContainer}>
