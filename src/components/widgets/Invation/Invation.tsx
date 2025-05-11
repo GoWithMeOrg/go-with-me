@@ -11,14 +11,15 @@ import Joined from "@/assets/icons/joined.svg";
 
 import classes from "./Invation.module.css";
 
-export enum Condition {
-    CANCELED = "canceled",
-    ENDED = "ended",
+export enum ConditionEvent {
+    CANCELED = "canceled", //- отменено
+    FINALIZED = "finalized", // - завершено
 }
 
 export enum InvationStatus {
-    ACCEPTED = "accepted",
-    DECLINED = "declined",
+    INVITED = "Invited",
+    ACCEPTED = "Accepted",
+    DECLINED = "Declined",
 }
 
 interface InvationProps {
@@ -30,11 +31,11 @@ interface InvationProps {
     startDate: string | Date | undefined;
     time: string | undefined;
     image?: string;
-    condition?: Condition;
+    condition?: ConditionEvent;
 }
 
 // Accepted - принял, Refesuded - отказался
-// Canceled - отменено, Ended - закончилось
+// Canceled - отменено, finalized - завершено
 
 // Как мы будем отменять событие. В событие предусмотреть процедуру отмены. В описание интерфесай события добавить варианты (отменено, закончено, активно)
 //
