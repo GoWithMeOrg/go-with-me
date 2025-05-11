@@ -10,6 +10,8 @@ import { Button } from "@/components/shared/Button";
 import Joined from "@/assets/icons/joined.svg";
 
 import classes from "./Invation.module.css";
+import { useMutation } from "@apollo/client";
+import { ACCEPT_INVITATION_MUTATION, DECLINE_INVITATION_MUTATION } from "@/app/api/graphql/mutations/invations";
 
 export enum ConditionEvent {
     CANCELED = "canceled", //- отменено
@@ -24,6 +26,7 @@ export enum InvationStatus {
 
 interface InvationProps {
     id: string;
+    user_id: string;
     eventId: string;
     organizer: string;
     name: string;
@@ -52,9 +55,32 @@ export const Invation = ({
     condition,
     sender,
     eventId,
+    user_id,
 }: InvationProps) => {
+    const [AcceptInvation] = useMutation(ACCEPT_INVITATION_MUTATION);
+    const [DeclineInvitation] = useMutation(DECLINE_INVITATION_MUTATION);
     const [invationStatus, setInvationStatus] = useState<string>("");
     //const [eventStatus, setEventStatus] = useState<string>("");
+
+    const acceptInvation = async () => {
+        try {
+            await AcceptInvation({
+                variables: { invitationId: id, userId: user_id },
+            });
+        } catch (error) {
+            console.error("Error deleting event: ", error);
+        }
+    };
+
+    const declineInvitation = async () => {
+        try {
+            await DeclineInvitation({
+                variables: { invitationId: id, userId: user_id },
+            });
+        } catch (error) {
+            console.error("Error deleting event: ", error);
+        }
+    };
 
     const handleClickAccept = () => {
         setInvationStatus(InvationStatus.ACCEPTED);
@@ -101,13 +127,13 @@ export const Invation = ({
                 <div className={classes.buttonsBlock}>
                     {invationStatus !== InvationStatus.ACCEPTED && invationStatus !== InvationStatus.DECLINED ? (
                         <div className={classes.buttons}>
-                            <Button onClick={handleClickAccept} className={classes.buttonAccept}>
+                            <Button onClick={acceptInvation} className={classes.buttonAccept}>
                                 Accept
                             </Button>
                             <Link href={`/events/${eventId}`}>
                                 <Button className={classes.buttonSee}>See more details</Button>
                             </Link>
-                            <Button onClick={handleClickRefuse} className={classes.buttonRefuse}>
+                            <Button onClick={declineInvitation} className={classes.buttonRefuse}>
                                 Decline
                             </Button>
                         </div>

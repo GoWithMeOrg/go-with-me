@@ -25,5 +25,5 @@ export const useNotifications = () => {
     const dataInvations = invations?.getInvitation || [];
     console.log(dataInvations);
 
-    return { dataApplications, dataInvations, refetch };
+    return { dataApplications, dataInvations, refetch, user_id };
 };

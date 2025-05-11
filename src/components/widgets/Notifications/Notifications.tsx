@@ -12,7 +12,7 @@ import { ApplicationProps } from "@/components/shared/Application/Application";
 import classes from "./Notifications.module.css";
 
 export const Notifications: FC = () => {
-    const { dataApplications, dataInvations } = useNotifications();
+    const { dataApplications, dataInvations, user_id } = useNotifications();
 
     return (
         <div className={classes.notificationsList}>
@@ -29,6 +29,7 @@ export const Notifications: FC = () => {
                     organizer={invation.event.organizer.name}
                     sender={invation.sender.name}
                     // status={invation.status}
+                    user_id={user_id}
                 />
             ))}
 

@@ -74,5 +74,73 @@ export const invitationResolvers = {
                 .populate("event")
                 .populate("receivers.user");
         },
+
+        acceptInvitation: async (_: any, { invitationId, userId }: { invitationId: string; userId: string }) => {
+            // Находим приглашение по ID
+            const invitation = await InvitationModel.findById(invitationId);
+            if (!invitation) {
+                throw new Error("Инвайт не найден");
+            }
+
+            // Ищем получателя по userId в массиве receivers
+            const receiverIndex = invitation.receivers.findIndex((receiver) => {
+                return receiver.user.toString() === userId; // Находим получателя по userId
+            });
+
+            // Если получатель не найден
+            if (receiverIndex === -1) {
+                throw new Error("Получатель не найден в этом приглашении");
+            }
+
+            // Обновляем статус получателя на ACCEPTED
+            invitation.receivers[receiverIndex].status = InvitationResponseStatus.ACCEPTED;
+            invitation.receivers[receiverIndex].respondedAt = new Date(); // Устанавливаем дату ответа
+
+            // Обновляем дату изменения приглашения
+            invitation.updatedAt = new Date();
+
+            // Сохраняем изменения
+            await invitation.save();
+
+            // Возвращаем обновленное приглашение
+            return InvitationModel.findById(invitation._id)
+                .populate("sender")
+                .populate("event")
+                .populate("receivers.user");
+        },
+
+        declineInvitation: async (_: any, { invitationId, userId }: { invitationId: string; userId: string }) => {
+            // Находим приглашение по ID
+            const invitation = await InvitationModel.findById(invitationId);
+            if (!invitation) {
+                throw new Error("Инвайт не найден");
+            }
+
+            // Ищем получателя по userId в массиве receivers
+            const receiverIndex = invitation.receivers.findIndex((receiver) => {
+                return receiver.user.toString() === userId; // Находим получателя по userId
+            });
+
+            // Если получатель не найден
+            if (receiverIndex === -1) {
+                throw new Error("Получатель не найден в этом приглашении");
+            }
+
+            // Обновляем статус получателя на ACCEPTED
+            invitation.receivers[receiverIndex].status = InvitationResponseStatus.DECLINED;
+            invitation.receivers[receiverIndex].respondedAt = new Date(); // Устанавливаем дату ответа
+
+            // Обновляем дату изменения приглашения
+            invitation.updatedAt = new Date();
+
+            // Сохраняем изменения
+            await invitation.save();
+
+            // Возвращаем обновленное приглашение
+            return InvitationModel.findById(invitation._id)
+                .populate("sender")
+                .populate("event")
+                .populate("receivers.user");
+        },
     },
 };
