@@ -23,7 +23,7 @@ const InvitationReceiverSchema = new Schema<InvitationReceiver>(
 
 const InvitationSchema = new Schema<InvitationDocument>(
     {
-        event_id: {
+        event: {
             type: Schema.Types.ObjectId,
             ref: "Event",
             required: true,

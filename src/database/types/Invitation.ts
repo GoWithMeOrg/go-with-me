@@ -19,7 +19,7 @@ export interface InvitationReceiver {
 
 export interface Invitation {
     id: string;
-    event_id: mongoose.Types.ObjectId;
+    event: mongoose.Types.ObjectId;
     sender: mongoose.Types.ObjectId;
     receivers: InvitationReceiver[];
     createdAt?: Date;
@@ -27,7 +27,7 @@ export interface Invitation {
 }
 
 export interface InvitationDocument extends Document {
-    event_id: Types.ObjectId;
+    event: Types.ObjectId;
     sender: Types.ObjectId;
     receivers: InvitationReceiver[];
     createdAt?: Date;

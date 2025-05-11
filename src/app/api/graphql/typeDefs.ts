@@ -9,6 +9,7 @@ import { joinedTypeDefs } from "./types/joined";
 import { likeTypeDefs } from "./types/like";
 import companionRequest from "./types/companionRequest";
 import { companionsTypeDefs } from "./types/companions";
+import { invitationTypeDefs } from "./types/invitation";
 
 export const rootTypeDefs = gql`
     scalar ISODate
@@ -42,6 +43,9 @@ export const rootTypeDefs = gql`
         getApplications(userId: String): [CompanionRequest!]!
 
         companions(userId: ID!): [User!]!
+
+        getInvitation(id: ID!): Invitation
+        getInvitationsByEvent(eventId: ID!): [Invitation!]!
     }
 
     type Mutation {
@@ -72,6 +76,8 @@ export const rootTypeDefs = gql`
         acceptCompanionRequest(requestId: String!): CompanionRequest!
         rejectCompanionRequest(requestId: String!): CompanionRequest!
         removeCompanion(userId: ID!, companionId: ID!): Boolean
+
+        respondToInvitation(eventId: ID!, senderId: ID!, receiverIds: [ID!]!): Invitation!
     }
 `;
 
@@ -87,4 +93,5 @@ export const typeDefs = [
     likeTypeDefs,
     companionRequest,
     companionsTypeDefs,
+    invitationTypeDefs,
 ];
