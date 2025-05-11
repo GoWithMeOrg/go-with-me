@@ -2,9 +2,9 @@ import gql from "graphql-tag";
 
 export const invitationTypeDefs = gql`
     enum InvitationResponseStatus {
-        INVITED
-        ACCEPTED
-        DECLINED
+        Invited
+        Accepted
+        Declined
     }
 
     type InvitationReceiver {

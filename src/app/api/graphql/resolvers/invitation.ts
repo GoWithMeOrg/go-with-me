@@ -10,8 +10,21 @@ type RespondArgs = {
 
 export const invitationResolvers = {
     Query: {
-        async getInvitation(parent: any, { id }: { id: string }) {
-            return InvitationModel.findById(id).populate("sender").populate("event").populate("receivers.user");
+        async getInvitation(parent: any, { userId }: { userId: string }) {
+            // const userObjectId = new mongoose.Types.ObjectId(userId);
+
+            // Ищем все приглашения, где пользователь является получателем или отправителем
+            const invitations = await InvitationModel.find({
+                $or: [
+                    { "receivers.user": userId }, // Пользователь в списке получателей
+                    { sender: userId }, // Пользователь - отправитель
+                ],
+            })
+                .populate("sender")
+                .populate("event")
+                .populate("receivers.user");
+
+            return invitations;
         },
 
         async getInvitationsByEvent(parent: any, { eventId }: { eventId: string }) {

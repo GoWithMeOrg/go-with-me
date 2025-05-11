@@ -24,14 +24,16 @@ export enum InvationStatus {
 
 interface InvationProps {
     id: string;
-    organizer: IUser;
+    eventId: string;
+    organizer: string;
     name: string;
-    description: string;
-    coord: [number, number];
+    coord?: [number, number];
     startDate: string | Date | undefined;
     time: string | undefined;
     image?: string;
     condition?: ConditionEvent;
+    sender: string;
+    // status: string;
 }
 
 // Accepted - принял, Refesuded - отказался
@@ -39,7 +41,18 @@ interface InvationProps {
 
 // Как мы будем отменять событие. В событие предусмотреть процедуру отмены. В описание интерфесай события добавить варианты (отменено, закончено, активно)
 //
-export const Invation = ({ id, organizer, name, coord, startDate, time, image, condition }: InvationProps) => {
+export const Invation = ({
+    id,
+    organizer,
+    name,
+    coord,
+    startDate,
+    time,
+    image,
+    condition,
+    sender,
+    eventId,
+}: InvationProps) => {
     const [invationStatus, setInvationStatus] = useState<string>("");
     //const [eventStatus, setEventStatus] = useState<string>("");
 
@@ -55,7 +68,7 @@ export const Invation = ({ id, organizer, name, coord, startDate, time, image, c
         setInvationStatus(InvationStatus.DECLINED);
     };
 
-    console.log(invationStatus);
+    console.log(organizer);
 
     return (
         <div
@@ -67,23 +80,23 @@ export const Invation = ({ id, organizer, name, coord, startDate, time, image, c
         >
             <div className={classes.image}>
                 {image && (
-                    <Link href={`/events/${id}`}>
+                    <Link href={`/events/${eventId}`}>
                         <Image src={image} alt="img" width={92} height={92} />
                     </Link>
                 )}
             </div>
 
             <div className={classes.info}>
-                <Link href={`/events/${id}`}>
+                <Link href={`/events/${eventId}`}>
                     <span className={classes.title}>{name}</span>
                 </Link>
 
-                <div className={classes.location}>
+                {/* <div className={classes.location}>
                     <Geocoding coordinates={coord} /> | {dayjs(startDate).format("DD.MM.YY")} | {time}
-                </div>
+                </div> */}
 
-                <div className={classes.organizer}>event organizer {organizer?.name}</div>
-                <div className={classes.organizer}>Invited by Violetta Capybara </div>
+                <div className={classes.organizer}>event organizer {organizer}</div>
+                <div className={classes.organizer}>Invited by {sender} </div>
 
                 <div className={classes.buttonsBlock}>
                     {invationStatus !== InvationStatus.ACCEPTED && invationStatus !== InvationStatus.DECLINED ? (
@@ -91,7 +104,7 @@ export const Invation = ({ id, organizer, name, coord, startDate, time, image, c
                             <Button onClick={handleClickAccept} className={classes.buttonAccept}>
                                 Accept
                             </Button>
-                            <Link href={`/events/${id}`}>
+                            <Link href={`/events/${eventId}`}>
                                 <Button className={classes.buttonSee}>See more details</Button>
                             </Link>
                             <Button onClick={handleClickRefuse} className={classes.buttonRefuse}>

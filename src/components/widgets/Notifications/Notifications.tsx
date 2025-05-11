@@ -11,57 +11,26 @@ import { ApplicationProps } from "@/components/shared/Application/Application";
 
 import classes from "./Notifications.module.css";
 
-export type EventListProps = {
-    events?: IEvent[];
-};
-
-const GET_EVENTS = gql`
-    query GetEvents {
-        events {
-            _id
-            organizer {
-                _id
-                name
-                email
-                image
-            }
-
-            name
-            description
-            startDate
-            endDate
-            time
-            location {
-                type
-                coordinates
-                properties {
-                    address
-                }
-            }
-            image
-        }
-    }
-`;
-
 export const Notifications: FC = () => {
-    const { dataApplications } = useNotifications();
+    const { dataApplications, dataInvations } = useNotifications();
 
-    // console.log(dataApplications[0]?.name);
     return (
         <div className={classes.notificationsList}>
-            {/* {data?.events.map(({ _id, organizer, description, name, startDate, location, time, image }: IEvent) => (
+            {dataInvations?.map((invation: any) => (
                 <Invation
-                    key={_id}
-                    id={_id}
-                    name={name}
-                    description={description}
-                    coord={[location.coordinates[1], location.coordinates[0]]}
-                    startDate={startDate}
-                    time={time}
-                    image={image}
-                    organizer={organizer}
+                    key={invation.id}
+                    id={invation.id}
+                    eventId={invation.event._id}
+                    name={invation.event?.name}
+                    // coord={[location.coordinates[1], location.coordinates[0]]}
+                    startDate={invation.event.startDate}
+                    time={invation.event.time}
+                    image={invation.event.image}
+                    organizer={invation.event.organizer.name}
+                    sender={invation.sender.name}
+                    // status={invation.status}
                 />
-            ))} */}
+            ))}
 
             {dataApplications?.map((application: any) => (
                 <Application

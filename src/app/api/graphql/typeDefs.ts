@@ -44,7 +44,8 @@ export const rootTypeDefs = gql`
 
         companions(userId: ID!): [User!]!
 
-        getInvitation(id: ID!): Invitation
+        getInvitation(userId: ID!): [Invitation!]!
+
         getInvitationsByEvent(eventId: ID!): [Invitation!]!
     }
 
