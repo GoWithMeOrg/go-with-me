@@ -7,17 +7,20 @@ export const invitationTypeDefs = gql`
         Declined
     }
 
-    type InvitationReceiver {
+    type Invited {
+        id: ID!
         user: User!
+        invitation: Invitation! # ссылка обратно на инвайт (удобно для мутаций)
         status: InvitationResponseStatus!
         respondedAt: String
+        createdAt: String
+        updatedAt: String
     }
 
     type Invitation {
         id: ID!
         event: Event!
         sender: User!
-        receivers: [InvitationReceiver!]!
         createdAt: String
         updatedAt: String
     }

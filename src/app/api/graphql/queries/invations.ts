@@ -4,33 +4,44 @@ export const GET_INVATIONS = gql`
     query GetInvitation($userId: ID!) {
         getInvitation(userId: $userId) {
             id
-            event {
-                _id
-                name
-                time
-                startDate
-                location {
-                    type
-                    coordinates
-                    properties {
-                        address
+            createdAt
+            invitation {
+                event {
+                    _id
+                    name
+                    location {
+                        type
+                        coordinates
+                        properties {
+                            address
+                        }
+                    }
+                    image
+                    time
+                    startDate
+                    organizer {
+                        name
+                        _id
                     }
                 }
-                image
-                organizer {
+                id
+                sender {
+                    _id
                     name
                 }
             }
-            receivers {
-                user {
-                    _id
-                }
-                status
-            }
-            sender {
+            status
+            user {
                 _id
-                name
             }
+        }
+    }
+`;
+
+export const GET_INVATIONS_WITH_STATUS = gql`
+    query GetInvitationsWithStatus($userId: ID!) {
+        getInvitation(userId: $userId) {
+            myStatus
         }
     }
 `;

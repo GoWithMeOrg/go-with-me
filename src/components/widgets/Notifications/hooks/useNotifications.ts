@@ -2,7 +2,7 @@ import { useSession } from "next-auth/react";
 import { useQuery } from "@apollo/client";
 
 import { GET_APPLICATIONS } from "@/app/api/graphql/queries/applications";
-import { GET_INVATIONS } from "@/app/api/graphql/queries/invations";
+import { GET_INVATIONS, GET_INVATIONS_WITH_STATUS } from "@/app/api/graphql/queries/invations";
 
 export const useNotifications = () => {
     const { data: session } = useSession();
@@ -18,12 +18,19 @@ export const useNotifications = () => {
         variables: {
             userId: user_id,
         },
-        pollInterval: 5000,
+        //pollInterval: 5000,
     });
+
+    // const { data: status } = useQuery(GET_INVATIONS_WITH_STATUS, {
+    //     variables: {
+    //         userId: user_id,
+    //     },
+    //     pollInterval: 5000,
+    // });
 
     const dataApplications = data?.getApplications || [];
     const dataInvations = invations?.getInvitation || [];
-    console.log(dataInvations);
+    console.log(dataInvations[0]?.user._id);
 
     return { dataApplications, dataInvations, refetch, user_id };
 };

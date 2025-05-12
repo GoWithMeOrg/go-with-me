@@ -36,7 +36,7 @@ interface InvationProps {
     image?: string;
     condition?: ConditionEvent;
     sender: string;
-    // status: string;
+    status: string;
 }
 
 // Accepted - принял, Refesuded - отказался

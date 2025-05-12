@@ -18,18 +18,18 @@ export const Notifications: FC = () => {
         <div className={classes.notificationsList}>
             {dataInvations?.map((invation: any) => (
                 <Invation
-                    key={invation.id}
-                    id={invation.id}
-                    eventId={invation.event._id}
-                    name={invation.event?.name}
+                    key={invation.invitation.id}
+                    id={invation.invitation.id}
+                    eventId={invation.invitation.event._id}
+                    name={invation.invitation.event?.name}
                     // coord={[location.coordinates[1], location.coordinates[0]]}
-                    startDate={invation.event.startDate}
-                    time={invation.event.time}
-                    image={invation.event.image}
-                    organizer={invation.event.organizer.name}
-                    sender={invation.sender.name}
-                    // status={invation.status}
-                    user_id={user_id}
+                    startDate={invation.invitation.event.startDate}
+                    time={invation.invitation.event.time}
+                    image={invation.invitation.event.image}
+                    organizer={invation.invitation.event.organizer.name}
+                    sender={invation.invitation.sender.name}
+                    status={invation.status}
+                    user_id={invation.user._id}
                 />
             ))}
 

@@ -1,11 +1,16 @@
-import mongoose, { Model, Schema } from "mongoose";
-import { InvitationDocument, InvitationReceiver, InvitationResponseStatus } from "@/database/types/Invitation";
+import mongoose, { model, Model, Schema, Types } from "mongoose";
+import { InvitationDocument, InvitationResponseStatus, InvitedDocument } from "@/database/types/Invitation";
 
-const InvitationReceiverSchema = new Schema<InvitationReceiver>(
+const InvitedSchema = new Schema<InvitedDocument>(
     {
         user: {
             type: Schema.Types.ObjectId,
             ref: "User",
+            required: true,
+        },
+        invitation: {
+            type: Schema.Types.ObjectId,
+            ref: "Invitation",
             required: true,
         },
         status: {
@@ -18,8 +23,10 @@ const InvitationReceiverSchema = new Schema<InvitationReceiver>(
             type: Date,
         },
     },
-    { _id: false },
+    { timestamps: true },
 );
+
+export const InvitedModel = mongoose.models?.Invited || model<InvitedDocument>("Invited", InvitedSchema);
 
 const InvitationSchema = new Schema<InvitationDocument>(
     {
@@ -31,10 +38,6 @@ const InvitationSchema = new Schema<InvitationDocument>(
         sender: {
             type: Schema.Types.ObjectId,
             ref: "User",
-            required: true,
-        },
-        receivers: {
-            type: [InvitationReceiverSchema],
             required: true,
         },
     },
