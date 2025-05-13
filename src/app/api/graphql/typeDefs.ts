@@ -81,8 +81,8 @@ export const rootTypeDefs = gql`
         removeCompanion(userId: ID!, companionId: ID!): Boolean
 
         respondToInvitation(eventId: ID!, senderId: ID!, receiverIds: [ID!]!): Invitation!
-        acceptInvitation(invitationId: ID!, userId: ID!): Invitation!
-        declineInvitation(invitationId: ID!, userId: ID!): Invitation!
+        acceptInvitation(invitationId: ID!, userId: ID!): Invited!
+        declineInvitation(invitationId: ID!, userId: ID!): Invited!
     }
 `;
 

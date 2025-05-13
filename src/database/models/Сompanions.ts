@@ -27,7 +27,7 @@ const CompanionsSchema = new Schema<ICompanionsDocument>(
 );
 
 // Индекс для ускорения поиска по user_id и обеспечения уникальности
-CompanionsSchema.index({ user_id: 1 }, { unique: true });
+// CompanionsSchema.index({ user_id: 1 }, { unique: true });
 
 const CompanionsModel: mongoose.Model<ICompanionsDocument> =
     mongoose.models?.Companions || mongoose.model<ICompanionsDocument>("Companions", CompanionsSchema);

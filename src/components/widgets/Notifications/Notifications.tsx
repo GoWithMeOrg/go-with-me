@@ -11,8 +11,10 @@ import { ApplicationProps } from "@/components/shared/Application/Application";
 
 import classes from "./Notifications.module.css";
 
+//TODO: исправить в типах user на receiver
+
 export const Notifications: FC = () => {
-    const { dataApplications, dataInvations, user_id } = useNotifications();
+    const { dataApplications, dataInvations } = useNotifications();
 
     return (
         <div className={classes.notificationsList}>

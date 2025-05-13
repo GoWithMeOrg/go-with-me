@@ -12,6 +12,7 @@ import Joined from "@/assets/icons/joined.svg";
 import classes from "./Invation.module.css";
 import { useMutation } from "@apollo/client";
 import { ACCEPT_INVITATION_MUTATION, DECLINE_INVITATION_MUTATION } from "@/app/api/graphql/mutations/invations";
+import { useNotifications } from "../Notifications/hooks";
 
 export enum ConditionEvent {
     CANCELED = "canceled", //- отменено
@@ -56,11 +57,12 @@ export const Invation = ({
     sender,
     eventId,
     user_id,
+    status,
 }: InvationProps) => {
     const [AcceptInvation] = useMutation(ACCEPT_INVITATION_MUTATION);
     const [DeclineInvitation] = useMutation(DECLINE_INVITATION_MUTATION);
     const [invationStatus, setInvationStatus] = useState<string>("");
-    //const [eventStatus, setEventStatus] = useState<string>("");
+    const { refetchDataInvations } = useNotifications();
 
     const acceptInvation = async () => {
         try {
@@ -70,6 +72,7 @@ export const Invation = ({
         } catch (error) {
             console.error("Error deleting event: ", error);
         }
+        refetchDataInvations();
     };
 
     const declineInvitation = async () => {
@@ -80,6 +83,7 @@ export const Invation = ({
         } catch (error) {
             console.error("Error deleting event: ", error);
         }
+        refetchDataInvations();
     };
 
     const handleClickAccept = () => {
@@ -125,7 +129,7 @@ export const Invation = ({
                 <div className={classes.organizer}>Invited by {sender} </div>
 
                 <div className={classes.buttonsBlock}>
-                    {invationStatus !== InvationStatus.ACCEPTED && invationStatus !== InvationStatus.DECLINED ? (
+                    {status === "Invited" ? (
                         <div className={classes.buttons}>
                             <Button onClick={acceptInvation} className={classes.buttonAccept}>
                                 Accept
@@ -138,7 +142,7 @@ export const Invation = ({
                             </Button>
                         </div>
                     ) : (
-                        invationStatus !== InvationStatus.DECLINED && (
+                        status === "Accepted" && (
                             <div className={classes.buttons}>
                                 <div className={classes.invationAccepted}>
                                     <Joined style={{ transform: "scale(1.2)" }} />
@@ -152,7 +156,7 @@ export const Invation = ({
                         )
                     )}
 
-                    {invationStatus === InvationStatus.DECLINED && (
+                    {status === "Declined" && (
                         <div className={classes.buttons}>
                             <Button onClick={handleClickAccept} className={classes.buttonAccept}>
                                 Accept
@@ -165,14 +169,12 @@ export const Invation = ({
 
             <div className={classes.invationStatus}>
                 <div className={classes.invationPlaque}>
-                    {invationStatus === InvationStatus.ACCEPTED ? (
+                    {status === "Accepted" ? (
                         <div className={classes.plaque}>Accepted</div>
-                    ) : invationStatus === InvationStatus.DECLINED ? (
+                    ) : status === "Declined" ? (
                         <div className={`${classes.plaque} ${classes.plaqueActive}`}>Declined</div>
                     ) : (
-                        <div
-                            className={`${classes.plaque} ${invationStatus === InvationStatus.DECLINED && classes.plaqueActive}`}
-                        >
+                        <div className={`${classes.plaque} ${status === "Declined" && classes.plaqueActive}`}>
                             Invited
                         </div>
                     )}

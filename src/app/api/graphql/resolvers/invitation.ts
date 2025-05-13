@@ -40,40 +40,6 @@ export const invitationResolvers = {
     },
 
     Mutation: {
-        // async respondToInvitation(_: any, { eventId, senderId, receiverIds }: RespondArgs) {
-        //     const eventObjectId = new mongoose.Types.ObjectId(eventId);
-        //     const senderObjectId = new mongoose.Types.ObjectId(senderId);
-
-        //     let invitation = await InvitationModel.findOne({
-        //         event: eventObjectId,
-        //         sender: senderObjectId,
-        //     });
-
-        //     if (!invitation) {
-        //         invitation = await InvitationModel.create({
-        //             event: eventObjectId,
-        //             sender: senderObjectId,
-        //         });
-        //     }
-
-        //     // найти уже существующих приглашённых по этому приглашению
-        //     const existingInvited = await InvitedModel.find({ invitation: invitation._id });
-        //     const existingUserIds = existingInvited.map((invited) => invited.user.toString());
-
-        //     // добавить новых приглашённых
-        //     const newInvites = receiverIds.filter((userId) => !existingUserIds.includes(userId));
-        //     await InvitedModel.insertMany(
-        //         newInvites.map((userId) => ({
-        //             user: new mongoose.Types.ObjectId(userId),
-        //             invitation: invitation._id,
-        //             status: InvitationResponseStatus.INVITED,
-        //         })),
-        //     );
-
-        //     // вернуть приглашение с отправителем и событием
-        //     return InvitationModel.findById(invitation._id).populate("sender").populate("event");
-        // },
-
         async respondToInvitation(_: any, { eventId, senderId, receiverIds }: RespondArgs) {
             const eventObjectId = new mongoose.Types.ObjectId(eventId);
             const senderObjectId = new mongoose.Types.ObjectId(senderId);
@@ -112,72 +78,38 @@ export const invitationResolvers = {
             return InvitationModel.findById(invitation._id).populate("sender").populate("event");
         },
 
-        // acceptInvitation: async (_: any, { invitationId, userId }: { invitationId: string; userId: string }) => {
-        //     // Находим приглашение по ID
-        //     const invitation = await InvitationModel.findById(invitationId);
-        //     if (!invitation) {
-        //         throw new Error("Инвайт не найден");
-        //     }
+        acceptInvitation: async (_: any, { invitationId, userId }: { invitationId: string; userId: string }) => {
+            const invited = await InvitedModel.findOne({ invitation: invitationId, user: userId });
 
-        //     // Ищем получателя по userId в массиве receivers
-        //     const receiverIndex = invitation.receivers.findIndex((receiver) => {
-        //         return receiver.user.toString() === userId; // Находим получателя по userId
-        //     });
+            if (!invited) {
+                throw new Error("Инвайт не найден для этого пользователя");
+            }
 
-        //     // Если получатель не найден
-        //     if (receiverIndex === -1) {
-        //         throw new Error("Получатель не найден в этом приглашении");
-        //     }
+            console.log(invited);
+            invited.status = InvitationResponseStatus.ACCEPTED;
+            invited.respondedAt = new Date();
+            invited.updatedAt = new Date();
 
-        //     // Обновляем статус получателя на ACCEPTED
-        //     invitation.receivers[receiverIndex].status = InvitationResponseStatus.ACCEPTED;
-        //     invitation.receivers[receiverIndex].respondedAt = new Date(); // Устанавливаем дату ответа
+            await invited.save();
 
-        //     // Обновляем дату изменения приглашения
-        //     invitation.updatedAt = new Date();
+            return await InvitedModel.findOne({ invitation: invitationId, user: userId });
+        },
 
-        //     // Сохраняем изменения
-        //     await invitation.save();
+        declineInvitation: async (_: any, { invitationId, userId }: { invitationId: string; userId: string }) => {
+            const invited = await InvitedModel.findOne({ invitation: invitationId, user: userId });
 
-        //     // Возвращаем обновленное приглашение
-        //     return InvitationModel.findById(invitation._id)
-        //         .populate("sender")
-        //         .populate("event")
-        //         .populate("receivers.user");
-        // },
+            if (!invited) {
+                throw new Error("Инвайт не найден для этого пользователя");
+            }
 
-        // declineInvitation: async (_: any, { invitationId, userId }: { invitationId: string; userId: string }) => {
-        //     // Находим приглашение по ID
-        //     const invitation = await InvitationModel.findById(invitationId);
-        //     if (!invitation) {
-        //         throw new Error("Инвайт не найден");
-        //     }
+            console.log(invited);
+            invited.status = InvitationResponseStatus.DECLINED;
+            invited.respondedAt = new Date();
+            invited.updatedAt = new Date();
 
-        //     // Ищем получателя по userId в массиве receivers
-        //     const receiverIndex = invitation.receivers.findIndex((receiver) => {
-        //         return receiver.user.toString() === userId; // Находим получателя по userId
-        //     });
+            await invited.save();
 
-        //     // Если получатель не найден
-        //     if (receiverIndex === -1) {
-        //         throw new Error("Получатель не найден в этом приглашении");
-        //     }
-
-        //     // Обновляем статус получателя на ACCEPTED
-        //     invitation.receivers[receiverIndex].status = InvitationResponseStatus.DECLINED;
-        //     invitation.receivers[receiverIndex].respondedAt = new Date(); // Устанавливаем дату ответа
-
-        //     // Обновляем дату изменения приглашения
-        //     invitation.updatedAt = new Date();
-
-        //     // Сохраняем изменения
-        //     await invitation.save();
-
-        //     // Возвращаем обновленное приглашение
-        //     return InvitationModel.findById(invitation._id)
-        //         .populate("sender")
-        //         .populate("event")
-        //         .populate("receivers.user");
-        // },
+            return await InvitedModel.findOne({ invitation: invitationId, user: userId });
+        },
     },
 };
