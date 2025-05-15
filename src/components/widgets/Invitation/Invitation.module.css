@@ -1,3 +1,25 @@
+.invitation {
+    display: flex;
+    width: 48.75rem;
+    height: 14.44rem;
+    border-radius: 0.25rem;
+    background: var(--white-color);
+}
+
+.invitationActive {
+    background: var(--background-color);
+    border-radius: 0;
+    border-top: 0.06rem solid var(--additional-color);
+}
+
+.title {
+    color: var(--text-color);
+    font-size: 0.88rem;
+    font-weight: 700;
+    line-height: 1.38rem;
+    text-align: left;
+}
+
 .invation {
     display: flex;
     width: 48.75rem;
@@ -42,6 +64,10 @@
     font-weight: 500;
     line-height: 1.63rem;
     text-align: left;
+}
+
+.organizer > a:hover {
+    color: var(--hover-color);
 }
 
 .info {

@@ -1,37 +1,36 @@
 import React, { FC } from "react";
-import gql from "graphql-tag";
 
-import { Invation } from "@/components/widgets/Invation";
 import { Application } from "@/components/shared/Application";
 
-import { IEvent } from "@/database/models/Event";
-
 import { useNotifications } from "./hooks";
-import { ApplicationProps } from "@/components/shared/Application/Application";
+
+import { Invitation } from "@/components/widgets/Invitation";
 
 import classes from "./Notifications.module.css";
-
 //TODO: исправить в типах user на receiver
 
 export const Notifications: FC = () => {
     const { dataApplications, dataInvations } = useNotifications();
 
+    console.log(dataInvations[1].invitation.id);
     return (
         <div className={classes.notificationsList}>
-            {dataInvations?.map((invation: any) => (
-                <Invation
-                    key={invation.invitation.id}
-                    id={invation.invitation.id}
-                    eventId={invation.invitation.event._id}
-                    name={invation.invitation.event?.name}
-                    // coord={[location.coordinates[1], location.coordinates[0]]}
-                    startDate={invation.invitation.event.startDate}
-                    time={invation.invitation.event.time}
-                    image={invation.invitation.event.image}
-                    organizer={invation.invitation.event.organizer.name}
-                    sender={invation.invitation.sender.name}
-                    status={invation.status}
-                    user_id={invation.user._id}
+            {dataInvations?.map((invitation: any) => (
+                <Invitation
+                    key={invitation.invitation.id}
+                    invitation_id={invitation.invitation.id}
+                    receiver_id={invitation.user._id}
+                    status={invitation.status}
+                    event_id={invitation.invitation.event._id}
+                    image={invitation.invitation.event.image}
+                    eventName={invitation.invitation.event?.name}
+                    coordinates={invitation.invitation.event.location.coordinates}
+                    startDate={invitation.invitation.event.startDate}
+                    time={invitation.invitation.event.time}
+                    organizerName={invitation.invitation.event.organizer.name}
+                    senderName={invitation.invitation.sender.name}
+                    organizer_id={invitation.invitation.event.organizer._id}
+                    sender_id={invitation.invitation.sender._id}
                 />
             ))}
 
