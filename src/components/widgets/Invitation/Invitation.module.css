@@ -20,20 +20,6 @@
     text-align: left;
 }
 
-.invation {
-    display: flex;
-    width: 48.75rem;
-    height: 14.44rem;
-    border-radius: 0.25rem;
-    background: var(--white-color);
-}
-
-.invationActive {
-    background: var(--background-color);
-    border-radius: 0;
-    border-top: 0.06rem solid var(--additional-color);
-}
-
 .image {
     width: 6.25rem;
     height: 6.25rem;
@@ -98,82 +84,6 @@
     display: flex;
     gap: 1rem;
     margin-top: 1.25rem;
-}
-
-.buttonAccept {
-    width: 5.13rem;
-    height: 2.31rem;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    background: none;
-    /* border: 0.13rem solid var(--main-color); */
-    border: 0.13rem solid rgb(9, 23, 87);
-    border-radius: 0.25rem;
-    font-size: 0.88rem;
-    font-weight: 700;
-    line-height: 1.06rem;
-    text-align: center;
-}
-
-.buttonSee {
-    width: 9.13rem;
-    height: 2.31rem;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    background: none;
-    border: 0.13rem solid var(--main-color);
-    border-radius: 0.25rem;
-    font-size: 0.88rem;
-    font-weight: 700;
-    line-height: 1.06rem;
-    text-align: center;
-}
-
-.buttonRefuse {
-    width: 5rem;
-    height: 2.31rem;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    padding: 0.63rem 1rem 0.63rem 1rem;
-    background: none;
-    border: 0.13rem solid var(--main-color);
-    border-radius: 0.25rem;
-    font-size: 0.88rem;
-    font-weight: 700;
-    line-height: 1.06rem;
-    text-align: center;
-}
-
-.buttonCancel {
-    width: 8.69rem;
-    height: 2.31rem;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    padding: 0.63rem 1rem 0.63rem 1rem;
-    background: none;
-    border: 0.13rem solid var(--main-color);
-    border-radius: 0.25rem;
-    font-size: 0.88rem;
-    font-weight: 700;
-    line-height: 1.06rem;
-    text-align: center;
-}
-
-.buttonAccept:hover,
-.buttonSee:hover,
-.buttonRefuse:hover,
-.buttonCancel:hover {
-    border: 0.13rem solid var(--hover-color);
-    border-radius: 0.25rem;
-    color: var(--hover-color);
 }
 
 .invationAccepted {

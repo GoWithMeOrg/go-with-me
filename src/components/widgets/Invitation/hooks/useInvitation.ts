@@ -3,10 +3,7 @@ import { useMutation } from "@apollo/client";
 import { ACCEPT_INVITATION_MUTATION, DECLINE_INVITATION_MUTATION } from "@/app/api/graphql/mutations/invations";
 import { useNotifications } from "@/components/widgets/Notifications/hooks";
 
-interface IUseInvitation {
-    invitation_id: string;
-    receiver_id: string;
-}
+import { IUseInvitation } from "@/components/widgets/Invitation/types/Invitation";
 
 export const useInvitation = ({ invitation_id, receiver_id }: IUseInvitation) => {
     const [AcceptInvation] = useMutation(ACCEPT_INVITATION_MUTATION);

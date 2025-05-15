@@ -12,7 +12,6 @@ import classes from "./Notifications.module.css";
 export const Notifications: FC = () => {
     const { dataApplications, dataInvations } = useNotifications();
 
-    console.log(dataInvations[1].invitation.id);
     return (
         <div className={classes.notificationsList}>
             {dataInvations?.map((invitation: any) => (

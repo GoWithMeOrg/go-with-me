@@ -1,4 +1,4 @@
-import { FC, HTMLAttributes } from "react";
+import { FC } from "react";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -13,23 +13,9 @@ import InvationDeclined from "@/assets/icons/invationDeclined.svg";
 
 import { useInvitation } from "./hooks";
 
-import classes from "./Invitation.module.css";
+import { InvitationProps } from "@/components/widgets/Invitation/types/Invitation";
 
-interface InvitationProps extends HTMLAttributes<HTMLDivElement> {
-    invitation_id: string;
-    receiver_id: string;
-    status: string;
-    event_id: string;
-    image: string;
-    eventName: string;
-    coordinates: [number, number];
-    startDate: string;
-    time: string;
-    organizerName: string;
-    senderName: string;
-    organizer_id: string;
-    sender_id: string;
-}
+import classes from "./Invitation.module.css";
 
 export const Invitation: FC<InvitationProps> = ({
     invitation_id,
