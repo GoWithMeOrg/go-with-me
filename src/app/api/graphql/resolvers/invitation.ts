@@ -10,30 +10,15 @@ type RespondArgs = {
 
 export const invitationResolvers = {
     Query: {
-        //Получаем все инвайты
-
-        // async getInvitation(parent: any, { userId }: { userId: string }) {
-        //     // Ищем все записи в коллекции Invited, где пользователь пригашён
-        //     const inviteds = await InvitedModel.find({ user: userId })
-        //         .populate("invitation") // Заполняем связанные инвайты
-        //         .populate("invitation.sender") // Заполняем отправителя инвайта
-        //         .populate("invitation.event"); // Заполняем событие инвайта
-
-        //     console.log(inviteds.map((record) => record.toObject()));
-        //     return inviteds.map((record) => record);
-        // },
-
-        async getInvitation(parent: any, { userId }: { userId: string }) {
+        getInvitation: async (parent: any, { user_id }: { user_id: string }) => {
             // Ищем все записи в коллекции Invited, где пользователь пригашён
-            const inviteds = await InvitedModel.find({ user: userId }).populate({
+            const inviteds = await InvitedModel.find({ user: user_id }).populate({
                 path: "invitation",
                 populate: [
                     { path: "sender" }, // Популяция отправителя с полем 'name'
                     { path: "event" }, // Популяция события с нужными полями
                 ],
             });
-
-            console.log(inviteds.map((record) => record.toObject()));
 
             return inviteds.map((record) => record);
         },

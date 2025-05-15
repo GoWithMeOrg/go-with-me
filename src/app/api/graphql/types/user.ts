@@ -39,5 +39,15 @@ export const userTypeDefs = gql`
     input PropertiesInput {
         address: String
     }
+
+    type Query {
+        users: [User]
+        user(id: ID!): User
+        findUsers(email: String, name: String): [User!]!
+    }
+
+    type Mutation {
+        updateUser(id: ID!, user: UserInput): User
+    }
 `;
 export default userTypeDefs;

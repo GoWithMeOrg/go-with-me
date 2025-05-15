@@ -1,15 +1,6 @@
 import { gql } from "graphql-tag";
 
 export const eventTypeDefs = gql`
-    type Query {
-        events(limit: Int, offset: Int, sort: String): [Event!]!
-        eventSearchByLocation(bounds: Bounds!): [Event]
-        eventSearchByCategories(categories: [String]!): [Event!]!
-        eventSearchByTypes(types: [String]!): [Event!]!
-        eventFilters(date: String, bounds: Bounds, categories: [String], types: [String], tags: [String]): [Event!]!
-        allOrganizerEvents(organizer_id: String!): [Event!]!
-    }
-
     type Event {
         _id: ID
         organizer_id: ID
@@ -63,6 +54,25 @@ export const eventTypeDefs = gql`
 
     input TagsInput {
         tags: [String]
+    }
+
+    type Query {
+        events: [Event]
+        event(id: ID!): Event
+        events(limit: Int, offset: Int, sort: String): [Event!]!
+        eventSearchByLocation(bounds: Bounds!): [Event]
+        eventSearchByCategories(categories: [String]!): [Event!]!
+        eventSearchByTypes(types: [String]!): [Event!]!
+        eventFilters(date: String, bounds: Bounds, categories: [String], types: [String], tags: [String]): [Event!]!
+        allOrganizerEvents(organizer_id: String!): [Event!]!
+        search(text: String!): [Event]
+        eventsByDate(date: String!): [Event!]!
+    }
+
+    type Mutation {
+        createEvent(event: EventInput): Event
+        updateEvent(id: ID!, event: EventInput): Event
+        deleteEvent(id: ID!): Event
     }
 `;
 
