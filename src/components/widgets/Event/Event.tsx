@@ -37,7 +37,7 @@ const Event: FC<EventProps> = ({ event }) => {
     const { data: session, status } = useSession();
     const sessionUserID = session?.user.id ?? null;
 
-    const { handleJoin, isJoined } = useJoin({ event_id: event._id, user_id: sessionUserID });
+    const { handleJoin, isJoined } = useJoin({ event_id: event?._id, user_id: sessionUserID });
 
     const { organizer, markerPosition, handleDelete, coord, day, copied, handleCopyLink } = useEvent({
         event,
@@ -48,13 +48,11 @@ const Event: FC<EventProps> = ({ event }) => {
 
     const { showPopup, setShowPopup, handleShowPopup, handleHidePopup } = usePopup({ popupMode });
 
-    // console.log(`/profile/${event}/public`);
-    console.log(event);
     return (
         <div className={classes.event}>
             <div className={classes.eventWrapper}>
                 <div className={classes.eventInfo}>
-                    <Title title={event.name} className={classes.eventTitle} tag={"h2"} />
+                    <Title title={event?.name} className={classes.eventTitle} tag={"h2"} />
                     <div className={classes.information}>
                         <div className={classes.location}>
                             <Marker style={{ transform: "scale(0.937)", marginRight: "0.5rem", color: "#575B75" }} />
@@ -74,12 +72,12 @@ const Event: FC<EventProps> = ({ event }) => {
 
                         <div className={classes.dateAndTime}>
                             <Checkbox style={{ transform: "scale(0.8)", marginRight: "0.5rem", fill: "#575B75" }} />
-                            {day} {dayjs(event.startDate).format("DD.MM.YY")} | {formatDate(event.time, "HH:mm")}
+                            {day} {dayjs(event?.startDate).format("DD.MM.YY")} | {formatDate(event?.time, "HH:mm")}
                         </div>
 
                         <div className={classes.eventStatus}>
                             <Lock style={{ transform: "scale(1.1)", marginRight: "0.5rem" }} />
-                            <div className={classes.status}>{event.status}</div>
+                            <div className={classes.status}>{event?.status}</div>
                             <Button className={classes.buttonGoogleMaps} resetDefaultStyles onClick={handleCopyLink}>
                                 <ShareLink style={{ marginRight: "0.25rem", marginLeft: "0.88rem" }} />
                                 Копировать ссылку
@@ -92,20 +90,20 @@ const Event: FC<EventProps> = ({ event }) => {
                     </div>
 
                     <div className={classes.badges}>
-                        <Badges badges={event.types || []} size={Sizes.SMALL} />
+                        <Badges badges={event?.types || []} size={Sizes.SMALL} />
                     </div>
 
                     <div className={classes.invitations}>
-                        <Join event_id={event._id} />
+                        <Join event_id={event?._id} />
                     </div>
 
                     {organizer ? (
                         <div className={classes.buttons}>
-                            <Link className={classes.buttonEditLink} href={`/events/${event._id}/edit`}>
+                            <Link className={classes.buttonEditLink} href={`/events/${event?._id}/edit`}>
                                 Редактировать
                             </Link>
 
-                            <Button size="big" onClick={() => handleDelete(event._id)}>
+                            <Button size="big" onClick={() => handleDelete(event?._id)}>
                                 Удалить
                             </Button>
                         </div>
@@ -127,14 +125,14 @@ const Event: FC<EventProps> = ({ event }) => {
                                         {isJoined ? "Участник" : "Участвовать"}
                                     </Button>
 
-                                    <Like event_id={event._id} user_id={sessionUserID as string} />
+                                    <Like event_id={event?._id} user_id={sessionUserID as string} />
                                 </>
                             )}
                         </div>
                     )}
                 </div>
                 <div>
-                    {event.image && (
+                    {event?.image && (
                         <Image
                             src={event.image}
                             width={680}
@@ -157,8 +155,8 @@ const Event: FC<EventProps> = ({ event }) => {
                                 style={{ height: "600px" }}
                                 defaultZoom={14}
                                 defaultCenter={{
-                                    lat: event.location.coordinates[1],
-                                    lng: event.location.coordinates[0],
+                                    lat: event?.location.coordinates[1],
+                                    lng: event?.location.coordinates[0],
                                 }}
                                 gestureHandling="greedy"
                                 disableDefaultUI={false}
@@ -188,20 +186,20 @@ const Event: FC<EventProps> = ({ event }) => {
             <div className={classes.descriptionAndOrganizer}>
                 <Title title={"Описание"} className={classes.description} tag={"h3"} />
                 <div className={classes.eventDescription}>
-                    <span className={classes.descriptionText}>{event.description}</span>
+                    <span className={classes.descriptionText}>{event?.description}</span>
 
                     <div className={classes.eventOrganizer}>
                         <div className={classes.organizerImage}>
                             <Avatar
-                                image={event.organizer?.image}
-                                name={event.organizer?.name}
+                                image={event?.organizer.image}
+                                name={event?.organizer.name}
                                 scale={2.7}
-                                id={event.organizer._id as string}
+                                id={event?.organizer._id as string}
                             />
                         </div>
 
                         <div className={classes.organizerName}>
-                            <span className={classes.name}>{event.organizer?.name}</span>
+                            <span className={classes.name}>{event?.organizer.name}</span>
                             <span className={classes.organizer}>Организатор</span>
                             {/* <div className={classes.linkChat}>
                                 <Link href={`/profile`} className={classes.link}>

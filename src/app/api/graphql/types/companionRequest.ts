@@ -16,5 +16,18 @@ export const companionRequestTypeDefs = gql`
         createdAt: String!
         updatedAt: String!
     }
+
+    type Query {
+        getApplications(userId: String): [CompanionRequest!]!
+        companions(userId: ID!): [User!]!
+    }
+
+    type Mutation {
+        companionRequest(senderId: String!, receiverId: String!): CompanionRequest!
+        acceptCompanionRequest(requestId: String!): CompanionRequest!
+        rejectCompanionRequest(requestId: String!): CompanionRequest!
+        removeCompanion(userId: ID!, companionId: ID!): Boolean
+    }
 `;
+
 export default companionRequestTypeDefs;

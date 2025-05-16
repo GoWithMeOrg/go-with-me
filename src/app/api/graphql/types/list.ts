@@ -25,4 +25,15 @@ export const listTypeDefs = gql`
         description: String
         users_id: [ID]
     }
+
+    type Query {
+        lists: [List]
+        listItem(id: ID!): List
+    }
+
+    type Mutation {
+        createList(list: ListInput): List
+        updateList(id: ID!, list: ListInputUpdate): List
+        deleteList(id: ID!): List
+    }
 `;

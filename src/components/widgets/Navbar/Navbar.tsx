@@ -9,7 +9,6 @@ interface INavbar {
 }
 export const Navbar = ({ onTabClick, activeTab }: INavbar) => {
     const { dataApplications } = useNotifications();
-    console.log(dataApplications);
 
     return (
         <div className={classes.navbar}>

@@ -62,7 +62,7 @@ const useEvent = ({ event, sessionUserID }: EventProps) => {
     const [organizer, setOrganizer] = useState(true);
     const [copied, setCopied] = useState(false);
     const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(
-        event.location !== undefined
+        event?.location !== undefined
             ? {
                   lng: event.location.coordinates[0],
                   lat: event.location?.coordinates[1],
@@ -96,8 +96,8 @@ const useEvent = ({ event, sessionUserID }: EventProps) => {
     };
 
     useEffect(() => {
-        setOrganizer(sessionUserID === event.organizer_id);
-    }, [event.organizer_id, sessionUserID]);
+        setOrganizer(sessionUserID === event?.organizer_id);
+    }, [event?.organizer_id, sessionUserID]);
 
     const handleDelete = async (eventId: string) => {
         try {
@@ -106,7 +106,7 @@ const useEvent = ({ event, sessionUserID }: EventProps) => {
             });
 
             //Находим картинку события
-            const imageUrl = data.events.find((event: any) => event._id === eventId).image;
+            const imageUrl = data.events.find((event: any) => event?._id === eventId).image;
             //удаляем картинку
             await getDeleteFile(imageUrl);
             router.push("/events");
@@ -115,9 +115,12 @@ const useEvent = ({ event, sessionUserID }: EventProps) => {
         }
     };
 
-    const coord: [number, number] = [event.location.coordinates[0] as number, event.location.coordinates[1] as number];
+    const coord: [number, number] = [
+        event?.location.coordinates[0] as number,
+        event?.location.coordinates[1] as number,
+    ];
 
-    const dayOfWeek = dayjs(event.startDate).day();
+    const dayOfWeek = dayjs(event?.startDate).day();
     const days = ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
     const day = days[dayOfWeek];
 

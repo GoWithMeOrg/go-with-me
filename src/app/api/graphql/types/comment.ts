@@ -33,4 +33,15 @@ export const commentTypeDefs = gql`
         id: ID!
         userName: String!
     }
+
+    type Query {
+        comments(event_id: ID!, limit: Int): [Comment]
+    }
+
+    type Mutation {
+        saveComment(comment: CommentInput): Comment
+        updateComment(id: ID!, comment: CommentInput): Comment
+        deleteComment(commentId: ID!, userId: ID!): String
+        likeComment(commentId: ID!, userId: ID!): Comment
+    }
 `;
