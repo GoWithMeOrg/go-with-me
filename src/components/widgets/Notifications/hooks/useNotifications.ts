@@ -18,7 +18,7 @@ export const useNotifications = () => {
         variables: {
             userId: user_id,
         },
-        //pollInterval: 5000,
+        pollInterval: 5000,
     });
 
     const dataApplications = data?.getApplications || [];

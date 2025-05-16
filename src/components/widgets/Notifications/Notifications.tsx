@@ -7,14 +7,43 @@ import { useNotifications } from "./hooks";
 import { Invitation } from "@/components/widgets/Invitation";
 
 import classes from "./Notifications.module.css";
-//TODO: исправить в типах user на receiver
 
 export const Notifications: FC = () => {
     const { dataApplications, dataInvations } = useNotifications();
 
+    interface IInvitation {
+        id: string;
+        createdAt: Date;
+        invitation: {
+            id: string;
+            event: {
+                _id: string;
+                image: string;
+                name: string;
+                location: {
+                    coordinates: [number, number];
+                };
+                startDate: string;
+                time: string;
+                organizer: {
+                    _id: string;
+                    name: string;
+                };
+            };
+            sender: {
+                _id: string;
+                name: string;
+            };
+        };
+        status: string;
+        user: {
+            _id: string;
+        };
+    }
+
     return (
         <div className={classes.notificationsList}>
-            {dataInvations?.map((invitation: any) => (
+            {dataInvations?.map((invitation: IInvitation) => (
                 <Invitation
                     key={invitation.invitation.id}
                     invitation_id={invitation.invitation.id}
