@@ -16,6 +16,7 @@ import { useInvitation } from "./hooks";
 import { InvitationProps } from "@/components/widgets/Invitation/types/Invitation";
 
 import classes from "./Invitation.module.css";
+import { InvitationResponseStatus } from "@/database/types/Invitation";
 
 export const Invitation: FC<InvitationProps> = ({
     invitation_id,
@@ -35,7 +36,8 @@ export const Invitation: FC<InvitationProps> = ({
     const { acceptInvation, declineInvitation } = useInvitation({ invitation_id, receiver_id });
     const invitationCss = [
         classes.invitation,
-        (status === "Accepted" || status === "Declined") && classes.invitationActive,
+        (status === InvitationResponseStatus.ACCEPTED || status === InvitationResponseStatus.DECLINED) &&
+            classes.invitationActive,
     ]
         .filter(Boolean)
         .join(" ");
@@ -77,14 +79,14 @@ export const Invitation: FC<InvitationProps> = ({
                 </div>
 
                 <div className={classes.buttonsBlock}>
-                    {status === "Invited" ? (
+                    {status === InvitationResponseStatus.INVITED ? (
                         <div className={classes.buttons}>
                             <Button onClick={acceptInvation}>Accept</Button>
                             <Button onClick={declineInvitation}>Decline</Button>
                             <Button>Mark as read</Button>
                         </div>
                     ) : (
-                        status === "Accepted" && (
+                        status === InvitationResponseStatus.ACCEPTED && (
                             <div className={classes.buttons}>
                                 <div className={classes.invationAccepted}>
                                     <InvationAccepted style={{ transform: "scale(1.2)" }} />
@@ -98,7 +100,7 @@ export const Invitation: FC<InvitationProps> = ({
                         )
                     )}
 
-                    {status === "Declined" && (
+                    {status === InvitationResponseStatus.DECLINED && (
                         <div className={classes.buttons}>
                             <div className={classes.invationAccepted}>
                                 <InvationDeclined style={{ transform: "scale(1)" }} />
@@ -115,14 +117,12 @@ export const Invitation: FC<InvitationProps> = ({
 
             <div className={classes.invationStatus}>
                 <div className={classes.invationPlaque}>
-                    {status === "Accepted" ? (
+                    {status === InvitationResponseStatus.ACCEPTED ? (
                         <div className={classes.plaque}>Accepted</div>
-                    ) : status === "Declined" ? (
+                    ) : status === InvitationResponseStatus.DECLINED ? (
                         <div className={`${classes.plaque} ${classes.plaqueActive}`}>Declined</div>
                     ) : (
-                        <div className={`${classes.plaque} ${status === "Declined" && classes.plaqueActive}`}>
-                            Invited
-                        </div>
+                        <div className={classes.plaque}>Invited</div>
                     )}
                     <div className={classes.invationDate}>{dayjs().format("DD.MM.YY")}</div>
                 </div>

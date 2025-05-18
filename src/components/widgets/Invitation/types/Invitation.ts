@@ -1,6 +1,6 @@
-import { HTMLAttributes } from "react";
+import { InvitationResponseStatus } from "@/database/types/Invitation";
 
-export interface InvitationProps extends HTMLAttributes<HTMLDivElement> {
+export interface InvitationProps {
     invitation_id: string;
     receiver_id: string;
     status: string;

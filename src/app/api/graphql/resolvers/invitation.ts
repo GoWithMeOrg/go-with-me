@@ -11,7 +11,7 @@ type RespondArgs = {
 export const invitationResolvers = {
     Query: {
         getInvitation: async (parent: any, { user_id }: { user_id: string }) => {
-            // Ищем все записи в коллекции Invited, где пользователь пригашён
+            // Ищем все записи в коллекции Invited, где пользователь приглашен
             const inviteds = await InvitedModel.find({ user: user_id }).populate({
                 path: "invitation",
                 populate: [
@@ -29,19 +29,14 @@ export const invitationResolvers = {
             const eventObjectId = new mongoose.Types.ObjectId(eventId);
             const senderObjectId = new mongoose.Types.ObjectId(senderId);
 
-            // Ищем приглашение
-            let invitation = await InvitationModel.findOne({
-                event: eventObjectId,
-                sender: senderObjectId,
-            });
-
-            // Если приглашения нет, создаём его
-            if (!invitation) {
-                invitation = await InvitationModel.create({
+            let invitation = await InvitationModel.findOneAndUpdate(
+                {
                     event: eventObjectId,
                     sender: senderObjectId,
-                });
-            }
+                },
+                {}, // no updates needed
+                { upsert: true, new: true },
+            );
 
             // Ищем уже существующих приглашённых
             const existingInvited = await InvitedModel.find({ invitation: invitation._id });
@@ -72,8 +67,7 @@ export const invitationResolvers = {
 
             console.log(invited);
             invited.status = InvitationResponseStatus.ACCEPTED;
-            invited.respondedAt = new Date();
-            invited.updatedAt = new Date();
+            invited.respondedAt = invited.updatedAt = new Date();
 
             await invited.save();
 
