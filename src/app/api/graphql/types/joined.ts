@@ -9,4 +9,13 @@ export const joinedTypeDefs = gql`
         createdAt: ISODate
         updatedAt: ISODate
     }
+
+    type Query {
+        joinedByUsers(event_id: ID): [Joined]
+        joinedByUser(event_id: ID!, user_id: ID!): Joined
+    }
+
+    type Mutation {
+        joinEvent(event_id: ID!, user_id: ID!): Joined
+    }
 `;

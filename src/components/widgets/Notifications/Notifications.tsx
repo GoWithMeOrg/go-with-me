@@ -1,67 +1,66 @@
 import React, { FC } from "react";
-import gql from "graphql-tag";
 
-import { Invation } from "@/components/widgets/Invation";
 import { Application } from "@/components/shared/Application";
 
-import { IEvent } from "@/database/models/Event";
-
 import { useNotifications } from "./hooks";
-import { ApplicationProps } from "@/components/shared/Application/Application";
+
+import { Invitation } from "@/components/widgets/Invitation";
 
 import classes from "./Notifications.module.css";
 
-export type EventListProps = {
-    events?: IEvent[];
-};
-
-const GET_EVENTS = gql`
-    query GetEvents {
-        events {
-            _id
-            organizer {
-                _id
-                name
-                email
-                image
-            }
-
-            name
-            description
-            startDate
-            endDate
-            time
-            location {
-                type
-                coordinates
-                properties {
-                    address
-                }
-            }
-            image
-        }
-    }
-`;
-
 export const Notifications: FC = () => {
-    const { dataApplications } = useNotifications();
+    const { dataApplications, dataInvations } = useNotifications();
 
-    // console.log(dataApplications[0]?.name);
+    interface IInvitation {
+        id: string;
+        createdAt: Date;
+        invitation: {
+            id: string;
+            event: {
+                _id: string;
+                image: string;
+                name: string;
+                location: {
+                    coordinates: [number, number];
+                };
+                startDate: string;
+                time: string;
+                organizer: {
+                    _id: string;
+                    name: string;
+                };
+            };
+            sender: {
+                _id: string;
+                name: string;
+            };
+        };
+        status: string;
+        user: {
+            _id: string;
+        };
+    }
+
     return (
         <div className={classes.notificationsList}>
-            {/* {data?.events.map(({ _id, organizer, description, name, startDate, location, time, image }: IEvent) => (
-                <Invation
-                    key={_id}
-                    id={_id}
-                    name={name}
-                    description={description}
-                    coord={[location.coordinates[1], location.coordinates[0]]}
-                    startDate={startDate}
-                    time={time}
-                    image={image}
-                    organizer={organizer}
+            {dataInvations?.map((invitation: IInvitation) => (
+                <Invitation
+                    key={invitation.invitation.id}
+                    invitation_id={invitation.invitation.id}
+                    receiver_id={invitation.user._id}
+                    status={invitation.status}
+                    event_id={invitation.invitation.event._id}
+                    image={invitation.invitation.event.image}
+                    eventName={invitation.invitation.event?.name}
+                    coordinates={invitation.invitation.event.location.coordinates}
+                    startDate={invitation.invitation.event.startDate}
+                    time={invitation.invitation.event.time}
+                    organizerName={invitation.invitation.event.organizer.name}
+                    senderName={invitation.invitation.sender.name}
+                    organizer_id={invitation.invitation.event.organizer._id}
+                    sender_id={invitation.invitation.sender._id}
                 />
-            ))} */}
+            ))}
 
             {dataApplications?.map((application: any) => (
                 <Application

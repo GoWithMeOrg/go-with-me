@@ -22,6 +22,17 @@ export const tripTypeDefs = gql`
         isPrivate: Boolean
         events_id: [ID]
     }
+
+    type Query {
+        trips: [Trip]
+        trip(id: ID!): Trip
+    }
+
+    type Mutation {
+        createTrip(trip: TripInput): Trip
+        updateTrip(id: ID!, trip: TripInput): Trip
+        deleteTrip(id: ID!): Trip
+    }
 `;
 
 export default tripTypeDefs;
