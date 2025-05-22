@@ -27,7 +27,7 @@ const Generator: NextPage = () => {
 
             <div>
                 <Label label="Укажите количество событий">
-                    <Input type="number" onChange={changeNumberItems} />
+                    <Input type="number" onChange={changeNumberItems} min="1" max="10" />
                 </Label>
 
                 <FilteredEventsLocation onChange={setSelectedLocation} options={optionsFullAdress} />
@@ -43,7 +43,7 @@ const Generator: NextPage = () => {
 
             <div>
                 <Label label="Укажите количество пользователей">
-                    <Input type="number" onChange={changeNumberItems} />
+                    <Input type="number" onChange={changeNumberItems} min="1" max="10" />
                 </Label>
 
                 <FilteredEventsLocation onChange={setSelectedLocation} options={optionsFullAdress} />

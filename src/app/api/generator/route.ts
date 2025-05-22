@@ -7,7 +7,7 @@ export async function POST(req: Request) {
     try {
         const { id, num, coordinates, address, type } = await req.json();
 
-        if (num <= 0) {
+        if (num <= 0 || num > 10) {
             return NextResponse.json({ error: "Некорректное количество" }, { status: 400 });
         }
 

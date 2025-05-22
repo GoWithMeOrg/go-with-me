@@ -1,8 +1,12 @@
 import { useEventFilters } from "@/components/widgets/EventFilters/hooks/useEventFilters";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import cities from "../world_cities.json";
+
 import { faker } from "@faker-js/faker";
+import { GET_USERS } from "@/app/api/graphql/queries/users";
+import { useQuery } from "@apollo/client";
+
+import cities from "../world_cities.json";
 
 type City = {
     country: string;
@@ -10,8 +14,10 @@ type City = {
     lng: number;
     name: string;
 };
+
 export const useGenerator = () => {
     const { data: session } = useSession();
+    const { data: usersData, refetch } = useQuery(GET_USERS);
     const userID = session?.user.id;
 
     const { selectedLocation, setSelectedLocation } = useEventFilters();
@@ -20,6 +26,10 @@ export const useGenerator = () => {
     const [generatedEvents, setGeneratedEvents] = useState(null);
     const [generatedUsers, setGeneratedUsers] = useState(null);
     const [city, setCity] = useState<City | null>(null);
+
+    const randomUser = usersData?.users?.length ? faker.helpers.arrayElement(usersData.users) : null;
+    //@ts-ignore
+    const randomUserId = randomUser?._id;
 
     useEffect(() => {
         if (Array.isArray(cities)) {
@@ -47,7 +57,7 @@ export const useGenerator = () => {
 
         // Параметры для запроса на генерацию событий
         const payload = {
-            id: userID,
+            id: randomUserId,
             num: numberItems,
             coordinates: coord,
             address: addr,
