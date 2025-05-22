@@ -2,6 +2,7 @@ import { faker } from "@faker-js/faker";
 import EventModel from "@/database/models/Event";
 import { eventCategory, eventTypes } from "@/components/shared/Dropdown/dropdownLists";
 import mongooseConnect from "@/database/mongooseConnect";
+import UserModel from "@/database/models/User";
 
 export async function generateEvents(id: string, num: number, coordinates: [number, number], address: string) {
     await mongooseConnect();
@@ -43,4 +44,40 @@ export async function generateEvents(id: string, num: number, coordinates: [numb
 
     await EventModel.insertMany(events);
     console.log(`✅ Сгенерировано ${num} событий`);
+}
+
+export async function generateUsers(num: number, coordinates: [number, number], address: string) {
+    await mongooseConnect();
+
+    const users = [];
+
+    for (let i = 0; i < num; i++) {
+        const fakeUser = {
+            name: faker.person.fullName(),
+            email: faker.internet.email(),
+            image: faker.image.url(),
+            location: {
+                type: "Point",
+                coordinates,
+                properties: {
+                    address,
+                },
+            },
+            description: faker.lorem.paragraph(),
+            categories: faker.helpers.arrayElements(eventCategory, faker.number.int({ min: 1, max: 5 })),
+            types: faker.helpers.arrayElements(eventTypes, faker.number.int({ min: 1, max: 5 })),
+            tags: faker.helpers.arrayElements(
+                ["AI", "Blockchain", "Startup", "Networking"],
+                faker.number.int({ min: 1, max: 3 }),
+            ),
+            emailVerified: faker.helpers.arrayElement(["true"]),
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        };
+
+        users.push(fakeUser);
+    }
+
+    await UserModel.insertMany(users);
+    console.log(`✅ Сгенерировано ${num} пользователей`);
 }
