@@ -5,15 +5,13 @@ import { GET_FIND_USERS } from "@/app/api/graphql/queries/findUsers";
 import { GET_COMPANIONS } from "@/app/api/graphql/queries/companions";
 import { REMOVE_COMPANION_MUTATION } from "@/app/api/graphql/mutations/companions";
 import { COMPANION_REQUEST_MUTATION } from "@/app/api/graphql/mutations/companionRequest";
+import { useState } from "react";
 
 export const useCompanions = () => {
     const { data: session } = useSession();
     const user_id = session?.user.id;
 
-    //TODO: добавить функию быстрой очитски полей и сброса кэша
-    //TODO: добавить кнопки добавлени/удаления пользователя из друзей
-    //TODO: добавить красную точку при появлении уведомлений
-    //TODO: добавить интервал обновления увведомлений
+    const [searchValue, setSearchValue] = useState("");
 
     const [loadUsers, { loading, error, data, called }] = useLazyQuery(GET_FIND_USERS);
 
@@ -26,19 +24,21 @@ export const useCompanions = () => {
         variables: { userId: user_id },
     });
 
-    const findUsers = data?.findUsers || [];
+    const findUsers = searchValue ? data?.findUsers || [] : [];
+
     const companions = dataCompanions?.companions || [];
 
-    const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        loadUsers({ variables: { name: `${e.target.value}` } });
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const inputValue = e.target.value;
+        setSearchValue(inputValue);
+
+        const isEmail = inputValue.includes("@");
+        const variables = isEmail ? { email: inputValue } : { name: inputValue };
+        loadUsers({ variables });
     };
 
-    const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        loadUsers({ variables: { name: `${e.target.value}` } });
-    };
-
-    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        loadUsers({ variables: { email: `${e.target.value}` } });
+    const clearInput = () => {
+        setSearchValue("");
     };
 
     const [RemoveCompanion] = useMutation(REMOVE_COMPANION_MUTATION);
@@ -67,13 +67,13 @@ export const useCompanions = () => {
     };
 
     return {
-        handleFirstNameChange,
-        handleLastNameChange,
-        handleEmailChange,
+        handleInputChange,
         findUsers,
         companions,
         called,
         removeCompanion,
         companionRequest,
+        searchValue,
+        clearInput,
     };
 };

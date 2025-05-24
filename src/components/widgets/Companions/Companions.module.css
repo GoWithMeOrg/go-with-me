@@ -2,6 +2,11 @@
     width: 100%;
 }
 
+.findCompanions {
+    width: 36.25rem;
+    position: relative;
+}
+
 .line {
     width: 100%;
     border: 1px solid var(--additional-color);
@@ -40,11 +45,30 @@
 }
 
 .addCompanion {
-    top: -30px;
-    left: 0px;
     position: relative;
+    top: -24px;
+    left: 76px;
 }
 
 .addCompanion path:hover {
     fill: var(--hover-color);
+}
+
+.add {
+    display: flex;
+    width: 100px;
+    height: 100px;
+    align-items: center;
+    justify-content: center;
+}
+
+.searchIcon {
+    position: absolute;
+    top: 69%;
+    right: 1rem;
+    transform: translateY(-50%);
+}
+
+.findInput {
+    padding: 11px 17px 11px 17px;
 }
