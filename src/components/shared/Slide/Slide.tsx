@@ -35,9 +35,7 @@ export const Slide: FC<SlideProps> = ({ id, name, image, coord, startDate, time,
                     <div className={classes.content}>
                         <div className={classes.header}>
                             <Title tag={"h3"} title={name} className={classes.title} />
-                            {showAvatar && (
-                                <Avatar name={""} image={avatar} scale={1.8} className={classes.border} id={userId} />
-                            )}
+                            {showAvatar && <Avatar name={""} image={avatar} scale={1.8} id={userId} />}
                         </div>
 
                         <div className={classes.details}>

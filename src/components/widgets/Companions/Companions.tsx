@@ -18,6 +18,7 @@ import Search from "@/assets/icons/search.svg";
 import ClearInput from "@/assets/icons/clearInput.svg";
 
 import classes from "./Companions.module.css";
+import { Carousel } from "@/components/shared/Carousel";
 
 export const Companions: FC = () => {
     const {
@@ -59,13 +60,14 @@ export const Companions: FC = () => {
                 ) : (
                     findUsers.map((card: any) => (
                         <div key={card._id}>
-                            <div className={classes.add}>
-                                <Avatar name={card.name} image={card.image} scale={1.65} id={card._id} />
-                                {/* <button onClick={() => companionRequest(card._id)}>
-                                    <Plus className={classes.addCompanion} />
-                                </button> */}
+                            <div className={classes.avatar}>
+                                <Avatar name={card.name} image={card.image} scale={1.8} id={card._id} />
+
+                                <Plus className={classes.addCompanion} onClick={() => companionRequest(card._id)} />
                             </div>
-                            <Span title={card.name} />
+
+                            <Span title={card.name.split(" ")[0]} className={classes.name} />
+                            <Span title={card.name.split(" ")[1]} className={classes.name} />
                         </div>
                     ))
                 )}

@@ -1,5 +1,6 @@
 .searchCompanions {
-    width: 100%;
+    width: 48.75rem;
+    margin-left: 7.5rem;
 }
 
 .findCompanions {
@@ -15,12 +16,15 @@
 .filters {
     display: flex;
     justify-content: space-between;
-    margin: 1.5rem 0 2.5rem 0;
+    margin: 2.5rem 0 1rem 0;
     gap: 1.25rem;
 }
 
+.avatar {
+    height: 100px;
+}
+
 .filteredList {
-    height: 130px;
     display: flex;
     justify-content: flex-start;
     gap: 1.25rem;
@@ -54,14 +58,6 @@
     fill: var(--hover-color);
 }
 
-.add {
-    display: flex;
-    width: 100px;
-    height: 100px;
-    align-items: center;
-    justify-content: center;
-}
-
 .searchIcon {
     position: absolute;
     top: 69%;
@@ -71,4 +67,12 @@
 
 .findInput {
     padding: 11px 17px 11px 17px;
+}
+
+.name {
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    display: flex;
+    line-height: 1.25rem;
 }

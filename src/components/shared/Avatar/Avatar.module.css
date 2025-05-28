@@ -5,7 +5,6 @@
     border-radius: 50%;
     color: #fff;
     font-weight: 600;
-    border: 2px solid var(--white-color);
 }
 
 .content {
@@ -22,6 +21,8 @@
 
 .image {
     object-fit: cover;
+    border: 0.25rem solid var(--white-color);
+    border-radius: 100%;
 }
 
 .background {
