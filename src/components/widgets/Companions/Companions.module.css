@@ -11,6 +11,7 @@
 .line {
     width: 100%;
     border: 1px solid var(--additional-color);
+    margin: 1.38rem 0;
 }
 
 .filters {
@@ -31,11 +32,13 @@
 }
 
 .companionsList {
-    margin-top: 20px;
-    height: 130px;
-    display: flex;
     justify-content: flex-start;
-    gap: 1.25rem;
+    gap: 15px;
+    height: 130px;
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 300px;
 }
 
 .removeCompanion {
@@ -75,4 +78,8 @@
     font-weight: 700;
     display: flex;
     line-height: 1.25rem;
+}
+
+.companions {
+    margin-top: 6.25rem;
 }

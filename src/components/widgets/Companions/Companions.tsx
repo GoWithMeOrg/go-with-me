@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useState } from "react";
+import { FC } from "react";
 
 import { Title } from "@/components/shared/Title";
 import { Label } from "@/components/shared/Label";
@@ -18,7 +18,7 @@ import Search from "@/assets/icons/search.svg";
 import ClearInput from "@/assets/icons/clearInput.svg";
 
 import classes from "./Companions.module.css";
-import { Carousel } from "@/components/shared/Carousel";
+import { CardCompanion } from "../CardCompanion";
 
 export const Companions: FC = () => {
     const {
@@ -37,8 +37,6 @@ export const Companions: FC = () => {
             <div className={classes.header}>
                 <Title tag={"h3"} title="Find new companions" />
             </div>
-
-            <div className={classes.line}></div>
 
             <div className={classes.filters}>
                 <Label label={"Search by name or email"} className={classes.findCompanions}>
@@ -80,15 +78,23 @@ export const Companions: FC = () => {
 
                 <div className={classes.line}></div>
 
+                <div className={classes.filters}>
+                    <Label label={""} className={classes.findCompanions}>
+                        <Input
+                            onChange={handleInputChange}
+                            type="text"
+                            className={classes.findInput}
+                            value={searchValue ?? ""}
+                        />
+                        {searchValue === "" && <Search className={classes.searchIcon} />}
+
+                        {searchValue !== "" && <ClearInput className={classes.searchIcon} onClick={clearInput} />}
+                    </Label>
+                </div>
+
                 <FilteredList className={classes.companionsList}>
                     {companions?.map((card: any) => (
-                        <div key={card._id}>
-                            <Avatar name={card.name} image={card.image} scale={1.8} id={card._id} />
-                            <Span title={card.name} />
-                            <Button resetDefaultStyles onClick={() => removeCompanion(card._id)}>
-                                <Minus className={classes.removeCompanion} />
-                            </Button>
-                        </div>
+                        <CardCompanion id={card._id} name={card.name} image={card.image} key={card._id} />
                     ))}
                 </FilteredList>
             </div>
