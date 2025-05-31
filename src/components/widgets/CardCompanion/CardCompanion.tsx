@@ -4,6 +4,7 @@ import classes from "./CardCompanion.module.css";
 import Minus from "@/assets/icons/minus.svg";
 import { FC } from "react";
 import { Span } from "@/components/shared/Span";
+import { Checkbox } from "@/components/shared/Checkbox";
 
 interface CardCompanionProps {
     id: string;
@@ -14,9 +15,7 @@ interface CardCompanionProps {
 export const CardCompanion: FC<CardCompanionProps> = ({ id, name, image }) => {
     return (
         <div className={classes.card}>
-            <label className={classes.checkbox}>
-                <input type="checkbox" />
-            </label>
+            <Checkbox />
             <Avatar name={name} image={image} scale={1.8} id={id} />
             <div className={classes.fullName}>
                 <Span title={name.split(" ")[0]} className={classes.name} />
