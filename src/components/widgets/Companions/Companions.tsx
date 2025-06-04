@@ -31,6 +31,8 @@ export const Companions: FC = () => {
         clearInput,
         removeCompanion,
         showAllCompanions,
+        select,
+        selectCompanions,
     } = useCompanions();
 
     const [checkedMap, setCheckedMap] = useState<Record<string, boolean>>({});
@@ -69,8 +71,6 @@ export const Companions: FC = () => {
 
                     {searchValue !== "" && <ClearInput className={classes.searchIcon} onClick={clearInput} />}
                 </Label>
-
-                <Button resetDefaultStyles>SELECT</Button>
             </div>
 
             <FilteredList className={classes.filteredList}>
@@ -113,6 +113,10 @@ export const Companions: FC = () => {
                             <ClearInput className={classes.searchIconCompanions} onClick={clearInput} />
                         )}
                     </Label>
+
+                    <Button resetDefaultStyles className={classes.buttonText} onClick={selectCompanions}>
+                        SELECT
+                    </Button>
                 </div>
 
                 <FilteredList className={classes.companionsList}>
@@ -123,12 +127,13 @@ export const Companions: FC = () => {
                             image={card.image}
                             key={card._id}
                             onChange={(isChecked) => handleCheckboxChange(card._id, isChecked)}
+                            select={select}
                         />
                     ))}
                 </FilteredList>
 
                 <div className={classes.buttons}>
-                    <Button resetDefaultStyles className={classes.buttonShowAll} onClick={showAllCompanions}>
+                    <Button resetDefaultStyles className={classes.buttonText} onClick={showAllCompanions}>
                         Show all companions
                     </Button>
 

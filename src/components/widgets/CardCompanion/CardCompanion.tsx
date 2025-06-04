@@ -16,15 +16,17 @@ interface CardCompanionProps {
     name: string;
     image: string;
     onChange: (checked: boolean) => void;
+    select: boolean;
 }
 
-export const CardCompanion: FC<CardCompanionProps> = ({ id, name, image, onChange }) => {
+export const CardCompanion: FC<CardCompanionProps> = ({ id, name, image, onChange, select }) => {
     const { removeCompanion } = useCompanions();
 
     return (
         <div className={classes.card}>
             <div>
-                <Checkbox className={classes.position} onChange={onChange} id={id} />
+                {select && <Checkbox className={classes.position} onChange={onChange} id={id} />}
+
                 <Avatar name={name} image={image} scale={1.8} id={id} />
             </div>
 

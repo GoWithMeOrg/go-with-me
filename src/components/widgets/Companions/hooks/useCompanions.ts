@@ -13,6 +13,7 @@ export const useCompanions = () => {
     const user_id = session?.user.id;
 
     const [searchValue, setSearchValue] = useState("");
+    const [select, setSelect] = useState<boolean>(false);
 
     const [loadUsers, { loading, error, data, called }] = useLazyQuery(GET_FIND_USERS);
 
@@ -71,6 +72,10 @@ export const useCompanions = () => {
         setLimit(limit === 0 ? 12 : 0);
     };
 
+    const selectCompanions = () => {
+        setSelect(select === true ? false : true);
+    };
+
     return {
         handleInputChange,
         findUsers,
@@ -81,5 +86,7 @@ export const useCompanions = () => {
         searchValue,
         clearInput,
         showAllCompanions,
+        select,
+        selectCompanions,
     };
 };

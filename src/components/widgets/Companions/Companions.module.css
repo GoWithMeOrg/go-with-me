@@ -106,7 +106,7 @@
     z-index: 1;
 }
 
-.buttonShowAll {
+.buttonText {
     color: var(--additional-color);
     font-family: inherit;
     font-size: 1rem;
@@ -115,7 +115,7 @@
     text-transform: uppercase;
 }
 
-.buttonShowAll:hover {
+.buttonText:hover {
     color: var(--main-color);
 }
 
