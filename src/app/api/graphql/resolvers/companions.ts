@@ -3,14 +3,24 @@ import CompanionsModel from "@/database/models/Сompanions";
 
 export const companionsResolvers = {
     Query: {
-        companions: async (_: any, { userId }: { userId: string }) => {
+        // companions: async (_: any, { userId }: { userId: string }) => {
+        //     const companions = await CompanionsModel.findOne({ user_id: userId }).populate("companions");
+
+        //     if (!companions) {
+        //         return [];
+        //     }
+
+        //     return companions.companions;
+        // },
+
+        companions: async (_: any, { userId, limit }: { userId: string; limit?: number }) => {
             const companions = await CompanionsModel.findOne({ user_id: userId }).populate("companions");
 
             if (!companions) {
                 return [];
             }
 
-            return companions.companions;
+            return limit ? companions.companions.slice(0, limit) : companions.companions;
         },
     },
 

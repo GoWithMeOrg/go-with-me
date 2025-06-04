@@ -25,18 +25,10 @@
     height: 14px;
     transition: opacity 0.2s;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(5deg);
+    transform: translate(30%, 40%) rotate(5deg);
 }
 
 /* Показываем галочку, когда чекбокс отмечен */
 .checkbox input[type="checkbox"]:checked::after {
     opacity: 1;
 }
-
-/* .addCompanion {
-    position: relative;
-    top: -24px;
-    left: 76px;
-} */

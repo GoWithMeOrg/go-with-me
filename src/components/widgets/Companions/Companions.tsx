@@ -1,6 +1,6 @@
 "use client";
 
-import { FC } from "react";
+import { FC, useState } from "react";
 
 import { Title } from "@/components/shared/Title";
 import { Label } from "@/components/shared/Label";
@@ -15,13 +15,41 @@ import Plus from "@/assets/icons/plus.svg";
 import Search from "@/assets/icons/search.svg";
 import ClearInput from "@/assets/icons/clearInput.svg";
 
-import classes from "./Companions.module.css";
 import { CardCompanion } from "../CardCompanion";
 import { Button } from "@/components/shared/Button";
 
+import classes from "./Companions.module.css";
+
 export const Companions: FC = () => {
-    const { handleInputChange, findUsers, companions, called, companionRequest, searchValue, clearInput } =
-        useCompanions();
+    const {
+        handleInputChange,
+        findUsers,
+        companions,
+        called,
+        companionRequest,
+        searchValue,
+        clearInput,
+        removeCompanion,
+        showAllCompanions,
+    } = useCompanions();
+
+    const [checkedMap, setCheckedMap] = useState<Record<string, boolean>>({});
+
+    const handleCheckboxChange = (id: string, isChecked: boolean) => {
+        setCheckedMap((prev) => ({
+            ...prev,
+            [id]: isChecked,
+        }));
+    };
+
+    const deleteCheckedCards = () => {
+        Object.entries(checkedMap).forEach(([id, isChecked]) => {
+            if (isChecked) {
+                removeCompanion(id);
+            }
+        });
+        setCheckedMap({});
+    };
 
     return (
         <div className={classes.searchCompanions}>
@@ -41,6 +69,8 @@ export const Companions: FC = () => {
 
                     {searchValue !== "" && <ClearInput className={classes.searchIcon} onClick={clearInput} />}
                 </Label>
+
+                <Button resetDefaultStyles>SELECT</Button>
             </div>
 
             <FilteredList className={classes.filteredList}>
@@ -69,7 +99,7 @@ export const Companions: FC = () => {
 
                 <div className={classes.line}></div>
 
-                <div className={classes.filters}>
+                <div className={classes.filtersCompanion}>
                     <Label label={""} className={classes.findCompanions}>
                         <Input
                             onChange={handleInputChange}
@@ -87,9 +117,26 @@ export const Companions: FC = () => {
 
                 <FilteredList className={classes.companionsList}>
                     {companions?.map((card: any) => (
-                        <CardCompanion id={card._id} name={card.name} image={card.image} key={card._id} />
+                        <CardCompanion
+                            id={card._id}
+                            name={card.name}
+                            image={card.image}
+                            key={card._id}
+                            onChange={(isChecked) => handleCheckboxChange(card._id, isChecked)}
+                        />
                     ))}
                 </FilteredList>
+
+                <div className={classes.buttons}>
+                    <Button resetDefaultStyles className={classes.buttonShowAll} onClick={showAllCompanions}>
+                        Show all companions
+                    </Button>
+
+                    <div className={classes.buttonsDelAndInvite}>
+                        <Button onClick={deleteCheckedCards}>Отправить инвайт</Button>
+                        <Button onClick={deleteCheckedCards}>Удалить компаньионов</Button>
+                    </div>
+                </div>
             </div>
         </div>
     );

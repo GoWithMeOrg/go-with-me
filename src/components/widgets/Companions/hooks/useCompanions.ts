@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 
@@ -5,10 +6,10 @@ import { GET_FIND_USERS } from "@/app/api/graphql/queries/findUsers";
 import { GET_COMPANIONS } from "@/app/api/graphql/queries/companions";
 import { REMOVE_COMPANION_MUTATION } from "@/app/api/graphql/mutations/companions";
 import { COMPANION_REQUEST_MUTATION } from "@/app/api/graphql/mutations/companionRequest";
-import { useState } from "react";
 
 export const useCompanions = () => {
     const { data: session } = useSession();
+    const [limit, setLimit] = useState<number>(12);
     const user_id = session?.user.id;
 
     const [searchValue, setSearchValue] = useState("");
@@ -21,7 +22,7 @@ export const useCompanions = () => {
         data: dataCompanions,
         refetch: refetchCompanions,
     } = useQuery(GET_COMPANIONS, {
-        variables: { userId: user_id },
+        variables: { userId: user_id, limit },
     });
 
     const findUsers = searchValue ? data?.findUsers || [] : [];
@@ -66,6 +67,10 @@ export const useCompanions = () => {
         }
     };
 
+    const showAllCompanions = () => {
+        setLimit(limit === 0 ? 12 : 0);
+    };
+
     return {
         handleInputChange,
         findUsers,
@@ -75,5 +80,6 @@ export const useCompanions = () => {
         companionRequest,
         searchValue,
         clearInput,
+        showAllCompanions,
     };
 };
