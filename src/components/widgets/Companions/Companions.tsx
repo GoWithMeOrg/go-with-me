@@ -8,29 +8,20 @@ import { Input } from "@/components/shared/Input";
 import { FilteredList } from "@/components/shared/FilteredList/FilteredList";
 import { Avatar } from "@/components/shared/Avatar";
 import { Span } from "@/components/shared/Span";
-import { Button } from "@/components/shared/Button";
 
 import { useCompanions } from "./hooks/useCompanions";
 
 import Plus from "@/assets/icons/plus.svg";
-import Minus from "@/assets/icons/minus.svg";
 import Search from "@/assets/icons/search.svg";
 import ClearInput from "@/assets/icons/clearInput.svg";
 
 import classes from "./Companions.module.css";
 import { CardCompanion } from "../CardCompanion";
+import { Button } from "@/components/shared/Button";
 
 export const Companions: FC = () => {
-    const {
-        handleInputChange,
-        findUsers,
-        companions,
-        called,
-        removeCompanion,
-        companionRequest,
-        searchValue,
-        clearInput,
-    } = useCompanions();
+    const { handleInputChange, findUsers, companions, called, companionRequest, searchValue, clearInput } =
+        useCompanions();
 
     return (
         <div className={classes.searchCompanions}>
@@ -86,9 +77,11 @@ export const Companions: FC = () => {
                             className={classes.findInput}
                             value={searchValue ?? ""}
                         />
-                        {searchValue === "" && <Search className={classes.searchIcon} />}
+                        {searchValue === "" && <Search className={classes.searchIconCompanions} />}
 
-                        {searchValue !== "" && <ClearInput className={classes.searchIcon} onClick={clearInput} />}
+                        {searchValue !== "" && (
+                            <ClearInput className={classes.searchIconCompanions} onClick={clearInput} />
+                        )}
                     </Label>
                 </div>
 

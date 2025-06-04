@@ -1,14 +1,17 @@
-import { Avatar } from "@/components/shared/Avatar";
-import classes from "./CardCompanion.module.css";
-
 import { FC } from "react";
+
+import { Avatar } from "@/components/shared/Avatar";
 import { Span } from "@/components/shared/Span";
 import { Checkbox } from "@/components/shared/Checkbox";
 
 import Minus from "@/assets/icons/minus.svg";
 import Email from "@/assets/icons/email.svg";
 import Message from "@/assets/icons/message.svg";
-import { useCompanions } from "../Companions/hooks/useCompanions";
+import { useCompanions } from "@/components/widgets/Companions/hooks/useCompanions";
+
+import classes from "./CardCompanion.module.css";
+import { useCheckbox } from "@/components/shared/Checkbox/hooks";
+import { Button } from "@/components/shared/Button";
 
 interface CardCompanionProps {
     id: string;
@@ -18,11 +21,12 @@ interface CardCompanionProps {
 
 export const CardCompanion: FC<CardCompanionProps> = ({ id, name, image }) => {
     const { removeCompanion } = useCompanions();
+    const { checked, setChecked } = useCheckbox({});
 
     return (
         <div className={classes.card}>
             <div>
-                <Checkbox className={classes.position} />
+                <Checkbox className={classes.position} onChange={setChecked} />
                 <Avatar name={name} image={image} scale={1.8} id={id} />
             </div>
 
