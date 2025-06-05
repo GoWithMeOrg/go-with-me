@@ -9,3 +9,13 @@ export const GET_COMPANIONS = gql`
         }
     }
 `;
+
+export const GET_FIND_COMPANION = gql`
+    query FindCompanion($userId: ID!, $email: String, $name: String) {
+        findCompanion(userId: $userId, email: $email, name: $name) {
+            _id
+            name
+            image
+        }
+    }
+`;

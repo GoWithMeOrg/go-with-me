@@ -119,6 +119,15 @@
     color: var(--main-color);
 }
 
+.buttonActive {
+    color: var(--main-color);
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.19rem;
+    text-transform: uppercase;
+}
+
 .buttonsDelAndInvite {
     display: flex;
     gap: 1.25rem;

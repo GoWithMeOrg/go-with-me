@@ -20,15 +20,24 @@ import { Button } from "@/components/shared/Button";
 
 import classes from "./Companions.module.css";
 
-export const Companions: FC = () => {
+// TODO: Сделать поиск в добавленных друзьях
+// TODO: Добавить попап с вопрос об удаление одного или нескольких друзей
+// TODO: Добавить попап с вопрос об приглашении одного или нескольких друзей
+// TODO: При клике на карточку переходим на страницу компаниона
+
+const Companions: FC = () => {
     const {
-        handleInputChange,
+        handleFindUsers,
+        handleFindCompanion,
         findUsers,
         companions,
+        companion,
         called,
         companionRequest,
         searchValue,
+        searchValueCompanion,
         clearInput,
+        clearInputCompanion,
         removeCompanion,
         showAllCompanions,
         select,
@@ -62,7 +71,7 @@ export const Companions: FC = () => {
             <div className={classes.filters}>
                 <Label label={"Search by name or email"} className={classes.findCompanions}>
                     <Input
-                        onChange={handleInputChange}
+                        onChange={handleFindUsers}
                         type="text"
                         className={classes.findInput}
                         value={searchValue ?? ""}
@@ -102,20 +111,24 @@ export const Companions: FC = () => {
                 <div className={classes.filtersCompanion}>
                     <Label label={""} className={classes.findCompanions}>
                         <Input
-                            onChange={handleInputChange}
+                            onChange={handleFindCompanion}
                             type="text"
                             className={classes.findInput}
-                            value={searchValue ?? ""}
+                            value={searchValueCompanion ?? ""}
                         />
                         {searchValue === "" && <Search className={classes.searchIconCompanions} />}
 
                         {searchValue !== "" && (
-                            <ClearInput className={classes.searchIconCompanions} onClick={clearInput} />
+                            <ClearInput className={classes.searchIconCompanions} onClick={clearInputCompanion} />
                         )}
                     </Label>
 
-                    <Button resetDefaultStyles className={classes.buttonText} onClick={selectCompanions}>
-                        SELECT
+                    <Button
+                        resetDefaultStyles
+                        className={classes.buttonText && select ? classes.buttonActive : classes.buttonText}
+                        onClick={selectCompanions}
+                    >
+                        Select
                     </Button>
                 </div>
 
@@ -146,3 +159,4 @@ export const Companions: FC = () => {
         </div>
     );
 };
+export default Companions;

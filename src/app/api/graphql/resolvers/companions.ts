@@ -1,4 +1,5 @@
 import CompanionRequest from "@/database/models/CompanionRequest";
+import UserModel from "@/database/models/User";
 import CompanionsModel from "@/database/models/Сompanions";
 
 export const companionsResolvers = {
@@ -21,6 +22,48 @@ export const companionsResolvers = {
             }
 
             return limit ? companions.companions.slice(0, limit) : companions.companions;
+        },
+
+        // findCompanion: async (
+        //     parent: any,
+        //     { userId, email, name }: { userId: string; email?: string; name?: string },
+        // ) => {
+        //     const companions = await CompanionsModel.findOne({ user_id: userId }).populate("companions");
+
+        //     const filters: any = {};
+
+        //     if (email) filters.email = email;
+
+        //     if (name) {
+        //         filters.name = { $regex: name, $options: "i" }; // 'i' — игнорировать регистр
+        //     }
+
+        //     return await UserModel.find(filters);
+        // },
+
+        findCompanion: async (
+            parent: any,
+            { userId, email, name }: { userId: string; email?: string; name?: string },
+        ) => {
+            const companionDoc = await CompanionsModel.findOne({ user_id: userId }).populate("companions");
+
+            if (!companionDoc || !companionDoc.companions || companionDoc.companions.length === 0) {
+                return [];
+            }
+
+            const companionIds = companionDoc.companions.map((c: any) => c._id);
+
+            const filters: any = { _id: { $in: companionIds } };
+
+            if (email) {
+                filters.email = email;
+            }
+
+            if (name) {
+                filters.name = { $regex: name, $options: "i" };
+            }
+
+            return await UserModel.find(filters);
         },
     },
 

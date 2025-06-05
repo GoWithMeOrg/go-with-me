@@ -9,7 +9,7 @@ import { ProfileForm } from "@/components/widgets/ProfileForm";
 import { Notifications } from "@/components/widgets/Notifications";
 
 import classes from "./ProfileTabs.module.css";
-import { Companions } from "../Companions/Companions";
+import Companions from "../Companions/Companions";
 import { ButtonLink } from "@/components/shared/ButtonLink";
 
 export const ProfileTabs = () => {
