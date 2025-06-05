@@ -115,6 +115,16 @@
     text-transform: uppercase;
 }
 
+.buttonTextSelect {
+    margin-bottom: 17.38rem;
+    color: var(--additional-color);
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.19rem;
+    text-transform: uppercase;
+}
+
 .buttonText:hover {
     color: var(--main-color);
 }
@@ -131,5 +141,5 @@
 .buttonsDelAndInvite {
     display: flex;
     gap: 1.25rem;
-    margin-top: 5rem;
+    margin: 5rem 0 17.38rem 0;
 }

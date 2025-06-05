@@ -20,10 +20,15 @@ import { Button } from "@/components/shared/Button";
 
 import classes from "./Companions.module.css";
 
-// TODO: Сделать поиск в добавленных друзьях
+// TODO: При клике на плюс тоже вызываем попап?.
 // TODO: Добавить попап с вопрос об удаление одного или нескольких друзей
 // TODO: Добавить попап с вопрос об приглашении одного или нескольких друзей
 // TODO: При клике на карточку переходим на страницу компаниона
+// TODO: При клике на на минус на карточке вызываем попап
+// TODO: Что происходит при клике на конверт?
+// TODO: Что происходит при клике на сообщение?
+// TODO: Определиться с рассылкой инвайтов.
+// TODO: Скрыть кнопку Show All при поиске и если мало друзей, а при активности изменить надпись на hide.
 
 const Companions: FC = () => {
     const {
@@ -31,7 +36,6 @@ const Companions: FC = () => {
         handleFindCompanion,
         findUsers,
         companions,
-        companion,
         called,
         companionRequest,
         searchValue,
@@ -116,9 +120,9 @@ const Companions: FC = () => {
                             className={classes.findInput}
                             value={searchValueCompanion ?? ""}
                         />
-                        {searchValue === "" && <Search className={classes.searchIconCompanions} />}
+                        {searchValueCompanion === "" && <Search className={classes.searchIconCompanions} />}
 
-                        {searchValue !== "" && (
+                        {searchValueCompanion !== "" && (
                             <ClearInput className={classes.searchIconCompanions} onClick={clearInputCompanion} />
                         )}
                     </Label>
@@ -146,14 +150,20 @@ const Companions: FC = () => {
                 </FilteredList>
 
                 <div className={classes.buttons}>
-                    <Button resetDefaultStyles className={classes.buttonText} onClick={showAllCompanions}>
+                    <Button
+                        resetDefaultStyles
+                        className={classes.buttonText && !select ? classes.buttonTextSelect : classes.buttonText}
+                        onClick={showAllCompanions}
+                    >
                         Show all companions
                     </Button>
 
-                    <div className={classes.buttonsDelAndInvite}>
-                        <Button onClick={deleteCheckedCards}>Отправить инвайт</Button>
-                        <Button onClick={deleteCheckedCards}>Удалить компаньионов</Button>
-                    </div>
+                    {select && (
+                        <div className={classes.buttonsDelAndInvite}>
+                            <Button onClick={() => console.log("Send invitations")}>Отправить инвайты</Button>
+                            <Button onClick={() => console.log("Delete companions")}>Удалить компанионов</Button>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

@@ -30,11 +30,7 @@ export const useCompanions = () => {
 
     const findUsers = searchValue ? data?.findUsers || [] : [];
 
-    const companions = dataCompanions?.companions || [];
-
-    const companion = findCompanion?.findCompanion || [];
-
-    console.log(companion);
+    const companions = searchValueCompanion ? findCompanion?.findCompanion : dataCompanions?.companions;
 
     const handleFindUsers = (e: React.ChangeEvent<HTMLInputElement>) => {
         const inputValue = e.target.value;
@@ -103,7 +99,6 @@ export const useCompanions = () => {
         handleFindCompanion,
         findUsers,
         companions,
-        companion,
         called,
         removeCompanion,
         companionRequest,
