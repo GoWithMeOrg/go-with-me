@@ -1,6 +1,6 @@
 "use client";
 
-import { FC } from "react";
+import { FC, useState } from "react";
 
 import { Title } from "@/components/shared/Title";
 import { Label } from "@/components/shared/Label";
@@ -8,59 +8,98 @@ import { Input } from "@/components/shared/Input";
 import { FilteredList } from "@/components/shared/FilteredList/FilteredList";
 import { Avatar } from "@/components/shared/Avatar";
 import { Span } from "@/components/shared/Span";
-import { Button } from "@/components/shared/Button";
+
 import { useCompanions } from "./hooks/useCompanions";
+
 import Plus from "@/assets/icons/plus.svg";
-import Minus from "@/assets/icons/minus.svg";
+import Search from "@/assets/icons/search.svg";
+import ClearInput from "@/assets/icons/clearInput.svg";
+
+import { CardCompanion } from "../CardCompanion";
+import { Button } from "@/components/shared/Button";
 
 import classes from "./Companions.module.css";
 
-export const Companions: FC = () => {
-    // добавить индекс в дб прода db.getCollection('users').createIndex({ name: 1 })
+// TODO: При клике на плюс тоже вызываем попап?.
+// TODO: Добавить попап с вопрос об удаление одного или нескольких друзей
+// TODO: Добавить попап с вопрос об приглашении одного или нескольких друзей
+// TODO: При клике на карточку переходим на страницу компаниона
+// TODO: При клике на на минус на карточке вызываем попап
+// TODO: Что происходит при клике на конверт?
+// TODO: Что происходит при клике на сообщение?
+// TODO: Определиться с рассылкой инвайтов.
+// TODO: Скрыть кнопку Show All при поиске и если мало друзей, а при активности изменить надпись на hide.
+
+const Companions: FC = () => {
     const {
-        handleFirstNameChange,
-        handleLastNameChange,
-        handleEmailChange,
+        handleFindUsers,
+        handleFindCompanion,
         findUsers,
         companions,
         called,
-        removeCompanion,
         companionRequest,
+        searchValue,
+        searchValueCompanion,
+        clearInput,
+        clearInputCompanion,
+        removeCompanion,
+        showAllCompanions,
+        select,
+        selectCompanions,
     } = useCompanions();
+
+    const [checkedMap, setCheckedMap] = useState<Record<string, boolean>>({});
+
+    const handleCheckboxChange = (id: string, isChecked: boolean) => {
+        setCheckedMap((prev) => ({
+            ...prev,
+            [id]: isChecked,
+        }));
+    };
+
+    const deleteCheckedCards = () => {
+        Object.entries(checkedMap).forEach(([id, isChecked]) => {
+            if (isChecked) {
+                removeCompanion(id);
+            }
+        });
+        setCheckedMap({});
+    };
 
     return (
         <div className={classes.searchCompanions}>
             <div className={classes.header}>
-                <Title tag={"h3"} title="Find companions" />
+                <Title tag={"h3"} title="Find new companions" />
             </div>
 
-            <div className={classes.line}></div>
-
             <div className={classes.filters}>
-                <Label label={"First Name"}>
-                    <Input onChange={handleFirstNameChange} />
-                </Label>
+                <Label label={"Search by name or email"} className={classes.findCompanions}>
+                    <Input
+                        onChange={handleFindUsers}
+                        type="text"
+                        className={classes.findInput}
+                        value={searchValue ?? ""}
+                    />
+                    {searchValue === "" && <Search className={classes.searchIcon} />}
 
-                <Label label={"Last Name"}>
-                    <Input onChange={handleLastNameChange} />
-                </Label>
-
-                <Label label={"Email"}>
-                    <Input onChange={handleEmailChange} />
+                    {searchValue !== "" && <ClearInput className={classes.searchIcon} onClick={clearInput} />}
                 </Label>
             </div>
 
             <FilteredList className={classes.filteredList}>
-                {called && findUsers?.length === 0 ? (
+                {called && searchValue && findUsers?.length === 0 ? (
                     <Span title={"По вашему запросу ничего не найдено"} />
                 ) : (
                     findUsers.map((card: any) => (
                         <div key={card._id}>
-                            <Avatar name={card.name} image={card.image} scale={1.8} id={card._id} />
-                            <Span title={card.name} />
-                            <Button resetDefaultStyles onClick={() => companionRequest(card._id)}>
-                                <Plus className={classes.addCompanion} />
-                            </Button>
+                            <div className={classes.avatar}>
+                                <Avatar name={card.name} image={card.image} scale={1.8} id={card._id} />
+
+                                <Plus className={classes.addCompanion} onClick={() => companionRequest(card._id)} />
+                            </div>
+
+                            <Span title={card.name.split(" ")[0]} className={classes.name} />
+                            <Span title={card.name.split(" ")[1]} className={classes.name} />
                         </div>
                     ))
                 )}
@@ -73,18 +112,61 @@ export const Companions: FC = () => {
 
                 <div className={classes.line}></div>
 
+                <div className={classes.filtersCompanion}>
+                    <Label label={""} className={classes.findCompanions}>
+                        <Input
+                            onChange={handleFindCompanion}
+                            type="text"
+                            className={classes.findInput}
+                            value={searchValueCompanion ?? ""}
+                        />
+                        {searchValueCompanion === "" && <Search className={classes.searchIconCompanions} />}
+
+                        {searchValueCompanion !== "" && (
+                            <ClearInput className={classes.searchIconCompanions} onClick={clearInputCompanion} />
+                        )}
+                    </Label>
+
+                    <Button
+                        resetDefaultStyles
+                        className={classes.buttonText && select ? classes.buttonActive : classes.buttonText}
+                        onClick={selectCompanions}
+                    >
+                        Select
+                    </Button>
+                </div>
+
                 <FilteredList className={classes.companionsList}>
                     {companions?.map((card: any) => (
-                        <div key={card._id}>
-                            <Avatar name={card.name} image={card.image} scale={1.8} id={card._id} />
-                            <Span title={card.name} />
-                            <Button resetDefaultStyles onClick={() => removeCompanion(card._id)}>
-                                <Minus className={classes.removeCompanion} />
-                            </Button>
-                        </div>
+                        <CardCompanion
+                            id={card._id}
+                            name={card.name}
+                            image={card.image}
+                            key={card._id}
+                            onChange={(isChecked) => handleCheckboxChange(card._id, isChecked)}
+                            select={select}
+                        />
                     ))}
                 </FilteredList>
+
+                <div className={classes.buttons}>
+                    <Button
+                        resetDefaultStyles
+                        className={classes.buttonText && !select ? classes.buttonTextSelect : classes.buttonText}
+                        onClick={showAllCompanions}
+                    >
+                        Show all companions
+                    </Button>
+
+                    {select && (
+                        <div className={classes.buttonsDelAndInvite}>
+                            <Button onClick={() => console.log("Send invitations")}>Отправить инвайты</Button>
+                            <Button onClick={() => console.log("Delete companions")}>Удалить компанионов</Button>
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );
 };
+export default Companions;

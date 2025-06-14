@@ -1,32 +1,54 @@
 .searchCompanions {
-    width: 100%;
+    width: 48.75rem;
+    margin-left: 7.5rem;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Занимает всю высоту экрана */
+}
+
+.findCompanions {
+    width: 36.25rem;
+    position: relative;
 }
 
 .line {
     width: 100%;
     border: 1px solid var(--additional-color);
+    margin: 1.38rem 0;
 }
 
 .filters {
     display: flex;
     justify-content: space-between;
-    margin: 1.5rem 0 2.5rem 0;
+    margin: 2.5rem 0 1rem 0;
     gap: 1.25rem;
+}
+
+.filtersCompanion {
+    display: flex;
+    justify-content: space-between;
+    margin: 1.38rem 0 2.5rem;
+    gap: 1.25rem;
+}
+
+.avatar {
+    height: 100px;
 }
 
 .filteredList {
-    height: 130px;
     display: flex;
     justify-content: flex-start;
     gap: 1.25rem;
+    flex-grow: 1; /* Позволяет списку занимать оставшееся пространство */
 }
 
 .companionsList {
-    margin-top: 20px;
-    height: 130px;
-    display: flex;
     justify-content: flex-start;
-    gap: 1.25rem;
+    gap: 15px;
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 2.88rem;
 }
 
 .removeCompanion {
@@ -40,11 +62,84 @@
 }
 
 .addCompanion {
-    top: -30px;
-    left: 0px;
     position: relative;
+    top: -24px;
+    left: 76px;
 }
 
 .addCompanion path:hover {
     fill: var(--hover-color);
+}
+
+.searchIcon {
+    position: absolute;
+    top: 69%;
+    right: 1rem;
+    transform: translateY(-50%);
+}
+
+.searchIconCompanions {
+    position: absolute;
+    top: 51%;
+    right: 1rem;
+    transform: translateY(-50%);
+}
+
+.findInput {
+    padding: 11px 17px 11px 17px;
+}
+
+.name {
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    display: flex;
+    line-height: 1.25rem;
+}
+
+.companions {
+    margin-top: 6.25rem;
+}
+
+.position {
+    position: absolute;
+    z-index: 1;
+}
+
+.buttonText {
+    color: var(--additional-color);
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.19rem;
+    text-transform: uppercase;
+}
+
+.buttonTextSelect {
+    margin-bottom: 17.38rem;
+    color: var(--additional-color);
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.19rem;
+    text-transform: uppercase;
+}
+
+.buttonText:hover {
+    color: var(--main-color);
+}
+
+.buttonActive {
+    color: var(--main-color);
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.19rem;
+    text-transform: uppercase;
+}
+
+.buttonsDelAndInvite {
+    display: flex;
+    gap: 1.25rem;
+    margin: 5rem 0 17.38rem 0;
 }

@@ -1,21 +1,23 @@
+import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 
 import { GET_FIND_USERS } from "@/app/api/graphql/queries/findUsers";
-import { GET_COMPANIONS } from "@/app/api/graphql/queries/companions";
+import { GET_COMPANIONS, GET_FIND_COMPANION } from "@/app/api/graphql/queries/companions";
 import { REMOVE_COMPANION_MUTATION } from "@/app/api/graphql/mutations/companions";
 import { COMPANION_REQUEST_MUTATION } from "@/app/api/graphql/mutations/companionRequest";
 
 export const useCompanions = () => {
     const { data: session } = useSession();
+    const [limit, setLimit] = useState<number>(12);
     const user_id = session?.user.id;
 
-    //TODO: добавить функию быстрой очитски полей и сброса кэша
-    //TODO: добавить кнопки добавлени/удаления пользователя из друзей
-    //TODO: добавить красную точку при появлении уведомлений
-    //TODO: добавить интервал обновления увведомлений
+    const [searchValue, setSearchValue] = useState("");
+    const [searchValueCompanion, setSearchValueCompanion] = useState("");
+    const [select, setSelect] = useState<boolean>(false);
 
     const [loadUsers, { loading, error, data, called }] = useLazyQuery(GET_FIND_USERS);
+    const [loadCompanion, { data: findCompanion, called: findCompanionCalled }] = useLazyQuery(GET_FIND_COMPANION);
 
     const {
         loading: errorloading,
@@ -23,22 +25,40 @@ export const useCompanions = () => {
         data: dataCompanions,
         refetch: refetchCompanions,
     } = useQuery(GET_COMPANIONS, {
-        variables: { userId: user_id },
+        variables: { userId: user_id, limit },
     });
 
-    const findUsers = data?.findUsers || [];
-    const companions = dataCompanions?.companions || [];
+    const findUsers = searchValue ? data?.findUsers || [] : [];
 
-    const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        loadUsers({ variables: { name: `${e.target.value}` } });
+    const companions = searchValueCompanion ? findCompanion?.findCompanion : dataCompanions?.companions;
+
+    const handleFindUsers = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const inputValue = e.target.value;
+        setSearchValue(inputValue);
+
+        const isEmail = inputValue.includes("@");
+        const variables = isEmail ? { email: inputValue } : { name: inputValue };
+        loadUsers({ variables });
     };
 
-    const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        loadUsers({ variables: { name: `${e.target.value}` } });
+    const clearInput = () => {
+        setSearchValue("");
     };
 
-    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        loadUsers({ variables: { email: `${e.target.value}` } });
+    const handleFindCompanion = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const inputValue = e.target.value;
+        setSearchValueCompanion(inputValue);
+
+        const isEmail = inputValue.includes("@");
+        const variables = {
+            userId: user_id,
+            ...(isEmail ? { email: inputValue } : { name: inputValue }),
+        };
+        loadCompanion({ variables });
+    };
+
+    const clearInputCompanion = () => {
+        setSearchValueCompanion("");
     };
 
     const [RemoveCompanion] = useMutation(REMOVE_COMPANION_MUTATION);
@@ -66,14 +86,28 @@ export const useCompanions = () => {
         }
     };
 
+    const showAllCompanions = () => {
+        setLimit(limit === 0 ? 12 : 0);
+    };
+
+    const selectCompanions = () => {
+        setSelect(select === true ? false : true);
+    };
+
     return {
-        handleFirstNameChange,
-        handleLastNameChange,
-        handleEmailChange,
+        handleFindUsers,
+        handleFindCompanion,
         findUsers,
         companions,
         called,
         removeCompanion,
         companionRequest,
+        searchValue,
+        searchValueCompanion,
+        clearInput,
+        clearInputCompanion,
+        showAllCompanions,
+        select,
+        selectCompanions,
     };
 };

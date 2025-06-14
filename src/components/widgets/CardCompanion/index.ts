@@ -1,0 +1,1 @@
+export { CardCompanion } from "./CardCompanion";

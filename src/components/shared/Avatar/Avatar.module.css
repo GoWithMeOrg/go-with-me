@@ -21,6 +21,8 @@
 
 .image {
     object-fit: cover;
+    border: 0.25rem solid var(--white-color);
+    border-radius: 100%;
 }
 
 .background {

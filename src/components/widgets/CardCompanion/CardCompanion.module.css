@@ -1,0 +1,42 @@
+.card {
+    background: var(--white-color);
+    border-radius: 0.25rem;
+    width: 250px;
+    height: 130px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 15px 16px 15px 11px;
+}
+
+.fullName {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 1.25rem 0 0 10px;
+}
+
+.name {
+    line-height: 1.25rem;
+    font-weight: 700;
+}
+
+.position {
+    position: absolute;
+    z-index: 1;
+}
+
+.icons {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+.nameAndIcons {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
