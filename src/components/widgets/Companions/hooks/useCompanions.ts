@@ -31,6 +31,7 @@ export const useCompanions = () => {
     const findUsers = searchValue ? data?.findUsers || [] : [];
 
     const companions = searchValueCompanion ? findCompanion?.findCompanion : dataCompanions?.companions;
+    const defaultUserLimit = 12;
 
     const handleFindUsers = (e: React.ChangeEvent<HTMLInputElement>) => {
         const inputValue = e.target.value;
@@ -87,11 +88,11 @@ export const useCompanions = () => {
     };
 
     const showAllCompanions = () => {
-        setLimit(limit === 0 ? 12 : 0);
+        setLimit(limit === 0 ? defaultUserLimit : 0);
     };
 
     const selectCompanions = () => {
-        setSelect(select === true ? false : true);
+        setSelect(!select);
     };
 
     return {

@@ -4,42 +4,18 @@ import CompanionsModel from "@/database/models/Сompanions";
 
 export const companionsResolvers = {
     Query: {
-        // companions: async (_: any, { userId }: { userId: string }) => {
-        //     const companions = await CompanionsModel.findOne({ user_id: userId }).populate("companions");
-
-        //     if (!companions) {
-        //         return [];
-        //     }
-
-        //     return companions.companions;
-        // },
-
         companions: async (_: any, { userId, limit }: { userId: string; limit?: number }) => {
-            const companions = await CompanionsModel.findOne({ user_id: userId }).populate("companions");
+            const companions = await CompanionsModel.findOne({ user_id: userId }).populate({
+                path: "companions",
+                options: limit ? { limit } : {},
+            });
 
             if (!companions) {
                 return [];
             }
 
-            return limit ? companions.companions.slice(0, limit) : companions.companions;
+            return companions.companions;
         },
-
-        // findCompanion: async (
-        //     parent: any,
-        //     { userId, email, name }: { userId: string; email?: string; name?: string },
-        // ) => {
-        //     const companions = await CompanionsModel.findOne({ user_id: userId }).populate("companions");
-
-        //     const filters: any = {};
-
-        //     if (email) filters.email = email;
-
-        //     if (name) {
-        //         filters.name = { $regex: name, $options: "i" }; // 'i' — игнорировать регистр
-        //     }
-
-        //     return await UserModel.find(filters);
-        // },
 
         findCompanion: async (
             parent: any,
