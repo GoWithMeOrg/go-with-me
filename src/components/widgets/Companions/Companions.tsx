@@ -28,7 +28,6 @@ import classes from "./Companions.module.css";
 // TODO: Что происходит при клике на конверт?
 // TODO: Что происходит при клике на сообщение?
 // TODO: Определиться с рассылкой инвайтов.
-// TODO: Скрыть кнопку Show All при поиске и если мало друзей, а при активности изменить надпись на hide.
 
 const Companions: FC = () => {
     const {
@@ -45,6 +44,7 @@ const Companions: FC = () => {
         removeCompanion,
         showAllCompanions,
         select,
+        limit,
         selectCompanions,
     } = useCompanions();
 
@@ -150,13 +150,19 @@ const Companions: FC = () => {
                 </FilteredList>
 
                 <div className={classes.buttons}>
-                    <Button
-                        resetDefaultStyles
-                        className={classes.buttonText && !select ? classes.buttonTextSelect : classes.buttonText}
-                        onClick={showAllCompanions}
-                    >
-                        Show all companions
-                    </Button>
+                    {companions?.length >= limit && (
+                        <Button
+                            resetDefaultStyles
+                            className={
+                                classes.buttonText && companions.length > limit
+                                    ? classes.buttonActive
+                                    : classes.buttonText
+                            }
+                            onClick={showAllCompanions}
+                        >
+                            {companions.length > limit ? "Hide" : "Show all companions"}
+                        </Button>
+                    )}
 
                     {select && (
                         <div className={classes.buttonsDelAndInvite}>
