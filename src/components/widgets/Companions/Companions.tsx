@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useState } from "react";
+import { FC, useState, useCallback } from "react";
 
 import { Title } from "@/components/shared/Title";
 import { Label } from "@/components/shared/Label";
@@ -17,6 +17,7 @@ import ClearInput from "@/assets/icons/clearInput.svg";
 
 import { CardCompanion } from "../CardCompanion";
 import { Button } from "@/components/shared/Button";
+import DeleteFriendModal from "../DeleteFriendModal";
 
 import classes from "./Companions.module.css";
 
@@ -30,6 +31,22 @@ import classes from "./Companions.module.css";
 // TODO: Определиться с рассылкой инвайтов.
 
 const Companions: FC = () => {
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [selectedFriendId, setSelectedFriendId] = useState<string | null>(null);
+    const [selectedFriendName, setSelectedFriendName] = useState<string | null>(null);
+
+    const handleDeleteClick = useCallback((id: string, name: string) => {
+        setSelectedFriendId(id);
+        setSelectedFriendName(name);
+        setIsDeleteModalOpen(true);
+        console.log(name);
+    }, []);
+
+    const handleCloseDeleteModal = useCallback(() => {
+        setIsDeleteModalOpen(false);
+        setSelectedFriendId(null);
+    }, []);
+
     const {
         handleFindUsers,
         handleFindCompanion,
@@ -145,6 +162,7 @@ const Companions: FC = () => {
                             key={card._id}
                             onChange={(isChecked) => handleCheckboxChange(card._id, isChecked)}
                             select={select}
+                            onDeleteClick={handleDeleteClick}
                         />
                     ))}
                 </FilteredList>
@@ -172,6 +190,20 @@ const Companions: FC = () => {
                     )}
                 </div>
             </div>
+            {/* {selectedFriendId && (
+                <DeleteFriendModal
+                    isOpen={isDeleteModalOpen}
+                    onClose={handleCloseDeleteModal}
+                    onConfirm={() => {
+                        if (selectedFriendId) {
+                            removeCompanion(selectedFriendId);
+                            handleCloseDeleteModal();
+                        }
+                    }}
+                    friendId={selectedFriendId}
+                    name={selectedFriendName}
+                />
+            )} */}
         </div>
     );
 };

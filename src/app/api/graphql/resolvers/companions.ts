@@ -54,6 +54,8 @@ export const companionsResolvers = {
                     ],
                 });
 
+                console.log("Заявка найдена");
+
                 if (!existingCompanion) {
                     console.log("Активная дружба не найдена");
                     return false;
