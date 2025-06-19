@@ -64,6 +64,7 @@ export const useCompanions = () => {
     const [RemoveCompanion] = useMutation(REMOVE_COMPANION_MUTATION);
 
     const removeCompanion = async (id: string) => {
+        console.log(id, user_id);
         try {
             await RemoveCompanion({
                 variables: { userId: user_id, companionId: id },
