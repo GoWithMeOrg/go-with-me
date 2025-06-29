@@ -40,3 +40,8 @@
     flex-direction: column;
     justify-content: space-between;
 }
+
+.delete {
+    color: var(--error-color);
+    border: 2px solid var(--error-color);
+}

@@ -1,1 +1,1 @@
-export { default } from "./DeleteFriendModal";
+export { DeleteFriendModal } from "./DeleteFriendModal";

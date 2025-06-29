@@ -1,6 +1,9 @@
 "use client";
 
-import { FC, useState, useCallback } from "react";
+import { FC } from "react";
+
+import { CardCompanion } from "@/components/widgets/CardCompanion";
+import { DeleteFriendModal } from "@/components/widgets/DeleteFriendModal";
 
 import { Title } from "@/components/shared/Title";
 import { Label } from "@/components/shared/Label";
@@ -8,16 +11,14 @@ import { Input } from "@/components/shared/Input";
 import { FilteredList } from "@/components/shared/FilteredList/FilteredList";
 import { Avatar } from "@/components/shared/Avatar";
 import { Span } from "@/components/shared/Span";
+import { Popup } from "@/components/shared/Popup";
+import { Button } from "@/components/shared/Button";
 
 import { useCompanions } from "./hooks/useCompanions";
 
 import Plus from "@/assets/icons/plus.svg";
 import Search from "@/assets/icons/search.svg";
 import ClearInput from "@/assets/icons/clearInput.svg";
-
-import { CardCompanion } from "../CardCompanion";
-import { Button } from "@/components/shared/Button";
-import DeleteFriendModal from "../DeleteFriendModal";
 
 import classes from "./Companions.module.css";
 
@@ -31,22 +32,6 @@ import classes from "./Companions.module.css";
 // TODO: Определиться с рассылкой инвайтов.
 
 const Companions: FC = () => {
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const [selectedFriendId, setSelectedFriendId] = useState<string | null>(null);
-    const [selectedFriendName, setSelectedFriendName] = useState<string | null>(null);
-
-    const handleDeleteClick = useCallback((id: string, name: string) => {
-        setSelectedFriendId(id);
-        setSelectedFriendName(name);
-        setIsDeleteModalOpen(true);
-        console.log(name);
-    }, []);
-
-    const handleCloseDeleteModal = useCallback(() => {
-        setIsDeleteModalOpen(false);
-        setSelectedFriendId(null);
-    }, []);
-
     const {
         handleFindUsers,
         handleFindCompanion,
@@ -58,30 +43,18 @@ const Companions: FC = () => {
         searchValueCompanion,
         clearInput,
         clearInputCompanion,
-        removeCompanion,
         showAllCompanions,
         select,
         limit,
         selectCompanions,
+        showPopup,
+        setShowPopup,
+        handleShowPopup,
+        handleHidePopup,
+        handleCheckboxChange,
+        deleteCheckedCards,
+        checkedMapObj,
     } = useCompanions();
-
-    const [checkedMap, setCheckedMap] = useState<Record<string, boolean>>({});
-
-    const handleCheckboxChange = (id: string, isChecked: boolean) => {
-        setCheckedMap((prev) => ({
-            ...prev,
-            [id]: isChecked,
-        }));
-    };
-
-    const deleteCheckedCards = () => {
-        Object.entries(checkedMap).forEach(([id, isChecked]) => {
-            if (isChecked) {
-                removeCompanion(id);
-            }
-        });
-        setCheckedMap({});
-    };
 
     return (
         <div className={classes.searchCompanions}>
@@ -162,7 +135,6 @@ const Companions: FC = () => {
                             key={card._id}
                             onChange={(isChecked) => handleCheckboxChange(card._id, isChecked)}
                             select={select}
-                            onDeleteClick={handleDeleteClick}
                         />
                     ))}
                 </FilteredList>
@@ -185,25 +157,21 @@ const Companions: FC = () => {
                     {select && (
                         <div className={classes.buttonsDelAndInvite}>
                             <Button onClick={() => console.log("Send invitations")}>Отправить инвайты</Button>
-                            <Button onClick={() => console.log("Delete companions")}>Удалить компанионов</Button>
+                            <Button className={classes.delete} onClick={handleShowPopup}>
+                                Удалить компанионов
+                            </Button>
                         </div>
                     )}
                 </div>
             </div>
-            {/* {selectedFriendId && (
-                <DeleteFriendModal
-                    isOpen={isDeleteModalOpen}
-                    onClose={handleCloseDeleteModal}
-                    onConfirm={() => {
-                        if (selectedFriendId) {
-                            removeCompanion(selectedFriendId);
-                            handleCloseDeleteModal();
-                        }
-                    }}
-                    friendId={selectedFriendId}
-                    name={selectedFriendName}
-                />
-            )} */}
+            <Popup popupMode={"map"} showPopup={showPopup} setShowPopup={setShowPopup}>
+                <DeleteFriendModal companionCounter={checkedMapObj}>
+                    <Button className={classes.delete} onClick={deleteCheckedCards}>
+                        Yes
+                    </Button>
+                    <Button onClick={handleHidePopup}>Cancel</Button>
+                </DeleteFriendModal>
+            </Popup>
         </div>
     );
 };
