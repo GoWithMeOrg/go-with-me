@@ -33,9 +33,15 @@ export const useCompanions = () => {
         variables: { userId: user_id, limit },
     });
 
+    const { data: countCompanions } = useQuery(GET_COMPANIONS, {
+        variables: { userId: user_id },
+    });
+
     const findUsers = searchValue ? data?.findUsers || [] : [];
     const companions = searchValueCompanion ? findCompanion?.findCompanion : dataCompanions?.companions;
     const checkedMapObj = Object.keys(checkedMap).length;
+
+    const countCompanionsFull = countCompanions?.companions.length;
 
     const handleFindUsers = (e: React.ChangeEvent<HTMLInputElement>) => {
         const inputValue = e.target.value;
@@ -140,5 +146,7 @@ export const useCompanions = () => {
         handleShowPopup,
         handleHidePopup,
         checkedMapObj,
+        defaulShowCompanions,
+        countCompanionsFull,
     };
 };
