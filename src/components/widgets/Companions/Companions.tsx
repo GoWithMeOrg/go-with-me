@@ -54,6 +54,8 @@ const Companions: FC = () => {
         handleCheckboxChange,
         deleteCheckedCards,
         checkedMapObj,
+        defaulShowCompanions,
+        countCompanionsFull,
     } = useCompanions();
 
     return (
@@ -150,7 +152,9 @@ const Companions: FC = () => {
                             }
                             onClick={showAllCompanions}
                         >
-                            {companions.length > limit ? "Hide" : "Show all companions"}
+                            {companions.length > defaulShowCompanions
+                                ? "Hide"
+                                : "Show all companions " + `(${countCompanionsFull})`}
                         </Button>
                     )}
 
