@@ -158,7 +158,7 @@ const Companions: FC = () => {
                         </Button>
                     )}
 
-                    {select && (
+                    {select && checkedMapObj > 0 && (
                         <div className={classes.buttonsDelAndInvite}>
                             <Button onClick={() => console.log("Send invitations")}>Отправить инвайты</Button>
                             <Button className={classes.delete} onClick={handleShowPopup}>

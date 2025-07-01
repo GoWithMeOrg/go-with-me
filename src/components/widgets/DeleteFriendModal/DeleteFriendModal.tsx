@@ -17,7 +17,7 @@ export const DeleteFriendModal: React.FC<DeleteFriendModalProps> = ({ name, chil
                 </p>
             )}
 
-            {companionCounter && <p className={classes.message}>Удалить {companionCounter} компанионов?</p>}
+            {Boolean(companionCounter) && <p className={classes.message}>Удалить {companionCounter} компанионов?</p>}
 
             <div className={classes.actions}>{children}</div>
         </div>

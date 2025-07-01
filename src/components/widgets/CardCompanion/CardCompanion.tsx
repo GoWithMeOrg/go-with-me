@@ -38,7 +38,7 @@ export const CardCompanion: FC<CardCompanionProps> = ({ id, name, image, onChang
     };
 
     return (
-        <div className={classes.card} key={id}>
+        <div className={classes.card}>
             <div>
                 {select && <Checkbox className={classes.position} onChange={onChange} id={id} />}
 
