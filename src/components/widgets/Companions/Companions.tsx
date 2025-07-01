@@ -8,7 +8,7 @@ import { DeleteFriendModal } from "@/components/widgets/DeleteFriendModal";
 import { Title } from "@/components/shared/Title";
 import { Label } from "@/components/shared/Label";
 import { Input } from "@/components/shared/Input";
-import { FilteredList } from "@/components/shared/FilteredList/FilteredList";
+import { FilteredList } from "@/components/shared/FilteredList";
 import { Avatar } from "@/components/shared/Avatar";
 import { Span } from "@/components/shared/Span";
 import { Popup } from "@/components/shared/Popup";
@@ -23,8 +23,8 @@ import ClearInput from "@/assets/icons/clearInput.svg";
 import classes from "./Companions.module.css";
 
 // TODO: При клике на плюс тоже вызываем попап?.
-// TODO: Добавить попап с вопрос об удаление одного или нескольких друзей
-// TODO: Добавить попап с вопрос об приглашении одного или нескольких друзей
+// TODO: Добавить попап с вопросом об удаление одного или нескольких друзей
+// TODO: Добавить попап с вопросом об приглашении одного или нескольких друзей
 // TODO: При клике на карточку переходим на страницу компаниона
 // TODO: При клике на на минус на карточке вызываем попап
 // TODO: Что происходит при клике на конверт?
@@ -55,7 +55,7 @@ const Companions: FC = () => {
         deleteCheckedCards,
         checkedMapObj,
         defaulShowCompanions,
-        countCompanionsFull,
+        totalCompanions,
     } = useCompanions();
 
     return (
@@ -154,7 +154,7 @@ const Companions: FC = () => {
                         >
                             {companions.length > defaulShowCompanions
                                 ? "Hide"
-                                : "Show all companions " + `(${countCompanionsFull})`}
+                                : "Show all companions " + `(${totalCompanions})`}
                         </Button>
                     )}
 

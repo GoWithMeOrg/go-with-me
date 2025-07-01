@@ -10,11 +10,16 @@ export const companionsResolvers = {
                 options: limit ? { limit } : {},
             });
 
-            if (!companions) {
-                return [];
-            }
+            const allCompanions = await CompanionsModel.findOne({ user_id: userId }).lean();
+            const totalCompanions = allCompanions?.companions?.length ?? 0;
 
-            return companions.companions;
+            if (!companions) {
+                return {
+                    companions: [],
+                    totalCompanions: 0,
+                };
+            }
+            return { companions: companions.companions, totalCompanions };
         },
 
         findCompanion: async (
