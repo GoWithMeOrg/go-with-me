@@ -1,13 +1,18 @@
 "use client";
 
-import { FC, useState } from "react";
+import { FC } from "react";
+
+import { CardCompanion } from "@/components/widgets/CardCompanion";
+import { DeleteFriendModal } from "@/components/widgets/DeleteFriendModal";
 
 import { Title } from "@/components/shared/Title";
 import { Label } from "@/components/shared/Label";
 import { Input } from "@/components/shared/Input";
-import { FilteredList } from "@/components/shared/FilteredList/FilteredList";
+import { FilteredList } from "@/components/shared/FilteredList";
 import { Avatar } from "@/components/shared/Avatar";
 import { Span } from "@/components/shared/Span";
+import { Popup } from "@/components/shared/Popup";
+import { Button } from "@/components/shared/Button";
 
 import { useCompanions } from "./hooks/useCompanions";
 
@@ -15,20 +20,16 @@ import Plus from "@/assets/icons/plus.svg";
 import Search from "@/assets/icons/search.svg";
 import ClearInput from "@/assets/icons/clearInput.svg";
 
-import { CardCompanion } from "../CardCompanion";
-import { Button } from "@/components/shared/Button";
-
 import classes from "./Companions.module.css";
 
 // TODO: При клике на плюс тоже вызываем попап?.
-// TODO: Добавить попап с вопрос об удаление одного или нескольких друзей
-// TODO: Добавить попап с вопрос об приглашении одного или нескольких друзей
+// TODO: Добавить попап с вопросом об удаление одного или нескольких друзей
+// TODO: Добавить попап с вопросом об приглашении одного или нескольких друзей
 // TODO: При клике на карточку переходим на страницу компаниона
 // TODO: При клике на на минус на карточке вызываем попап
 // TODO: Что происходит при клике на конверт?
 // TODO: Что происходит при клике на сообщение?
 // TODO: Определиться с рассылкой инвайтов.
-// TODO: Скрыть кнопку Show All при поиске и если мало друзей, а при активности изменить надпись на hide.
 
 const Companions: FC = () => {
     const {
@@ -42,29 +43,20 @@ const Companions: FC = () => {
         searchValueCompanion,
         clearInput,
         clearInputCompanion,
-        removeCompanion,
         showAllCompanions,
         select,
+        limit,
         selectCompanions,
+        showPopup,
+        setShowPopup,
+        handleShowPopup,
+        handleHidePopup,
+        handleCheckboxChange,
+        deleteCheckedCards,
+        checkedMapObj,
+        defaulShowCompanions,
+        totalCompanions,
     } = useCompanions();
-
-    const [checkedMap, setCheckedMap] = useState<Record<string, boolean>>({});
-
-    const handleCheckboxChange = (id: string, isChecked: boolean) => {
-        setCheckedMap((prev) => ({
-            ...prev,
-            [id]: isChecked,
-        }));
-    };
-
-    const deleteCheckedCards = () => {
-        Object.entries(checkedMap).forEach(([id, isChecked]) => {
-            if (isChecked) {
-                removeCompanion(id);
-            }
-        });
-        setCheckedMap({});
-    };
 
     return (
         <div className={classes.searchCompanions}>
@@ -150,22 +142,40 @@ const Companions: FC = () => {
                 </FilteredList>
 
                 <div className={classes.buttons}>
-                    <Button
-                        resetDefaultStyles
-                        className={classes.buttonText && !select ? classes.buttonTextSelect : classes.buttonText}
-                        onClick={showAllCompanions}
-                    >
-                        Show all companions
-                    </Button>
+                    {companions?.length >= limit && (
+                        <Button
+                            resetDefaultStyles
+                            className={
+                                classes.buttonText && companions.length > limit
+                                    ? classes.buttonActive
+                                    : classes.buttonText
+                            }
+                            onClick={showAllCompanions}
+                        >
+                            {companions.length > defaulShowCompanions
+                                ? "Hide"
+                                : "Show all companions " + `(${totalCompanions})`}
+                        </Button>
+                    )}
 
-                    {select && (
+                    {select && checkedMapObj > 0 && (
                         <div className={classes.buttonsDelAndInvite}>
                             <Button onClick={() => console.log("Send invitations")}>Отправить инвайты</Button>
-                            <Button onClick={() => console.log("Delete companions")}>Удалить компанионов</Button>
+                            <Button className={classes.delete} onClick={handleShowPopup}>
+                                Удалить компанионов
+                            </Button>
                         </div>
                     )}
                 </div>
             </div>
+            <Popup popupMode={"map"} showPopup={showPopup} setShowPopup={setShowPopup}>
+                <DeleteFriendModal companionCounter={checkedMapObj}>
+                    <Button className={classes.delete} onClick={deleteCheckedCards}>
+                        Yes
+                    </Button>
+                    <Button onClick={handleHidePopup}>Cancel</Button>
+                </DeleteFriendModal>
+            </Popup>
         </div>
     );
 };

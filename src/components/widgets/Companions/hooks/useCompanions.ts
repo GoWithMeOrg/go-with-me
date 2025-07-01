@@ -6,15 +6,20 @@ import { GET_FIND_USERS } from "@/app/api/graphql/queries/findUsers";
 import { GET_COMPANIONS, GET_FIND_COMPANION } from "@/app/api/graphql/queries/companions";
 import { REMOVE_COMPANION_MUTATION } from "@/app/api/graphql/mutations/companions";
 import { COMPANION_REQUEST_MUTATION } from "@/app/api/graphql/mutations/companionRequest";
+import { usePopup } from "@/components/shared/Popup/hooks";
 
 export const useCompanions = () => {
     const { data: session } = useSession();
-    const [limit, setLimit] = useState<number>(12);
+    const { handleShowPopup, handleHidePopup, showPopup, setShowPopup } = usePopup({ popupMode: "map" });
+
+    const defaulShowCompanions = 12;
+    const [limit, setLimit] = useState<number>(defaulShowCompanions);
     const user_id = session?.user.id;
 
     const [searchValue, setSearchValue] = useState("");
     const [searchValueCompanion, setSearchValueCompanion] = useState("");
     const [select, setSelect] = useState<boolean>(false);
+    const [checkedMap, setCheckedMap] = useState<Record<string, boolean>>({});
 
     const [loadUsers, { loading, error, data, called }] = useLazyQuery(GET_FIND_USERS);
     const [loadCompanion, { data: findCompanion, called: findCompanionCalled }] = useLazyQuery(GET_FIND_COMPANION);
@@ -29,8 +34,9 @@ export const useCompanions = () => {
     });
 
     const findUsers = searchValue ? data?.findUsers || [] : [];
-
-    const companions = searchValueCompanion ? findCompanion?.findCompanion : dataCompanions?.companions;
+    const companions = searchValueCompanion ? findCompanion?.findCompanion : dataCompanions?.companions?.companions;
+    const checkedMapObj = Object.keys(checkedMap).length;
+    const totalCompanions = dataCompanions?.companions?.totalCompanions;
 
     const handleFindUsers = (e: React.ChangeEvent<HTMLInputElement>) => {
         const inputValue = e.target.value;
@@ -64,6 +70,7 @@ export const useCompanions = () => {
     const [RemoveCompanion] = useMutation(REMOVE_COMPANION_MUTATION);
 
     const removeCompanion = async (id: string) => {
+        console.log(id, user_id);
         try {
             await RemoveCompanion({
                 variables: { userId: user_id, companionId: id },
@@ -91,7 +98,25 @@ export const useCompanions = () => {
     };
 
     const selectCompanions = () => {
-        setSelect(select === true ? false : true);
+        setSelect(!select);
+    };
+
+    const handleCheckboxChange = (id: string, isChecked: boolean) => {
+        setCheckedMap((prev) => ({
+            ...prev,
+            [id]: isChecked,
+        }));
+    };
+
+    const deleteCheckedCards = () => {
+        Object.entries(checkedMap).forEach(([id, isChecked]) => {
+            if (isChecked) {
+                removeCompanion(id);
+            }
+        });
+        setCheckedMap({});
+        refetchCompanions();
+        handleHidePopup();
     };
 
     return {
@@ -108,6 +133,16 @@ export const useCompanions = () => {
         clearInputCompanion,
         showAllCompanions,
         select,
+        limit,
         selectCompanions,
+        handleCheckboxChange,
+        deleteCheckedCards,
+        showPopup,
+        setShowPopup,
+        handleShowPopup,
+        handleHidePopup,
+        checkedMapObj,
+        defaulShowCompanions,
+        totalCompanions,
     };
 };

@@ -4,42 +4,23 @@ import CompanionsModel from "@/database/models/Сompanions";
 
 export const companionsResolvers = {
     Query: {
-        // companions: async (_: any, { userId }: { userId: string }) => {
-        //     const companions = await CompanionsModel.findOne({ user_id: userId }).populate("companions");
-
-        //     if (!companions) {
-        //         return [];
-        //     }
-
-        //     return companions.companions;
-        // },
-
         companions: async (_: any, { userId, limit }: { userId: string; limit?: number }) => {
-            const companions = await CompanionsModel.findOne({ user_id: userId }).populate("companions");
+            const companions = await CompanionsModel.findOne({ user_id: userId }).populate({
+                path: "companions",
+                options: limit ? { limit } : {},
+            });
+
+            const allCompanions = await CompanionsModel.findOne({ user_id: userId }).lean();
+            const totalCompanions = allCompanions?.companions?.length ?? 0;
 
             if (!companions) {
-                return [];
+                return {
+                    companions: [],
+                    totalCompanions: 0,
+                };
             }
-
-            return limit ? companions.companions.slice(0, limit) : companions.companions;
+            return { companions: companions.companions, totalCompanions };
         },
-
-        // findCompanion: async (
-        //     parent: any,
-        //     { userId, email, name }: { userId: string; email?: string; name?: string },
-        // ) => {
-        //     const companions = await CompanionsModel.findOne({ user_id: userId }).populate("companions");
-
-        //     const filters: any = {};
-
-        //     if (email) filters.email = email;
-
-        //     if (name) {
-        //         filters.name = { $regex: name, $options: "i" }; // 'i' — игнорировать регистр
-        //     }
-
-        //     return await UserModel.find(filters);
-        // },
 
         findCompanion: async (
             parent: any,
@@ -77,6 +58,8 @@ export const companionsResolvers = {
                         { sender: companionId, receiver: userId, status: "accepted" },
                     ],
                 });
+
+                console.log("Заявка найдена");
 
                 if (!existingCompanion) {
                     console.log("Активная дружба не найдена");

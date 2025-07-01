@@ -143,3 +143,8 @@
     gap: 1.25rem;
     margin: 5rem 0 17.38rem 0;
 }
+
+.delete {
+    color: var(--error-color);
+    border: 2px solid var(--error-color);
+}

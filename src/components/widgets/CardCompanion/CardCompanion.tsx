@@ -10,8 +10,13 @@ import Message from "@/assets/icons/message.svg";
 
 import { useCompanions } from "@/components/widgets/Companions/hooks/useCompanions";
 
+import { Popup } from "@/components/shared/Popup";
+import { usePopup } from "@/components/shared/Popup/hooks/usePopup";
+import { DeleteFriendModal } from "@/components/widgets/DeleteFriendModal";
+import { Button } from "@/components/shared/Button";
+
 import classes from "./CardCompanion.module.css";
-interface CardCompanionProps {
+export interface CardCompanionProps {
     id: string;
     name: string;
     image: string;
@@ -20,7 +25,17 @@ interface CardCompanionProps {
 }
 
 export const CardCompanion: FC<CardCompanionProps> = ({ id, name, image, onChange, select }) => {
+    const { handleShowPopup, handleHidePopup, showPopup, setShowPopup } = usePopup({ popupMode: "map" });
     const { removeCompanion } = useCompanions();
+
+    const handleDeleteCompanion = () => {
+        try {
+            removeCompanion(id);
+            handleHidePopup;
+        } catch (error) {
+            console.error("DeleteFriendModal - Error deleting companion: ", error);
+        }
+    };
 
     return (
         <div className={classes.card}>
@@ -41,7 +56,15 @@ export const CardCompanion: FC<CardCompanionProps> = ({ id, name, image, onChang
 
                     <Message />
 
-                    <Minus className={classes.removeCompanion} onClick={() => removeCompanion(id)} />
+                    <Minus className={classes.removeCompanion} onClick={handleShowPopup} />
+                    <Popup popupMode={"map"} showPopup={showPopup} setShowPopup={setShowPopup}>
+                        <DeleteFriendModal name={name}>
+                            <Button className={classes.delete} onClick={handleDeleteCompanion}>
+                                Yes
+                            </Button>
+                            <Button onClick={handleHidePopup}>Cancel</Button>
+                        </DeleteFriendModal>
+                    </Popup>
                 </div>
             </div>
         </div>

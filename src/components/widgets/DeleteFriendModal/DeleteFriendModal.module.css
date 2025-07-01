@@ -1,0 +1,28 @@
+.modalContent {
+    background-color: white;
+    padding: 20px;
+    border-radius: 0.25rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 18.75rem;
+    margin: auto;
+    border: none;
+}
+
+.modalContent::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.message {
+    margin-bottom: 1.25rem;
+    font-weight: 700;
+    line-height: 1.25rem;
+    color: var(--text-color);
+    font-size: 1.1rem;
+}
+
+.actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
