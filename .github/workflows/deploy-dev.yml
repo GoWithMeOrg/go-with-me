@@ -44,7 +44,6 @@ jobs:
                       NEXT_PUBLIC_GRAPHQL_ENDPOINT=${{ vars.NEXT_PUBLIC_GRAPHQL_ENDPOINT }}
                       TWITTER_CLIENT_ID=${{ secrets.TWITTER_CLIENT_ID }}
                       TWITTER_CLIENT_SECRET=${{ secrets.TWITTER_CLIENT_SECRET }}
-
             - name: Log in to DigitalOcean Container Registry with short-lived credentials
               run: doctl registry login --expiry-seconds 1200
 
