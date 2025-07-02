@@ -57,7 +57,8 @@ export const usePopup = ({ popupMode }: IUsePopup) => {
     }, [showPopup, handleOutsideClick]);
 
     useEffect(() => {
-        managePopupContainer();
+        const clenup = managePopupContainer();
+        return clenup;
     }, [showPopup, managePopupContainer]);
 
     return { refPopup, popupCss, showPopup, setShowPopup, handleShowPopup, handleHidePopup, container, setContainer };
