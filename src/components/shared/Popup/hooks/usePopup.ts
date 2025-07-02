@@ -5,12 +5,14 @@ import classes from "../Popup.module.css";
 
 interface IUsePopup {
     popupMode?: "auth" | "map";
+    // showPopup: boolean;
+    // setShowPopup: Dispatch<SetStateAction<boolean>>;
 }
 
 export const usePopup = ({ popupMode }: IUsePopup) => {
     const refPopup = useRef<HTMLDivElement>(null);
     const [container, setContainer] = useState<HTMLElement | null>(null);
-    const [showPopup, setShowPopup] = useState<boolean>(false);
+    const [showPopup, setShowPopup] = useState(false);
 
     const handleShowPopup = useCallback(() => {
         setShowPopup(true);
@@ -57,7 +59,8 @@ export const usePopup = ({ popupMode }: IUsePopup) => {
     }, [showPopup, handleOutsideClick]);
 
     useEffect(() => {
-        managePopupContainer();
+        const cleanup = managePopupContainer();
+        return cleanup;
     }, [showPopup, managePopupContainer]);
 
     return { refPopup, popupCss, showPopup, setShowPopup, handleShowPopup, handleHidePopup, container, setContainer };

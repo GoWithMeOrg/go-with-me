@@ -1,18 +1,16 @@
 import { createPortal } from "react-dom";
-import { Dispatch, FC, SetStateAction } from "react";
-import { usePopup } from "./hooks";
+import { FC, PropsWithChildren } from "react";
 
 import classes from "./Popup.module.css";
 
 interface PopupProps extends React.HTMLAttributes<HTMLDivElement> {
+    container: HTMLElement | null;
+    refPopup: React.RefObject<HTMLDivElement | null>;
+    popupCss: string;
     showPopup: boolean;
-    setShowPopup: Dispatch<SetStateAction<boolean>>;
-    popupMode: "map" | "auth";
 }
 
-export const Popup: FC<PopupProps> = ({ showPopup, children, popupMode }) => {
-    const { refPopup, container, popupCss } = usePopup({ popupMode });
-
+export const Popup: FC<PropsWithChildren<PopupProps>> = ({ container, refPopup, popupCss, showPopup, children }) => {
     if (!showPopup || !container) return null;
 
     return createPortal(
