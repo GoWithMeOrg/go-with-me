@@ -30,7 +30,7 @@ export const usePopup = ({ popupMode }: IUsePopup) => {
         }
     }, []);
 
-    const managePopupContainer = useCallback(() => {
+    useEffect(() => {
         let popupContainer = document.getElementById("popupContainer");
 
         if (!popupContainer) {
@@ -41,6 +41,14 @@ export const usePopup = ({ popupMode }: IUsePopup) => {
 
         setContainer(popupContainer);
 
+        return () => {
+            if (!popupContainer?.hasChildNodes()) {
+                popupContainer.remove();
+            }
+        };
+    }, []);
+
+    useEffect(() => {
         if (showPopup) {
             document.body.style.overflow = "hidden";
             document.addEventListener("mousedown", handleOutsideClick);
@@ -50,16 +58,9 @@ export const usePopup = ({ popupMode }: IUsePopup) => {
 
         return () => {
             document.removeEventListener("mousedown", handleOutsideClick);
-            if (!document.querySelector("#popupContainer")?.hasChildNodes()) {
-                popupContainer?.remove();
-            }
+            document.body.style.overflow = "";
         };
     }, [showPopup, handleOutsideClick]);
-
-    useEffect(() => {
-        const clenup = managePopupContainer();
-        return clenup;
-    }, [showPopup, managePopupContainer]);
 
     return { refPopup, popupCss, showPopup, setShowPopup, handleShowPopup, handleHidePopup, container, setContainer };
 };
