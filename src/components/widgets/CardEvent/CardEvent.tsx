@@ -28,9 +28,10 @@ interface CardEventProps {
     time: string | undefined;
     image?: string;
     size: SizeCard;
+    slideRef?: React.Ref<HTMLDivElement>;
 }
 
-export const CardEvent = ({ id, name, description, coord, startDate, time, image, size }: CardEventProps) => {
+export const CardEvent = ({ id, name, description, coord, startDate, time, image, size, slideRef }: CardEventProps) => {
     const imageSizes = {
         medium: { width: 440, height: 290 },
         "medium-large": { width: 380, height: 250 },
@@ -55,7 +56,7 @@ export const CardEvent = ({ id, name, description, coord, startDate, time, image
     );
 
     return (
-        <div id={id} className={cardCssString}>
+        <div id={id} className={cardCssString} ref={slideRef}>
             {(image && size && (
                 <Link href={`/events/${id}`}>
                     <Image

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export interface ICarousel {
     children: React.ReactNode[];
@@ -8,9 +8,12 @@ export interface ICarousel {
 }
 export const useCarousel = ({ children }: ICarousel) => {
     const [width, setWidth] = useState<number | null>(null);
-    const [hideSlider, setHideSlider] = useState(false);
+    const [hideSlider, setHideSlider] = useState<boolean>(false);
     const [currentIndex, setCurrentIndex] = useState<number>(0);
-    const [length, setLength] = useState<number>(children.length);
+    const [length, setLength] = useState<number>(children?.length);
+
+    const slideRef = useRef<HTMLDivElement>(null);
+    const slideWidth = slideRef.current?.offsetWidth || 0;
 
     const hideSliderHandler = () => {
         setHideSlider(true);
@@ -25,14 +28,13 @@ export const useCarousel = ({ children }: ICarousel) => {
     };
 
     useEffect(() => {
-        setLength(children.length);
+        setLength(children?.length);
     }, [children]);
 
     useEffect(() => {
         const updateWidth = () => {
-            const windowInnerWidth = window.innerWidth;
-            const containerGrid = 1180;
-            setWidth((windowInnerWidth - containerGrid) / 2 + containerGrid);
+            const containerGrid = 1190;
+            setWidth(containerGrid);
         };
 
         updateWidth();
@@ -41,5 +43,15 @@ export const useCarousel = ({ children }: ICarousel) => {
         return () => window.removeEventListener("resize", updateWidth);
     }, []);
 
-    return { width, length, hideSlider, currentIndex, next, hideSliderHandler, showSliderHandler };
+    return {
+        width,
+        length,
+        hideSlider,
+        currentIndex,
+        next,
+        hideSliderHandler,
+        showSliderHandler,
+        slideRef,
+        slideWidth,
+    };
 };

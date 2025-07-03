@@ -23,11 +23,23 @@ export interface SlideProps {
     time: string;
     avatar: string;
     showAvatar: boolean;
+    slideRef?: React.Ref<HTMLDivElement>;
 }
 
-export const Slide: FC<SlideProps> = ({ id, name, image, coord, startDate, time, avatar, showAvatar, userId }) => {
+export const Slide: FC<SlideProps> = ({
+    id,
+    name,
+    image,
+    coord,
+    startDate,
+    time,
+    avatar,
+    showAvatar,
+    userId,
+    slideRef,
+}) => {
     return (
-        <div className={classes.slide}>
+        <div className={classes.slide} ref={slideRef}>
             <Image src={image} alt={name} width={580} height={408} priority style={{ objectFit: "cover" }} />
             <Link href={`/events/${id}`}>
                 <div className={classes.contentWrapper}>

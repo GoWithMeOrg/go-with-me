@@ -7,9 +7,20 @@ import { ButtonNext } from "@/components/shared/ButtonNext";
 import { ICarousel, useCarousel } from "./hooks/useCarousel";
 
 import classes from "./Carousel.module.css";
+import React from "react";
 
 export const Carousel: FC<ICarousel> = ({ children, title, hideButton, marginBottom }) => {
-    const { width, hideSlider, currentIndex, next, hideSliderHandler, length, showSliderHandler } = useCarousel({
+    const {
+        width,
+        hideSlider,
+        currentIndex,
+        next,
+        hideSliderHandler,
+        length,
+        showSliderHandler,
+        slideRef,
+        slideWidth,
+    } = useCarousel({
         children,
         marginBottom,
     });
@@ -30,9 +41,9 @@ export const Carousel: FC<ICarousel> = ({ children, title, hideButton, marginBot
                     <div className={classes.wrapper} style={{ maxWidth: `${width}px`, marginBottom }}>
                         <div
                             className={classes.content}
-                            style={{ transform: `translateX(-${currentIndex * (100 / length)}%)` }}
+                            style={{ transform: `translateX(-${currentIndex * (slideWidth + 20)}px)` }}
                         >
-                            {children}
+                            {React.Children.map(children, (child) => React.cloneElement(child as any, { slideRef }))}
                         </div>
 
                         <ButtonNext onNext={next} />
