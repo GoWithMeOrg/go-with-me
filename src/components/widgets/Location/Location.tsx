@@ -41,7 +41,9 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
     const geocoding = useMapsLibrary("geocoding");
     const mapAPI = useContext(APIProviderContext);
 
-    const { showPopup, setShowPopup, handleShowPopup, handleHidePopup } = usePopup({ popupMode });
+    const { showPopup, setShowPopup, handleShowPopup, handleHidePopup, container, popupCss, refPopup } = usePopup({
+        popupMode,
+    });
 
     const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(
         props.locationEvent?.coordinates !== undefined
@@ -137,7 +139,7 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
                 options={optionsFullAdress}
             />
 
-            <Popup showPopup={showPopup} setShowPopup={setShowPopup} popupMode={"map"}>
+            <Popup showPopup={showPopup} container={container} popupCss={popupCss} refPopup={refPopup}>
                 <Map
                     style={{ height: "600px" }}
                     defaultZoom={markerPosition ? 15 : 3}
@@ -166,9 +168,7 @@ export const Location = forwardRef(function Location(props: ILocation, ref) {
                 </Map>
                 <div className={classes.buttonBlockMap}>
                     <Geolocation />
-                    <Button className={classes.buttonMap} onClick={handleHidePopup}>
-                        Закрыть
-                    </Button>
+                    <Button className={classes.buttonMap} onClick={handleHidePopup}></Button>
                 </div>
             </Popup>
         </label>
