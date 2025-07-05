@@ -22,7 +22,7 @@ export const EventList: FC<EventListProps> = ({ sizeCard, limit, sort }) => {
     if (!events) return;
 
     return (
-        <Backdrop marginTop={84} marginBottom={274} contentLoading={loading}>
+        <Backdrop marginTop={84} marginBottom={440} contentLoading={loading}>
             <ul className={classes.list}>
                 {events.map(({ _id, description, name, startDate, time, location, image }: IEvent) => (
                     <li key={_id}>

@@ -25,7 +25,7 @@ const EventListPage: NextPage = () => {
 
     return (
         <div className={classes.eventListPage}>
-            <Title tag={"h1"} title="Присоединяйтесь к приключениям" className={classes.title} />
+            <Title tag={"h1"} title="Найди свое племя" className={classes.title} />
             <Carousel title={"Рекомендуемые события"} hideButton={false} marginBottom="7.5rem">
                 {filterEventsImage.map((slide: IEvent) => (
                     <Slide

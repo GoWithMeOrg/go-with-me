@@ -36,5 +36,6 @@
     flex-wrap: wrap;
     justify-content: space-between;
     align-content: space-around;
-    gap: 1.25rem;
+    column-gap: 1.25rem;
+    row-gap: 4.5rem;
 }

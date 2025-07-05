@@ -31,3 +31,48 @@
     margin-top: 2.8rem;
     margin-bottom: 4.375rem;
 }
+
+.profile {
+    display: flex;
+}
+
+.buttonSaveChange {
+    width: 11.44rem;
+    height: 3.13rem;
+    border: 0.13rem solid var(--main-color);
+    border-radius: 0.25rem;
+    background: rgba(9, 23, 87, 0);
+    color: var(--main-color);
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.375rem;
+    text-align: center;
+    cursor: pointer;
+    margin-top: 3rem;
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 17.5rem;
+    height: 30.81rem;
+    border-radius: 0.25rem;
+    padding: 30px 32px 45px 16px;
+    background: var(--white-color);
+}
+
+.preview {
+    display: flex;
+    width: 11.25rem;
+    height: 11.25rem;
+    background-color: var(--additional-color);
+}
+
+.buttonsCreate {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    justify-content: flex-end;
+}
