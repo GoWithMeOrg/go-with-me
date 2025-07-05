@@ -45,6 +45,7 @@ const PublicProfile: NextPage = () => {
 
     //TO DO: Кнопкам Chat, Invite and Add добавить соотвествующую логику, после того, как будет реализован данный функционал.
 
+    console.log(eventsData);
     return (
         <>
             {userData?.user && (
@@ -130,7 +131,7 @@ const PublicProfile: NextPage = () => {
                         </div>
                     </div>
 
-                    {eventsData?.allOrganizerEvents && (
+                    {eventsData?.allOrganizerEvents.length > 0 && (
                         <Carousel title="Organized events" hideButton marginBottom="3.88rem">
                             {eventsData?.allOrganizerEvents.map((slide: IEvent) => (
                                 <CardEvent
@@ -148,7 +149,7 @@ const PublicProfile: NextPage = () => {
                         </Carousel>
                     )}
 
-                    {eventsData?.allOrganizerEvents && (
+                    {eventsData?.allOrganizerEvents.length > 0 && (
                         <Carousel title="Upcoming events" hideButton marginBottom="3.88rem">
                             {eventsData?.allOrganizerEvents.map((slide: IEvent) => (
                                 <CardEvent

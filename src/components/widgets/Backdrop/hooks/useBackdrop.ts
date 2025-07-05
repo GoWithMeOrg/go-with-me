@@ -13,14 +13,11 @@ export const useBackdrop = ({ children, marginTop, marginBottom }: useBackdropPr
         const updateBackground = () => {
             if (!containerRef.current) return;
 
-            const container = containerRef.current;
-
-            const containerTop = container.offsetTop;
-
-            const containerHeight = container.offsetHeight;
+            const containerTop = containerRef.current.offsetTop;
+            const containerHeight = containerRef.current.offsetHeight;
 
             const adjustedTop = containerTop + marginTop;
-            const adjustedHeight = containerHeight - marginTop - marginBottom;
+            const adjustedHeight = containerHeight - marginBottom;
 
             setStyle({
                 top: `${adjustedTop}px`,
