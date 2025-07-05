@@ -97,77 +97,80 @@ const Companions: FC = () => {
                 )}
             </FilteredList>
 
-            <div className={classes.companions}>
-                <div className={classes.header}>
-                    <Title tag={"h3"} title="My companions" />
-                </div>
+            {companions?.length > 0 && (
+                <div className={classes.companions}>
+                    <div className={classes.header}>
+                        <Title tag={"h3"} title="My companions" />
+                    </div>
 
-                <div className={classes.line}></div>
+                    <div className={classes.line}></div>
 
-                <div className={classes.filtersCompanion}>
-                    <Label label={""} className={classes.findCompanions}>
-                        <Input
-                            onChange={handleFindCompanion}
-                            type="text"
-                            className={classes.findInput}
-                            value={searchValueCompanion ?? ""}
-                        />
-                        {searchValueCompanion === "" && <Search className={classes.searchIconCompanions} />}
+                    <div className={classes.filtersCompanion}>
+                        <Label label={""} className={classes.findCompanions}>
+                            <Input
+                                onChange={handleFindCompanion}
+                                type="text"
+                                className={classes.findInput}
+                                value={searchValueCompanion ?? ""}
+                            />
+                            {searchValueCompanion === "" && <Search className={classes.searchIconCompanions} />}
 
-                        {searchValueCompanion !== "" && (
-                            <ClearInput className={classes.searchIconCompanions} onClick={clearInputCompanion} />
-                        )}
-                    </Label>
+                            {searchValueCompanion !== "" && (
+                                <ClearInput className={classes.searchIconCompanions} onClick={clearInputCompanion} />
+                            )}
+                        </Label>
 
-                    <Button
-                        resetDefaultStyles
-                        className={classes.buttonText && select ? classes.buttonActive : classes.buttonText}
-                        onClick={selectCompanions}
-                    >
-                        Select
-                    </Button>
-                </div>
-
-                <FilteredList className={classes.companionsList}>
-                    {companions?.map((card: any) => (
-                        <CardCompanion
-                            id={card._id}
-                            name={card.name}
-                            image={card.image}
-                            key={card._id}
-                            onChange={(isChecked) => handleCheckboxChange(card._id, isChecked)}
-                            select={select}
-                        />
-                    ))}
-                </FilteredList>
-
-                <div className={classes.buttons}>
-                    {companions?.length >= limit && (
                         <Button
                             resetDefaultStyles
-                            className={
-                                classes.buttonText && companions.length > limit
-                                    ? classes.buttonActive
-                                    : classes.buttonText
-                            }
-                            onClick={showAllCompanions}
+                            className={classes.buttonText && select ? classes.buttonActive : classes.buttonText}
+                            onClick={selectCompanions}
                         >
-                            {companions.length > defaulShowCompanions
-                                ? "Hide"
-                                : "Show all companions " + `(${totalCompanions})`}
+                            Select
                         </Button>
-                    )}
+                    </div>
 
-                    {select && checkedMapObj > 0 && (
-                        <div className={classes.buttonsDelAndInvite}>
-                            <Button onClick={() => console.log("Send invitations")}>Отправить инвайты</Button>
-                            <Button className={classes.delete} onClick={handleShowPopup}>
-                                Удалить компанионов
+                    <FilteredList className={classes.companionsList}>
+                        {companions?.map((card: any) => (
+                            <CardCompanion
+                                id={card._id}
+                                name={card.name}
+                                image={card.image}
+                                key={card._id}
+                                onChange={(isChecked) => handleCheckboxChange(card._id, isChecked)}
+                                select={select}
+                            />
+                        ))}
+                    </FilteredList>
+
+                    <div className={classes.buttons}>
+                        {companions?.length >= limit && (
+                            <Button
+                                resetDefaultStyles
+                                className={
+                                    classes.buttonText && companions.length > limit
+                                        ? classes.buttonActive
+                                        : classes.buttonText
+                                }
+                                onClick={showAllCompanions}
+                            >
+                                {companions.length > defaulShowCompanions
+                                    ? "Hide"
+                                    : "Show all companions " + `(${totalCompanions})`}
                             </Button>
-                        </div>
-                    )}
+                        )}
+
+                        {select && checkedMapObj > 0 && (
+                            <div className={classes.buttonsDelAndInvite}>
+                                <Button onClick={() => console.log("Send invitations")}>Отправить инвайты</Button>
+                                <Button className={classes.delete} onClick={handleShowPopup}>
+                                    Удалить компанионов
+                                </Button>
+                            </div>
+                        )}
+                    </div>
                 </div>
-            </div>
+            )}
+
             <Popup popupMode={"map"} showPopup={showPopup} setShowPopup={setShowPopup}>
                 <DeleteFriendModal companionCounter={checkedMapObj}>
                     <Button className={classes.delete} onClick={deleteCheckedCards}>
