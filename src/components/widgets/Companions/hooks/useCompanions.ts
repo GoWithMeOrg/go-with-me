@@ -6,11 +6,14 @@ import { GET_FIND_USERS } from "@/app/api/graphql/queries/findUsers";
 import { GET_COMPANIONS, GET_FIND_COMPANION } from "@/app/api/graphql/queries/companions";
 import { REMOVE_COMPANION_MUTATION } from "@/app/api/graphql/mutations/companions";
 import { COMPANION_REQUEST_MUTATION } from "@/app/api/graphql/mutations/companionRequest";
+import { GET_APPLICATION } from "@/app/api/graphql/queries/applications";
 import { usePopup } from "@/components/shared/Popup/hooks";
 
 export const useCompanions = () => {
     const { data: session } = useSession();
-    const { handleShowPopup, handleHidePopup, showPopup, setShowPopup } = usePopup({ popupMode: "map" });
+    const { showPopup, handleShowPopup, handleHidePopup, container, popupCss, refPopup } = usePopup({
+        popupMode: "map",
+    });
 
     const defaulShowCompanions = 12;
     const [limit, setLimit] = useState<number>(defaulShowCompanions);
@@ -43,7 +46,11 @@ export const useCompanions = () => {
         setSearchValue(inputValue);
 
         const isEmail = inputValue.includes("@");
-        const variables = isEmail ? { email: inputValue } : { name: inputValue };
+        // const variables = isEmail ? { email: inputValue } : { name: inputValue };
+        const variables = {
+            user_id,
+            ...(isEmail ? { email: inputValue } : { name: inputValue }),
+        };
         loadUsers({ variables });
     };
 
@@ -61,6 +68,11 @@ export const useCompanions = () => {
             ...(isEmail ? { email: inputValue } : { name: inputValue }),
         };
         loadCompanion({ variables });
+    };
+
+    const sendRequestCompanion = (card_id: string) => {
+        handleShowPopup();
+        companionRequest(card_id);
     };
 
     const clearInputCompanion = () => {
@@ -122,6 +134,7 @@ export const useCompanions = () => {
     return {
         handleFindUsers,
         handleFindCompanion,
+        sendRequestCompanion,
         findUsers,
         companions,
         called,
@@ -138,9 +151,11 @@ export const useCompanions = () => {
         handleCheckboxChange,
         deleteCheckedCards,
         showPopup,
-        setShowPopup,
         handleShowPopup,
         handleHidePopup,
+        container,
+        popupCss,
+        refPopup,
         checkedMapObj,
         defaulShowCompanions,
         totalCompanions,

@@ -11,7 +11,6 @@ import Message from "@/assets/icons/message.svg";
 import { useCompanions } from "@/components/widgets/Companions/hooks/useCompanions";
 
 import { Popup } from "@/components/shared/Popup";
-import { usePopup } from "@/components/shared/Popup/hooks/usePopup";
 import { DeleteFriendModal } from "@/components/widgets/DeleteFriendModal";
 import { Button } from "@/components/shared/Button";
 
@@ -25,8 +24,8 @@ export interface CardCompanionProps {
 }
 
 export const CardCompanion: FC<CardCompanionProps> = ({ id, name, image, onChange, select }) => {
-    const { handleShowPopup, handleHidePopup, showPopup, setShowPopup } = usePopup({ popupMode: "map" });
-    const { removeCompanion } = useCompanions();
+    const { removeCompanion, handleShowPopup, handleHidePopup, showPopup, container, popupCss, refPopup } =
+        useCompanions();
 
     const handleDeleteCompanion = () => {
         try {
@@ -57,7 +56,7 @@ export const CardCompanion: FC<CardCompanionProps> = ({ id, name, image, onChang
                     <Message />
 
                     <Minus className={classes.removeCompanion} onClick={handleShowPopup} />
-                    <Popup popupMode={"map"} showPopup={showPopup} setShowPopup={setShowPopup}>
+                    <Popup showPopup={showPopup} container={container} popupCss={popupCss} refPopup={refPopup}>
                         <DeleteFriendModal name={name}>
                             <Button className={classes.delete} onClick={handleDeleteCompanion}>
                                 Yes

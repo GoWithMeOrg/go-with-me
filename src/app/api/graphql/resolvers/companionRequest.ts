@@ -15,6 +15,17 @@ export const companionRequestResolvers = {
                 .populate("sender")
                 .populate("receiver");
         },
+
+        getApplication: async (parent: any, { user_id, receiver_id }: { user_id: string; receiver_id: string }) => {
+            return await CompanionRequest.findOne({
+                $or: [
+                    { sender: user_id, receiver: receiver_id },
+                    { sender: receiver_id, receiver: user_id },
+                ],
+            })
+                .populate("sender")
+                .populate("receiver");
+        },
     },
 
     Mutation: {
