@@ -4,19 +4,18 @@ import { FC } from "react";
 
 import { CardCompanion } from "@/components/widgets/CardCompanion";
 import { DeleteFriendModal } from "@/components/widgets/DeleteFriendModal";
+import { CardAddCompanion } from "@/components/widgets/CardAddCompanion";
 
 import { Title } from "@/components/shared/Title";
 import { Label } from "@/components/shared/Label";
 import { Input } from "@/components/shared/Input";
 import { FilteredList } from "@/components/shared/FilteredList";
-import { Avatar } from "@/components/shared/Avatar";
 import { Span } from "@/components/shared/Span";
 import { Popup } from "@/components/shared/Popup";
 import { Button } from "@/components/shared/Button";
 
 import { useCompanions } from "./hooks/useCompanions";
 
-import Plus from "@/assets/icons/plus.svg";
 import Search from "@/assets/icons/search.svg";
 import ClearInput from "@/assets/icons/clearInput.svg";
 
@@ -86,20 +85,7 @@ const Companions: FC = () => {
                     <Span title={"По вашему запросу ничего не найдено"} />
                 ) : (
                     findUsers.map((card: any) => (
-                        <div key={card._id}>
-                            <div className={classes.avatar}>
-                                <Avatar name={card.name} image={card.image} scale={1.8} id={card._id} />
-
-                                <Plus className={classes.addCompanion} onClick={() => sendRequestCompanion(card._id)} />
-
-                                <Popup showPopup={showPopup} popupCss={popupCss} refPopup={refPopup}>
-                                    <DeleteFriendModal>Ваша заявка в друзья {card.name} отправлена</DeleteFriendModal>
-                                </Popup>
-                            </div>
-
-                            <Span title={card.name.split(" ")[0]} className={classes.name} />
-                            <Span title={card.name.split(" ")[1]} className={classes.name} />
-                        </div>
+                        <CardAddCompanion key={card._id} id={card._id} name={card.name} image={card.image} />
                     ))
                 )}
             </FilteredList>

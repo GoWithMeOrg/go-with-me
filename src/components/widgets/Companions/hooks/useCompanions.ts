@@ -6,7 +6,6 @@ import { GET_FIND_USERS } from "@/app/api/graphql/queries/findUsers";
 import { GET_COMPANIONS, GET_FIND_COMPANION } from "@/app/api/graphql/queries/companions";
 import { REMOVE_COMPANION_MUTATION } from "@/app/api/graphql/mutations/companions";
 import { COMPANION_REQUEST_MUTATION } from "@/app/api/graphql/mutations/companionRequest";
-import { GET_APPLICATION } from "@/app/api/graphql/queries/applications";
 import { usePopup } from "@/components/shared/Popup/hooks";
 
 export const useCompanions = () => {
@@ -24,7 +23,7 @@ export const useCompanions = () => {
     const [select, setSelect] = useState<boolean>(false);
     const [checkedMap, setCheckedMap] = useState<Record<string, boolean>>({});
 
-    const [loadUsers, { loading, error, data, called }] = useLazyQuery(GET_FIND_USERS);
+    const [loadUsers, { loading, error, data, called, refetch }] = useLazyQuery(GET_FIND_USERS);
     const [loadCompanion, { data: findCompanion, called: findCompanionCalled }] = useLazyQuery(GET_FIND_COMPANION);
 
     const {
@@ -46,7 +45,6 @@ export const useCompanions = () => {
         setSearchValue(inputValue);
 
         const isEmail = inputValue.includes("@");
-        // const variables = isEmail ? { email: inputValue } : { name: inputValue };
         const variables = {
             user_id,
             ...(isEmail ? { email: inputValue } : { name: inputValue }),
@@ -73,6 +71,7 @@ export const useCompanions = () => {
     const sendRequestCompanion = (card_id: string) => {
         handleShowPopup();
         companionRequest(card_id);
+        refetch();
     };
 
     const clearInputCompanion = () => {
