@@ -12,3 +12,24 @@ export const LIKED = gql`
         }
     }
 `;
+
+export const GET_LIKED_EVENTS = gql`
+    query GetLikedEvents($userId: ID!) {
+        events: likedEvents(user_id: $userId) {
+            _id
+            name
+            description
+            startDate
+            time
+            createdAt
+            location {
+                type
+                coordinates
+                properties {
+                    address
+                }
+            }
+            image
+        }
+    }
+`;

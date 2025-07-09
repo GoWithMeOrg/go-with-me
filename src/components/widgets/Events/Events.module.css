@@ -1,0 +1,59 @@
+.eventsWrapper {
+    display: flex;
+    flex-direction: column;
+    margin: 0 0 12.25rem 7.5rem;
+    max-width: 780px;
+}
+
+.eventsList {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    position: relative;
+    margin-bottom: 6.25rem;
+}
+
+.btnAllNotifications {
+    position: absolute;
+    top: -2.75rem;
+    right: 1.25rem;
+    padding: 0.3125rem;
+    color: var(--additional-color);
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.19rem;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.btnAllNotifications:hover {
+    color: var(--main-color);
+}
+
+.line {
+    width: 100%;
+    border: 1px solid var(--additional-color);
+    margin-top: 1.375rem;
+    margin-bottom: 1.3125rem;
+}
+
+.filteredList {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 2.5rem;
+    row-gap: 4.5rem;
+}
+
+.noEventsMessage {
+    color: var(--text-color);
+    font-weight: 700;
+    margin: 0 auto;
+}
+
+.errorMessage {
+    color: var(--error-color);
+    font-weight: 500;
+    margin: 0 auto;
+}

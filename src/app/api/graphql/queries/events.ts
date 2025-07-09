@@ -30,6 +30,7 @@ export const GET_ORGANIZER_EVENTS = gql`
             description
             startDate
             time
+            createdAt
             location {
                 type
                 coordinates

@@ -23,3 +23,24 @@ export const JOINED_BY_USERS = gql`
         }
     }
 `;
+
+export const GET_JOINED_EVENTS = gql`
+    query GetJoinedEvents($userId: ID!) {
+        events: joinedEvents(user_id: $userId) {
+            _id
+            name
+            description
+            startDate
+            time
+            createdAt
+            location {
+                type
+                coordinates
+                properties {
+                    address
+                }
+            }
+            image
+        }
+    }
+`;

@@ -12,6 +12,7 @@ import { NavbarTabs } from "@/components/widgets/Navbar/models";
 import { ProfileForm } from "@/components/widgets/ProfileForm";
 import { Notifications } from "@/components/widgets/Notifications";
 import { Companions } from "@/components/widgets/Companions";
+import { Events } from "@/components/widgets/Events";
 
 import classes from "./page.module.css";
 
@@ -42,6 +43,7 @@ const Profile: NextPage = () => {
                     {activeTab === NavbarTabs.PERSONAL && <ProfileForm />}
                     {activeTab === NavbarTabs.NOTIFICATIONS && <Notifications />}
                     {activeTab === NavbarTabs.COMPANIONS && <Companions />}
+                    {activeTab === NavbarTabs.EVENTS && <Events onTabClick={handleTabClick} />}
                 </div>
             </div>
         </div>
