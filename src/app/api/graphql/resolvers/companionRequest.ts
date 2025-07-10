@@ -8,11 +8,11 @@ export const companionRequestResolvers = {
         getApplications: async (parent: any, { userId }: { userId: string }) => {
             return await CompanionRequest.find({
                 $or: [
-                    { sender: userId, status: "pending" },
+                    // { sender: userId, status: "pending" },
                     { receiver: userId, status: "pending" },
                 ],
             })
-                .populate("sender")
+                // .populate("sender")
                 .populate("receiver");
         },
 
