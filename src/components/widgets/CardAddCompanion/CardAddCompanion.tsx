@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { Dispatch, FC, SetStateAction } from "react";
 
 import { Popup } from "@/components/shared/Popup";
 import { Span } from "@/components/shared/Span";
@@ -15,30 +15,25 @@ export interface CardAddCompanionProps {
     id: string;
     name: string;
     image: string;
+    onClick: () => void;
+    setSelectedUser: Dispatch<SetStateAction<{ id: string; name: string } | null>>;
 }
 
-export const CardAddCompanion: FC<CardAddCompanionProps> = ({ id, name, image }) => {
-    const { showPopup, container, popupCss, refPopup, handleHidePopup, sendRequestCompanion } = useCompanions();
+export const CardAddCompanion: FC<CardAddCompanionProps> = ({ id, name, image, onClick, setSelectedUser }) => {
+    // const { showPopup, container, popupCss, refPopup, handleHidePopup, handleShowPopup, sendRequestCompanion } =
+    //     useCompanions();
+
+    const idName = () => {
+        setSelectedUser({ id, name });
+        onClick();
+    };
 
     return (
         <div key={id}>
             <div className={classes.avatar}>
                 <Avatar name={name} image={image} scale={1.8} id={id} />
 
-                <Plus className={classes.addCompanion} onClick={() => sendRequestCompanion(id)} />
-
-                <Popup showPopup={showPopup} container={container} popupCss={popupCss} refPopup={refPopup}>
-                    <div className={classes.content}>
-                        <Close className={classes.close} onClick={handleHidePopup} />
-                        <span className={classes.actions}>
-                            <p>
-                                Ваша заявка в друзья <br />
-                                <span>{name}</span>
-                                отправлена
-                            </p>
-                        </span>
-                    </div>
-                </Popup>
+                <Plus className={classes.addCompanion} onClick={idName} />
             </div>
 
             <Span title={name.split(" ")[0]} className={classes.name} />

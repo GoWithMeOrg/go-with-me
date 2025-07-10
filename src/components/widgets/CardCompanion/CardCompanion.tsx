@@ -56,14 +56,14 @@ export const CardCompanion: FC<CardCompanionProps> = ({ id, name, image, onChang
                     <Message />
 
                     <Minus className={classes.removeCompanion} onClick={handleShowPopup} />
-                    <Popup showPopup={showPopup} container={container} popupCss={popupCss} refPopup={refPopup}>
+                    {/* <Popup showPopup={showPopup} container={container} popupCss={popupCss} refPopup={refPopup}>
                         <DeleteFriendModal name={name}>
                             <Button className={classes.delete} onClick={handleDeleteCompanion}>
                                 Yes
                             </Button>
                             <Button onClick={handleHidePopup}>Cancel</Button>
                         </DeleteFriendModal>
-                    </Popup>
+                    </Popup> */}
                 </div>
             </div>
         </div>

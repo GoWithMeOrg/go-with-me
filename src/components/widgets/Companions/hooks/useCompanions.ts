@@ -21,6 +21,7 @@ export const useCompanions = () => {
     const [searchValue, setSearchValue] = useState("");
     const [searchValueCompanion, setSearchValueCompanion] = useState("");
     const [select, setSelect] = useState<boolean>(false);
+    const [selectedUser, setSelectedUser] = useState<{ id: string; name: string } | null>(null);
     const [checkedMap, setCheckedMap] = useState<Record<string, boolean>>({});
 
     const [loadUsers, { loading, error, data, called, refetch }] = useLazyQuery(GET_FIND_USERS);
@@ -69,9 +70,9 @@ export const useCompanions = () => {
     };
 
     const sendRequestCompanion = (card_id: string) => {
-        handleShowPopup();
         companionRequest(card_id);
         refetch();
+        handleHidePopup();
     };
 
     const clearInputCompanion = () => {
@@ -158,5 +159,8 @@ export const useCompanions = () => {
         checkedMapObj,
         defaulShowCompanions,
         totalCompanions,
+
+        selectedUser,
+        setSelectedUser,
     };
 };

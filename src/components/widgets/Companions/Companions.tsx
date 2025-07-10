@@ -18,8 +18,14 @@ import { useCompanions } from "./hooks/useCompanions";
 
 import Search from "@/assets/icons/search.svg";
 import ClearInput from "@/assets/icons/clearInput.svg";
+import Close from "@/assets/icons/close.svg";
 
 import classes from "./Companions.module.css";
+import { DialogModal } from "../DialogModal";
+
+import { Avatar } from "@/components/shared/Avatar";
+import Plus from "@/assets/icons/plus.svg";
+import { DialogMode } from "../DialogModal/DialogModal";
 
 // TODO: При клике на плюс тоже вызываем попап?.
 // TODO: Добавить попап с вопросом об удаление одного или нескольких друзей
@@ -58,8 +64,12 @@ const Companions: FC = () => {
         checkedMapObj,
         defaulShowCompanions,
         totalCompanions,
+
+        selectedUser,
+        setSelectedUser,
     } = useCompanions();
 
+    console.log(selectedUser);
     return (
         <div className={classes.searchCompanions}>
             <div className={classes.header}>
@@ -85,7 +95,15 @@ const Companions: FC = () => {
                     <Span title={"По вашему запросу ничего не найдено"} />
                 ) : (
                     findUsers.map((card: any) => (
-                        <CardAddCompanion key={card._id} id={card._id} name={card.name} image={card.image} />
+                        <CardAddCompanion
+                            key={card._id}
+                            id={card._id}
+                            name={card.name}
+                            image={card.image}
+                            setSelectedUser={setSelectedUser}
+                            // addCompanion={() => sendRequestCompanion(card._id)}
+                            onClick={handleShowPopup}
+                        />
                     ))
                 )}
             </FilteredList>
@@ -166,13 +184,28 @@ const Companions: FC = () => {
                             )}
                         </div>
                     </div>
-                    <Popup showPopup={showPopup} popupCss={popupCss} refPopup={refPopup}>
+                    {/* <Popup showPopup={showPopup} popupCss={popupCss} refPopup={refPopup}>
                         <DeleteFriendModal companionCounter={checkedMapObj}>
                             <Button className={classes.delete} onClick={deleteCheckedCards}>
                                 Yes
                             </Button>
                             <Button onClick={handleHidePopup}>Cancel</Button>
                         </DeleteFriendModal>
+                    </Popup> */}
+
+                    <Popup showPopup={showPopup && !!selectedUser} popupCss={popupCss} refPopup={refPopup}>
+                        {/* добавить в друзья */}
+                        {selectedUser && (
+                            <DialogModal name={selectedUser?.name} mode={DialogMode.ADD}>
+                                <Button
+                                    className={classes.delete}
+                                    onClick={() => sendRequestCompanion(selectedUser?.id)}
+                                >
+                                    Yes
+                                </Button>
+                                <Button onClick={handleHidePopup}>Cancel</Button>
+                            </DialogModal>
+                        )}
                     </Popup>
                 </>
             )}
