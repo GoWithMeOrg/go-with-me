@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { Dispatch, FC, SetStateAction } from "react";
 
 import { Avatar } from "@/components/shared/Avatar";
 import { Span } from "@/components/shared/Span";
@@ -19,21 +19,24 @@ export interface CardCompanionProps {
     id: string;
     name: string;
     image: string;
+    onShowPopup: () => void;
+    setDelCompanion: Dispatch<SetStateAction<{ id: string; name: string } | null>>;
     onChange: (checked: boolean) => void;
     select: boolean;
 }
 
-export const CardCompanion: FC<CardCompanionProps> = ({ id, name, image, onChange, select }) => {
-    const { removeCompanion, handleShowPopup, handleHidePopup, showPopup, container, popupCss, refPopup } =
-        useCompanions();
-
-    const handleDeleteCompanion = () => {
-        try {
-            removeCompanion(id);
-            handleHidePopup;
-        } catch (error) {
-            console.error("DeleteFriendModal - Error deleting companion: ", error);
-        }
+export const CardCompanion: FC<CardCompanionProps> = ({
+    id,
+    name,
+    image,
+    onChange,
+    select,
+    onShowPopup,
+    setDelCompanion,
+}) => {
+    const handleClick = () => {
+        setDelCompanion({ id, name });
+        onShowPopup();
     };
 
     return (
@@ -51,19 +54,11 @@ export const CardCompanion: FC<CardCompanionProps> = ({ id, name, image, onChang
                 </div>
 
                 <div className={classes.icons}>
-                    <Email />
+                    <Email onClick={handleClick} />
 
-                    <Message />
+                    {/* <Message /> */}
 
-                    <Minus className={classes.removeCompanion} onClick={handleShowPopup} />
-                    {/* <Popup showPopup={showPopup} container={container} popupCss={popupCss} refPopup={refPopup}>
-                        <DeleteFriendModal name={name}>
-                            <Button className={classes.delete} onClick={handleDeleteCompanion}>
-                                Yes
-                            </Button>
-                            <Button onClick={handleHidePopup}>Cancel</Button>
-                        </DeleteFriendModal>
-                    </Popup> */}
+                    <Minus className={classes.removeCompanion} onClick={handleClick} />
                 </div>
             </div>
         </div>

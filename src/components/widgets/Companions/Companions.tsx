@@ -5,6 +5,7 @@ import { FC } from "react";
 import { CardCompanion } from "@/components/widgets/CardCompanion";
 import { DeleteFriendModal } from "@/components/widgets/DeleteFriendModal";
 import { CardAddCompanion } from "@/components/widgets/CardAddCompanion";
+import { DialogModal, DialogMode } from "@/components/widgets/DialogModal/DialogModal";
 
 import { Title } from "@/components/shared/Title";
 import { Label } from "@/components/shared/Label";
@@ -18,14 +19,8 @@ import { useCompanions } from "./hooks/useCompanions";
 
 import Search from "@/assets/icons/search.svg";
 import ClearInput from "@/assets/icons/clearInput.svg";
-import Close from "@/assets/icons/close.svg";
 
 import classes from "./Companions.module.css";
-import { DialogModal } from "../DialogModal";
-
-import { Avatar } from "@/components/shared/Avatar";
-import Plus from "@/assets/icons/plus.svg";
-import { DialogMode } from "../DialogModal/DialogModal";
 
 // TODO: При клике на плюс тоже вызываем попап?.
 // TODO: Добавить попап с вопросом об удаление одного или нескольких друзей
@@ -44,7 +39,6 @@ const Companions: FC = () => {
         findUsers,
         companions,
         called,
-        companionRequest,
         searchValue,
         searchValueCompanion,
         clearInput,
@@ -56,7 +50,6 @@ const Companions: FC = () => {
         showPopup,
         handleShowPopup,
         handleHidePopup,
-        container,
         popupCss,
         refPopup,
         handleCheckboxChange,
@@ -65,11 +58,17 @@ const Companions: FC = () => {
         defaulShowCompanions,
         totalCompanions,
 
-        selectedUser,
-        setSelectedUser,
+        addedUser,
+        setAddedUser,
+
+        delCompanion,
+        setDelCompanion,
+        deleteCompanion,
+
+        openPopup,
+        activePopup,
     } = useCompanions();
 
-    console.log(selectedUser);
     return (
         <div className={classes.searchCompanions}>
             <div className={classes.header}>
@@ -100,9 +99,8 @@ const Companions: FC = () => {
                             id={card._id}
                             name={card.name}
                             image={card.image}
-                            setSelectedUser={setSelectedUser}
-                            // addCompanion={() => sendRequestCompanion(card._id)}
-                            onClick={handleShowPopup}
+                            onShowPopup={() => openPopup(card._id)}
+                            setAddedUser={setAddedUser}
                         />
                     ))
                 )}
@@ -153,6 +151,8 @@ const Companions: FC = () => {
                                     key={card._id}
                                     onChange={(isChecked) => handleCheckboxChange(card._id, isChecked)}
                                     select={select}
+                                    onShowPopup={() => openPopup(card._id)}
+                                    setDelCompanion={setDelCompanion}
                                 />
                             ))}
                         </FilteredList>
@@ -184,23 +184,21 @@ const Companions: FC = () => {
                             )}
                         </div>
                     </div>
-                    {/* <Popup showPopup={showPopup} popupCss={popupCss} refPopup={refPopup}>
-                        <DeleteFriendModal companionCounter={checkedMapObj}>
-                            <Button className={classes.delete} onClick={deleteCheckedCards}>
-                                Yes
-                            </Button>
-                            <Button onClick={handleHidePopup}>Cancel</Button>
-                        </DeleteFriendModal>
-                    </Popup> */}
+                    <Popup showPopup={showPopup} popupCss={popupCss} refPopup={refPopup}>
+                        {/* Добавить в друзья */}
+                        {addedUser?.id === activePopup && (
+                            <DialogModal name={addedUser?.name} mode={DialogMode.ADD}>
+                                <Button className={classes.delete} onClick={() => sendRequestCompanion(addedUser?.id)}>
+                                    Yes
+                                </Button>
+                                <Button onClick={handleHidePopup}>Cancel</Button>
+                            </DialogModal>
+                        )}
 
-                    <Popup showPopup={showPopup && !!selectedUser} popupCss={popupCss} refPopup={refPopup}>
-                        {/* добавить в друзья */}
-                        {selectedUser && (
-                            <DialogModal name={selectedUser?.name} mode={DialogMode.ADD}>
-                                <Button
-                                    className={classes.delete}
-                                    onClick={() => sendRequestCompanion(selectedUser?.id)}
-                                >
+                        {/* Удалить из друзей */}
+                        {delCompanion?.id === activePopup && (
+                            <DialogModal name={delCompanion?.name} mode={DialogMode.DEL}>
+                                <Button className={classes.delete} onClick={() => deleteCompanion(delCompanion?.id)}>
                                     Yes
                                 </Button>
                                 <Button onClick={handleHidePopup}>Cancel</Button>

@@ -10,7 +10,7 @@ import { usePopup } from "@/components/shared/Popup/hooks";
 
 export const useCompanions = () => {
     const { data: session } = useSession();
-    const { showPopup, handleShowPopup, handleHidePopup, container, popupCss, refPopup } = usePopup({
+    const { showPopup, setShowPopup, handleShowPopup, handleHidePopup, container, popupCss, refPopup } = usePopup({
         popupMode: "map",
     });
 
@@ -21,8 +21,17 @@ export const useCompanions = () => {
     const [searchValue, setSearchValue] = useState("");
     const [searchValueCompanion, setSearchValueCompanion] = useState("");
     const [select, setSelect] = useState<boolean>(false);
-    const [selectedUser, setSelectedUser] = useState<{ id: string; name: string } | null>(null);
+    const [addedUser, setAddedUser] = useState<{ id: string; name: string } | null>(null);
+    const [delCompanion, setDelCompanion] = useState<{ id: string; name: string } | null>(null);
     const [checkedMap, setCheckedMap] = useState<Record<string, boolean>>({});
+
+    //Активный попап
+    const [activePopup, setActivePopup] = useState<string | null>(null);
+
+    const openPopup = (popupId: string) => {
+        setActivePopup(popupId);
+        handleShowPopup();
+    };
 
     const [loadUsers, { loading, error, data, called, refetch }] = useLazyQuery(GET_FIND_USERS);
     const [loadCompanion, { data: findCompanion, called: findCompanionCalled }] = useLazyQuery(GET_FIND_COMPANION);
@@ -57,6 +66,10 @@ export const useCompanions = () => {
         setSearchValue("");
     };
 
+    const clearInputCompanion = () => {
+        setSearchValueCompanion("");
+    };
+
     const handleFindCompanion = (e: React.ChangeEvent<HTMLInputElement>) => {
         const inputValue = e.target.value;
         setSearchValueCompanion(inputValue);
@@ -69,14 +82,22 @@ export const useCompanions = () => {
         loadCompanion({ variables });
     };
 
+    const [CompanionRequest] = useMutation(COMPANION_REQUEST_MUTATION);
+
+    const companionRequest = async (id: string) => {
+        try {
+            await CompanionRequest({
+                variables: { senderId: user_id, receiverId: id },
+            });
+        } catch (error) {
+            console.error("Error deleting event: ", error);
+        }
+    };
+
     const sendRequestCompanion = (card_id: string) => {
         companionRequest(card_id);
         refetch();
         handleHidePopup();
-    };
-
-    const clearInputCompanion = () => {
-        setSearchValueCompanion("");
     };
 
     const [RemoveCompanion] = useMutation(REMOVE_COMPANION_MUTATION);
@@ -93,16 +114,9 @@ export const useCompanions = () => {
         refetchCompanions();
     };
 
-    const [CompanionRequest] = useMutation(COMPANION_REQUEST_MUTATION);
-
-    const companionRequest = async (id: string) => {
-        try {
-            await CompanionRequest({
-                variables: { senderId: user_id, receiverId: id },
-            });
-        } catch (error) {
-            console.error("Error deleting event: ", error);
-        }
+    const deleteCompanion = (card_id: string) => {
+        removeCompanion(card_id);
+        handleHidePopup();
     };
 
     const showAllCompanions = () => {
@@ -151,6 +165,7 @@ export const useCompanions = () => {
         handleCheckboxChange,
         deleteCheckedCards,
         showPopup,
+        setShowPopup,
         handleShowPopup,
         handleHidePopup,
         container,
@@ -160,7 +175,14 @@ export const useCompanions = () => {
         defaulShowCompanions,
         totalCompanions,
 
-        selectedUser,
-        setSelectedUser,
+        addedUser,
+        setAddedUser,
+
+        delCompanion,
+        setDelCompanion,
+        deleteCompanion,
+
+        openPopup,
+        activePopup,
     };
 };

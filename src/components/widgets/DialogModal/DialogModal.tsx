@@ -1,6 +1,6 @@
 import classes from "./DialogModal.module.css";
 
-interface DialogModalProps {
+export interface DialogModalProps {
     name?: string;
     children?: React.ReactNode;
     companionCounter?: number;
@@ -9,19 +9,19 @@ interface DialogModalProps {
 
 export enum DialogMode {
     ADD = "add",
-    DELETE = "del",
+    DEL = "del",
 }
 
 export const DialogModal: React.FC<DialogModalProps> = ({ name, children, companionCounter, mode }) => {
     return (
         <div className={classes.modalContent}>
-            {name && mode === "add" && (
+            {name && mode === DialogMode.ADD && (
                 <p className={classes.message}>
-                    Отправить заявку в коммпанионы <br /> {name}?
+                    Отправить заявку в компанионы <br /> {name}?
                 </p>
             )}
 
-            {name && mode === "del" && (
+            {name && mode === DialogMode.DEL && (
                 <p className={classes.message}>
                     Удалить из компанионов <br /> {name}?
                 </p>

@@ -9,6 +9,7 @@
 }
 
 .addCompanion path:hover {
+    cursor: pointer;
     fill: var(--hover-color);
 }
 
