@@ -3,7 +3,6 @@
 import { FC } from "react";
 
 import { CardCompanion } from "@/components/widgets/CardCompanion";
-import { DeleteFriendModal } from "@/components/widgets/DeleteFriendModal";
 import { CardAddCompanion } from "@/components/widgets/CardAddCompanion";
 import { DialogModal, DialogMode } from "@/components/widgets/DialogModal/DialogModal";
 
@@ -67,7 +66,24 @@ const Companions: FC = () => {
 
         openPopup,
         activePopup,
+
+        invitationCompanion,
+        setInvitationCompanion,
+
+        events,
+
+        delCompanions,
+        setDelCompanions,
+
+        invitationCompanions,
+        setInvitationCompanions,
+        checkedMap,
+
+        openPopup2,
+        openPopup3,
     } = useCompanions();
+
+    console.log("invitationCompanions: ", invitationCompanions, "delCompanions: ", delCompanions);
 
     return (
         <div className={classes.searchCompanions}>
@@ -152,6 +168,7 @@ const Companions: FC = () => {
                                     onChange={(isChecked) => handleCheckboxChange(card._id, isChecked)}
                                     select={select}
                                     onShowPopup={() => openPopup(card._id)}
+                                    setInvitateCompanion={setInvitationCompanion}
                                     setDelCompanion={setDelCompanion}
                                 />
                             ))}
@@ -176,8 +193,8 @@ const Companions: FC = () => {
 
                             {select && checkedMapObj > 0 && (
                                 <div className={classes.buttonsDelAndInvite}>
-                                    <Button onClick={() => console.log("Send invitations")}>Отправить инвайты</Button>
-                                    <Button className={classes.delete} onClick={handleShowPopup}>
+                                    <Button onClick={() => openPopup2()}>Отправить инвайты</Button>
+                                    <Button className={classes.delete} onClick={() => openPopup3()}>
                                         Удалить компанионов
                                     </Button>
                                 </div>
@@ -185,7 +202,7 @@ const Companions: FC = () => {
                         </div>
                     </div>
                     <Popup showPopup={showPopup} popupCss={popupCss} refPopup={refPopup}>
-                        {/* Добавить в друзья */}
+                        {/* Отправить заявку в компанионы */}
                         {addedUser?.id === activePopup && (
                             <DialogModal name={addedUser?.name} mode={DialogMode.ADD}>
                                 <Button className={classes.delete} onClick={() => sendRequestCompanion(addedUser?.id)}>
@@ -195,13 +212,50 @@ const Companions: FC = () => {
                             </DialogModal>
                         )}
 
-                        {/* Удалить из друзей */}
+                        {/* Удалить из компанионов */}
                         {delCompanion?.id === activePopup && (
                             <DialogModal name={delCompanion?.name} mode={DialogMode.DEL}>
                                 <Button className={classes.delete} onClick={() => deleteCompanion(delCompanion?.id)}>
                                     Yes
                                 </Button>
                                 <Button onClick={handleHidePopup}>Cancel</Button>
+                            </DialogModal>
+                        )}
+
+                        {/* Пригласить компаниона */}
+                        {invitationCompanion?.id === activePopup && (
+                            <DialogModal name={invitationCompanion?.name} mode={DialogMode.INVITATION}>
+                                {/* <Button className={classes.delete} onClick={() => deleteCompanion(delCompanion?.id)}>
+                                    Yes
+                                </Button>
+                                <Button onClick={handleHidePopup}>Cancel</Button> */}
+
+                                <FilteredList className={classes.companionsList}>
+                                    {events?.map((event: any) => <div key={event._id}>{event.name}</div>)}
+                                </FilteredList>
+                            </DialogModal>
+                        )}
+
+                        {/* Удалить несколько компанионов */}
+                        {delCompanions && checkedMap && (
+                            <DialogModal companionCounter={checkedMapObj} mode={DialogMode.DEL}>
+                                <Button className={classes.delete} onClick={deleteCheckedCards}>
+                                    Yes
+                                </Button>
+                                <Button onClick={handleHidePopup}>Cancel</Button>
+                            </DialogModal>
+                        )}
+
+                        {/* Пригласить несколько компанионов */}
+                        {invitationCompanions && checkedMap && (
+                            <DialogModal companionCounter={checkedMapObj} mode={DialogMode.INVITATION}>
+                                {/* <Button className={classes.delete} onClick={deleteCheckedCards}>
+                                Yes
+                            </Button>
+                            <Button onClick={handleHidePopup}>Cancel</Button> */}
+                                <FilteredList className={classes.companionsList}>
+                                    {events?.map((event: any) => <div key={event._id}>{event.name}</div>)}
+                                </FilteredList>
                             </DialogModal>
                         )}
                     </Popup>

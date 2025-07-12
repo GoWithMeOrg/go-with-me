@@ -4,12 +4,13 @@ export interface DialogModalProps {
     name?: string;
     children?: React.ReactNode;
     companionCounter?: number;
-    mode: DialogMode;
+    mode?: DialogMode;
 }
 
 export enum DialogMode {
     ADD = "add",
     DEL = "del",
+    INVITATION = "Invitation",
 }
 
 export const DialogModal: React.FC<DialogModalProps> = ({ name, children, companionCounter, mode }) => {
@@ -27,7 +28,19 @@ export const DialogModal: React.FC<DialogModalProps> = ({ name, children, compan
                 </p>
             )}
 
-            {Boolean(companionCounter) && <p className={classes.message}>Удалить {companionCounter} компанионов?</p>}
+            {name && mode === DialogMode.INVITATION && (
+                <p className={classes.message}>
+                    Выберите мероприятия на которые хотите пригласить <br /> {name}
+                </p>
+            )}
+
+            {Boolean(companionCounter) && mode === DialogMode.DEL && (
+                <p className={classes.message}>Удалить {companionCounter} компанионов?</p>
+            )}
+
+            {Boolean(companionCounter) && mode === DialogMode.INVITATION && (
+                <p className={classes.message}>Пригласить {companionCounter} компанионов?</p>
+            )}
 
             <div className={classes.actions}>{children}</div>
         </div>

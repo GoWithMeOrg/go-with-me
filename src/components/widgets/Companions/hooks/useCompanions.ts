@@ -7,6 +7,7 @@ import { GET_COMPANIONS, GET_FIND_COMPANION } from "@/app/api/graphql/queries/co
 import { REMOVE_COMPANION_MUTATION } from "@/app/api/graphql/mutations/companions";
 import { COMPANION_REQUEST_MUTATION } from "@/app/api/graphql/mutations/companionRequest";
 import { usePopup } from "@/components/shared/Popup/hooks";
+import { GET_ORGANIZER_EVENTS } from "@/app/api/graphql/queries/events";
 
 export const useCompanions = () => {
     const { data: session } = useSession();
@@ -22,8 +23,18 @@ export const useCompanions = () => {
     const [searchValueCompanion, setSearchValueCompanion] = useState("");
     const [select, setSelect] = useState<boolean>(false);
     const [addedUser, setAddedUser] = useState<{ id: string; name: string } | null>(null);
+
+    // const [addedUsers, setAddedUsers] = useState({});
+
     const [delCompanion, setDelCompanion] = useState<{ id: string; name: string } | null>(null);
+
+    const [invitationCompanion, setInvitationCompanion] = useState<{ id: string; name: string } | null>(null);
+
     const [checkedMap, setCheckedMap] = useState<Record<string, boolean>>({});
+
+    const [delCompanions, setDelCompanions] = useState<boolean>(false);
+
+    const [invitationCompanions, setInvitationCompanions] = useState<boolean>(false);
 
     //Активный попап
     const [activePopup, setActivePopup] = useState<string | null>(null);
@@ -33,8 +44,29 @@ export const useCompanions = () => {
         handleShowPopup();
     };
 
+    const openPopup2 = () => {
+        setDelCompanions(false);
+        setInvitationCompanions(true);
+        handleShowPopup();
+    };
+
+    const openPopup3 = () => {
+        setInvitationCompanions(false);
+        setDelCompanions(true);
+        handleShowPopup();
+    };
+
     const [loadUsers, { loading, error, data, called, refetch }] = useLazyQuery(GET_FIND_USERS);
     const [loadCompanion, { data: findCompanion, called: findCompanionCalled }] = useLazyQuery(GET_FIND_COMPANION);
+    const {
+        loading: loadingEvents,
+        error: errorEvents,
+        data: dataEvents,
+    } = useQuery(GET_ORGANIZER_EVENTS, {
+        variables: {
+            organizerId: user_id,
+        },
+    });
 
     const {
         loading: errorloading,
@@ -49,6 +81,7 @@ export const useCompanions = () => {
     const companions = searchValueCompanion ? findCompanion?.findCompanion : dataCompanions?.companions?.companions;
     const checkedMapObj = Object.keys(checkedMap).length;
     const totalCompanions = dataCompanions?.companions?.totalCompanions;
+    const events = dataEvents?.allOrganizerEvents;
 
     const handleFindUsers = (e: React.ChangeEvent<HTMLInputElement>) => {
         const inputValue = e.target.value;
@@ -142,6 +175,7 @@ export const useCompanions = () => {
         });
         setCheckedMap({});
         refetchCompanions();
+        selectCompanions();
         handleHidePopup();
     };
 
@@ -184,5 +218,19 @@ export const useCompanions = () => {
 
         openPopup,
         activePopup,
+
+        invitationCompanion,
+        setInvitationCompanion,
+        events,
+
+        openPopup2,
+        openPopup3,
+        delCompanions,
+        setDelCompanions,
+
+        invitationCompanions,
+        setInvitationCompanions,
+
+        checkedMap,
     };
 };

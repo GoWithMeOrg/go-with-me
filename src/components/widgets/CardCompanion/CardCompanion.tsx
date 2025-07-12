@@ -8,12 +8,6 @@ import Minus from "@/assets/icons/minus.svg";
 import Email from "@/assets/icons/email.svg";
 import Message from "@/assets/icons/message.svg";
 
-import { useCompanions } from "@/components/widgets/Companions/hooks/useCompanions";
-
-import { Popup } from "@/components/shared/Popup";
-import { DeleteFriendModal } from "@/components/widgets/DeleteFriendModal";
-import { Button } from "@/components/shared/Button";
-
 import classes from "./CardCompanion.module.css";
 export interface CardCompanionProps {
     id: string;
@@ -21,6 +15,7 @@ export interface CardCompanionProps {
     image: string;
     onShowPopup: () => void;
     setDelCompanion: Dispatch<SetStateAction<{ id: string; name: string } | null>>;
+    setInvitateCompanion: Dispatch<SetStateAction<{ id: string; name: string } | null>>;
     onChange: (checked: boolean) => void;
     select: boolean;
 }
@@ -33,9 +28,15 @@ export const CardCompanion: FC<CardCompanionProps> = ({
     select,
     onShowPopup,
     setDelCompanion,
+    setInvitateCompanion,
 }) => {
     const handleClick = () => {
         setDelCompanion({ id, name });
+        onShowPopup();
+    };
+
+    const handleClickInviate = () => {
+        setInvitateCompanion({ id, name });
         onShowPopup();
     };
 
@@ -54,7 +55,7 @@ export const CardCompanion: FC<CardCompanionProps> = ({
                 </div>
 
                 <div className={classes.icons}>
-                    <Email onClick={handleClick} />
+                    <Email onClick={handleClickInviate} />
 
                     {/* <Message /> */}
 
