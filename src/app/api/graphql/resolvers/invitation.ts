@@ -22,6 +22,19 @@ export const invitationResolvers = {
 
             return inviteds.map((record) => record);
         },
+        getDeclinedEvents: async (_: any, { userId }: { userId: string }) => {
+            const declinedInvites = await InvitedModel.find({
+                user: userId,
+                status: InvitationResponseStatus.DECLINED,
+            }).populate({
+                path: "invitation",
+                populate: { path: "event" },
+            });
+
+            const declinedEvents = declinedInvites.map((inv) => inv.invitation?.event).filter(Boolean); // фильтруем на случай если нет события
+
+            return declinedEvents;
+        },
     },
 
     Mutation: {

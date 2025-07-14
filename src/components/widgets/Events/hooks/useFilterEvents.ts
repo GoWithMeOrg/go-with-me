@@ -8,6 +8,7 @@ import { GET_JOINED_EVENTS } from "@/app/api/graphql/queries/joined";
 import { GET_ORGANIZER_EVENTS } from "@/app/api/graphql/queries/events";
 
 import { filterOrganizerByNewest, filterPast, filterUpcoming } from "../utils/getFilteredEvents";
+import { GET_DECLINED_EVENTS } from "@/app/api/graphql/queries/invations";
 
 interface FilterEventsProps {
     activeFilter: TabType;
@@ -46,6 +47,15 @@ export const useFilterEvents = ({ activeFilter }: FilterEventsProps) => {
     } = useQuery(GET_ORGANIZER_EVENTS, {
         variables: { organizerId: user_id },
         skip: !user_id || activeFilter !== TabType.ORGANIZED,
+    });
+
+    const {
+        data: declinedData,
+        loading: declinedLoading,
+        error: declinedError,
+    } = useQuery(GET_DECLINED_EVENTS, {
+        variables: { userId: user_id },
+        skip: !user_id || activeFilter !== TabType.DECLINED,
     });
 
     const now = useMemo(() => new Date(), []);
@@ -90,6 +100,14 @@ export const useFilterEvents = ({ activeFilter }: FilterEventsProps) => {
                 }
                 break;
 
+            case TabType.DECLINED:
+                if (declinedData) {
+                    setData(declinedData.events ?? []);
+                    setLoading(declinedLoading);
+                    setError(declinedError ?? null);
+                }
+                break;
+
             default:
                 setData([]);
                 setLoading(false);
@@ -106,6 +124,9 @@ export const useFilterEvents = ({ activeFilter }: FilterEventsProps) => {
         organizerData,
         organizerLoading,
         organizerError,
+        declinedData,
+        declinedLoading,
+        declinedError,
         now,
     ]);
 

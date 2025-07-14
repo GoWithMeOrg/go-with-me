@@ -34,6 +34,30 @@ export function Events({ onTabClick }: EventsProps) {
 
     const TABS = [TabType.UPCOMING, TabType.WATCHLIST, TabType.DECLINED, TabType.PAST, TabType.ORGANIZED];
 
+    let content: React.ReactNode;
+
+    if (loading) {
+        content = <Loader num={2} />;
+    } else if (error) {
+        content = <div className={classes.errorMessage}>{error.message}</div>;
+    } else if (!data || data.length === 0) {
+        content = <div className={classes.noEventsMessage}>По вашему запросу ничего не найдено</div>;
+    } else {
+        content = data.map(({ _id, description, name, startDate, location, time, image }) => (
+            <CardEvent
+                key={_id}
+                id={_id}
+                name={name}
+                description={description}
+                coord={[location.coordinates[0], location.coordinates[1]]}
+                startDate={startDate}
+                time={time}
+                image={image}
+                size={SizeCard.ML}
+            />
+        ));
+    }
+
     return (
         <div className={classes.eventsWrapper}>
             {hasData && (
@@ -66,29 +90,7 @@ export function Events({ onTabClick }: EventsProps) {
             <Title tag={"h3"} title="Events" />
             <div className={classes.line}></div>
             <NavigationTabs tabs={TABS} activeTab={activeFilter} onTabChange={setActiveFilter} />
-            <FilteredList className={classes.filteredList}>
-                {loading ? (
-                    <Loader num={2} />
-                ) : error ? (
-                    <div className={classes.errorMessage}>{error.message}</div>
-                ) : !data || data.length === 0 ? (
-                    <div className={classes.noEventsMessage}>По вашему запросу ничего не найдено</div>
-                ) : (
-                    data.map(({ _id, description, name, startDate, location, time, image }) => (
-                        <CardEvent
-                            key={_id}
-                            id={_id}
-                            name={name}
-                            description={description}
-                            coord={[location.coordinates[0], location.coordinates[1]]}
-                            startDate={startDate}
-                            time={time}
-                            image={image}
-                            size={SizeCard.ML}
-                        />
-                    ))
-                )}
-            </FilteredList>
+            <FilteredList className={classes.filteredList}>{content}</FilteredList>
         </div>
     );
 }
