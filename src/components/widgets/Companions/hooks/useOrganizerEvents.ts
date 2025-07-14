@@ -1,9 +1,10 @@
 import { useQuery } from "@apollo/client";
 import { GET_ORGANIZER_EVENTS } from "@/app/api/graphql/queries/events";
-
-import { user_id } from "@/constants/constants";
+import { useUserID } from "@/hooks/useUserID";
 
 export const useOrganizerEvents = () => {
+    const { user_id } = useUserID();
+
     const {
         loading: loadingEvents,
         error: errorEvents,

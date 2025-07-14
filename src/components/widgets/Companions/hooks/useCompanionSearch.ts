@@ -3,11 +3,12 @@ import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { GET_FIND_COMPANION, GET_COMPANIONS } from "@/app/api/graphql/queries/companions";
 import { REMOVE_COMPANION_MUTATION } from "@/app/api/graphql/mutations/companions";
 import { COMPANION_REQUEST_MUTATION } from "@/app/api/graphql/mutations/companionRequest";
-import { user_id } from "@/constants/constants";
+import { useUserID } from "@/hooks/useUserID";
 
 export const useCompanionSearch = (limit: number) => {
     const [searchValueCompanion, setSearchValueCompanion] = useState("");
     const [loadCompanion, { data: findCompanion, called: findCompanionCalled }] = useLazyQuery(GET_FIND_COMPANION);
+    const { user_id } = useUserID();
 
     const {
         loading: loadingCompanions,

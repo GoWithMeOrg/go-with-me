@@ -2,10 +2,10 @@ import { useState } from "react";
 import { useLazyQuery } from "@apollo/client";
 
 import { GET_FIND_USERS } from "@/app/api/graphql/queries/findUsers";
-
-import { user_id } from "@/constants/constants";
+import { useUserID } from "@/hooks/useUserID";
 
 export const useFindUsers = () => {
+    const { user_id } = useUserID();
     const [searchValue, setSearchValue] = useState("");
     const [loadUsers, { loading, error, data, called, refetch }] = useLazyQuery(GET_FIND_USERS);
 
