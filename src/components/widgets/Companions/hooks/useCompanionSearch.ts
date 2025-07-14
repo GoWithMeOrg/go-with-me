@@ -3,12 +3,9 @@ import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { GET_FIND_COMPANION, GET_COMPANIONS } from "@/app/api/graphql/queries/companions";
 import { REMOVE_COMPANION_MUTATION } from "@/app/api/graphql/mutations/companions";
 import { COMPANION_REQUEST_MUTATION } from "@/app/api/graphql/mutations/companionRequest";
-import { useSession } from "next-auth/react";
+import { user_id } from "@/constants/constants";
 
 export const useCompanionSearch = (limit: number) => {
-    const { data: session } = useSession();
-    const user_id = session?.user.id;
-
     const [searchValueCompanion, setSearchValueCompanion] = useState("");
     const [loadCompanion, { data: findCompanion, called: findCompanionCalled }] = useLazyQuery(GET_FIND_COMPANION);
 
