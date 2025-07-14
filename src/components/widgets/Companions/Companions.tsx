@@ -83,8 +83,6 @@ const Companions: FC = () => {
         openPopup3,
     } = useCompanions();
 
-    console.log("invitationCompanions: ", invitationCompanions, "delCompanions: ", delCompanions);
-
     return (
         <div className={classes.searchCompanions}>
             <div className={classes.header}>
