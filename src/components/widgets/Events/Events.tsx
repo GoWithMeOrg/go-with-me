@@ -28,9 +28,9 @@ export function Events({ onTabClick }: EventsProps) {
 
     const { dataInvations } = useNotifications();
 
-    const hasData = Boolean(dataInvations?.length);
+    const invitedEvents = dataInvations?.filter((item: IInvitation) => item.status === "Invited");
 
-    const lastInvitation: IInvitation = dataInvations?.at(-1);
+    const viewInvitedEvent: IInvitation | undefined = invitedEvents?.[0];
 
     const TABS = [TabType.UPCOMING, TabType.WATCHLIST, TabType.DECLINED, TabType.PAST, TabType.ORGANIZED];
 
@@ -60,7 +60,7 @@ export function Events({ onTabClick }: EventsProps) {
 
     return (
         <div className={classes.eventsWrapper}>
-            {hasData && (
+            {viewInvitedEvent && (
                 <div className={classes.eventsList}>
                     <Button
                         resetDefaultStyles={true}
@@ -70,20 +70,20 @@ export function Events({ onTabClick }: EventsProps) {
                         All notifications
                     </Button>
                     <Invitation
-                        key={lastInvitation.invitation.id}
-                        invitation_id={lastInvitation.invitation.id}
-                        receiver_id={lastInvitation.user._id}
-                        status={lastInvitation.status}
-                        event_id={lastInvitation.invitation.event._id}
-                        image={lastInvitation.invitation.event.image}
-                        eventName={lastInvitation.invitation.event?.name}
-                        coordinates={lastInvitation.invitation.event.location.coordinates}
-                        startDate={lastInvitation.invitation.event.startDate}
-                        time={lastInvitation.invitation.event.time}
-                        organizerName={lastInvitation.invitation.event.organizer.name}
-                        senderName={lastInvitation.invitation.sender.name}
-                        organizer_id={lastInvitation.invitation.event.organizer._id}
-                        sender_id={lastInvitation.invitation.sender._id}
+                        key={viewInvitedEvent.invitation.id}
+                        invitation_id={viewInvitedEvent.invitation.id}
+                        receiver_id={viewInvitedEvent.user._id}
+                        status={viewInvitedEvent.status}
+                        event_id={viewInvitedEvent.invitation.event._id}
+                        image={viewInvitedEvent.invitation.event.image}
+                        eventName={viewInvitedEvent.invitation.event?.name}
+                        coordinates={viewInvitedEvent.invitation.event.location.coordinates}
+                        startDate={viewInvitedEvent.invitation.event.startDate}
+                        time={viewInvitedEvent.invitation.event.time}
+                        organizerName={viewInvitedEvent.invitation.event.organizer.name}
+                        senderName={viewInvitedEvent.invitation.sender.name}
+                        organizer_id={viewInvitedEvent.invitation.event.organizer._id}
+                        sender_id={viewInvitedEvent.invitation.sender._id}
                     />
                 </div>
             )}
