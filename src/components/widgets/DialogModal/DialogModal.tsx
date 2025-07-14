@@ -10,7 +10,7 @@ export interface DialogModalProps {
 export enum DialogMode {
     ADD = "add",
     DEL = "del",
-    INVITATION = "Invitation",
+    INVITATION = "invitation",
 }
 
 export const DialogModal: React.FC<DialogModalProps> = ({ name, children, companionCounter, mode }) => {

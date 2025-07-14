@@ -47,13 +47,12 @@ const Companions: FC = () => {
         limit,
         selectCompanions,
         showPopup,
-        handleShowPopup,
         handleHidePopup,
         popupCss,
         refPopup,
         handleCheckboxChange,
-        deleteCheckedCards,
-        checkedMapObj,
+        deleteCheckedCompanions,
+        checkedCompanionsCounter,
         defaulShowCompanions,
         totalCompanions,
 
@@ -69,18 +68,15 @@ const Companions: FC = () => {
 
         invitationCompanion,
         setInvitationCompanion,
+        invitationSelectedCompanions,
 
         events,
 
-        delCompanions,
-        setDelCompanions,
+        delSelectedCompanions,
+        checkedCompanions,
 
-        invitationCompanions,
-        setInvitationCompanions,
-        checkedMap,
-
-        openPopup2,
-        openPopup3,
+        openPopupInvation,
+        openPopupDelete,
     } = useCompanions();
 
     return (
@@ -189,10 +185,10 @@ const Companions: FC = () => {
                                 </Button>
                             )}
 
-                            {select && checkedMapObj > 0 && (
+                            {select && checkedCompanionsCounter > 0 && (
                                 <div className={classes.buttonsDelAndInvite}>
-                                    <Button onClick={() => openPopup2()}>Отправить инвайты</Button>
-                                    <Button className={classes.delete} onClick={() => openPopup3()}>
+                                    <Button onClick={() => openPopupInvation()}>Отправить инвайты</Button>
+                                    <Button className={classes.delete} onClick={() => openPopupDelete()}>
                                         Удалить компанионов
                                     </Button>
                                 </div>
@@ -235,9 +231,9 @@ const Companions: FC = () => {
                         )}
 
                         {/* Удалить несколько компанионов */}
-                        {delCompanions && checkedMap && (
-                            <DialogModal companionCounter={checkedMapObj} mode={DialogMode.DEL}>
-                                <Button className={classes.delete} onClick={deleteCheckedCards}>
+                        {delSelectedCompanions && checkedCompanions && (
+                            <DialogModal companionCounter={checkedCompanionsCounter} mode={DialogMode.DEL}>
+                                <Button className={classes.delete} onClick={deleteCheckedCompanions}>
                                     Yes
                                 </Button>
                                 <Button onClick={handleHidePopup}>Cancel</Button>
@@ -245,15 +241,16 @@ const Companions: FC = () => {
                         )}
 
                         {/* Пригласить несколько компанионов */}
-                        {invitationCompanions && checkedMap && (
-                            <DialogModal companionCounter={checkedMapObj} mode={DialogMode.INVITATION}>
-                                {/* <Button className={classes.delete} onClick={deleteCheckedCards}>
-                                Yes
-                            </Button>
-                            <Button onClick={handleHidePopup}>Cancel</Button> */}
+                        {invitationSelectedCompanions && checkedCompanions && (
+                            <DialogModal companionCounter={checkedCompanionsCounter} mode={DialogMode.INVITATION}>
                                 <FilteredList className={classes.companionsList}>
                                     {events?.map((event: any) => <div key={event._id}>{event.name}</div>)}
                                 </FilteredList>
+
+                                {/* <Button className={classes.delete} onClick={() => console.log("Отправить приглашение")}>
+                                    Yes
+                                </Button>
+                                <Button onClick={handleHidePopup}>Cancel</Button> */}
                             </DialogModal>
                         )}
                     </Popup>
