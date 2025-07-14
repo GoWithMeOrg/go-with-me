@@ -45,3 +45,24 @@ export const GET_INVATIONS_WITH_STATUS = gql`
         }
     }
 `;
+
+export const GET_DECLINED_EVENTS = gql`
+    query GetDeclinedEvents($userId: ID!) {
+        events: getDeclinedEvents(userId: $userId) {
+            _id
+            name
+            description
+            startDate
+            time
+            createdAt
+            location {
+                type
+                coordinates
+                properties {
+                    address
+                }
+            }
+            image
+        }
+    }
+`;

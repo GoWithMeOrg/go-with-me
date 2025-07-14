@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@apollo/client";
 
 import { JOIN_MUTATION } from "@/app/api/graphql/mutations/join";
-import { JOINED_BY_USER, JOINED_BY_USERS } from "@/app/api/graphql/queries/joined";
+import { GET_JOINED_EVENTS, JOINED_BY_USER, JOINED_BY_USERS } from "@/app/api/graphql/queries/joined";
 
 import { JoinProps } from "@/components/widgets/Join/types/JoinProps";
 import { IJoined, IGetJoined } from "@/components/widgets/Join/types/IJoined";
@@ -26,6 +26,13 @@ const useJoin = ({ event_id, user_id }: JoinProps) => {
         try {
             await joinEventMutation({
                 variables: { eventId: event_id, userId: user_id },
+                refetchQueries: [
+                    {
+                        query: GET_JOINED_EVENTS,
+                        variables: { userId: user_id },
+                    },
+                ],
+                awaitRefetchQueries: true,
             });
         } catch (error) {
             console.error("Error deleting event: ", error);
