@@ -29,7 +29,7 @@
         "@googlemaps/js-api-loader": "^1.16.8",
         "@googlemaps/routing": "^1.4.0",
         "@graphql-tools/schema": "^10.0.16",
-        "@vis.gl/react-google-maps": "^1.5.2",
+        "@vis.gl/react-google-maps": "^1.5.4",
         "child_process": "^1.0.2",
         "dayjs": "^1.11.13",
         "graphql": "^16.10.0",

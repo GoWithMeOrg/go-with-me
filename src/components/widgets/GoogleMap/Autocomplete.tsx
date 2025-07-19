@@ -10,41 +10,68 @@ interface Props {
 
 export const Autocomplete = ({ onPlaceSelect, className, address, options }: Props) => {
     const places = useMapsLibrary("places");
-    const originRef = useRef<HTMLInputElement>(null);
+    const inputRef = useRef<HTMLInputElement>(null);
     const [placeAutocomplete, setPlaceAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
-    const newAdress = placeAutocomplete?.getPlace()?.formatted_address || address;
 
     const createAutocomplete = useCallback(() => {
-        if (!places || !originRef || !originRef.current) return;
+        if (!places || !inputRef.current) return;
 
-        options;
+        const autocomplete = new places.Autocomplete(inputRef.current, options);
+        setPlaceAutocomplete(autocomplete);
 
-        setPlaceAutocomplete(new places.Autocomplete(originRef.current, options));
-    }, [places, originRef, options]);
+        return autocomplete;
+    }, [places, options]);
 
     useEffect(() => {
-        createAutocomplete();
+        const autocomplete = createAutocomplete();
+        return () => {
+            if (autocomplete) {
+                google.maps.event.clearInstanceListeners(autocomplete);
+            }
+        };
     }, [createAutocomplete]);
 
     useEffect(() => {
         if (!placeAutocomplete) return;
 
-        const placeChangedListener = placeAutocomplete.addListener("place_changed", () => {
+        const handlePlaceChanged = () => {
             const place = placeAutocomplete.getPlace();
             onPlaceSelect(place);
+        };
 
-            return () => {
-                placeChangedListener.remove();
-                setPlaceAutocomplete(null);
-            };
-        });
+        const listener = placeAutocomplete.addListener("place_changed", handlePlaceChanged);
 
-        if (originRef.current) {
-            originRef.current.value = newAdress || "";
+        return () => {
+            if (listener) {
+                listener.remove();
+            }
+        };
+    }, [placeAutocomplete, onPlaceSelect]);
+
+    useEffect(() => {
+        if (inputRef.current && address) {
+            inputRef.current.value = address;
         }
-    }, [onPlaceSelect, placeAutocomplete, newAdress]);
+    }, [address]);
 
-    return <input className={className} type="text" placeholder="" ref={originRef} defaultValue={newAdress} />;
+    useEffect(() => {
+        const stopPropagation = (e: MouseEvent) => {
+            const target = e.target as HTMLElement;
+            if (target.closest(".pac-container")) {
+                e.stopPropagation();
+            }
+        };
+
+        document.addEventListener("mousedown", stopPropagation, true);
+
+        return () => {
+            document.removeEventListener("mousedown", stopPropagation, true);
+        };
+    }, []);
+
+    return (
+        <input ref={inputRef} className={className} type="text" placeholder="Введите адрес" defaultValue={address} />
+    );
 };
 
 export default Autocomplete;

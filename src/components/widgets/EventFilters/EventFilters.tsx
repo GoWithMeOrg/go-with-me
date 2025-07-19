@@ -31,6 +31,7 @@ export const EventFilters = () => {
         handleCategoriesChange,
         handleTagsChange,
         handleTypesChange,
+        selectedLocation,
     } = useEventFilters();
 
     const { events, loading } = useEventList({});
@@ -104,7 +105,9 @@ export const EventFilters = () => {
                     </FilteredList>
                 </Backdrop>
             )}
-            {activeTab === "map" && <GoogleMap />}
+            {activeTab === "map" && (
+                <GoogleMap events={filteredData?.eventFilters || events || []} selectedLocation={selectedLocation} />
+            )}
         </div>
     );
 };

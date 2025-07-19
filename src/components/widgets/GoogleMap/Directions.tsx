@@ -4,6 +4,7 @@ import { useMapsLibrary, useMap } from "@vis.gl/react-google-maps";
 interface Props {
     onPlaceSelect: (place: google.maps.places.PlaceResult | null) => void;
 }
+
 export const Directions = ({ onPlaceSelect }: Props) => {
     const map = useMap();
     const places = useMapsLibrary("places");
@@ -23,47 +24,40 @@ export const Directions = ({ onPlaceSelect }: Props) => {
 
     useEffect(() => {
         if (!places || !originRef.current || !destinationRef.current) return;
+
         const options = {
             fields: ["geometry", "name", "formatted_address"],
         };
-        setOriginPlace(new places.Autocomplete(originRef.current, options));
-        setDestinationPlace(new places.Autocomplete(destinationRef.current, options));
+
+        const originAutocomplete = new places.Autocomplete(originRef.current, options);
+        const destinationAutocomplete = new places.Autocomplete(destinationRef.current, options);
+
+        setOriginPlace(originAutocomplete);
+        setDestinationPlace(destinationAutocomplete);
 
         if (!routesLibrary || !map) return;
         setDirectionsService(new routesLibrary.DirectionsService());
         setDirectionsRenderer(new routesLibrary.DirectionsRenderer({ map }));
+
+        return () => {
+            google.maps.event.clearInstanceListeners(originAutocomplete);
+            google.maps.event.clearInstanceListeners(destinationAutocomplete);
+        };
     }, [map, places, routesLibrary]);
 
     useEffect(() => {
-        if (!directionsService || !directionsRenderer) return;
+        if (!directionsService || !directionsRenderer || !originPlace || !destinationPlace) return;
 
-        const onChangeHandler = function () {
-            calculateAndDisplayRoute(directionsService, directionsRenderer);
-        };
+        const calculateAndDisplayRoute = () => {
+            const originValue = originRef.current?.value;
+            const destinationValue = destinationRef.current?.value;
 
-        let originValue = originRef.current;
-        let destinationValue = destinationRef.current;
-        let originListener: google.maps.MapsEventListener | null = null;
+            if (!originValue || !destinationValue) return;
 
-        if (originPlace && destinationValue) {
-            originListener = originPlace.addListener("place_changed", () => {
-                onPlaceSelect(originPlace.getPlace());
-            });
-            destinationValue.addEventListener("change", onChangeHandler);
-        }
-
-        function calculateAndDisplayRoute(
-            directionsService: google.maps.DirectionsService,
-            directionsRenderer: google.maps.DirectionsRenderer,
-        ) {
             directionsService
                 .route({
-                    origin: {
-                        query: originValue?.value,
-                    },
-                    destination: {
-                        query: destinationValue?.value,
-                    },
+                    origin: { query: originValue },
+                    destination: { query: destinationValue },
                     travelMode: google.maps.TravelMode.DRIVING,
                     provideRouteAlternatives: true,
                 })
@@ -71,19 +65,22 @@ export const Directions = ({ onPlaceSelect }: Props) => {
                     directionsRenderer.setDirections(response);
                     setRoutes(response.routes);
                 })
-                .catch((e) => console.log("Directions request failed due to "));
-        }
+                .catch((e) => console.log("Ошибка запроса маршрута:", e));
+        };
+
+        const originListener = originPlace.addListener("place_changed", () => {
+            onPlaceSelect(originPlace.getPlace());
+            calculateAndDisplayRoute();
+        });
+
+        const destinationListener = destinationPlace.addListener("place_changed", () => {
+            calculateAndDisplayRoute();
+        });
 
         return () => {
-            if (originListener) {
-                originListener.remove();
-                setOriginPlace(null);
-            }
-
-            if (destinationValue) {
-                destinationValue.removeEventListener("change", onChangeHandler);
-            }
-            directionsRenderer.setMap(null);
+            if (originListener) originListener.remove();
+            if (destinationListener) destinationListener.remove();
+            if (directionsRenderer) directionsRenderer.setMap(null);
         };
     }, [onPlaceSelect, originPlace, destinationPlace, directionsService, directionsRenderer]);
 
@@ -95,33 +92,31 @@ export const Directions = ({ onPlaceSelect }: Props) => {
     return (
         <>
             <div>
-                <input ref={originRef} />
-                <input ref={destinationRef} />
+                <input ref={originRef} placeholder="Откуда" />
+                <input ref={destinationRef} placeholder="Куда" />
             </div>
 
             {selected && (
                 <div className="directions">
-                    {/* <h2>{selected?.summary}</h2> */}
-                    {/*  <p>
-                        {leg?.start_address.split(",")[0]} to {leg?.end_address.split(",")[0]}
-                    </p> */}
-                    {/* <div className={classes.leg}>
-                        <p>Distance: {leg?.distance?.text}</p>
-                        <p>Duration: {leg?.duration?.text}</p>
-                    </div> */}
+                    <h2>{selected?.summary}</h2>
+                    <p>
+                        {leg?.start_address.split(",")[0]} до {leg?.end_address.split(",")[0]}
+                    </p>
+                    <div>
+                        <p>Расстояние: {leg?.distance?.text}</p>
+                        <p>Время: {leg?.duration?.text}</p>
+                    </div>
 
-                    {/* <h2>Other Routes</h2>
+                    <h3>Другие маршруты</h3>
                     <ul>
                         {routes.map((route, index) => (
                             <li key={route.summary}>
                                 <button onClick={() => setRouteIndex(index)}>{route.summary}</button>
                             </li>
                         ))}
-                    </ul> */}
+                    </ul>
                 </div>
             )}
         </>
     );
 };
-
-export default Directions;
