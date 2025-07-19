@@ -20,10 +20,6 @@ export const GoogleMap: React.FC<Props> = ({ events = [], selectedLocation }) =>
     const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
     const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
 
-    if (!apiIsLoaded || !ctx) return null;
-
-    const selectedEvent = events.find((e) => e._id === selectedEventId);
-
     const handleMarkerClick = useCallback((event: IEvent, offsetLat: number, offsetLng: number) => {
         setSelectedEventId(event._id);
     }, []);
@@ -34,6 +30,10 @@ export const GoogleMap: React.FC<Props> = ({ events = [], selectedLocation }) =>
             map.fitBounds(bounds);
         }
     }, [map, selectedLocation]);
+
+    if (!apiIsLoaded || !ctx) return null;
+
+    const selectedEvent = events.find((e) => e._id === selectedEventId);
 
     return (
         <div style={{ display: "flex", height: "600px" }}>
