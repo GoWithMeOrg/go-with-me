@@ -17,11 +17,15 @@ import { IEvent } from "@/database/models/Event";
 import { CardEvent } from "@/components/widgets/CardEvent";
 import { SizeCard } from "@/components/widgets/CardEvent/CardEvent";
 
+import Spinner from "@/assets/icons/spinner.svg";
+
 import classes from "./page.module.css";
 
 const EventListPage: NextPage = () => {
     const { status } = useSession();
-    const { filterEventsImage } = useEventList({});
+    const { filterEventsImage, loading } = useEventList({});
+
+    if (loading) return <Spinner className={classes.spinner} />;
 
     return (
         <div className={classes.eventListPage}>

@@ -141,7 +141,7 @@ const Companions: FC = () => {
                                 className={classes.buttonText && select ? classes.buttonActive : classes.buttonText}
                                 onClick={selectCompanions}
                             >
-                                Select
+                                {select ? "Cancel" : "Select"}
                             </Button>
                         </div>
 
@@ -154,6 +154,7 @@ const Companions: FC = () => {
                                     key={card._id}
                                     onChange={(isChecked) => handleCheckboxChange(card._id, isChecked)}
                                     select={select}
+                                    checked={checkedCompanions[card._id] ?? false}
                                     onShowPopup={() => openPopup(card._id)}
                                     setInvitateCompanion={setInvitationCompanion}
                                     setDelCompanion={setDelCompanion}

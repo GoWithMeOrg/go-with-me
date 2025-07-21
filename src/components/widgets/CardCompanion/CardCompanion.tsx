@@ -18,6 +18,7 @@ export interface CardCompanionProps {
     setInvitateCompanion: Dispatch<SetStateAction<{ id: string; name: string } | null>>;
     onChange: (checked: boolean) => void;
     select: boolean;
+    checked?: boolean;
 }
 
 export const CardCompanion: FC<CardCompanionProps> = ({
@@ -26,10 +27,12 @@ export const CardCompanion: FC<CardCompanionProps> = ({
     image,
     onChange,
     select,
+    checked,
     onShowPopup,
     setDelCompanion,
     setInvitateCompanion,
 }) => {
+    const CardCompanionCss = [classes.card, checked && classes.cardBorder].filter(Boolean).join(" ");
     const handleClick = () => {
         setDelCompanion({ id, name });
         onShowPopup();
@@ -41,9 +44,9 @@ export const CardCompanion: FC<CardCompanionProps> = ({
     };
 
     return (
-        <div className={classes.card}>
+        <div className={CardCompanionCss}>
             <div>
-                {select && <Checkbox className={classes.position} onChange={onChange} id={id} />}
+                {select && <Checkbox className={classes.position} onChange={onChange} id={id} checked={checked} />}
 
                 <Avatar name={name} image={image} scale={1.8} id={id} />
             </div>
