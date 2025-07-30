@@ -1,6 +1,7 @@
 import { AdvancedMarker, Pin, useMap } from "@vis.gl/react-google-maps";
 import { useCallback, useEffect, useRef } from "react";
 import { IEvent } from "./types/Type";
+import { MAP_CONSTANTS, COLORS } from "@/constants/map";
 
 interface MapControllerProp {
     onMarkerClick: (event: IEvent, offsetLat: number, offsetLng: number) => void;
@@ -26,8 +27,8 @@ export const MapController = ({ onMarkerClick, selectedEventId, events }: MapCon
 
                 mapRef.current.panTo(position);
 
-                if (currentZoom && currentZoom < 12) {
-                    mapRef.current.setZoom(14);
+                if (currentZoom && currentZoom < MAP_CONSTANTS.MIN_ZOOM) {
+                    mapRef.current.setZoom(MAP_CONSTANTS.TARGET_ZOOM);
                 }
             }
             onMarkerClick(event, offsetLat, offsetLng);
@@ -53,9 +54,9 @@ export const MapController = ({ onMarkerClick, selectedEventId, events }: MapCon
                         title={event.name}
                     >
                         <Pin
-                            background={isSelected ? "#FFD600" : "#091757"}
-                            borderColor={"#091757"}
-                            glyphColor={isSelected ? "#000" : "#fff"}
+                            background={isSelected ? COLORS.yellow : COLORS.darkBlue}
+                            borderColor={COLORS.black}
+                            glyphColor={isSelected ? COLORS.black : COLORS.white}
                         />
                     </AdvancedMarker>
                 );

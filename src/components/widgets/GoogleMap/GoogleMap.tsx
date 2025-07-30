@@ -7,6 +7,7 @@ import { CustomMapControl } from "./CustomMapControl";
 import { IEvent } from "./types/Type";
 import { MapController } from "./MapController";
 import { CardEventMap } from "../CardEventMap/CardEventMap";
+import { MAP_CONSTANTS } from "@/constants/map";
 
 interface Props {
     events?: IEvent[];
@@ -44,7 +45,7 @@ export const GoogleMap: React.FC<Props> = ({ events = [], selectedLocation }) =>
             <div style={{ flex: 1, position: "relative" }}>
                 <Map
                     defaultZoom={3}
-                    defaultCenter={{ lat: 55.7558, lng: 37.6173 }}
+                    defaultCenter={MAP_CONSTANTS.DEFAULT_CENTER}
                     gestureHandling="greedy"
                     disableDefaultUI={false}
                     mapId={"<Your custom MapId here>"}

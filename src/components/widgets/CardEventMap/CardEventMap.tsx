@@ -1,7 +1,7 @@
 import Link from "next/link";
 import classes from "./CardEventMap.module.css";
 import CardEvent, { SizeCard } from "../CardEvent/CardEvent";
-import ArrowCircle from "../../../assets/icons/arrowCircle.svg";
+import ArrowCircle from "@/assets/icons/arrowCircle.svg";
 
 interface IEvent {
     _id: string;
