@@ -97,7 +97,7 @@ const EventEditPage: NextPage<PageProps> = () => {
 
             <Title className={classes.createEventTitle} title="РЕДАКТИРОВАНИЕ СОБЫТИЯ" tag={"h2"} />
 
-            {loading && <Loader />}
+            {loading && <Loader num={1} />}
             {error && <p>Error : {error.message}</p>}
 
             {!error && data?.event && <EventForm eventData={data.event} onSubmitEvent={handleEditEvent} />}

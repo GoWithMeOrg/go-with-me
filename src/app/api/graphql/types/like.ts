@@ -12,6 +12,7 @@ export const likeTypeDefs = gql`
 
     type Query {
         liked(event_id: ID, user_id: ID): Like
+        likedEvents(user_id: ID!): [Event!]!
     }
 
     type Mutation {

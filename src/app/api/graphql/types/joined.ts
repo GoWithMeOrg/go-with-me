@@ -13,6 +13,7 @@ export const joinedTypeDefs = gql`
     type Query {
         joinedByUsers(event_id: ID): [Joined]
         joinedByUser(event_id: ID!, user_id: ID!): Joined
+        joinedEvents(user_id: ID!): [Event!]!
     }
 
     type Mutation {

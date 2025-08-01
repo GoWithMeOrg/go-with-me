@@ -12,6 +12,16 @@ export const likedResolvers: IResolvers = {
 
             return await LikeModel.findOne({ event_id: eventObjectId, user_id: userObjectId });
         },
+
+        likedEvents: async (_: any, { user_id }: { user_id: string }) => {
+            const userObjectId = new mongoose.Types.ObjectId(user_id);
+
+            const likes = await LikeModel.find({ user_id: userObjectId, isLiked: true });
+            const eventIds = likes.map((like) => like.event_id);
+
+            const events = await EventModel.find({ _id: { $in: eventIds } });
+            return events;
+        },
     },
 
     Mutation: {

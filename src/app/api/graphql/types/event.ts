@@ -11,6 +11,7 @@ export const eventTypeDefs = gql`
         endDate: ISODate
         time: String
         location: Location
+        createdAt: ISODate
         tags: [String]
         categories: [String]
         types: [String]

@@ -1,69 +1,68 @@
-import React, { useContext, useRef, useState } from "react";
-import {
-    APIProviderContext,
-    AdvancedMarker,
-    ControlPosition,
-    Map,
-    Pin,
-    useApiIsLoaded,
-} from "@vis.gl/react-google-maps";
-
-import { CustomMapControl } from "./CustomMapControl";
-import MapHandler from "./MapHandler";
-
-import Autocomplete from "./Autocomplete";
+import React, { useContext, useState, useCallback, useEffect } from "react";
+import { APIProviderContext, Map, ControlPosition, useApiIsLoaded, useMap } from "@vis.gl/react-google-maps";
+import { Autocomplete } from "./Autocomplete";
+import { MapHandlerBounds } from "./MapHandlerBounds";
 import { optionsFullAdress } from "./OptionsAutocomplete";
-import MapHandlerBounds from "./MapHandlerBounds";
+import { CustomMapControl } from "./CustomMapControl";
+import { IEvent } from "./types/Type";
+import { MapController } from "./MapController";
+import { CardEventMap } from "../CardEventMap/CardEventMap";
+import { MAP_CONSTANTS } from "@/constants/map";
 
-export const GoogleMap = () => {
+interface Props {
+    events?: IEvent[];
+    selectedLocation?: google.maps.places.PlaceResult | null;
+}
+
+export const GoogleMap: React.FC<Props> = ({ events = [], selectedLocation }) => {
     const apiIsLoaded = useApiIsLoaded();
     const ctx = useContext(APIProviderContext);
+    const map = useMap();
     const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
-    const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(null);
-    const originRef = useRef<HTMLInputElement>(null);
+    const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
 
-    if (!apiIsLoaded || !ctx) {
-        return;
-    }
+    const handleMarkerClick = useCallback((event: IEvent, offsetLat: number, offsetLng: number) => {
+        setSelectedEventId(event._id);
+    }, []);
 
-    // let newPosition;
-    // if (selectedPlace?.geometry && selectedPlace.geometry.location) {
-    //     newPosition = {
-    //         lat: selectedPlace.geometry.location.lat(),
-    //         lng: selectedPlace.geometry.location.lng(),
-    //     };
-    // }
+    useEffect(() => {
+        if (map && selectedLocation?.geometry?.viewport) {
+            const bounds = selectedLocation.geometry.viewport;
+            map.fitBounds(bounds);
+        }
+    }, [map, selectedLocation]);
 
-    // console.log(markerPosition);
+    if (!apiIsLoaded || !ctx) return null;
+
+    const selectedEvent = events.find((e) => e._id === selectedEventId);
 
     return (
-        <>
-            <Map
-                style={{ height: "600px" }}
-                defaultZoom={3}
-                defaultCenter={{ lat: 22.54992, lng: 0 }}
-                gestureHandling={"greedy"}
-                disableDefaultUI={false}
-                mapId={"<Your custom MapId here>"}
-                onClick={(e) => {
-                    setMarkerPosition(e.detail.latLng);
-                }}
-            >
-                {/* {markerPosition && <AdvancedMarker position={markerPosition} />} */}
-                <AdvancedMarker
-                    position={markerPosition}
-                    // draggable={true}
-                    title={"AdvancedMarker with customized pin."}
+        <div style={{ display: "flex", height: "600px" }}>
+            {/* Sidebar карточка */}
+            {selectedEvent && <CardEventMap selectedEvent={selectedEvent} />}
+
+            {/* Карта */}
+            <div style={{ flex: 1, position: "relative" }}>
+                <Map
+                    defaultZoom={3}
+                    defaultCenter={MAP_CONSTANTS.DEFAULT_CENTER}
+                    gestureHandling="greedy"
+                    disableDefaultUI={false}
+                    mapId={"<Your custom MapId here>"}
+                    onClick={() => setSelectedEventId(null)}
                 >
-                    <Pin background={"#FBBC04"} borderColor={"#1e89a1"} glyphColor={"#0f677a"}></Pin>
-                </AdvancedMarker>
-            </Map>
-            <CustomMapControl controlPosition={ControlPosition.TOP}>
-                <Autocomplete onPlaceSelect={setSelectedPlace} options={optionsFullAdress} />
-            </CustomMapControl>
-            <MapHandlerBounds place={selectedPlace} />
-        </>
+                    <MapController
+                        onMarkerClick={handleMarkerClick}
+                        selectedEventId={selectedEventId}
+                        events={events}
+                    />
+                </Map>
+
+                <CustomMapControl controlPosition={ControlPosition.TOP}>
+                    <Autocomplete onPlaceSelect={setSelectedPlace} options={optionsFullAdress} />
+                </CustomMapControl>
+                <MapHandlerBounds place={selectedPlace} />
+            </div>
+        </div>
     );
 };
-
-export default GoogleMap;
