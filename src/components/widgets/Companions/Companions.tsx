@@ -1,6 +1,8 @@
 "use client";
 
-import { FC } from "react";
+import { FC, useState } from "react";
+
+import dayjs from "dayjs";
 
 import { CardCompanion } from "@/components/widgets/CardCompanion";
 import { CardAddCompanion } from "@/components/widgets/CardAddCompanion";
@@ -18,10 +20,15 @@ import { useCompanions } from "./hooks/useCompanions";
 
 import Search from "@/assets/icons/search.svg";
 import ClearInput from "@/assets/icons/clearInput.svg";
+import Plus from "@/assets/icons/plus.svg";
+import Checkbox from "@/assets/icons/checkbox.svg";
+
+import { SEND_INVITATION_MUTATION } from "@/app/api/graphql/mutations/invations";
 
 import classes from "./Companions.module.css";
+import { useMutation } from "@apollo/client";
+import { send } from "process";
 
-// TODO: При клике на карточку переходим на страницу компаниона
 // TODO: Сверстать попапы по макету
 
 const Companions: FC = () => {
@@ -58,9 +65,15 @@ const Companions: FC = () => {
         deleteCompanion,
 
         openPopup,
+        closePopup,
+        itemContentCss,
+        plusIconCss,
         activePopup,
         openPopupInvation,
         openPopupDelete,
+        handleSelectEvent,
+        selectedEvent,
+        disabledBtn,
 
         invitationCompanion,
         setInvitationCompanion,
@@ -212,15 +225,33 @@ const Companions: FC = () => {
 
                         {/* Пригласить компаниона */}
                         {invitationCompanion?.id === activePopup && (
-                            <DialogModal name={invitationCompanion?.name} mode={DialogMode.INVITATION}>
+                            <DialogModal
+                                name={invitationCompanion?.name}
+                                mode={DialogMode.INVITATION}
+                                closePopup={closePopup}
+                                disabled={disabledBtn}
+                            >
                                 {/* <Button className={classes.delete} onClick={() => deleteCompanion(delCompanion?.id)}>
                                     Yes
                                 </Button>
                                 <Button onClick={handleHidePopup}>Cancel</Button> */}
+                                {events?.map((event: any) => (
+                                    <li key={event._id} className={classes.itemList}>
+                                        <button className={itemContentCss} onClick={() => handleSelectEvent(event._id)}>
+                                            {selectedEvent === event._id ? (
+                                                <Checkbox className={classes.checkbox} />
+                                            ) : (
+                                                <Plus className={plusIconCss} />
+                                            )}
 
-                                <FilteredList className={classes.companionsList}>
-                                    {events?.map((event: any) => <div key={event._id}>{event.name}</div>)}
-                                </FilteredList>
+                                            <span className={classes.date}>
+                                                {dayjs(event.startDate).format("DD.MM.YYYY")}
+                                            </span>
+                                            {" | "}
+                                            {event.name}
+                                        </button>
+                                    </li>
+                                ))}
                             </DialogModal>
                         )}
 

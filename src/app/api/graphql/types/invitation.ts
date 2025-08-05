@@ -27,12 +27,13 @@ export const invitationTypeDefs = gql`
 
     type Query {
         getInvitation(user_id: ID!): [Invited!]!
-        getInvitationsByEvent(eventId: ID!): [Invitation!]!
+        getInvitationByUserAndEvent(user_id: ID!, event_id: ID!): Invited!
         getDeclinedEvents(userId: ID!): [Event!]!
+        companionInvitationEvent(organizer_id: String!): [Event!]!
     }
 
     type Mutation {
-        respondToInvitation(eventId: ID!, senderId: ID!, receiverIds: [ID!]!): Invitation!
+        sendInvitation(eventId: ID!, senderId: ID!, receiverIds: [ID!]!): Invitation!
         acceptInvitation(invitationId: ID!, userId: ID!): Invited!
         declineInvitation(invitationId: ID!, userId: ID!): Invited!
     }

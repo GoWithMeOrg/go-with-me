@@ -1,10 +1,16 @@
-import classes from "./DialogModal.module.css";
+import { Title } from "@/components/shared/Title";
+import { Button } from "@/components/shared/Button";
 
+import Close from "@/assets/icons/close.svg";
+
+import classes from "./DialogModal.module.css";
 export interface DialogModalProps {
     name?: string;
     children?: React.ReactNode;
     companionCounter?: number;
     mode?: DialogMode;
+    closePopup?: () => void;
+    disabled?: boolean;
 }
 
 export enum DialogMode {
@@ -13,7 +19,14 @@ export enum DialogMode {
     INVITATION = "invitation",
 }
 
-export const DialogModal: React.FC<DialogModalProps> = ({ name, children, companionCounter, mode }) => {
+export const DialogModal: React.FC<DialogModalProps> = ({
+    name,
+    children,
+    companionCounter,
+    mode,
+    closePopup,
+    disabled,
+}) => {
     return (
         <div className={classes.modalContent}>
             {name && mode === DialogMode.ADD && (
@@ -29,9 +42,20 @@ export const DialogModal: React.FC<DialogModalProps> = ({ name, children, compan
             )}
 
             {name && mode === DialogMode.INVITATION && (
-                <p className={classes.message}>
-                    Выберите мероприятия на которые хотите пригласить <br /> {name}
-                </p>
+                <>
+                    <Button resetDefaultStyles onClick={closePopup} className={classes.modalClose}>
+                        <Close />
+                    </Button>
+                    <Title className={classes.titleModal} tag="h3">
+                        Отправить приглашение <br /> {name}
+                    </Title>
+                    <p className={classes.header}>Выбрать мероприятие</p>
+                    <ul className={classes.list}>{children}</ul>
+
+                    <Button stretch disabled={disabled} className={classes.buttonSend} onClick={closePopup}>
+                        Отправить
+                    </Button>
+                </>
             )}
 
             {Boolean(companionCounter) && mode === DialogMode.DEL && (
@@ -42,7 +66,8 @@ export const DialogModal: React.FC<DialogModalProps> = ({ name, children, compan
                 <p className={classes.message}>Пригласить {companionCounter} компанионов?</p>
             )}
 
-            <div className={classes.actions}>{children}</div>
+            {/* Только для не-INVITATION режимов рендерим actions */}
+            {mode !== DialogMode.INVITATION && <div className={classes.actions}>{children}</div>}
         </div>
     );
 };

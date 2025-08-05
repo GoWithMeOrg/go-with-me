@@ -71,5 +71,6 @@ export const useCompanionSearch = (limit: number) => {
         loadingCompanions,
         errorCompanions,
         findCompanionCalled,
+        user_id,
     };
 };

@@ -66,3 +66,13 @@ export const GET_DECLINED_EVENTS = gql`
         }
     }
 `;
+
+export const GET_COMPANION_INVITATION_EVENTS = gql`
+    query CompanionInvitationEvent($organizerId: String!) {
+        companionInvitationEvent(organizer_id: $organizerId) {
+            _id
+            name
+            startDate
+        }
+    }
+`;
