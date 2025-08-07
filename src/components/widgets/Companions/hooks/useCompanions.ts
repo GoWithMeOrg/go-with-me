@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useFindUsers } from "./useFindUsers";
 import { useCompanionSearch } from "./useCompanionSearch";
-import { useCompanionPopups } from "./useCompanionPopups";
 import { useCompanionSelection } from "./useCompanionSelection";
-import { useOrganizerEvents } from "./useOrganizerEvents";
+import { useDialogModal } from "@/components/widgets/DialogModal/hooks/useDialogModal";
+import { useInvitationEvents } from "@/components/widgets/DialogModal/hooks/useInvitationEvents";
 
 export const useCompanions = () => {
     // Основные состояния
@@ -13,9 +13,9 @@ export const useCompanions = () => {
     // Хуки декомпозиции
     const findUsersHook = useFindUsers();
     const companionSearchHook = useCompanionSearch(limit);
-    const popupsHook = useCompanionPopups();
     const selectionHook = useCompanionSelection();
-    const organizerEventsHook = useOrganizerEvents();
+    const invitationEventsHook = useInvitationEvents();
+    const popupsHook = useDialogModal({});
 
     // Показать всех компаньонов (лимит)
     const showAllCompanions = () => {
@@ -105,7 +105,7 @@ export const useCompanions = () => {
         invitationSelectedCompanions: popupsHook.invitationSelectedCompanions,
         setInvitationSelectedCompanions: popupsHook.setInvitationSelectedCompanions,
         // События организатора
-        events: organizerEventsHook.events,
+        events: invitationEventsHook.events,
         // Прочее
         defaulShowCompanions,
         limit,

@@ -1,12 +1,17 @@
 import { useState } from "react";
+import { useMutation } from "@apollo/client";
+
 import { usePopup } from "@/components/shared/Popup/hooks";
 import { useUserID } from "@/hooks/useUserID";
-import { useMutation } from "@apollo/client";
+import { useInvitationEvents } from "./useInvitationEvents";
+
 import { SEND_INVITATION_MUTATION } from "@/app/api/graphql/mutations/invations";
 
-import classes from "@/components/widgets/Companions/Companions.module.css";
+export interface CompanionsDialogModalProps {
+    receiver_id?: string;
+}
 
-export const useCompanionPopups = () => {
+export const useDialogModal = ({ receiver_id }: CompanionsDialogModalProps) => {
     const { user_id } = useUserID();
     const { showPopup, setShowPopup, handleShowPopup, handleHidePopup, container, popupCss, refPopup } = usePopup({
         popupMode: "map",
@@ -18,13 +23,14 @@ export const useCompanionPopups = () => {
     const [delSelectedCompanions, setDelSelectedCompanions] = useState<boolean>(false);
     const [invitationSelectedCompanions, setInvitationSelectedCompanions] = useState<boolean>(false);
 
+    const receiver = receiver_id === undefined ? invitationCompanion?.id : receiver_id;
+
     const [selectedEvent, setSelectedEvent] = useState<string | null>(null);
     const [disabledBtn, setDisabledBtn] = useState(true);
 
-    const itemContentCss = [classes.itemContent, selectedEvent && classes.selected].filter(Boolean).join(" ");
-    const plusIconCss = [classes.plus, !selectedEvent && classes.plusHover].filter(Boolean).join(" ");
-
     const [SendInvitation] = useMutation(SEND_INVITATION_MUTATION);
+
+    const invitationEventsHook = useInvitationEvents();
 
     const openPopup = (popupId: string) => {
         setActivePopup(popupId);
@@ -53,7 +59,6 @@ export const useCompanionPopups = () => {
         handleShowPopup();
     };
 
-    // console.log(id);
     const handleSelectEvent = (id: string) => {
         setSelectedEvent(id);
         setDisabledBtn(false);
@@ -64,7 +69,7 @@ export const useCompanionPopups = () => {
                     variables: {
                         eventId: id,
                         senderId: user_id,
-                        receiverIds: invitationCompanion?.id,
+                        receiverIds: receiver,
                     },
                 });
             } catch (error) {
@@ -108,8 +113,7 @@ export const useCompanionPopups = () => {
         openPopupDelete,
         resetAllPopups,
         disabledBtn,
-        itemContentCss,
-        plusIconCss,
         selectedEvent,
+        events: invitationEventsHook.events,
     };
 };

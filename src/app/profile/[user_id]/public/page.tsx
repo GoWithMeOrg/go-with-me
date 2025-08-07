@@ -16,36 +16,42 @@ import { Popup } from "@/components/shared/Popup";
 import { AuthModal } from "@/components/widgets/AuthModal";
 import { CardEvent } from "@/components/widgets/CardEvent";
 import { SizeCard } from "@/components/widgets/CardEvent/CardEvent";
+import { DialogModal } from "@/components/widgets/DialogModal";
+import { DialogMode } from "@/components/widgets/DialogModal/DialogModal";
+import { useDialogModal } from "@/components/widgets/DialogModal/hooks/useDialogModal";
+import { InvationEvent } from "@/components/widgets/DialogModal/InvationEvent";
+
+import { usePublicProfile } from "./hooks";
 
 import { IEvent } from "@/database/models/Event";
 
 import Marker from "@/assets/icons/marker.svg";
 import Envelope from "@/assets/icons/envelope.svg";
 
-import { usePublicProfile } from "./hooks";
-
 import classes from "./page.module.css";
 
 const PublicProfile: NextPage = () => {
+    const { user_id, userData, eventsData, status, isOwner, companionRequest } = usePublicProfile();
+
     const {
-        user_id,
-        userData,
-        eventsData,
-        status,
-        isOwner,
+        closePopup,
+        disabledBtn,
+        selectedEvent,
+        handleSelectEvent,
+        events,
         showPopup,
-        setShowPopup,
-        handleShowPopup,
+        popupCss,
+        refPopup,
+        openPopupInvation,
         handleHidePopup,
-        companionRequest,
-    } = usePublicProfile();
+    } = useDialogModal({ receiver_id: userData?.user?._id });
 
     //TO DO: Будет ли какая-то сортивка организованных событий в слайдере? К примеру пропускаем состоявшиеся события?
     //TO DO: Ближайшие события организатора или в которых участвует организатор? Если ближайшие события организатора, то такую сортировку можно сделать в первом слайдере. Что показывать в слайдере будет настраиваться в настройках приватности.
 
     //TO DO: Кнопкам Chat, Invite and Add добавить соотвествующую логику, после того, как будет реализован данный функционал.
+    // Скрыть кнопку add если пользователь уже в друзьях
 
-    console.log(eventsData);
     return (
         <>
             {userData?.user && (
@@ -94,17 +100,17 @@ const PublicProfile: NextPage = () => {
                                 <div className={classes.links}>
                                     {status === "unauthenticated" ? (
                                         <>
-                                            <Button onClick={handleShowPopup}>Chat</Button>
+                                            {/* <Button onClick={handleShowPopup}>Chat</Button>
 
                                             <Button onClick={handleShowPopup}>Invite</Button>
 
-                                            <Button onClick={handleShowPopup}>Add</Button>
+                                            <Button onClick={handleShowPopup}>Add</Button> */}
                                         </>
                                     ) : (
                                         <>
                                             <Button>Chat</Button>
 
-                                            <Button>Invite</Button>
+                                            <Button onClick={() => openPopupInvation()}>Invite</Button>
 
                                             <Button onClick={companionRequest}>Add</Button>
                                         </>
@@ -113,8 +119,21 @@ const PublicProfile: NextPage = () => {
                             )}
                         </div>
 
-                        <Popup showPopup={showPopup} setShowPopup={setShowPopup} popupMode={"auth"}>
-                            <AuthModal onClose={handleHidePopup} />
+                        <Popup showPopup={showPopup} popupCss={popupCss} refPopup={refPopup}>
+                            {status === "unauthenticated" && <AuthModal onClose={handleHidePopup} />}
+
+                            <DialogModal
+                                name={userData?.user.name}
+                                mode={DialogMode.INVITATION}
+                                closePopup={closePopup}
+                                disabled={disabledBtn}
+                            >
+                                <InvationEvent
+                                    data={events}
+                                    selectedEvent={selectedEvent}
+                                    handleSelectEvent={handleSelectEvent}
+                                />
+                            </DialogModal>
                         </Popup>
 
                         <div className={classes.details}>

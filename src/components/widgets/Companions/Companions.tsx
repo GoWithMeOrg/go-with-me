@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useState } from "react";
+import { FC } from "react";
 
 import dayjs from "dayjs";
 
@@ -20,14 +20,11 @@ import { useCompanions } from "./hooks/useCompanions";
 
 import Search from "@/assets/icons/search.svg";
 import ClearInput from "@/assets/icons/clearInput.svg";
-import Plus from "@/assets/icons/plus.svg";
-import Checkbox from "@/assets/icons/checkbox.svg";
-
-import { SEND_INVITATION_MUTATION } from "@/app/api/graphql/mutations/invations";
+// import Plus from "@/assets/icons/plus.svg";
+// import Checkbox from "@/assets/icons/checkbox.svg";
 
 import classes from "./Companions.module.css";
-import { useMutation } from "@apollo/client";
-import { send } from "process";
+import InvationEvent from "../DialogModal/InvationEvent/InvationEvent";
 
 // TODO: Сверстать попапы по макету
 
@@ -231,27 +228,11 @@ const Companions: FC = () => {
                                 closePopup={closePopup}
                                 disabled={disabledBtn}
                             >
-                                {/* <Button className={classes.delete} onClick={() => deleteCompanion(delCompanion?.id)}>
-                                    Yes
-                                </Button>
-                                <Button onClick={handleHidePopup}>Cancel</Button> */}
-                                {events?.map((event: any) => (
-                                    <li key={event._id} className={classes.itemList}>
-                                        <button className={itemContentCss} onClick={() => handleSelectEvent(event._id)}>
-                                            {selectedEvent === event._id ? (
-                                                <Checkbox className={classes.checkbox} />
-                                            ) : (
-                                                <Plus className={plusIconCss} />
-                                            )}
-
-                                            <span className={classes.date}>
-                                                {dayjs(event.startDate).format("DD.MM.YYYY")}
-                                            </span>
-                                            {" | "}
-                                            {event.name}
-                                        </button>
-                                    </li>
-                                ))}
+                                <InvationEvent
+                                    data={events}
+                                    selectedEvent={selectedEvent}
+                                    handleSelectEvent={handleSelectEvent}
+                                />
                             </DialogModal>
                         )}
 

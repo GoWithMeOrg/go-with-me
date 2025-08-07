@@ -4,6 +4,8 @@ import { Button } from "@/components/shared/Button";
 import Close from "@/assets/icons/close.svg";
 
 import classes from "./DialogModal.module.css";
+import { FC } from "react";
+import { useDialogModal } from "./hooks/useDialogModal";
 export interface DialogModalProps {
     name?: string;
     children?: React.ReactNode;
@@ -19,14 +21,7 @@ export enum DialogMode {
     INVITATION = "invitation",
 }
 
-export const DialogModal: React.FC<DialogModalProps> = ({
-    name,
-    children,
-    companionCounter,
-    mode,
-    closePopup,
-    disabled,
-}) => {
+export const DialogModal: FC<DialogModalProps> = ({ name, children, companionCounter, mode, closePopup, disabled }) => {
     return (
         <div className={classes.modalContent}>
             {name && mode === DialogMode.ADD && (
