@@ -130,7 +130,12 @@
     margin: 5rem 0 17.38rem 0;
 }
 
-.delete {
+.cancelButton {
     color: var(--error-color);
     border: 2px solid var(--error-color);
+    width: 160px;
+}
+
+.yesButton {
+    width: 160px;
 }

@@ -41,6 +41,8 @@ export const useDialogModal = ({ receiver_id }: CompanionsDialogModalProps) => {
         handleHidePopup();
         setSelectedEvent(null);
         setDisabledBtn(true);
+        setActivePopup(null);
+        resetAllPopups();
     };
 
     // Сброс всех popup-состояний

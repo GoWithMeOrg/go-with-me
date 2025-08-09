@@ -89,8 +89,6 @@ export const useCompanions = () => {
         setAddedUser: popupsHook.setAddedUser,
         openPopup: popupsHook.openPopup,
         closePopup: popupsHook.closePopup,
-        itemContentCss: popupsHook.itemContentCss,
-        plusIconCss: popupsHook.plusIconCss,
         handleSelectEvent: popupsHook.handleSelectEvent,
         disabledBtn: popupsHook.disabledBtn,
         selectedEvent: popupsHook.selectedEvent,

@@ -22,8 +22,15 @@ export enum DialogMode {
 }
 
 export const DialogModal: FC<DialogModalProps> = ({ name, children, companionCounter, mode, closePopup, disabled }) => {
+    const modalContentCss = [classes.modalContent, DialogMode.DEL && classes.modelContentMini]
+        .filter(Boolean)
+        .join(" ");
+
     return (
-        <div className={classes.modalContent}>
+        <div className={modalContentCss}>
+            <Button resetDefaultStyles onClick={closePopup} className={classes.modalClose}>
+                <Close />
+            </Button>
             {name && mode === DialogMode.ADD && (
                 <p className={classes.message}>
                     Отправить заявку в компанионы <br /> {name}?
@@ -38,9 +45,6 @@ export const DialogModal: FC<DialogModalProps> = ({ name, children, companionCou
 
             {name && mode === DialogMode.INVITATION && (
                 <>
-                    <Button resetDefaultStyles onClick={closePopup} className={classes.modalClose}>
-                        <Close />
-                    </Button>
                     <Title className={classes.titleModal} tag="h3">
                         Отправить приглашение <br /> {name}
                     </Title>
@@ -54,11 +58,23 @@ export const DialogModal: FC<DialogModalProps> = ({ name, children, companionCou
             )}
 
             {Boolean(companionCounter) && mode === DialogMode.DEL && (
-                <p className={classes.message}>Удалить {companionCounter} компанионов?</p>
+                <p className={classes.message}>
+                    Вы уверены, что хотите удалить из списка компаньонов {companionCounter} пользователей?
+                </p>
             )}
 
             {Boolean(companionCounter) && mode === DialogMode.INVITATION && (
-                <p className={classes.message}>Пригласить {companionCounter} компанионов?</p>
+                <>
+                    <Title className={classes.titleModal} tag="h3">
+                        Пригласить {companionCounter} компанионов?
+                    </Title>
+                    <p className={classes.header}>Выбрать мероприятие</p>
+                    <ul className={classes.list}>{children}</ul>
+
+                    <Button stretch disabled={disabled} className={classes.buttonSend} onClick={closePopup}>
+                        Отправить
+                    </Button>
+                </>
             )}
 
             {/* Только для не-INVITATION режимов рендерим actions */}
