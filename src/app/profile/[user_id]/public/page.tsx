@@ -29,6 +29,7 @@ import Marker from "@/assets/icons/marker.svg";
 import Envelope from "@/assets/icons/envelope.svg";
 
 import classes from "./page.module.css";
+import { send } from "process";
 
 const PublicProfile: NextPage = () => {
     const { user_id, userData, eventsData, status, isOwner, companionRequest } = usePublicProfile();
@@ -38,13 +39,14 @@ const PublicProfile: NextPage = () => {
         disabledBtn,
         selectedEvent,
         handleSelectEvent,
+        sendInvation,
         events,
         showPopup,
         popupCss,
         refPopup,
         openPopupInvation,
         handleHidePopup,
-    } = useDialogModal({ receiver_id: userData?.user?._id });
+    } = useDialogModal({ receiver_ids: userData?.user?._id });
 
     //TO DO: Будет ли какая-то сортивка организованных событий в слайдере? К примеру пропускаем состоявшиеся события?
     //TO DO: Ближайшие события организатора или в которых участвует организатор? Если ближайшие события организатора, то такую сортировку можно сделать в первом слайдере. Что показывать в слайдере будет настраиваться в настройках приватности.
@@ -126,6 +128,7 @@ const PublicProfile: NextPage = () => {
                                 name={userData?.user.name}
                                 mode={DialogMode.INVITATION}
                                 closePopup={closePopup}
+                                sendInvation={sendInvation}
                                 disabled={disabledBtn}
                             >
                                 <InvationEvent

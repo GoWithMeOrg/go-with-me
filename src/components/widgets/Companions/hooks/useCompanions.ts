@@ -15,7 +15,10 @@ export const useCompanions = () => {
     const companionSearchHook = useCompanionSearch(limit);
     const selectionHook = useCompanionSelection();
     const invitationEventsHook = useInvitationEvents();
-    const popupsHook = useDialogModal({});
+    const popupsHook = useDialogModal({
+        receiver_ids: selectionHook.receiverIds,
+        resetCards: selectionHook.selectCompanions,
+    });
 
     // Показать всех компаньонов (лимит)
     const showAllCompanions = () => {
@@ -29,7 +32,7 @@ export const useCompanions = () => {
                 companionSearchHook.removeCompanion(id);
             }
         });
-        selectionHook.clearChecked();
+        selectionHook.setCheckedCompanions({});
         companionSearchHook.refetchCompanions();
         selectionHook.selectCompanions();
         popupsHook.handleHidePopup();
@@ -102,6 +105,7 @@ export const useCompanions = () => {
         setInvitationCompanion: popupsHook.setInvitationCompanion,
         invitationSelectedCompanions: popupsHook.invitationSelectedCompanions,
         setInvitationSelectedCompanions: popupsHook.setInvitationSelectedCompanions,
+        sendInvation: popupsHook.sendInvation,
         // События организатора
         events: invitationEventsHook.events,
         // Прочее

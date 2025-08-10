@@ -32,7 +32,7 @@ export const CardCompanion: FC<CardCompanionProps> = ({
     setDelCompanion,
     setInvitateCompanion,
 }) => {
-    const CardCompanionCss = [classes.card, checked && classes.cardBorder].filter(Boolean).join(" ");
+    const cardCompanionCss = [classes.card, checked && classes.cardBorder].filter(Boolean).join(" ");
     const handleClick = () => {
         setDelCompanion({ id, name });
         onShowPopup();
@@ -44,7 +44,7 @@ export const CardCompanion: FC<CardCompanionProps> = ({
     };
 
     return (
-        <div className={CardCompanionCss}>
+        <div className={cardCompanionCss}>
             <div>
                 {select && <Checkbox className={classes.position} onChange={onChange} id={id} checked={checked} />}
 

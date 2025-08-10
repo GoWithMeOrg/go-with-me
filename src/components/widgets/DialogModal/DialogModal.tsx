@@ -1,17 +1,19 @@
+import { FC } from "react";
+
 import { Title } from "@/components/shared/Title";
 import { Button } from "@/components/shared/Button";
 
 import Close from "@/assets/icons/close.svg";
 
 import classes from "./DialogModal.module.css";
-import { FC } from "react";
-import { useDialogModal } from "./hooks/useDialogModal";
+
 export interface DialogModalProps {
     name?: string;
     children?: React.ReactNode;
     companionCounter?: number;
     mode?: DialogMode;
     closePopup?: () => void;
+    sendInvation?: () => void;
     disabled?: boolean;
 }
 
@@ -21,13 +23,17 @@ export enum DialogMode {
     INVITATION = "invitation",
 }
 
-export const DialogModal: FC<DialogModalProps> = ({ name, children, companionCounter, mode, closePopup, disabled }) => {
-    const modalContentCss = [classes.modalContent, DialogMode.DEL && classes.modelContentMini]
-        .filter(Boolean)
-        .join(" ");
-
+export const DialogModal: FC<DialogModalProps> = ({
+    name,
+    children,
+    companionCounter,
+    mode,
+    closePopup,
+    disabled,
+    sendInvation,
+}) => {
     return (
-        <div className={modalContentCss}>
+        <div className={classes.modalContent}>
             <Button resetDefaultStyles onClick={closePopup} className={classes.modalClose}>
                 <Close />
             </Button>
@@ -51,7 +57,7 @@ export const DialogModal: FC<DialogModalProps> = ({ name, children, companionCou
                     <p className={classes.header}>Выбрать мероприятие</p>
                     <ul className={classes.list}>{children}</ul>
 
-                    <Button stretch disabled={disabled} className={classes.buttonSend} onClick={closePopup}>
+                    <Button stretch disabled={disabled} className={classes.buttonSend} onClick={sendInvation}>
                         Отправить
                     </Button>
                 </>
@@ -66,12 +72,13 @@ export const DialogModal: FC<DialogModalProps> = ({ name, children, companionCou
             {Boolean(companionCounter) && mode === DialogMode.INVITATION && (
                 <>
                     <Title className={classes.titleModal} tag="h3">
-                        Пригласить {companionCounter} компанионов?
+                        Отправить приглашение <br />
+                        {companionCounter} компаньонам?
                     </Title>
                     <p className={classes.header}>Выбрать мероприятие</p>
                     <ul className={classes.list}>{children}</ul>
 
-                    <Button stretch disabled={disabled} className={classes.buttonSend} onClick={closePopup}>
+                    <Button stretch disabled={disabled} className={classes.buttonSend} onClick={sendInvation}>
                         Отправить
                     </Button>
                 </>

@@ -21,6 +21,7 @@ import Search from "@/assets/icons/search.svg";
 import ClearInput from "@/assets/icons/clearInput.svg";
 
 import classes from "./Companions.module.css";
+import { send } from "process";
 
 // TODO: Сверстать попапы по макету
 
@@ -69,6 +70,7 @@ const Companions: FC = () => {
         invitationCompanion,
         setInvitationCompanion,
         invitationSelectedCompanions,
+        sendInvation,
 
         events,
 
@@ -228,6 +230,7 @@ const Companions: FC = () => {
                                 mode={DialogMode.INVITATION}
                                 closePopup={closePopup}
                                 disabled={disabledBtn}
+                                sendInvation={sendInvation}
                             >
                                 <InvationEvent
                                     data={events}
@@ -271,6 +274,7 @@ const Companions: FC = () => {
                                 companionCounter={checkedCompanionsCounter}
                                 mode={DialogMode.INVITATION}
                                 closePopup={closePopup}
+                                sendInvation={sendInvation}
                                 disabled={disabledBtn}
                             >
                                 <InvationEvent

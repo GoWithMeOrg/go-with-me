@@ -7,16 +7,14 @@
     text-align: center;
     margin: 0 auto;
     position: relative;
-}
-
-.modelContentMini {
-    padding: 64px 72px 82px;
+    padding: 64px 50px 9%;
 }
 
 .modalClose {
     position: absolute;
     top: 12px;
     right: 12px;
+    cursor: pointer;
 }
 
 .modalContent::backdrop {
