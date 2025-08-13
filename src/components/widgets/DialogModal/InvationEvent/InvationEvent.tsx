@@ -9,7 +9,11 @@ import classes from "./InvationEvent.module.css";
 
 export interface InvationEventProps {
     data: [];
-    selectedEvent: string | null;
+    selectedEvent: {
+        _id: string;
+        name: string;
+        startDate: string;
+    } | null;
     handleSelectEvent: (id: string) => void;
 }
 
@@ -18,8 +22,8 @@ export const InvationEvent: FC<InvationEventProps> = ({ data, selectedEvent, han
         <>
             {data?.map((event: any) => (
                 <li key={event._id}>
-                    <button className={classes.itemContent} onClick={() => handleSelectEvent(event._id)}>
-                        {selectedEvent === event._id ? <Checkbox /> : <Plus className={classes.plus} />}
+                    <button className={classes.itemContent} onClick={() => handleSelectEvent(event)}>
+                        {selectedEvent === event ? <Checkbox /> : <Plus className={classes.plus} />}
 
                         <span className={classes.date}>{dayjs(event.startDate).format("DD.MM.YYYY")}</span>
                         {" | "}

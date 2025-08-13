@@ -6,6 +6,7 @@ import { CardCompanion } from "@/components/widgets/CardCompanion";
 import { CardAddCompanion } from "@/components/widgets/CardAddCompanion";
 import { DialogModal, DialogMode } from "@/components/widgets/DialogModal/DialogModal";
 import { InvationEvent } from "@/components/widgets/DialogModal/InvationEvent/InvationEvent";
+import { SuccessModal } from "@/components/widgets/SuccessModal/SuccessModal";
 
 import { Title } from "@/components/shared/Title";
 import { Label } from "@/components/shared/Label";
@@ -21,7 +22,6 @@ import Search from "@/assets/icons/search.svg";
 import ClearInput from "@/assets/icons/clearInput.svg";
 
 import classes from "./Companions.module.css";
-import { send } from "process";
 
 // TODO: Сверстать попапы по макету
 
@@ -66,6 +66,7 @@ const Companions: FC = () => {
         handleSelectEvent,
         selectedEvent,
         disabledBtn,
+        successModalOpen,
 
         invitationCompanion,
         setInvitationCompanion,
@@ -225,32 +226,30 @@ const Companions: FC = () => {
 
                         {/* Пригласить компаниона */}
                         {invitationCompanion?.id === activePopup && (
-                            <DialogModal
-                                name={invitationCompanion?.name}
-                                mode={DialogMode.INVITATION}
-                                closePopup={closePopup}
-                                disabled={disabledBtn}
-                                sendInvation={sendInvation}
-                            >
-                                <InvationEvent
-                                    data={events}
-                                    selectedEvent={selectedEvent}
-                                    handleSelectEvent={handleSelectEvent}
-                                />
-                            </DialogModal>
+                            <>
+                                <DialogModal
+                                    name={invitationCompanion?.name}
+                                    mode={DialogMode.INVITATION}
+                                    closePopup={closePopup}
+                                    sendInvation={sendInvation}
+                                    disabled={disabledBtn}
+                                >
+                                    <InvationEvent
+                                        data={events}
+                                        selectedEvent={selectedEvent}
+                                        handleSelectEvent={handleSelectEvent}
+                                    />
+                                </DialogModal>
+                            </>
                         )}
-                        {/* <DialogModal
-                            name={invitationCompanion?.name}
-                            mode={DialogMode.INVITATION}
-                            closePopup={closePopup}
-                            disabled={disabledBtn}
-                        >
-                            <InvationEvent
-                                data={events}
+
+                        {successModalOpen && (
+                            <SuccessModal
+                                closePopup={closePopup}
+                                name={invitationCompanion?.name}
                                 selectedEvent={selectedEvent}
-                                handleSelectEvent={handleSelectEvent}
                             />
-                        </DialogModal> */}
+                        )}
 
                         {/* Удалить несколько компанионов */}
                         {delSelectedCompanions && checkedCompanions && (

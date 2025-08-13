@@ -106,6 +106,7 @@ export const useCompanions = () => {
         invitationSelectedCompanions: popupsHook.invitationSelectedCompanions,
         setInvitationSelectedCompanions: popupsHook.setInvitationSelectedCompanions,
         sendInvation: popupsHook.sendInvation,
+        successModalOpen: popupsHook.successModalOpen,
         // События организатора
         events: invitationEventsHook.events,
         // Прочее

@@ -12,7 +12,6 @@ export interface CompanionsDialogModalProps {
     resetCards?: () => void; // Функция для сброса выбранных карточек
 }
 
-//Сброс чекнутых карточек после отправки инвайта.
 export const useDialogModal = ({ receiver_ids, resetCards }: CompanionsDialogModalProps) => {
     const { user_id } = useUserID();
     const { showPopup, setShowPopup, handleShowPopup, handleHidePopup, container, popupCss, refPopup } = usePopup({
@@ -26,9 +25,13 @@ export const useDialogModal = ({ receiver_ids, resetCards }: CompanionsDialogMod
     const [delSelectedCompanions, setDelSelectedCompanions] = useState<boolean>(false);
     const [invitationSelectedCompanions, setInvitationSelectedCompanions] = useState<boolean>(false);
 
+    const [successModalOpen, setSuccessModalOpen] = useState(false);
+
     const receivers = invitationCompanion?.id !== undefined ? invitationCompanion?.id : receiver_ids;
 
-    const [selectedEvent, setSelectedEvent] = useState<string | null>(null);
+    const [selectedEvent, setSelectedEvent] = useState<{ _id: string; name: string; startDate: string } | null>(null);
+
+    // const [selectedEvent, setSelectedEvent] = useState<string | null>(null);
     const [disabledBtn, setDisabledBtn] = useState(true);
 
     const [SendInvitation] = useMutation(SEND_INVITATION_MUTATION);
@@ -45,6 +48,7 @@ export const useDialogModal = ({ receiver_ids, resetCards }: CompanionsDialogMod
         setSelectedEvent(null);
         setDisabledBtn(true);
         setActivePopup(null);
+        setSuccessModalOpen(false);
         resetAllPopups();
     };
 
@@ -64,8 +68,8 @@ export const useDialogModal = ({ receiver_ids, resetCards }: CompanionsDialogMod
         handleShowPopup();
     };
 
-    const handleSelectEvent = (id: string) => {
-        setSelectedEvent(id);
+    const handleSelectEvent = (event: any) => {
+        setSelectedEvent(event);
         setDisabledBtn(false);
     };
 
@@ -73,7 +77,7 @@ export const useDialogModal = ({ receiver_ids, resetCards }: CompanionsDialogMod
         try {
             await SendInvitation({
                 variables: {
-                    eventId: selectedEvent,
+                    eventId: selectedEvent?._id,
                     senderId: user_id,
                     receiverIds: receivers,
                 },
@@ -86,7 +90,10 @@ export const useDialogModal = ({ receiver_ids, resetCards }: CompanionsDialogMod
             resetCards();
         }
 
-        closePopup();
+        setActivePopup(null);
+        setInvitationSelectedCompanions(false);
+
+        setSuccessModalOpen(true);
     };
 
     const openPopupDelete = () => {
@@ -125,5 +132,6 @@ export const useDialogModal = ({ receiver_ids, resetCards }: CompanionsDialogMod
         selectedEvent,
         events: invitationEventsHook.events,
         sendInvation,
+        successModalOpen,
     };
 };
