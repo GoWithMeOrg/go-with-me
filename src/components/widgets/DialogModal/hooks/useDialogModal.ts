@@ -30,8 +30,6 @@ export const useDialogModal = ({ receiver_ids, resetCards }: CompanionsDialogMod
     const receivers = invitationCompanion?.id !== undefined ? invitationCompanion?.id : receiver_ids;
 
     const [selectedEvent, setSelectedEvent] = useState<{ _id: string; name: string; startDate: string } | null>(null);
-
-    // const [selectedEvent, setSelectedEvent] = useState<string | null>(null);
     const [disabledBtn, setDisabledBtn] = useState(true);
 
     const [SendInvitation] = useMutation(SEND_INVITATION_MUTATION);
@@ -68,6 +66,23 @@ export const useDialogModal = ({ receiver_ids, resetCards }: CompanionsDialogMod
         handleShowPopup();
     };
 
+    const openPopupInvitationCompanion = (id: string, name: string) => {
+        setInvitationCompanion({ id, name });
+        openPopup(id);
+    };
+
+    const openPopupDeleteCompanion = (id: string, name: string) => {
+        setDelCompanion({ id, name });
+        openPopup(id);
+    };
+
+    const openPopupRequestUser = (id: string, name: string) => {
+        resetAllPopups();
+        setActivePopup(id);
+        setAddedUser({ id, name });
+        handleShowPopup();
+    };
+
     const handleSelectEvent = (event: any) => {
         setSelectedEvent(event);
         setDisabledBtn(false);
@@ -91,6 +106,7 @@ export const useDialogModal = ({ receiver_ids, resetCards }: CompanionsDialogMod
         }
 
         setActivePopup(null);
+        setAddedUser(null);
         setInvitationSelectedCompanions(false);
 
         setSuccessModalOpen(true);
@@ -133,5 +149,10 @@ export const useDialogModal = ({ receiver_ids, resetCards }: CompanionsDialogMod
         events: invitationEventsHook.events,
         sendInvation,
         successModalOpen,
+        setSuccessModalOpen,
+
+        openPopupRequestUser,
+        openPopupInvitationCompanion,
+        openPopupDeleteCompanion,
     };
 };

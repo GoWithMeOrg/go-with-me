@@ -18,8 +18,8 @@ import { CardEvent } from "@/components/widgets/CardEvent";
 import { SizeCard } from "@/components/widgets/CardEvent/CardEvent";
 import { DialogModal } from "@/components/widgets/DialogModal";
 import { DialogMode } from "@/components/widgets/DialogModal/DialogModal";
-import { useDialogModal } from "@/components/widgets/DialogModal/hooks/useDialogModal";
 import { InvationEvent } from "@/components/widgets/DialogModal/InvationEvent";
+import SuccessModal from "@/components/widgets/SuccessModal/SuccessModal";
 
 import { usePublicProfile } from "./hooks";
 
@@ -29,30 +29,40 @@ import Marker from "@/assets/icons/marker.svg";
 import Envelope from "@/assets/icons/envelope.svg";
 
 import classes from "./page.module.css";
-import { send } from "process";
 
 const PublicProfile: NextPage = () => {
-    const { user_id, userData, eventsData, status, isOwner, companionRequest } = usePublicProfile();
-
     const {
-        closePopup,
-        disabledBtn,
-        selectedEvent,
-        handleSelectEvent,
-        sendInvation,
-        events,
+        user_id,
+        userData,
+        eventsData,
+        status,
+        isOwner,
         showPopup,
         popupCss,
         refPopup,
-        openPopupInvation,
+        closePopup,
         handleHidePopup,
-    } = useDialogModal({ receiver_ids: userData?.user?._id });
+        activePopup,
+        sendInvation,
+        disabledBtn,
+        selectedEvent,
+        handleSelectEvent,
+        events,
+        successModalOpen,
+        addedUser,
+
+        companionRequest,
+
+        invitationCompanion,
+
+        openPopupRequestUser,
+        openPopupInvitationCompanion,
+
+        userCompanion,
+    } = usePublicProfile();
 
     //TO DO: Будет ли какая-то сортивка организованных событий в слайдере? К примеру пропускаем состоявшиеся события?
     //TO DO: Ближайшие события организатора или в которых участвует организатор? Если ближайшие события организатора, то такую сортировку можно сделать в первом слайдере. Что показывать в слайдере будет настраиваться в настройках приватности.
-
-    //TO DO: Кнопкам Chat, Invite and Add добавить соотвествующую логику, после того, как будет реализован данный функционал.
-    // Скрыть кнопку add если пользователь уже в друзьях
 
     return (
         <>
@@ -112,9 +122,26 @@ const PublicProfile: NextPage = () => {
                                         <>
                                             <Button>Chat</Button>
 
-                                            <Button onClick={() => openPopupInvation()}>Invite</Button>
+                                            <Button
+                                                onClick={() =>
+                                                    openPopupInvitationCompanion(
+                                                        userData?.user?._id,
+                                                        userData?.user?.name,
+                                                    )
+                                                }
+                                            >
+                                                Invite
+                                            </Button>
 
-                                            <Button onClick={companionRequest}>Add</Button>
+                                            {!userCompanion && (
+                                                <Button
+                                                    onClick={() =>
+                                                        openPopupRequestUser(userData?.user?._id, userData?.user?.name)
+                                                    }
+                                                >
+                                                    Add
+                                                </Button>
+                                            )}
                                         </>
                                     )}
                                 </div>
@@ -124,19 +151,41 @@ const PublicProfile: NextPage = () => {
                         <Popup showPopup={showPopup} popupCss={popupCss} refPopup={refPopup}>
                             {status === "unauthenticated" && <AuthModal onClose={handleHidePopup} />}
 
-                            <DialogModal
-                                name={userData?.user.name}
-                                mode={DialogMode.INVITATION}
-                                closePopup={closePopup}
-                                sendInvation={sendInvation}
-                                disabled={disabledBtn}
-                            >
-                                <InvationEvent
-                                    data={events}
+                            {invitationCompanion?.id === activePopup && (
+                                <DialogModal
+                                    name={invitationCompanion?.name}
+                                    mode={DialogMode.INVITATION}
+                                    closePopup={closePopup}
+                                    sendInvation={sendInvation}
+                                    disabled={disabledBtn}
+                                >
+                                    <InvationEvent
+                                        data={events}
+                                        selectedEvent={selectedEvent}
+                                        handleSelectEvent={handleSelectEvent}
+                                    />
+                                </DialogModal>
+                            )}
+
+                            {/* Приглашение успешно отправлено одному или нескольким пользователям */}
+                            {successModalOpen && (
+                                <SuccessModal
+                                    closePopup={closePopup}
+                                    name={userData?.user.name}
                                     selectedEvent={selectedEvent}
-                                    handleSelectEvent={handleSelectEvent}
                                 />
-                            </DialogModal>
+                            )}
+
+                            {addedUser?.id === activePopup && (
+                                <DialogModal name={addedUser?.name} mode={DialogMode.ADD} closePopup={closePopup}>
+                                    <Button className={classes.yesButton} onClick={companionRequest}>
+                                        Yes
+                                    </Button>
+                                    <Button onClick={closePopup} className={classes.cancelButton}>
+                                        Cancel
+                                    </Button>
+                                </DialogModal>
+                            )}
                         </Popup>
 
                         <div className={classes.details}>

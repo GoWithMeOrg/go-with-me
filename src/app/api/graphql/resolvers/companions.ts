@@ -1,16 +1,18 @@
+import mongoose from "mongoose";
+
 import CompanionRequest from "@/database/models/CompanionRequest";
-import UserModel from "@/database/models/User";
 import CompanionsModel from "@/database/models/Сompanions";
+import { IUser } from "@/database/types/User";
 
 export const companionsResolvers = {
     Query: {
-        companions: async (_: any, { userId, limit }: { userId: string; limit?: number }) => {
-            const companions = await CompanionsModel.findOne({ user_id: userId }).populate({
+        companions: async (_: any, { user_id, limit }: { user_id: string; limit?: number }) => {
+            const companions = await CompanionsModel.findOne({ user_id }).populate({
                 path: "companions",
                 options: limit ? { limit } : {},
             });
 
-            const allCompanions = await CompanionsModel.findOne({ user_id: userId }).lean();
+            const allCompanions = await CompanionsModel.findOne({ user_id }).lean();
             const totalCompanions = allCompanions?.companions?.length ?? 0;
 
             if (!companions) {
@@ -22,29 +24,44 @@ export const companionsResolvers = {
             return { companions: companions.companions, totalCompanions };
         },
 
+        isUserCompanion: async (parent: any, { user_id, companion_id }: { user_id: string; companion_id: string }) => {
+            // Проверяем наличие companion_id в массиве companions
+            const exists = await CompanionsModel.exists({
+                user_id,
+                companions: new mongoose.Types.ObjectId(companion_id),
+            });
+
+            // возвращает булевое значение
+            return !!exists;
+        },
+
         findCompanion: async (
             parent: any,
-            { userId, email, name }: { userId: string; email?: string; name?: string },
+            { user_id, email, name }: { user_id: string; email?: string; name?: string },
         ) => {
-            const companionDoc = await CompanionsModel.findOne({ user_id: userId }).populate("companions");
+            const userCompanions = await CompanionsModel.findOne({ user_id }).populate<{ companions: IUser[] }>(
+                "companions",
+            );
 
-            if (!companionDoc || !companionDoc.companions || companionDoc.companions.length === 0) {
+            if (
+                !userCompanions ||
+                !Array.isArray(userCompanions.companions) ||
+                userCompanions.companions.length === 0
+            ) {
                 return [];
             }
 
-            const companionIds = companionDoc.companions.map((c: any) => c._id);
+            // Фильтруем прямо по массиву
+            let companions = userCompanions.companions;
 
-            const filters: any = { _id: { $in: companionIds } };
-
-            if (email) {
-                filters.email = email;
-            }
+            if (email) companions = companions.filter((c) => c.email === email);
 
             if (name) {
-                filters.name = { $regex: name, $options: "i" };
+                const regex = new RegExp(name, "i");
+                companions = companions.filter((c) => regex.test(c.name));
             }
 
-            return await UserModel.find(filters);
+            return companions;
         },
     },
 

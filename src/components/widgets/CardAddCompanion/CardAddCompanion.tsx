@@ -12,22 +12,16 @@ export interface CardAddCompanionProps {
     id: string;
     name: string;
     image: string;
-    onShowPopup: (id: string) => void;
-    setAddedUser: Dispatch<SetStateAction<{ id: string; name: string } | null>>;
+    onClickPopupRequest: () => void;
 }
 
-export const CardAddCompanion: FC<CardAddCompanionProps> = ({ id, name, image, onShowPopup, setAddedUser }) => {
-    const handleClick = () => {
-        setAddedUser({ id, name });
-        onShowPopup(id);
-    };
-
+export const CardAddCompanion: FC<CardAddCompanionProps> = ({ id, name, image, onClickPopupRequest }) => {
     return (
         <div key={id}>
             <div className={classes.avatar}>
                 <Avatar name={name} image={image} scale={1.8} id={id} />
 
-                <Plus className={classes.addCompanion} onClick={handleClick} />
+                <Plus className={classes.addCompanion} onClick={onClickPopupRequest} />
             </div>
 
             <Span title={name.split(" ")[0]} className={classes.name} />

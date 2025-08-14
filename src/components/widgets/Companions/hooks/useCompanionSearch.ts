@@ -19,6 +19,8 @@ export const useCompanionSearch = (limit: number) => {
         variables: { userId: user_id, limit },
     });
 
+    console.log(dataCompanions);
+
     const [CompanionRequest] = useMutation(COMPANION_REQUEST_MUTATION);
     const [RemoveCompanion] = useMutation(REMOVE_COMPANION_MUTATION);
 

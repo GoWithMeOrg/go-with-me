@@ -23,8 +23,6 @@ import ClearInput from "@/assets/icons/clearInput.svg";
 
 import classes from "./Companions.module.css";
 
-// TODO: Сверстать попапы по макету
-
 const Companions: FC = () => {
     const {
         handleFindUsers,
@@ -42,7 +40,7 @@ const Companions: FC = () => {
         limit,
         selectCompanions,
         showPopup,
-        handleHidePopup,
+
         popupCss,
         refPopup,
         handleCheckboxChange,
@@ -52,10 +50,9 @@ const Companions: FC = () => {
         totalCompanions,
 
         addedUser,
-        setAddedUser,
 
         delCompanion,
-        setDelCompanion,
+
         deleteCompanion,
 
         openPopup,
@@ -69,7 +66,7 @@ const Companions: FC = () => {
         successModalOpen,
 
         invitationCompanion,
-        setInvitationCompanion,
+
         invitationSelectedCompanions,
         sendInvation,
 
@@ -77,6 +74,10 @@ const Companions: FC = () => {
 
         delSelectedCompanions,
         checkedCompanions,
+
+        openPopupRequestUser,
+        openPopupDeleteCompanion,
+        openPopupInvitationCompanion,
     } = useCompanions();
 
     return (
@@ -109,8 +110,7 @@ const Companions: FC = () => {
                             id={card._id}
                             name={card.name}
                             image={card.image}
-                            onShowPopup={() => openPopup(card._id)}
-                            setAddedUser={setAddedUser}
+                            onClickPopupRequest={() => openPopupRequestUser(card._id, card.name)}
                         />
                     ))
                 )}
@@ -162,9 +162,8 @@ const Companions: FC = () => {
                                     onChange={(isChecked) => handleCheckboxChange(card._id, isChecked)}
                                     select={select}
                                     checked={checkedCompanions[card._id] ?? false}
-                                    onShowPopup={() => openPopup(card._id)}
-                                    setInvitateCompanion={setInvitationCompanion}
-                                    setDelCompanion={setDelCompanion}
+                                    onClickPopupInvitation={() => openPopupInvitationCompanion(card._id, card.name)}
+                                    onClickPopupDelete={() => openPopupDeleteCompanion(card._id, card.name)}
                                 />
                             ))}
                         </FilteredList>
@@ -243,6 +242,7 @@ const Companions: FC = () => {
                             </>
                         )}
 
+                        {/* Приглашение успешно отправлено одному или нескольким пользователям */}
                         {successModalOpen && (
                             <SuccessModal
                                 closePopup={closePopup}

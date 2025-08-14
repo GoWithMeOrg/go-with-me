@@ -1,4 +1,4 @@
-import { Dispatch, FC, SetStateAction } from "react";
+import { FC } from "react";
 
 import { Avatar } from "@/components/shared/Avatar";
 import { Span } from "@/components/shared/Span";
@@ -13,9 +13,8 @@ export interface CardCompanionProps {
     id: string;
     name: string;
     image: string;
-    onShowPopup: () => void;
-    setDelCompanion: Dispatch<SetStateAction<{ id: string; name: string } | null>>;
-    setInvitateCompanion: Dispatch<SetStateAction<{ id: string; name: string } | null>>;
+    onClickPopupDelete: () => void;
+    onClickPopupInvitation: () => void;
     onChange: (checked: boolean) => void;
     select: boolean;
     checked?: boolean;
@@ -28,20 +27,10 @@ export const CardCompanion: FC<CardCompanionProps> = ({
     onChange,
     select,
     checked,
-    onShowPopup,
-    setDelCompanion,
-    setInvitateCompanion,
+    onClickPopupDelete,
+    onClickPopupInvitation,
 }) => {
     const cardCompanionCss = [classes.card, checked && classes.cardBorder].filter(Boolean).join(" ");
-    const handleClick = () => {
-        setDelCompanion({ id, name });
-        onShowPopup();
-    };
-
-    const handleClickInviate = () => {
-        setInvitateCompanion({ id, name });
-        onShowPopup();
-    };
 
     return (
         <div className={cardCompanionCss}>
@@ -58,11 +47,11 @@ export const CardCompanion: FC<CardCompanionProps> = ({
                 </div>
 
                 <div className={classes.icons}>
-                    <Email onClick={handleClickInviate} />
+                    <Email onClick={onClickPopupInvitation} />
 
                     {/* <Message /> */}
 
-                    <Minus className={classes.removeCompanion} onClick={handleClick} />
+                    <Minus className={classes.removeCompanion} onClick={onClickPopupDelete} />
                 </div>
             </div>
         </div>

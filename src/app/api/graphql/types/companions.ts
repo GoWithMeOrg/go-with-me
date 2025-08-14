@@ -2,8 +2,9 @@ import { gql } from "graphql-tag";
 
 export const companionsTypeDefs = gql`
     type Query {
-        companions(userId: String!, limit: Int): Companions!
-        findCompanion(userId: ID!, email: String, name: String): [User!]!
+        companions(user_id: String!, limit: Int): Companions!
+        findCompanion(user_id: ID!, email: String, name: String): [User!]!
+        isUserCompanion(user_id: ID!, companion_id: ID!): Boolean!
     }
 
     type Companions {
