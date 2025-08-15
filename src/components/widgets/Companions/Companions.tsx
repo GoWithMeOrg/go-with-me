@@ -3,42 +3,34 @@
 import { FC } from "react";
 
 import { CardCompanion } from "@/components/widgets/CardCompanion";
-import { DeleteFriendModal } from "@/components/widgets/DeleteFriendModal";
+import { CardAddCompanion } from "@/components/widgets/CardAddCompanion";
+import { DialogModal, DialogMode } from "@/components/widgets/DialogModal/DialogModal";
+import { InvationEvent } from "@/components/widgets/DialogModal/InvationEvent/InvationEvent";
+import { SuccessModal } from "@/components/widgets/SuccessModal/SuccessModal";
 
 import { Title } from "@/components/shared/Title";
 import { Label } from "@/components/shared/Label";
 import { Input } from "@/components/shared/Input";
 import { FilteredList } from "@/components/shared/FilteredList";
-import { Avatar } from "@/components/shared/Avatar";
 import { Span } from "@/components/shared/Span";
 import { Popup } from "@/components/shared/Popup";
 import { Button } from "@/components/shared/Button";
 
 import { useCompanions } from "./hooks/useCompanions";
 
-import Plus from "@/assets/icons/plus.svg";
 import Search from "@/assets/icons/search.svg";
 import ClearInput from "@/assets/icons/clearInput.svg";
 
 import classes from "./Companions.module.css";
 
-// TODO: При клике на плюс тоже вызываем попап?.
-// TODO: Добавить попап с вопросом об удаление одного или нескольких друзей
-// TODO: Добавить попап с вопросом об приглашении одного или нескольких друзей
-// TODO: При клике на карточку переходим на страницу компаниона
-// TODO: При клике на на минус на карточке вызываем попап
-// TODO: Что происходит при клике на конверт?
-// TODO: Что происходит при клике на сообщение?
-// TODO: Определиться с рассылкой инвайтов.
-
 const Companions: FC = () => {
     const {
         handleFindUsers,
         handleFindCompanion,
+        sendRequestCompanion,
         findUsers,
         companions,
         called,
-        companionRequest,
         searchValue,
         searchValueCompanion,
         clearInput,
@@ -48,14 +40,44 @@ const Companions: FC = () => {
         limit,
         selectCompanions,
         showPopup,
-        setShowPopup,
-        handleShowPopup,
-        handleHidePopup,
+
+        popupCss,
+        refPopup,
         handleCheckboxChange,
-        deleteCheckedCards,
-        checkedMapObj,
+        deleteCheckedCompanions,
+        checkedCompanionsCounter,
         defaulShowCompanions,
         totalCompanions,
+
+        addedUser,
+
+        delCompanion,
+
+        deleteCompanion,
+
+        openPopup,
+        closePopup,
+        activePopup,
+        openPopupInvation,
+        openPopupDelete,
+        handleSelectEvent,
+        selectedEvent,
+        disabledBtn,
+        successModalOpen,
+
+        invitationCompanion,
+
+        invitationSelectedCompanions,
+        sendInvation,
+
+        events,
+
+        delSelectedCompanions,
+        checkedCompanions,
+
+        openPopupRequestUser,
+        openPopupDeleteCompanion,
+        openPopupInvitationCompanion,
     } = useCompanions();
 
     return (
@@ -83,103 +105,189 @@ const Companions: FC = () => {
                     <Span title={"По вашему запросу ничего не найдено"} />
                 ) : (
                     findUsers.map((card: any) => (
-                        <div key={card._id}>
-                            <div className={classes.avatar}>
-                                <Avatar name={card.name} image={card.image} scale={1.8} id={card._id} />
-
-                                <Plus className={classes.addCompanion} onClick={() => companionRequest(card._id)} />
-                            </div>
-
-                            <Span title={card.name.split(" ")[0]} className={classes.name} />
-                            <Span title={card.name.split(" ")[1]} className={classes.name} />
-                        </div>
+                        <CardAddCompanion
+                            key={card._id}
+                            id={card._id}
+                            name={card.name}
+                            image={card.image}
+                            onClickPopupRequest={() => openPopupRequestUser(card._id, card.name)}
+                        />
                     ))
                 )}
             </FilteredList>
 
             {companions?.length > 0 && (
-                <div className={classes.companions}>
-                    <div className={classes.header}>
-                        <Title tag={"h3"} title="My companions" />
-                    </div>
+                <>
+                    <div className={classes.companions}>
+                        <div className={classes.header}>
+                            <Title tag={"h3"} title="My companions" />
+                        </div>
 
-                    <div className={classes.line}></div>
+                        <div className={classes.line}></div>
 
-                    <div className={classes.filtersCompanion}>
-                        <Label label={""} className={classes.findCompanions}>
-                            <Input
-                                onChange={handleFindCompanion}
-                                type="text"
-                                className={classes.findInput}
-                                value={searchValueCompanion ?? ""}
-                            />
-                            {searchValueCompanion === "" && <Search className={classes.searchIconCompanions} />}
+                        <div className={classes.filtersCompanion}>
+                            <Label label={""} className={classes.findCompanions}>
+                                <Input
+                                    onChange={handleFindCompanion}
+                                    type="text"
+                                    className={classes.findInput}
+                                    value={searchValueCompanion ?? ""}
+                                />
+                                {searchValueCompanion === "" && <Search className={classes.searchIconCompanions} />}
 
-                            {searchValueCompanion !== "" && (
-                                <ClearInput className={classes.searchIconCompanions} onClick={clearInputCompanion} />
-                            )}
-                        </Label>
+                                {searchValueCompanion !== "" && (
+                                    <ClearInput
+                                        className={classes.searchIconCompanions}
+                                        onClick={clearInputCompanion}
+                                    />
+                                )}
+                            </Label>
 
-                        <Button
-                            resetDefaultStyles
-                            className={classes.buttonText && select ? classes.buttonActive : classes.buttonText}
-                            onClick={selectCompanions}
-                        >
-                            Select
-                        </Button>
-                    </div>
-
-                    <FilteredList className={classes.companionsList}>
-                        {companions?.map((card: any) => (
-                            <CardCompanion
-                                id={card._id}
-                                name={card.name}
-                                image={card.image}
-                                key={card._id}
-                                onChange={(isChecked) => handleCheckboxChange(card._id, isChecked)}
-                                select={select}
-                            />
-                        ))}
-                    </FilteredList>
-
-                    <div className={classes.buttons}>
-                        {companions?.length >= limit && (
                             <Button
                                 resetDefaultStyles
-                                className={
-                                    classes.buttonText && companions.length > limit
-                                        ? classes.buttonActive
-                                        : classes.buttonText
-                                }
-                                onClick={showAllCompanions}
+                                className={classes.buttonText && select ? classes.buttonActive : classes.buttonText}
+                                onClick={selectCompanions}
                             >
-                                {companions.length > defaulShowCompanions
-                                    ? "Hide"
-                                    : "Show all companions " + `(${totalCompanions})`}
+                                {select ? "Cancel" : "Select"}
                             </Button>
-                        )}
+                        </div>
 
-                        {select && checkedMapObj > 0 && (
-                            <div className={classes.buttonsDelAndInvite}>
-                                <Button onClick={() => console.log("Send invitations")}>Отправить инвайты</Button>
-                                <Button className={classes.delete} onClick={handleShowPopup}>
-                                    Удалить компанионов
+                        <FilteredList className={classes.companionsList}>
+                            {companions?.map((card: any) => (
+                                <CardCompanion
+                                    id={card._id}
+                                    name={card.name}
+                                    image={card.image}
+                                    key={card._id}
+                                    onChange={(isChecked) => handleCheckboxChange(card._id, isChecked)}
+                                    select={select}
+                                    checked={checkedCompanions[card._id] ?? false}
+                                    onClickPopupInvitation={() => openPopupInvitationCompanion(card._id, card.name)}
+                                    onClickPopupDelete={() => openPopupDeleteCompanion(card._id, card.name)}
+                                />
+                            ))}
+                        </FilteredList>
+
+                        <div className={classes.buttons}>
+                            {companions?.length >= limit && (
+                                <Button
+                                    resetDefaultStyles
+                                    className={
+                                        classes.buttonText && companions.length > limit
+                                            ? classes.buttonActive
+                                            : classes.buttonText
+                                    }
+                                    onClick={showAllCompanions}
+                                >
+                                    {companions.length > defaulShowCompanions
+                                        ? "Hide"
+                                        : "Show all companions " + `(${totalCompanions})`}
                                 </Button>
-                            </div>
-                        )}
-                    </div>
-                </div>
-            )}
+                            )}
 
-            <Popup popupMode={"map"} showPopup={showPopup} setShowPopup={setShowPopup}>
-                <DeleteFriendModal companionCounter={checkedMapObj}>
-                    <Button className={classes.delete} onClick={deleteCheckedCards}>
-                        Yes
-                    </Button>
-                    <Button onClick={handleHidePopup}>Cancel</Button>
-                </DeleteFriendModal>
-            </Popup>
+                            {select && checkedCompanionsCounter > 0 && (
+                                <div className={classes.buttonsDelAndInvite}>
+                                    <Button onClick={() => openPopupInvation()}>Отправить инвайты</Button>
+                                    <Button className={classes.delete} onClick={() => openPopupDelete()}>
+                                        Удалить компанионов
+                                    </Button>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                    <Popup showPopup={showPopup} popupCss={popupCss} refPopup={refPopup}>
+                        {/* Отправить заявку в компанионы */}
+                        {addedUser?.id === activePopup && (
+                            <DialogModal name={addedUser?.name} mode={DialogMode.ADD} closePopup={closePopup}>
+                                <Button
+                                    className={classes.yesButton}
+                                    onClick={() => sendRequestCompanion(addedUser?.id)}
+                                >
+                                    Yes
+                                </Button>
+                                <Button onClick={closePopup} className={classes.cancelButton}>
+                                    Cancel
+                                </Button>
+                            </DialogModal>
+                        )}
+
+                        {/* Удалить из компанионов */}
+                        {delCompanion?.id === activePopup && (
+                            <DialogModal name={delCompanion?.name} mode={DialogMode.DEL} closePopup={closePopup}>
+                                <Button className={classes.yesButton} onClick={() => deleteCompanion(delCompanion?.id)}>
+                                    Yes
+                                </Button>
+                                <Button onClick={closePopup} className={classes.cancelButton}>
+                                    Cancel
+                                </Button>
+                            </DialogModal>
+                        )}
+
+                        {/* Пригласить компаниона */}
+                        {invitationCompanion?.id === activePopup && (
+                            <>
+                                <DialogModal
+                                    name={invitationCompanion?.name}
+                                    mode={DialogMode.INVITATION}
+                                    closePopup={closePopup}
+                                    sendInvation={sendInvation}
+                                    disabled={disabledBtn}
+                                >
+                                    <InvationEvent
+                                        data={events}
+                                        selectedEvent={selectedEvent}
+                                        handleSelectEvent={handleSelectEvent}
+                                    />
+                                </DialogModal>
+                            </>
+                        )}
+
+                        {/* Приглашение успешно отправлено одному или нескольким пользователям */}
+                        {successModalOpen && (
+                            <SuccessModal
+                                closePopup={closePopup}
+                                name={invitationCompanion?.name}
+                                selectedEvent={selectedEvent}
+                            />
+                        )}
+
+                        {/* Удалить несколько компанионов */}
+                        {delSelectedCompanions && checkedCompanions && (
+                            <DialogModal
+                                companionCounter={checkedCompanionsCounter}
+                                mode={DialogMode.DEL}
+                                closePopup={closePopup}
+                            >
+                                <Button className={classes.yesButton} onClick={deleteCheckedCompanions}>
+                                    Yes
+                                </Button>
+                                <Button className={classes.cancelButton} onClick={closePopup}>
+                                    Cancel
+                                </Button>
+                            </DialogModal>
+                        )}
+
+                        {/* Пригласить несколько компанионов */}
+                        {invitationSelectedCompanions && checkedCompanions && (
+                            <DialogModal
+                                companionCounter={checkedCompanionsCounter}
+                                mode={DialogMode.INVITATION}
+                                closePopup={closePopup}
+                                sendInvation={sendInvation}
+                                disabled={disabledBtn}
+                            >
+                                <InvationEvent
+                                    data={events}
+                                    selectedEvent={selectedEvent}
+                                    handleSelectEvent={handleSelectEvent}
+                                />
+                            </DialogModal>
+                        )}
+                    </Popup>
+                </>
+            )}
         </div>
     );
 };
+
 export default Companions;

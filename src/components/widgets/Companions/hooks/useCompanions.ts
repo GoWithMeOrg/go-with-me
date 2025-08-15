@@ -1,148 +1,119 @@
 import { useState } from "react";
-import { useSession } from "next-auth/react";
-import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
-
-import { GET_FIND_USERS } from "@/app/api/graphql/queries/findUsers";
-import { GET_COMPANIONS, GET_FIND_COMPANION } from "@/app/api/graphql/queries/companions";
-import { REMOVE_COMPANION_MUTATION } from "@/app/api/graphql/mutations/companions";
-import { COMPANION_REQUEST_MUTATION } from "@/app/api/graphql/mutations/companionRequest";
-import { usePopup } from "@/components/shared/Popup/hooks";
+import { useFindUsers } from "./useFindUsers";
+import { useCompanionSearch } from "./useCompanionSearch";
+import { useCompanionSelection } from "./useCompanionSelection";
+import { useDialogModal } from "@/components/widgets/DialogModal/hooks/useDialogModal";
+import { useInvitationEvents } from "@/components/widgets/DialogModal/hooks/useInvitationEvents";
 
 export const useCompanions = () => {
-    const { data: session } = useSession();
-    const { handleShowPopup, handleHidePopup, showPopup, setShowPopup } = usePopup({ popupMode: "map" });
+    // Основные состояния
+    // const defaulShowCompanions = 12;
+    // const [limit, setLimit] = useState<number>(defaulShowCompanions);
 
-    const defaulShowCompanions = 12;
-    const [limit, setLimit] = useState<number>(defaulShowCompanions);
-    const user_id = session?.user.id;
-
-    const [searchValue, setSearchValue] = useState("");
-    const [searchValueCompanion, setSearchValueCompanion] = useState("");
-    const [select, setSelect] = useState<boolean>(false);
-    const [checkedMap, setCheckedMap] = useState<Record<string, boolean>>({});
-
-    const [loadUsers, { loading, error, data, called }] = useLazyQuery(GET_FIND_USERS);
-    const [loadCompanion, { data: findCompanion, called: findCompanionCalled }] = useLazyQuery(GET_FIND_COMPANION);
-
-    const {
-        loading: errorloading,
-        error: errorCompanions,
-        data: dataCompanions,
-        refetch: refetchCompanions,
-    } = useQuery(GET_COMPANIONS, {
-        variables: { userId: user_id, limit },
+    // Хуки декомпозиции
+    const findUsersHook = useFindUsers();
+    const companionSearchHook = useCompanionSearch();
+    const selectionHook = useCompanionSelection();
+    const invitationEventsHook = useInvitationEvents();
+    const popupsHook = useDialogModal({
+        receiver_ids: selectionHook.receiverIds,
+        resetCards: selectionHook.selectCompanions,
     });
 
-    const findUsers = searchValue ? data?.findUsers || [] : [];
-    const companions = searchValueCompanion ? findCompanion?.findCompanion : dataCompanions?.companions?.companions;
-    const checkedMapObj = Object.keys(checkedMap).length;
-    const totalCompanions = dataCompanions?.companions?.totalCompanions;
-
-    const handleFindUsers = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const inputValue = e.target.value;
-        setSearchValue(inputValue);
-
-        const isEmail = inputValue.includes("@");
-        const variables = isEmail ? { email: inputValue } : { name: inputValue };
-        loadUsers({ variables });
-    };
-
-    const clearInput = () => {
-        setSearchValue("");
-    };
-
-    const handleFindCompanion = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const inputValue = e.target.value;
-        setSearchValueCompanion(inputValue);
-
-        const isEmail = inputValue.includes("@");
-        const variables = {
-            userId: user_id,
-            ...(isEmail ? { email: inputValue } : { name: inputValue }),
-        };
-        loadCompanion({ variables });
-    };
-
-    const clearInputCompanion = () => {
-        setSearchValueCompanion("");
-    };
-
-    const [RemoveCompanion] = useMutation(REMOVE_COMPANION_MUTATION);
-
-    const removeCompanion = async (id: string) => {
-        console.log(id, user_id);
-        try {
-            await RemoveCompanion({
-                variables: { userId: user_id, companionId: id },
-            });
-        } catch (error) {
-            console.error("Error deleting event: ", error);
-        }
-        refetchCompanions();
-    };
-
-    const [CompanionRequest] = useMutation(COMPANION_REQUEST_MUTATION);
-
-    const companionRequest = async (id: string) => {
-        try {
-            await CompanionRequest({
-                variables: { senderId: user_id, receiverId: id },
-            });
-        } catch (error) {
-            console.error("Error deleting event: ", error);
-        }
-    };
-
-    const showAllCompanions = () => {
-        setLimit(limit === 0 ? 12 : 0);
-    };
-
-    const selectCompanions = () => {
-        setSelect(!select);
-    };
-
-    const handleCheckboxChange = (id: string, isChecked: boolean) => {
-        setCheckedMap((prev) => ({
-            ...prev,
-            [id]: isChecked,
-        }));
-    };
-
-    const deleteCheckedCards = () => {
-        Object.entries(checkedMap).forEach(([id, isChecked]) => {
+    // Массовое удаление выбранных компаньонов
+    const deleteCheckedCompanions = () => {
+        Object.entries(selectionHook.checkedCompanions).forEach(([id, isChecked]) => {
             if (isChecked) {
-                removeCompanion(id);
+                companionSearchHook.removeCompanion(id);
             }
         });
-        setCheckedMap({});
-        refetchCompanions();
-        handleHidePopup();
+        selectionHook.setCheckedCompanions({});
+        companionSearchHook.refetchCompanions();
+        selectionHook.selectCompanions();
+        popupsHook.handleHidePopup();
+    };
+
+    // Удаление одного компаньона
+    const deleteCompanion = (card_id: string) => {
+        companionSearchHook.removeCompanion(card_id);
+        popupsHook.handleHidePopup();
+    };
+
+    // Отправка запроса на добавление компаньона
+    const sendRequestCompanion = (card_id: string) => {
+        companionSearchHook.companionRequest(card_id);
+        findUsersHook.refetch();
+        popupsHook.handleHidePopup();
     };
 
     return {
-        handleFindUsers,
-        handleFindCompanion,
-        findUsers,
-        companions,
-        called,
-        removeCompanion,
-        companionRequest,
-        searchValue,
-        searchValueCompanion,
-        clearInput,
-        clearInputCompanion,
-        showAllCompanions,
-        select,
-        limit,
-        selectCompanions,
-        handleCheckboxChange,
-        deleteCheckedCards,
-        showPopup,
-        setShowPopup,
-        handleShowPopup,
-        handleHidePopup,
-        checkedMapObj,
-        defaulShowCompanions,
-        totalCompanions,
+        // Поиск пользователей
+        handleFindUsers: findUsersHook.handleFindUsers,
+        searchValue: findUsersHook.searchValue,
+        setSearchValue: findUsersHook.setSearchValue,
+        clearInput: findUsersHook.clearInput,
+        findUsers: findUsersHook.findUsers,
+        called: findUsersHook.called,
+        sendRequestCompanion,
+        // Поиск и управление компаньонами
+        handleFindCompanion: companionSearchHook.handleFindCompanion,
+        searchValueCompanion: companionSearchHook.searchValueCompanion,
+        setSearchValueCompanion: companionSearchHook.setSearchValueCompanion,
+        clearInputCompanion: companionSearchHook.clearInputCompanion,
+        companions: companionSearchHook.companions,
+        totalCompanions: companionSearchHook.totalCompanions,
+        removeCompanion: companionSearchHook.removeCompanion,
+        companionRequest: companionSearchHook.companionRequest,
+        refetchCompanions: companionSearchHook.refetchCompanions,
+        // Выбор и массовые действия
+        select: selectionHook.select,
+        selectCompanions: selectionHook.selectCompanions,
+        checkedCompanions: selectionHook.checkedCompanions,
+        setCheckedCompanions: selectionHook.setCheckedCompanions,
+        handleCheckboxChange: selectionHook.handleCheckboxChange,
+        checkedCompanionsCounter: selectionHook.checkedCompanionsCounter,
+        deleteCheckedCompanions,
+        // Попапы
+        showPopup: popupsHook.showPopup,
+        setShowPopup: popupsHook.setShowPopup,
+        handleShowPopup: popupsHook.handleShowPopup,
+        handleHidePopup: popupsHook.handleHidePopup,
+        container: popupsHook.container,
+        popupCss: popupsHook.popupCss,
+        refPopup: popupsHook.refPopup,
+        activePopup: popupsHook.activePopup,
+        setActivePopup: popupsHook.setActivePopup,
+        addedUser: popupsHook.addedUser,
+        setAddedUser: popupsHook.setAddedUser,
+        openPopup: popupsHook.openPopup,
+        closePopup: popupsHook.closePopup,
+        handleSelectEvent: popupsHook.handleSelectEvent,
+        disabledBtn: popupsHook.disabledBtn,
+        selectedEvent: popupsHook.selectedEvent,
+        openPopupInvation: popupsHook.openPopupInvation,
+        openPopupDelete: popupsHook.openPopupDelete,
+        delCompanion: popupsHook.delCompanion,
+        setDelCompanion: popupsHook.setDelCompanion,
+        delSelectedCompanions: popupsHook.delSelectedCompanions,
+        setDelSelectedCompanions: popupsHook.setDelSelectedCompanions,
+        invitationCompanion: popupsHook.invitationCompanion,
+        setInvitationCompanion: popupsHook.setInvitationCompanion,
+        invitationSelectedCompanions: popupsHook.invitationSelectedCompanions,
+        setInvitationSelectedCompanions: popupsHook.setInvitationSelectedCompanions,
+        sendInvation: popupsHook.sendInvation,
+        successModalOpen: popupsHook.successModalOpen,
+        openPopupRequestUser: popupsHook.openPopupRequestUser,
+        openPopupDeleteCompanion: popupsHook.openPopupDeleteCompanion,
+        openPopupInvitationCompanion: popupsHook.openPopupInvitationCompanion,
+
+        // События организатора
+        events: invitationEventsHook.events,
+        // Прочее
+        defaulShowCompanions: companionSearchHook.defaulShowCompanions,
+        limit: companionSearchHook.limit,
+        setLimit: companionSearchHook.setLimit,
+        showAllCompanions: companionSearchHook.showAllCompanions,
+
+        deleteCompanion,
     };
 };

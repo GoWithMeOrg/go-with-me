@@ -16,13 +16,17 @@ import { Popup } from "@/components/shared/Popup";
 import { AuthModal } from "@/components/widgets/AuthModal";
 import { CardEvent } from "@/components/widgets/CardEvent";
 import { SizeCard } from "@/components/widgets/CardEvent/CardEvent";
+import { DialogModal } from "@/components/widgets/DialogModal";
+import { DialogMode } from "@/components/widgets/DialogModal/DialogModal";
+import { InvationEvent } from "@/components/widgets/DialogModal/InvationEvent";
+import SuccessModal from "@/components/widgets/SuccessModal/SuccessModal";
+
+import { usePublicProfile } from "./hooks";
 
 import { IEvent } from "@/database/models/Event";
 
 import Marker from "@/assets/icons/marker.svg";
 import Envelope from "@/assets/icons/envelope.svg";
-
-import { usePublicProfile } from "./hooks";
 
 import classes from "./page.module.css";
 
@@ -34,18 +38,32 @@ const PublicProfile: NextPage = () => {
         status,
         isOwner,
         showPopup,
-        setShowPopup,
-        handleShowPopup,
+        popupCss,
+        refPopup,
+        closePopup,
         handleHidePopup,
+        activePopup,
+        sendInvation,
+        disabledBtn,
+        selectedEvent,
+        handleSelectEvent,
+        events,
+        successModalOpen,
+        addedUser,
+
         companionRequest,
+
+        invitationCompanion,
+
+        openPopupRequestUser,
+        openPopupInvitationCompanion,
+
+        userCompanion,
     } = usePublicProfile();
 
     //TO DO: Будет ли какая-то сортивка организованных событий в слайдере? К примеру пропускаем состоявшиеся события?
     //TO DO: Ближайшие события организатора или в которых участвует организатор? Если ближайшие события организатора, то такую сортировку можно сделать в первом слайдере. Что показывать в слайдере будет настраиваться в настройках приватности.
 
-    //TO DO: Кнопкам Chat, Invite and Add добавить соотвествующую логику, после того, как будет реализован данный функционал.
-
-    console.log(eventsData);
     return (
         <>
             {userData?.user && (
@@ -94,27 +112,80 @@ const PublicProfile: NextPage = () => {
                                 <div className={classes.links}>
                                     {status === "unauthenticated" ? (
                                         <>
-                                            <Button onClick={handleShowPopup}>Chat</Button>
+                                            {/* <Button onClick={handleShowPopup}>Chat</Button>
 
                                             <Button onClick={handleShowPopup}>Invite</Button>
 
-                                            <Button onClick={handleShowPopup}>Add</Button>
+                                            <Button onClick={handleShowPopup}>Add</Button> */}
                                         </>
                                     ) : (
                                         <>
                                             <Button>Chat</Button>
 
-                                            <Button>Invite</Button>
+                                            <Button
+                                                onClick={() =>
+                                                    openPopupInvitationCompanion(
+                                                        userData?.user?._id,
+                                                        userData?.user?.name,
+                                                    )
+                                                }
+                                            >
+                                                Invite
+                                            </Button>
 
-                                            <Button onClick={companionRequest}>Add</Button>
+                                            {!userCompanion && (
+                                                <Button
+                                                    onClick={() =>
+                                                        openPopupRequestUser(userData?.user?._id, userData?.user?.name)
+                                                    }
+                                                >
+                                                    Add
+                                                </Button>
+                                            )}
                                         </>
                                     )}
                                 </div>
                             )}
                         </div>
 
-                        <Popup showPopup={showPopup} setShowPopup={setShowPopup} popupMode={"auth"}>
-                            <AuthModal onClose={handleHidePopup} />
+                        <Popup showPopup={showPopup} popupCss={popupCss} refPopup={refPopup}>
+                            {status === "unauthenticated" && <AuthModal onClose={handleHidePopup} />}
+
+                            {invitationCompanion?.id === activePopup && (
+                                <DialogModal
+                                    name={invitationCompanion?.name}
+                                    mode={DialogMode.INVITATION}
+                                    closePopup={closePopup}
+                                    sendInvation={sendInvation}
+                                    disabled={disabledBtn}
+                                >
+                                    <InvationEvent
+                                        data={events}
+                                        selectedEvent={selectedEvent}
+                                        handleSelectEvent={handleSelectEvent}
+                                    />
+                                </DialogModal>
+                            )}
+
+                            {/* Приглашение успешно отправлено одному или нескольким пользователям */}
+                            {successModalOpen && (
+                                <SuccessModal
+                                    closePopup={closePopup}
+                                    name={userData?.user.name}
+                                    selectedEvent={selectedEvent}
+                                />
+                            )}
+
+                            {addedUser?.id === activePopup && (
+                                <DialogModal name={addedUser?.name} mode={DialogMode.ADD} closePopup={closePopup}>
+                                    <Button className={classes.yesButton} onClick={companionRequest}>
+                                        Yes
+                                    </Button>
+                                    <Button onClick={closePopup} className={classes.cancelButton}>
+                                        Cancel
+                                    </Button>
+                                </DialogModal>
+                            )}
                         </Popup>
 
                         <div className={classes.details}>

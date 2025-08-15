@@ -8,39 +8,34 @@ import Minus from "@/assets/icons/minus.svg";
 import Email from "@/assets/icons/email.svg";
 import Message from "@/assets/icons/message.svg";
 
-import { useCompanions } from "@/components/widgets/Companions/hooks/useCompanions";
-
-import { Popup } from "@/components/shared/Popup";
-import { usePopup } from "@/components/shared/Popup/hooks/usePopup";
-import { DeleteFriendModal } from "@/components/widgets/DeleteFriendModal";
-import { Button } from "@/components/shared/Button";
-
 import classes from "./CardCompanion.module.css";
 export interface CardCompanionProps {
     id: string;
     name: string;
     image: string;
+    onClickPopupDelete: () => void;
+    onClickPopupInvitation: () => void;
     onChange: (checked: boolean) => void;
     select: boolean;
+    checked?: boolean;
 }
 
-export const CardCompanion: FC<CardCompanionProps> = ({ id, name, image, onChange, select }) => {
-    const { handleShowPopup, handleHidePopup, showPopup, setShowPopup } = usePopup({ popupMode: "map" });
-    const { removeCompanion } = useCompanions();
-
-    const handleDeleteCompanion = () => {
-        try {
-            removeCompanion(id);
-            handleHidePopup;
-        } catch (error) {
-            console.error("DeleteFriendModal - Error deleting companion: ", error);
-        }
-    };
+export const CardCompanion: FC<CardCompanionProps> = ({
+    id,
+    name,
+    image,
+    onChange,
+    select,
+    checked,
+    onClickPopupDelete,
+    onClickPopupInvitation,
+}) => {
+    const cardCompanionCss = [classes.card, checked && classes.cardBorder].filter(Boolean).join(" ");
 
     return (
-        <div className={classes.card}>
+        <div className={cardCompanionCss}>
             <div>
-                {select && <Checkbox className={classes.position} onChange={onChange} id={id} />}
+                {select && <Checkbox className={classes.position} onChange={onChange} id={id} checked={checked} />}
 
                 <Avatar name={name} image={image} scale={1.8} id={id} />
             </div>
@@ -52,19 +47,11 @@ export const CardCompanion: FC<CardCompanionProps> = ({ id, name, image, onChang
                 </div>
 
                 <div className={classes.icons}>
-                    <Email />
+                    <Email onClick={onClickPopupInvitation} />
 
-                    <Message />
+                    {/* <Message /> */}
 
-                    <Minus className={classes.removeCompanion} onClick={handleShowPopup} />
-                    <Popup popupMode={"map"} showPopup={showPopup} setShowPopup={setShowPopup}>
-                        <DeleteFriendModal name={name}>
-                            <Button className={classes.delete} onClick={handleDeleteCompanion}>
-                                Yes
-                            </Button>
-                            <Button onClick={handleHidePopup}>Cancel</Button>
-                        </DeleteFriendModal>
-                    </Popup>
+                    <Minus className={classes.removeCompanion} onClick={onClickPopupDelete} />
                 </div>
             </div>
         </div>

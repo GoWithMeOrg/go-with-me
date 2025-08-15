@@ -28,7 +28,13 @@ export const Avatar: FC<AvatarProps> = ({ image, name, scale = 1, className, id 
         <div style={{ width: `calc(${scale} * 3.5rem)` }} onClick={handleClick}>
             <div className={[classes.avatar, !image && classes.background, className].filter(Boolean).join(" ")}>
                 {image ? (
-                    <Image className={classes.image} alt={name} src={image} fill></Image>
+                    <Image
+                        className={classes.image}
+                        alt={name}
+                        src={image}
+                        fill
+                        sizes={`calc(${scale} * 3.5rem)`}
+                    ></Image>
                 ) : (
                     <p className={classes.content} style={{ fontSize: `calc(${scale} * 1rem)` }}>
                         {getContent(name)}

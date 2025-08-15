@@ -17,3 +17,16 @@ export const GET_APPLICATIONS = gql`
         }
     }
 `;
+
+export const GET_APPLICATION = gql`
+    query GetApplication($user_id: String, $receiver_id: String) {
+        getApplication(user_id: $user_id, receiver_id: $receiver_id) {
+            receiver {
+                name
+            }
+            sender {
+                name
+            }
+        }
+    }
+`;

@@ -1,6 +1,5 @@
 "use client";
 
-import React, { useState } from "react";
 import { NextPage } from "next";
 
 import { ButtonBack } from "@/components/shared/ButtonBack";
@@ -14,10 +13,12 @@ import { Notifications } from "@/components/widgets/Notifications";
 import { Companions } from "@/components/widgets/Companions";
 import { Events } from "@/components/widgets/Events";
 
+import { useLocalStorage } from "@/hooks/useLocalStorage";
+
 import classes from "./page.module.css";
 
 const Profile: NextPage = () => {
-    const [activeTab, setActiveTab] = useState(NavbarTabs.PERSONAL);
+    const [activeTab, setActiveTab] = useLocalStorage<NavbarTabs>("activeTab", NavbarTabs.PERSONAL);
 
     const handleTabClick = (tab: NavbarTabs) => {
         setActiveTab(tab);

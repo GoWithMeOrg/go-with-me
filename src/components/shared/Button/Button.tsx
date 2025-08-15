@@ -8,24 +8,30 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     resetDefaultStyles?: boolean;
     size?: "normal" | "big";
     stretch?: boolean;
+    disabled?: boolean;
 }
 
-export const Button: FC<ButtonProps> = ({ stretch, children, className, resetDefaultStyles, size, ...rest }) => {
-    const buttonCssString = useMemo(
-        () =>
-            [
-                !resetDefaultStyles && classes.button,
-                size === "big" && classes.big,
-                stretch && classes.stretch,
-                className,
-            ]
-                .filter(Boolean)
-                .join(" "),
-        [resetDefaultStyles, className, size, stretch],
-    );
+export const Button: FC<ButtonProps> = ({
+    stretch,
+    children,
+    className,
+    resetDefaultStyles,
+    size,
+    disabled,
+    ...rest
+}) => {
+    const buttonCssString = [
+        !resetDefaultStyles && classes.button,
+        size === "big" && classes.big,
+        stretch && classes.stretch,
+        disabled && classes.disabled,
+        className,
+    ]
+        .filter(Boolean)
+        .join(" ");
 
     return (
-        <button className={buttonCssString} {...rest}>
+        <button className={buttonCssString} {...rest} disabled={disabled}>
             {children}
         </button>
     );

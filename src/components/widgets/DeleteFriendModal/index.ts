@@ -1,1 +1,0 @@
-export { DeleteFriendModal } from "./DeleteFriendModal";

@@ -1,29 +1,33 @@
-import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import { useMutation, useQuery } from "@apollo/client";
 
 import { GET_ORGANIZER_EVENTS } from "@/app/api/graphql/queries/events";
 import { GET_USER_BY_ID } from "@/app/api/graphql/queries/user";
 import { COMPANION_REQUEST_MUTATION } from "@/app/api/graphql/mutations/companionRequest";
-
-import { usePopup } from "@/components/shared/Popup/hooks";
+import { useUserID } from "@/hooks/useUserID";
+import { useDialogModal } from "@/components/widgets/DialogModal/hooks/useDialogModal";
+import { GET_IS_USER_COMPANION } from "@/app/api/graphql/queries/companions";
 
 export const usePublicProfile = () => {
-    const { data: session, status } = useSession();
+    const { user_id, status } = useUserID();
     const params = useParams();
-    const user_id = session?.user.id;
-    const isOwner = session?.user.id === params.user_id;
+
+    const isOwner = user_id === params.user_id;
 
     const { data: userData } = useQuery(GET_USER_BY_ID, { variables: { userId: params.user_id } });
     const { data: eventsData } = useQuery(GET_ORGANIZER_EVENTS, {
         variables: { organizerId: params.user_id },
     });
 
-    const popupMode: "auth" = "auth";
+    const { data: isCompanion } = useQuery(GET_IS_USER_COMPANION, {
+        variables: { userId: user_id, companionId: params.user_id },
+    });
 
-    const { showPopup, setShowPopup, handleShowPopup, handleHidePopup } = usePopup({ popupMode });
+    const userCompanion = isCompanion?.isUserCompanion;
 
     const [CompanionRequest] = useMutation(COMPANION_REQUEST_MUTATION);
+
+    const popupsHook = useDialogModal({ receiver_ids: userData?.user?._id });
 
     const companionRequest = async () => {
         try {
@@ -33,6 +37,8 @@ export const usePublicProfile = () => {
         } catch (error) {
             console.error("Error deleting event: ", error);
         }
+
+        popupsHook.closePopup();
     };
 
     return {
@@ -41,10 +47,26 @@ export const usePublicProfile = () => {
         eventsData,
         status,
         isOwner,
-        showPopup,
-        setShowPopup,
-        handleShowPopup,
-        handleHidePopup,
+        showPopup: popupsHook.showPopup,
+        refPopup: popupsHook.refPopup,
+        popupCss: popupsHook.popupCss,
+        openPopup: popupsHook.openPopup,
+        closePopup: popupsHook.closePopup,
+        handleHidePopup: popupsHook.handleHidePopup,
+        activePopup: popupsHook.activePopup,
+        sendInvation: popupsHook.sendInvation,
+        disabledBtn: popupsHook.disabledBtn,
+        selectedEvent: popupsHook.selectedEvent,
+        handleSelectEvent: popupsHook.handleSelectEvent,
+        events: popupsHook.events,
+        successModalOpen: popupsHook.successModalOpen,
+        addedUser: popupsHook.addedUser,
+
+        invitationCompanion: popupsHook.invitationCompanion,
+        openPopupRequestUser: popupsHook.openPopupRequestUser,
+        openPopupInvitationCompanion: popupsHook.openPopupInvitationCompanion,
+
         companionRequest,
+        userCompanion,
     };
 };

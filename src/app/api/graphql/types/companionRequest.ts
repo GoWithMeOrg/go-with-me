@@ -19,7 +19,7 @@ export const companionRequestTypeDefs = gql`
 
     type Query {
         getApplications(userId: String): [CompanionRequest!]!
-        # companions(userId: ID!): [User!]!
+        getApplication(user_id: String, receiver_id: String): CompanionRequest!
     }
 
     type Mutation {

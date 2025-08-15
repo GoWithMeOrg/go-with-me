@@ -1,3 +1,4 @@
+import EventModel from "@/database/models/Event";
 import { InvitationModel, InvitedModel } from "@/database/models/Invitation";
 import { InvitationResponseStatus } from "@/database/types/Invitation";
 import mongoose from "mongoose";
@@ -22,6 +23,35 @@ export const invitationResolvers = {
 
             return inviteds.map((record) => record);
         },
+
+        companionInvitationEvent: async (_parent: any, args: { organizer_id: string; event_id: string }) => {
+            // Получаем все события организатора, фильтруем и сортируем по дате
+            const currentDate = new Date();
+            const events = await EventModel.find({
+                organizer_id: args.organizer_id,
+                startDate: { $gte: currentDate },
+            }).sort({ startDate: 1 }); // сортировка по дате
+
+            // Получаем все события на которые принято приглашение
+            const inviteds = await InvitedModel.find({
+                user: args.organizer_id,
+                status: "Accepted",
+            }).populate({
+                path: "invitation",
+                populate: [{ path: "sender" }, { path: "event" }],
+            });
+
+            // Извлекаем события из приглашений
+            const acceptedEvents = inviteds
+                .map((invited) => invited.invitation?.event)
+                .filter((event) => event != null);
+
+            // Объединяем массивы событий
+            const allEvents = [...events, ...acceptedEvents];
+
+            return allEvents;
+        },
+
         getDeclinedEvents: async (_: any, { userId }: { userId: string }) => {
             const declinedInvites = await InvitedModel.find({
                 user: userId,
@@ -38,7 +68,7 @@ export const invitationResolvers = {
     },
 
     Mutation: {
-        async respondToInvitation(_: any, { eventId, senderId, receiverIds }: RespondArgs) {
+        async sendInvitation(_: any, { eventId, senderId, receiverIds }: RespondArgs) {
             const eventObjectId = new mongoose.Types.ObjectId(eventId);
             const senderObjectId = new mongoose.Types.ObjectId(senderId);
 
