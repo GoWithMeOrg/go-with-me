@@ -5,8 +5,11 @@ import { REMOVE_COMPANION_MUTATION } from "@/app/api/graphql/mutations/companion
 import { COMPANION_REQUEST_MUTATION } from "@/app/api/graphql/mutations/companionRequest";
 import { useUserID } from "@/hooks/useUserID";
 
-export const useCompanionSearch = (limit: number) => {
+export const useCompanionSearch = () => {
     const [searchValueCompanion, setSearchValueCompanion] = useState("");
+    const defaulShowCompanions = 12;
+    const [limit, setLimit] = useState<number>(defaulShowCompanions);
+
     const [loadCompanion, { data: findCompanion, called: findCompanionCalled }] = useLazyQuery(GET_FIND_COMPANION);
     const { user_id } = useUserID();
 
@@ -18,8 +21,6 @@ export const useCompanionSearch = (limit: number) => {
     } = useQuery(GET_COMPANIONS, {
         variables: { userId: user_id, limit },
     });
-
-    console.log(dataCompanions);
 
     const [CompanionRequest] = useMutation(COMPANION_REQUEST_MUTATION);
     const [RemoveCompanion] = useMutation(REMOVE_COMPANION_MUTATION);
@@ -60,6 +61,11 @@ export const useCompanionSearch = (limit: number) => {
         refetchCompanions();
     };
 
+    // Показать всех компаньонов (лимит)
+    const showAllCompanions = () => {
+        setLimit(limit === 0 ? defaulShowCompanions : 0);
+    };
+
     return {
         searchValueCompanion,
         setSearchValueCompanion,
@@ -74,5 +80,9 @@ export const useCompanionSearch = (limit: number) => {
         errorCompanions,
         findCompanionCalled,
         user_id,
+        defaulShowCompanions,
+        limit,
+        setLimit,
+        showAllCompanions,
     };
 };

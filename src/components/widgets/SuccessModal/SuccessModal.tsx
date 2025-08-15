@@ -30,7 +30,7 @@ export const SuccessModal: FC<SuccessModalProps> = ({ closePopup, name, selected
             </Button>
 
             <Title className={classes.titleModal} tag="h3">
-                Приглашение успено <br />
+                Приглашение успешно <br />
                 отправлено!
             </Title>
 

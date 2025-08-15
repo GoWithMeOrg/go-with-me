@@ -7,23 +7,18 @@ import { useInvitationEvents } from "@/components/widgets/DialogModal/hooks/useI
 
 export const useCompanions = () => {
     // Основные состояния
-    const defaulShowCompanions = 12;
-    const [limit, setLimit] = useState<number>(defaulShowCompanions);
+    // const defaulShowCompanions = 12;
+    // const [limit, setLimit] = useState<number>(defaulShowCompanions);
 
     // Хуки декомпозиции
     const findUsersHook = useFindUsers();
-    const companionSearchHook = useCompanionSearch(limit);
+    const companionSearchHook = useCompanionSearch();
     const selectionHook = useCompanionSelection();
     const invitationEventsHook = useInvitationEvents();
     const popupsHook = useDialogModal({
         receiver_ids: selectionHook.receiverIds,
         resetCards: selectionHook.selectCompanions,
     });
-
-    // Показать всех компаньонов (лимит)
-    const showAllCompanions = () => {
-        setLimit(limit === 0 ? limit : 0);
-    };
 
     // Массовое удаление выбранных компаньонов
     const deleteCheckedCompanions = () => {
@@ -114,10 +109,10 @@ export const useCompanions = () => {
         // События организатора
         events: invitationEventsHook.events,
         // Прочее
-        defaulShowCompanions,
-        limit,
-        setLimit,
-        showAllCompanions,
+        defaulShowCompanions: companionSearchHook.defaulShowCompanions,
+        limit: companionSearchHook.limit,
+        setLimit: companionSearchHook.setLimit,
+        showAllCompanions: companionSearchHook.showAllCompanions,
 
         deleteCompanion,
     };

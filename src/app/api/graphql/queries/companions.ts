@@ -1,8 +1,8 @@
 import gql from "graphql-tag";
 
 export const GET_COMPANIONS = gql`
-    query Companions($userId: String!) {
-        companions(user_id: $userId) {
+    query Companions($userId: String!, $limit: Int) {
+        companions(user_id: $userId, limit: $limit) {
             totalCompanions
             companions {
                 _id
