@@ -49,35 +49,22 @@ const Companions: FC = () => {
         defaulShowCompanions,
         totalCompanions,
 
-        addedUser,
-
-        delCompanion,
-
         deleteCompanion,
 
-        openPopup,
         closePopup,
-        activePopup,
-        openPopupInvation,
-        openPopupDelete,
+        openPopupRequestUser,
+        openPopupInvitationCompanion,
+        openPopupInvitationCompanions,
+        openPopupDeleteCompanion,
+        openPopupDeleteCompanions,
         handleSelectEvent,
-        selectedEvent,
-        disabledBtn,
-        successModalOpen,
 
-        invitationCompanion,
-
-        invitationSelectedCompanions,
         sendInvation,
 
         events,
-
-        delSelectedCompanions,
         checkedCompanions,
 
-        openPopupRequestUser,
-        openPopupDeleteCompanion,
-        openPopupInvitationCompanion,
+        state,
     } = useCompanions();
 
     return (
@@ -187,8 +174,8 @@ const Companions: FC = () => {
 
                             {select && checkedCompanionsCounter > 0 && (
                                 <div className={classes.buttonsDelAndInvite}>
-                                    <Button onClick={() => openPopupInvation()}>Отправить инвайты</Button>
-                                    <Button className={classes.delete} onClick={() => openPopupDelete()}>
+                                    <Button onClick={() => openPopupInvitationCompanions()}>Отправить инвайты</Button>
+                                    <Button className={classes.delete} onClick={() => openPopupDeleteCompanions()}>
                                         Удалить компанионов
                                     </Button>
                                 </div>
@@ -197,11 +184,11 @@ const Companions: FC = () => {
                     </div>
                     <Popup showPopup={showPopup} popupCss={popupCss} refPopup={refPopup}>
                         {/* Отправить заявку в компанионы */}
-                        {addedUser?.id === activePopup && (
-                            <DialogModal name={addedUser?.name} mode={DialogMode.ADD} closePopup={closePopup}>
+                        {state.addedUser?.id === state.activePopup && (
+                            <DialogModal name={state.addedUser?.name} mode={DialogMode.ADD} closePopup={closePopup}>
                                 <Button
                                     className={classes.yesButton}
-                                    onClick={() => sendRequestCompanion(addedUser?.id)}
+                                    onClick={() => sendRequestCompanion(state.addedUser?.id)}
                                 >
                                     Yes
                                 </Button>
@@ -212,9 +199,16 @@ const Companions: FC = () => {
                         )}
 
                         {/* Удалить из компанионов */}
-                        {delCompanion?.id === activePopup && (
-                            <DialogModal name={delCompanion?.name} mode={DialogMode.DEL} closePopup={closePopup}>
-                                <Button className={classes.yesButton} onClick={() => deleteCompanion(delCompanion?.id)}>
+                        {state.deleteCompanion?.id === state.activePopup && (
+                            <DialogModal
+                                name={state.deleteCompanion?.name}
+                                mode={DialogMode.DEL}
+                                closePopup={closePopup}
+                            >
+                                <Button
+                                    className={classes.yesButton}
+                                    onClick={() => deleteCompanion(state.deleteCompanion?.id)}
+                                >
                                     Yes
                                 </Button>
                                 <Button onClick={closePopup} className={classes.cancelButton}>
@@ -224,35 +218,33 @@ const Companions: FC = () => {
                         )}
 
                         {/* Пригласить компаниона */}
-                        {invitationCompanion?.id === activePopup && (
-                            <>
-                                <DialogModal
-                                    name={invitationCompanion?.name}
-                                    mode={DialogMode.INVITATION}
-                                    closePopup={closePopup}
-                                    sendInvation={sendInvation}
-                                    disabled={disabledBtn}
-                                >
-                                    <InvationEvent
-                                        data={events}
-                                        selectedEvent={selectedEvent}
-                                        handleSelectEvent={handleSelectEvent}
-                                    />
-                                </DialogModal>
-                            </>
+                        {state.invitationCompanion?.id === state.activePopup && (
+                            <DialogModal
+                                name={state.invitationCompanion?.name}
+                                mode={DialogMode.INVITATION}
+                                closePopup={closePopup}
+                                sendInvation={sendInvation}
+                                disabled={state.disableButton}
+                            >
+                                <InvationEvent
+                                    data={events}
+                                    selectedEvent={state.selectedEvent}
+                                    handleSelectEvent={handleSelectEvent}
+                                />
+                            </DialogModal>
                         )}
 
                         {/* Приглашение успешно отправлено одному или нескольким пользователям */}
-                        {successModalOpen && (
+                        {state.successModalOpen && (
                             <SuccessModal
                                 closePopup={closePopup}
-                                name={invitationCompanion?.name}
-                                selectedEvent={selectedEvent}
+                                name={state.invitationCompanion?.name}
+                                selectedEvent={state.selectedEvent}
                             />
                         )}
 
                         {/* Удалить несколько компанионов */}
-                        {delSelectedCompanions && checkedCompanions && (
+                        {state.deleteSelectedCompanions && checkedCompanions && (
                             <DialogModal
                                 companionCounter={checkedCompanionsCounter}
                                 mode={DialogMode.DEL}
@@ -268,17 +260,17 @@ const Companions: FC = () => {
                         )}
 
                         {/* Пригласить несколько компанионов */}
-                        {invitationSelectedCompanions && checkedCompanions && (
+                        {state.invitationSelectedCompanions && checkedCompanions && (
                             <DialogModal
                                 companionCounter={checkedCompanionsCounter}
                                 mode={DialogMode.INVITATION}
                                 closePopup={closePopup}
                                 sendInvation={sendInvation}
-                                disabled={disabledBtn}
+                                disabled={state.disableButton}
                             >
                                 <InvationEvent
                                     data={events}
-                                    selectedEvent={selectedEvent}
+                                    selectedEvent={state.selectedEvent}
                                     handleSelectEvent={handleSelectEvent}
                                 />
                             </DialogModal>

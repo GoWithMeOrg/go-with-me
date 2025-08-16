@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useFindUsers } from "./useFindUsers";
 import { useCompanionSearch } from "./useCompanionSearch";
 import { useCompanionSelection } from "./useCompanionSelection";
@@ -6,10 +5,6 @@ import { useDialogModal } from "@/components/widgets/DialogModal/hooks/useDialog
 import { useInvitationEvents } from "@/components/widgets/DialogModal/hooks/useInvitationEvents";
 
 export const useCompanions = () => {
-    // Основные состояния
-    // const defaulShowCompanions = 12;
-    // const [limit, setLimit] = useState<number>(defaulShowCompanions);
-
     // Хуки декомпозиции
     const findUsersHook = useFindUsers();
     const companionSearchHook = useCompanionSearch();
@@ -76,35 +71,21 @@ export const useCompanions = () => {
         // Попапы
         showPopup: popupsHook.showPopup,
         setShowPopup: popupsHook.setShowPopup,
+        openPopup: popupsHook.openPopup,
+        closePopup: popupsHook.closePopup,
         handleShowPopup: popupsHook.handleShowPopup,
         handleHidePopup: popupsHook.handleHidePopup,
         container: popupsHook.container,
         popupCss: popupsHook.popupCss,
         refPopup: popupsHook.refPopup,
-        activePopup: popupsHook.activePopup,
-        setActivePopup: popupsHook.setActivePopup,
-        addedUser: popupsHook.addedUser,
-        setAddedUser: popupsHook.setAddedUser,
-        openPopup: popupsHook.openPopup,
-        closePopup: popupsHook.closePopup,
         handleSelectEvent: popupsHook.handleSelectEvent,
-        disabledBtn: popupsHook.disabledBtn,
-        selectedEvent: popupsHook.selectedEvent,
-        openPopupInvation: popupsHook.openPopupInvation,
-        openPopupDelete: popupsHook.openPopupDelete,
-        delCompanion: popupsHook.delCompanion,
-        setDelCompanion: popupsHook.setDelCompanion,
-        delSelectedCompanions: popupsHook.delSelectedCompanions,
-        setDelSelectedCompanions: popupsHook.setDelSelectedCompanions,
-        invitationCompanion: popupsHook.invitationCompanion,
-        setInvitationCompanion: popupsHook.setInvitationCompanion,
-        invitationSelectedCompanions: popupsHook.invitationSelectedCompanions,
-        setInvitationSelectedCompanions: popupsHook.setInvitationSelectedCompanions,
+
         sendInvation: popupsHook.sendInvation,
-        successModalOpen: popupsHook.successModalOpen,
         openPopupRequestUser: popupsHook.openPopupRequestUser,
         openPopupDeleteCompanion: popupsHook.openPopupDeleteCompanion,
+        openPopupDeleteCompanions: popupsHook.openPopupDeleteCompanions,
         openPopupInvitationCompanion: popupsHook.openPopupInvitationCompanion,
+        openPopupInvitationCompanions: popupsHook.openPopupInvitationCompanions,
 
         // События организатора
         events: invitationEventsHook.events,
@@ -115,5 +96,7 @@ export const useCompanions = () => {
         showAllCompanions: companionSearchHook.showAllCompanions,
 
         deleteCompanion,
+
+        state: popupsHook.state,
     };
 };
