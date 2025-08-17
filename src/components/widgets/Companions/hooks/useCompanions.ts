@@ -31,6 +31,7 @@ export const useCompanions = () => {
     // Удаление одного компаньона
     const deleteCompanion = (card_id: string) => {
         companionSearchHook.removeCompanion(card_id);
+        popupsHook.dispatch({ type: "SET_DELETE_COMPANION", payload: null });
         popupsHook.handleHidePopup();
     };
 
