@@ -3,6 +3,7 @@ import { useCompanionSearch } from "./useCompanionSearch";
 import { useCompanionSelection } from "./useCompanionSelection";
 import { useDialogModal } from "@/components/widgets/DialogModal/hooks/useDialogModal";
 import { useInvitationEvents } from "@/components/widgets/DialogModal/hooks/useInvitationEvents";
+import { DialogModal } from "@/components/widgets/DialogModal/types/DialogModal";
 
 export const useCompanions = () => {
     // Хуки декомпозиции
@@ -31,7 +32,7 @@ export const useCompanions = () => {
     // Удаление одного компаньона
     const deleteCompanion = (card_id: string) => {
         companionSearchHook.removeCompanion(card_id);
-        popupsHook.dispatch({ type: "SET_DELETE_COMPANION", payload: null });
+        popupsHook.dispatch({ type: DialogModal.DELETE_COMPANION, payload: null });
         popupsHook.handleHidePopup();
     };
 
