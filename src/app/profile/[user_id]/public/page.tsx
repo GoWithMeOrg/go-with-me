@@ -42,19 +42,13 @@ const PublicProfile: NextPage = () => {
         refPopup,
         closePopup,
         handleHidePopup,
-        activePopup,
-        sendInvation,
-        disabledBtn,
-        selectedEvent,
-        handleSelectEvent,
+        state,
+
         events,
-        successModalOpen,
-        addedUser,
+        handleSelectEvent,
+        sendInvation,
 
         companionRequest,
-
-        invitationCompanion,
-
         openPopupRequestUser,
         openPopupInvitationCompanion,
 
@@ -151,33 +145,33 @@ const PublicProfile: NextPage = () => {
                         <Popup showPopup={showPopup} popupCss={popupCss} refPopup={refPopup}>
                             {status === "unauthenticated" && <AuthModal onClose={handleHidePopup} />}
 
-                            {invitationCompanion?.id === activePopup && (
+                            {state.invitationCompanion?.id === state.activePopup && (
                                 <DialogModal
-                                    name={invitationCompanion?.name}
+                                    name={state.invitationCompanion?.name}
                                     mode={DialogMode.INVITATION}
                                     closePopup={closePopup}
                                     sendInvation={sendInvation}
-                                    disabled={disabledBtn}
+                                    disabled={state.disableButton}
                                 >
                                     <InvationEvent
                                         data={events}
-                                        selectedEvent={selectedEvent}
+                                        selectedEvent={state.selectedEvent}
                                         handleSelectEvent={handleSelectEvent}
                                     />
                                 </DialogModal>
                             )}
 
                             {/* Приглашение успешно отправлено одному или нескольким пользователям */}
-                            {successModalOpen && (
+                            {state.successModalOpen && (
                                 <SuccessModal
                                     closePopup={closePopup}
                                     name={userData?.user.name}
-                                    selectedEvent={selectedEvent}
+                                    selectedEvent={state.selectedEvent}
                                 />
                             )}
 
-                            {addedUser?.id === activePopup && (
-                                <DialogModal name={addedUser?.name} mode={DialogMode.ADD} closePopup={closePopup}>
+                            {state.addedUser?.id === state.activePopup && (
+                                <DialogModal name={state.addedUser?.name} mode={DialogMode.ADD} closePopup={closePopup}>
                                     <Button className={classes.yesButton} onClick={companionRequest}>
                                         Yes
                                     </Button>

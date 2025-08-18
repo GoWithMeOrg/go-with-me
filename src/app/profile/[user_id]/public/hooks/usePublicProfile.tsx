@@ -53,20 +53,15 @@ export const usePublicProfile = () => {
         openPopup: popupsHook.openPopup,
         closePopup: popupsHook.closePopup,
         handleHidePopup: popupsHook.handleHidePopup,
-        activePopup: popupsHook.activePopup,
         sendInvation: popupsHook.sendInvation,
-        disabledBtn: popupsHook.disabledBtn,
-        selectedEvent: popupsHook.selectedEvent,
         handleSelectEvent: popupsHook.handleSelectEvent,
         events: popupsHook.events,
-        successModalOpen: popupsHook.successModalOpen,
-        addedUser: popupsHook.addedUser,
-
-        invitationCompanion: popupsHook.invitationCompanion,
         openPopupRequestUser: popupsHook.openPopupRequestUser,
         openPopupInvitationCompanion: popupsHook.openPopupInvitationCompanion,
 
         companionRequest,
         userCompanion,
+
+        state: popupsHook.state,
     };
 };

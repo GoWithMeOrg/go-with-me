@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useReducer } from "react";
 import { useMutation } from "@apollo/client";
 
 import { usePopup } from "@/components/shared/Popup/hooks";
@@ -7,92 +7,84 @@ import { useInvitationEvents } from "./useInvitationEvents";
 
 import { SEND_INVITATION_MUTATION } from "@/app/api/graphql/mutations/invations";
 
-export interface CompanionsDialogModalProps {
-    receiver_ids: string[];
-    resetCards?: () => void; // Функция для сброса выбранных карточек
-}
-
+import { CompanionsDialogModalProps } from "@/components/widgets/DialogModal/types/DialogModal";
+import { dialogModalReducer, initialState } from "@/components/widgets/DialogModal/redusers/dialogModalReducer";
+import { DialogModal } from "@/components/widgets/DialogModal/types/DialogModal";
 export const useDialogModal = ({ receiver_ids, resetCards }: CompanionsDialogModalProps) => {
     const { user_id } = useUserID();
     const { showPopup, setShowPopup, handleShowPopup, handleHidePopup, container, popupCss, refPopup } = usePopup({
         popupMode: "map",
     });
 
-    const [activePopup, setActivePopup] = useState<string | null>(null);
-    const [addedUser, setAddedUser] = useState<{ id: string; name: string } | null>(null);
-    const [delCompanion, setDelCompanion] = useState<{ id: string; name: string } | null>(null);
-    const [invitationCompanion, setInvitationCompanion] = useState<{ id: string; name: string } | null>(null);
-    const [delSelectedCompanions, setDelSelectedCompanions] = useState<boolean>(false);
-    const [invitationSelectedCompanions, setInvitationSelectedCompanions] = useState<boolean>(false);
+    const [state, dispatch] = useReducer(dialogModalReducer, initialState);
 
-    const [successModalOpen, setSuccessModalOpen] = useState(false);
-
-    const receivers = invitationCompanion?.id !== undefined ? invitationCompanion?.id : receiver_ids;
-
-    const [selectedEvent, setSelectedEvent] = useState<{ _id: string; name: string; startDate: string } | null>(null);
-    const [disabledBtn, setDisabledBtn] = useState(true);
+    const receivers = state.invitationCompanion?.id !== undefined ? state.invitationCompanion?.id : receiver_ids;
 
     const [SendInvitation] = useMutation(SEND_INVITATION_MUTATION);
 
     const invitationEventsHook = useInvitationEvents();
 
     const openPopup = (popupId: string) => {
-        setActivePopup(popupId);
+        dispatch({ type: DialogModal.ACTIVE_POPUP, payload: popupId });
         handleShowPopup();
     };
 
     const closePopup = () => {
         handleHidePopup();
-        setSelectedEvent(null);
-        setDisabledBtn(true);
-        setActivePopup(null);
-        setSuccessModalOpen(false);
-        resetAllPopups();
+        dispatch({ type: DialogModal.RESET_ALL_POPUPS, payload: initialState });
     };
 
-    // Сброс всех popup-состояний
-    const resetAllPopups = () => {
-        setActivePopup(null);
-        setAddedUser(null);
-        setDelCompanion(null);
-        setInvitationCompanion(null);
-        setDelSelectedCompanions(false);
-        setInvitationSelectedCompanions(false);
-    };
-
-    const openPopupInvation = () => {
-        resetAllPopups();
-        setInvitationSelectedCompanions(true);
-        handleShowPopup();
-    };
-
-    const openPopupInvitationCompanion = (id: string, name: string) => {
-        setInvitationCompanion({ id, name });
-        openPopup(id);
-    };
-
-    const openPopupDeleteCompanion = (id: string, name: string) => {
-        setDelCompanion({ id, name });
-        openPopup(id);
-    };
-
+    // Отправить заявку в компаньоны
     const openPopupRequestUser = (id: string, name: string) => {
-        resetAllPopups();
-        setActivePopup(id);
-        setAddedUser({ id, name });
+        dispatch({ type: DialogModal.ACTIVE_POPUP, payload: id });
+        dispatch({ type: DialogModal.ADDED_USER, payload: { id, name } });
         handleShowPopup();
     };
 
-    const handleSelectEvent = (event: any) => {
-        setSelectedEvent(event);
-        setDisabledBtn(false);
+    // Пригласить компаниона
+    const openPopupInvitationCompanion = (id: string, name: string) => {
+        dispatch({ type: DialogModal.ACTIVE_POPUP, payload: id });
+        dispatch({ type: DialogModal.INVITATION_COMPANION, payload: { id, name } });
+        handleShowPopup();
     };
 
+    // Пригласить компаньонов
+    const openPopupInvitationCompanions = () => {
+        dispatch({
+            type: DialogModal.INVITATION_SELECTED_COMPANIONS,
+            payload: true,
+        });
+        handleShowPopup();
+    };
+
+    // Удалить компаньона
+    const openPopupDeleteCompanion = (id: string, name: string) => {
+        dispatch({ type: DialogModal.ACTIVE_POPUP, payload: id });
+        dispatch({ type: DialogModal.DELETE_COMPANION, payload: { id, name } });
+        handleShowPopup();
+    };
+
+    // Удалить компаньонов
+    const openPopupDeleteCompanions = () => {
+        dispatch({ type: DialogModal.DELETE_SELECTED_COMPANIONS, payload: true });
+        handleShowPopup();
+    };
+
+    // Выбрать событие
+    const handleSelectEvent = (event: any) => {
+        dispatch({
+            type: DialogModal.SELECTED_EVENT,
+            payload: event,
+        });
+        dispatch({ type: DialogModal.DISABLE_BUTTON, payload: false });
+    };
+
+    // Отправить приглашение
     const sendInvation = async () => {
         try {
             await SendInvitation({
                 variables: {
-                    eventId: selectedEvent?._id,
+                    eventId: state.selectedEvent?._id,
                     senderId: user_id,
                     receiverIds: receivers,
                 },
@@ -103,19 +95,10 @@ export const useDialogModal = ({ receiver_ids, resetCards }: CompanionsDialogMod
 
         if (receiver_ids.length > 0 && resetCards) {
             resetCards();
+            dispatch({ type: DialogModal.INVITATION_SELECTED_COMPANIONS, payload: false });
         }
-
-        setActivePopup(null);
-        setAddedUser(null);
-        setInvitationSelectedCompanions(false);
-
-        setSuccessModalOpen(true);
-    };
-
-    const openPopupDelete = () => {
-        resetAllPopups();
-        setDelSelectedCompanions(true);
-        handleShowPopup();
+        dispatch({ type: DialogModal.ACTIVE_POPUP, payload: null });
+        dispatch({ type: DialogModal.SUCCESS_MODAL_OPEN, payload: true });
     };
 
     return {
@@ -126,33 +109,19 @@ export const useDialogModal = ({ receiver_ids, resetCards }: CompanionsDialogMod
         container,
         popupCss,
         refPopup,
-        activePopup,
-        setActivePopup,
-        addedUser,
-        setAddedUser,
-        delCompanion,
-        setDelCompanion,
-        invitationCompanion,
-        setInvitationCompanion,
-        delSelectedCompanions,
-        setDelSelectedCompanions,
-        invitationSelectedCompanions,
-        setInvitationSelectedCompanions,
         openPopup,
         closePopup,
-        openPopupInvation,
-        handleSelectEvent,
-        openPopupDelete,
-        resetAllPopups,
-        disabledBtn,
-        selectedEvent,
-        events: invitationEventsHook.events,
-        sendInvation,
-        successModalOpen,
-        setSuccessModalOpen,
-
         openPopupRequestUser,
         openPopupInvitationCompanion,
+        openPopupInvitationCompanions,
         openPopupDeleteCompanion,
+        openPopupDeleteCompanions,
+        handleSelectEvent,
+
+        events: invitationEventsHook.events,
+        sendInvation,
+
+        state,
+        dispatch,
     };
 };
