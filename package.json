@@ -14,7 +14,9 @@
         "migration:up": "env $(cat .env.local | grep -v \"#\" | xargs) npx migrate up --",
         "migration:down": "env $(cat .env.local | grep -v \"#\" | xargs) npx migrate down --",
         "storybook": "storybook dev -p 6006",
-        "build-storybook": "storybook build"
+        "build-storybook": "storybook build",
+        "mcp:start": "npx mongodb-mcp-server",
+        "mcp:install": "npm install --save-dev mongodb-mcp-server"
     },
     "engines": {
         "node": ">=20"
@@ -51,6 +53,7 @@
     "devDependencies": {
         "@chromatic-com/storybook": "^3.2.4",
         "@faker-js/faker": "^9.4.0",
+        "@modelcontextprotocol/sdk": "^1.17.4",
         "@playwright/test": "^1.52.0",
         "@storybook/addon-essentials": "^8.5.3",
         "@storybook/addon-interactions": "^8.5.3",
@@ -72,6 +75,7 @@
         "eslint-plugin-storybook": "^0.11.2",
         "husky": "^9.1.7",
         "lint-staged": "^15.4.3",
+        "mongodb-mcp-server": "^0.2.0",
         "prettier": "^3.4.2",
         "storybook": "^8.5.3",
         "typescript": "^5.7.3"

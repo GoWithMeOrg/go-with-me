@@ -1,3 +1,10 @@
 {
-    "codium.codeCompletion.enable": true
+    "codium.codeCompletion.enable": true,
+    "mongodb.playgrounds.defaultDatabase": "admin",
+    "mongodb.playgrounds.defaultConnectionString": "${env:MONGODB_URI}",
+    "mongodb.playgrounds.showResultsOnSave": true,
+    "mcp.server.mongodb.enabled": true,
+    "mcp.server.mongodb.command": "npx",
+    "mcp.server.mongodb.args": ["@modelcontextprotocol/server-mongodb"],
+    "mcp.server.mongodb.env.MONGODB_URI": "${env:MONGODB_URI}"
 }
