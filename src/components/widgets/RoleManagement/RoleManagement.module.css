@@ -72,7 +72,7 @@
 
 .permissionsHeader {
     display: grid;
-    grid-template-columns: 150px repeat(5, 1fr);
+    grid-template-columns: 150px repeat(4, 1fr);
     background: #f3f4f6;
     border-bottom: 1px solid #d1d5db;
     font-weight: 600;
@@ -93,7 +93,7 @@
 
 .permissionRow {
     display: grid;
-    grid-template-columns: 150px repeat(5, 1fr);
+    grid-template-columns: 150px repeat(4, 1fr);
     border-bottom: 1px solid #e5e7eb;
 }
 
@@ -277,7 +277,7 @@
 
     .permissionsHeader,
     .permissionRow {
-        grid-template-columns: 120px repeat(5, 1fr);
+        grid-template-columns: 120px repeat(4, 1fr);
         font-size: 0.875rem;
     }
 
@@ -310,7 +310,7 @@
 @media (max-width: 480px) {
     .permissionsHeader,
     .permissionRow {
-        grid-template-columns: 100px repeat(5, 1fr);
+        grid-template-columns: 100px repeat(4, 1fr);
         font-size: 0.75rem;
     }
 

@@ -16,7 +16,7 @@ import { Action, Resource } from "@/database/types/Permission";
 import classes from "./RoleManagement.module.css";
 
 // GraphQL queries and mutations
-const GET_ROLES = gql`
+export const GET_ROLES = gql`
     query GetRoles {
         roles {
             _id
@@ -29,7 +29,7 @@ const GET_ROLES = gql`
     }
 `;
 
-const CREATE_ROLE = gql`
+export const CREATE_ROLE = gql`
     mutation CreateRole($role: RoleInput!) {
         createRole(role: $role) {
             _id
@@ -42,7 +42,7 @@ const CREATE_ROLE = gql`
     }
 `;
 
-const UPDATE_ROLE = gql`
+export const UPDATE_ROLE = gql`
     mutation UpdateRole($id: ID!, $role: RoleInput!) {
         updateRole(id: $id, role: $role) {
             _id
@@ -55,7 +55,7 @@ const UPDATE_ROLE = gql`
     }
 `;
 
-const DELETE_ROLE = gql`
+export const DELETE_ROLE = gql`
     mutation DeleteRole($id: ID!) {
         deleteRole(id: $id)
     }
