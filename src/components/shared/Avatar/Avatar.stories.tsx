@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/nextjs";
 import { Avatar } from "@/components/shared/Avatar";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
