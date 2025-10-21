@@ -1,7 +1,8 @@
 "use client";
 
 import type { NextPage } from "next";
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
+import { gql } from "@apollo/client";
 
 import { Trip } from "@/components/widgets/Trip";
 import { useParams } from "next/navigation";

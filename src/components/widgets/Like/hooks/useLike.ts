@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client/react";
 
 import { GET_LIKED_EVENTS, LIKED } from "@/app/api/graphql/queries/liked";
 import { LIKE_MUTATION } from "@/app/api/graphql/mutations/like";

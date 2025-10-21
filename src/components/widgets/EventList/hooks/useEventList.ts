@@ -1,5 +1,5 @@
 import { GET_EVENTS } from "@/app/api/graphql/queries/events";
-import { useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 import { GetEventsData, useEventListProps } from "@/components/widgets/EventList/types/EventList";
 import { IEvent } from "@/database/models/Event";
 

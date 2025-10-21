@@ -3,7 +3,8 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { useMutation, gql } from "@apollo/client";
+import { useMutation } from "@apollo/client/react";
+import { gql } from "@apollo/client";
 
 import { EventForm } from "@/components/widgets/EventForm";
 import { EventType } from "@/components/widgets/EventForm/EventForm";

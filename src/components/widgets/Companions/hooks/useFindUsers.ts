@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLazyQuery } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client/react";
 
 import { GET_FIND_USERS } from "@/app/api/graphql/queries/findUsers";
 import { useUserID } from "@/hooks/useUserID";

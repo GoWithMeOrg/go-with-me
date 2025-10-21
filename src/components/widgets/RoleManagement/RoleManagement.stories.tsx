@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/nextjs";
 import { MockedProvider } from "@apollo/client/testing";
 import { RoleManagement, GET_ROLES, CREATE_ROLE, UPDATE_ROLE, DELETE_ROLE } from "./RoleManagement";
 

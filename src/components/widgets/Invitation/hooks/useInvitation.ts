@@ -1,4 +1,4 @@
-import { useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client/react";
 
 import { ACCEPT_INVITATION_MUTATION, DECLINE_INVITATION_MUTATION } from "@/app/api/graphql/mutations/invations";
 import { GET_DECLINED_EVENTS } from "@/app/api/graphql/queries/invations";

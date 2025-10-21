@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Link from "next/link";
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client/react";
 import gql from "graphql-tag";
 
 import classes from "./TripFormEvents.module.css";

@@ -2,7 +2,8 @@
 
 import React from "react";
 import { SessionProvider } from "next-auth/react";
-import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { ApolloClient, InMemoryCache, HttpLink } from "@apollo/client";
+import { ApolloProvider } from "@apollo/client/react";
 import { APIProvider } from "@vis.gl/react-google-maps";
 
 type Props = {
@@ -14,7 +15,9 @@ export const NextAuthProvider = ({ children }: Props) => {
 };
 
 const client = new ApolloClient({
-    uri: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT,
+    link: new HttpLink({
+        uri: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT,
+    }),
     cache: new InMemoryCache(),
 });
 

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { IEvent, TabType } from "../types/events";
 import { useSession } from "next-auth/react";
 
-import { ApolloError, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 import { GET_LIKED_EVENTS } from "@/app/api/graphql/queries/liked";
 import { GET_JOINED_EVENTS } from "@/app/api/graphql/queries/joined";
 import { GET_ORGANIZER_EVENTS } from "@/app/api/graphql/queries/events";
@@ -17,7 +17,7 @@ interface FilterEventsProps {
 export const useFilterEvents = ({ activeFilter }: FilterEventsProps) => {
     const [data, setData] = useState<IEvent[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<ApolloError | null>(null);
+    const [error, setError] = useState<Error | null>(null);
 
     const { data: session } = useSession();
     const user_id = session?.user.id;

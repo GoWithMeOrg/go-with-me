@@ -3,7 +3,8 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { useMutation, gql } from "@apollo/client";
+import { useMutation } from "@apollo/client/react";
+import { gql } from "@apollo/client";
 
 import { TripForm } from "@/components/widgets/TripForm";
 import { TripType } from "@/components/widgets/TripForm/TripForm";

@@ -1,5 +1,5 @@
 import { useReducer } from "react";
-import { useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client/react";
 
 import { usePopup } from "@/components/shared/Popup/hooks";
 import { useUserID } from "@/hooks/useUserID";

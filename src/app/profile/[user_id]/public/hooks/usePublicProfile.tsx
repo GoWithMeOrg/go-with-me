@@ -1,5 +1,5 @@
 import { useParams } from "next/navigation";
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client/react";
 
 import { GET_ORGANIZER_EVENTS } from "@/app/api/graphql/queries/events";
 import { GET_USER_BY_ID } from "@/app/api/graphql/queries/user";

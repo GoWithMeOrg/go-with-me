@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 import { useUserID } from "@/hooks/useUserID";
 import { GET_COMPANION_INVITATION_EVENTS } from "@/app/api/graphql/queries/invations";
 

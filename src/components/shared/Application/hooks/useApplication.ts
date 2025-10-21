@@ -1,6 +1,6 @@
 import { ACCEPT_COMPANION_MUTATION, REJECT_COMPANION_MUTATION } from "@/app/api/graphql/mutations/companionRequest";
 import { useNotifications } from "@/components/widgets/Notifications/hooks";
-import { useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client/react";
 
 interface useApplicationProps {
     id: string;

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 import { faker } from "@faker-js/faker";
 import { GET_USERS } from "@/app/api/graphql/queries/users";
-import { useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 
 import cities from "../world_cities.json";
 

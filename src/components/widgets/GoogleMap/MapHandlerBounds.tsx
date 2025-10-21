@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 import { useMap } from "@vis.gl/react-google-maps";
 import gql from "graphql-tag";
 import React, { useEffect, useRef, useState } from "react";

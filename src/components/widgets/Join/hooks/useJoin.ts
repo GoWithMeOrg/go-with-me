@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client/react";
 
 import { JOIN_MUTATION } from "@/app/api/graphql/mutations/join";
 import { GET_JOINED_EVENTS, JOINED_BY_USER, JOINED_BY_USERS } from "@/app/api/graphql/queries/joined";

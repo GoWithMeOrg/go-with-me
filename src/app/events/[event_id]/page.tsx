@@ -1,10 +1,13 @@
 "use client";
 
 import type { NextPage } from "next";
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
+import { gql } from "@apollo/client";
 
 import { Event } from "@/components/widgets/Event";
 import { CommentsList } from "@/components/widgets/CommentsList";
+import type { IEvent } from "@/database/models/Event";
+import type { IComment } from "@/database/models/Comment";
 
 import { useParams } from "next/navigation";
 import { ButtonBack } from "@/components/shared/ButtonBack";
@@ -16,6 +19,11 @@ import { Backdrop } from "@/components/widgets/Backdrop";
 
 interface PageProps {
     params: Promise<{ event_id: string }>;
+}
+
+interface GetEventByIdData {
+    event: IEvent;
+    comments: IComment[];
 }
 
 const GET_EVENT_BY_ID = gql`
@@ -80,7 +88,9 @@ const EventPage: NextPage<PageProps> = () => {
 
     const event_id = params.event_id as string;
 
-    const { data, error, loading, refetch } = useQuery(GET_EVENT_BY_ID, { variables: { id: event_id } });
+    const { data, error, loading, refetch } = useQuery<GetEventByIdData>(GET_EVENT_BY_ID, {
+        variables: { id: event_id },
+    });
 
     refetch();
 
@@ -97,9 +107,11 @@ const EventPage: NextPage<PageProps> = () => {
             {status === "authenticated" && <ButtonBack />}
 
             <Backdrop marginTop={430} marginBottom={274} contentLoading={loading}>
-                <Event event={data.event} />
+                {data?.event && <Event event={data.event} />}
 
-                {status === "authenticated" && <CommentsList {...{ comments: data.comments, event_id, refetch }} />}
+                {status === "authenticated" && data?.comments && (
+                    <CommentsList {...{ comments: data.comments, event_id, refetch }} />
+                )}
             </Backdrop>
         </section>
     );

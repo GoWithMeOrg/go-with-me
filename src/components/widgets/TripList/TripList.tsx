@@ -3,7 +3,8 @@
 import { FC } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useQuery, gql, useMutation } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client/react";
+import { gql } from "@apollo/client";
 
 import { formatDate } from "@/utils/formatDate";
 import { ITrip } from "@/database/models/Trip";

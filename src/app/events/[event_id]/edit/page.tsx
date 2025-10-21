@@ -2,7 +2,8 @@
 
 import { NextPage } from "next";
 import { useParams, useRouter } from "next/navigation";
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client/react";
+import { gql } from "@apollo/client";
 
 import type { IEvent } from "@/database/models/Event";
 
@@ -16,6 +17,10 @@ import classes from "../../new/page.module.css";
 
 interface PageProps {
     params: Promise<{ event_id: string }>;
+}
+
+interface GetEventData {
+    event: IEvent;
 }
 
 const GET_EVENT = gql`
@@ -72,7 +77,7 @@ const EventEditPage: NextPage<PageProps> = () => {
     const params = useParams();
     const event_id = params.event_id;
 
-    const { loading, error, data, refetch } = useQuery(GET_EVENT, {
+    const { loading, error, data, refetch } = useQuery<GetEventData>(GET_EVENT, {
         variables: { id: event_id },
     });
 
