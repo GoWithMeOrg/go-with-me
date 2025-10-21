@@ -1,0 +1,11 @@
+{
+    "mcpServers": {
+        "mongodb": {
+            "command": "mongodb-mcp-server",
+            "args": ["--uri", "${env:MONGODB_URI}"],
+            "env": {
+                "MONGODB_URI": "${env:MONGODB_URI}"
+            }
+        }
+    }
+}

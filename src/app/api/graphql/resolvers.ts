@@ -11,6 +11,7 @@ import { likedResolvers } from "./resolvers/like";
 import { companionRequestResolvers } from "./resolvers/companionRequest";
 import { companionsResolvers } from "./resolvers/companions";
 import { invitationResolvers } from "./resolvers/invitation";
+import { roleResolvers } from "./resolvers/role";
 
 export const resolvers = mergeResolvers([
     isoDateResolvers,
@@ -24,4 +25,5 @@ export const resolvers = mergeResolvers([
     companionRequestResolvers,
     companionsResolvers,
     invitationResolvers,
+    roleResolvers,
 ]);

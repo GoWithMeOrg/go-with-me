@@ -3,7 +3,6 @@ export enum Action {
     CREATE = "CREATE",
     EDIT = "EDIT",
     DELETE = "DELETE",
-    BAN_USER = "BAN_USER",
 }
 
 export enum Resource {

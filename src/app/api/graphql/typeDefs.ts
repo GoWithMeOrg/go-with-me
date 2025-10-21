@@ -10,6 +10,7 @@ import { likeTypeDefs } from "./types/like";
 import companionRequest from "./types/companionRequest";
 import { companionsTypeDefs } from "./types/companions";
 import { invitationTypeDefs } from "./types/invitation";
+import { roleTypeDefs } from "./types/role";
 
 export const rootTypeDefs = gql`
     scalar ISODate
@@ -28,4 +29,5 @@ export const typeDefs = [
     companionRequest,
     companionsTypeDefs,
     invitationTypeDefs,
+    roleTypeDefs,
 ];

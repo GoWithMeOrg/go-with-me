@@ -14,7 +14,9 @@
         "migration:up": "env $(cat .env.local | grep -v \"#\" | xargs) npx migrate up --",
         "migration:down": "env $(cat .env.local | grep -v \"#\" | xargs) npx migrate down --",
         "storybook": "storybook dev -p 6006",
-        "build-storybook": "storybook build"
+        "build-storybook": "storybook build",
+        "mcp:start": "npx mongodb-mcp-server",
+        "mcp:install": "npm install --save-dev mongodb-mcp-server"
     },
     "engines": {
         "node": ">=20"
@@ -49,17 +51,13 @@
         "ts-migrate-mongoose": "^3.8.9"
     },
     "devDependencies": {
-        "@chromatic-com/storybook": "^3.2.4",
         "@faker-js/faker": "^9.4.0",
+        "@modelcontextprotocol/sdk": "^1.17.4",
         "@playwright/test": "^1.52.0",
-        "@storybook/addon-essentials": "^8.5.3",
-        "@storybook/addon-interactions": "^8.5.3",
-        "@storybook/addon-links": "^8.5.3",
-        "@storybook/addon-onboarding": "^8.5.3",
-        "@storybook/blocks": "^8.5.3",
-        "@storybook/nextjs": "^8.5.3",
-        "@storybook/react": "^8.5.3",
-        "@storybook/test": "^8.5.3",
+        "@storybook/addon-docs": "^9.1.13",
+        "@storybook/addon-links": "^9.1.13",
+        "@storybook/addon-onboarding": "^9.1.13",
+        "@storybook/nextjs": "^9.1.13",
         "@svgr/webpack": "^8.1.0",
         "@types/google.maps": "^3.58.1",
         "@types/luxon": "^3.4.2",
@@ -69,11 +67,12 @@
         "eslint": "^9.19.0",
         "eslint-config-next": "15.1.6",
         "eslint-config-prettier": "^10.0.1",
-        "eslint-plugin-storybook": "^0.11.2",
+        "eslint-plugin-storybook": "^9.1.13",
         "husky": "^9.1.7",
         "lint-staged": "^15.4.3",
+        "mongodb-mcp-server": "^0.2.0",
         "prettier": "^3.4.2",
-        "storybook": "^8.5.3",
+        "storybook": "^9.1.13",
         "typescript": "^5.7.3"
     }
 }

@@ -1,0 +1,7 @@
+# Development Rules
+
+---
+alwaysApply: true
+---
+
+Use storybook version 9

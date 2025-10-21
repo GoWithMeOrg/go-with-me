@@ -1,0 +1,38 @@
+# MongoDB MCP Integration for Cursor
+
+## MCP Server Configuration
+To enable MongoDB MCP in Cursor, you need to configure the MCP server:
+
+1. **Install MongoDB MCP Server**: Already installed via `npm install mongodb-mcp-server --save-dev`
+
+2. **Start MCP Server**: Run `npm run mcp:start` to start the MongoDB MCP server
+
+3. **Cursor MCP Configuration**: In Cursor, go to Settings > Extensions > MCP and add:
+   - **Name**: MongoDB
+   - **Command**: `mongodb-mcp-server`
+   - **Args**: `--uri ${env:MONGODB_URI}`
+
+## Available MCP Commands
+Once configured, you can use these MCP commands in Cursor:
+
+- `mcp_mongodb_find`: Query documents from collections
+- `mcp_mongodb_insert`: Insert new documents
+- `mcp_mongodb_update`: Update existing documents
+- `mcp_mongodb_delete`: Delete documents
+- `mcp_mongodb_aggregate`: Run aggregation pipelines
+- `mcp_mongodb_list_collections`: List all collections
+- `mcp_mongodb_list_databases`: List all databases
+
+## Environment Variables
+Make sure you have these in your `.env.local`:
+```
+MONGODB_URI=mongodb://localhost:27017/your_database_name
+```
+
+## Usage Example
+In Cursor chat, you can now ask:
+"Show me all users from the users collection"
+"Insert a new event into the events collection"
+"Update the user with email 'john@example.com'"
+
+The AI will use MCP to interact with your MongoDB database directly.
