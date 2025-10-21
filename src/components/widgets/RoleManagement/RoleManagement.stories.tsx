@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
-import { MockedProvider } from "@apollo/client/testing";
+import { MockedProvider } from "@apollo/client/testing/react";
 import { RoleManagement, GET_ROLES, CREATE_ROLE, UPDATE_ROLE, DELETE_ROLE } from "./RoleManagement";
 
 // Mock data for the stories
