@@ -48,7 +48,7 @@
         "react-dom": "^19.1.0",
         "react-hook-form": "^7.54.2",
         "simpledotcss": "^2.3.3",
-        "ts-migrate-mongoose": "^3.8.9"
+        "ts-migrate-mongoose": "^4.1.0"
     },
     "devDependencies": {
         "@faker-js/faker": "^9.4.0",
