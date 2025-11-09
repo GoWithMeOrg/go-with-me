@@ -28,10 +28,10 @@ type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
 
   """Удалить локацию"""
-  removeLocation(id: ID!): Location!
+  removeLocation(id: ID!): Boolean!
 
   """Удалить пользователя"""
-  removeUser(id: ID!): User!
+  removeUser(id: ID!): Boolean!
 
   """Обновить локацию"""
   updateLocation(updateLocationInput: UpdateLocationInput!): Location!

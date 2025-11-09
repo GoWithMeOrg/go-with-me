@@ -11,37 +11,38 @@ import { UserModule } from './user/user.module';
 import { LocationModule } from './location/location.module';
 import { AuthModule } from './auth/GoogleAuth/auth.module';
 @Module({
-	imports: [
-		ConfigModule.forRoot({
-			isGlobal: true,
-		}),
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
 
-		GraphQLModule.forRootAsync({
-			driver: ApolloDriver,
-			imports: [ConfigModule],
-			useFactory: getGraphQLConfig,
-			inject: [ConfigService],
-		}),
+    GraphQLModule.forRootAsync({
+      driver: ApolloDriver,
+      imports: [ConfigModule],
+      useFactory: getGraphQLConfig,
+      inject: [ConfigService],
+    }),
 
-		MongooseModule.forRootAsync({
-			imports: [ConfigModule],
-			useFactory: getMongooseConfig,
-			inject: [ConfigService],
-		}),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: getMongooseConfig,
+      inject: [ConfigService],
+    }),
 
-		ConfigModule.forRoot({
-			cache: true,
-		}),
+    ConfigModule.forRoot({
+      cache: true,
+      envFilePath: '.env.local',
+    }),
 
-		UserModule,
+    UserModule,
 
-		LocationModule,
+    LocationModule,
 
-		AuthModule,
-	],
+    AuthModule,
+  ],
 
-	controllers: [],
-	providers: [],
+  controllers: [],
+  providers: [],
 })
 
 // Подключаем LoggingMiddleware глобально ко всем маршрутам

@@ -1,9 +1,24 @@
 {
-  "name": "go-with-me-monorepo",
+  "name": "go-with-me",
   "version": "0.0.0",
   "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "frontend:dev": "pnpm --filter go-with-me dev"
+    "frontend:dev": "pnpm --filter web-frontend dev",
+    "backend:dev": "pnpm --filter backend nest start --watch",
+    "frontend:lint": "pnpm -r exec eslint packages/web-frontend --fix",
+    "backend:lint": "pnpm -r exec eslint packages/backend --fix",
+    "frontend:format": "prettier packages/web-frontend -w",
+    "backend:format": "prettier packages/backend -w"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.46.3",
+    "@typescript-eslint/parser": "^8.46.3",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "prettier": "^3.6.2"
   }
 }
-

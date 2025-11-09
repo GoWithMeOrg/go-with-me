@@ -1,5 +1,5 @@
 {
-    "name": "web-frontend",
+    "name": "@go-with-me/web-frontend",
     "version": "0.0.0",
     "private": true,
     "scripts": {
@@ -16,6 +16,7 @@
         "@googlemaps/routing": "^2.1.1",
         "@graphql-tools/schema": "^10.0.25",
         "@vis.gl/react-google-maps": "^1.5.5",
+        "@go-with-me/api-scheme": "workspace:^",
         "dayjs": "^1.11.18",
         "graphql": "^16.11.0",
         "graphql-tag": "^2.12.6",

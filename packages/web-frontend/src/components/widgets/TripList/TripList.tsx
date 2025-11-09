@@ -3,11 +3,12 @@
 import { FC } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { ITrip } from "api-scheme/types/Trip";
+
 import { useQuery, useMutation } from "@apollo/client/react";
 import { gql } from "@apollo/client";
 
 import { formatDate } from "@/utils/formatDate";
-import { ITrip } from "@/database/models/Trip";
 
 import classes from "../TripList/TripList.module.css";
 
