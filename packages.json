@@ -1,0 +1,10 @@
+{
+  "name": "go-with-me",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": ["packages/*"],
+  "scripts": {
+    "backend:dev": "pnpm --filter backend start:dev",
+    "frontend:dev": "pnpm --filter web-frontend dev"
+  }
+}
