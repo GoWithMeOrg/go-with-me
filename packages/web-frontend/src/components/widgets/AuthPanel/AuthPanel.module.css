@@ -1,37 +1,37 @@
 .title {
-    color: #303030;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 24px;
-    margin: 0;
+  color: #303030;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px;
+  margin: 0;
 }
 
 .avatar {
-    width: 69px;
-    height: 69px;
-    border-radius: 100%;
-    margin-top: 16px;
+  width: 69px;
+  height: 69px;
+  border-radius: 100%;
+  margin-top: 16px;
 }
 
 .avatarAndMenu {
-    display: flex;
-    flex-direction: row;
-    gap: 1.25rem;
+  display: flex;
+  flex-direction: row;
+  gap: 1.25rem;
 }
 
 .menu {
-    display: flex;
-    justify-content: center;
-    flex-direction: row;
-    align-items: center;
-    gap: 16px;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
 }
 
 .logout {
-    border: 1px solid #303030;
-    padding: 4px 8px;
-    border-radius: 4px;
-    cursor: pointer;
-    background-color: unset;
+  border: 1px solid #303030;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: unset;
 }

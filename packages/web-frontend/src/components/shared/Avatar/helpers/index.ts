@@ -1,1 +1,1 @@
-export * from "./getContent";
+export * from './getContent';

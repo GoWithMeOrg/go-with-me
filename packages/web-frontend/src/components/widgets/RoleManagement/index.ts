@@ -1,1 +1,1 @@
-export { RoleManagement } from "./RoleManagement";
+export { RoleManagement } from './RoleManagement';

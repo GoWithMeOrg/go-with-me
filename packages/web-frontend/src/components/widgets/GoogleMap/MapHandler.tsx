@@ -1,22 +1,22 @@
-import { useMap } from "@vis.gl/react-google-maps";
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
+import { useMap } from '@vis.gl/react-google-maps';
 
 interface Props {
-    place: google.maps.places.PlaceResult | null;
+  place: google.maps.places.PlaceResult | null;
 }
 
 export const MapHandler = ({ place }: Props) => {
-    const map = useMap();
+  const map = useMap();
 
-    useEffect(() => {
-        if (!map || !place) return;
+  useEffect(() => {
+    if (!map || !place) return;
 
-        if (place.geometry?.viewport) {
-            map.fitBounds(place.geometry?.viewport);
-        }
-    }, [map, place]);
+    if (place.geometry?.viewport) {
+      map.fitBounds(place.geometry?.viewport);
+    }
+  }, [map, place]);
 
-    return null;
+  return null;
 };
 
 export default React.memo(MapHandler);

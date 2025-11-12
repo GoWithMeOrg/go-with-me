@@ -1,21 +1,21 @@
 .moreLink {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    margin-top: 4.38rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 4.38rem;
 }
 
 .moreText {
-    color: var(--main-color);
-    font-size: 1rem;
-    font-weight: 700;
-    line-height: 1.19rem;
-    margin-right: 0.75rem;
-    text-transform: uppercase;
+  color: var(--main-color);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.19rem;
+  margin-right: 0.75rem;
+  text-transform: uppercase;
 }
 
 .moreTextBig {
-    font-size: 1.75rem;
-    line-height: 2.13rem;
-    text-transform: none;
+  font-size: 1.75rem;
+  line-height: 2.13rem;
+  text-transform: none;
 }

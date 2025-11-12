@@ -1,25 +1,25 @@
 .input {
-    width: 100%;
-    background: var(--white-color);
-    border: 1px solid var(--additional-color);
-    border-radius: 0.25rem;
-    color: var(--main-color);
-    font-size: 1rem;
-    font-weight: 400;
-    text-align: left;
-    height: 3.13rem;
-    padding: 0.75rem 0.94rem;
+  width: 100%;
+  background: var(--white-color);
+  border: 1px solid var(--additional-color);
+  border-radius: 0.25rem;
+  color: var(--main-color);
+  font-size: 1rem;
+  font-weight: 400;
+  text-align: left;
+  height: 3.13rem;
+  padding: 0.75rem 0.94rem;
 }
 
 .input::placeholder {
-    color: var(--text-color);
+  color: var(--text-color);
 }
 
 .resizeNone {
-    resize: none;
+  resize: none;
 }
 
 .error {
-    color: var(--error-color);
-    border-color: var(--error-color);
+  color: var(--error-color);
+  border-color: var(--error-color);
 }

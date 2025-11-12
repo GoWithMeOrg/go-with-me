@@ -1,1 +1,1 @@
-export { TripFormEvents } from "./TripFormEvents";
+export { TripFormEvents } from './TripFormEvents';

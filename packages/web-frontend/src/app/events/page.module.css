@@ -1,23 +1,23 @@
 .eventListPage {
-    display: grid;
-    grid-column: 1 / -1;
+  display: grid;
+  grid-column: 1 / -1;
 }
 
 .title {
-    margin: 5.63rem 0 5.94rem 0;
+  margin: 5.63rem 0 5.94rem 0;
 }
 
 .spinner {
-    margin-top: 20vh;
-    grid-column: span 2 / span 2;
-    grid-column-start: 6;
+  margin-top: 20vh;
+  grid-column: span 2 / span 2;
+  grid-column-start: 6;
 }
 
 .event {
-    margin-bottom: 170px;
+  margin-bottom: 170px;
 }
 
 .image {
-    height: 100%;
-    background: green;
+  height: 100%;
+  background: green;
 }

@@ -1,1 +1,1 @@
-export { FilteredEventsLocation } from "./FilteredEventsLocation";
+export { FilteredEventsLocation } from './FilteredEventsLocation';

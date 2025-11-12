@@ -1,1 +1,1 @@
-export { NavbarEvents } from "./NavbarEvents";
+export { NavbarEvents } from './NavbarEvents';

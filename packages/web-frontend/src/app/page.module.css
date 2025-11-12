@@ -1,51 +1,51 @@
 .homePage {
-    display: grid;
-    grid-column: 1 / -1;
+  display: grid;
+  grid-column: 1 / -1;
 }
 
 .popularEvents {
-    margin-bottom: 6.3rem;
+  margin-bottom: 6.3rem;
 }
 
 .popularEventsHeader {
-    display: flex;
-    margin-bottom: 4.38rem;
-    justify-content: space-between;
-    align-items: flex-end;
+  display: flex;
+  margin-bottom: 4.38rem;
+  justify-content: space-between;
+  align-items: flex-end;
 }
 
 .cardsEventsHeaderLinks {
-    display: flex;
-    gap: 0.75rem;
+  display: flex;
+  gap: 0.75rem;
 }
 
 .cardsEventsHeaderLink {
-    color: var(--additional-color);
-    font-size: 1rem;
-    font-weight: 700;
-    line-height: 1.19rem;
-    text-align: center;
-    text-transform: uppercase;
+  color: var(--additional-color);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.19rem;
+  text-align: center;
+  text-transform: uppercase;
 }
 
 .cardsEventsList {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    align-content: center;
-    position: relative;
-    margin-bottom: 1.4rem;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-content: center;
+  position: relative;
+  margin-bottom: 1.4rem;
 }
 
 .cardsEventsList::before {
-    content: "";
-    position: absolute;
-    top: 6%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 99vw;
-    height: 70%;
-    background-color: var(--white-color);
-    z-index: -1;
+  content: '';
+  position: absolute;
+  top: 6%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 99vw;
+  height: 70%;
+  background-color: var(--white-color);
+  z-index: -1;
 }

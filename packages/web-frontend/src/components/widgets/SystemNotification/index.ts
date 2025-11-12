@@ -1,1 +1,1 @@
-export { SystemNotification } from "./SystemNotification";
+export { SystemNotification } from './SystemNotification';

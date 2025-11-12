@@ -1,1 +1,1 @@
-import { SuccessModal } from "./SuccessModal";
+import { SuccessModal } from './SuccessModal';

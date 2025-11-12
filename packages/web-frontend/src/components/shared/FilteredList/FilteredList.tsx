@@ -1,10 +1,10 @@
-import { FC } from "react";
+import { FC } from 'react';
 
 interface FilteredListProps {
-    children: React.ReactNode;
-    className: string;
+  children: React.ReactNode;
+  className: string;
 }
 
 export const FilteredList: FC<FilteredListProps> = ({ children, className }) => {
-    return <div className={className}>{children}</div>;
+  return <div className={className}>{children}</div>;
 };

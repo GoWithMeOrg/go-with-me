@@ -1,15 +1,14 @@
-import { Module } from '@nestjs/common';
-
-import { ConfigModule, ConfigService } from '@nestjs/config';
-
-import { GraphQLModule } from '@nestjs/graphql';
-import { getGraphQLConfig } from './config/graphql.config';
 import { ApolloDriver } from '@nestjs/apollo';
+import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { GraphQLModule } from '@nestjs/graphql';
 import { MongooseModule } from '@nestjs/mongoose';
-import { getMongooseConfig } from './config/mongoose.config';
-import { UserModule } from './user/user.module';
-import { LocationModule } from './location/location.module';
+
 import { AuthModule } from './auth/GoogleAuth/auth.module';
+import { getGraphQLConfig } from './config/graphql.config';
+import { getMongooseConfig } from './config/mongoose.config';
+import { LocationModule } from './location/location.module';
+import { UserModule } from './user/user.module';
 @Module({
   imports: [
     ConfigModule.forRoot({

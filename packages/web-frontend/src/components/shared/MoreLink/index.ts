@@ -1,1 +1,1 @@
-export { MoreLink } from "./MoreLink";
+export { MoreLink } from './MoreLink';

@@ -1,10 +1,10 @@
-import type { Meta, StoryObj } from "@storybook/nextjs";
-import { Avatar } from "@/components/shared/Avatar";
+import { Avatar } from '@/components/shared/Avatar';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
-    title: "UI/Avatar",
-    component: Avatar,
+  title: 'UI/Avatar',
+  component: Avatar,
 } satisfies Meta<typeof Avatar>;
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
@@ -13,18 +13,18 @@ type Story = StoryObj<typeof meta>;
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const AvatarWithText: Story = {
-    args: {
-        name: "User",
-        scale: 1,
-        id: "123",
-    },
+  args: {
+    name: 'User',
+    scale: 1,
+    id: '123',
+  },
 };
 
 export const AvatarWithImage: Story = {
-    args: {
-        name: "User",
-        scale: 3,
-        image: "https://radiovan.fm/uploads/article/1935cb7c8dc5d25a_5cb7c8dc5a28f.jpg",
-        id: "123",
-    },
+  args: {
+    name: 'User',
+    scale: 3,
+    image: 'https://radiovan.fm/uploads/article/1935cb7c8dc5d25a_5cb7c8dc5a28f.jpg',
+    id: '123',
+  },
 };

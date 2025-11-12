@@ -1,47 +1,42 @@
-/* eslint config at workspace root */
-module.exports = {
-  root: true,
-  ignorePatterns: ['node_modules', 'dist', 'build', '.next', 'coverage'],
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    // this makes TypeScript project references work in subpackages
-    tsconfigRootDir: __dirname,
-  },
-  plugins: ['@typescript-eslint', 'simple-import-sort'],
-  extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-    // if you have Next.js apps, they’ll get extra rules via overrides below
-    'prettier',
-  ],
-  rules: {
-    // import sorting
-    'simple-import-sort/imports': 'error',
-    'simple-import-sort/exports': 'error',
+const { FlatCompat } = require('@eslint/eslintrc');
+const js = require('@eslint/js');
+const nextPlugin = require('@next/eslint-plugin-next');
 
-    // optional: rely on the sorter instead of these
-    'sort-imports': 'off',
-  },
+const compat = new FlatCompat({
+  baseDirectory: __dirname,
+  recommendedConfig: js.configs.recommended,
+  allConfig: js.configs.all,
+});
 
-  // Per-framework overrides (optional but handy)
-  overrides: [
-    {
-      files: ['**/packages/web-frontend/**/*.{js,jsx,ts,tsx}'],
-      extends: ['next/core-web-vitals', 'prettier'],
+const nextCoreWebVitals = nextPlugin.configs['core-web-vitals'];
+
+module.exports = [
+  {
+    ignores: ['**/node_modules/**', '**/dist/**', '**/build/**', '**/.next/**', '**/coverage/**'],
+  },
+  ...compat.config({
+    parser: '@typescript-eslint/parser',
+    parserOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+      tsconfigRootDir: __dirname,
     },
-    // {
-    //   files: ['**/packages/api-scheme/**/*.{js,jsx,ts,tsx}'],
-    //   rules: {
-    //     // backend-specific tweaks can go here
-    //   },
-    // },
-    // {
-    //   files: ['**/packages/backend/**/*.{js,jsx,ts,tsx}'],
-    //   rules: {
-    //     // backend-specific tweaks can go here
-    //   },
-    // },
-  ],
-};
+    plugins: ['@typescript-eslint'],
+    extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'prettier'],
+  }),
+  {
+    files: ['**/packages/web-frontend/**/*.{js,jsx,ts,tsx}'],
+    ...nextCoreWebVitals,
+    settings: {
+      ...(nextCoreWebVitals.settings ?? {}),
+      next: {
+        ...(nextCoreWebVitals.settings?.next ?? {}),
+        rootDir: ['packages/web-frontend'],
+      },
+    },
+    rules: {
+      ...nextCoreWebVitals.rules,
+      '@next/next/no-html-link-for-pages': 'off',
+    },
+  },
+];

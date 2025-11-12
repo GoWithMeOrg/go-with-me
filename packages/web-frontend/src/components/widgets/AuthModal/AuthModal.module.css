@@ -1,95 +1,95 @@
 .authModal {
-    background: var(--background-color);
+  background: var(--background-color);
 }
 
 .authModalClose {
-    position: relative;
-    color: var(--main-color);
-    top: -30px;
-    right: -335px;
-    cursor: pointer;
+  position: relative;
+  color: var(--main-color);
+  top: -30px;
+  right: -335px;
+  cursor: pointer;
 }
 
 .authModalWrapper {
-    width: 17.7rem;
-    /* height: 24.38rem; */
+  width: 17.7rem;
+  /* height: 24.38rem; */
 }
 
 .authModalTitle {
-    margin-bottom: 2.5rem;
+  margin-bottom: 2.5rem;
 }
 
 .authModalDescription {
-    margin-bottom: 1rem;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 26px;
-    text-align: left;
+  margin-bottom: 1rem;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 26px;
+  text-align: left;
 }
 
 .authModalButtons {
-    display: flex;
-    margin-bottom: 2.5rem;
+  display: flex;
+  margin-bottom: 2.5rem;
 }
 
 .authModalButton {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: nowrap;
-    /* width: 3.5rem; */
-    width: 100%;
-    height: 3.125rem;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 26px;
-    text-align: center;
-    border: 2px solid var(--main-color);
-    border-radius: 4px;
-    cursor: pointer;
-    /* margin-right: 1.25rem; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  /* width: 3.5rem; */
+  width: 100%;
+  height: 3.125rem;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 26px;
+  text-align: center;
+  border: 2px solid var(--main-color);
+  border-radius: 4px;
+  cursor: pointer;
+  /* margin-right: 1.25rem; */
 }
 
 .authModalInput {
-    width: 100%;
-    border: 2px solid var(--additional-color);
-    border-radius: 0.25rem;
-    background: var(--white);
+  width: 100%;
+  border: 2px solid var(--additional-color);
+  border-radius: 0.25rem;
+  background: var(--white);
 }
 
 .authModalFormButton {
-    width: 100%;
-    background: var(--additional-color);
-    border-radius: 0.25rem;
-    color: var(--white-color);
-    font-size: 1.125rem;
-    font-weight: 700;
-    line-height: 1.375rem;
-    text-align: center;
-    margin-top: 1rem;
+  width: 100%;
+  background: var(--additional-color);
+  border-radius: 0.25rem;
+  color: var(--white-color);
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.375rem;
+  text-align: center;
+  margin-top: 1rem;
 }
 
 .authModalFormButton:hover {
-    color: var(--main-color);
+  color: var(--main-color);
 }
 
 .authModalFormButtonResend {
-    border: none;
+  border: none;
 
-    color: var(--text-color);
-    font-size: 0.88rem;
-    font-weight: 500;
-    line-height: 1.625rem;
-    text-align: left;
+  color: var(--text-color);
+  font-size: 0.88rem;
+  font-weight: 500;
+  line-height: 1.625rem;
+  text-align: left;
 }
 
 .authModalFormButtonResend:hover {
-    border: none;
+  border: none;
 }
 
 .authModalInputNumber {
-    width: 100%;
-    border: 2px solid var(--additional-color);
-    border-radius: 0.25rem;
-    background: var(--white-color);
+  width: 100%;
+  border: 2px solid var(--additional-color);
+  border-radius: 0.25rem;
+  background: var(--white-color);
 }

@@ -1,18 +1,17 @@
-import { NextPage } from "next";
-
-import SearchEvent from "@/components/widgets/SearchEvent/SearchEvent";
-import SearchEventsList from "@/components/widgets/SearchEventsList/SearchEventsList";
+import SearchEvent from '@/components/widgets/SearchEvent/SearchEvent';
+import SearchEventsList from '@/components/widgets/SearchEventsList/SearchEventsList';
+import { NextPage } from 'next';
 
 const SearchPage: NextPage<{ searchParams: Promise<{ text?: string; tripId?: string }> }> = async ({
-    searchParams,
+  searchParams,
 }) => {
-    const { text = "", tripId = "" } = await searchParams;
-    return (
-        <div className="EventListPage">
-            <SearchEvent />
-            <SearchEventsList text={text} tripId={tripId} />
-        </div>
-    );
+  const { text = '', tripId = '' } = await searchParams;
+  return (
+    <div className="EventListPage">
+      <SearchEvent />
+      <SearchEventsList text={text} tripId={tripId} />
+    </div>
+  );
 };
 
 export default SearchPage;

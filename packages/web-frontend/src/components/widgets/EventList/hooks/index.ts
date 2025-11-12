@@ -1,1 +1,1 @@
-export { useEventList } from "./useEventList";
+export { useEventList } from './useEventList';

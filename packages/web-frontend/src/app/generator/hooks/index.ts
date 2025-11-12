@@ -1,1 +1,1 @@
-export { useGenerator } from "./useGenerator";
+export { useGenerator } from './useGenerator';

@@ -1,1 +1,1 @@
-export { InvationEvent } from "./InvationEvent";
+export { InvationEvent } from './InvationEvent';

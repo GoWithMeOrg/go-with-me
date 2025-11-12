@@ -1,5 +1,5 @@
-import { IUser } from "./User";
-import { IEvent } from "./Event";
+import { IEvent } from './Event';
+import { IUser } from './User';
 
 export interface ITrip {
   _id: string;

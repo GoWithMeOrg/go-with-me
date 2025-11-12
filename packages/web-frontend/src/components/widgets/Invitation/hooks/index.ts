@@ -1,1 +1,1 @@
-export { useInvitation } from "./useInvitation";
+export { useInvitation } from './useInvitation';

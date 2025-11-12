@@ -1,1 +1,1 @@
-export { CardCompanion } from "./CardCompanion";
+export { CardCompanion } from './CardCompanion';

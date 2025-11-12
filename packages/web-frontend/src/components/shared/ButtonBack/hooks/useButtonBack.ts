@@ -1,13 +1,13 @@
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
 
 export const useButtonBack = () => {
-    const router = useRouter();
+  const router = useRouter();
 
-    const handleBack = () => {
-        router.push("/events");
-    };
+  const handleBack = () => {
+    router.push('/events');
+  };
 
-    return { handleBack };
+  return { handleBack };
 };
 
 export default useButtonBack;

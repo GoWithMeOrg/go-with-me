@@ -1,7 +1,7 @@
 .list {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    row-gap: 4.5rem;
-    column-gap: 1.25rem;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 4.5rem;
+  column-gap: 1.25rem;
 }

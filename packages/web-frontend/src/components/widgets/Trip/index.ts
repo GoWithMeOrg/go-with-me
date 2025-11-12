@@ -1,1 +1,1 @@
-export { Trip } from "./Trip";
+export { Trip } from './Trip';

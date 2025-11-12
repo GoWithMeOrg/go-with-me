@@ -1,4 +1,4 @@
-import type { IUser } from "./User";
+import type { IUser } from './User';
 
 export interface INewComment {
   author_id: string;

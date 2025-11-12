@@ -1,11 +1,12 @@
-import type { Meta, StoryObj } from "@storybook/nextjs";
-import { fn } from "storybook/test";
-import { PopupTrigger } from "./PopupTrigger";
+import type { Meta, StoryObj } from '@storybook/nextjs';
+import { fn } from 'storybook/test';
+
+import { PopupTrigger } from './PopupTrigger';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
-    title: "UI",
-    component: PopupTrigger,
+  title: 'UI',
+  component: PopupTrigger,
 } satisfies Meta<typeof PopupTrigger>;
 
 export default meta;

@@ -1,1 +1,1 @@
-export { default as Companions } from "./Companions";
+export { default as Companions } from './Companions';

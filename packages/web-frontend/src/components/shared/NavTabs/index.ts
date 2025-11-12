@@ -1,1 +1,1 @@
-export { NavigationTabs } from "./NavTabs";
+export { NavigationTabs } from './NavTabs';

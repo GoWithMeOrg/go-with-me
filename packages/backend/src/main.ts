@@ -1,10 +1,11 @@
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import MongoStore from 'connect-mongo';
 import session from 'express-session';
 import passport from 'passport';
-import MongoStore from 'connect-mongo';
+
+import { AppModule } from './app.module';
 import { SessionSerializer } from './auth/GoogleAuth/serializer/google-session.serializer';
-import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -39,7 +40,7 @@ async function bootstrap() {
         domain: configService.get('SESSION_COOKIE_DOMAIN'),
         sameSite: configService.get<'lax' | 'none' | 'strict'>('SESSION_COOKIE_SAMESITE') ?? 'lax',
       },
-    }),
+    })
   );
 
   app.use(passport.initialize());

@@ -1,4 +1,4 @@
-import { IUser } from "./User";
+import { IUser } from './User';
 
 export interface IEvent {
   _id: string;
@@ -12,7 +12,7 @@ export interface IEvent {
   createdAt: Date;
   updatedAt: Date;
   location: {
-    type: "Point";
+    type: 'Point';
     coordinates: [number, number];
     properties: {
       address: string;

@@ -1,7 +1,7 @@
 export enum CompanionRequestStatus {
-  PENDING = "pending",
-  ACCEPTED = "accepted",
-  REJECTED = "rejected",
+  PENDING = 'pending',
+  ACCEPTED = 'accepted',
+  REJECTED = 'rejected',
 }
 export interface ICompanionRequest {
   id: string;

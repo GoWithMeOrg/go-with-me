@@ -1,12 +1,12 @@
 export enum ConditionEvent {
-  CANCELED = "Canceled",
-  FINALIZED = "Finalized",
+  CANCELED = 'Canceled',
+  FINALIZED = 'Finalized',
 }
 
 export enum InvitationResponseStatus {
-  INVITED = "Invited",
-  ACCEPTED = "Accepted",
-  DECLINED = "Declined",
+  INVITED = 'Invited',
+  ACCEPTED = 'Accepted',
+  DECLINED = 'Declined',
 }
 
 export interface Invited {

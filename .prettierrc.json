@@ -1,7 +1,18 @@
 {
-  "singleQuote": true,
+  "endOfLine": "auto",
   "semi": true,
-  "trailingComma": "all",
-  "printWidth": 120,
-  "tabWidth": 2
+  "singleQuote": true,
+  "tabWidth": 2,
+  "trailingComma": "es5",
+  "printWidth": 100,
+  "plugins": ["@ianvs/prettier-plugin-sort-imports"],
+  "importOrder": [
+    "^react",
+    "<THIRD_PARTY_MODULES>",
+    "",
+    "^(modules|lib|mocks|utils|config|assets|temp|styles|ui-kit|src)\\/.*(?<!\\.css)(?<!\\/styles)$",
+    "^(\\.|\\.{2}|\\.\\/.*|\\.{2}\\/.*)(?<!\\.css)(?<!\\/styles)$",
+    "",
+    "(.*\\.css|\\.\\/styles)$"
+  ]
 }

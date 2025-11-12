@@ -1,10 +1,10 @@
 .searchEvent {
-    position: relative;
+  position: relative;
 }
 
 .searchIcon {
-    position: absolute;
-    top: 50%;
-    right: 1rem;
-    transform: translateY(-50%);
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
 }

@@ -1,4 +1,4 @@
-import { IRole } from "./Role";
+import { IRole } from './Role';
 
 export type ProfileType = Partial<IUser>;
 export interface IUser {
@@ -7,7 +7,7 @@ export interface IUser {
   email: string;
   image: string;
   location: {
-    type: "Point";
+    type: 'Point';
     coordinates: [number, number];
     properties: {
       address: string;

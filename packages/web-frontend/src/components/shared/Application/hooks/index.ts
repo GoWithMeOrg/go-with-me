@@ -1,1 +1,1 @@
-export { useApplication } from "./useApplication";
+export { useApplication } from './useApplication';

@@ -1,39 +1,39 @@
 .button {
-    padding: 0.63rem 1rem;
-    color: var(--main-color);
-    font-family: inherit;
-    font-size: 0.88rem;
-    font-weight: 700;
-    border: 2px solid var(--main-color);
-    border-radius: 0.25rem;
-    background: none;
-    cursor: pointer;
+  padding: 0.63rem 1rem;
+  color: var(--main-color);
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  border: 2px solid var(--main-color);
+  border-radius: 0.25rem;
+  background: none;
+  cursor: pointer;
 }
 
 .button:active {
-    color: var(--white-color);
-    background-color: var(--text-color);
-    border-color: var(--text-color);
+  color: var(--white-color);
+  background-color: var(--text-color);
+  border-color: var(--text-color);
 }
 
 .button:hover {
-    border: 0.13rem solid var(--hover-color);
-    border-radius: 0.25rem;
-    color: var(--hover-color);
+  border: 0.13rem solid var(--hover-color);
+  border-radius: 0.25rem;
+  color: var(--hover-color);
 }
 
 .button:disabled {
-    color: var(--white-color);
-    background-color: var(--additional-color);
-    border-color: var(--additional-color);
-    cursor: not-allowed;
+  color: var(--white-color);
+  background-color: var(--additional-color);
+  border-color: var(--additional-color);
+  cursor: not-allowed;
 }
 
 .big {
-    padding: 0.88rem 1.88rem;
-    font-size: 1.13rem;
+  padding: 0.88rem 1.88rem;
+  font-size: 1.13rem;
 }
 
 .stretch {
-    width: 100%;
+  width: 100%;
 }
