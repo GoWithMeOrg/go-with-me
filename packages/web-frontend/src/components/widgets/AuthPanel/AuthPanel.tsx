@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import Human from '@/assets/icons/human.svg';
 import { Button } from '@/components/shared/Button';
 import { Popup } from '@/components/shared/Popup';
@@ -14,10 +13,14 @@ import classes from './AuthPanel.module.css';
 export const AuthPanel = () => {
   const { data: session, status } = useSession();
 
-  const user_id = session?.user.id;
+  const user_email = session?.user?.email;
   const popupMode: 'auth' = 'auth';
 
   const { showPopup, setShowPopup, handleShowPopup, handleHidePopup } = usePopup({ popupMode });
+
+  const handleSignIn = () => {
+    signIn('google');
+  };
 
   return (
     <div className={classes.component}>
@@ -27,7 +30,7 @@ export const AuthPanel = () => {
             Войти
           </Button>
           <Popup showPopup={showPopup} setShowPopup={setShowPopup} popupMode={'auth'}>
-            <AuthModal onClose={handleHidePopup} />
+            <AuthModal onClose={handleHidePopup} onSignIn={handleSignIn} />
           </Popup>
         </>
       )}
@@ -36,7 +39,7 @@ export const AuthPanel = () => {
         <>
           <div className={classes.avatarAndMenu}>
             <div className={classes.menu}>
-              <Link href={`/profile/${user_id}/private`} className={classes.linkToProfile}>
+              <Link href={`/profile/${user_email}/private`} className={classes.linkToProfile}>
                 <Human />
               </Link>
               <Button

@@ -1,25 +1,16 @@
-import { FormEvent } from 'react';
 import Close from '@/assets/icons/close.svg';
 import Google from '@/assets/icons/google.svg';
 import { Button } from '@/components/shared/Button';
 import { Title } from '@/components/shared/Title';
-import { signIn } from 'next-auth/react';
 
 import classes from './AuthModal.module.css';
 
 interface IAuthModal {
   onClose?: () => void;
+  onSignIn?: () => void;
 }
 
-export const AuthModal = ({ onClose }: IAuthModal) => {
-  let userEmail;
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = Object.fromEntries(new FormData(e.currentTarget).entries());
-    userEmail = formData.email as string;
-  };
-
+export const AuthModal = ({ onClose, onSignIn }: IAuthModal) => {
   return (
     <div className={classes.authModal}>
       <Close className={classes.authModalClose} onClick={onClose} />
@@ -31,7 +22,7 @@ export const AuthModal = ({ onClose }: IAuthModal) => {
           войти с помощью Google {/* or social networks */}
         </p>
         <div className={classes.authModalButtons}>
-          <Button className={classes.authModalButton} onClick={() => signIn('google')}>
+          <Button className={classes.authModalButton} onClick={onSignIn}>
             <Google />
           </Button>
         </div>

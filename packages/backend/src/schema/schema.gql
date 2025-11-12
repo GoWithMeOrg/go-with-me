@@ -21,52 +21,34 @@ type Location {
 }
 
 type Mutation {
-  """
-  Создать локацию
-  """
+  """Создать локацию"""
   createLocation(createLocationInput: CreateLocationInput!): Location!
 
-  """
-  Создать пользователя
-  """
+  """Создать пользователя"""
   createUser(createUserInput: CreateUserInput!): User!
 
-  """
-  Удалить локацию
-  """
+  """Удалить локацию"""
   removeLocation(id: ID!): Boolean!
 
-  """
-  Удалить пользователя
-  """
+  """Удалить пользователя"""
   removeUser(id: ID!): Boolean!
 
-  """
-  Обновить локацию
-  """
+  """Обновить локацию"""
   updateLocation(updateLocationInput: UpdateLocationInput!): Location!
 
-  """
-  Обновить данные пользователя
-  """
+  """Обновить данные пользователя"""
   updateUser(updateUserInput: UpdateUserInput!): User!
 }
 
 type Query {
-  """
-  Поиск места по id
-  """
+  """Поиск места по id"""
   locationById(id: ID!): Location!
   me: User!
 
-  """
-  Поиск пользователя по id
-  """
+  """Поиск пользователя по id"""
   userById(id: ID!): User!
 
-  """
-  Получить всех пользователей
-  """
+  """Получить всех пользователей"""
   users: [User!]!
 }
 
