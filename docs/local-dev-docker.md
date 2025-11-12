@@ -1,6 +1,6 @@
 # Docker-Based Local Environment
 
-This guide explains how to run the project locally with Docker, Docker Compose, and nginx so that the site is available at **https://tribeplans.local**.
+This guide explains how to run the project locally with Docker, Docker Compose, and nginx so that the site is available at **https://tribeplans.dev**.
 
 ## Prerequisites
 
@@ -10,10 +10,10 @@ This guide explains how to run the project locally with Docker, Docker Compose, 
 
 ### 1. Hostname Mapping
 
-Add `tribeplans.local` to your hosts file:
+Add `tribeplans.dev` to your hosts file:
 
 ```bash
-echo "127.0.0.1 tribeplans.local" | sudo tee -a /etc/hosts
+echo "127.0.0.1 tribeplans.dev" | sudo tee -a /etc/hosts
 ```
 
 ### 2. TLS Certificates
@@ -23,7 +23,7 @@ Create the certificate pair inside `infra/certs` (the directory is mounted into 
 ```bash
 mkdir -p infra/certs
 cd infra/certs
-mkcert -key-file tribeplans.local-key.pem -cert-file tribeplans.local.pem tribeplans.local
+mkcert -key-file tribeplans.dev-key.pem -cert-file tribeplans.dev.pem tribeplans.dev
 ```
 
 > If you cannot use mkcert, replace the command above with OpenSSL equivalents. Ensure both `.pem` files match the names referenced in `infra/nginx/conf.d/tribeplans.conf`.
@@ -50,7 +50,7 @@ Compose starts four containers:
 | `gwm-mongo` | MongoDB instance for local development   | 27017 |
 | `gwm-nginx` | Reverse proxy terminating HTTPS          | 80/443 |
 
-Visit **https://tribeplans.local** in your browser. The first visit will prompt you to trust the locally generated certificate—accept it to continue.
+Visit **https://tribeplans.dev** in your browser. The first visit will prompt you to trust the locally generated certificate—accept it to continue.
 
 ## Useful Commands
 
