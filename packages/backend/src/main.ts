@@ -21,8 +21,11 @@ async function bootstrap() {
     credentials: true,
   });
 
+  const sessionCookieName = configService.get<string>('SESSION_COOKIE_NAME');
+
   app.use(
     session({
+      name: sessionCookieName || undefined,
       secret: configService.getOrThrow('SESSION_SECRET') || 'secret',
       resave: false,
       saveUninitialized: false,
