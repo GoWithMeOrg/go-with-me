@@ -15,7 +15,7 @@ import { Time } from '@/components/widgets/Time';
 import { UploadFile } from '@/components/widgets/UploadFile';
 import { useUploadFile } from '@/components/widgets/UploadFile/hooks';
 import { UploadFileSizes } from '@/components/widgets/UploadFile/UploadFile';
-import { IEvent } from '@/database/models/Event';
+import { IEvent } from '@go-with-me/api-scheme/types/Event';
 
 import { Location } from '../Location';
 

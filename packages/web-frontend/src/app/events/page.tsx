@@ -10,7 +10,7 @@ import { CreateAndInvite } from '@/components/widgets/CreateAndInvite';
 import { Mode } from '@/components/widgets/CreateAndInvite/CreateAndInvite';
 import { EventFilters } from '@/components/widgets/EventFilters';
 import { useEventList } from '@/components/widgets/EventList/hooks';
-import { IEvent } from '@/database/models/Event';
+import { IEvent } from '@go-with-me/api-scheme/types/Event';
 import type { NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 

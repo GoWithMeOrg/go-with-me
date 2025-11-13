@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
-export const GET_USER_BY_ID = gql`
-  query GetUserById($userId: ID!) {
-    user(id: $userId) {
+export const UPDATE_USER = gql`
+  mutation UpdateUser($updateUserId: ID!, $user: UpdateUserInput!) {
+    updateUser(updateUserId: $updateUserId, user: $user) {
       _id
       name
       email
@@ -19,7 +19,6 @@ export const GET_USER_BY_ID = gql`
       types
       tags
       emailVerified
-      createdAt
       updatedAt
     }
   }

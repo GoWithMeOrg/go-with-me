@@ -5,7 +5,7 @@ import { Button } from '@/components/shared/Button';
 import { Title } from '@/components/shared/Title';
 import { Geocoding } from '@/components/widgets/GoogleMap';
 import { InvitationProps } from '@/components/widgets/Invitation/types/Invitation';
-import { InvitationResponseStatus } from '@/database/types/Invitation';
+import { InvitationResponseStatus } from '@go-with-me/api-scheme/types/Invitation';
 import dayjs from 'dayjs';
 import Image from 'next/image';
 import Link from 'next/link';
