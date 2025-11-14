@@ -1,31 +1,33 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { MongooseModule } from '@nestjs/mongoose';
-import { PassportModule } from '@nestjs/passport';
-import { User, UserSchema } from 'src/user/entities/user.entity';
-
-import { AuthController } from './auth.controller';
-import { AuthResolver } from './auth.resolver';
 import { AuthService } from './auth.service';
-import { GoogleOAuthGuard } from './guard/google-oauth.guard';
-import { SessionAuthGuard } from './guard/session-auth.guard';
-import { SessionSerializer } from './serializer/google-session.serializer';
+import { AuthController } from './auth.controller';
+import { UserModule } from 'src/user/user.module';
+import { PassportModule } from '@nestjs/passport';
 import { GoogleAuthStrategy } from './strategies/google.strategy';
+import { ConfigModule } from '@nestjs/config';
+import { SessionSerializer } from '../serializer/session.serializer';
+import { AuthResolver } from './auth.resolver';
+import { GoogleOAuthGuard } from './guard/google-oauth.guard';
+import { SessionAuthGuard } from '../guard/session-auth.guard';
+import { RolesGuard } from '../guard/roles.guard';
+import { SessionModule } from 'src/session/session.module';
 
 @Module({
-  imports: [
-    ConfigModule, // чтобы использовать ConfigService в стратеги
-    PassportModule.register({ session: true }), // регистрация passport
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]), // подключаем модель User
-  ],
-  providers: [
-    AuthService,
-    GoogleAuthStrategy,
-    SessionSerializer,
-    AuthResolver,
-    GoogleOAuthGuard,
-    SessionAuthGuard,
-  ], // регистрируем провайдеры: сервис, стратегия, сериалайзер, резолвер и guards
-  controllers: [AuthController], // регистрируем контроллер
+	imports: [
+		ConfigModule, // чтобы использовать ConfigService в стратеги
+		PassportModule.register({ session: true }), // регистрация passport
+		UserModule,
+		SessionModule,
+	],
+	providers: [
+		AuthService,
+		GoogleAuthStrategy,
+		SessionSerializer,
+		AuthResolver,
+		GoogleOAuthGuard,
+		SessionAuthGuard,
+		RolesGuard,
+	], // регистрируем провайдеры: сервис, стратегия, сериалайзер, резолвер и guards
+	controllers: [AuthController], // регистрируем контроллер
 })
 export class AuthModule {}

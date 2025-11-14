@@ -5,52 +5,42 @@ import session from 'express-session';
 import passport from 'passport';
 
 import { AppModule } from './app.module';
-import { SessionSerializer } from './auth/GoogleAuth/serializer/google-session.serializer';
+import { SessionSerializer } from './auth/serializer/session.serializer';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+    const app = await NestFactory.create(AppModule);
 
-  const configService = app.get(ConfigService);
+    const configService = app.get(ConfigService);
 
-  const allowedOrigins = configService
-    .get<string>('CORS_ORIGIN', 'http://localhost:5173')
-    .split(',')
-    .map((origin) => origin.trim());
+    app.enableCors({
+        origin: 'http://localhost:3000', // фронтенд
+        credentials: true,
+    });
 
-  app.enableCors({
-    origin: allowedOrigins,
-    credentials: true,
-  });
+    app.use(
+        session({
+            secret: configService.getOrThrow('SESSION_SECRET') || 'secret',
+            resave: false,
+            saveUninitialized: false,
+            store: MongoStore.create({
+                mongoUrl: configService.getOrThrow('MONGODB_URI'),
+            }),
+            cookie: {
+                secure: false, // Для development,
+                httpOnly: true,
+                maxAge: 1000 * 60 * 60 * 24, // 1 день
+            },
+        })
+    );
 
-  const sessionCookieName = configService.get<string>('SESSION_COOKIE_NAME');
+    app.use(passport.initialize());
+    app.use(passport.session());
 
-  app.use(
-    session({
-      name: sessionCookieName || undefined,
-      secret: configService.getOrThrow('SESSION_SECRET') || 'secret',
-      resave: false,
-      saveUninitialized: false,
-      store: MongoStore.create({
-        mongoUrl: configService.getOrThrow('MONGODB_URI'),
-      }),
-      cookie: {
-        secure: configService.get('SESSION_COOKIE_SECURE') === 'true',
-        httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24, // 1 день
-        domain: configService.get('SESSION_COOKIE_DOMAIN'),
-        sameSite: configService.get<'lax' | 'none' | 'strict'>('SESSION_COOKIE_SAMESITE') ?? 'lax',
-      },
-    })
-  );
+    const sessionSerializer = app.get(SessionSerializer);
+    passport.serializeUser(sessionSerializer.serializeUser.bind(sessionSerializer));
 
-  app.use(passport.initialize());
-  app.use(passport.session());
+    passport.deserializeUser(sessionSerializer.deserializeUser.bind(sessionSerializer));
 
-  const sessionSerializer = app.get(SessionSerializer);
-  passport.serializeUser(sessionSerializer.serializeUser.bind(sessionSerializer));
-
-  passport.deserializeUser(sessionSerializer.deserializeUser.bind(sessionSerializer));
-
-  await app.listen(process.env.PORT ?? 3000, '0.0.0.0');
+    await app.listen(process.env.PORT ?? 4000);
 }
 bootstrap();

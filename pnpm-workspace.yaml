@@ -1,2 +1,11 @@
 packages:
-  - 'packages/*'
+  - packages/*
+
+onlyBuiltDependencies:
+  - '@apollo/protobufjs'
+  - '@nestjs/core'
+  - core-js-pure
+  - esbuild
+  - protobufjs
+  - sharp
+  - unrs-resolver

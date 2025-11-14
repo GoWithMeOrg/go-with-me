@@ -1,0 +1,1354 @@
+time="2025-11-14T13:01:45+03:00" level=warning msg="/home/pavel/Coding/PR-208/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+ frontend Pulling 
+ nginx Pulling 
+ mongo Pulling 
+ backend Pulling 
+ 2d35ebdb57d9 Pulling fs layer 
+ fc2cca81d0de Pulling fs layer 
+ e1acb8d81a6a Pulling fs layer 
+ 5ff8b913658c Pulling fs layer 
+ 5ff8b913658c Waiting 
+ 7e49dc6156b0 Pulling fs layer 
+ febe548a5fe0 Pulling fs layer 
+ 8bc0577f0c5a Pulling fs layer 
+ 78bb42539a6e Pulling fs layer 
+ 03a2f7dfc9d5 Pulling fs layer 
+ 7e49dc6156b0 Waiting 
+ 3370660e3793 Pulling fs layer 
+ 423feecba649 Pulling fs layer 
+ 213a7d95f2f6 Pulling fs layer 
+ febe548a5fe0 Waiting 
+ 8bc0577f0c5a Waiting 
+ 78bb42539a6e Waiting 
+ 423feecba649 Waiting 
+ 03a2f7dfc9d5 Waiting 
+ 213a7d95f2f6 Waiting 
+ 3370660e3793 Waiting 
+ f18232174bc9 Pulling fs layer 
+ 61ca4f733c80 Pulling fs layer 
+ b464cfdf2a63 Pulling fs layer 
+ d7e507024086 Pulling fs layer 
+ 81bd8ed7ec67 Pulling fs layer 
+ 197eb75867ef Pulling fs layer 
+ 34a64644b756 Pulling fs layer 
+ 39c2ddfd6010 Pulling fs layer 
+ f18232174bc9 Waiting 
+ 81bd8ed7ec67 Waiting 
+ 61ca4f733c80 Waiting 
+ b464cfdf2a63 Waiting 
+ d7e507024086 Waiting 
+ 197eb75867ef Waiting 
+ 34a64644b756 Waiting 
+ 2d35ebdb57d9 Pulling fs layer 
+ fc2cca81d0de Pulling fs layer 
+ e1acb8d81a6a Pulling fs layer 
+ 5ff8b913658c Pulling fs layer 
+ 5ff8b913658c Waiting 
+ e1acb8d81a6a Downloading [>                                                  ]  13.69kB/1.261MB
+ e1acb8d81a6a Downloading [>                                                  ]  13.69kB/1.261MB
+ e1acb8d81a6a Downloading [=>                                                 ]  27.38kB/1.261MB
+ e1acb8d81a6a Downloading [=>                                                 ]  27.38kB/1.261MB
+ e1acb8d81a6a Downloading [==>                                                ]  54.76kB/1.261MB
+ e1acb8d81a6a Downloading [==>                                                ]  54.76kB/1.261MB
+ 2d35ebdb57d9 Downloading [>                                                  ]  39.26kB/3.802MB
+ 2d35ebdb57d9 Downloading [>                                                  ]  39.26kB/3.802MB
+ e1acb8d81a6a Downloading [===>                                               ]  95.27kB/1.261MB
+ e1acb8d81a6a Downloading [===>                                               ]  95.27kB/1.261MB
+ 2d35ebdb57d9 Downloading [=>                                                 ]  81.07kB/3.802MB
+ 2d35ebdb57d9 Downloading [=>                                                 ]  81.07kB/3.802MB
+ e1acb8d81a6a Downloading [======>                                            ]  151.8kB/1.261MB
+ e1acb8d81a6a Downloading [======>                                            ]  151.8kB/1.261MB
+ e1acb8d81a6a Downloading [=========>                                         ]  234.1kB/1.261MB
+ e1acb8d81a6a Downloading [=========>                                         ]  234.1kB/1.261MB
+ 2d35ebdb57d9 Downloading [==>                                                ]  161.2kB/3.802MB
+ 2d35ebdb57d9 Downloading [==>                                                ]  161.2kB/3.802MB
+ e1acb8d81a6a Downloading [==============>                                    ]  360.4kB/1.261MB
+ e1acb8d81a6a Downloading [==============>                                    ]  360.4kB/1.261MB
+ 2d35ebdb57d9 Downloading [===>                                               ]  282.7kB/3.802MB
+ 2d35ebdb57d9 Downloading [===>                                               ]  282.7kB/3.802MB
+ e1acb8d81a6a Downloading [====================>                              ]  524.3kB/1.261MB
+ e1acb8d81a6a Downloading [====================>                              ]  524.3kB/1.261MB
+ e1acb8d81a6a Downloading [===============================>                   ]  802.8kB/1.261MB
+ e1acb8d81a6a Downloading [===============================>                   ]  802.8kB/1.261MB
+ 2d35ebdb57d9 Downloading [=====>                                             ]  430.2kB/3.802MB
+ 2d35ebdb57d9 Downloading [=====>                                             ]  430.2kB/3.802MB
+ fc2cca81d0de Downloading [>                                                  ]  522.7kB/51.57MB
+ fc2cca81d0de Downloading [>                                                  ]  522.7kB/51.57MB
+ e1acb8d81a6a Downloading [===============================================>   ]  1.196MB/1.261MB
+ e1acb8d81a6a Downloading [===============================================>   ]  1.196MB/1.261MB
+ 2d35ebdb57d9 Downloading [=======>                                           ]  577.6kB/3.802MB
+ 2d35ebdb57d9 Downloading [=======>                                           ]  577.6kB/3.802MB
+ e1acb8d81a6a Downloading [==================================================>]  1.261MB/1.261MB
+ e1acb8d81a6a Download complete 
+ e1acb8d81a6a Downloading [==================================================>]  1.261MB/1.261MB
+ e1acb8d81a6a Download complete 
+ 2d35ebdb57d9 Downloading [=========>                                         ]  725.1kB/3.802MB
+ 2d35ebdb57d9 Downloading [=========>                                         ]  725.1kB/3.802MB
+ 2d35ebdb57d9 Downloading [============>                                      ]  914.6kB/3.802MB
+ 2d35ebdb57d9 Downloading [============>                                      ]  914.6kB/3.802MB
+ 2d35ebdb57d9 Downloading [==============>                                    ]  1.111MB/3.802MB
+ 2d35ebdb57d9 Downloading [==============>                                    ]  1.111MB/3.802MB
+ fc2cca81d0de Downloading [=>                                                 ]  1.043MB/51.57MB
+ fc2cca81d0de Downloading [=>                                                 ]  1.043MB/51.57MB
+ 2d35ebdb57d9 Downloading [=================>                                 ]  1.308MB/3.802MB
+ 2d35ebdb57d9 Downloading [=================>                                 ]  1.308MB/3.802MB
+ 2d35ebdb57d9 Downloading [===================>                               ]  1.504MB/3.802MB
+ 2d35ebdb57d9 Downloading [===================>                               ]  1.504MB/3.802MB
+ 2d35ebdb57d9 Downloading [=====================>                             ]  1.652MB/3.802MB
+ 2d35ebdb57d9 Downloading [=====================>                             ]  1.652MB/3.802MB
+ fc2cca81d0de Downloading [=>                                                 ]   1.57MB/51.57MB
+ fc2cca81d0de Downloading [=>                                                 ]   1.57MB/51.57MB
+ 2d35ebdb57d9 Downloading [=======================>                           ]  1.799MB/3.802MB
+ 2d35ebdb57d9 Downloading [=======================>                           ]  1.799MB/3.802MB
+ 2d35ebdb57d9 Downloading [==========================>                        ]  1.996MB/3.802MB
+ 2d35ebdb57d9 Downloading [==========================>                        ]  1.996MB/3.802MB
+ 2d35ebdb57d9 Downloading [============================>                      ]  2.189MB/3.802MB
+ 2d35ebdb57d9 Downloading [============================>                      ]  2.189MB/3.802MB
+ fc2cca81d0de Downloading [==>                                                ]  2.095MB/51.57MB
+ fc2cca81d0de Downloading [==>                                                ]  2.095MB/51.57MB
+ 2d35ebdb57d9 Downloading [===============================>                   ]  2.385MB/3.802MB
+ 2d35ebdb57d9 Downloading [===============================>                   ]  2.385MB/3.802MB
+ 2d35ebdb57d9 Downloading [=================================>                 ]  2.583MB/3.802MB
+ 2d35ebdb57d9 Downloading [=================================>                 ]  2.583MB/3.802MB
+ 2d35ebdb57d9 Downloading [===================================>               ]   2.73MB/3.802MB
+ 2d35ebdb57d9 Downloading [===================================>               ]   2.73MB/3.802MB
+ fc2cca81d0de Downloading [==>                                                ]  2.617MB/51.57MB
+ fc2cca81d0de Downloading [==>                                                ]  2.617MB/51.57MB
+ 2d35ebdb57d9 Downloading [======================================>            ]  2.927MB/3.802MB
+ 2d35ebdb57d9 Downloading [======================================>            ]  2.927MB/3.802MB
+ 2d35ebdb57d9 Downloading [=========================================>         ]  3.123MB/3.802MB
+ 2d35ebdb57d9 Downloading [=========================================>         ]  3.123MB/3.802MB
+ 2d35ebdb57d9 Downloading [===========================================>       ]  3.316MB/3.802MB
+ 2d35ebdb57d9 Downloading [===========================================>       ]  3.316MB/3.802MB
+ fc2cca81d0de Downloading [===>                                               ]  3.141MB/51.57MB
+ fc2cca81d0de Downloading [===>                                               ]  3.141MB/51.57MB
+ 2d35ebdb57d9 Downloading [==============================================>    ]  3.513MB/3.802MB
+ 2d35ebdb57d9 Downloading [==============================================>    ]  3.513MB/3.802MB
+ 2d35ebdb57d9 Downloading [================================================>  ]  3.661MB/3.802MB
+ 2d35ebdb57d9 Downloading [================================================>  ]  3.661MB/3.802MB
+ 2d35ebdb57d9 Download complete 
+ 2d35ebdb57d9 Download complete 
+ fc2cca81d0de Downloading [===>                                               ]  3.658MB/51.57MB
+ fc2cca81d0de Downloading [===>                                               ]  3.658MB/51.57MB
+ 2d35ebdb57d9 Extracting [>                                                  ]  65.54kB/3.802MB
+ 2d35ebdb57d9 Extracting [>                                                  ]  65.54kB/3.802MB
+ 5ff8b913658c Download complete 
+ 5ff8b913658c Download complete 
+ 2d35ebdb57d9 Extracting [==========================================>        ]  3.211MB/3.802MB
+ 2d35ebdb57d9 Extracting [==========================================>        ]  3.211MB/3.802MB
+ 2d35ebdb57d9 Extracting [==================================================>]  3.802MB/3.802MB
+ 2d35ebdb57d9 Extracting [==================================================>]  3.802MB/3.802MB
+ 2d35ebdb57d9 Pull complete 
+ 2d35ebdb57d9 Pull complete 
+ fc2cca81d0de Downloading [====>                                              ]  4.175MB/51.57MB
+ fc2cca81d0de Downloading [====>                                              ]  4.175MB/51.57MB
+ fc2cca81d0de Downloading [====>                                              ]  4.699MB/51.57MB
+ fc2cca81d0de Downloading [====>                                              ]  4.699MB/51.57MB
+ fc2cca81d0de Downloading [=====>                                             ]  5.226MB/51.57MB
+ fc2cca81d0de Downloading [=====>                                             ]  5.226MB/51.57MB
+ fc2cca81d0de Downloading [=====>                                             ]   5.75MB/51.57MB
+ fc2cca81d0de Downloading [=====>                                             ]   5.75MB/51.57MB
+ fc2cca81d0de Downloading [======>                                            ]  6.279MB/51.57MB
+ fc2cca81d0de Downloading [======>                                            ]  6.279MB/51.57MB
+ fc2cca81d0de Downloading [======>                                            ]  6.797MB/51.57MB
+ fc2cca81d0de Downloading [======>                                            ]  6.797MB/51.57MB
+ fc2cca81d0de Downloading [=======>                                           ]  7.325MB/51.57MB
+ fc2cca81d0de Downloading [=======>                                           ]  7.325MB/51.57MB
+ fc2cca81d0de Downloading [=======>                                           ]  7.849MB/51.57MB
+ fc2cca81d0de Downloading [=======>                                           ]  7.849MB/51.57MB
+ febe548a5fe0 Downloading [==========================>                        ]     935B/1.786kB
+ febe548a5fe0 Downloading [==================================================>]  1.786kB/1.786kB
+ febe548a5fe0 Verifying Checksum 
+ febe548a5fe0 Download complete 
+ fc2cca81d0de Downloading [========>                                          ]  8.378MB/51.57MB
+ fc2cca81d0de Downloading [========>                                          ]  8.378MB/51.57MB
+ fc2cca81d0de Downloading [========>                                          ]  8.899MB/51.57MB
+ fc2cca81d0de Downloading [========>                                          ]  8.899MB/51.57MB
+ 7e49dc6156b0 Downloading [>                                                  ]  303.9kB/29.54MB
+ 7e49dc6156b0 Downloading [=>                                                 ]  601.8kB/29.54MB
+ fc2cca81d0de Downloading [=========>                                         ]  9.424MB/51.57MB
+ fc2cca81d0de Downloading [=========>                                         ]  9.424MB/51.57MB
+ 7e49dc6156b0 Downloading [=>                                                 ]  909.3kB/29.54MB
+ 7e49dc6156b0 Downloading [==>                                                ]   1.22MB/29.54MB
+ 7e49dc6156b0 Downloading [===>                                               ]  2.134MB/29.54MB
+ fc2cca81d0de Downloading [=========>                                         ]  9.948MB/51.57MB
+ fc2cca81d0de Downloading [=========>                                         ]  9.948MB/51.57MB
+ 7e49dc6156b0 Downloading [=====>                                             ]  3.351MB/29.54MB
+ 7e49dc6156b0 Downloading [=======>                                           ]  4.256MB/29.54MB
+ fc2cca81d0de Downloading [==========>                                        ]  10.47MB/51.57MB
+ fc2cca81d0de Downloading [==========>                                        ]  10.47MB/51.57MB
+ 7e49dc6156b0 Downloading [=========>                                         ]  5.779MB/29.54MB
+ 7e49dc6156b0 Downloading [============>                                      ]  7.307MB/29.54MB
+ 7e49dc6156b0 Downloading [=============>                                     ]  8.225MB/29.54MB
+ fc2cca81d0de Downloading [==========>                                        ]  10.99MB/51.57MB
+ fc2cca81d0de Downloading [==========>                                        ]  10.99MB/51.57MB
+ 7e49dc6156b0 Downloading [===============>                                   ]  9.449MB/29.54MB
+ 7e49dc6156b0 Downloading [==================>                                ]  10.68MB/29.54MB
+ 7e49dc6156b0 Downloading [===================>                               ]   11.6MB/29.54MB
+ fc2cca81d0de Downloading [===========>                                       ]  11.52MB/51.57MB
+ fc2cca81d0de Downloading [===========>                                       ]  11.52MB/51.57MB
+ 7e49dc6156b0 Downloading [=====================>                             ]  12.83MB/29.54MB
+ 8bc0577f0c5a Downloading [>                                                  ]  15.99kB/1.514MB
+ 7e49dc6156b0 Downloading [=======================>                           ]  13.76MB/29.54MB
+ 8bc0577f0c5a Downloading [=>                                                 ]   31.5kB/1.514MB
+ 7e49dc6156b0 Downloading [========================>                          ]  14.68MB/29.54MB
+ fc2cca81d0de Downloading [===========>                                       ]  12.05MB/51.57MB
+ fc2cca81d0de Downloading [===========>                                       ]  12.05MB/51.57MB
+ 8bc0577f0c5a Downloading [==>                                                ]  63.23kB/1.514MB
+ 7e49dc6156b0 Downloading [==========================>                        ]  15.61MB/29.54MB
+ 7e49dc6156b0 Downloading [============================>                      ]  16.54MB/29.54MB
+ 8bc0577f0c5a Downloading [===>                                               ]    114kB/1.514MB
+ 7e49dc6156b0 Downloading [=============================>                     ]  17.48MB/29.54MB
+ 8bc0577f0c5a Downloading [======>                                            ]  198.1kB/1.514MB
+ fc2cca81d0de Downloading [============>                                      ]  12.58MB/51.57MB
+ fc2cca81d0de Downloading [============>                                      ]  12.58MB/51.57MB
+ 8bc0577f0c5a Downloading [==========>                                        ]  304.6kB/1.514MB
+ 7e49dc6156b0 Downloading [===============================>                   ]  18.71MB/29.54MB
+ 8bc0577f0c5a Downloading [=============>                                     ]  419.3kB/1.514MB
+ 7e49dc6156b0 Downloading [=================================>                 ]  19.95MB/29.54MB
+ 8bc0577f0c5a Downloading [==================>                                ]  555.1kB/1.514MB
+ 7e49dc6156b0 Downloading [===================================>               ]  21.18MB/29.54MB
+ 8bc0577f0c5a Downloading [======================>                            ]  694.7kB/1.514MB
+ 7e49dc6156b0 Downloading [=====================================>             ]  22.41MB/29.54MB
+ 8bc0577f0c5a Downloading [==========================>                        ]  809.4kB/1.514MB
+ 7e49dc6156b0 Downloading [=======================================>           ]  23.34MB/29.54MB
+ 8bc0577f0c5a Downloading [=============================>                     ]  891.3kB/1.514MB
+ 7e49dc6156b0 Downloading [=========================================>         ]  24.58MB/29.54MB
+ fc2cca81d0de Downloading [============>                                      ]   13.1MB/51.57MB
+ fc2cca81d0de Downloading [============>                                      ]   13.1MB/51.57MB
+ 8bc0577f0c5a Downloading [===============================>                   ]  956.9kB/1.514MB
+ 7e49dc6156b0 Downloading [===========================================>       ]  25.51MB/29.54MB
+ 8bc0577f0c5a Downloading [==================================>                ]  1.039MB/1.514MB
+ 7e49dc6156b0 Downloading [=============================================>     ]  26.76MB/29.54MB
+ 8bc0577f0c5a Downloading [=====================================>             ]  1.132MB/1.514MB
+ 7e49dc6156b0 Downloading [==============================================>    ]  27.66MB/29.54MB
+ 8bc0577f0c5a Downloading [========================================>          ]  1.214MB/1.514MB
+ 7e49dc6156b0 Downloading [================================================>  ]  28.89MB/29.54MB
+ 8bc0577f0c5a Downloading [==========================================>        ]  1.279MB/1.514MB
+ 7e49dc6156b0 Verifying Checksum 
+ 7e49dc6156b0 Download complete 
+ fc2cca81d0de Downloading [=============>                                     ]  13.63MB/51.57MB
+ fc2cca81d0de Downloading [=============>                                     ]  13.63MB/51.57MB
+ 7e49dc6156b0 Extracting [>                                                  ]  327.7kB/29.54MB
+ 8bc0577f0c5a Downloading [==============================================>    ]   1.41MB/1.514MB
+ 8bc0577f0c5a Verifying Checksum 
+ 8bc0577f0c5a Download complete 
+ 7e49dc6156b0 Extracting [=======>                                           ]   4.26MB/29.54MB
+ 7e49dc6156b0 Extracting [=============>                                     ]  7.864MB/29.54MB
+ fc2cca81d0de Downloading [=============>                                     ]  14.15MB/51.57MB
+ fc2cca81d0de Downloading [=============>                                     ]  14.15MB/51.57MB
+ 7e49dc6156b0 Extracting [===================>                               ]   11.8MB/29.54MB
+ 7e49dc6156b0 Extracting [===============================>                   ]  18.35MB/29.54MB
+ fc2cca81d0de Downloading [==============>                                    ]  14.67MB/51.57MB
+ fc2cca81d0de Downloading [==============>                                    ]  14.67MB/51.57MB
+ 7e49dc6156b0 Extracting [=========================================>         ]  24.25MB/29.54MB
+ 7e49dc6156b0 Extracting [==============================================>    ]  27.53MB/29.54MB
+ 7e49dc6156b0 Extracting [=================================================> ]  29.16MB/29.54MB
+ 7e49dc6156b0 Extracting [==================================================>]  29.54MB/29.54MB
+ fc2cca81d0de Downloading [==============>                                    ]  15.19MB/51.57MB
+ fc2cca81d0de Downloading [==============>                                    ]  15.19MB/51.57MB
+ 7e49dc6156b0 Pull complete 
+ febe548a5fe0 Extracting [==================================================>]  1.786kB/1.786kB
+ febe548a5fe0 Extracting [==================================================>]  1.786kB/1.786kB
+ fc2cca81d0de Downloading [===============>                                   ]  15.71MB/51.57MB
+ fc2cca81d0de Downloading [===============>                                   ]  15.71MB/51.57MB
+ febe548a5fe0 Pull complete 
+ 8bc0577f0c5a Extracting [=>                                                 ]  32.77kB/1.514MB
+ 8bc0577f0c5a Extracting [==================================================>]  1.514MB/1.514MB
+ 8bc0577f0c5a Pull complete 
+ fc2cca81d0de Downloading [===============>                                   ]  16.24MB/51.57MB
+ fc2cca81d0de Downloading [===============>                                   ]  16.24MB/51.57MB
+ fc2cca81d0de Downloading [================>                                  ]  16.76MB/51.57MB
+ fc2cca81d0de Downloading [================>                                  ]  16.76MB/51.57MB
+ fc2cca81d0de Downloading [================>                                  ]  17.29MB/51.57MB
+ fc2cca81d0de Downloading [================>                                  ]  17.29MB/51.57MB
+ 78bb42539a6e Downloading [>                                                  ]  9.583kB/898.1kB
+ 78bb42539a6e Downloading [=>                                                 ]  28.75kB/898.1kB
+ fc2cca81d0de Downloading [=================>                                 ]  17.81MB/51.57MB
+ fc2cca81d0de Downloading [=================>                                 ]  17.81MB/51.57MB
+ 03a2f7dfc9d5 Downloading [==================================================>]     114B/114B
+ 03a2f7dfc9d5 Verifying Checksum 
+ 03a2f7dfc9d5 Download complete 
+ 78bb42539a6e Downloading [===>                                               ]  58.99kB/898.1kB
+ 78bb42539a6e Downloading [=====>                                             ]  97.05kB/898.1kB
+ fc2cca81d0de Downloading [=================>                                 ]  18.33MB/51.57MB
+ fc2cca81d0de Downloading [=================>                                 ]  18.33MB/51.57MB
+ 78bb42539a6e Downloading [========>                                          ]  148.1kB/898.1kB
+ 78bb42539a6e Downloading [=============>                                     ]  236.4kB/898.1kB
+ 78bb42539a6e Downloading [====================>                              ]  372.7kB/898.1kB
+ fc2cca81d0de Downloading [==================>                                ]  18.86MB/51.57MB
+ fc2cca81d0de Downloading [==================>                                ]  18.86MB/51.57MB
+ 78bb42539a6e Downloading [===============================>                   ]  557.1kB/898.1kB
+ 78bb42539a6e Downloading [===============================================>   ]    852kB/898.1kB
+ 78bb42539a6e Downloading [==================================================>]  898.1kB/898.1kB
+ 78bb42539a6e Download complete 
+ 78bb42539a6e Extracting [=>                                                 ]  32.77kB/898.1kB
+ 78bb42539a6e Extracting [==================================================>]  898.1kB/898.1kB
+ 78bb42539a6e Extracting [==================================================>]  898.1kB/898.1kB
+ 78bb42539a6e Pull complete 
+ 03a2f7dfc9d5 Extracting [==================================================>]     114B/114B
+ 03a2f7dfc9d5 Extracting [==================================================>]     114B/114B
+ 03a2f7dfc9d5 Pull complete 
+ fc2cca81d0de Downloading [==================>                                ]  19.38MB/51.57MB
+ fc2cca81d0de Downloading [==================>                                ]  19.38MB/51.57MB
+ fc2cca81d0de Downloading [===================>                               ]   19.9MB/51.57MB
+ fc2cca81d0de Downloading [===================>                               ]   19.9MB/51.57MB
+ fc2cca81d0de Downloading [===================>                               ]  20.42MB/51.57MB
+ fc2cca81d0de Downloading [===================>                               ]  20.42MB/51.57MB
+ fc2cca81d0de Downloading [====================>                              ]  20.94MB/51.57MB
+ fc2cca81d0de Downloading [====================>                              ]  20.94MB/51.57MB
+ fc2cca81d0de Downloading [====================>                              ]  21.47MB/51.57MB
+ fc2cca81d0de Downloading [====================>                              ]  21.47MB/51.57MB
+ 3370660e3793 Downloading [==================================================>]     263B/263B
+ 3370660e3793 Download complete 
+ 3370660e3793 Extracting [==================================================>]     263B/263B
+ 3370660e3793 Extracting [==================================================>]     263B/263B
+ 3370660e3793 Pull complete 
+ fc2cca81d0de Downloading [=====================>                             ]  21.99MB/51.57MB
+ fc2cca81d0de Downloading [=====================>                             ]  21.99MB/51.57MB
+ fc2cca81d0de Downloading [=====================>                             ]  22.52MB/51.57MB
+ fc2cca81d0de Downloading [=====================>                             ]  22.52MB/51.57MB
+ fc2cca81d0de Downloading [======================>                            ]  23.04MB/51.57MB
+ fc2cca81d0de Downloading [======================>                            ]  23.04MB/51.57MB
+ fc2cca81d0de Downloading [======================>                            ]  23.57MB/51.57MB
+ fc2cca81d0de Downloading [======================>                            ]  23.57MB/51.57MB
+ fc2cca81d0de Downloading [=======================>                           ]  24.09MB/51.57MB
+ fc2cca81d0de Downloading [=======================>                           ]  24.09MB/51.57MB
+ 423feecba649 Downloading [>                                                  ]  540.7kB/247.8MB
+ fc2cca81d0de Downloading [=======================>                           ]  24.61MB/51.57MB
+ fc2cca81d0de Downloading [=======================>                           ]  24.61MB/51.57MB
+ 423feecba649 Downloading [>                                                  ]  1.081MB/247.8MB
+ 423feecba649 Downloading [>                                                  ]  1.622MB/247.8MB
+ fc2cca81d0de Downloading [========================>                          ]  25.14MB/51.57MB
+ fc2cca81d0de Downloading [========================>                          ]  25.14MB/51.57MB
+ 423feecba649 Downloading [>                                                  ]  2.687MB/247.8MB
+ 423feecba649 Downloading [>                                                  ]  3.756MB/247.8MB
+ 423feecba649 Downloading [>                                                  ]  4.833MB/247.8MB
+ 213a7d95f2f6 Downloading [=========>                                         ]     935B/5.003kB
+ 213a7d95f2f6 Downloading [==================================================>]  5.003kB/5.003kB
+ 213a7d95f2f6 Verifying Checksum 
+ 213a7d95f2f6 Download complete 
+ fc2cca81d0de Downloading [========================>                          ]  25.66MB/51.57MB
+ fc2cca81d0de Downloading [========================>                          ]  25.66MB/51.57MB
+ 423feecba649 Downloading [=>                                                 ]  6.439MB/247.8MB
+ 423feecba649 Downloading [=>                                                 ]   7.52MB/247.8MB
+ 423feecba649 Downloading [=>                                                 ]  8.581MB/247.8MB
+ fc2cca81d0de Downloading [=========================>                         ]  26.19MB/51.57MB
+ fc2cca81d0de Downloading [=========================>                         ]  26.19MB/51.57MB
+ 423feecba649 Downloading [==>                                                ]  10.17MB/247.8MB
+ 423feecba649 Downloading [==>                                                ]  11.24MB/247.8MB
+ fc2cca81d0de Downloading [=========================>                         ]  26.71MB/51.57MB
+ fc2cca81d0de Downloading [=========================>                         ]  26.71MB/51.57MB
+ 423feecba649 Downloading [==>                                                ]  12.32MB/247.8MB
+ 423feecba649 Downloading [==>                                                ]  13.38MB/247.8MB
+ 423feecba649 Downloading [==>                                                ]  14.45MB/247.8MB
+ 423feecba649 Downloading [===>                                               ]  15.52MB/247.8MB
+ fc2cca81d0de Downloading [==========================>                        ]  27.24MB/51.57MB
+ fc2cca81d0de Downloading [==========================>                        ]  27.24MB/51.57MB
+ 423feecba649 Downloading [===>                                               ]   16.6MB/247.8MB
+ 423feecba649 Downloading [===>                                               ]  17.66MB/247.8MB
+ 423feecba649 Downloading [===>                                               ]  18.74MB/247.8MB
+ fc2cca81d0de Downloading [==========================>                        ]  27.77MB/51.57MB
+ fc2cca81d0de Downloading [==========================>                        ]  27.77MB/51.57MB
+ 423feecba649 Downloading [===>                                               ]  19.82MB/247.8MB
+ 423feecba649 Downloading [====>                                              ]  20.89MB/247.8MB
+ 423feecba649 Downloading [====>                                              ]  21.95MB/247.8MB
+ fc2cca81d0de Downloading [===========================>                       ]  28.29MB/51.57MB
+ fc2cca81d0de Downloading [===========================>                       ]  28.29MB/51.57MB
+ 423feecba649 Downloading [====>                                              ]  23.02MB/247.8MB
+ 423feecba649 Downloading [====>                                              ]  24.62MB/247.8MB
+ 423feecba649 Downloading [=====>                                             ]  25.69MB/247.8MB
+ fc2cca81d0de Downloading [===========================>                       ]  28.82MB/51.57MB
+ fc2cca81d0de Downloading [===========================>                       ]  28.82MB/51.57MB
+ 423feecba649 Downloading [=====>                                             ]  26.76MB/247.8MB
+ f18232174bc9 Downloading [>                                                  ]  36.94kB/3.642MB
+ 423feecba649 Downloading [=====>                                             ]  28.37MB/247.8MB
+ 423feecba649 Downloading [=====>                                             ]  29.44MB/247.8MB
+ fc2cca81d0de Downloading [============================>                      ]  29.35MB/51.57MB
+ fc2cca81d0de Downloading [============================>                      ]  29.35MB/51.57MB
+ f18232174bc9 Downloading [=>                                                 ]  74.26kB/3.642MB
+ 423feecba649 Downloading [======>                                            ]  30.49MB/247.8MB
+ f18232174bc9 Downloading [==>                                                ]  150.4kB/3.642MB
+ 423feecba649 Downloading [======>                                            ]  31.56MB/247.8MB
+ f18232174bc9 Downloading [===>                                               ]  238.7kB/3.642MB
+ 423feecba649 Downloading [======>                                            ]  32.62MB/247.8MB
+ fc2cca81d0de Downloading [============================>                      ]  29.87MB/51.57MB
+ fc2cca81d0de Downloading [============================>                      ]  29.87MB/51.57MB
+ f18232174bc9 Downloading [=====>                                             ]  386.1kB/3.642MB
+ 423feecba649 Downloading [======>                                            ]   33.7MB/247.8MB
+ f18232174bc9 Downloading [======>                                            ]  483.3kB/3.642MB
+ 423feecba649 Downloading [=======>                                           ]  35.32MB/247.8MB
+ f18232174bc9 Downloading [========>                                          ]  630.8kB/3.642MB
+ 423feecba649 Downloading [=======>                                           ]  36.37MB/247.8MB
+ f18232174bc9 Downloading [==========>                                        ]  778.2kB/3.642MB
+ 423feecba649 Downloading [=======>                                           ]  37.45MB/247.8MB
+ fc2cca81d0de Downloading [=============================>                     ]   30.4MB/51.57MB
+ fc2cca81d0de Downloading [=============================>                     ]   30.4MB/51.57MB
+ 423feecba649 Downloading [=======>                                           ]  38.52MB/247.8MB
+ f18232174bc9 Downloading [============>                                      ]  928.8kB/3.642MB
+ 423feecba649 Downloading [=======>                                           ]   39.6MB/247.8MB
+ f18232174bc9 Downloading [==============>                                    ]  1.076MB/3.642MB
+ 423feecba649 Downloading [========>                                          ]  40.69MB/247.8MB
+ f18232174bc9 Downloading [================>                                  ]  1.175MB/3.642MB
+ 423feecba649 Downloading [========>                                          ]  41.77MB/247.8MB
+ f18232174bc9 Downloading [==================>                                ]  1.322MB/3.642MB
+ fc2cca81d0de Downloading [=============================>                     ]  30.93MB/51.57MB
+ fc2cca81d0de Downloading [=============================>                     ]  30.93MB/51.57MB
+ 423feecba649 Downloading [========>                                          ]  43.37MB/247.8MB
+ f18232174bc9 Downloading [===================>                               ]  1.457MB/3.642MB
+ 423feecba649 Downloading [========>                                          ]  44.43MB/247.8MB
+ f18232174bc9 Downloading [=====================>                             ]  1.555MB/3.642MB
+ 423feecba649 Downloading [=========>                                         ]  45.51MB/247.8MB
+ f18232174bc9 Downloading [======================>                            ]  1.654MB/3.642MB
+ f18232174bc9 Downloading [=======================>                           ]  1.744MB/3.642MB
+ 423feecba649 Downloading [=========>                                         ]  47.12MB/247.8MB
+ 423feecba649 Downloading [=========>                                         ]  48.19MB/247.8MB
+ fc2cca81d0de Downloading [==============================>                    ]  31.46MB/51.57MB
+ fc2cca81d0de Downloading [==============================>                    ]  31.46MB/51.57MB
+ f18232174bc9 Downloading [=========================>                         ]  1.843MB/3.642MB
+ 423feecba649 Downloading [=========>                                         ]  49.27MB/247.8MB
+ f18232174bc9 Downloading [==========================>                        ]  1.941MB/3.642MB
+ 423feecba649 Downloading [==========>                                        ]  50.33MB/247.8MB
+ f18232174bc9 Downloading [=============================>                     ]  2.128MB/3.642MB
+ 423feecba649 Downloading [==========>                                        ]   51.4MB/247.8MB
+ f18232174bc9 Downloading [===============================>                   ]  2.275MB/3.642MB
+ fc2cca81d0de Downloading [===============================>                   ]  31.99MB/51.57MB
+ fc2cca81d0de Downloading [===============================>                   ]  31.99MB/51.57MB
+ f18232174bc9 Downloading [=================================>                 ]  2.423MB/3.642MB
+ 423feecba649 Downloading [==========>                                        ]  53.01MB/247.8MB
+ f18232174bc9 Downloading [===================================>               ]   2.57MB/3.642MB
+ 423feecba649 Downloading [===========>                                       ]  54.62MB/247.8MB
+ f18232174bc9 Downloading [=====================================>             ]  2.718MB/3.642MB
+ 423feecba649 Downloading [===========>                                       ]  55.69MB/247.8MB
+ f18232174bc9 Downloading [======================================>            ]  2.816MB/3.642MB
+ 423feecba649 Downloading [===========>                                       ]  56.77MB/247.8MB
+ f18232174bc9 Downloading [========================================>          ]  2.964MB/3.642MB
+ 423feecba649 Downloading [===========>                                       ]  57.85MB/247.8MB
+ fc2cca81d0de Downloading [===============================>                   ]  32.51MB/51.57MB
+ fc2cca81d0de Downloading [===============================>                   ]  32.51MB/51.57MB
+ 423feecba649 Downloading [===========>                                       ]  58.92MB/247.8MB
+ f18232174bc9 Downloading [==========================================>        ]  3.111MB/3.642MB
+ f18232174bc9 Downloading [============================================>      ]  3.258MB/3.642MB
+ 423feecba649 Downloading [============>                                      ]  60.52MB/247.8MB
+ f18232174bc9 Downloading [===============================================>   ]  3.455MB/3.642MB
+ fc2cca81d0de Downloading [================================>                  ]  33.03MB/51.57MB
+ fc2cca81d0de Downloading [================================>                  ]  33.03MB/51.57MB
+ 423feecba649 Downloading [============>                                      ]  61.05MB/247.8MB
+ f18232174bc9 Downloading [==================================================>]  3.642MB/3.642MB
+ f18232174bc9 Download complete 
+ f18232174bc9 Extracting [>                                                  ]  65.54kB/3.642MB
+ 423feecba649 Downloading [============>                                      ]  62.67MB/247.8MB
+ f18232174bc9 Extracting [====================================>              ]  2.687MB/3.642MB
+ f18232174bc9 Extracting [==================================================>]  3.642MB/3.642MB
+ f18232174bc9 Extracting [==================================================>]  3.642MB/3.642MB
+ f18232174bc9 Pull complete 
+ 423feecba649 Downloading [============>                                      ]  63.74MB/247.8MB
+ fc2cca81d0de Downloading [================================>                  ]  33.55MB/51.57MB
+ fc2cca81d0de Downloading [================================>                  ]  33.55MB/51.57MB
+ 423feecba649 Downloading [=============>                                     ]  65.35MB/247.8MB
+ 423feecba649 Downloading [=============>                                     ]  66.43MB/247.8MB
+ 423feecba649 Downloading [=============>                                     ]   67.5MB/247.8MB
+ fc2cca81d0de Downloading [=================================>                 ]  34.08MB/51.57MB
+ fc2cca81d0de Downloading [=================================>                 ]  34.08MB/51.57MB
+ 423feecba649 Downloading [=============>                                     ]  68.58MB/247.8MB
+ 423feecba649 Downloading [=============>                                     ]  69.12MB/247.8MB
+ fc2cca81d0de Downloading [=================================>                 ]   34.6MB/51.57MB
+ fc2cca81d0de Downloading [=================================>                 ]   34.6MB/51.57MB
+ 423feecba649 Downloading [==============>                                    ]  70.19MB/247.8MB
+ 423feecba649 Downloading [==============>                                    ]  71.27MB/247.8MB
+ 423feecba649 Downloading [==============>                                    ]  72.88MB/247.8MB
+ fc2cca81d0de Downloading [==================================>                ]  35.12MB/51.57MB
+ fc2cca81d0de Downloading [==================================>                ]  35.12MB/51.57MB
+ 423feecba649 Downloading [===============>                                   ]  74.48MB/247.8MB
+ 423feecba649 Downloading [===============>                                   ]  75.56MB/247.8MB
+ 423feecba649 Downloading [===============>                                   ]  76.64MB/247.8MB
+ fc2cca81d0de Downloading [==================================>                ]  35.65MB/51.57MB
+ fc2cca81d0de Downloading [==================================>                ]  35.65MB/51.57MB
+ 423feecba649 Downloading [===============>                                   ]  77.72MB/247.8MB
+ 423feecba649 Downloading [===============>                                   ]  78.25MB/247.8MB
+ fc2cca81d0de Downloading [===================================>               ]  36.17MB/51.57MB
+ fc2cca81d0de Downloading [===================================>               ]  36.17MB/51.57MB
+ 423feecba649 Downloading [================>                                  ]  79.86MB/247.8MB
+ 423feecba649 Downloading [================>                                  ]  81.46MB/247.8MB
+ 423feecba649 Downloading [================>                                  ]  82.52MB/247.8MB
+ 423feecba649 Downloading [================>                                  ]  83.59MB/247.8MB
+ fc2cca81d0de Downloading [===================================>               ]   36.7MB/51.57MB
+ fc2cca81d0de Downloading [===================================>               ]   36.7MB/51.57MB
+ 61ca4f733c80 Downloading [>                                                  ]  19.14kB/1.791MB
+ 423feecba649 Downloading [=================>                                 ]  85.19MB/247.8MB
+ 61ca4f733c80 Downloading [=>                                                 ]  57.34kB/1.791MB
+ 423feecba649 Downloading [=================>                                 ]   86.8MB/247.8MB
+ fc2cca81d0de Downloading [====================================>              ]  37.21MB/51.57MB
+ fc2cca81d0de Downloading [====================================>              ]  37.21MB/51.57MB
+ 61ca4f733c80 Downloading [==>                                                ]  78.49kB/1.791MB
+ 423feecba649 Downloading [=================>                                 ]  87.34MB/247.8MB
+ 61ca4f733c80 Downloading [===>                                               ]  120.8kB/1.791MB
+ 423feecba649 Downloading [=================>                                 ]  88.95MB/247.8MB
+ 61ca4f733c80 Downloading [======>                                            ]  236.5kB/1.791MB
+ 423feecba649 Downloading [==================>                                ]  90.01MB/247.8MB
+ fc2cca81d0de Downloading [====================================>              ]  37.74MB/51.57MB
+ fc2cca81d0de Downloading [====================================>              ]  37.74MB/51.57MB
+ 61ca4f733c80 Downloading [=========>                                         ]  335.9kB/1.791MB
+ 423feecba649 Downloading [==================>                                ]  91.08MB/247.8MB
+ 61ca4f733c80 Downloading [=============>                                     ]  466.9kB/1.791MB
+ 423feecba649 Downloading [==================>                                ]   92.7MB/247.8MB
+ 61ca4f733c80 Downloading [===============>                                   ]  565.2kB/1.791MB
+ 423feecba649 Downloading [==================>                                ]  93.77MB/247.8MB
+ 61ca4f733c80 Downloading [==================>                                ]  663.6kB/1.791MB
+ fc2cca81d0de Downloading [=====================================>             ]  38.26MB/51.57MB
+ fc2cca81d0de Downloading [=====================================>             ]  38.26MB/51.57MB
+ 61ca4f733c80 Downloading [=======================>                           ]  847.6kB/1.791MB
+ 61ca4f733c80 Downloading [=============================>                     ]  1.044MB/1.791MB
+ 61ca4f733c80 Downloading [=================================>                 ]  1.204MB/1.791MB
+ fc2cca81d0de Downloading [=====================================>             ]  38.79MB/51.57MB
+ fc2cca81d0de Downloading [=====================================>             ]  38.79MB/51.57MB
+ 61ca4f733c80 Downloading [======================================>            ]  1.368MB/1.791MB
+ 423feecba649 Downloading [===================>                               ]  94.31MB/247.8MB
+ 61ca4f733c80 Downloading [=========================================>         ]  1.499MB/1.791MB
+ 423feecba649 Downloading [===================>                               ]  95.38MB/247.8MB
+ 61ca4f733c80 Downloading [=============================================>     ]   1.63MB/1.791MB
+ 423feecba649 Downloading [===================>                               ]  96.44MB/247.8MB
+ 61ca4f733c80 Verifying Checksum 
+ 61ca4f733c80 Download complete 
+ 61ca4f733c80 Extracting [>                                                  ]  32.77kB/1.791MB
+ fc2cca81d0de Downloading [======================================>            ]  39.31MB/51.57MB
+ fc2cca81d0de Downloading [======================================>            ]  39.31MB/51.57MB
+ 423feecba649 Downloading [===================>                               ]  98.04MB/247.8MB
+ 61ca4f733c80 Extracting [===================================>               ]  1.278MB/1.791MB
+ 61ca4f733c80 Extracting [==================================================>]  1.791MB/1.791MB
+ 61ca4f733c80 Extracting [==================================================>]  1.791MB/1.791MB
+ 423feecba649 Downloading [====================>                              ]  99.65MB/247.8MB
+ 61ca4f733c80 Pull complete 
+ 423feecba649 Downloading [====================>                              ]  100.7MB/247.8MB
+ fc2cca81d0de Downloading [======================================>            ]  39.84MB/51.57MB
+ fc2cca81d0de Downloading [======================================>            ]  39.84MB/51.57MB
+ 423feecba649 Downloading [====================>                              ]  101.8MB/247.8MB
+ 423feecba649 Downloading [====================>                              ]  103.4MB/247.8MB
+ 423feecba649 Downloading [=====================>                             ]  104.5MB/247.8MB
+ fc2cca81d0de Downloading [=======================================>           ]  40.36MB/51.57MB
+ fc2cca81d0de Downloading [=======================================>           ]  40.36MB/51.57MB
+ 423feecba649 Downloading [=====================>                             ]  105.5MB/247.8MB
+ 423feecba649 Downloading [=====================>                             ]  106.6MB/247.8MB
+ 423feecba649 Downloading [=====================>                             ]  108.2MB/247.8MB
+ fc2cca81d0de Downloading [=======================================>           ]  40.89MB/51.57MB
+ fc2cca81d0de Downloading [=======================================>           ]  40.89MB/51.57MB
+ 423feecba649 Downloading [======================>                            ]  109.8MB/247.8MB
+ 423feecba649 Downloading [======================>                            ]  110.9MB/247.8MB
+ fc2cca81d0de Downloading [========================================>          ]  41.41MB/51.57MB
+ fc2cca81d0de Downloading [========================================>          ]  41.41MB/51.57MB
+ 423feecba649 Downloading [======================>                            ]  112.5MB/247.8MB
+ 423feecba649 Downloading [======================>                            ]  113.5MB/247.8MB
+ fc2cca81d0de Downloading [========================================>          ]  41.93MB/51.57MB
+ 423feecba649 Downloading [=======================>                           ]  114.6MB/247.8MB
+ fc2cca81d0de Downloading [========================================>          ]  41.93MB/51.57MB
+ 423feecba649 Downloading [=======================>                           ]  116.2MB/247.8MB
+ 423feecba649 Downloading [=======================>                           ]  117.8MB/247.8MB
+ fc2cca81d0de Downloading [=========================================>         ]  42.46MB/51.57MB
+ fc2cca81d0de Downloading [=========================================>         ]  42.46MB/51.57MB
+ 423feecba649 Downloading [=======================>                           ]  118.9MB/247.8MB
+ 423feecba649 Downloading [========================>                          ]  120.5MB/247.8MB
+ b464cfdf2a63 Downloading [==================================================>]     629B/629B
+ b464cfdf2a63 Download complete 
+ b464cfdf2a63 Extracting [==================================================>]     629B/629B
+ 423feecba649 Downloading [========================>                          ]  121.6MB/247.8MB
+ b464cfdf2a63 Extracting [==================================================>]     629B/629B
+ b464cfdf2a63 Pull complete 
+ fc2cca81d0de Downloading [=========================================>         ]  42.98MB/51.57MB
+ fc2cca81d0de Downloading [=========================================>         ]  42.98MB/51.57MB
+ 423feecba649 Downloading [========================>                          ]  122.7MB/247.8MB
+ 423feecba649 Downloading [=========================>                         ]  124.3MB/247.8MB
+ fc2cca81d0de Downloading [==========================================>        ]   43.5MB/51.57MB
+ fc2cca81d0de Downloading [==========================================>        ]   43.5MB/51.57MB
+ 423feecba649 Downloading [=========================>                         ]  125.3MB/247.8MB
+ 423feecba649 Downloading [=========================>                         ]  126.4MB/247.8MB
+ 423feecba649 Downloading [=========================>                         ]  127.5MB/247.8MB
+ 423feecba649 Downloading [=========================>                         ]  128.6MB/247.8MB
+ fc2cca81d0de Downloading [==========================================>        ]  44.02MB/51.57MB
+ fc2cca81d0de Downloading [==========================================>        ]  44.02MB/51.57MB
+ 423feecba649 Downloading [==========================>                        ]  130.2MB/247.8MB
+ 423feecba649 Downloading [==========================>                        ]  131.2MB/247.8MB
+ fc2cca81d0de Downloading [===========================================>       ]  44.55MB/51.57MB
+ fc2cca81d0de Downloading [===========================================>       ]  44.55MB/51.57MB
+ 423feecba649 Downloading [==========================>                        ]  131.8MB/247.8MB
+ 423feecba649 Downloading [==========================>                        ]  133.4MB/247.8MB
+ 423feecba649 Downloading [===========================>                       ]  134.5MB/247.8MB
+ fc2cca81d0de Downloading [===========================================>       ]  45.06MB/51.57MB
+ fc2cca81d0de Downloading [===========================================>       ]  45.06MB/51.57MB
+ 423feecba649 Downloading [===========================>                       ]  135.5MB/247.8MB
+ 423feecba649 Downloading [===========================>                       ]  137.1MB/247.8MB
+ 423feecba649 Downloading [===========================>                       ]  138.2MB/247.8MB
+ fc2cca81d0de Downloading [============================================>      ]  45.59MB/51.57MB
+ fc2cca81d0de Downloading [============================================>      ]  45.59MB/51.57MB
+ 423feecba649 Downloading [============================>                      ]  139.3MB/247.8MB
+ 423feecba649 Downloading [============================>                      ]  140.9MB/247.8MB
+ fc2cca81d0de Downloading [============================================>      ]  46.11MB/51.57MB
+ fc2cca81d0de Downloading [============================================>      ]  46.11MB/51.57MB
+ d7e507024086 Downloading [================================================>  ]     935B/955B
+ d7e507024086 Downloading [==================================================>]     955B/955B
+ d7e507024086 Download complete 
+ d7e507024086 Extracting [==================================================>]     955B/955B
+ d7e507024086 Extracting [==================================================>]     955B/955B
+ 423feecba649 Downloading [============================>                      ]    142MB/247.8MB
+ d7e507024086 Pull complete 
+ 423feecba649 Downloading [============================>                      ]    143MB/247.8MB
+ fc2cca81d0de Downloading [=============================================>     ]  46.64MB/51.57MB
+ fc2cca81d0de Downloading [=============================================>     ]  46.64MB/51.57MB
+ 423feecba649 Downloading [=============================>                     ]  144.6MB/247.8MB
+ 423feecba649 Downloading [=============================>                     ]  145.7MB/247.8MB
+ 423feecba649 Downloading [=============================>                     ]  146.8MB/247.8MB
+ fc2cca81d0de Downloading [=============================================>     ]  47.17MB/51.57MB
+ fc2cca81d0de Downloading [=============================================>     ]  47.17MB/51.57MB
+ 423feecba649 Downloading [=============================>                     ]  148.4MB/247.8MB
+ 423feecba649 Downloading [==============================>                    ]  149.5MB/247.8MB
+ 423feecba649 Downloading [==============================>                    ]  150.5MB/247.8MB
+ fc2cca81d0de Downloading [==============================================>    ]  47.69MB/51.57MB
+ fc2cca81d0de Downloading [==============================================>    ]  47.69MB/51.57MB
+ 423feecba649 Downloading [==============================>                    ]  152.1MB/247.8MB
+ 423feecba649 Downloading [==============================>                    ]  153.2MB/247.8MB
+ fc2cca81d0de Downloading [==============================================>    ]  48.21MB/51.57MB
+ fc2cca81d0de Downloading [==============================================>    ]  48.21MB/51.57MB
+ 423feecba649 Downloading [===============================>                   ]  154.8MB/247.8MB
+ 423feecba649 Downloading [===============================>                   ]  156.5MB/247.8MB
+ fc2cca81d0de Downloading [===============================================>   ]  48.73MB/51.57MB
+ fc2cca81d0de Downloading [===============================================>   ]  48.73MB/51.57MB
+ 423feecba649 Downloading [===============================>                   ]  158.1MB/247.8MB
+ 423feecba649 Downloading [================================>                  ]  159.1MB/247.8MB
+ 423feecba649 Downloading [================================>                  ]  160.2MB/247.8MB
+ fc2cca81d0de Downloading [===============================================>   ]  49.25MB/51.57MB
+ fc2cca81d0de Downloading [===============================================>   ]  49.25MB/51.57MB
+ 423feecba649 Downloading [================================>                  ]  161.8MB/247.8MB
+ 423feecba649 Downloading [================================>                  ]  163.4MB/247.8MB
+ 81bd8ed7ec67 Downloading [==================================================>]     402B/402B
+ 81bd8ed7ec67 Verifying Checksum 
+ 81bd8ed7ec67 Download complete 
+ 81bd8ed7ec67 Extracting [==================================================>]     402B/402B
+ 423feecba649 Downloading [=================================>                 ]  164.5MB/247.8MB
+ 81bd8ed7ec67 Extracting [==================================================>]     402B/402B
+ 81bd8ed7ec67 Pull complete 
+ fc2cca81d0de Downloading [================================================>  ]  49.77MB/51.57MB
+ fc2cca81d0de Downloading [================================================>  ]  49.77MB/51.57MB
+ 423feecba649 Downloading [=================================>                 ]  165.6MB/247.8MB
+ 423feecba649 Downloading [=================================>                 ]  166.6MB/247.8MB
+ 423feecba649 Downloading [=================================>                 ]  167.7MB/247.8MB
+ fc2cca81d0de Downloading [================================================>  ]  50.29MB/51.57MB
+ fc2cca81d0de Downloading [================================================>  ]  50.29MB/51.57MB
+ 423feecba649 Downloading [==================================>                ]  169.3MB/247.8MB
+ 423feecba649 Downloading [==================================>                ]  170.4MB/247.8MB
+ 423feecba649 Downloading [==================================>                ]  171.5MB/247.8MB
+ fc2cca81d0de Downloading [=================================================> ]  50.81MB/51.57MB
+ fc2cca81d0de Downloading [=================================================> ]  50.81MB/51.57MB
+ 423feecba649 Downloading [==================================>                ]  173.1MB/247.8MB
+ 423feecba649 Downloading [===================================>               ]  174.2MB/247.8MB
+ 423feecba649 Downloading [===================================>               ]  175.2MB/247.8MB
+ fc2cca81d0de Downloading [=================================================> ]  51.33MB/51.57MB
+ fc2cca81d0de Downloading [=================================================> ]  51.33MB/51.57MB
+ 423feecba649 Downloading [===================================>               ]  176.3MB/247.8MB
+ fc2cca81d0de Verifying Checksum 
+ fc2cca81d0de Verifying Checksum 
+ fc2cca81d0de Download complete 
+ fc2cca81d0de Download complete 
+ fc2cca81d0de Extracting [>                                                  ]  524.3kB/51.57MB
+ fc2cca81d0de Extracting [>                                                  ]  524.3kB/51.57MB
+ 423feecba649 Downloading [===================================>               ]  177.9MB/247.8MB
+ fc2cca81d0de Extracting [===>                                               ]   3.67MB/51.57MB
+ fc2cca81d0de Extracting [===>                                               ]   3.67MB/51.57MB
+ 423feecba649 Downloading [====================================>              ]    179MB/247.8MB
+ fc2cca81d0de Extracting [========>                                          ]  8.389MB/51.57MB
+ fc2cca81d0de Extracting [========>                                          ]  8.389MB/51.57MB
+ 423feecba649 Downloading [====================================>              ]  180.1MB/247.8MB
+ fc2cca81d0de Extracting [=============>                                     ]  14.16MB/51.57MB
+ fc2cca81d0de Extracting [=============>                                     ]  14.16MB/51.57MB
+ 423feecba649 Downloading [====================================>              ]  181.1MB/247.8MB
+ fc2cca81d0de Extracting [=================>                                 ]  18.35MB/51.57MB
+ fc2cca81d0de Extracting [=================>                                 ]  18.35MB/51.57MB
+ 423feecba649 Downloading [====================================>              ]  182.2MB/247.8MB
+ fc2cca81d0de Extracting [=======================>                           ]  24.12MB/51.57MB
+ fc2cca81d0de Extracting [=======================>                           ]  24.12MB/51.57MB
+ 423feecba649 Downloading [====================================>              ]  183.3MB/247.8MB
+ fc2cca81d0de Extracting [===========================>                       ]  28.31MB/51.57MB
+ fc2cca81d0de Extracting [===========================>                       ]  28.31MB/51.57MB
+ 423feecba649 Downloading [=====================================>             ]  184.4MB/247.8MB
+ fc2cca81d0de Extracting [===============================>                   ]  32.51MB/51.57MB
+ fc2cca81d0de Extracting [===============================>                   ]  32.51MB/51.57MB
+ 423feecba649 Downloading [=====================================>             ]  185.5MB/247.8MB
+ fc2cca81d0de Extracting [=====================================>             ]   38.8MB/51.57MB
+ fc2cca81d0de Extracting [=====================================>             ]   38.8MB/51.57MB
+ 197eb75867ef Downloading [======================================>            ]     934B/1.209kB
+ 197eb75867ef Downloading [==================================================>]  1.209kB/1.209kB
+ 197eb75867ef Verifying Checksum 
+ 197eb75867ef Download complete 
+ 197eb75867ef Extracting [==================================================>]  1.209kB/1.209kB
+ 197eb75867ef Extracting [==================================================>]  1.209kB/1.209kB
+ 423feecba649 Downloading [=====================================>             ]  186.5MB/247.8MB
+ 197eb75867ef Pull complete 
+ fc2cca81d0de Extracting [==========================================>        ]  43.52MB/51.57MB
+ fc2cca81d0de Extracting [==========================================>        ]  43.52MB/51.57MB
+ 423feecba649 Downloading [=====================================>             ]  187.6MB/247.8MB
+ fc2cca81d0de Extracting [==============================================>    ]  47.71MB/51.57MB
+ fc2cca81d0de Extracting [==============================================>    ]  47.71MB/51.57MB
+ 423feecba649 Downloading [======================================>            ]  188.7MB/247.8MB
+ fc2cca81d0de Extracting [===============================================>   ]  49.28MB/51.57MB
+ fc2cca81d0de Extracting [===============================================>   ]  49.28MB/51.57MB
+ 423feecba649 Downloading [======================================>            ]  189.8MB/247.8MB
+ fc2cca81d0de Extracting [================================================>  ]  50.33MB/51.57MB
+ fc2cca81d0de Extracting [================================================>  ]  50.33MB/51.57MB
+ 423feecba649 Downloading [======================================>            ]  191.4MB/247.8MB
+ fc2cca81d0de Extracting [=================================================> ]  51.38MB/51.57MB
+ fc2cca81d0de Extracting [=================================================> ]  51.38MB/51.57MB
+ fc2cca81d0de Extracting [==================================================>]  51.57MB/51.57MB
+ fc2cca81d0de Extracting [==================================================>]  51.57MB/51.57MB
+ 423feecba649 Downloading [======================================>            ]    193MB/247.8MB
+ fc2cca81d0de Pull complete 
+ fc2cca81d0de Pull complete 
+ e1acb8d81a6a Extracting [=>                                                 ]  32.77kB/1.261MB
+ e1acb8d81a6a Extracting [=>                                                 ]  32.77kB/1.261MB
+ e1acb8d81a6a Extracting [==================================================>]  1.261MB/1.261MB
+ e1acb8d81a6a Extracting [==================================================>]  1.261MB/1.261MB
+ e1acb8d81a6a Extracting [==================================================>]  1.261MB/1.261MB
+ e1acb8d81a6a Extracting [==================================================>]  1.261MB/1.261MB
+ e1acb8d81a6a Pull complete 
+ e1acb8d81a6a Pull complete 
+ 5ff8b913658c Extracting [==================================================>]     445B/445B
+ 5ff8b913658c Extracting [==================================================>]     445B/445B
+ 5ff8b913658c Extracting [==================================================>]     445B/445B
+ 5ff8b913658c Extracting [==================================================>]     445B/445B
+ 423feecba649 Downloading [=======================================>           ]  194.6MB/247.8MB
+ 5ff8b913658c Pull complete 
+ 5ff8b913658c Pull complete 
+ backend Pulled 
+ frontend Pulled 
+ 423feecba649 Downloading [=======================================>           ]  195.7MB/247.8MB
+ 34a64644b756 Downloading [================================================>  ]  1.369kB/1.397kB
+ 34a64644b756 Download complete 
+ 34a64644b756 Extracting [==================================================>]  1.397kB/1.397kB
+ 34a64644b756 Extracting [==================================================>]  1.397kB/1.397kB
+ 34a64644b756 Pull complete 
+ 423feecba649 Downloading [=======================================>           ]  196.7MB/247.8MB
+ 423feecba649 Downloading [========================================>          ]  198.3MB/247.8MB
+ 423feecba649 Downloading [========================================>          ]    200MB/247.8MB
+ 423feecba649 Downloading [========================================>          ]  201.5MB/247.8MB
+ 423feecba649 Downloading [========================================>          ]  202.6MB/247.8MB
+ 423feecba649 Downloading [=========================================>         ]  203.7MB/247.8MB
+ 423feecba649 Downloading [=========================================>         ]  205.3MB/247.8MB
+ 423feecba649 Downloading [=========================================>         ]  206.4MB/247.8MB
+ 423feecba649 Downloading [=========================================>         ]  207.4MB/247.8MB
+ 39c2ddfd6010 Downloading [>                                                  ]    156kB/15.52MB
+ 423feecba649 Downloading [==========================================>        ]    209MB/247.8MB
+ 39c2ddfd6010 Downloading [=>                                                 ]  316.2kB/15.52MB
+ 423feecba649 Downloading [==========================================>        ]  210.1MB/247.8MB
+ 423feecba649 Downloading [==========================================>        ]  211.2MB/247.8MB
+ 39c2ddfd6010 Downloading [==>                                                ]  630.8kB/15.52MB
+ 39c2ddfd6010 Downloading [===>                                               ]  1.098MB/15.52MB
+ 423feecba649 Downloading [==========================================>        ]  212.8MB/247.8MB
+ 423feecba649 Downloading [===========================================>       ]  213.8MB/247.8MB
+ 39c2ddfd6010 Downloading [=====>                                             ]  1.585MB/15.52MB
+ 39c2ddfd6010 Downloading [========>                                          ]  2.563MB/15.52MB
+ 423feecba649 Downloading [===========================================>       ]  214.9MB/247.8MB
+ 39c2ddfd6010 Downloading [===========>                                       ]  3.695MB/15.52MB
+ 423feecba649 Downloading [===========================================>       ]    216MB/247.8MB
+ 39c2ddfd6010 Downloading [===============>                                   ]  4.801MB/15.52MB
+ 423feecba649 Downloading [===========================================>       ]  217.1MB/247.8MB
+ 39c2ddfd6010 Downloading [==================>                                ]  5.779MB/15.52MB
+ 423feecba649 Downloading [============================================>      ]  218.1MB/247.8MB
+ 39c2ddfd6010 Downloading [======================>                            ]  6.926MB/15.52MB
+ 423feecba649 Downloading [============================================>      ]  219.2MB/247.8MB
+ 39c2ddfd6010 Downloading [=========================>                         ]  8.053MB/15.52MB
+ 423feecba649 Downloading [============================================>      ]  220.3MB/247.8MB
+ 39c2ddfd6010 Downloading [============================>                      ]  8.999MB/15.52MB
+ 423feecba649 Downloading [============================================>      ]  221.9MB/247.8MB
+ 39c2ddfd6010 Downloading [=================================>                 ]  10.29MB/15.52MB
+ 423feecba649 Downloading [============================================>      ]    223MB/247.8MB
+ 39c2ddfd6010 Downloading [====================================>              ]  11.26MB/15.52MB
+ 423feecba649 Downloading [=============================================>     ]    224MB/247.8MB
+ 39c2ddfd6010 Downloading [=======================================>           ]   12.4MB/15.52MB
+ 423feecba649 Downloading [=============================================>     ]  225.1MB/247.8MB
+ 39c2ddfd6010 Downloading [==========================================>        ]  13.19MB/15.52MB
+ 423feecba649 Downloading [=============================================>     ]  226.2MB/247.8MB
+ 39c2ddfd6010 Downloading [=============================================>     ]  13.99MB/15.52MB
+ 423feecba649 Downloading [=============================================>     ]  227.3MB/247.8MB
+ 39c2ddfd6010 Downloading [=================================================> ]   15.3MB/15.52MB
+ 39c2ddfd6010 Verifying Checksum 
+ 39c2ddfd6010 Download complete 
+ 423feecba649 Downloading [==============================================>    ]  228.3MB/247.8MB
+ 39c2ddfd6010 Extracting [>                                                  ]  163.8kB/15.52MB
+ 423feecba649 Downloading [==============================================>    ]  229.4MB/247.8MB
+ 39c2ddfd6010 Extracting [==================>                                ]  5.734MB/15.52MB
+ 423feecba649 Downloading [==============================================>    ]  230.5MB/247.8MB
+ 39c2ddfd6010 Extracting [========================================>          ]  12.45MB/15.52MB
+ 39c2ddfd6010 Extracting [==================================================>]  15.52MB/15.52MB
+ 423feecba649 Downloading [==============================================>    ]  231.5MB/247.8MB
+ 39c2ddfd6010 Pull complete 
+ nginx Pulled 
+ 423feecba649 Downloading [===============================================>   ]  233.1MB/247.8MB
+ 423feecba649 Downloading [===============================================>   ]  234.2MB/247.8MB
+ 423feecba649 Downloading [===============================================>   ]  235.3MB/247.8MB
+ 423feecba649 Downloading [===============================================>   ]  236.9MB/247.8MB
+ 423feecba649 Downloading [================================================>  ]  238.5MB/247.8MB
+ 423feecba649 Downloading [================================================>  ]  239.6MB/247.8MB
+ 423feecba649 Downloading [================================================>  ]  240.7MB/247.8MB
+ 423feecba649 Downloading [================================================>  ]  241.7MB/247.8MB
+ 423feecba649 Downloading [================================================>  ]  242.8MB/247.8MB
+ 423feecba649 Downloading [=================================================> ]  244.4MB/247.8MB
+ 423feecba649 Downloading [=================================================> ]  245.5MB/247.8MB
+ 423feecba649 Downloading [=================================================> ]  246.6MB/247.8MB
+ 423feecba649 Verifying Checksum 
+ 423feecba649 Download complete 
+ 423feecba649 Extracting [>                                                  ]  557.1kB/247.8MB
+ 423feecba649 Extracting [=>                                                 ]  8.913MB/247.8MB
+ 423feecba649 Extracting [==>                                                ]  12.81MB/247.8MB
+ 423feecba649 Extracting [====>                                              ]  22.28MB/247.8MB
+ 423feecba649 Extracting [=====>                                             ]  28.97MB/247.8MB
+ 423feecba649 Extracting [=======>                                           ]  35.65MB/247.8MB
+ 423feecba649 Extracting [========>                                          ]  41.78MB/247.8MB
+ 423feecba649 Extracting [=========>                                         ]  48.46MB/247.8MB
+ 423feecba649 Extracting [===========>                                       ]  54.59MB/247.8MB
+ 423feecba649 Extracting [===========>                                       ]  57.93MB/247.8MB
+ 423feecba649 Extracting [=============>                                     ]   67.4MB/247.8MB
+ 423feecba649 Extracting [===============>                                   ]  76.87MB/247.8MB
+ 423feecba649 Extracting [=================>                                 ]  86.34MB/247.8MB
+ 423feecba649 Extracting [===================>                               ]  95.26MB/247.8MB
+ 423feecba649 Extracting [=====================>                             ]  104.7MB/247.8MB
+ 423feecba649 Extracting [======================>                            ]  109.7MB/247.8MB
+ 423feecba649 Extracting [=======================>                           ]  118.7MB/247.8MB
+ 423feecba649 Extracting [=========================>                         ]  124.2MB/247.8MB
+ 423feecba649 Extracting [==========================>                        ]  130.4MB/247.8MB
+ 423feecba649 Extracting [===========================>                       ]  136.5MB/247.8MB
+ 423feecba649 Extracting [============================>                      ]  140.4MB/247.8MB
+ 423feecba649 Extracting [=============================>                     ]  147.1MB/247.8MB
+ 423feecba649 Extracting [===============================>                   ]  153.7MB/247.8MB
+ 423feecba649 Extracting [================================>                  ]  158.8MB/247.8MB
+ 423feecba649 Extracting [=================================>                 ]  164.9MB/247.8MB
+ 423feecba649 Extracting [==================================>                ]  169.3MB/247.8MB
+ 423feecba649 Extracting [===================================>               ]  177.1MB/247.8MB
+ 423feecba649 Extracting [====================================>              ]  183.3MB/247.8MB
+ 423feecba649 Extracting [======================================>            ]  191.1MB/247.8MB
+ 423feecba649 Extracting [=======================================>           ]  197.8MB/247.8MB
+ 423feecba649 Extracting [==========================================>        ]  209.5MB/247.8MB
+ 423feecba649 Extracting [============================================>      ]  218.9MB/247.8MB
+ 423feecba649 Extracting [=============================================>     ]  226.2MB/247.8MB
+ 423feecba649 Extracting [===============================================>   ]  233.4MB/247.8MB
+ 423feecba649 Extracting [================================================>  ]    239MB/247.8MB
+ 423feecba649 Extracting [=================================================> ]  243.4MB/247.8MB
+ 423feecba649 Extracting [=================================================> ]  246.8MB/247.8MB
+ 423feecba649 Extracting [==================================================>]  247.8MB/247.8MB
+ 423feecba649 Pull complete 
+ 213a7d95f2f6 Extracting [==================================================>]  5.003kB/5.003kB
+ 213a7d95f2f6 Extracting [==================================================>]  5.003kB/5.003kB
+ 213a7d95f2f6 Pull complete 
+ mongo Pulled 
+ Network pr-208_default  Creating
+ Network pr-208_default  Created
+ Container gwm-mongo  Creating
+ Container gwm-mongo  Created
+ Container gwm-backend  Creating
+ Container gwm-backend  Created
+ Container gwm-frontend  Creating
+ Container gwm-frontend  Created
+ Container gwm-nginx  Creating
+ Container gwm-nginx  Created
+Attaching to gwm-backend, gwm-frontend, gwm-mongo, gwm-nginx
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:41.815+00:00"},"s":"I",  "c":"CONTROL",  "id":23285,   "ctx":"main","msg":"Automatically disabling TLS 1.0, to force-enable TLS 1.0 specify --sslDisabledProtocols 'none'"}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:41.816+00:00"},"s":"I",  "c":"NETWORK",  "id":4915701, "ctx":"main","msg":"Initialized wire specification","attr":{"spec":{"incomingExternalClient":{"minWireVersion":0,"maxWireVersion":21},"incomingInternalClient":{"minWireVersion":0,"maxWireVersion":21},"outgoing":{"minWireVersion":6,"maxWireVersion":21},"isInternalClient":true}}}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:41.816+00:00"},"s":"I",  "c":"NETWORK",  "id":4648601, "ctx":"main","msg":"Implicit TCP FastOpen unavailable. If TCP FastOpen is required, set tcpFastOpenServer, tcpFastOpenClient, and tcpFastOpenQueueSize."}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:41.817+00:00"},"s":"I",  "c":"REPL",     "id":5123008, "ctx":"main","msg":"Successfully registered PrimaryOnlyService","attr":{"service":"TenantMigrationDonorService","namespace":"config.tenantMigrationDonors"}}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:41.817+00:00"},"s":"I",  "c":"REPL",     "id":5123008, "ctx":"main","msg":"Successfully registered PrimaryOnlyService","attr":{"service":"TenantMigrationRecipientService","namespace":"config.tenantMigrationRecipients"}}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:41.817+00:00"},"s":"I",  "c":"CONTROL",  "id":5945603, "ctx":"main","msg":"Multi threading initialized"}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:41.817+00:00"},"s":"I",  "c":"TENANT_M", "id":7091600, "ctx":"main","msg":"Starting TenantMigrationAccessBlockerRegistry"}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:41.817+00:00"},"s":"I",  "c":"CONTROL",  "id":4615611, "ctx":"initandlisten","msg":"MongoDB starting","attr":{"pid":1,"port":27017,"dbPath":"/data/db","architecture":"64-bit","host":"75fc1e848290"}}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:41.817+00:00"},"s":"I",  "c":"CONTROL",  "id":23403,   "ctx":"initandlisten","msg":"Build Info","attr":{"buildInfo":{"version":"7.0.25","gitVersion":"96dce3da49b8d2e9e0d328048cb56930eb1bdb2b","openSSLVersion":"OpenSSL 3.0.2 15 Mar 2022","modules":[],"allocator":"tcmalloc","environment":{"distmod":"ubuntu2204","distarch":"x86_64","target_arch":"x86_64"}}}}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:41.817+00:00"},"s":"I",  "c":"CONTROL",  "id":51765,   "ctx":"initandlisten","msg":"Operating System","attr":{"os":{"name":"Ubuntu","version":"22.04"}}}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:41.817+00:00"},"s":"I",  "c":"CONTROL",  "id":21951,   "ctx":"initandlisten","msg":"Options set by command line","attr":{"options":{"net":{"bindIp":"*"}}}}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:41.818+00:00"},"s":"I",  "c":"STORAGE",  "id":22270,   "ctx":"initandlisten","msg":"Storage engine to use detected by data files","attr":{"dbpath":"/data/db","storageEngine":"wiredTiger"}}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:41.818+00:00"},"s":"I",  "c":"STORAGE",  "id":22315,   "ctx":"initandlisten","msg":"Opening WiredTiger","attr":{"config":"create,cache_size=15343M,session_max=33000,eviction=(threads_min=4,threads_max=4),config_base=false,statistics=(fast),log=(enabled=true,remove=true,path=journal,compressor=snappy),builtin_extension_config=(zstd=(compression_level=6)),file_manager=(close_idle_time=600,close_scan_interval=10,close_handle_minimum=2000),statistics_log=(wait=0),json_output=(error,message),verbose=[recovery_progress:1,checkpoint_progress:1,compact_progress:1,backup:0,checkpoint:0,compact:0,evict:0,history_store:0,recovery:0,rts:0,salvage:0,tiered:0,timestamp:0,transaction:0,verify:0,log:0],"}}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:41.922+00:00"},"s":"I",  "c":"WTRECOV",  "id":22430,   "ctx":"initandlisten","msg":"WiredTiger message","attr":{"message":{"ts_sec":1763114561,"ts_usec":922042,"thread":"1:0x7f91b2440c80","session_name":"txn-recover","category":"WT_VERB_RECOVERY_PROGRESS","category_id":30,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"Recovering log 7 through 8"}}}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:41.972+00:00"},"s":"I",  "c":"WTRECOV",  "id":22430,   "ctx":"initandlisten","msg":"WiredTiger message","attr":{"message":{"ts_sec":1763114561,"ts_usec":972106,"thread":"1:0x7f91b2440c80","session_name":"txn-recover","category":"WT_VERB_RECOVERY_PROGRESS","category_id":30,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"Recovering log 8 through 8"}}}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:42.019+00:00"},"s":"I",  "c":"WTRECOV",  "id":22430,   "ctx":"initandlisten","msg":"WiredTiger message","attr":{"message":{"ts_sec":1763114562,"ts_usec":19371,"thread":"1:0x7f91b2440c80","session_name":"txn-recover","category":"WT_VERB_RECOVERY_PROGRESS","category_id":30,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"Main recovery loop: starting at 7/18432 to 8/256"}}}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:42.076+00:00"},"s":"I",  "c":"WTRECOV",  "id":22430,   "ctx":"initandlisten","msg":"WiredTiger message","attr":{"message":{"ts_sec":1763114562,"ts_usec":76653,"thread":"1:0x7f91b2440c80","session_name":"txn-recover","category":"WT_VERB_RECOVERY_PROGRESS","category_id":30,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"Recovering log 7 through 8"}}}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:42.117+00:00"},"s":"I",  "c":"WTRECOV",  "id":22430,   "ctx":"initandlisten","msg":"WiredTiger message","attr":{"message":{"ts_sec":1763114562,"ts_usec":117682,"thread":"1:0x7f91b2440c80","session_name":"txn-recover","category":"WT_VERB_RECOVERY_PROGRESS","category_id":30,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"Recovering log 8 through 8"}}}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:42.143+00:00"},"s":"I",  "c":"WTRECOV",  "id":22430,   "ctx":"initandlisten","msg":"WiredTiger message","attr":{"message":{"ts_sec":1763114562,"ts_usec":143625,"thread":"1:0x7f91b2440c80","session_name":"txn-recover","category":"WT_VERB_RECOVERY_PROGRESS","category_id":30,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"recovery log replay has successfully finished and ran for 221 milliseconds"}}}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:42.143+00:00"},"s":"I",  "c":"WTRECOV",  "id":22430,   "ctx":"initandlisten","msg":"WiredTiger message","attr":{"message":{"ts_sec":1763114562,"ts_usec":143693,"thread":"1:0x7f91b2440c80","session_name":"txn-recover","category":"WT_VERB_RECOVERY_PROGRESS","category_id":30,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"Set global recovery timestamp: (0, 0)"}}}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:42.143+00:00"},"s":"I",  "c":"WTRECOV",  "id":22430,   "ctx":"initandlisten","msg":"WiredTiger message","attr":{"message":{"ts_sec":1763114562,"ts_usec":143707,"thread":"1:0x7f91b2440c80","session_name":"txn-recover","category":"WT_VERB_RECOVERY_PROGRESS","category_id":30,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"Set global oldest timestamp: (0, 0)"}}}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:42.143+00:00"},"s":"I",  "c":"WTRECOV",  "id":22430,   "ctx":"initandlisten","msg":"WiredTiger message","attr":{"message":{"ts_sec":1763114562,"ts_usec":143926,"thread":"1:0x7f91b2440c80","session_name":"txn-recover","category":"WT_VERB_RECOVERY_PROGRESS","category_id":30,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"recovery rollback to stable has successfully finished and ran for 0 milliseconds"}}}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:42.147+00:00"},"s":"I",  "c":"WTCHKPT",  "id":22430,   "ctx":"initandlisten","msg":"WiredTiger message","attr":{"message":{"ts_sec":1763114562,"ts_usec":147173,"thread":"1:0x7f91b2440c80","session_name":"WT_SESSION.checkpoint","category":"WT_VERB_CHECKPOINT_PROGRESS","category_id":6,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"saving checkpoint snapshot min: 1, snapshot max: 1 snapshot count: 0, oldest timestamp: (0, 0) , meta checkpoint timestamp: (0, 0) base write gen: 214"}}}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:42.164+00:00"},"s":"I",  "c":"WTRECOV",  "id":22430,   "ctx":"initandlisten","msg":"WiredTiger message","attr":{"message":{"ts_sec":1763114562,"ts_usec":164313,"thread":"1:0x7f91b2440c80","session_name":"txn-recover","category":"WT_VERB_RECOVERY_PROGRESS","category_id":30,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"recovery checkpoint has successfully finished and ran for 20 milliseconds"}}}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:42.164+00:00"},"s":"I",  "c":"WTRECOV",  "id":22430,   "ctx":"initandlisten","msg":"WiredTiger message","attr":{"message":{"ts_sec":1763114562,"ts_usec":164380,"thread":"1:0x7f91b2440c80","session_name":"txn-recover","category":"WT_VERB_RECOVERY_PROGRESS","category_id":30,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"recovery was completed successfully and took 242ms, including 221ms for the log replay, 0ms for the rollback to stable, and 20ms for the checkpoint."}}}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:42.170+00:00"},"s":"I",  "c":"STORAGE",  "id":4795906, "ctx":"initandlisten","msg":"WiredTiger opened","attr":{"durationMillis":352}}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:42.170+00:00"},"s":"I",  "c":"RECOVERY", "id":23987,   "ctx":"initandlisten","msg":"WiredTiger recoveryTimestamp","attr":{"recoveryTimestamp":{"$timestamp":{"t":0,"i":0}}}}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:42.181+00:00"},"s":"W",  "c":"CONTROL",  "id":22120,   "ctx":"initandlisten","msg":"Access control is not enabled for the database. Read and write access to data and configuration is unrestricted","tags":["startupWarnings"]}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:42.181+00:00"},"s":"W",  "c":"CONTROL",  "id":22184,   "ctx":"initandlisten","msg":"Soft rlimits for open file descriptors too low","attr":{"currentValue":1024,"recommendedMinimum":64000},"tags":["startupWarnings"]}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:42.181+00:00"},"s":"W",  "c":"CONTROL",  "id":9068900, "ctx":"initandlisten","msg":"For customers running MongoDB 7.0, we suggest changing the contents of the following sysfsFile","attr":{"sysfsFile":"/sys/kernel/mm/transparent_hugepage","currentValue":"always","desiredValue":"never"},"tags":["startupWarnings"]}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:42.186+00:00"},"s":"I",  "c":"NETWORK",  "id":4915702, "ctx":"initandlisten","msg":"Updated wire specification","attr":{"oldSpec":{"incomingExternalClient":{"minWireVersion":0,"maxWireVersion":21},"incomingInternalClient":{"minWireVersion":0,"maxWireVersion":21},"outgoing":{"minWireVersion":6,"maxWireVersion":21},"isInternalClient":true},"newSpec":{"incomingExternalClient":{"minWireVersion":0,"maxWireVersion":21},"incomingInternalClient":{"minWireVersion":21,"maxWireVersion":21},"outgoing":{"minWireVersion":21,"maxWireVersion":21},"isInternalClient":true}}}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:42.186+00:00"},"s":"I",  "c":"REPL",     "id":5853300, "ctx":"initandlisten","msg":"current featureCompatibilityVersion value","attr":{"featureCompatibilityVersion":"7.0","context":"startup"}}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:42.186+00:00"},"s":"I",  "c":"STORAGE",  "id":5071100, "ctx":"initandlisten","msg":"Clearing temp directory"}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:42.187+00:00"},"s":"I",  "c":"CONTROL",  "id":6608200, "ctx":"initandlisten","msg":"Initializing cluster server parameters from disk"}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:42.187+00:00"},"s":"I",  "c":"CONTROL",  "id":20536,   "ctx":"initandlisten","msg":"Flow Control is enabled on this deployment"}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:42.187+00:00"},"s":"I",  "c":"FTDC",     "id":20625,   "ctx":"initandlisten","msg":"Initializing full-time diagnostic data capture","attr":{"dataDirectory":"/data/db/diagnostic.data"}}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:42.189+00:00"},"s":"I",  "c":"REPL",     "id":6015317, "ctx":"initandlisten","msg":"Setting new configuration state","attr":{"newState":"ConfigReplicationDisabled","oldState":"ConfigPreStart"}}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:42.189+00:00"},"s":"I",  "c":"STORAGE",  "id":22262,   "ctx":"initandlisten","msg":"Timestamp monitor starting"}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:42.190+00:00"},"s":"I",  "c":"NETWORK",  "id":23015,   "ctx":"listener","msg":"Listening on","attr":{"address":"/tmp/mongodb-27017.sock"}}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:42.190+00:00"},"s":"I",  "c":"NETWORK",  "id":23015,   "ctx":"listener","msg":"Listening on","attr":{"address":"0.0.0.0"}}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:42.190+00:00"},"s":"I",  "c":"NETWORK",  "id":23016,   "ctx":"listener","msg":"Waiting for connections","attr":{"port":27017,"ssl":"off"}}
+gwm-mongo  | {"t":{"$date":"2025-11-14T10:02:42.190+00:00"},"s":"I",  "c":"CONTROL",  "id":8423403, "ctx":"initandlisten","msg":"mongod startup complete","attr":{"Summary of time elapsed":{"Startup from clean shutdown?":true,"Statistics":{"Transport layer setup":"0 ms","Run initial syncer crash recovery":"0 ms","Create storage engine lock file in the data directory":"0 ms","Get metadata describing storage engine":"0 ms","Validate options in metadata against current startup options":"0 ms","Create storage engine":"352 ms","Write current PID to file":"10 ms","Initialize FCV before rebuilding indexes":"5 ms","Drop abandoned idents and get back indexes that need to be rebuilt or builds that need to be restarted":"0 ms","Rebuild indexes for collections":"0 ms","Load cluster parameters from disk for a standalone":"0 ms","Build user and roles graph":"0 ms","Set up the background thread pool responsible for waiting for opTimes to be majority committed":"0 ms","Initialize information needed to make a mongod instance shard aware":"0 ms","Start up the replication coordinator":"1 ms","Start transport layer":"0 ms","_initAndListen total elapsed time":"373 ms"}}}}
+gwm-nginx  | /docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration
+gwm-nginx  | /docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/
+gwm-nginx  | /docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
+gwm-nginx  | 10-listen-on-ipv6-by-default.sh: info: /etc/nginx/conf.d/default.conf is not a file or does not exist
+gwm-nginx  | /docker-entrypoint.sh: Sourcing /docker-entrypoint.d/15-local-resolvers.envsh
+gwm-nginx  | /docker-entrypoint.sh: Launching /docker-entrypoint.d/20-envsubst-on-templates.sh
+gwm-nginx  | /docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh
+gwm-nginx  | /docker-entrypoint.sh: Configuration complete; ready for start up
+gwm-frontend  | ! Corepack is about to download https://registry.npmjs.org/pnpm/-/pnpm-10.22.0.tgz
+gwm-backend   | ! Corepack is about to download https://registry.npmjs.org/pnpm/-/pnpm-10.22.0.tgz
+gwm-backend   | Scope: all 4 workspace projects
+gwm-frontend  | Scope: all 4 workspace projects
+gwm-backend   | Lockfile is up to date, resolution step is skipped
+gwm-frontend  | Lockfile is up to date, resolution step is skipped
+gwm-backend   | Progress: resolved 1, reused 0, downloaded 0, added 0
+gwm-frontend  | Progress: resolved 1, reused 0, downloaded 0, added 0
+gwm-backend   | Packages: +62 -55
+gwm-backend   | ++++++++++++++++++++++++++++++++++++++++++--------------------------------------
+gwm-frontend  | Packages: +62 -55
+gwm-frontend  | ++++++++++++++++++++++++++++++++++++++++++--------------------------------------
+gwm-backend   | Progress: resolved 62, reused 0, downloaded 0, added 0
+gwm-frontend  | Progress: resolved 62, reused 0, downloaded 0, added 0
+gwm-backend   | Progress: resolved 62, reused 0, downloaded 2, added 2
+gwm-frontend  | Progress: resolved 62, reused 0, downloaded 1, added 1
+gwm-backend   | Progress: resolved 62, reused 0, downloaded 48, added 48
+gwm-frontend  | Progress: resolved 62, reused 0, downloaded 48, added 48
+gwm-backend   | Progress: resolved 62, reused 0, downloaded 62, added 62, done
+gwm-frontend  | Progress: resolved 62, reused 0, downloaded 62, added 62, done
+gwm-backend   | 
+gwm-backend   | ╭ Warning ─────────────────────────────────────────────────────────────────────╮
+gwm-backend   | │                                                                              │
+gwm-backend   | │   Ignored build scripts: @nestjs/core.                                       │
+gwm-backend   | │   Run "pnpm approve-builds" to pick which dependencies should be allowed     │
+gwm-backend   | │   to run scripts.                                                            │
+gwm-backend   | │                                                                              │
+gwm-backend   | ╰──────────────────────────────────────────────────────────────────────────────╯
+gwm-backend   | 
+gwm-backend   | Done in 4.6s using pnpm v10.22.0
+gwm-frontend  | 
+gwm-frontend  | ╭ Warning ─────────────────────────────────────────────────────────────────────╮
+gwm-frontend  | │                                                                              │
+gwm-frontend  | │   Ignored build scripts: @nestjs/core.                                       │
+gwm-frontend  | │   Run "pnpm approve-builds" to pick which dependencies should be allowed     │
+gwm-frontend  | │   to run scripts.                                                            │
+gwm-frontend  | │                                                                              │
+gwm-frontend  | ╰──────────────────────────────────────────────────────────────────────────────╯
+gwm-frontend  | 
+gwm-frontend  | Done in 4.7s using pnpm v10.22.0
+gwm-backend   | 
+gwm-backend   | > @go-with-me/backend@0.0.1 start:dev /workspace/packages/backend
+gwm-backend   | > nest start --watch
+gwm-backend   | 
+gwm-frontend  | 
+gwm-frontend  | > @go-with-me/web-frontend@0.0.0 dev /workspace/packages/web-frontend
+gwm-frontend  | > next dev --turbo --hostname 0.0.0.0 --port 3000
+gwm-frontend  | 
+gwm-backend   | [2J[3J[H[[90m10:02:52 AM[0m] Starting compilation in watch mode...
+gwm-backend   | 
+gwm-frontend  |  ⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+gwm-frontend  |  We detected multiple lockfiles and selected the directory of /workspace/pnpm-lock.yaml as the root directory.
+gwm-frontend  |  To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+gwm-frontend  |    See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+gwm-frontend  |  Detected additional lockfiles: 
+gwm-frontend  |    * /workspace/packages/web-frontend/package-lock.json
+gwm-frontend  | 
+gwm-frontend  |    ▲ Next.js 16.0.1 (Turbopack)
+gwm-frontend  |    - Local:        http://localhost:3000
+gwm-frontend  |    - Network:      http://0.0.0.0:3000
+gwm-frontend  | 
+gwm-frontend  |  ✓ Starting...
+gwm-frontend  |  ✓ Ready in 564ms
+gwm-backend   | [[90m10:02:53 AM[0m] Found 0 errors. Watching for file changes.
+gwm-backend   | 
+gwm-backend   | [32m[Nest] 75  - [39m11/14/2025, 10:02:54 AM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+gwm-backend   | [32m[Nest] 75  - [39m11/14/2025, 10:02:54 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +11ms[39m
+gwm-backend   | [32m[Nest] 75  - [39m11/14/2025, 10:02:54 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMongooseModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 75  - [39m11/14/2025, 10:02:54 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPassportModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 75  - [39m11/14/2025, 10:02:54 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +1ms[39m
+gwm-backend   | [32m[Nest] 75  - [39m11/14/2025, 10:02:54 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 75  - [39m11/14/2025, 10:02:54 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 75  - [39m11/14/2025, 10:02:54 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 75  - [39m11/14/2025, 10:02:54 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mGraphQLSchemaBuilderModule dependencies initialized[39m[38;5;3m +15ms[39m
+gwm-backend   | [32m[Nest] 75  - [39m11/14/2025, 10:02:54 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mGraphQLModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:02:54.327+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:44516","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"31e99987-2492-42cc-956d-996c406dcfc5"}},"connectionId":1,"connectionCount":1}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:02:54.329+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn1","msg":"client metadata","attr":{"remote":"172.18.0.3:44516","client":"conn1","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs|Mongoose","version":"6.20.0|8.19.3"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-backend   | [32m[Nest] 75  - [39m11/14/2025, 10:02:54 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMongooseCoreModule dependencies initialized[39m[38;5;3m +10ms[39m
+gwm-backend   | [32m[Nest] 75  - [39m11/14/2025, 10:02:54 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMongooseModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 75  - [39m11/14/2025, 10:02:54 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMongooseModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 75  - [39m11/14/2025, 10:02:54 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMongooseModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 75  - [39m11/14/2025, 10:02:54 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mUserModule dependencies initialized[39m[38;5;3m +1ms[39m
+gwm-backend   | [32m[Nest] 75  - [39m11/14/2025, 10:02:54 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mLocationModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 75  - [39m11/14/2025, 10:02:54 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAuthModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 75  - [39m11/14/2025, 10:02:54 AM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAuthController {/auth}:[39m[38;5;3m +4ms[39m
+gwm-backend   | [32m[Nest] 75  - [39m11/14/2025, 10:02:54 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/google, GET} route[39m[38;5;3m +2ms[39m
+gwm-backend   | [32m[Nest] 75  - [39m11/14/2025, 10:02:54 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/google/callback, GET} route[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 75  - [39m11/14/2025, 10:02:54 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/profile, GET} route[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 75  - [39m11/14/2025, 10:02:54 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/logout, GET} route[39m[38;5;3m +1ms[39m
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:02:54.373+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:44524","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"83da5ca0-7518-4823-a3f0-59b3aab59961"}},"connectionId":2,"connectionCount":2}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:02:54.373+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:44526","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"f1f8b3ef-e69a-481d-8960-e1f0cdf9aa19"}},"connectionId":3,"connectionCount":3}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:02:54.374+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:44542","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"054cc9e4-f81f-4165-a0f6-5158245baa21"}},"connectionId":4,"connectionCount":4}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:02:54.375+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn2","msg":"client metadata","attr":{"remote":"172.18.0.3:44524","client":"conn2","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs","version":"6.20.0"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-backend   | [32m[Nest] 75  - [39m11/14/2025, 10:02:54 AM [32m    LOG[39m [38;5;3m[GraphQLModule] [39m[32mMapped {/graphql, POST} route[39m[38;5;3m +58ms[39m
+gwm-backend   | [32m[Nest] 75  - [39m11/14/2025, 10:02:54 AM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +1ms[39m
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:02:54.405+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn3","msg":"client metadata","attr":{"remote":"172.18.0.3:44526","client":"conn3","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs|Mongoose","version":"6.20.0|8.19.3"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:02:54.405+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn4","msg":"client metadata","attr":{"remote":"172.18.0.3:44542","client":"conn4","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs|Mongoose","version":"6.20.0|8.19.3"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:02:54.407+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn3","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":2}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:02:54.408+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn4","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":3}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:02:54.409+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:44554","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"44a30b16-f6b0-4392-8404-ff8fb34a8e16"}},"connectionId":5,"connectionCount":5}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:02:54.411+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn5","msg":"client metadata","attr":{"remote":"172.18.0.3:44554","client":"conn5","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs","version":"6.20.0"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:02:54.411+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn5","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":0}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:03:04.835+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:58592","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"b0d4ba47-5679-49f3-b779-bc1c9e8a181a"}},"connectionId":6,"connectionCount":6}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:03:04.837+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn6","msg":"client metadata","attr":{"remote":"172.18.0.3:58592","client":"conn6","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs|Mongoose","version":"6.20.0|8.19.3"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:03:04.909+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:58602","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"8cbaa5e4-40b7-410b-b1bb-adadcedcff06"}},"connectionId":7,"connectionCount":7}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:03:04.910+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn7","msg":"client metadata","attr":{"remote":"172.18.0.3:58602","client":"conn7","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs","version":"6.20.0"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-frontend  |  ○ Compiling / ...
+gwm-frontend  |  GET / 200 in 8.8s (compile: 8.6s, render: 210ms)
+gwm-frontend  |  GET /api/auth/session 404 in 644ms (compile: 587ms, render: 57ms)
+gwm-frontend  |  POST /api/auth/_log 404 in 30ms (compile: 5ms, render: 25ms)
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:03:42.182+00:00"},"s":"I",  "c":"WTCHKPT",  "id":22430,   "ctx":"Checkpointer","msg":"WiredTiger message","attr":{"message":{"ts_sec":1763114622,"ts_usec":182607,"thread":"1:0x7f91a942d640","session_name":"WT_SESSION.checkpoint","category":"WT_VERB_CHECKPOINT_PROGRESS","category_id":6,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"saving checkpoint snapshot min: 4, snapshot max: 4 snapshot count: 0, oldest timestamp: (0, 0) , meta checkpoint timestamp: (0, 0) base write gen: 214"}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:04:42.205+00:00"},"s":"I",  "c":"WTCHKPT",  "id":22430,   "ctx":"Checkpointer","msg":"WiredTiger message","attr":{"message":{"ts_sec":1763114682,"ts_usec":205766,"thread":"1:0x7f91a942d640","session_name":"WT_SESSION.checkpoint","category":"WT_VERB_CHECKPOINT_PROGRESS","category_id":6,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"saving checkpoint snapshot min: 5, snapshot max: 5 snapshot count: 0, oldest timestamp: (0, 0) , meta checkpoint timestamp: (0, 0) base write gen: 214"}}}
+gwm-backend   | [2J[3J[H[[90m10:05:25 AM[0m] File change detected. Starting incremental compilation...
+gwm-backend   | 
+gwm-backend   | [[90m10:05:25 AM[0m] Found 0 errors. Watching for file changes.
+gwm-backend   | 
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:25.821+00:00"},"s":"I",  "c":"-",        "id":20883,   "ctx":"conn2","msg":"Interrupted operation as its client disconnected","attr":{"opId":2083}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:25.821+00:00"},"s":"I",  "c":"-",        "id":20883,   "ctx":"conn1","msg":"Interrupted operation as its client disconnected","attr":{"opId":2080}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:25.821+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn7","msg":"Connection ended","attr":{"remote":"172.18.0.3:58602","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"8cbaa5e4-40b7-410b-b1bb-adadcedcff06"}},"connectionId":7,"connectionCount":6}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:25.821+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn4","msg":"Connection ended","attr":{"remote":"172.18.0.3:44542","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"054cc9e4-f81f-4165-a0f6-5158245baa21"}},"connectionId":4,"connectionCount":5}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:25.821+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn6","msg":"Connection ended","attr":{"remote":"172.18.0.3:58592","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"b0d4ba47-5679-49f3-b779-bc1c9e8a181a"}},"connectionId":6,"connectionCount":4}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:25.821+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn3","msg":"Connection ended","attr":{"remote":"172.18.0.3:44526","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"f1f8b3ef-e69a-481d-8960-e1f0cdf9aa19"}},"connectionId":3,"connectionCount":3}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:25.821+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn5","msg":"Connection ended","attr":{"remote":"172.18.0.3:44554","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"44a30b16-f6b0-4392-8404-ff8fb34a8e16"}},"connectionId":5,"connectionCount":2}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:25.821+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn2","msg":"Connection ended","attr":{"remote":"172.18.0.3:44524","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"83da5ca0-7518-4823-a3f0-59b3aab59961"}},"connectionId":2,"connectionCount":1}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:25.821+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn1","msg":"Connection ended","attr":{"remote":"172.18.0.3:44516","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"31e99987-2492-42cc-956d-996c406dcfc5"}},"connectionId":1,"connectionCount":0}}
+gwm-backend   | [32m[Nest] 87  - [39m11/14/2025, 10:05:26 AM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+gwm-backend   | [32m[Nest] 87  - [39m11/14/2025, 10:05:26 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +10ms[39m
+gwm-backend   | [32m[Nest] 87  - [39m11/14/2025, 10:05:26 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMongooseModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 87  - [39m11/14/2025, 10:05:26 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPassportModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 87  - [39m11/14/2025, 10:05:26 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 87  - [39m11/14/2025, 10:05:26 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +1ms[39m
+gwm-backend   | [32m[Nest] 87  - [39m11/14/2025, 10:05:26 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 87  - [39m11/14/2025, 10:05:26 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 87  - [39m11/14/2025, 10:05:26 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mGraphQLSchemaBuilderModule dependencies initialized[39m[38;5;3m +13ms[39m
+gwm-backend   | [32m[Nest] 87  - [39m11/14/2025, 10:05:26 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mGraphQLModule dependencies initialized[39m[38;5;3m +1ms[39m
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:26.319+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:50440","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"be94fddf-9784-4164-8291-2e9c43d9faae"}},"connectionId":8,"connectionCount":1}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:26.321+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn8","msg":"client metadata","attr":{"remote":"172.18.0.3:50440","client":"conn8","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs|Mongoose","version":"6.20.0|8.19.3"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-backend   | [32m[Nest] 87  - [39m11/14/2025, 10:05:26 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMongooseCoreModule dependencies initialized[39m[38;5;3m +10ms[39m
+gwm-backend   | [32m[Nest] 87  - [39m11/14/2025, 10:05:26 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMongooseModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 87  - [39m11/14/2025, 10:05:26 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMongooseModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 87  - [39m11/14/2025, 10:05:26 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMongooseModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 87  - [39m11/14/2025, 10:05:26 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mUserModule dependencies initialized[39m[38;5;3m +1ms[39m
+gwm-backend   | [32m[Nest] 87  - [39m11/14/2025, 10:05:26 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mLocationModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 87  - [39m11/14/2025, 10:05:26 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAuthModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 87  - [39m11/14/2025, 10:05:26 AM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAuthController {/auth}:[39m[38;5;3m +5ms[39m
+gwm-backend   | [32m[Nest] 87  - [39m11/14/2025, 10:05:26 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/google, GET} route[39m[38;5;3m +1ms[39m
+gwm-backend   | [32m[Nest] 87  - [39m11/14/2025, 10:05:26 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/google/callback, GET} route[39m[38;5;3m +1ms[39m
+gwm-backend   | [32m[Nest] 87  - [39m11/14/2025, 10:05:26 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/profile, GET} route[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 87  - [39m11/14/2025, 10:05:26 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/logout, GET} route[39m[38;5;3m +0ms[39m
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:26.367+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:50442","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"1ee4ac87-95fc-4f44-95d1-8565b9819b87"}},"connectionId":9,"connectionCount":2}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:26.368+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:50444","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"caffac30-9622-446e-9eb6-8c31beaad39e"}},"connectionId":10,"connectionCount":3}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:26.368+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:50460","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"fe83edd1-6ab8-4ffc-a890-8ac3b6636427"}},"connectionId":11,"connectionCount":4}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:26.369+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn9","msg":"client metadata","attr":{"remote":"172.18.0.3:50442","client":"conn9","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs","version":"6.20.0"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-backend   | [32m[Nest] 87  - [39m11/14/2025, 10:05:26 AM [32m    LOG[39m [38;5;3m[GraphQLModule] [39m[32mMapped {/graphql, POST} route[39m[38;5;3m +54ms[39m
+gwm-backend   | [32m[Nest] 87  - [39m11/14/2025, 10:05:26 AM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +1ms[39m
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:26.394+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn10","msg":"client metadata","attr":{"remote":"172.18.0.3:50444","client":"conn10","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs|Mongoose","version":"6.20.0|8.19.3"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:26.394+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn11","msg":"client metadata","attr":{"remote":"172.18.0.3:50460","client":"conn11","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs|Mongoose","version":"6.20.0|8.19.3"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:26.395+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn10","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":1}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:26.399+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn11","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":4}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:26.399+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:50462","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"9ed73952-4982-4a5b-b29b-e91c214677e9"}},"connectionId":12,"connectionCount":5}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:26.399+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn12","msg":"client metadata","attr":{"remote":"172.18.0.3:50462","client":"conn12","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs","version":"6.20.0"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:26.400+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn12","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":0}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:36.831+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:36584","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"54e138c2-8c1c-4d65-b9e6-127adc2e5e07"}},"connectionId":13,"connectionCount":6}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:36.832+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn13","msg":"client metadata","attr":{"remote":"172.18.0.3:36584","client":"conn13","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs|Mongoose","version":"6.20.0|8.19.3"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:36.897+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:36590","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"3c4a9a7a-5013-4b43-b441-7531ffa65043"}},"connectionId":14,"connectionCount":7}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:36.898+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn14","msg":"client metadata","attr":{"remote":"172.18.0.3:36590","client":"conn14","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs","version":"6.20.0"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-backend   | [2J[3J[H[[90m10:05:41 AM[0m] File change detected. Starting incremental compilation...
+gwm-backend   | 
+gwm-backend   | [[90m10:05:41 AM[0m] Found 0 errors. Watching for file changes.
+gwm-backend   | 
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:41.874+00:00"},"s":"I",  "c":"-",        "id":20883,   "ctx":"conn9","msg":"Interrupted operation as its client disconnected","attr":{"opId":2242}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:41.874+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn12","msg":"Connection ended","attr":{"remote":"172.18.0.3:50462","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"9ed73952-4982-4a5b-b29b-e91c214677e9"}},"connectionId":12,"connectionCount":6}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:41.874+00:00"},"s":"I",  "c":"-",        "id":20883,   "ctx":"conn8","msg":"Interrupted operation as its client disconnected","attr":{"opId":2238}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:41.874+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn13","msg":"Connection ended","attr":{"remote":"172.18.0.3:36584","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"54e138c2-8c1c-4d65-b9e6-127adc2e5e07"}},"connectionId":13,"connectionCount":5}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:41.874+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn14","msg":"Connection ended","attr":{"remote":"172.18.0.3:36590","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"3c4a9a7a-5013-4b43-b441-7531ffa65043"}},"connectionId":14,"connectionCount":4}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:41.874+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn11","msg":"Connection ended","attr":{"remote":"172.18.0.3:50460","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"fe83edd1-6ab8-4ffc-a890-8ac3b6636427"}},"connectionId":11,"connectionCount":3}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:41.874+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn10","msg":"Connection ended","attr":{"remote":"172.18.0.3:50444","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"caffac30-9622-446e-9eb6-8c31beaad39e"}},"connectionId":10,"connectionCount":2}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:41.874+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn9","msg":"Connection ended","attr":{"remote":"172.18.0.3:50442","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"1ee4ac87-95fc-4f44-95d1-8565b9819b87"}},"connectionId":9,"connectionCount":1}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:41.874+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn8","msg":"Connection ended","attr":{"remote":"172.18.0.3:50440","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"be94fddf-9784-4164-8291-2e9c43d9faae"}},"connectionId":8,"connectionCount":0}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:42.256+00:00"},"s":"I",  "c":"WTCHKPT",  "id":22430,   "ctx":"Checkpointer","msg":"WiredTiger message","attr":{"message":{"ts_sec":1763114742,"ts_usec":256779,"thread":"1:0x7f91a942d640","session_name":"WT_SESSION.checkpoint","category":"WT_VERB_CHECKPOINT_PROGRESS","category_id":6,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"saving checkpoint snapshot min: 6, snapshot max: 6 snapshot count: 0, oldest timestamp: (0, 0) , meta checkpoint timestamp: (0, 0) base write gen: 214"}}}
+gwm-backend   | [32m[Nest] 99  - [39m11/14/2025, 10:05:42 AM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+gwm-backend   | [32m[Nest] 99  - [39m11/14/2025, 10:05:42 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +11ms[39m
+gwm-backend   | [32m[Nest] 99  - [39m11/14/2025, 10:05:42 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMongooseModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 99  - [39m11/14/2025, 10:05:42 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPassportModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 99  - [39m11/14/2025, 10:05:42 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 99  - [39m11/14/2025, 10:05:42 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +1ms[39m
+gwm-backend   | [32m[Nest] 99  - [39m11/14/2025, 10:05:42 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 99  - [39m11/14/2025, 10:05:42 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 99  - [39m11/14/2025, 10:05:42 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mGraphQLSchemaBuilderModule dependencies initialized[39m[38;5;3m +13ms[39m
+gwm-backend   | [32m[Nest] 99  - [39m11/14/2025, 10:05:42 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mGraphQLModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:42.377+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:55606","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"b255b66c-2343-4a8c-b576-425b49a9cc9f"}},"connectionId":15,"connectionCount":1}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:42.379+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn15","msg":"client metadata","attr":{"remote":"172.18.0.3:55606","client":"conn15","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs|Mongoose","version":"6.20.0|8.19.3"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-backend   | [32m[Nest] 99  - [39m11/14/2025, 10:05:42 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMongooseCoreModule dependencies initialized[39m[38;5;3m +10ms[39m
+gwm-backend   | [32m[Nest] 99  - [39m11/14/2025, 10:05:42 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMongooseModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 99  - [39m11/14/2025, 10:05:42 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMongooseModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 99  - [39m11/14/2025, 10:05:42 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMongooseModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 99  - [39m11/14/2025, 10:05:42 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mUserModule dependencies initialized[39m[38;5;3m +1ms[39m
+gwm-backend   | [32m[Nest] 99  - [39m11/14/2025, 10:05:42 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mLocationModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 99  - [39m11/14/2025, 10:05:42 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAuthModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 99  - [39m11/14/2025, 10:05:42 AM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAuthController {/auth}:[39m[38;5;3m +4ms[39m
+gwm-backend   | [32m[Nest] 99  - [39m11/14/2025, 10:05:42 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/google, GET} route[39m[38;5;3m +1ms[39m
+gwm-backend   | [32m[Nest] 99  - [39m11/14/2025, 10:05:42 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/google/callback, GET} route[39m[38;5;3m +1ms[39m
+gwm-backend   | [32m[Nest] 99  - [39m11/14/2025, 10:05:42 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/profile, GET} route[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 99  - [39m11/14/2025, 10:05:42 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/logout, GET} route[39m[38;5;3m +0ms[39m
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:42.420+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:55622","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"b5e6715e-5b9d-4a6d-8ff1-f653682b4bee"}},"connectionId":16,"connectionCount":2}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:42.422+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:55632","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"381a9989-8080-49f2-a368-068698bbd7d8"}},"connectionId":17,"connectionCount":3}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:42.422+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:55642","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"6e9026f3-b067-4104-b9dd-3bf969a6c191"}},"connectionId":18,"connectionCount":4}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:42.423+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn16","msg":"client metadata","attr":{"remote":"172.18.0.3:55622","client":"conn16","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs","version":"6.20.0"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-backend   | [32m[Nest] 99  - [39m11/14/2025, 10:05:42 AM [32m    LOG[39m [38;5;3m[GraphQLModule] [39m[32mMapped {/graphql, POST} route[39m[38;5;3m +52ms[39m
+gwm-backend   | [32m[Nest] 99  - [39m11/14/2025, 10:05:42 AM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +0ms[39m
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:42.447+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn17","msg":"client metadata","attr":{"remote":"172.18.0.3:55632","client":"conn17","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs|Mongoose","version":"6.20.0|8.19.3"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:42.447+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn18","msg":"client metadata","attr":{"remote":"172.18.0.3:55642","client":"conn18","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs|Mongoose","version":"6.20.0|8.19.3"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:42.449+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn17","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":1}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:42.452+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn18","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":5}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:42.453+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:55644","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"e4ced12d-cda5-482c-affd-4782d1ffaf3c"}},"connectionId":19,"connectionCount":5}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:42.453+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn19","msg":"client metadata","attr":{"remote":"172.18.0.3:55644","client":"conn19","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs","version":"6.20.0"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:42.454+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn19","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":0}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:52.884+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:52516","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"b4fea105-e200-4f9d-b984-ab959301a5fa"}},"connectionId":20,"connectionCount":6}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:52.886+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn20","msg":"client metadata","attr":{"remote":"172.18.0.3:52516","client":"conn20","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs|Mongoose","version":"6.20.0|8.19.3"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:52.952+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:52530","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"20046ab8-fcb3-4851-a587-865d756abaf1"}},"connectionId":21,"connectionCount":7}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:05:52.953+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn21","msg":"client metadata","attr":{"remote":"172.18.0.3:52530","client":"conn21","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs","version":"6.20.0"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:06:42.308+00:00"},"s":"I",  "c":"WTCHKPT",  "id":22430,   "ctx":"Checkpointer","msg":"WiredTiger message","attr":{"message":{"ts_sec":1763114802,"ts_usec":308847,"thread":"1:0x7f91a942d640","session_name":"WT_SESSION.checkpoint","category":"WT_VERB_CHECKPOINT_PROGRESS","category_id":6,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"saving checkpoint snapshot min: 7, snapshot max: 7 snapshot count: 0, oldest timestamp: (0, 0) , meta checkpoint timestamp: (0, 0) base write gen: 214"}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:07:42.363+00:00"},"s":"I",  "c":"WTCHKPT",  "id":22430,   "ctx":"Checkpointer","msg":"WiredTiger message","attr":{"message":{"ts_sec":1763114862,"ts_usec":363093,"thread":"1:0x7f91a942d640","session_name":"WT_SESSION.checkpoint","category":"WT_VERB_CHECKPOINT_PROGRESS","category_id":6,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"saving checkpoint snapshot min: 17, snapshot max: 17 snapshot count: 0, oldest timestamp: (0, 0) , meta checkpoint timestamp: (0, 0) base write gen: 214"}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:08:42.394+00:00"},"s":"I",  "c":"WTCHKPT",  "id":22430,   "ctx":"Checkpointer","msg":"WiredTiger message","attr":{"message":{"ts_sec":1763114922,"ts_usec":394124,"thread":"1:0x7f91a942d640","session_name":"WT_SESSION.checkpoint","category":"WT_VERB_CHECKPOINT_PROGRESS","category_id":6,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"saving checkpoint snapshot min: 19, snapshot max: 19 snapshot count: 0, oldest timestamp: (0, 0) , meta checkpoint timestamp: (0, 0) base write gen: 214"}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:09:42.417+00:00"},"s":"I",  "c":"WTCHKPT",  "id":22430,   "ctx":"Checkpointer","msg":"WiredTiger message","attr":{"message":{"ts_sec":1763114982,"ts_usec":417251,"thread":"1:0x7f91a942d640","session_name":"WT_SESSION.checkpoint","category":"WT_VERB_CHECKPOINT_PROGRESS","category_id":6,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"saving checkpoint snapshot min: 20, snapshot max: 20 snapshot count: 0, oldest timestamp: (0, 0) , meta checkpoint timestamp: (0, 0) base write gen: 214"}}}
+gwm-frontend  | Error: Turbopack build failed with 1 errors:
+gwm-frontend  | ./packages/web-frontend/src/app
+gwm-frontend  | Error: Next.js inferred your workspace root, but it may not be correct.
+gwm-frontend  |     We couldn't find the Next.js package (next/package.json) from the project directory: /workspace/packages/web-frontend/src/app
+gwm-frontend  |      To fix this, set turbopack.root in your Next.js config, or ensure the Next.js package is resolvable from this directory.
+gwm-frontend  |     Note: For security and performance reasons, files outside of the project directory will not be compiled.
+gwm-frontend  |     See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+gwm-frontend  | 
+gwm-frontend  |     at ignore-listed frames
+gwm-frontend  | [?25h
+gwm-frontend  | /workspace/packages/web-frontend:
+gwm-frontend  |  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @go-with-me/web-frontend@0.0.0 dev: `next dev --turbo --hostname 0.0.0.0 --port 3000`
+gwm-frontend  | Exit status 1
+[Kgwm-frontend exited with code 1
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:10:42.469+00:00"},"s":"I",  "c":"WTCHKPT",  "id":22430,   "ctx":"Checkpointer","msg":"WiredTiger message","attr":{"message":{"ts_sec":1763115042,"ts_usec":469933,"thread":"1:0x7f91a942d640","session_name":"WT_SESSION.checkpoint","category":"WT_VERB_CHECKPOINT_PROGRESS","category_id":6,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"saving checkpoint snapshot min: 21, snapshot max: 21 snapshot count: 0, oldest timestamp: (0, 0) , meta checkpoint timestamp: (0, 0) base write gen: 214"}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:11:42.519+00:00"},"s":"I",  "c":"WTCHKPT",  "id":22430,   "ctx":"Checkpointer","msg":"WiredTiger message","attr":{"message":{"ts_sec":1763115102,"ts_usec":519532,"thread":"1:0x7f91a942d640","session_name":"WT_SESSION.checkpoint","category":"WT_VERB_CHECKPOINT_PROGRESS","category_id":6,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"saving checkpoint snapshot min: 22, snapshot max: 22 snapshot count: 0, oldest timestamp: (0, 0) , meta checkpoint timestamp: (0, 0) base write gen: 214"}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:42.580+00:00"},"s":"I",  "c":"WTCHKPT",  "id":22430,   "ctx":"Checkpointer","msg":"WiredTiger message","attr":{"message":{"ts_sec":1763115162,"ts_usec":580543,"thread":"1:0x7f91a942d640","session_name":"WT_SESSION.checkpoint","category":"WT_VERB_CHECKPOINT_PROGRESS","category_id":6,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"saving checkpoint snapshot min: 23, snapshot max: 23 snapshot count: 0, oldest timestamp: (0, 0) , meta checkpoint timestamp: (0, 0) base write gen: 214"}}}
+gwm-backend   | [2J[3J[H[[90m10:12:44 AM[0m] File change detected. Starting incremental compilation...
+gwm-backend   | 
+gwm-backend   | [[90m10:12:44 AM[0m] Found 0 errors. Watching for file changes.
+gwm-backend   | 
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:44.316+00:00"},"s":"I",  "c":"-",        "id":20883,   "ctx":"conn16","msg":"Interrupted operation as its client disconnected","attr":{"opId":7682}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:44.316+00:00"},"s":"I",  "c":"-",        "id":20883,   "ctx":"conn15","msg":"Interrupted operation as its client disconnected","attr":{"opId":7680}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:44.316+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn19","msg":"Connection ended","attr":{"remote":"172.18.0.3:55644","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"e4ced12d-cda5-482c-affd-4782d1ffaf3c"}},"connectionId":19,"connectionCount":6}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:44.316+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn18","msg":"Connection ended","attr":{"remote":"172.18.0.3:55642","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"6e9026f3-b067-4104-b9dd-3bf969a6c191"}},"connectionId":18,"connectionCount":5}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:44.316+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn17","msg":"Connection ended","attr":{"remote":"172.18.0.3:55632","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"381a9989-8080-49f2-a368-068698bbd7d8"}},"connectionId":17,"connectionCount":4}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:44.316+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn21","msg":"Connection ended","attr":{"remote":"172.18.0.3:52530","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"20046ab8-fcb3-4851-a587-865d756abaf1"}},"connectionId":21,"connectionCount":3}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:44.316+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn20","msg":"Connection ended","attr":{"remote":"172.18.0.3:52516","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"b4fea105-e200-4f9d-b984-ab959301a5fa"}},"connectionId":20,"connectionCount":2}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:44.316+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn15","msg":"Connection ended","attr":{"remote":"172.18.0.3:55606","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"b255b66c-2343-4a8c-b576-425b49a9cc9f"}},"connectionId":15,"connectionCount":1}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:44.317+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn16","msg":"Connection ended","attr":{"remote":"172.18.0.3:55622","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"b5e6715e-5b9d-4a6d-8ff1-f653682b4bee"}},"connectionId":16,"connectionCount":0}}
+gwm-backend   | [32m[Nest] 111  - [39m11/14/2025, 10:12:44 AM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+gwm-backend   | [32m[Nest] 111  - [39m11/14/2025, 10:12:44 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +12ms[39m
+gwm-backend   | [32m[Nest] 111  - [39m11/14/2025, 10:12:44 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMongooseModule dependencies initialized[39m[38;5;3m +1ms[39m
+gwm-backend   | [32m[Nest] 111  - [39m11/14/2025, 10:12:44 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPassportModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 111  - [39m11/14/2025, 10:12:44 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 111  - [39m11/14/2025, 10:12:44 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 111  - [39m11/14/2025, 10:12:44 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 111  - [39m11/14/2025, 10:12:44 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 111  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mGraphQLSchemaBuilderModule dependencies initialized[39m[38;5;3m +13ms[39m
+gwm-backend   | [32m[Nest] 111  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mGraphQLModule dependencies initialized[39m[38;5;3m +1ms[39m
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:45.010+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:35210","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"2ba423e7-ce9b-450d-9129-3819a8fc6a1e"}},"connectionId":22,"connectionCount":1}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:45.011+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn22","msg":"client metadata","attr":{"remote":"172.18.0.3:35210","client":"conn22","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs|Mongoose","version":"6.20.0|8.19.3"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-backend   | [32m[Nest] 111  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMongooseCoreModule dependencies initialized[39m[38;5;3m +9ms[39m
+gwm-backend   | [32m[Nest] 111  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMongooseModule dependencies initialized[39m[38;5;3m +1ms[39m
+gwm-backend   | [32m[Nest] 111  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMongooseModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 111  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMongooseModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 111  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mUserModule dependencies initialized[39m[38;5;3m +1ms[39m
+gwm-backend   | [32m[Nest] 111  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mLocationModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 111  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAuthModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 111  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAuthController {/auth}:[39m[38;5;3m +4ms[39m
+gwm-backend   | [32m[Nest] 111  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/google, GET} route[39m[38;5;3m +2ms[39m
+gwm-backend   | [32m[Nest] 111  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/google/callback, GET} route[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 111  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/profile, GET} route[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 111  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/logout, GET} route[39m[38;5;3m +0ms[39m
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:45.055+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:35224","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"047859f3-834c-4676-a0e8-0ee6bb9b7da0"}},"connectionId":23,"connectionCount":2}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:45.056+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:35228","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"c8c58c1d-917f-4c33-8cb2-61756e83dbc1"}},"connectionId":24,"connectionCount":3}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:45.056+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:35242","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"1419250b-eb09-435c-9718-c5be0b1e6c46"}},"connectionId":25,"connectionCount":4}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:45.057+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn23","msg":"client metadata","attr":{"remote":"172.18.0.3:35224","client":"conn23","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs","version":"6.20.0"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-backend   | [32m[Nest] 111  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[GraphQLModule] [39m[32mMapped {/graphql, POST} route[39m[38;5;3m +64ms[39m
+gwm-backend   | [32m[Nest] 111  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +1ms[39m
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:45.093+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn24","msg":"client metadata","attr":{"remote":"172.18.0.3:35228","client":"conn24","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs|Mongoose","version":"6.20.0|8.19.3"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:45.094+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn25","msg":"client metadata","attr":{"remote":"172.18.0.3:35242","client":"conn25","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs|Mongoose","version":"6.20.0|8.19.3"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:45.096+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn24","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":3}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:45.097+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn25","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":3}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:45.099+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:35244","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"7f659d07-abee-40a2-8945-ad2869f94e4a"}},"connectionId":26,"connectionCount":5}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:45.100+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn26","msg":"client metadata","attr":{"remote":"172.18.0.3:35244","client":"conn26","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs","version":"6.20.0"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:45.101+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn26","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":0}}
+gwm-backend   | [2J[3J[H[[90m10:12:45 AM[0m] File change detected. Starting incremental compilation...
+gwm-backend   | 
+gwm-backend   | [[90m10:12:45 AM[0m] Found 0 errors. Watching for file changes.
+gwm-backend   | 
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:45.300+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn25","msg":"Connection ended","attr":{"remote":"172.18.0.3:35242","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"1419250b-eb09-435c-9718-c5be0b1e6c46"}},"connectionId":25,"connectionCount":4}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:45.300+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn26","msg":"Connection ended","attr":{"remote":"172.18.0.3:35244","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"7f659d07-abee-40a2-8945-ad2869f94e4a"}},"connectionId":26,"connectionCount":3}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:45.300+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn23","msg":"Connection ended","attr":{"remote":"172.18.0.3:35224","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"047859f3-834c-4676-a0e8-0ee6bb9b7da0"}},"connectionId":23,"connectionCount":2}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:45.300+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn22","msg":"Connection ended","attr":{"remote":"172.18.0.3:35210","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"2ba423e7-ce9b-450d-9129-3819a8fc6a1e"}},"connectionId":22,"connectionCount":1}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:45.300+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn24","msg":"Connection ended","attr":{"remote":"172.18.0.3:35228","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"c8c58c1d-917f-4c33-8cb2-61756e83dbc1"}},"connectionId":24,"connectionCount":0}}
+gwm-backend   | [32m[Nest] 123  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+gwm-backend   | [32m[Nest] 123  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +11ms[39m
+gwm-backend   | [32m[Nest] 123  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMongooseModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 123  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPassportModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 123  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 123  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +1ms[39m
+gwm-backend   | [32m[Nest] 123  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 123  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 123  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mGraphQLSchemaBuilderModule dependencies initialized[39m[38;5;3m +15ms[39m
+gwm-backend   | [32m[Nest] 123  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mGraphQLModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:45.829+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:35250","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"f16e1d84-dce9-4752-a4ac-aa476bac4bbc"}},"connectionId":27,"connectionCount":1}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:45.831+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn27","msg":"client metadata","attr":{"remote":"172.18.0.3:35250","client":"conn27","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs|Mongoose","version":"6.20.0|8.19.3"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-backend   | [32m[Nest] 123  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMongooseCoreModule dependencies initialized[39m[38;5;3m +11ms[39m
+gwm-backend   | [32m[Nest] 123  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMongooseModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 123  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMongooseModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 123  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMongooseModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 123  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mUserModule dependencies initialized[39m[38;5;3m +1ms[39m
+gwm-backend   | [32m[Nest] 123  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mLocationModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 123  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAuthModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 123  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAuthController {/auth}:[39m[38;5;3m +5ms[39m
+gwm-backend   | [32m[Nest] 123  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/google, GET} route[39m[38;5;3m +1ms[39m
+gwm-backend   | [32m[Nest] 123  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/google/callback, GET} route[39m[38;5;3m +1ms[39m
+gwm-backend   | [32m[Nest] 123  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/profile, GET} route[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 123  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/logout, GET} route[39m[38;5;3m +0ms[39m
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:45.876+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:35262","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"1a96758b-f1ac-4b2e-8a6c-0bd49d30c348"}},"connectionId":28,"connectionCount":2}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:45.878+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:35270","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"94304438-3ae8-4f2d-a6a8-0de56fab4678"}},"connectionId":29,"connectionCount":3}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:45.878+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:35284","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"251fd447-9329-49f4-8cd2-6778b7053954"}},"connectionId":30,"connectionCount":4}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:45.879+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn28","msg":"client metadata","attr":{"remote":"172.18.0.3:35262","client":"conn28","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs","version":"6.20.0"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-backend   | [32m[Nest] 123  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[GraphQLModule] [39m[32mMapped {/graphql, POST} route[39m[38;5;3m +54ms[39m
+gwm-backend   | [32m[Nest] 123  - [39m11/14/2025, 10:12:45 AM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +1ms[39m
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:45.904+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn29","msg":"client metadata","attr":{"remote":"172.18.0.3:35270","client":"conn29","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs|Mongoose","version":"6.20.0|8.19.3"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:45.904+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn30","msg":"client metadata","attr":{"remote":"172.18.0.3:35284","client":"conn30","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs|Mongoose","version":"6.20.0|8.19.3"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:45.906+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn29","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":1}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:45.910+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn30","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":5}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:45.910+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:35292","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"8fe1cf9e-6d88-4444-9a02-df90920915bf"}},"connectionId":31,"connectionCount":5}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:45.911+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn31","msg":"client metadata","attr":{"remote":"172.18.0.3:35292","client":"conn31","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs","version":"6.20.0"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:45.911+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn31","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":0}}
+gwm-backend   | [2J[3J[H[[90m10:12:53 AM[0m] File change detected. Starting incremental compilation...
+gwm-backend   | 
+gwm-backend   | [[90m10:12:53 AM[0m] Found 0 errors. Watching for file changes.
+gwm-backend   | 
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:53.452+00:00"},"s":"I",  "c":"-",        "id":20883,   "ctx":"conn28","msg":"Interrupted operation as its client disconnected","attr":{"opId":7739}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:53.452+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn31","msg":"Connection ended","attr":{"remote":"172.18.0.3:35292","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"8fe1cf9e-6d88-4444-9a02-df90920915bf"}},"connectionId":31,"connectionCount":4}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:53.452+00:00"},"s":"I",  "c":"-",        "id":20883,   "ctx":"conn27","msg":"Interrupted operation as its client disconnected","attr":{"opId":7737}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:53.452+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn29","msg":"Connection ended","attr":{"remote":"172.18.0.3:35270","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"94304438-3ae8-4f2d-a6a8-0de56fab4678"}},"connectionId":29,"connectionCount":3}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:53.452+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn30","msg":"Connection ended","attr":{"remote":"172.18.0.3:35284","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"251fd447-9329-49f4-8cd2-6778b7053954"}},"connectionId":30,"connectionCount":2}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:53.452+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn28","msg":"Connection ended","attr":{"remote":"172.18.0.3:35262","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"1a96758b-f1ac-4b2e-8a6c-0bd49d30c348"}},"connectionId":28,"connectionCount":1}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:53.452+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn27","msg":"Connection ended","attr":{"remote":"172.18.0.3:35250","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"f16e1d84-dce9-4752-a4ac-aa476bac4bbc"}},"connectionId":27,"connectionCount":0}}
+gwm-backend   | [32m[Nest] 135  - [39m11/14/2025, 10:12:53 AM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+gwm-backend   | [32m[Nest] 135  - [39m11/14/2025, 10:12:53 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +12ms[39m
+gwm-backend   | [32m[Nest] 135  - [39m11/14/2025, 10:12:53 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMongooseModule dependencies initialized[39m[38;5;3m +1ms[39m
+gwm-backend   | [32m[Nest] 135  - [39m11/14/2025, 10:12:53 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPassportModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 135  - [39m11/14/2025, 10:12:53 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 135  - [39m11/14/2025, 10:12:53 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 135  - [39m11/14/2025, 10:12:53 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 135  - [39m11/14/2025, 10:12:53 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +1ms[39m
+gwm-backend   | [32m[Nest] 135  - [39m11/14/2025, 10:12:53 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mGraphQLSchemaBuilderModule dependencies initialized[39m[38;5;3m +13ms[39m
+gwm-backend   | [32m[Nest] 135  - [39m11/14/2025, 10:12:53 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mGraphQLModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:53.959+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:33952","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"091ef53f-c7cc-4f8e-a5a4-d3591e9b7837"}},"connectionId":32,"connectionCount":1}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:53.961+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn32","msg":"client metadata","attr":{"remote":"172.18.0.3:33952","client":"conn32","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs|Mongoose","version":"6.20.0|8.19.3"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-backend   | [32m[Nest] 135  - [39m11/14/2025, 10:12:53 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMongooseCoreModule dependencies initialized[39m[38;5;3m +10ms[39m
+gwm-backend   | [32m[Nest] 135  - [39m11/14/2025, 10:12:53 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMongooseModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 135  - [39m11/14/2025, 10:12:53 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMongooseModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 135  - [39m11/14/2025, 10:12:53 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMongooseModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 135  - [39m11/14/2025, 10:12:53 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mUserModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 135  - [39m11/14/2025, 10:12:53 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mLocationModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 135  - [39m11/14/2025, 10:12:53 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAuthModule dependencies initialized[39m[38;5;3m +1ms[39m
+gwm-backend   | [32m[Nest] 135  - [39m11/14/2025, 10:12:53 AM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAuthController {/auth}:[39m[38;5;3m +4ms[39m
+gwm-backend   | [32m[Nest] 135  - [39m11/14/2025, 10:12:53 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/google, GET} route[39m[38;5;3m +2ms[39m
+gwm-backend   | [32m[Nest] 135  - [39m11/14/2025, 10:12:53 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/google/callback, GET} route[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 135  - [39m11/14/2025, 10:12:53 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/profile, GET} route[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 135  - [39m11/14/2025, 10:12:53 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/logout, GET} route[39m[38;5;3m +0ms[39m
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:54.009+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:33966","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"a8c8aa94-2b15-494f-8444-71349f69e0f5"}},"connectionId":33,"connectionCount":2}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:54.011+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:33978","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"4ce8a7e0-3dc0-46b5-abef-b3113e032500"}},"connectionId":34,"connectionCount":3}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:54.011+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:33990","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"0d60db8c-d457-4fe6-b1a5-daaa277a9581"}},"connectionId":35,"connectionCount":4}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:54.012+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn33","msg":"client metadata","attr":{"remote":"172.18.0.3:33966","client":"conn33","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs","version":"6.20.0"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-backend   | [32m[Nest] 135  - [39m11/14/2025, 10:12:54 AM [32m    LOG[39m [38;5;3m[GraphQLModule] [39m[32mMapped {/graphql, POST} route[39m[38;5;3m +59ms[39m
+gwm-backend   | [32m[Nest] 135  - [39m11/14/2025, 10:12:54 AM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +0ms[39m
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:54.036+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn34","msg":"client metadata","attr":{"remote":"172.18.0.3:33978","client":"conn34","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs|Mongoose","version":"6.20.0|8.19.3"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:54.037+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn35","msg":"client metadata","attr":{"remote":"172.18.0.3:33990","client":"conn35","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs|Mongoose","version":"6.20.0|8.19.3"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:54.038+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn34","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":1}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:54.041+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn35","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":4}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:54.041+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:33996","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"16f57561-3130-4b7c-8b6d-45ff8dcc5b65"}},"connectionId":36,"connectionCount":5}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:54.041+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn36","msg":"client metadata","attr":{"remote":"172.18.0.3:33996","client":"conn36","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs","version":"6.20.0"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:54.043+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn36","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":1}}
+gwm-backend   | [2J[3J[H[[90m10:12:54 AM[0m] File change detected. Starting incremental compilation...
+gwm-backend   | 
+gwm-backend   | [[90m10:12:54 AM[0m] Found 0 errors. Watching for file changes.
+gwm-backend   | 
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:54.448+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn36","msg":"Connection ended","attr":{"remote":"172.18.0.3:33996","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"16f57561-3130-4b7c-8b6d-45ff8dcc5b65"}},"connectionId":36,"connectionCount":4}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:54.448+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn35","msg":"Connection ended","attr":{"remote":"172.18.0.3:33990","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"0d60db8c-d457-4fe6-b1a5-daaa277a9581"}},"connectionId":35,"connectionCount":3}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:54.448+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn32","msg":"Connection ended","attr":{"remote":"172.18.0.3:33952","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"091ef53f-c7cc-4f8e-a5a4-d3591e9b7837"}},"connectionId":32,"connectionCount":2}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:54.448+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn34","msg":"Connection ended","attr":{"remote":"172.18.0.3:33978","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"4ce8a7e0-3dc0-46b5-abef-b3113e032500"}},"connectionId":34,"connectionCount":1}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:54.448+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn33","msg":"Connection ended","attr":{"remote":"172.18.0.3:33966","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"a8c8aa94-2b15-494f-8444-71349f69e0f5"}},"connectionId":33,"connectionCount":0}}
+gwm-backend   | [32m[Nest] 147  - [39m11/14/2025, 10:12:54 AM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+gwm-backend   | [32m[Nest] 147  - [39m11/14/2025, 10:12:54 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +11ms[39m
+gwm-backend   | [32m[Nest] 147  - [39m11/14/2025, 10:12:54 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMongooseModule dependencies initialized[39m[38;5;3m +1ms[39m
+gwm-backend   | [32m[Nest] 147  - [39m11/14/2025, 10:12:54 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPassportModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 147  - [39m11/14/2025, 10:12:54 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 147  - [39m11/14/2025, 10:12:54 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 147  - [39m11/14/2025, 10:12:54 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 147  - [39m11/14/2025, 10:12:54 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 147  - [39m11/14/2025, 10:12:54 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mGraphQLSchemaBuilderModule dependencies initialized[39m[38;5;3m +14ms[39m
+gwm-backend   | [32m[Nest] 147  - [39m11/14/2025, 10:12:54 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mGraphQLModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:54.960+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:34000","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"877efb65-3f2d-40a0-af80-fa7b719f85dc"}},"connectionId":37,"connectionCount":1}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:54.962+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn37","msg":"client metadata","attr":{"remote":"172.18.0.3:34000","client":"conn37","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs|Mongoose","version":"6.20.0|8.19.3"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-backend   | [32m[Nest] 147  - [39m11/14/2025, 10:12:54 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMongooseCoreModule dependencies initialized[39m[38;5;3m +10ms[39m
+gwm-backend   | [32m[Nest] 147  - [39m11/14/2025, 10:12:54 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMongooseModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 147  - [39m11/14/2025, 10:12:54 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMongooseModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 147  - [39m11/14/2025, 10:12:54 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMongooseModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 147  - [39m11/14/2025, 10:12:54 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mUserModule dependencies initialized[39m[38;5;3m +1ms[39m
+gwm-backend   | [32m[Nest] 147  - [39m11/14/2025, 10:12:54 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mLocationModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 147  - [39m11/14/2025, 10:12:54 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAuthModule dependencies initialized[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 147  - [39m11/14/2025, 10:12:54 AM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAuthController {/auth}:[39m[38;5;3m +4ms[39m
+gwm-backend   | [32m[Nest] 147  - [39m11/14/2025, 10:12:54 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/google, GET} route[39m[38;5;3m +2ms[39m
+gwm-backend   | [32m[Nest] 147  - [39m11/14/2025, 10:12:54 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/google/callback, GET} route[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 147  - [39m11/14/2025, 10:12:54 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/profile, GET} route[39m[38;5;3m +0ms[39m
+gwm-backend   | [32m[Nest] 147  - [39m11/14/2025, 10:12:54 AM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/logout, GET} route[39m[38;5;3m +1ms[39m
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:55.004+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:34016","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"08ff2c21-66b5-4c0b-9a6e-3a74b0093c84"}},"connectionId":38,"connectionCount":2}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:55.007+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:34018","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"67a6e1ed-cec5-4ebe-aae7-7708cfbdbec2"}},"connectionId":39,"connectionCount":3}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:55.007+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:34034","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"b501510e-b8cf-4a28-af75-8f393f788152"}},"connectionId":40,"connectionCount":4}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:55.008+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn38","msg":"client metadata","attr":{"remote":"172.18.0.3:34016","client":"conn38","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs","version":"6.20.0"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-backend   | [32m[Nest] 147  - [39m11/14/2025, 10:12:55 AM [32m    LOG[39m [38;5;3m[GraphQLModule] [39m[32mMapped {/graphql, POST} route[39m[38;5;3m +53ms[39m
+gwm-backend   | [32m[Nest] 147  - [39m11/14/2025, 10:12:55 AM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +1ms[39m
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:55.032+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn39","msg":"client metadata","attr":{"remote":"172.18.0.3:34018","client":"conn39","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs|Mongoose","version":"6.20.0|8.19.3"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:55.032+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn40","msg":"client metadata","attr":{"remote":"172.18.0.3:34034","client":"conn40","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs|Mongoose","version":"6.20.0|8.19.3"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:55.035+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn40","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":2}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:55.035+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn39","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":2}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:55.036+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:34036","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"cf8e2df7-ae3a-498d-a3b2-dc9c984795a0"}},"connectionId":41,"connectionCount":5}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:55.038+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn41","msg":"client metadata","attr":{"remote":"172.18.0.3:34036","client":"conn41","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs","version":"6.20.0"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:12:55.039+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn41","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":0}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:13:05.468+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:35602","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"2d825274-5341-48ed-a8c4-4e61e282a565"}},"connectionId":42,"connectionCount":6}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:13:05.469+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn42","msg":"client metadata","attr":{"remote":"172.18.0.3:35602","client":"conn42","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs|Mongoose","version":"6.20.0|8.19.3"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:13:05.537+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.18.0.3:35604","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"6b152042-d422-4168-9cd9-6c5f4664e7e8"}},"connectionId":43,"connectionCount":7}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:13:05.538+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn43","msg":"client metadata","attr":{"remote":"172.18.0.3:35604","client":"conn43","negotiatedCompressors":[],"doc":{"driver":{"name":"nodejs","version":"6.20.0"},"platform":"Node.js v22.21.1, LE","os":{"name":"linux","architecture":"x64","version":"6.17.7-zen1-1-zen","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:13:42.631+00:00"},"s":"I",  "c":"WTCHKPT",  "id":22430,   "ctx":"Checkpointer","msg":"WiredTiger message","attr":{"message":{"ts_sec":1763115222,"ts_usec":631380,"thread":"1:0x7f91a942d640","session_name":"WT_SESSION.checkpoint","category":"WT_VERB_CHECKPOINT_PROGRESS","category_id":6,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"saving checkpoint snapshot min: 24, snapshot max: 24 snapshot count: 0, oldest timestamp: (0, 0) , meta checkpoint timestamp: (0, 0) base write gen: 214"}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:14:42.687+00:00"},"s":"I",  "c":"WTCHKPT",  "id":22430,   "ctx":"Checkpointer","msg":"WiredTiger message","attr":{"message":{"ts_sec":1763115282,"ts_usec":687204,"thread":"1:0x7f91a942d640","session_name":"WT_SESSION.checkpoint","category":"WT_VERB_CHECKPOINT_PROGRESS","category_id":6,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"saving checkpoint snapshot min: 25, snapshot max: 25 snapshot count: 0, oldest timestamp: (0, 0) , meta checkpoint timestamp: (0, 0) base write gen: 214"}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:15:42.739+00:00"},"s":"I",  "c":"WTCHKPT",  "id":22430,   "ctx":"Checkpointer","msg":"WiredTiger message","attr":{"message":{"ts_sec":1763115342,"ts_usec":739511,"thread":"1:0x7f91a942d640","session_name":"WT_SESSION.checkpoint","category":"WT_VERB_CHECKPOINT_PROGRESS","category_id":6,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"saving checkpoint snapshot min: 26, snapshot max: 26 snapshot count: 0, oldest timestamp: (0, 0) , meta checkpoint timestamp: (0, 0) base write gen: 214"}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:16:42.792+00:00"},"s":"I",  "c":"WTCHKPT",  "id":22430,   "ctx":"Checkpointer","msg":"WiredTiger message","attr":{"message":{"ts_sec":1763115402,"ts_usec":792270,"thread":"1:0x7f91a942d640","session_name":"WT_SESSION.checkpoint","category":"WT_VERB_CHECKPOINT_PROGRESS","category_id":6,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"saving checkpoint snapshot min: 27, snapshot max: 27 snapshot count: 0, oldest timestamp: (0, 0) , meta checkpoint timestamp: (0, 0) base write gen: 214"}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:17:42.844+00:00"},"s":"I",  "c":"WTCHKPT",  "id":22430,   "ctx":"Checkpointer","msg":"WiredTiger message","attr":{"message":{"ts_sec":1763115462,"ts_usec":844894,"thread":"1:0x7f91a942d640","session_name":"WT_SESSION.checkpoint","category":"WT_VERB_CHECKPOINT_PROGRESS","category_id":6,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"saving checkpoint snapshot min: 40, snapshot max: 40 snapshot count: 0, oldest timestamp: (0, 0) , meta checkpoint timestamp: (0, 0) base write gen: 214"}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:18:42.878+00:00"},"s":"I",  "c":"WTCHKPT",  "id":22430,   "ctx":"Checkpointer","msg":"WiredTiger message","attr":{"message":{"ts_sec":1763115522,"ts_usec":877986,"thread":"1:0x7f91a942d640","session_name":"WT_SESSION.checkpoint","category":"WT_VERB_CHECKPOINT_PROGRESS","category_id":6,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"saving checkpoint snapshot min: 41, snapshot max: 41 snapshot count: 0, oldest timestamp: (0, 0) , meta checkpoint timestamp: (0, 0) base write gen: 214"}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:19:42.933+00:00"},"s":"I",  "c":"WTCHKPT",  "id":22430,   "ctx":"Checkpointer","msg":"WiredTiger message","attr":{"message":{"ts_sec":1763115582,"ts_usec":933541,"thread":"1:0x7f91a942d640","session_name":"WT_SESSION.checkpoint","category":"WT_VERB_CHECKPOINT_PROGRESS","category_id":6,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"saving checkpoint snapshot min: 42, snapshot max: 42 snapshot count: 0, oldest timestamp: (0, 0) , meta checkpoint timestamp: (0, 0) base write gen: 214"}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:20:42.988+00:00"},"s":"I",  "c":"WTCHKPT",  "id":22430,   "ctx":"Checkpointer","msg":"WiredTiger message","attr":{"message":{"ts_sec":1763115642,"ts_usec":988545,"thread":"1:0x7f91a942d640","session_name":"WT_SESSION.checkpoint","category":"WT_VERB_CHECKPOINT_PROGRESS","category_id":6,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"saving checkpoint snapshot min: 43, snapshot max: 43 snapshot count: 0, oldest timestamp: (0, 0) , meta checkpoint timestamp: (0, 0) base write gen: 214"}}}
+gwm-mongo     | {"t":{"$date":"2025-11-14T10:21:43.042+00:00"},"s":"I",  "c":"WTCHKPT",  "id":22430,   "ctx":"Checkpointer","msg":"WiredTiger message","attr":{"message":{"ts_sec":1763115703,"ts_usec":42846,"thread":"1:0x7f91a942d640","session_name":"WT_SESSION.checkpoint","category":"WT_VERB_CHECKPOINT_PROGRESS","category_id":6,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"saving checkpoint snapshot min: 44, snapshot max: 44 snapshot count: 0, oldest timestamp: (0, 0) , meta checkpoint timestamp: (0, 0) base write gen: 214"}}}
+Gracefully Stopping... press Ctrl+C again to force
+ Container gwm-nginx  Stopping
+ Container gwm-nginx  Stopped
+ Container gwm-frontend  Stopping
+ Container gwm-frontend  Stopped
+ Container gwm-backend  Stopping
+ Container gwm-backend  Stopped
+ Container gwm-mongo  Stopping
+ Container gwm-mongo  Stopped
+

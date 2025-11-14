@@ -1,39 +1,41 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model, Schema as MongoSchema } from 'mongoose';
-
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
+import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from './entities/user.entity';
+import { DeleteResult, Model, Schema as MongooSchema } from 'mongoose';
 
 @Injectable()
 export class UserService {
-  constructor(
-    @InjectModel(User.name)
-    private userModel: Model<UserDocument>
-  ) {}
+    constructor(
+        @InjectModel(User.name)
+        private userModel: Model<UserDocument>
+    ) {}
 
-  getAllUsers() {
-    return this.userModel.find();
-  }
+    getAllUsers() {
+        return this.userModel.find();
+    }
 
-  getUserById(id: MongoSchema.Types.ObjectId) {
-    return this.userModel.findById(id);
-  }
+    getUserById(id: MongooSchema.Types.ObjectId) {
+        return this.userModel.findById(id);
+    }
 
-  createUser(createUserInput: CreateUserInput) {
-    const createUser = new this.userModel(createUserInput);
-    return createUser.save();
-  }
+    getPublicProfile(id: MongooSchema.Types.ObjectId) {
+        return this.userModel.findById(id).select('firstName lastName image description');
+    }
 
-  updateUser(id: MongoSchema.Types.ObjectId, updateUserInput: UpdateUserInput) {
-    return this.userModel.findByIdAndUpdate(id, updateUserInput, {
-      new: true,
-    });
-  }
+    createUser(createUserInput: CreateUserInput) {
+        const createUser = new this.userModel(createUserInput);
+        return createUser.save();
+    }
 
-  async removeUser(id: MongoSchema.Types.ObjectId): Promise<boolean> {
-    const result = await this.userModel.deleteOne({ _id: id }).exec();
-    return (result.deletedCount ?? 0) > 0;
-  }
+    updateUser(id: MongooSchema.Types.ObjectId, updateUserInput: UpdateUserInput) {
+        return this.userModel.findByIdAndUpdate(id, updateUserInput, {
+            new: true,
+        });
+    }
+
+    removeUser(id: MongooSchema.Types.ObjectId): Promise<DeleteResult> {
+        return this.userModel.deleteOne({ _id: id }).exec();
+    }
 }

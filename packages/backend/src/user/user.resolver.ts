@@ -1,52 +1,54 @@
-import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { Schema as MongoSchema } from 'mongoose';
-
+import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
+import { UserService } from './user.service';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { User } from './entities/user.entity';
-import { UserService } from './user.service';
+import { Schema as MongooSchema } from 'mongoose';
 
 @Resolver('User')
 export class UserResolver {
-  constructor(private readonly userService: UserService) {}
+    constructor(private readonly userService: UserService) {}
 
-  @Query(() => User, {
-    name: 'userById',
-    description: 'Поиск пользователя по id',
-  })
-  getUserById(@Args('id', { type: () => ID }) id: MongoSchema.Types.ObjectId) {
-    return this.userService.getUserById(id);
-  }
+    @Query(() => User, {
+        name: 'userById',
+        description: 'Поиск пользователя по id',
+    })
+    getUserById(@Args('id', { type: () => ID }) id: MongooSchema.Types.ObjectId) {
+        return this.userService.getUserById(id);
+    }
 
-  @Query(() => [User], {
-    name: 'users',
-    description: 'Получить всех пользователей',
-  })
-  getAllUsers() {
-    return this.userService.getAllUsers();
-  }
+    @Query(() => [User], {
+        name: 'users',
+        description: 'Получить всех пользователей',
+    })
+    getAllUsers() {
+        return this.userService.getAllUsers();
+    }
 
-  @Mutation(() => User, {
-    name: 'createUser',
-    description: 'Создать пользователя',
-  })
-  createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
-    return this.userService.createUser(createUserInput);
-  }
+    @Mutation(() => User, {
+        name: 'createUser',
+        description: 'Создать пользователя',
+    })
+    createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
+        return this.userService.createUser(createUserInput);
+    }
 
-  @Mutation(() => User, {
-    name: 'updateUser',
-    description: 'Обновить данные пользователя',
-  })
-  updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
-    return this.userService.updateUser(updateUserInput._id, updateUserInput);
-  }
+    @Mutation(() => User, {
+        name: 'updateUser',
+        description: 'Обновить данные пользователя',
+    })
+    updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
+        return this.userService.updateUser(updateUserInput._id, updateUserInput);
+    }
 
-  @Mutation(() => Boolean, {
-    name: 'removeUser',
-    description: 'Удалить пользователя',
-  })
-  removeUser(@Args('id', { type: () => ID }) id: MongoSchema.Types.ObjectId): Promise<boolean> {
-    return this.userService.removeUser(id);
-  }
+    @Mutation(() => Boolean, {
+        name: 'removeUser',
+        description: 'Удалить пользователя',
+    })
+    async removeUser(
+        @Args('id', { type: () => ID }) id: MongooSchema.Types.ObjectId
+    ): Promise<boolean> {
+        const result = await this.userService.removeUser(id);
+        return result.deletedCount > 0;
+    }
 }
