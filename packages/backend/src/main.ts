@@ -6,6 +6,7 @@ import passport from 'passport';
 
 import { AppModule } from './app.module';
 import { SessionSerializer } from './auth/serializer/session.serializer';
+import { isDev } from './utils/is-dev.utils';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
@@ -19,14 +20,14 @@ async function bootstrap() {
 
     app.use(
         session({
-            secret: configService.getOrThrow('SESSION_SECRET') || 'secret',
+            secret: configService.getOrThrow('SESSION_SECRET'),
             resave: false,
             saveUninitialized: false,
             store: MongoStore.create({
                 mongoUrl: configService.getOrThrow('MONGODB_URI'),
             }),
             cookie: {
-                secure: false, // Для development,
+                secure: !isDev(configService), // Проверяем dev или prod,
                 httpOnly: true,
                 maxAge: 1000 * 60 * 60 * 24, // 1 день
             },
