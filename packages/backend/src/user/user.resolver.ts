@@ -6,13 +6,21 @@ import { UpdateUserInput } from './dto/update-user.input';
 import { User } from './entities/user.entity';
 import { UserService } from './user.service';
 
-@Resolver('User')
+@Resolver(() => User)
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
   @Query(() => User, {
-    name: 'userById',
+    name: 'user',
     description: 'Поиск пользователя по id',
+  })
+  getUser(@Args('id', { type: () => ID }) id: MongoSchema.Types.ObjectId) {
+    return this.userService.getUserById(id);
+  }
+
+  @Query(() => User, {
+    name: 'userById',
+    description: 'Поиск пользователя по id (устаревший синоним)',
   })
   getUserById(@Args('id', { type: () => ID }) id: MongoSchema.Types.ObjectId) {
     return this.userService.getUserById(id);
@@ -38,8 +46,11 @@ export class UserResolver {
     name: 'updateUser',
     description: 'Обновить данные пользователя',
   })
-  updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
-    return this.userService.updateUser(updateUserInput._id, updateUserInput);
+  updateUser(
+    @Args('updateUserId', { type: () => ID }) id: MongoSchema.Types.ObjectId,
+    @Args('user', { type: () => UpdateUserInput }) updateUserInput: UpdateUserInput
+  ) {
+    return this.userService.updateUser(id, updateUserInput);
   }
 
   @Mutation(() => Boolean, {

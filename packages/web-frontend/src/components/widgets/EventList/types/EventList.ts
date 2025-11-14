@@ -1,5 +1,5 @@
 import { SizeCard } from '@/components/widgets/CardEvent/CardEvent';
-import { IEvent } from '@/database/models/Event';
+import { IEvent } from '@go-with-me/api-scheme/types/Event';
 
 export interface EventListProps {
   sizeCard: SizeCard;
