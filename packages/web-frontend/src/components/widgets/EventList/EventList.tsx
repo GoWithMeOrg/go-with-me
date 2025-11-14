@@ -3,7 +3,7 @@
 import { FC } from 'react';
 import { Backdrop } from '@/components/widgets/Backdrop';
 import { CardEvent } from '@/components/widgets/CardEvent';
-import type { IEvent } from '@/database/models/Event';
+import type { IEvent } from '@go-with-me/api-scheme/types/Event';
 
 import { useEventList } from './hooks';
 import { EventListProps } from './types/EventList';

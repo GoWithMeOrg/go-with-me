@@ -1,4 +1,4 @@
-import { IComment } from '@/database/models/Comment';
+import { IComment } from '@go-with-me/api-scheme/types/Comment';
 
 export type ICommentData = Pick<
   IComment,

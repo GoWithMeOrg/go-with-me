@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useUploadFile } from '@/components/widgets/UploadFile/hooks';
-import { IEvent } from '@/database/models/Event';
+import { IEvent } from '@go-with-me/api-scheme/types/Event';
 import { useMutation, useQuery } from '@apollo/client/react';
 import dayjs from 'dayjs';
 import gql from 'graphql-tag';

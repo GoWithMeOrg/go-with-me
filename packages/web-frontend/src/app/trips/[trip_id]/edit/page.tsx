@@ -1,7 +1,7 @@
 'use client';
 
 import { TripForm } from '@/components/widgets/TripForm';
-import type { ITrip } from '@/database/models/Trip';
+import type { ITrip } from '@go-with-me/api-scheme/types/Trip';
 import { gql } from '@apollo/client';
 import { useMutation, useQuery } from '@apollo/client/react';
 import { NextPage } from 'next';
