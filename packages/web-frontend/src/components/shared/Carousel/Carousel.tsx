@@ -43,7 +43,9 @@ export const Carousel: FC<ICarousel> = ({ children, title, hideButton, marginBot
           <div className={classes.wrapper} style={{ maxWidth: `${width}px`, marginBottom }}>
             <div
               className={classes.content}
-              style={{ transform: `translateX(-${currentIndex * (slideWidth + 20)}px)` }}
+              style={{
+                transform: `translateX(-${currentIndex * (slideWidth + 20)}px)`,
+              }}
             >
               {React.Children.map(children, (child) =>
                 React.cloneElement(child as any, { slideRef })

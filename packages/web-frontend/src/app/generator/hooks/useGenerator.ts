@@ -34,7 +34,11 @@ export const useGenerator = () => {
     if (Array.isArray(cities)) {
       const randomCity = faker.helpers.arrayElement(cities);
       // Нужно преобразовать координаты из строки в число.
-      setCity({ ...randomCity, lng: parseFloat(randomCity.lng), lat: parseFloat(randomCity.lat) });
+      setCity({
+        ...randomCity,
+        lng: parseFloat(randomCity.lng),
+        lat: parseFloat(randomCity.lat),
+      });
     }
   }, []);
 

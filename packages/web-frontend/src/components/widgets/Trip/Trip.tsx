@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react';
-import { ITrip } from '@go-with-me/api-scheme/types/Trip';
 import { formatDate } from '@/utils/formatDate';
+import { ITrip } from '@go-with-me/api-scheme/types/Trip';
 import { AdvancedMarker, Map, Pin, useMap } from '@vis.gl/react-google-maps';
 
 import classes from './Trip.module.css';

@@ -10,45 +10,48 @@ import { getMongooseConfig } from './config/mongoose.config';
 import { UserModule } from './user/user.module';
 import { LocationModule } from './location/location.module';
 import { AuthModule } from './auth/GoogleAuth/auth.module';
+import { EventModule } from './event/event.module';
 import { RolesGuard } from './auth/guard/roles.guard';
 import { APP_GUARD } from '@nestjs/core';
 @Module({
-    imports: [
-        ConfigModule.forRoot({
-            isGlobal: true,
-        }),
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
 
-        GraphQLModule.forRootAsync({
-            driver: ApolloDriver,
-            imports: [ConfigModule],
-            useFactory: getGraphQLConfig,
-            inject: [ConfigService],
-        }),
+    GraphQLModule.forRootAsync({
+      driver: ApolloDriver,
+      imports: [ConfigModule],
+      useFactory: getGraphQLConfig,
+      inject: [ConfigService],
+    }),
 
-        MongooseModule.forRootAsync({
-            imports: [ConfigModule],
-            useFactory: getMongooseConfig,
-            inject: [ConfigService],
-        }),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: getMongooseConfig,
+      inject: [ConfigService],
+    }),
 
-        ConfigModule.forRoot({
-            cache: true,
-        }),
+    ConfigModule.forRoot({
+      cache: true,
+    }),
 
-        UserModule,
+    UserModule,
 
-        LocationModule,
+    LocationModule,
 
-        AuthModule,
-    ],
+    AuthModule,
 
-    controllers: [],
-    providers: [
-        {
-            provide: APP_GUARD,
-            useClass: RolesGuard,
-        },
-    ],
+    EventModule,
+  ],
+
+  controllers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
 })
 
 // Подключаем LoggingMiddleware глобально ко всем маршрутам

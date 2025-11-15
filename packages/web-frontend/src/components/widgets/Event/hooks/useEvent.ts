@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { useUploadFile } from '@/components/widgets/UploadFile/hooks';
-import { IEvent } from '@go-with-me/api-scheme/types/Event';
 import { useMutation, useQuery } from '@apollo/client/react';
+import { IEvent } from '@go-with-me/api-scheme/types/Event';
 import dayjs from 'dayjs';
 import gql from 'graphql-tag';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';

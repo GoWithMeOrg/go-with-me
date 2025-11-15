@@ -2,8 +2,19 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input CreateEventInput {
+  description: String
+  image: String
+  location: CreateLocationInput
+  name: String!
+  organizer: ID!
+  startDate: DateTime!
+  time: String
+}
+
 input CreateLocationInput {
   coordinates: [Float!]!
+  properties: LocationPropertiesInput
   type: String!
 }
 
@@ -22,51 +33,131 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Event {
+  _id: String!
+  createdAt: DateTime!
+  description: String
+  image: String
+  location: Location
+  name: String!
+  organizer: User!
+  startDate: DateTime!
+  time: String
+  updatedAt: DateTime!
+}
+
 type Location {
   _id: String!
   coordinates: [Float!]!
+  properties: LocationProperties
   type: String!
 }
 
+type LocationProperties {
+  address: String
+}
+
+input LocationPropertiesInput {
+  address: String
+}
+
 type Mutation {
-  """Создать локацию"""
+  """
+  Создать событие
+  """
+  createEvent(createEventInput: CreateEventInput!): Event!
+
+  """
+  Создать локацию
+  """
   createLocation(createLocationInput: CreateLocationInput!): Location!
 
-  """Создать пользователя"""
+  """
+  Создать пользователя
+  """
   createUser(createUserInput: CreateUserInput!): User!
 
-  """Удалить локацию"""
+  """
+  Удалить событие
+  """
+  removeEvent(id: ID!): Boolean!
+
+  """
+  Удалить локацию
+  """
   removeLocation(id: ID!): Boolean!
 
-  """Удалить пользователя"""
+  """
+  Удалить пользователя
+  """
   removeUser(id: ID!): Boolean!
 
-  """Обновить локацию"""
+  """
+  Обновить данные события
+  """
+  updateEvent(id: ID!, updateEventInput: UpdateEventInput!): Event!
+
+  """
+  Обновить локацию
+  """
   updateLocation(updateLocationInput: UpdateLocationInput!): Location!
 
-  """Обновить данные пользователя"""
-  updateUser(updateUserInput: UpdateUserInput!): User!
+  """
+  Обновить данные пользователя
+  """
+  updateUser(updateUserId: ID!, user: UpdateUserInput!): User!
 }
 
 type Query {
   adminRoute: String!
 
-  """Поиск места по id"""
+  """
+  Получить событие по id
+  """
+  event(id: ID!): Event!
+
+  """
+  Получить все события
+  """
+  events: [Event!]!
+
+  """
+  Поиск места по id
+  """
   locationById(id: ID!): Location!
   moderatorRoute: String!
   session: User
 
-  """Поиск пользователя по id"""
+  """
+  Поиск пользователя по id
+  """
+  user(id: ID!): User!
+
+  """
+  Поиск пользователя по id (устаревший синоним)
+  """
   userById(id: ID!): User!
 
-  """Получить всех пользователей"""
+  """
+  Получить всех пользователей
+  """
   users: [User!]!
+}
+
+input UpdateEventInput {
+  description: String
+  image: String
+  location: CreateLocationInput
+  name: String
+  startDate: DateTime
+  time: String
+  updatedAt: DateTime
 }
 
 input UpdateLocationInput {
   _id: String!
   coordinates: [Float!]!
-  type: String!
+  properties: LocationPropertiesInput
 }
 
 input UpdateUserInput {

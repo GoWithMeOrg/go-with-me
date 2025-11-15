@@ -10,37 +10,35 @@ import { AuthenticationError } from '@nestjs/apollo/dist/errors';
 
 @Resolver(() => User)
 export class AuthResolver {
-	@Query(() => User, { nullable: true })
-	@UseGuards(SessionAuthGuard)
-	async session(
-		@Context() context: GqlContext,
-	): Promise<Partial<User> | null> {
-		if (!context.req.user) {
-			// бросаем стандартную Apollo ошибку с кодом UNAUTHENTICATED
-			throw new AuthenticationError('Пользователь не авторизован');
-		}
-		// console.log(
-		// 	'AuthResolver.me - context keys:',
-		// 	Object.keys(context || {}),
-		// );
-		// console.log('AuthResolver.me - context.req =', !!context?.req);
-		// console.log('AuthResolver.me - context.req.user =', context?.req?.user);
-		return context.req.user;
-	}
+  @Query(() => User, { nullable: true })
+  @UseGuards(SessionAuthGuard)
+  async session(@Context() context: GqlContext): Promise<Partial<User> | null> {
+    if (!context.req.user) {
+      // бросаем стандартную Apollo ошибку с кодом UNAUTHENTICATED
+      throw new AuthenticationError('Пользователь не авторизован');
+    }
+    // console.log(
+    // 	'AuthResolver.me - context keys:',
+    // 	Object.keys(context || {}),
+    // );
+    // console.log('AuthResolver.me - context.req =', !!context?.req);
+    // console.log('AuthResolver.me - context.req.user =', context?.req?.user);
+    return context.req.user;
+  }
 
-	// резолвер с требованием роли ADMIN
-	@Query(() => String)
-	@UseGuards(SessionAuthGuard, RolesGuard)
-	@Roles(Role.ADMIN)
-	async adminRoute(@Context() context: GqlContext): Promise<string> {
-		return 'Доступ только для администраторов';
-	}
+  // резолвер с требованием роли ADMIN
+  @Query(() => String)
+  @UseGuards(SessionAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
+  async adminRoute(@Context() context: GqlContext): Promise<string> {
+    return 'Доступ только для администраторов';
+  }
 
-	// резолвер с требованиями ролей админа и модератора
-	@Query(() => String)
-	@UseGuards(SessionAuthGuard, RolesGuard)
-	@Roles(Role.ADMIN, Role.MODERATOR)
-	async moderatorRoute(@Context() context: GqlContext): Promise<string> {
-		return 'Доступ для администраторов и модераторов';
-	}
+  // резолвер с требованиями ролей админа и модератора
+  @Query(() => String)
+  @UseGuards(SessionAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.MODERATOR)
+  async moderatorRoute(@Context() context: GqlContext): Promise<string> {
+    return 'Доступ для администраторов и модераторов';
+  }
 }

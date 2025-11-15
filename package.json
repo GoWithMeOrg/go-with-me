@@ -11,7 +11,9 @@
     "frontend:lint": "pnpm -r exec eslint packages/web-frontend --fix",
     "backend:lint": "pnpm -r exec eslint packages/backend --fix",
     "frontend:format": "prettier packages/web-frontend -w",
-    "backend:format": "prettier packages/backend -w"
+    "backend:format": "prettier packages/backend -w",
+    "api-scheme:format": "prettier packages/api-scheme -w",
+    "format": "pnpm run frontend:format && pnpm run backend:format && pnpm run api-scheme:format"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",

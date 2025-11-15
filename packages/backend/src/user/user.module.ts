@@ -5,10 +5,8 @@ import { UserResolver } from './user.resolver';
 import { UserSchema } from './entities/user.entity';
 
 @Module({
-	imports: [
-		MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
-	],
-	providers: [UserResolver, UserService],
-	exports: [UserService, MongooseModule],
+  imports: [MongooseModule.forFeature([{ name: 'User', schema: UserSchema }])],
+  providers: [UserResolver, UserService],
+  exports: [UserService, MongooseModule],
 })
 export class UserModule {}

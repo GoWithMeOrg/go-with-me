@@ -71,7 +71,11 @@ export const CardEvent = ({
             alt="img"
             width={imageSizes[size].width}
             height={imageSizes[size].height}
-            style={{ objectFit: 'cover', objectPosition: 'center', borderRadius: '0.25rem' }}
+            style={{
+              objectFit: 'cover',
+              objectPosition: 'center',
+              borderRadius: '0.25rem',
+            }}
           />
         </Link>
       )) ||

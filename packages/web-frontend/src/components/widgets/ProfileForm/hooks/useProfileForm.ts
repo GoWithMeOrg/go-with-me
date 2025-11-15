@@ -3,8 +3,8 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { UPDATE_USER } from '@/app/api/graphql/mutations/user';
 import { GET_USER_BY_ID } from '@/app/api/graphql/queries/user';
 import { useUploadFile } from '@/components/widgets/UploadFile/hooks';
-import { IUser, ProfileType } from '@go-with-me/api-scheme/types/User';
 import { useMutation, useQuery } from '@apollo/client/react';
+import { IUser, ProfileType } from '@go-with-me/api-scheme/types/User';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 

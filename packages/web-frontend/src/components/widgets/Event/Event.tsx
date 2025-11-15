@@ -52,7 +52,11 @@ const Event: FC<EventProps> = ({ event }) => {
           <div className={classes.information}>
             <div className={classes.location}>
               <Marker
-                style={{ transform: 'scale(0.937)', marginRight: '0.5rem', color: '#575B75' }}
+                style={{
+                  transform: 'scale(0.937)',
+                  marginRight: '0.5rem',
+                  color: '#575B75',
+                }}
               />
               <div className={classes.geocoding}>
                 <Geocoding coordinates={coord} />
@@ -70,7 +74,11 @@ const Event: FC<EventProps> = ({ event }) => {
 
             <div className={classes.dateAndTime}>
               <Checkbox
-                style={{ transform: 'scale(0.8)', marginRight: '0.5rem', fill: '#575B75' }}
+                style={{
+                  transform: 'scale(0.8)',
+                  marginRight: '0.5rem',
+                  fill: '#575B75',
+                }}
               />
               {day} {dayjs(event?.startDate).format('DD.MM.YY')} |{' '}
               {formatDate(event?.time, 'HH:mm')}
@@ -142,7 +150,11 @@ const Event: FC<EventProps> = ({ event }) => {
               src={event.image}
               width={680}
               height={480}
-              style={{ objectFit: 'cover', objectPosition: 'center', borderRadius: '0.25rem' }}
+              style={{
+                objectFit: 'cover',
+                objectPosition: 'center',
+                borderRadius: '0.25rem',
+              }}
               alt="img"
               priority
             />

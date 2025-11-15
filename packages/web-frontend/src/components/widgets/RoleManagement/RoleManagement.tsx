@@ -6,10 +6,10 @@ import { Checkbox } from '@/components/shared/Checkbox';
 import { Input } from '@/components/shared/Input';
 import { Label } from '@/components/shared/Label';
 import { Title } from '@/components/shared/Title';
-import { Action, Resource } from '@go-with-me/api-scheme/types/Permission';
-import { IRole } from '@go-with-me/api-scheme/types/Role';
 import { gql } from '@apollo/client';
 import { useMutation, useQuery } from '@apollo/client/react';
+import { Action, Resource } from '@go-with-me/api-scheme/types/Permission';
+import { IRole } from '@go-with-me/api-scheme/types/Role';
 
 import classes from './RoleManagement.module.css';
 
