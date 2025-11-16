@@ -13,21 +13,21 @@ import { RolesGuard } from '../guard/roles.guard';
 import { SessionModule } from 'src/session/session.module';
 
 @Module({
-	imports: [
-		ConfigModule, // чтобы использовать ConfigService в стратеги
-		PassportModule.register({ session: true }), // регистрация passport
-		UserModule,
-		SessionModule,
-	],
-	providers: [
-		AuthService,
-		GoogleAuthStrategy,
-		SessionSerializer,
-		AuthResolver,
-		GoogleOAuthGuard,
-		SessionAuthGuard,
-		RolesGuard,
-	], // регистрируем провайдеры: сервис, стратегия, сериалайзер, резолвер и guards
-	controllers: [AuthController], // регистрируем контроллер
+    imports: [
+        ConfigModule, // чтобы использовать ConfigService в стратеги
+        PassportModule.register({ session: true }), // регистрация passport
+        UserModule,
+        SessionModule,
+    ],
+    providers: [
+        AuthService,
+        GoogleAuthStrategy,
+        SessionSerializer,
+        AuthResolver,
+        GoogleOAuthGuard,
+        SessionAuthGuard,
+        RolesGuard,
+    ], // регистрируем провайдеры: сервис, стратегия, сериалайзер, резолвер и guards
+    controllers: [AuthController], // регистрируем контроллер
 })
 export class AuthModule {}

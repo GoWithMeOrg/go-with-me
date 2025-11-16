@@ -10,32 +10,32 @@ import { Inter } from 'next/font/google';
 import { APIProviderGoogleMaps, ApolloWrapper, NextAuthProvider } from './providers';
 
 const inter = Inter({
-  style: ['normal'],
-  subsets: ['latin'],
-  display: 'swap',
+    style: ['normal'],
+    subsets: ['latin'],
+    display: 'swap',
 });
 
 export const metadata: Metadata = {
-  title: 'Tribe Plans',
-  description: 'Travel, learn, party',
+    title: 'Tribe Plans',
+    description: 'Travel, learn, party',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="en">
-      <body className={inter.className}>
-        <ApolloWrapper>
-          <NextAuthProvider>
-            <APIProviderGoogleMaps>
-              <Suspense>
-                <Header />
-                <Container>{children}</Container>
-                <Footer />
-              </Suspense>
-            </APIProviderGoogleMaps>
-          </NextAuthProvider>
-        </ApolloWrapper>
-      </body>
-    </html>
-  );
+    return (
+        <html lang="en">
+            <body className={inter.className}>
+                <ApolloWrapper>
+                    <NextAuthProvider>
+                        <APIProviderGoogleMaps>
+                            <Suspense>
+                                <Header />
+                                <Container>{children}</Container>
+                                <Footer />
+                            </Suspense>
+                        </APIProviderGoogleMaps>
+                    </NextAuthProvider>
+                </ApolloWrapper>
+            </body>
+        </html>
+    );
 }
