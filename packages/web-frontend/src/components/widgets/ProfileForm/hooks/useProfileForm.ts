@@ -1,7 +1,7 @@
 import { use, useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { UPDATE_USER } from '@/app/api/graphql/mutations/user';
-import { GET_USER_BY_ID } from '@/app/api/graphql/queries/user';
+import { UPDATE_USER } from '@/app/graphql/mutations/user';
+import { GET_USER_BY_ID } from '@/app/graphql/queries/user';
 import { useUploadFile } from '@/components/widgets/UploadFile/hooks';
 import { useMutation, useQuery } from '@apollo/client/react';
 import { IUser, ProfileType } from '@go-with-me/api-scheme/types/User';

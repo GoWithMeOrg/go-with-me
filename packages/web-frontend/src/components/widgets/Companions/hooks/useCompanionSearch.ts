@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { COMPANION_REQUEST_MUTATION } from '@/app/api/graphql/mutations/companionRequest';
-import { REMOVE_COMPANION_MUTATION } from '@/app/api/graphql/mutations/companions';
-import { GET_COMPANIONS, GET_FIND_COMPANION } from '@/app/api/graphql/queries/companions';
+import { COMPANION_REQUEST_MUTATION } from '@/app/graphql/mutations/companionRequest';
+import { REMOVE_COMPANION_MUTATION } from '@/app/graphql/mutations/companions';
+import { GET_COMPANIONS, GET_FIND_COMPANION } from '@/app/graphql/queries/companions';
 import { useUserID } from '@/hooks/useUserID';
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client/react';
 

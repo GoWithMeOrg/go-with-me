@@ -1,5 +1,5 @@
-import { GET_APPLICATIONS } from '@/app/api/graphql/queries/applications';
-import { GET_INVATIONS } from '@/app/api/graphql/queries/invations';
+import { GET_APPLICATIONS } from '@/app/graphql/queries/applications';
+import { GET_INVATIONS } from '@/app/graphql/queries/invations';
 import { useQuery } from '@apollo/client/react';
 import { useSession } from 'next-auth/react';
 

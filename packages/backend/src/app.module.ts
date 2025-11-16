@@ -13,6 +13,7 @@ import { AuthModule } from './auth/GoogleAuth/auth.module';
 import { EventModule } from './event/event.module';
 import { RolesGuard } from './auth/guard/roles.guard';
 import { APP_GUARD } from '@nestjs/core';
+
 @Module({
   imports: [
     ConfigModule.forRoot({

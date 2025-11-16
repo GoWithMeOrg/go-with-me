@@ -19,6 +19,7 @@ export class EventResolver {
     description: 'Получить событие по id',
   })
   getEvent(@Args('id', { type: () => ID }) id: MongoSchema.Types.ObjectId) {
+    console.log('getEvent', id);
     return this.eventService.getEventById(id);
   }
 

@@ -1,7 +1,7 @@
-import { COMPANION_REQUEST_MUTATION } from '@/app/api/graphql/mutations/companionRequest';
-import { GET_IS_USER_COMPANION } from '@/app/api/graphql/queries/companions';
-import { GET_ORGANIZER_EVENTS } from '@/app/api/graphql/queries/events';
-import { GET_USER_BY_ID } from '@/app/api/graphql/queries/user';
+import { COMPANION_REQUEST_MUTATION } from '@/app/graphql/mutations/companionRequest';
+import { GET_IS_USER_COMPANION } from '@/app/graphql/queries/companions';
+import { GET_ORGANIZER_EVENTS } from '@/app/graphql/queries/events';
+import { GET_USER_BY_ID } from '@/app/graphql/queries/user';
 import { useDialogModal } from '@/components/widgets/DialogModal/hooks/useDialogModal';
 import { useUserID } from '@/hooks/useUserID';
 import { useMutation, useQuery } from '@apollo/client/react';

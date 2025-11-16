@@ -62,85 +62,55 @@ input LocationPropertiesInput {
 }
 
 type Mutation {
-  """
-  Создать событие
-  """
+  """Создать событие"""
   createEvent(createEventInput: CreateEventInput!): Event!
 
-  """
-  Создать локацию
-  """
+  """Создать локацию"""
   createLocation(createLocationInput: CreateLocationInput!): Location!
 
-  """
-  Создать пользователя
-  """
+  """Создать пользователя"""
   createUser(createUserInput: CreateUserInput!): User!
 
-  """
-  Удалить событие
-  """
+  """Удалить событие"""
   removeEvent(id: ID!): Boolean!
 
-  """
-  Удалить локацию
-  """
+  """Удалить локацию"""
   removeLocation(id: ID!): Boolean!
 
-  """
-  Удалить пользователя
-  """
+  """Удалить пользователя"""
   removeUser(id: ID!): Boolean!
 
-  """
-  Обновить данные события
-  """
+  """Обновить данные события"""
   updateEvent(id: ID!, updateEventInput: UpdateEventInput!): Event!
 
-  """
-  Обновить локацию
-  """
+  """Обновить локацию"""
   updateLocation(updateLocationInput: UpdateLocationInput!): Location!
 
-  """
-  Обновить данные пользователя
-  """
+  """Обновить данные пользователя"""
   updateUser(updateUserId: ID!, user: UpdateUserInput!): User!
 }
 
 type Query {
   adminRoute: String!
 
-  """
-  Получить событие по id
-  """
+  """Получить событие по id"""
   event(id: ID!): Event!
 
-  """
-  Получить все события
-  """
+  """Получить все события"""
   events: [Event!]!
 
-  """
-  Поиск места по id
-  """
+  """Поиск места по id"""
   locationById(id: ID!): Location!
   moderatorRoute: String!
   session: User
 
-  """
-  Поиск пользователя по id
-  """
+  """Поиск пользователя по id"""
   user(id: ID!): User!
 
-  """
-  Поиск пользователя по id (устаревший синоним)
-  """
+  """Поиск пользователя по id (устаревший синоним)"""
   userById(id: ID!): User!
 
-  """
-  Получить всех пользователей
-  """
+  """Получить всех пользователей"""
   users: [User!]!
 }
 

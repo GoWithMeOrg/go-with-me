@@ -1,5 +1,6 @@
 {
   "graphql.config.load.legacy": false,
   "graphql.config.cacheSchemaFileForLookup": true,
-  "graphql.allowLanguageServiceOverride": true
+  "graphql.allowLanguageServiceOverride": true,
+  "cSpell.words": ["INITDB", "mongodump", "mongorestore"]
 }

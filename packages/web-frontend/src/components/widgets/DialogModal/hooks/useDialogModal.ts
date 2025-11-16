@@ -1,5 +1,5 @@
 import { useReducer } from 'react';
-import { SEND_INVITATION_MUTATION } from '@/app/api/graphql/mutations/invations';
+import { SEND_INVITATION_MUTATION } from '@/app/graphql/mutations/invations';
 import { usePopup } from '@/components/shared/Popup/hooks';
 import {
   dialogModalReducer,

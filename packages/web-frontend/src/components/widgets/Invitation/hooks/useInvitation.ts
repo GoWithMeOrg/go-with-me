@@ -1,9 +1,9 @@
 import {
   ACCEPT_INVITATION_MUTATION,
   DECLINE_INVITATION_MUTATION,
-} from '@/app/api/graphql/mutations/invations';
-import { GET_DECLINED_EVENTS } from '@/app/api/graphql/queries/invations';
-import { GET_JOINED_EVENTS } from '@/app/api/graphql/queries/joined';
+} from '@/app/graphql/mutations/invations';
+import { GET_DECLINED_EVENTS } from '@/app/graphql/queries/invations';
+import { GET_JOINED_EVENTS } from '@/app/graphql/queries/joined';
 import { IUseInvitation } from '@/components/widgets/Invitation/types/Invitation';
 import { useNotifications } from '@/components/widgets/Notifications/hooks';
 import { useMutation } from '@apollo/client/react';

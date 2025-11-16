@@ -13,7 +13,8 @@
     "frontend:format": "prettier packages/web-frontend -w",
     "backend:format": "prettier packages/backend -w",
     "api-scheme:format": "prettier packages/api-scheme -w",
-    "format": "pnpm run frontend:format && pnpm run backend:format && pnpm run api-scheme:format"
+    "format": "pnpm run frontend:format && pnpm run backend:format && pnpm run api-scheme:format",
+    "import:mongo": "./scripts/import-mongo-data.sh"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",

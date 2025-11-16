@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { GET_USERS } from '@/app/api/graphql/queries/users';
+import { GET_USERS } from '@/app/graphql/queries/users';
 import { useEventFilters } from '@/components/widgets/EventFilters/hooks/useEventFilters';
 import { useQuery } from '@apollo/client/react';
 import { faker } from '@faker-js/faker';

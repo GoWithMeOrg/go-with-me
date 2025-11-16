@@ -1,4 +1,4 @@
-import { GET_COMPANION_INVITATION_EVENTS } from '@/app/api/graphql/queries/invations';
+import { GET_COMPANION_INVITATION_EVENTS } from '@/app/graphql/queries/invations';
 import { useUserID } from '@/hooks/useUserID';
 import { useQuery } from '@apollo/client/react';
 

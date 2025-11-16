@@ -1,5 +1,5 @@
-import { LIKE_MUTATION } from '@/app/api/graphql/mutations/like';
-import { GET_LIKED_EVENTS, LIKED } from '@/app/api/graphql/queries/liked';
+import { LIKE_MUTATION } from '@/app/graphql/mutations/like';
+import { GET_LIKED_EVENTS, LIKED } from '@/app/graphql/queries/liked';
 import { ILike } from '@/components/widgets/Like/types/Ilike';
 import { LikeProps } from '@/components/widgets/Like/types/LikeProps';
 import { useMutation, useQuery } from '@apollo/client/react';

@@ -1,9 +1,5 @@
-import { JOIN_MUTATION } from '@/app/api/graphql/mutations/join';
-import {
-  GET_JOINED_EVENTS,
-  JOINED_BY_USER,
-  JOINED_BY_USERS,
-} from '@/app/api/graphql/queries/joined';
+import { JOIN_MUTATION } from '@/app/graphql/mutations/join';
+import { GET_JOINED_EVENTS, JOINED_BY_USER, JOINED_BY_USERS } from '@/app/graphql/queries/joined';
 import { IGetJoined, IJoined } from '@/components/widgets/Join/types/IJoined';
 import { JoinProps } from '@/components/widgets/Join/types/JoinProps';
 import { useMutation, useQuery } from '@apollo/client/react';
