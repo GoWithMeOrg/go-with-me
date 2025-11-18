@@ -4,15 +4,14 @@ import React from 'react';
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
 import { ApolloProvider } from '@apollo/client/react';
 import { APIProvider } from '@vis.gl/react-google-maps';
-import { SessionProvider } from 'next-auth/react';
 
 type Props = {
     children?: React.ReactNode;
 };
 
-export const NextAuthProvider = ({ children }: Props) => {
-    return <SessionProvider>{children}</SessionProvider>;
-};
+// export const NextAuthProvider = ({ children }: Props) => {
+//     return <SessionProvider>{children}</SessionProvider>;
+// };
 
 const createApolloClient = () => {
     return new ApolloClient({

@@ -1,14 +1,14 @@
 import '@/styles/global.css';
 
 import { Suspense } from 'react';
+import { SessionProviderGQL } from '@/app/providers/session/SessionProviderGQL';
 import { Container } from '@/components/shared/Container';
 import { Footer } from '@/components/widgets/Footer';
 import { Header } from '@/components/widgets/Header';
-import { SessionProviderGQL } from '@/components/widgets/SessionProviderGQL';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
-import { APIProviderGoogleMaps, ApolloWrapper, NextAuthProvider } from './providers';
+import { APIProviderGoogleMaps, ApolloWrapper } from './providers/providers';
 
 const inter = Inter({
     style: ['normal'],
@@ -26,17 +26,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <html lang="en">
             <body className={inter.className}>
                 <ApolloWrapper>
-                    <NextAuthProvider>
-                        <SessionProviderGQL>
-                            <APIProviderGoogleMaps>
-                                <Suspense>
-                                    <Header />
-                                    <Container>{children}</Container>
-                                    <Footer />
-                                </Suspense>
-                            </APIProviderGoogleMaps>
-                        </SessionProviderGQL>
-                    </NextAuthProvider>
+                    <SessionProviderGQL>
+                        <APIProviderGoogleMaps>
+                            <Suspense>
+                                <Header />
+                                <Container>{children}</Container>
+                                <Footer />
+                            </Suspense>
+                        </APIProviderGoogleMaps>
+                    </SessionProviderGQL>
                 </ApolloWrapper>
             </body>
         </html>
