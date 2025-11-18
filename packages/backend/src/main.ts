@@ -14,7 +14,7 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   app.enableCors({
-    origin: 'http://localhost:3000', // фронтенд
+    origin: configService.getOrThrow('NEXT_PUBLIC_BASE_URL'), // фронтенд
     credentials: true,
   });
 
@@ -27,7 +27,7 @@ async function bootstrap() {
         mongoUrl: configService.getOrThrow('MONGODB_URI'),
       }),
       cookie: {
-        secure: !isDev(configService), // Проверяем dev или prod,
+        secure: false, //!isDev(configService), // Проверяем dev или prod,
         httpOnly: true,
         maxAge: 1000 * 60 * 60 * 24, // 1 день
       },

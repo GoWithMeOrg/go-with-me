@@ -9,8 +9,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { getMongooseConfig } from './config/mongoose.config';
 import { UserModule } from './user/user.module';
 import { LocationModule } from './location/location.module';
-import { AuthModule } from './auth/GoogleAuth/auth.module';
-import { EventModule } from './event/event.module';
+import { AuthModule } from './auth/auth.module';
 import { RolesGuard } from './auth/guard/roles.guard';
 import { APP_GUARD } from '@nestjs/core';
 
@@ -42,8 +41,6 @@ import { APP_GUARD } from '@nestjs/core';
     LocationModule,
 
     AuthModule,
-
-    EventModule,
   ],
 
   controllers: [],
