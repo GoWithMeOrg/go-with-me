@@ -10,21 +10,23 @@ import {
 } from '@nestjs/common';
 import type { Response } from 'express';
 import type { ReqWithPassport } from 'src/auth/types/graphql-context';
-import { GoogleOAuthGuard } from '../GoogleAuth/guard/google-oauth.guard';
-import { SessionAuthGuard } from '../guard/session-auth.guard';
-import { Roles } from '../decorators/roles.decorator';
-import { Role } from '../interfaces/role.interface';
-import { RolesGuard } from '../guard/roles.guard';
+import { GoogleOAuthGuard } from './GoogleAuth/guard/google-oauth.guard';
+import { SessionAuthGuard } from './guard/session-auth.guard';
+import { Roles } from './decorators/roles.decorator';
+import { Role } from './interfaces/role.interface';
+import { RolesGuard } from './guard/roles.guard';
 import { User } from 'src/user/entities/user.entity';
 import { UserService } from 'src/user/user.service';
 import { SessionService } from 'src/session/session.service';
 import { Schema as MongooSchema } from 'mongoose';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('auth')
 export class AuthController {
     constructor(
         private readonly userService: UserService,
-        private readonly sessionService: SessionService
+        private readonly sessionService: SessionService,
+        private readonly configService: ConfigService
     ) {}
 
     @Get('google/login')
@@ -47,20 +49,20 @@ export class AuthController {
                     return resolve(null);
                 }
 
-                // сохраняем сессию перед редиректом (если стор предоставляет save)
+                // сохраняем сессию перед редиректом (если стор предоставляет save) `http://localhost:3000/events`
                 if (req.session && typeof req.session.save === 'function') {
                     req.session.save((saveErr?: Error | null) => {
                         if (saveErr) console.error('session save error', saveErr);
                         console.log('session saved, session.passport =', req.session?.passport);
-                        // добавить токен в url
-                        // res.redirect(`http://localhost:3000?token=${res.accessToken}/`);
-                        res.redirect(`http://localhost:3000/events`);
+                        res.redirect(
+                            `${this.configService.getOrThrow('NEXT_PUBLIC_BASE_URL') + '/events'}`
+                        );
                         return resolve(null);
                     });
                 } else {
                     // если save не доступен — просто редиректим
                     console.log('session.save not available, skipping save');
-                    res.redirect('http://localhost:3000/');
+                    res.redirect(this.configService.getOrThrow('NEXT_PUBLIC_BASE_URL'));
                     return resolve(null);
                 }
             });
@@ -131,10 +133,10 @@ export class AuthController {
             if (req.session && typeof req.session.destroy === 'function') {
                 req.session.destroy((destroyErr?: Error | null) => {
                     if (destroyErr) console.error('session.destroy error', destroyErr);
-                    return res.redirect('http://localhost:3000');
+                    return res.redirect(this.configService.getOrThrow('NEXT_PUBLIC_BASE_URL'));
                 });
             } else {
-                return res.redirect('http://localhost:3000');
+                return res.redirect(this.configService.getOrThrow('NEXT_PUBLIC_BASE_URL'));
             }
         });
     }

@@ -14,7 +14,7 @@ async function bootstrap() {
     const configService = app.get(ConfigService);
 
     app.enableCors({
-        origin: ['http://localhost:3000', 'http://localhost:3001'], // фронтенд
+        origin: configService.getOrThrow('NEXT_PUBLIC_BASE_URL'), // фронтенд
         credentials: true,
     });
 

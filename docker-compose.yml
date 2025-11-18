@@ -30,6 +30,8 @@ services:
     working_dir: /workspace
     command: >
       sh -c "corepack enable && pnpm install && pnpm --filter web-frontend dev --hostname 0.0.0.0 --port 3000"
+    env_file:
+      - .env.local
     environment:
       NODE_ENV: development
       NEXT_PUBLIC_GRAPHQL_ENDPOINT: https://tribeplans.dev/graphql
