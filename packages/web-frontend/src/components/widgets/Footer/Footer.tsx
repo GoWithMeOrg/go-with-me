@@ -1,13 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
 import { useSessionGQL } from '@/app/providers/session/hooks/useSesssionGQL';
 import LogoFooter from '@/assets/icons/logoFooter.svg';
 import { Button } from '@/components/shared/Button';
 import { Popup } from '@/components/shared/Popup';
 import { usePopup } from '@/components/shared/Popup/hooks';
 import { AuthModal } from '@/components/widgets/AuthModal';
-import { signOut, useSession } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 
 import classes from './Footer.module.css';
