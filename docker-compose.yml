@@ -14,7 +14,6 @@ services:
       SESSION_COOKIE_SECURE: "true"
       SESSION_COOKIE_SAMESITE: none
       SESSION_COOKIE_DOMAIN: tribeplans.dev
-      GOOGLE_CALLBACK_URL: https://tribeplans.dev/api/auth/google/callback
       MONGODB_URI: mongodb://mongo:27017/go-with-me
     volumes:
       - ./:/workspace
@@ -35,12 +34,8 @@ services:
       - .env.local
     environment:
       NODE_ENV: development
-      NEXT_PUBLIC_GRAPHQL_ENDPOINT: /api/graphql
-      NEXTAUTH_URL: /api/auth
-      BASE_FETCH_URL: /
-      #NEXT_PUBLIC_GRAPHQL_ENDPOINT: https://tribeplans.dev/graphql
-      #NEXT_PUBLIC_GRAPHQL_ENDPOINT: http://localhost:4000/graphql
-      #NEXTAUTH_URL: https://tribeplans.dev
+      NEXT_PUBLIC_GRAPHQL_ENDPOINT: http://localhost:4000/graphql
+      NEXTAUTH_URL: https://tribeplans.dev
     volumes:
       - ./:/workspace
       - frontend_node_modules:/workspace/node_modules
@@ -52,7 +47,7 @@ services:
       - "3000:3000"
 
   mongo:
-    image: mongo:8.2
+    image: mongo:7
     container_name: gwm-mongo
     environment:
       MONGO_INITDB_DATABASE: go-with-me

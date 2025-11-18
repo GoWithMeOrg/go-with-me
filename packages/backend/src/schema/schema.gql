@@ -2,16 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-input CreateEventInput {
-  description: String
-  image: String
-  location: CreateLocationInput
-  name: String!
-  organizer: ID!
-  startDate: DateTime!
-  time: String
-}
-
 input CreateLocationInput {
   coordinates: [Float!]!
   properties: LocationPropertiesInput
@@ -33,19 +23,6 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type Event {
-  _id: String!
-  createdAt: DateTime!
-  description: String
-  image: String
-  location: Location
-  name: String!
-  organizer: User!
-  startDate: DateTime!
-  time: String
-  updatedAt: DateTime!
-}
-
 type Location {
   _id: String!
   coordinates: [Float!]!
@@ -62,26 +39,17 @@ input LocationPropertiesInput {
 }
 
 type Mutation {
-  """Создать событие"""
-  createEvent(createEventInput: CreateEventInput!): Event!
-
   """Создать локацию"""
   createLocation(createLocationInput: CreateLocationInput!): Location!
 
   """Создать пользователя"""
   createUser(createUserInput: CreateUserInput!): User!
 
-  """Удалить событие"""
-  removeEvent(id: ID!): Boolean!
-
   """Удалить локацию"""
   removeLocation(id: ID!): Boolean!
 
   """Удалить пользователя"""
   removeUser(id: ID!): Boolean!
-
-  """Обновить данные события"""
-  updateEvent(id: ID!, updateEventInput: UpdateEventInput!): Event!
 
   """Обновить локацию"""
   updateLocation(updateLocationInput: UpdateLocationInput!): Location!
@@ -92,12 +60,6 @@ type Mutation {
 
 type Query {
   adminRoute: String!
-
-  """Получить событие по id"""
-  event(id: ID!): Event!
-
-  """Получить все события"""
-  events: [Event!]!
 
   """Поиск места по id"""
   locationById(id: ID!): Location!
@@ -112,16 +74,6 @@ type Query {
 
   """Получить всех пользователей"""
   users: [User!]!
-}
-
-input UpdateEventInput {
-  description: String
-  image: String
-  location: CreateLocationInput
-  name: String
-  startDate: DateTime
-  time: String
-  updatedAt: DateTime
 }
 
 input UpdateLocationInput {
