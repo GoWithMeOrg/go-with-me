@@ -4,6 +4,7 @@ import { Suspense } from 'react';
 import { Container } from '@/components/shared/Container';
 import { Footer } from '@/components/widgets/Footer';
 import { Header } from '@/components/widgets/Header';
+import { SessionProviderGQL } from '@/components/widgets/SessionProviderGQL';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
@@ -26,13 +27,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <body className={inter.className}>
                 <ApolloWrapper>
                     <NextAuthProvider>
-                        <APIProviderGoogleMaps>
-                            <Suspense>
-                                <Header />
-                                <Container>{children}</Container>
-                                <Footer />
-                            </Suspense>
-                        </APIProviderGoogleMaps>
+                        <SessionProviderGQL>
+                            <APIProviderGoogleMaps>
+                                <Suspense>
+                                    <Header />
+                                    <Container>{children}</Container>
+                                    <Footer />
+                                </Suspense>
+                            </APIProviderGoogleMaps>
+                        </SessionProviderGQL>
                     </NextAuthProvider>
                 </ApolloWrapper>
             </body>

@@ -39,7 +39,7 @@ const EventListPage: NextPage = () => {
     const { data, loading, error } = useQuery(GET_SESSION);
 
     // Лог для проверки результата запроса
-    console.log('Session Data:', data);
+    // console.log('Session Data:', data);
 
     // Если есть ошибка или сессия не найдена, обработайте это правильно
     if (error) {

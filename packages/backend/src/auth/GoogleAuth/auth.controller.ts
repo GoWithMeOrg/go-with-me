@@ -131,10 +131,10 @@ export class AuthController {
             if (req.session && typeof req.session.destroy === 'function') {
                 req.session.destroy((destroyErr?: Error | null) => {
                     if (destroyErr) console.error('session.destroy error', destroyErr);
-                    return res.redirect('http://localhost:3001');
+                    return res.redirect('http://localhost:3000');
                 });
             } else {
-                return res.redirect('http://localhost:3001');
+                return res.redirect('http://localhost:3000');
             }
         });
     }
