@@ -9,16 +9,11 @@ type Props = {
     children?: React.ReactNode;
 };
 
-// export const NextAuthProvider = ({ children }: Props) => {
-//     return <SessionProvider>{children}</SessionProvider>;
-// };
-
 const createApolloClient = () => {
     return new ApolloClient({
         ssrMode: false,
         link: new HttpLink({
-            uri: 'http://localhost:4000/graphql',
-            // uri: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT,
+            uri: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT,
             credentials: 'include',
         }),
         cache: new InMemoryCache(),
