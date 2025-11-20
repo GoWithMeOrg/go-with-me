@@ -1,5 +1,5 @@
 import { FC, HTMLAttributes } from 'react';
-import { IUser } from '@go-with-me/api-scheme/types/User';
+import { IUser } from '@go-with-me/backend/src/types';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 

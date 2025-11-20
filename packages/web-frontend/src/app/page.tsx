@@ -15,34 +15,34 @@ import { useRouter } from 'next/navigation';
 import classes from './page.module.css';
 
 export default function HomePage() {
-    const { data: session, status } = useSessionGQL();
+  const { data: session, status } = useSessionGQL();
 
-    const router = useRouter();
+  const router = useRouter();
 
-    useEffect(() => {
-        if (status === 'authenticated') {
-            router.push('/events');
-        }
-    }, [status, router]);
+  useEffect(() => {
+    if (status === 'authenticated') {
+      router.push('/events');
+    }
+  }, [status, router]);
 
-    return (
-        <div className={classes.homePage}>
-            {status === 'unauthenticated' && (
-                <>
-                    <Promo />
-                    <section className={classes.popularEvents}>
-                        <div className={classes.popularEventsHeader}>
-                            <Title title={'Popular Event List'} tag={'h2'} />
-                        </div>
+  return (
+    <div className={classes.homePage}>
+      {status === 'unauthenticated' && (
+        <>
+          <Promo />
+          <section className={classes.popularEvents}>
+            <div className={classes.popularEventsHeader}>
+              <Title title={'Popular Event List'} tag={'h2'} />
+            </div>
 
-                        <EventList sizeCard={SizeCard.ML} limit={9} offset={9} sort={'startDate'} />
+            <EventList sizeCard={SizeCard.ML} limit={9} offset={9} sort={'startDate'} />
 
-                        <MoreLink link={'/events'} text={'more events'} />
-                    </section>
-                    <HowITWorks />
-                    <CreateAndInvite mode={Mode.BOTH} status={status} />
-                </>
-            )}
-        </div>
-    );
+            <MoreLink link={'/events'} text={'more events'} />
+          </section>
+          <HowITWorks />
+          <CreateAndInvite mode={Mode.BOTH} status={status} />
+        </>
+      )}
+    </div>
+  );
 }

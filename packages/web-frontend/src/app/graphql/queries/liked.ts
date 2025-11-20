@@ -1,1 +1,1 @@
-export { LIKED, GET_LIKED_EVENTS } from '@go-with-me/api-scheme/graphql/liked';
+export { LIKED, GET_LIKED_EVENTS } from '@go-with-me/backend/src/graphql/queries';

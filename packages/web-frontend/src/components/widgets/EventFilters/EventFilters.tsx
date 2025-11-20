@@ -11,7 +11,7 @@ import { useEventList } from '@/components/widgets/EventList/hooks';
 import { FilteredEventsLocation } from '@/components/widgets/FilteredEventsLocation';
 import { optionsCities } from '@/components/widgets/GoogleMap/OptionsAutocomplete';
 import { SelectItems } from '@/components/widgets/SelectItems';
-import { IEvent } from '@go-with-me/api-scheme/types/Event';
+import { IEvent } from '@go-with-me/backend/src/types';
 
 import { GoogleMap } from '../GoogleMap';
 import { NavbarEventTabs } from '../Navbar/models';

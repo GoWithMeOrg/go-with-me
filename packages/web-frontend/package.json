@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@apollo/client": "^4.0.7",
-    "@go-with-me/api-scheme": "workspace:^",
+    "@go-with-me/backend": "workspace:^",
     "@googlemaps/js-api-loader": "^2.0.1",
     "@googlemaps/routing": "^2.1.1",
     "@graphql-tools/schema": "^10.0.25",

@@ -1,1 +1,1 @@
-export { GET_USERS } from '@go-with-me/api-scheme/graphql/users';
+export { GET_USERS } from '@go-with-me/backend/src/graphql/queries';

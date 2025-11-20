@@ -19,7 +19,7 @@ import { DialogModal } from '@/components/widgets/DialogModal';
 import { DialogMode } from '@/components/widgets/DialogModal/DialogModal';
 import { InvationEvent } from '@/components/widgets/DialogModal/InvationEvent';
 import SuccessModal from '@/components/widgets/SuccessModal/SuccessModal';
-import { IEvent } from '@go-with-me/api-scheme/types/Event';
+import { IEvent } from '@go-with-me/backend/src/types';
 import { NextPage } from 'next';
 
 import { usePublicProfile } from './hooks';

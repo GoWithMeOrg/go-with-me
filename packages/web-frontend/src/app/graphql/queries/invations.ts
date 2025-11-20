@@ -2,4 +2,4 @@ export {
   GET_INVATIONS,
   GET_COMPANION_INVITATION_EVENTS,
   GET_DECLINED_EVENTS,
-} from '@go-with-me/api-scheme/graphql/invations';
+} from '@go-with-me/backend/src/graphql/queries';
