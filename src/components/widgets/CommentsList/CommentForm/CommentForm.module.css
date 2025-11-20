@@ -1,8 +1,0 @@
-.form {
-    margin-bottom: 0.75rem;
-    width: 50rem;
-}
-.form > *:not(:last-child) {
-    display: block;
-    margin-bottom: 1rem;
-}

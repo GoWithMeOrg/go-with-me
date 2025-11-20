@@ -1,0 +1,11 @@
+.backdrop {
+  width: 100%;
+}
+
+.containerRef {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}

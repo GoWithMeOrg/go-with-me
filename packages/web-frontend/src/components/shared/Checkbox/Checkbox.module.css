@@ -1,0 +1,34 @@
+.checkbox input[type='checkbox'] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 29px;
+  height: 29px;
+  border: 2px solid var(--accent-color);
+  border-radius: 50%;
+  background-color: white;
+  cursor: pointer;
+  display: inline-block;
+  transition: background-color 0.2s ease;
+}
+
+/* Фон круга при активном состоянии */
+.checkbox input[type='checkbox']:checked {
+  background-color: var(--accent-color);
+}
+
+/* Галочка через псевдоэлемент */
+.checkbox input[type='checkbox']::after {
+  content: '';
+  opacity: 0;
+  background-image: url(/icons/check.svg);
+  width: 16px;
+  height: 14px;
+  transition: opacity 0.2s;
+  position: absolute;
+  transform: translate(30%, 40%) rotate(5deg);
+}
+
+/* Показываем галочку, когда чекбокс отмечен */
+.checkbox input[type='checkbox']:checked::after {
+  opacity: 1;
+}

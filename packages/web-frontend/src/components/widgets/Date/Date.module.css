@@ -1,0 +1,40 @@
+.date {
+  display: flex;
+  flex-direction: column;
+}
+
+.dateTitle {
+  color: var(--text-color);
+  font-size: 0.88rem;
+  font-weight: 500;
+  line-height: 1.625rem;
+  text-align: left;
+  margin-bottom: 0.125rem;
+}
+
+.dateInput {
+  width: 11.25rem;
+  display: flex;
+  background: var(--white-color);
+  border: 1px solid var(--additional-color);
+  border-radius: 0.25rem;
+  color: var(--main-color);
+  font-size: 1rem;
+  font-weight: 400;
+  text-align: left;
+  height: 3.13rem;
+  padding: 0.75rem 0.94rem;
+}
+
+.dateInput[type='date']::-webkit-calendar-picker-indicator {
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1, 625rem;
+  color: var(--main);
+  padding: 0.75rem 1.06rem;
+  background-image: url('../../../assets/icons/calendar.svg');
+  background-repeat: no-repeat;
+  background-position: 100% center;
+  cursor: pointer;
+  font-family: '__Inter_aaf875';
+}

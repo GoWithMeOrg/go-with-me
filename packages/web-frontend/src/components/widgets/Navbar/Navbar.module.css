@@ -1,0 +1,47 @@
+.navbar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.personal {
+  display: flex;
+  align-items: center;
+}
+
+.navbarItem {
+  color: var(--additional-color);
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.19rem;
+}
+
+.navbarItemNotification {
+  color: var(--additional-color);
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.19rem;
+  margin-left: 0;
+}
+
+.navbarItemActive {
+  color: var(--main-color);
+}
+
+.redDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+  background: red;
+  margin-right: 0.5rem;
+}
+
+.whiteDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+  background: white;
+  margin-right: 0.5rem;
+}

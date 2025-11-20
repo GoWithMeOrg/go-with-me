@@ -1,1 +1,0 @@
-export { useGenerator } from "./useGenerator";
