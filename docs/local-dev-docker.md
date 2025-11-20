@@ -24,6 +24,7 @@ Create the certificate pair inside `infra/certs` (the directory is mounted into 
 mkdir -p infra/certs
 cd infra/certs
 mkcert -key-file tribeplans.dev-key.pem -cert-file tribeplans.dev.pem tribeplans.dev
+mkcert -install
 ```
 
 > If you cannot use mkcert, replace the command above with OpenSSL equivalents. Ensure both `.pem` files match the names referenced in `infra/nginx/conf.d/tribeplans.conf`.
@@ -43,13 +44,13 @@ docker compose up --build
 
 Compose starts four containers:
 
-| Service    | Description                               | Port |
-|------------|-------------------------------------------|------|
-| `gwm-mongo` | MongoDB instance for local development   | 27017 |
-| `gwm-backend` | NestJS API running on port `4000` inside the network | 4000 |
-| `gwm-frontend` | Next.js dev server (hot reload)        | 3000 |
-| `gwm-mongo` | MongoDB instance for local development   | 27017 |
-| `gwm-nginx` | Reverse proxy terminating HTTPS          | 80/443 |
+| Service        | Description                                          | Port   |
+| -------------- | ---------------------------------------------------- | ------ |
+| `gwm-mongo`    | MongoDB instance for local development               | 27017  |
+| `gwm-backend`  | NestJS API running on port `4000` inside the network | 4000   |
+| `gwm-frontend` | Next.js dev server (hot reload)                      | 3000   |
+| `gwm-mongo`    | MongoDB instance for local development               | 27017  |
+| `gwm-nginx`    | Reverse proxy terminating HTTPS                      | 80/443 |
 
 Visit **https://tribeplans.dev** in your browser. The first visit will prompt you to trust the locally generated certificate—accept it to continue.
 
@@ -76,19 +77,19 @@ The same stack runs cleanly on Podman with minor changes. Follow the Docker inst
 1. Install Podman via [Podman Desktop](https://podman.io/podman-desktop) or Homebrew (`brew install podman podman-compose`).
 2. Initialize and start the Podman machine (required on macOS):
 
-   ```bash
-   podman machine init --now
-   ```
+    ```bash
+    podman machine init --now
+    ```
 
-   > If you already have a machine, ensure it is running with `podman machine start`.
+    > If you already have a machine, ensure it is running with `podman machine start`.
 
 3. Export the Podman socket so compose commands can communicate with the Podman engine:
 
-   ```bash
-   export DOCKER_HOST=$(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.URI}}')
-   ```
+    ```bash
+    export DOCKER_HOST=$(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.URI}}')
+    ```
 
-   Adding this export to your shell profile keeps it available across sessions.
+    Adding this export to your shell profile keeps it available across sessions.
 
 ## Running the Stack
 
@@ -111,4 +112,3 @@ Podman’s `compose` subcommand understands the existing `docker-compose.yml`. T
 - Podman automatically builds images rootless; no extra configuration is required for the provided Dockerfile targets.
 - Volume mounts defined in `docker-compose.yml` map into the Podman machine. If you need to clean the pnpm store, run `podman volume rm gwm_frontend_node_modules gwm_backend_node_modules gwm_pnpm_store`.
 - Certificates, hosts file configuration, and environment variable management are identical to the Docker workflow above.
-
