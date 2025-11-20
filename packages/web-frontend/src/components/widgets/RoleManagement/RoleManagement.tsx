@@ -8,8 +8,7 @@ import { Label } from '@/components/shared/Label';
 import { Title } from '@/components/shared/Title';
 import { gql } from '@apollo/client';
 import { useMutation, useQuery } from '@apollo/client/react';
-import { Action, Resource } from '@go-with-me/api-scheme/types/Permission';
-import { IRole } from '@go-with-me/api-scheme/types/Role';
+import { Action, Resource, IRole } from '@go-with-me/backend/src/types';
 
 import classes from './RoleManagement.module.css';
 

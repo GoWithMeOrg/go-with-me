@@ -1,4 +1,4 @@
-import { InvitationResponseStatus } from '@go-with-me/api-scheme/types/Invitation';
+import { InvitationResponseStatus } from '@go-with-me/backend/src/types';
 
 export interface InvitationProps {
   invitation_id: string;

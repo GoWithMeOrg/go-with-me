@@ -6,7 +6,7 @@ import { Title } from '@/components/shared/Title';
 import { EventForm } from '@/components/widgets/EventForm/EventForm';
 import { gql } from '@apollo/client';
 import { useMutation, useQuery } from '@apollo/client/react';
-import type { IEvent } from '@go-with-me/api-scheme/types/Event';
+import type { IEvent } from '@go-with-me/backend/src/types';
 import { NextPage } from 'next';
 import { useParams, useRouter } from 'next/navigation';
 
