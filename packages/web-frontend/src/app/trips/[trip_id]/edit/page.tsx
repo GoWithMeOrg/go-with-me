@@ -3,7 +3,7 @@
 import { TripForm } from '@/components/widgets/TripForm';
 import { gql } from '@apollo/client';
 import { useMutation, useQuery } from '@apollo/client/react';
-import type { ITrip } from '@go-with-me/backend/src/types';
+import type { ITrip } from '@/types';
 import { NextPage } from 'next';
 import { useParams, useRouter } from 'next/navigation';
 

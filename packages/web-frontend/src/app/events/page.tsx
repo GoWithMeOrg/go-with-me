@@ -11,7 +11,7 @@ import { Mode } from '@/components/widgets/CreateAndInvite/CreateAndInvite';
 import { EventFilters } from '@/components/widgets/EventFilters';
 import { useEventList } from '@/components/widgets/EventList/hooks';
 import { useQuery } from '@apollo/client/react';
-import { IEvent } from '@go-with-me/backend/src/types';
+import { IEvent } from '@/types';
 import gql from 'graphql-tag';
 import type { NextPage } from 'next';
 import { User } from 'next-auth';

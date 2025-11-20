@@ -1,5 +1,5 @@
-// Export types for frontend consumption
-// These match the interfaces expected by the frontend
+// TypeScript types for GraphQL responses and shared interfaces
+// These types match the backend GraphQL schema
 
 export interface IEvent {
   _id: string;

@@ -4,7 +4,7 @@ import { UPDATE_USER } from '@/app/graphql/mutations/user';
 import { GET_USER_BY_ID } from '@/app/graphql/queries/user';
 import { useUploadFile } from '@/components/widgets/UploadFile/hooks';
 import { useMutation, useQuery } from '@apollo/client/react';
-import { IUser, ProfileType } from '@go-with-me/backend/src/types';
+import { IUser, ProfileType } from '@/types';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 

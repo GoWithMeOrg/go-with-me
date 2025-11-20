@@ -1,4 +1,4 @@
-import { IComment } from '@go-with-me/backend/src/types';
+import { IComment } from '@/types';
 
 export type ICommentData = Pick<
   IComment,

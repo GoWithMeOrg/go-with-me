@@ -1,6 +1,7 @@
 import { GetEventsData, useEventListProps } from '@/components/widgets/EventList/types/EventList';
 import { useQuery } from '@apollo/client/react';
-import { GET_EVENTS, IEvent } from '@go-with-me/backend/src/graphql/queries';
+import { GET_EVENTS } from '@/app/graphql/queries/events';
+import { IEvent } from '@/types';
 
 export const useEventList = ({ limit, offset, sort }: useEventListProps) => {
   const { loading, error, data, refetch } = useQuery<GetEventsData>(GET_EVENTS, {

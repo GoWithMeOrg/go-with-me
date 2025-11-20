@@ -1,6 +1,6 @@
 import { FC, FormEvent } from 'react';
 import { TripFormEvents } from '@/components/widgets/TripForm/TripFormEvents/TripFormEvents';
-import type { ITrip } from '@go-with-me/backend/src/types';
+import type { ITrip } from '@/types';
 import dayjs from 'dayjs';
 
 import classes from './TripForm.module.css';

@@ -4,7 +4,7 @@ import { FC } from 'react';
 import { formatDate } from '@/utils/formatDate';
 import { gql } from '@apollo/client';
 import { useMutation, useQuery } from '@apollo/client/react';
-import { ITrip } from '@go-with-me/backend/src/types';
+import { ITrip } from '@/types';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 

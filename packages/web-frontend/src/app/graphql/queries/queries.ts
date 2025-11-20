@@ -18,9 +18,6 @@ export const GET_SESSION = gql`
 `;
 
 // Event Queries
-// NOTE: EventModule has been added to AppModule
-// The schema will be regenerated when the backend starts, and these queries will be validated
-// TypeScript errors about "events" and "event" fields will disappear after schema regeneration
 export const GET_EVENTS = gql`
   query GetEvents {
     events {
@@ -82,6 +79,36 @@ export const GET_EVENT = gql`
   }
 `;
 
+export const GET_ORGANIZER_EVENTS = gql`
+  query GetOrganizerEvents($organizerId: ID!) {
+    events {
+      _id
+      name
+      description
+      startDate
+      time
+      location {
+        _id
+        coordinates
+        type
+        properties {
+          address
+        }
+      }
+      image
+      organizer {
+        _id
+        firstName
+        lastName
+        email
+        image
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
 // User Queries
 export const GET_USERS = gql`
   query GetUsers {
@@ -115,6 +142,22 @@ export const GET_USER = gql`
   }
 `;
 
+export const GET_USER_BY_ID = GET_USER; // Alias for compatibility
+
+export const GET_FIND_USERS = gql`
+  query FindUsers($search: String) {
+    users {
+      _id
+      firstName
+      lastName
+      email
+      roles
+      image
+      description
+    }
+  }
+`;
+
 // Location Queries
 export const GET_LOCATION_BY_ID = gql`
   query GetLocationById($id: ID!) {
@@ -130,9 +173,6 @@ export const GET_LOCATION_BY_ID = gql`
 `;
 
 // Application Queries (placeholders - update when backend implements these)
-// NOTE: These are placeholder queries - implement when Application resolver is added
-// For now, they're valid GraphQL queries that return empty results
-// TODO: Update these when Application resolver is implemented
 export const GET_APPLICATIONS = gql`
   query GetApplications {
     __typename
@@ -142,54 +182,6 @@ export const GET_APPLICATIONS = gql`
 export const GET_APPLICATION = gql`
   query GetApplication($_id: ID!) {
     __typename
-  }
-`;
-
-// Additional Event Queries
-export const GET_ORGANIZER_EVENTS = gql`
-  query GetOrganizerEvents($organizerId: ID!) {
-    events {
-      _id
-      name
-      description
-      startDate
-      time
-      location {
-        _id
-        coordinates
-        type
-        properties {
-          address
-        }
-      }
-      image
-      organizer {
-        _id
-        firstName
-        lastName
-        email
-        image
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-
-// User Queries
-export const GET_USER_BY_ID = GET_USER; // Alias for compatibility
-
-export const GET_FIND_USERS = gql`
-  query FindUsers($search: String) {
-    users {
-      _id
-      firstName
-      lastName
-      email
-      roles
-      image
-      description
-    }
   }
 `;
 
@@ -263,16 +255,3 @@ export const GET_IS_USER_COMPANION = gql`
   }
 `;
 
-// Re-export types from types/index.ts
-export type {
-  IEvent,
-  IUser,
-  IComment,
-  ITrip,
-  IRole,
-  IInvitation,
-  ProfileType,
-  Action,
-  Resource,
-  InvitationResponseStatus,
-} from '../types';
