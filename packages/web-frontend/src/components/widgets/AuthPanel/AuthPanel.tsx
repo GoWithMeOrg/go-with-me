@@ -36,7 +36,7 @@ export const AuthPanel = () => {
                     <div className={classes.avatarAndMenu}>
                         <div className={classes.menu}>
                             <Link
-                                href={`/profile/${session?.email}/private`}
+                                href={`/profile/${session?._id}/private`}
                                 className={classes.linkToProfile}
                             >
                                 <Human />

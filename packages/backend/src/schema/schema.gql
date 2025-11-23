@@ -66,11 +66,8 @@ type Query {
   moderatorRoute: String!
   session: User
 
-  """Поиск пользователя по id"""
-  user(id: ID!): User!
-
   """Поиск пользователя по id (устаревший синоним)"""
-  userById(id: ID!): User!
+  user(id: ID!): User!
 
   """Получить всех пользователей"""
   users: [User!]!

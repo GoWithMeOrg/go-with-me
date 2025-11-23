@@ -23,31 +23,11 @@ const errorLink = new ErrorLink(({ error, operation }) => {
             }
         });
     }
-    // if (CombinedGraphQLErrors.is(error)) {
-    //     error.errors.forEach(({ message, locations, path, extensions }) =>
-    //         console.log(
-    //             `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}, Extensions: ${JSON.stringify(extensions).includes('UNAUTHORIZED')}`
-    //         )
-    //     );
-    // } else if (CombinedProtocolErrors.is(error)) {
-    //     error.errors.forEach(({ message, extensions }) =>
-    //         console.log(
-    //             `[Protocol error]: Message: ${message}, Extensions: ${JSON.stringify(extensions)}`
-    //         )
-    //     );
-    // } else {
-    //     console.error(`[Network error]: ${error}`);
-    // }
-    // console.log(error.errors[0].extensions.code);
 });
 
 const createApolloClient = () => {
     return new ApolloClient({
         ssrMode: false,
-        // link: new HttpLink({
-        //     uri: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT,
-        //     credentials: 'include',
-        // }),
         link: errorLink.concat(
             new HttpLink({ uri: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT, credentials: 'include' })
         ),
