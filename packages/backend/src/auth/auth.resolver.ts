@@ -6,24 +6,30 @@ import { Roles } from './decorators/roles.decorator';
 import { Role } from './interfaces/role.interface';
 import { RolesGuard } from './guard/roles.guard';
 import type { GqlContext } from 'src/auth/types/graphql-context';
-import { AuthenticationError } from '@nestjs/apollo/dist/errors';
+import { GraphQLError } from 'graphql';
 
 @Resolver(() => User)
 export class AuthResolver {
     @Query(() => User, { nullable: true })
     @UseGuards(SessionAuthGuard)
     async session(@Context() context: GqlContext): Promise<Partial<User> | null> {
-        if (!context.req.user) {
-            // бросаем стандартную Apollo ошибку с кодом UNAUTHENTICATED
-            throw new AuthenticationError('Пользователь не авторизован');
-        }
+        // if (!context.req.user) {
+        //     // бросаем стандартную Apollo ошибку с кодом UNAUTHENTICATED
+        //     throw new GraphQLError('User is not authorized', {
+        //         extensions: {
+        //             code: 'UNAUTHORIZED',
+        //             http: { status: 401 },
+        //         },
+        //     });
+        // }
         // console.log(
         // 	'AuthResolver.me - context keys:',
         // 	Object.keys(context || {}),
         // );
         // console.log('AuthResolver.me - context.req =', !!context?.req);
         // console.log('AuthResolver.me - context.req.user =', context?.req?.user);
-        return context.req.user;
+        // return context.req.user;
+        return context.req.user || null;
     }
 
     // резолвер с требованием роли ADMIN

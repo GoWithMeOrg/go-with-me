@@ -44,7 +44,7 @@ export class AuthController {
             req.logIn(user ?? {}, (err?: Error | null) => {
                 if (err) {
                     // Ошибка при логине — направляем пользователя на страницу ошибки
-                    console.error('req.logIn error', err);
+                    // console.error('req.logIn error', err);
                     res.redirect('http://localhost:3000/error');
                     return resolve(null);
                 }
