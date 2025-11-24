@@ -1,20 +1,30 @@
-import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, ID, ResolveField, Parent } from '@nestjs/graphql';
 import { UserService } from './user.service';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { User } from './entities/user.entity';
+import { Location } from '../location/entities/location.entity';
 import { Schema as MongoSchema } from 'mongoose';
+import { LocationService } from 'src/location/location.service';
 
 @Resolver(() => User)
 export class UserResolver {
-    constructor(private readonly userService: UserService) {}
+    constructor(
+        private readonly userService: UserService,
+        private readonly locationService: LocationService
+    ) {}
 
     @Query(() => User, {
         name: 'user',
-        description: 'Поиск пользователя по id (устаревший синоним)',
+        description: 'Поиск пользователя по id',
     })
-    getUserById(@Args('id', { type: () => ID }) id: MongoSchema.Types.ObjectId) {
-        return this.userService.getUserById(id);
+    async getUserById(@Args('id', { type: () => ID }) id: MongoSchema.Types.ObjectId) {
+        return await this.userService.getUserById(id);
+    } // дополнительный запрос при это поле в User нет поля локация
+    @ResolveField(() => Location, { nullable: true })
+    async location(@Parent() user: User) {
+        // Мы ищем локацию, которая принадлежит этому юзеру
+        return await this.locationService.getLocationByOwner(user._id);
     }
 
     @Query(() => [User], {

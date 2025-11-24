@@ -4,6 +4,8 @@
 
 input CreateLocationInput {
   coordinates: [Float!]!
+  ownerId: ID!
+  ownerType: String!
   properties: LocationPropertiesInput
   type: String!
 }
@@ -26,8 +28,12 @@ scalar DateTime
 type Location {
   _id: String!
   coordinates: [Float!]!
+  createdAt: DateTime!
+  ownerId: String!
+  ownerType: String!
   properties: LocationProperties
   type: String!
+  updatedAt: DateTime!
 }
 
 type LocationProperties {
@@ -63,10 +69,13 @@ type Query {
 
   """Поиск места по id"""
   locationById(id: ID!): Location!
+
+  """Поиск места по ownerId"""
+  locationByOwnerId(ownerId: ID!): Location!
   moderatorRoute: String!
   session: User
 
-  """Поиск пользователя по id (устаревший синоним)"""
+  """Поиск пользователя по id"""
   user(id: ID!): User!
 
   """Получить всех пользователей"""
@@ -74,8 +83,8 @@ type Query {
 }
 
 input UpdateLocationInput {
-  _id: String!
-  coordinates: [Float!]!
+  _id: ID!
+  coordinates: [Float!]
   properties: LocationPropertiesInput
 }
 
@@ -98,6 +107,7 @@ type User {
   firstName: String!
   image: String
   lastName: String!
+  location: Location
   roles: [String!]!
   updatedAt: DateTime!
 }

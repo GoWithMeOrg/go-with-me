@@ -7,6 +7,6 @@ export * from './types/Joined';
 export * from './types/Like';
 export * from './types/List';
 export * from './types/Role';
-export * from './types/Session';
 export * from './types/User';
 export * from './types/Сompanions';
+export * from './types/Location';

@@ -83,21 +83,21 @@ export const ProfileForm: FC = () => {
                             )}
                         />
 
-                        {/* <Controller
+                        <Controller
                             name="location"
                             control={control}
-                            defaultValue={userData?.user?.location}
+                            defaultValue={userData?.location}
                             render={({ field }) => (
                                 <Label label={'Локация'}>
                                     <Autocomplete
                                         className={classes.location}
                                         onPlaceSelect={field.onChange}
-                                        address={userData?.user?.location.properties.address}
+                                        address={userData?.location?.properties.address}
                                         options={optionsFullAdress}
                                     />
                                 </Label>
                             )}
-                        /> */}
+                        />
 
                         <Controller
                             name="description"

@@ -7,27 +7,47 @@ import { Location, LocationDocument } from './entities/location.entity';
 
 @Injectable()
 export class LocationService {
-  constructor(
-    @InjectModel(Location.name)
-    private locationModel: Model<LocationDocument>
-  ) {}
+    constructor(
+        @InjectModel(Location.name)
+        private locationModel: Model<LocationDocument>
+    ) {}
 
-  getLocationById(id: MongoSchema.Types.ObjectId) {
-    return this.locationModel.findById(id);
-  }
+    getLocationById(id: MongoSchema.Types.ObjectId): Promise<Location | null> {
+        return this.locationModel.findById(id);
+    }
 
-  createLocation(createLocationInput: CreateLocationInput) {
-    const createLocation = new this.locationModel(createLocationInput);
-    return createLocation.save();
-  }
+    async getLocationByOwner(ownerId: MongoSchema.Types.ObjectId): Promise<Location | null> {
+        return this.locationModel.findOne({ ownerId }).exec();
+    }
 
-  updateLocation(id: MongoSchema.Types.ObjectId, updateLocationInput: UpdateLocationInput) {
-    return this.locationModel.findByIdAndUpdate(id, updateLocationInput, {
-      new: true,
-    });
-  }
+    createLocation(createLocationInput: CreateLocationInput): Promise<Location | null> {
+        const createLocation = new this.locationModel(createLocationInput);
+        return createLocation.save();
+    }
 
-  removeLocation(id: MongoSchema.Types.ObjectId): Promise<DeleteResult> {
-    return this.locationModel.deleteOne({ _id: id }).exec();
-  }
+    // updateLocation(
+    //     id: MongoSchema.Types.ObjectId,
+    //     updateLocationInput: UpdateLocationInput
+    // ): Promise<Location | null> {
+    //     return this.locationModel.findByIdAndUpdate(id, updateLocationInput, {
+    //         new: true,
+    //     });
+    // }
+
+    async updateLocation(id: MongoSchema.Types.ObjectId, updateLocationInput: UpdateLocationInput) {
+        return this.locationModel.findByIdAndUpdate(
+            id,
+            {
+                coordinates: updateLocationInput.coordinates,
+                properties: updateLocationInput.properties,
+            },
+            { new: true }
+        );
+        // .lean()
+        // .exec();
+    }
+
+    removeLocation(id: MongoSchema.Types.ObjectId): Promise<DeleteResult> {
+        return this.locationModel.deleteOne({ _id: id }).exec();
+    }
 }

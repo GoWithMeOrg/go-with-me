@@ -39,9 +39,10 @@ export const useProfileForm = () => {
     const {
         data: userData,
         refetch,
-        loading,
         error,
-    } = useQuery<{ user: IUser }>(GET_USER_BY_ID, { variables: { userById: session?._id } });
+    } = useQuery(GET_USER_BY_ID, {
+        variables: { userId: session?._id },
+    });
 
     console.log(userData);
     const [updateUser] = useMutation(UPDATE_USER);
@@ -90,10 +91,10 @@ export const useProfileForm = () => {
     const onSubmit: SubmitHandler<IFormProfile> = (event: ProfileType) => {
         handleEditProfile(event);
         if (file && presignUrl) {
-            onSubmitFile(file, presignUrl);
-            if (userData?.user?.image && file) {
-                getDeleteFile(userData?.user?.image);
-            }
+            // onSubmitFile(file, presignUrl);
+            // if (userData?.user?.image && file) {
+            //     getDeleteFile(userData?.user?.image);
+            // }
         }
     };
 

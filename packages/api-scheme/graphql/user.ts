@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export const GET_USER_BY_ID = gql`
-    query UserById($userById: ID!) {
-        user(id: $userById) {
+    query User($userId: ID!) {
+        user(id: $userId) {
             _id
             createdAt
             description
@@ -10,6 +10,18 @@ export const GET_USER_BY_ID = gql`
             firstName
             image
             lastName
+            location {
+                _id
+                coordinates
+                createdAt
+                ownerId
+                ownerType
+                properties {
+                    address
+                }
+                type
+                updatedAt
+            }
             roles
             updatedAt
         }

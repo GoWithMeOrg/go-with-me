@@ -7,35 +7,35 @@ import { DeleteResult, Model, Schema as MongoSchema } from 'mongoose';
 
 @Injectable()
 export class UserService {
-  constructor(
-    @InjectModel(User.name)
-    private userModel: Model<UserDocument>
-  ) {}
+    constructor(
+        @InjectModel(User.name)
+        private userModel: Model<UserDocument>
+    ) {}
 
-  getAllUsers() {
-    return this.userModel.find();
-  }
+    getAllUsers(): Promise<User[] | null> {
+        return this.userModel.find();
+    }
 
-  getUserById(id: MongoSchema.Types.ObjectId) {
-    return this.userModel.findById(id);
-  }
+    getUserById(id: MongoSchema.Types.ObjectId): Promise<User | null> {
+        return this.userModel.findById(id);
+    }
 
-  getPublicProfile(id: MongoSchema.Types.ObjectId) {
-    return this.userModel.findById(id).select('firstName lastName image description');
-  }
+    getPublicProfile(id: MongoSchema.Types.ObjectId) {
+        return this.userModel.findById(id).select('firstName lastName image description');
+    }
 
-  createUser(createUserInput: CreateUserInput) {
-    const createUser = new this.userModel(createUserInput);
-    return createUser.save();
-  }
+    createUser(createUserInput: CreateUserInput) {
+        const createUser = new this.userModel(createUserInput);
+        return createUser.save();
+    }
 
-  updateUser(id: MongoSchema.Types.ObjectId, updateUserInput: UpdateUserInput) {
-    return this.userModel.findByIdAndUpdate(id, updateUserInput, {
-      new: true,
-    });
-  }
+    updateUser(id: MongoSchema.Types.ObjectId, updateUserInput: UpdateUserInput) {
+        return this.userModel.findByIdAndUpdate(id, updateUserInput, {
+            new: true,
+        });
+    }
 
-  removeUser(id: MongoSchema.Types.ObjectId): Promise<DeleteResult> {
-    return this.userModel.deleteOne({ _id: id }).exec();
-  }
+    removeUser(id: MongoSchema.Types.ObjectId): Promise<DeleteResult> {
+        return this.userModel.deleteOne({ _id: id }).exec();
+    }
 }

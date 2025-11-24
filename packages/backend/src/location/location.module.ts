@@ -5,7 +5,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { LocationSchema } from './entities/location.entity';
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: 'Location', schema: LocationSchema }])],
-  providers: [LocationResolver, LocationService],
+    imports: [MongooseModule.forFeature([{ name: 'Location', schema: LocationSchema }])],
+    providers: [LocationResolver, LocationService],
+    exports: [LocationService, MongooseModule],
 })
 export class LocationModule {}
