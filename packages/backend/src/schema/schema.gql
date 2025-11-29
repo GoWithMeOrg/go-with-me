@@ -2,6 +2,12 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input CreateInterestInput {
+  interest: [String!]!
+  ownerId: ID!
+  ownerType: String!
+}
+
 input CreateLocationInput {
   coordinates: [Float!]!
   ownerId: ID!
@@ -23,6 +29,13 @@ input CreateUserInput {
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+type Interest {
+  _id: ID!
+  interest: [String!]!
+  ownerId: ID!
+  ownerType: String!
+}
 
 type Location {
   _id: String!
@@ -49,17 +62,21 @@ input LocationPropertiesInput {
 }
 
 type Mutation {
+  createInterest(createInterestInput: CreateInterestInput!): Interest!
+
   """Создать локацию"""
   createLocation(createLocationInput: CreateLocationInput!): Location!
 
   """Создать пользователя"""
   createUser(createUserInput: CreateUserInput!): User!
+  removeInterest(id: ID!): Interest!
 
   """Удалить локацию"""
   removeLocation(id: ID!): Boolean!
 
   """Удалить пользователя"""
   removeUser(id: ID!): Boolean!
+  updateInterest(updateInterestInput: UpdateInterestInput!): Interest!
 
   """Обновить локацию"""
   updateLocation(updateLocationInput: UpdateLocationInput!): Location!
@@ -70,6 +87,12 @@ type Mutation {
 
 type Query {
   adminRoute: String!
+
+  """Поиск интересов по id"""
+  interestById(id: ID!): Interest!
+
+  """Поиск интересов по ownerId"""
+  interestByOwnerId(ownerId: ID!): Interest!
 
   """Поиск места по id"""
   locationById(id: ID!): Location!
@@ -87,6 +110,13 @@ type Query {
 
   """Получить всех пользователей"""
   users: [User!]!
+}
+
+input UpdateInterestInput {
+  id: ID!
+  interest: [String!]
+  ownerId: ID
+  ownerType: String
 }
 
 input UpdateLocationInput {
@@ -119,6 +149,7 @@ type User {
 }
 
 type UserProfile {
+  interest: Interest
   location: Location
   user: User!
 }

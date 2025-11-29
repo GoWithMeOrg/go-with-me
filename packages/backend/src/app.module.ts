@@ -13,6 +13,7 @@ import { AuthModule } from './auth/auth.module';
 import { RolesGuard } from './auth/guard/roles.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { UserProfileModule } from './user-profile/user-profile.module';
+import { InterestModule } from './interest/interest.module';
 
 @Module({
     imports: [
@@ -40,6 +41,8 @@ import { UserProfileModule } from './user-profile/user-profile.module';
         UserModule,
 
         UserProfileModule,
+
+        InterestModule,
 
         LocationModule,
 

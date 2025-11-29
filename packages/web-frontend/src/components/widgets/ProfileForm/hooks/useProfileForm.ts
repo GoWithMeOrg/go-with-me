@@ -3,7 +3,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { UPDATE_USER } from '@/app/graphql/mutations/user';
 import { GET_USER_BY_ID } from '@/app/graphql/queries/user';
 import { useSessionGQL } from '@/app/providers/session/hooks/useSesssionGQL';
-import { Location, User } from '@/app/types/User';
+import { Interest, Location, User } from '@/app/types/User';
 import { useUploadFile } from '@/components/widgets/UploadFile/hooks';
 import { useMutation, useQuery } from '@apollo/client/react';
 import { GET_USER_PROFILE_BY_ID } from '@go-with-me/api-scheme/graphql/userProfile';
@@ -32,6 +32,7 @@ interface IFormProfile {
 export interface UserProfile {
     user: User;
     location: Location;
+    interest: Interest;
 }
 
 export const useProfileForm = () => {
@@ -57,6 +58,7 @@ export const useProfileForm = () => {
 
     const user = userProfile?.userProfile.user;
     const location = userProfile?.userProfile.location;
+    const interest = userProfile?.userProfile.interest;
 
     const [updateUser] = useMutation(UPDATE_USER);
 
@@ -116,5 +118,15 @@ export const useProfileForm = () => {
         setPresignUrl(preUrl);
     };
 
-    return { error, user, location, handleSubmit, onSubmit, control, handleUploadedFile, user_id };
+    return {
+        error,
+        user,
+        location,
+        interest,
+        handleSubmit,
+        onSubmit,
+        control,
+        handleUploadedFile,
+        user_id,
+    };
 };

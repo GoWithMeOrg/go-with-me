@@ -18,13 +18,13 @@ export class LocationService {
     ) {}
 
     // --- получить локацию по ID ---
-    getLocationById(id: MongoSchema.Types.ObjectId): Promise<Location | null> {
-        return this.locationModel.findById(id).exec();
+    async getLocationById(id: MongoSchema.Types.ObjectId): Promise<Location | null> {
+        return await this.locationModel.findById(id).exec();
     }
 
     // --- получить локацию по владельцу ---
     async getLocationByOwner(ownerId: MongoSchema.Types.ObjectId): Promise<Location | null> {
-        return this.locationModel.findOne({ 'properties.ownerId': ownerId }).exec();
+        return await this.locationModel.findOne({ 'properties.ownerId': ownerId }).exec();
     }
 
     // --- создать новую локацию ---

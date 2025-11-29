@@ -20,7 +20,7 @@ import { useProfileForm } from './hooks/useProfileForm';
 import classes from './ProfileForm.module.css';
 
 export const ProfileForm: FC = () => {
-    const { error, user, location, handleSubmit, onSubmit, control, handleUploadedFile, user_id } =
+    const { error, user, location, interest, handleSubmit, onSubmit, control, handleUploadedFile } =
         useProfileForm();
 
     return (
@@ -125,20 +125,20 @@ export const ProfileForm: FC = () => {
                             )}
                         /> */}
 
-                        {/* <Controller
+                        <Controller
                             name="types"
                             control={control}
                             render={({ field }) => (
                                 <SelectItems
                                     categoryList={eventTypes}
-                                    eventCategories={[...(userProfile?.user?.types ?? [])]}
+                                    eventCategories={[...(interest?.interest ?? [])]}
                                     titleCategories={'What subjects are you interested in?'}
                                     badgesShow
                                     onChange={field.onChange}
                                     filter={false}
                                 />
                             )}
-                        /> */}
+                        />
 
                         {/* <Controller
                             name="tags"
@@ -158,7 +158,7 @@ export const ProfileForm: FC = () => {
                             Save changes
                         </Button>
                         <ButtonLink
-                            href={`/profile/${user_id}/public`}
+                            href={`/profile/${user._id}/public`}
                             text={'View profile'}
                             width="10.38rem"
                         />
