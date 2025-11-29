@@ -3,8 +3,10 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { UPDATE_USER } from '@/app/graphql/mutations/user';
 import { GET_USER_BY_ID } from '@/app/graphql/queries/user';
 import { useSessionGQL } from '@/app/providers/session/hooks/useSesssionGQL';
+import { Location, User } from '@/app/types/User';
 import { useUploadFile } from '@/components/widgets/UploadFile/hooks';
 import { useMutation, useQuery } from '@apollo/client/react';
+import { GET_USER_PROFILE_BY_ID } from '@go-with-me/api-scheme/graphql/userProfile';
 import { IUser, ProfileType } from '@go-with-me/api-scheme/types/User';
 
 interface IFormProfile {
@@ -27,6 +29,11 @@ interface IFormProfile {
     tags: string[];
 }
 
+export interface UserProfile {
+    user: User;
+    location: Location;
+}
+
 export const useProfileForm = () => {
     const { control, handleSubmit, watch } = useForm<IFormProfile>();
     const { data: session } = useSessionGQL();
@@ -44,7 +51,13 @@ export const useProfileForm = () => {
         variables: { userId: session?._id },
     });
 
-    console.log(userData);
+    const { data: userProfile } = useQuery<{ userProfile: UserProfile }>(GET_USER_PROFILE_BY_ID, {
+        variables: { userId: session?._id },
+    });
+
+    const user = userProfile?.userProfile.user;
+    const location = userProfile?.userProfile.location;
+
     const [updateUser] = useMutation(UPDATE_USER);
 
     const place = watch('location');
@@ -103,5 +116,5 @@ export const useProfileForm = () => {
         setPresignUrl(preUrl);
     };
 
-    return { error, userData, handleSubmit, onSubmit, control, handleUploadedFile, user_id };
+    return { error, user, location, handleSubmit, onSubmit, control, handleUploadedFile, user_id };
 };

@@ -5,19 +5,15 @@ export class LocationPropertiesInput {
     @Field(() => String, { nullable: true })
     address?: string;
 }
-
 @InputType()
 export class CreateLocationInput {
-    @Field(() => String)
-    type: string; // "Point"
-
     @Field(() => [Float])
     coordinates: [number, number];
 
     @Field(() => LocationPropertiesInput, { nullable: true })
     properties?: LocationPropertiesInput;
 
-    // ПОЛИМОРФНАЯ СВЯЗЬ
+    // --- ПОЛИМОРФНАЯ СВЯЗЬ ---
     @Field(() => ID)
     ownerId: string;
 

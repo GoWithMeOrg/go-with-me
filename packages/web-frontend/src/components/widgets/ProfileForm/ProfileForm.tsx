@@ -1,6 +1,6 @@
 'use client';
 
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { Controller } from 'react-hook-form';
 import { Button } from '@/components/shared/Button';
 import { ButtonLink } from '@/components/shared/ButtonLink';
@@ -20,12 +20,12 @@ import { useProfileForm } from './hooks/useProfileForm';
 import classes from './ProfileForm.module.css';
 
 export const ProfileForm: FC = () => {
-    const { error, userData, handleSubmit, onSubmit, control, handleUploadedFile, user_id } =
+    const { error, user, location, handleSubmit, onSubmit, control, handleUploadedFile, user_id } =
         useProfileForm();
 
     return (
         <>
-            {!error && userData?.user && (
+            {!error && user && location && (
                 <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
                     <div className={classes.formField}>
                         <Controller
@@ -33,7 +33,7 @@ export const ProfileForm: FC = () => {
                             control={control}
                             render={({ field }) => (
                                 <UploadFile
-                                    imageUrl={userData?.user?.image}
+                                    imageUrl={user?.image}
                                     width={180}
                                     height={180}
                                     sizeType={UploadFileSizes.profile}
@@ -49,7 +49,7 @@ export const ProfileForm: FC = () => {
                             render={({ field }) => (
                                 <Label label={'First Name'}>
                                     <Input
-                                        defaultValue={userData?.user?.firstName}
+                                        defaultValue={user?.firstName}
                                         onChange={field.onChange}
                                     />
                                 </Label>
@@ -62,7 +62,7 @@ export const ProfileForm: FC = () => {
                             render={({ field }) => (
                                 <Label label={'Last Name'}>
                                     <Input
-                                        defaultValue={userData?.user?.lastName}
+                                        defaultValue={user?.lastName}
                                         onChange={field.onChange}
                                     />
                                 </Label>
@@ -72,13 +72,10 @@ export const ProfileForm: FC = () => {
                         <Controller
                             name="email"
                             control={control}
-                            defaultValue={userData?.user?.email}
+                            defaultValue={user?.email}
                             render={({ field }) => (
                                 <Label label={'Email'}>
-                                    <Input
-                                        defaultValue={userData?.user?.email}
-                                        onChange={field.onChange}
-                                    />
+                                    <Input defaultValue={user?.email} onChange={field.onChange} />
                                 </Label>
                             )}
                         />
@@ -86,13 +83,13 @@ export const ProfileForm: FC = () => {
                         <Controller
                             name="location"
                             control={control}
-                            defaultValue={userData?.location}
+                            defaultValue={location?.geometry}
                             render={({ field }) => (
                                 <Label label={'Локация'}>
                                     <Autocomplete
                                         className={classes.location}
                                         onPlaceSelect={field.onChange}
-                                        address={userData?.location?.properties.address}
+                                        address={location?.properties?.address}
                                         options={optionsFullAdress}
                                     />
                                 </Label>
@@ -105,7 +102,7 @@ export const ProfileForm: FC = () => {
                             render={({ field }) => (
                                 <Label label={'Обо мне'}>
                                     <Textarea
-                                        defaultValue={userData?.user?.description}
+                                        defaultValue={user?.description as string}
                                         onChange={field.onChange}
                                         resizeNone
                                     />
@@ -113,47 +110,47 @@ export const ProfileForm: FC = () => {
                             )}
                         />
 
-                        <Controller
+                        {/* <Controller
                             name="categories"
                             control={control}
                             render={({ field }) => (
                                 <SelectItems
                                     categoryList={eventCategory}
-                                    eventCategories={[...(userData?.user?.categories ?? [])]}
+                                    eventCategories={[...(user?.categories ?? [])]}
                                     titleCategories={'Выбрать категорию'}
                                     badgesShow
                                     onChange={field.onChange}
                                     filter={false}
                                 />
                             )}
-                        />
+                        /> */}
 
-                        <Controller
+                        {/* <Controller
                             name="types"
                             control={control}
                             render={({ field }) => (
                                 <SelectItems
                                     categoryList={eventTypes}
-                                    eventCategories={[...(userData?.user?.types ?? [])]}
+                                    eventCategories={[...(userProfile?.user?.types ?? [])]}
                                     titleCategories={'What subjects are you interested in?'}
                                     badgesShow
                                     onChange={field.onChange}
                                     filter={false}
                                 />
                             )}
-                        />
+                        /> */}
 
-                        <Controller
+                        {/* <Controller
                             name="tags"
                             control={control}
                             render={({ field }) => (
                                 <CreateTag
                                     onChange={field.onChange}
-                                    eventTags={[...(userData?.user?.tags ?? [])]}
+                                    eventTags={[...(userProfile?.user?.tags ?? [])]}
                                     title={'Добавить тег'}
                                 />
                             )}
-                        />
+                        /> */}
                     </div>
 
                     <div className={classes.buttons}>

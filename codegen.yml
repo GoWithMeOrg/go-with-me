@@ -1,0 +1,36 @@
+# schema: 'http://localhost:4000/graphql'
+# documents: './packages/web-frontend/src/app/graphql/**/*.{ts,tsx}' # искать gql теги во всех ts/tsx файлах
+# generates:
+#     # 1️⃣ Базовые типы схемы
+#     ./packages/web-frontend/src/app/types/base-types.ts:
+#         plugins:
+#             - typescript
+
+#     # 2️⃣ Типы операций из gql тегов
+#     ./packages/web-frontend/src/app/types/operations/:
+#         preset: 'near-operation-file'
+#         presetConfig:
+#             extension: '.types.ts'
+#             folder: ''
+#             baseTypesPath: '../base-types.ts'
+#             # Генерировать index.ts с экспортами
+#             rootTypesPath: './index.ts'
+#         plugins:
+#             - typescript-operations
+
+schema: 'http://localhost:4000/graphql' # Ваш endpoint или локальный schema.gql
+documents: './packages/api-scheme/graphql/location.ts' # Документ с запросом для User
+generates:
+    # 1️⃣ Тип схемы User
+    ./packages/web-frontend/src/app/types/User.ts:
+        plugins:
+            - typescript
+        config:
+            onlyTypes: true # генерируем только типы
+            include: ['Location'] # только сущность User
+
+    # 2️⃣ Типы операций с User
+    ./packages/web-frontend/src/app/types/UserOperations.ts:
+        plugins:
+            - typescript-operations
+            - typescript

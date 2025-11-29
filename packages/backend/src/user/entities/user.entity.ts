@@ -28,11 +28,6 @@ export class User {
     @Prop({ type: String })
     description: string;
 
-    // ПРи полиморфной свзи ссылки хранить сама локация через ownerId + ownerType
-    // @Field(() => Location, { nullable: true })
-    // @Prop({ type: MongoSchema.Types.ObjectId, ref: 'Location' })
-    // location: Location;
-
     @Field(() => [String])
     @Prop({ type: [String], enum: Object.values(Role), default: [Role.USER] })
     roles: Role[];

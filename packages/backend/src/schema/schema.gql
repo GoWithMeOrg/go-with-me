@@ -7,7 +7,6 @@ input CreateLocationInput {
   ownerId: ID!
   ownerType: String!
   properties: LocationPropertiesInput
-  type: String!
 }
 
 input CreateUserInput {
@@ -27,17 +26,22 @@ scalar DateTime
 
 type Location {
   _id: String!
-  coordinates: [Float!]!
-  createdAt: DateTime!
-  ownerId: String!
-  ownerType: String!
-  properties: LocationProperties
+  geometry: LocationGeometry!
+  properties: LocationProperties!
   type: String!
-  updatedAt: DateTime!
+}
+
+type LocationGeometry {
+  coordinates: [Float!]!
+  type: String!
 }
 
 type LocationProperties {
-  address: String
+  address: String!
+  createdAt: DateTime!
+  ownerId: String!
+  ownerType: String!
+  updatedAt: DateTime!
 }
 
 input LocationPropertiesInput {
@@ -78,6 +82,9 @@ type Query {
   """Поиск пользователя по id"""
   user(id: ID!): User!
 
+  """Составной профиль пользователя"""
+  userProfile(userId: ID!): UserProfile!
+
   """Получить всех пользователей"""
   users: [User!]!
 }
@@ -107,7 +114,11 @@ type User {
   firstName: String!
   image: String
   lastName: String!
-  location: Location
   roles: [String!]!
   updatedAt: DateTime!
+}
+
+type UserProfile {
+  location: Location
+  user: User!
 }

@@ -21,11 +21,11 @@ export class UserResolver {
     async getUserById(@Args('id', { type: () => ID }) id: MongoSchema.Types.ObjectId) {
         return await this.userService.getUserById(id);
     } // дополнительный запрос при это поле в User нет поля локация
-    @ResolveField(() => Location, { nullable: true })
-    async location(@Parent() user: User) {
-        // Мы ищем локацию, которая принадлежит этому юзеру
-        return await this.locationService.getLocationByOwner(user._id);
-    }
+    // @ResolveField(() => Location, { nullable: true })
+    // async location(@Parent() user: User) {
+    //     // Мы ищем локацию, которая принадлежит этому юзеру
+    //     return await this.locationService.getLocationByOwner(user._id);
+    // }
 
     @Query(() => [User], {
         name: 'users',

@@ -19,6 +19,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
     "@graphql-codegen/cli": "^6.1.0",
+    "@graphql-codegen/near-operation-file-preset": "^3.1.0",
     "@graphql-codegen/typescript": "^5.0.5",
     "@graphql-codegen/typescript-operations": "^5.0.5",
     "@ianvs/prettier-plugin-sort-imports": "^4.7.0",

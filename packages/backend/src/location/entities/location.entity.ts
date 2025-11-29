@@ -1,51 +1,78 @@
 import { ObjectType, Field, Float } from '@nestjs/graphql';
+import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose';
 import { Document, Schema as MongoSchema } from 'mongoose';
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 @ObjectType()
-@Schema({ _id: false })
-export class LocationProperties {
-    @Field(() => String, { nullable: true })
-    @Prop({ type: String })
-    address?: string;
-}
+export class LocationGeometry {
+    @Field(() => String)
+    type: 'Point';
 
-export const LocationPropertiesSchema = SchemaFactory.createForClass(LocationProperties);
+    @Field(() => [Float])
+    coordinates: [number, number];
+}
 
 @ObjectType()
 @Schema({ timestamps: true })
+export class LocationProperties {
+    @Field(() => String)
+    @Prop({ type: String })
+    address: string;
+
+    @Field(() => String)
+    @Prop({ type: MongoSchema.Types.ObjectId, required: true })
+    ownerId: string;
+
+    @Field(() => String)
+    @Prop({ type: String, enum: ['User', 'Event'], required: true })
+    ownerType: 'User' | 'Event';
+
+    @Field(() => Date)
+    @Prop({ required: true })
+    createdAt: Date;
+
+    @Field(() => Date)
+    @Prop({ required: true })
+    updatedAt: Date;
+}
+
+@ObjectType()
+@Schema()
 export class Location {
     @Field(() => String)
     _id: MongoSchema.Types.ObjectId;
 
     @Field(() => String)
-    @Prop({ type: String, enum: ['Point'], required: true })
+    @Prop({ required: true, enum: ['Feature'], default: 'Feature' })
     type: string;
 
-    @Field(() => [Float])
-    @Prop({ type: [Number], required: true })
-    coordinates: [number, number];
+    // ---- GEOMETRY ----
+    @Field(() => LocationGeometry)
+    @Prop(
+        raw({
+            type: { type: String, enum: ['Point'], required: true },
+            coordinates: {
+                type: [Number],
+                required: true,
+                validate: {
+                    validator: (v: number[]) => v.length === 2,
+                },
+            },
+        })
+    )
+    geometry: LocationGeometry;
 
-    @Field(() => LocationProperties, { nullable: true })
-    @Prop({ type: LocationPropertiesSchema })
-    properties?: LocationProperties;
-
-    // ПОЛИМОРФНАЯ СВЯЗЬ
-    @Field(() => String)
-    @Prop({ type: MongoSchema.Types.ObjectId, required: true })
-    ownerId: string; // сюда пишем userId или eventId
-
-    @Field(() => String)
-    @Prop({ type: String, enum: ['User', 'Event'], required: true })
-    ownerType: 'User' | 'Event'; // тип владельца
-
-    @Field(() => Date)
-    @Prop({ type: Date, default: Date.now })
-    createdAt: Date;
-
-    @Field(() => Date)
-    @Prop({ type: Date, default: Date.now })
-    updatedAt: Date;
+    // ---- PROPERTIES ----
+    @Field(() => LocationProperties)
+    @Prop(
+        raw({
+            address: { type: String },
+            ownerId: { type: MongoSchema.Types.ObjectId, required: true },
+            ownerType: { type: String, enum: ['User', 'Event'], required: true },
+            createdAt: { type: Date, required: true },
+            updatedAt: { type: Date, required: true },
+        })
+    )
+    properties: LocationProperties;
 }
 
 export type LocationDocument = Location & Document;

@@ -9,7 +9,6 @@ import { LocationModule } from 'src/location/location.module';
     imports: [
         MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
 
-        // Импортируем LocationModule, чтобы получить доступ к LocationService.
         // Используем forwardRef для предотвращения циклической зависимости. Иначе gql сервер не работает
         forwardRef(() => LocationModule),
     ],
