@@ -44,17 +44,23 @@ export const useProfileForm = () => {
     const [presignUrl, setPresignUrl] = useState<string | null>(null);
 
     const user_id = session?._id;
+    // const {
+    //     data: userData,
+    //     refetch,
+    //     error,
+    // } = useQuery(GET_USER_BY_ID, {
+    //     variables: { userId: session?._id },
+    // });
+
     const {
-        data: userData,
-        refetch,
+        data: userProfile,
         error,
-    } = useQuery(GET_USER_BY_ID, {
+        refetch,
+    } = useQuery<{ userProfile: UserProfile }>(GET_USER_PROFILE_BY_ID, {
         variables: { userId: session?._id },
     });
 
-    const { data: userProfile } = useQuery<{ userProfile: UserProfile }>(GET_USER_PROFILE_BY_ID, {
-        variables: { userId: session?._id },
-    });
+    console.log(userProfile);
 
     const user = userProfile?.userProfile.user;
     const location = userProfile?.userProfile.location;
@@ -106,10 +112,10 @@ export const useProfileForm = () => {
     const onSubmit: SubmitHandler<IFormProfile> = (event: ProfileType) => {
         handleEditProfile(event);
         if (file && presignUrl) {
-            // onSubmitFile(file, presignUrl);
-            // if (userData?.user?.image && file) {
-            //     getDeleteFile(userData?.user?.image);
-            // }
+            onSubmitFile(file, presignUrl);
+            if (user?.image && file) {
+                getDeleteFile(user?.image);
+            }
         }
     };
 

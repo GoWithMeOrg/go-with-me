@@ -37,7 +37,7 @@ export class InterestResolver {
 
     @Mutation(() => Interest)
     updateInterest(@Args('updateInterestInput') updateInterestInput: UpdateInterestInput) {
-        return this.interestService.updateInterest(updateInterestInput.id, updateInterestInput);
+        return this.interestService.updateInterest(updateInterestInput._id, updateInterestInput);
     }
 
     @Mutation(() => Interest)

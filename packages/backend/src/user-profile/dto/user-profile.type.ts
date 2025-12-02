@@ -13,7 +13,4 @@ export class UserProfile {
 
     @Field(() => Interest, { nullable: true })
     interest?: Interest;
-
-    // @Field(() => [Event], { nullable: 'itemsAndList' })
-    // events?: Event[];
 }

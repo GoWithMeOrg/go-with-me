@@ -1,17 +1,21 @@
-import { Field, Float, ID, InputType } from '@nestjs/graphql';
-import { PartialType } from '@nestjs/mapped-types';
+import { Field, ID, InputType } from '@nestjs/graphql';
 import { Schema as MongoSchema } from 'mongoose';
-
-import { CreateLocationInput, LocationPropertiesInput } from './create-location.input';
+import { LocationGeometryInput } from './create-location.input';
 
 @InputType()
-export class UpdateLocationInput extends PartialType(CreateLocationInput) {
+export class UpdateLocationPropertiesInput {
+    @Field(() => String, { nullable: true })
+    address?: string;
+}
+
+@InputType()
+export class UpdateLocationInput {
     @Field(() => ID)
     _id: MongoSchema.Types.ObjectId;
 
-    @Field(() => [Float], { nullable: true })
-    coordinates: [number, number];
+    @Field(() => LocationGeometryInput, { nullable: true })
+    geometry?: LocationGeometryInput;
 
-    @Field(() => LocationPropertiesInput, { nullable: true })
-    properties: LocationPropertiesInput;
+    @Field(() => UpdateLocationPropertiesInput, { nullable: true })
+    properties?: UpdateLocationPropertiesInput;
 }

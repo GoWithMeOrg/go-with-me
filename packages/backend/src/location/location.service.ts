@@ -33,12 +33,12 @@ export class LocationService {
             type: 'Feature',
             geometry: {
                 type: 'Point',
-                coordinates: input.coordinates,
+                coordinates: input.geometry?.coordinates,
             },
             properties: {
-                ...input.properties,
-                ownerId: input.ownerId,
-                ownerType: input.ownerType,
+                address: input.properties?.address,
+                ownerId: input.properties?.ownerId,
+                ownerType: input.properties?.ownerType,
                 createdAt: new Date(),
                 updatedAt: new Date(),
             },
@@ -46,35 +46,26 @@ export class LocationService {
         return location.save();
     }
 
-    // --- обновить существующую локацию ---
     async updateLocation(
         id: MongoSchema.Types.ObjectId,
-        updateLocationInput: UpdateLocationInput
+        input: UpdateLocationInput
     ): Promise<Location | null> {
         const update: any = {};
 
-        // --- обновление координат ---
-        if (updateLocationInput.coordinates) {
-            update.geometry = {
-                type: 'Point',
-                coordinates: updateLocationInput.coordinates,
-            };
+        // geometry update
+        if (input.geometry?.coordinates) {
+            update['geometry.coordinates'] = input.geometry.coordinates;
         }
 
-        // --- обновление properties ---
-        if (updateLocationInput.properties) {
-            update['properties'] = {
-                ...updateLocationInput.properties,
-                updatedAt: new Date(),
-            };
-        } else {
-            // если properties не переданы, обновляем только updatedAt
-            update['properties.updatedAt'] = new Date();
+        //properties update
+        if (input.properties?.address !== undefined) {
+            update['properties.address'] = input.properties.address;
         }
 
-        return this.locationModel.findByIdAndUpdate(id, update, { new: true }).exec();
+        update['properties.updatedAt'] = new Date();
+
+        return this.locationModel.findByIdAndUpdate(id, { $set: update }, { new: true });
     }
-
     // --- удалить локацию ---
     removeLocation(id: MongoSchema.Types.ObjectId): Promise<DeleteResult> {
         return this.locationModel.deleteOne({ _id: id }).exec();
