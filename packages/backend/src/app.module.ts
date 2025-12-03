@@ -14,6 +14,7 @@ import { RolesGuard } from './auth/guard/roles.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { UserProfileModule } from './user-profile/user-profile.module';
 import { InterestModule } from './interest/interest.module';
+import { CategoriesModule } from './categories/categories.module';
 
 @Module({
     imports: [
@@ -42,11 +43,15 @@ import { InterestModule } from './interest/interest.module';
 
         UserProfileModule,
 
+        CategoriesModule,
+
         InterestModule,
 
         LocationModule,
 
         AuthModule,
+
+        CategoriesModule,
     ],
 
     controllers: [],

@@ -6,21 +6,26 @@ import { InterestService } from 'src/interest/interest.service';
 import { UpdateLocationInput } from 'src/location/dto/update-location.input';
 import { UpdateUserInput } from 'src/user/dto/update-user.input';
 import { UpdateInterestInput } from 'src/interest/dto/update-interest.input';
+import { CategoriesService } from 'src/categories/categories.service';
+import { UpdateCategoriesInput } from 'src/categories/dto/update-category.input';
 
 @Injectable()
 export class UserProfileService {
     constructor(
         private readonly userService: UserService,
         private readonly locationService: LocationService,
+        private readonly categoriesService: CategoriesService,
         private readonly interestService: InterestService
     ) {}
 
     async updateProfile(
         userId: MongoSchema.Types.ObjectId,
         locationId: MongoSchema.Types.ObjectId,
+        categoriesId: MongoSchema.Types.ObjectId,
         interestId: MongoSchema.Types.ObjectId,
         updateUserInput: UpdateUserInput,
         updateLocationInput: UpdateLocationInput,
+        updateCategoriesInput: UpdateCategoriesInput,
         updateInterestInput: UpdateInterestInput
     ) {
         const tasks: Promise<any>[] = [];
@@ -33,6 +38,13 @@ export class UserProfileService {
         // ---- Обновляем локацию ----
         if (updateLocationInput) {
             tasks.push(this.locationService.updateLocation(locationId, updateLocationInput));
+        }
+
+        // ---- Обновляем категории ----
+        if (updateCategoriesInput) {
+            tasks.push(
+                this.categoriesService.updateCategories(categoriesId, updateCategoriesInput)
+            );
         }
 
         // ---- Обновляем интересы ----
@@ -53,6 +65,7 @@ export class UserProfileService {
         const [user, location, interest] = await Promise.all([
             this.userService.getUserById(userId),
             this.locationService.getLocationByOwner(userId),
+            this.categoriesService.getCategoriesByOwner(userId),
             this.interestService.getInterestByOwner(userId),
         ]);
 

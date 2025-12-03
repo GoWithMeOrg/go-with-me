@@ -2,6 +2,19 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Categories {
+  _id: ID!
+  categories: [String!]!
+  ownerId: ID!
+  ownerType: String!
+}
+
+input CreateCategoriesInput {
+  categories: [String!]!
+  ownerId: ID!
+  ownerType: String!
+}
+
 input CreateInterestInput {
   interest: [String!]!
   ownerId: ID!
@@ -66,6 +79,7 @@ input LocationPropertiesInput {
 }
 
 type Mutation {
+  createCategories(createCategoriesInput: CreateCategoriesInput!): Categories!
   createInterest(createInterestInput: CreateInterestInput!): Interest!
 
   """Создать локацию"""
@@ -73,6 +87,7 @@ type Mutation {
 
   """Создать пользователя"""
   createUser(createUserInput: CreateUserInput!): User!
+  removeCategories(id: ID!): Categories!
   removeInterest(id: ID!): Interest!
 
   """Удалить локацию"""
@@ -80,6 +95,7 @@ type Mutation {
 
   """Удалить пользователя"""
   removeUser(id: ID!): Boolean!
+  updateCategories(updateCategoriesInput: UpdateCategoriesInput!): Categories!
   updateInterest(updateInterestInput: UpdateInterestInput!): Interest!
 
   """Обновить локацию"""
@@ -87,11 +103,17 @@ type Mutation {
 
   """Обновить данные пользователя"""
   updateUser(updateUserId: ID!, user: UpdateUserInput!): User!
-  updateUserProfile(interestId: ID!, locationId: ID!, updateInterestInput: UpdateInterestInput!, updateLocationInput: UpdateLocationInput!, updateUserInput: UpdateUserInput!, userId: ID!): UserProfile!
+  updateUserProfile(categoriesId: ID!, interestId: ID!, locationId: ID!, updateCategoriesInput: UpdateCategoriesInput!, updateInterestInput: UpdateInterestInput!, updateLocationInput: UpdateLocationInput!, updateUserInput: UpdateUserInput!, userId: ID!): UserProfile!
 }
 
 type Query {
   adminRoute: String!
+
+  """Поиск категорий по id"""
+  categoriesById(id: ID!): Categories!
+
+  """Поиск категорий по ownerId"""
+  categoriesByOwnerId(ownerId: ID!): Categories!
 
   """Поиск интересов по id"""
   interestById(id: ID!): Interest!
@@ -115,6 +137,11 @@ type Query {
 
   """Получить всех пользователей"""
   users: [User!]!
+}
+
+input UpdateCategoriesInput {
+  _id: String!
+  categories: [String!]!
 }
 
 input UpdateInterestInput {

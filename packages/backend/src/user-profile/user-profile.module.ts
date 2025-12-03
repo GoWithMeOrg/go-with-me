@@ -4,11 +4,13 @@ import { UserModule } from 'src/user/user.module';
 import { UserProfileResolver } from './user-profile.resolver';
 import { UserProfileService } from './user-profile.service';
 import { InterestModule } from 'src/interest/interest.module';
+import { CategoriesModule } from 'src/categories/categories.module';
 
 @Module({
     imports: [
         forwardRef(() => UserModule),
         forwardRef(() => LocationModule),
+        forwardRef(() => CategoriesModule),
         forwardRef(() => InterestModule),
     ],
     providers: [UserProfileResolver, UserProfileService],
