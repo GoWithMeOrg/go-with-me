@@ -29,7 +29,7 @@ export const ProfileForm: FC = () => {
                 <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
                     <div className={classes.formField}>
                         <Controller
-                            name="image"
+                            name="user.image"
                             control={control}
                             render={({ field }) => (
                                 <UploadFile
@@ -44,7 +44,7 @@ export const ProfileForm: FC = () => {
                         />
 
                         <Controller
-                            name="firstName"
+                            name="user.firstName"
                             control={control}
                             render={({ field }) => (
                                 <Label label={'First Name'}>
@@ -57,7 +57,7 @@ export const ProfileForm: FC = () => {
                         />
 
                         <Controller
-                            name="lastName"
+                            name="user.lastName"
                             control={control}
                             render={({ field }) => (
                                 <Label label={'Last Name'}>
@@ -70,7 +70,7 @@ export const ProfileForm: FC = () => {
                         />
 
                         <Controller
-                            name="email"
+                            name="user.email"
                             control={control}
                             defaultValue={user?.email}
                             render={({ field }) => (
@@ -83,7 +83,7 @@ export const ProfileForm: FC = () => {
                         <Controller
                             name="location"
                             control={control}
-                            defaultValue={location?.geometry}
+                            defaultValue={location?.geometry.coordinates}
                             render={({ field }) => (
                                 <Label label={'Локация'}>
                                     <Autocomplete
@@ -97,7 +97,7 @@ export const ProfileForm: FC = () => {
                         />
 
                         <Controller
-                            name="description"
+                            name="user.description"
                             control={control}
                             render={({ field }) => (
                                 <Label label={'Обо мне'}>
@@ -126,7 +126,7 @@ export const ProfileForm: FC = () => {
                         /> */}
 
                         <Controller
-                            name="types"
+                            name="interest.interest"
                             control={control}
                             render={({ field }) => (
                                 <SelectItems

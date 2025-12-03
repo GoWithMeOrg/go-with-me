@@ -1,32 +1,16 @@
-import { use, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { UPDATE_USER } from '@/app/graphql/mutations/user';
-import { GET_USER_BY_ID } from '@/app/graphql/queries/user';
+import { UPDATE_USER_PROFILE } from '@/app/graphql/mutations/updateUserProfile';
 import { useSessionGQL } from '@/app/providers/session/hooks/useSesssionGQL';
 import { Interest, Location, User } from '@/app/types/User';
 import { useUploadFile } from '@/components/widgets/UploadFile/hooks';
 import { useMutation, useQuery } from '@apollo/client/react';
 import { GET_USER_PROFILE_BY_ID } from '@go-with-me/api-scheme/graphql/userProfile';
-import { IUser, ProfileType } from '@go-with-me/api-scheme/types/User';
 
 interface IFormProfile {
-    _id: string;
-    name: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    location: {
-        type: 'Point';
-        coordinates: [number, number];
-        properties: {
-            address: string;
-        };
-    };
-    description: string;
-    image: string;
-    categories: string[];
-    types: string[];
-    tags: string[];
+    user: User;
+    location: Location;
+    interest: Interest;
 }
 
 export interface UserProfile {
@@ -44,13 +28,6 @@ export const useProfileForm = () => {
     const [presignUrl, setPresignUrl] = useState<string | null>(null);
 
     const user_id = session?._id;
-    // const {
-    //     data: userData,
-    //     refetch,
-    //     error,
-    // } = useQuery(GET_USER_BY_ID, {
-    //     variables: { userId: session?._id },
-    // });
 
     const {
         data: userProfile,
@@ -60,56 +37,70 @@ export const useProfileForm = () => {
         variables: { userId: session?._id },
     });
 
-    console.log(userProfile);
-
     const user = userProfile?.userProfile.user;
     const location = userProfile?.userProfile.location;
     const interest = userProfile?.userProfile.interest;
 
-    const [updateUser] = useMutation(UPDATE_USER);
+    const [updateUserProfile] = useMutation(UPDATE_USER_PROFILE);
 
     const place = watch('location');
 
+    console.log(place);
     function mapGooglePlaceToLocationInput(place: any) {
         if (!place || !place.geometry) return null;
         const newPlace = {
-            type: 'Point',
-            coordinates: [place.geometry.location.lng(), place.geometry.location.lat()],
+            geometry: {
+                coordinates: [place.geometry.location.lng(), place.geometry.location.lat()],
+            },
             properties: {
                 address: place.formatted_address,
             },
         };
 
+        console.log(newPlace);
+
         return newPlace;
     }
 
-    //убираем __typename иначе ошибка при обновлении профиля
-    // const locationWithoutTypename = {
-    //     type: userData?.user.location.type,
-    //     coordinates: userData?.user.location.coordinates,
-    //     properties: {
-    //         address: userData?.user.location.properties.address,
-    //     },
-    // };
-
-    const handleEditProfile = (userEdited: Partial<IUser>) => {
+    const handleEditProfile = async (userProfileEdited: UserProfile) => {
         const transformedLocation = mapGooglePlaceToLocationInput(place);
 
-        updateUser({
+        if (!transformedLocation) {
+            console.error('Ошибка: transformedLocation пустой');
+            return;
+        }
+
+        await updateUserProfile({
             variables: {
-                updateUserId: user_id,
-                user: {
-                    ...userEdited,
-                    // location: transformedLocation || locationWithoutTypename,
+                userId: user_id,
+                interestId: userProfile?.userProfile.interest?._id,
+                locationId: userProfile?.userProfile.location?._id,
+
+                updateUserInput: {
+                    _id: userProfile?.userProfile.user._id,
+                    firstName: userProfileEdited.user.firstName,
+                    lastName: userProfileEdited.user.lastName,
+                    description: userProfileEdited.user.description,
+                    email: userProfileEdited.user.email,
+                    image: userProfileEdited.user.image,
+                },
+
+                updateLocationInput: {
+                    _id: userProfile?.userProfile.location._id,
+                    geometry: transformedLocation.geometry,
+                    properties: transformedLocation.properties,
+                },
+
+                updateInterestInput: {
+                    _id: userProfile?.userProfile.interest._id,
+                    interest: userProfileEdited.interest.interest,
                 },
             },
-        }).then((response) => {
-            console.log('UserEditPage: ', response);
         });
         refetch();
     };
 
-    const onSubmit: SubmitHandler<IFormProfile> = (event: ProfileType) => {
+    const onSubmit: SubmitHandler<IFormProfile> = (event: UserProfile) => {
         handleEditProfile(event);
         if (file && presignUrl) {
             onSubmitFile(file, presignUrl);
