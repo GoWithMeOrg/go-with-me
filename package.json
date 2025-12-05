@@ -1,34 +1,35 @@
 {
-  "name": "go-with-me",
-  "version": "0.0.0",
-  "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
-  "scripts": {
-    "frontend:dev": "pnpm --filter web-frontend dev",
-    "backend:dev": "pnpm --filter backend nest start --watch",
-    "frontend:lint": "pnpm -r exec eslint packages/web-frontend --fix",
-    "backend:lint": "pnpm -r exec eslint packages/backend --fix",
-    "frontend:format": "prettier packages/web-frontend -w",
-    "backend:format": "prettier packages/backend -w",
-    "api-scheme:format": "prettier packages/api-scheme -w",
-    "format": "pnpm run frontend:format && pnpm run backend:format && pnpm run api-scheme:format",
-    "import:mongo": "./scripts/import-mongo-data.sh"
-  },
-  "devDependencies": {
-    "@eslint/eslintrc": "^3.3.1",
-    "@graphql-codegen/cli": "^6.1.0",
-    "@graphql-codegen/near-operation-file-preset": "^3.1.0",
-    "@graphql-codegen/typescript": "^5.0.5",
-    "@graphql-codegen/typescript-operations": "^5.0.5",
-    "@ianvs/prettier-plugin-sort-imports": "^4.7.0",
-    "@next/eslint-plugin-next": "^16.0.1",
-    "@typescript-eslint/eslint-plugin": "^8.46.3",
-    "@typescript-eslint/parser": "^8.46.3",
-    "eslint": "^9.39.1",
-    "eslint-config-next": "15.5.6",
-    "eslint-config-prettier": "^10.1.8",
-    "prettier": "^3.6.2"
-  }
+    "name": "go-with-me",
+    "version": "0.0.0",
+    "private": true,
+    "workspaces": [
+        "packages/*"
+    ],
+    "scripts": {
+        "frontend:dev": "pnpm --filter web-frontend dev",
+        "backend:dev": "pnpm --filter backend nest start --watch",
+        "frontend:lint": "pnpm -r exec eslint packages/web-frontend --fix",
+        "backend:lint": "pnpm -r exec eslint packages/backend --fix",
+        "frontend:format": "prettier packages/web-frontend -w",
+        "backend:format": "prettier packages/backend -w",
+        "api-scheme:format": "prettier packages/api-scheme -w",
+        "format": "pnpm run frontend:format && pnpm run backend:format && pnpm run api-scheme:format",
+        "import:mongo": "./scripts/import-mongo-data.sh",
+        "codegen": "graphql-codegen --config codegen.ts"
+    },
+    "devDependencies": {
+        "@eslint/eslintrc": "^3.3.1",
+        "@graphql-codegen/cli": "^6.1.0",
+        "@graphql-codegen/near-operation-file-preset": "^3.1.0",
+        "@graphql-codegen/typescript": "^5.0.5",
+        "@graphql-codegen/typescript-operations": "^5.0.5",
+        "@ianvs/prettier-plugin-sort-imports": "^4.7.0",
+        "@next/eslint-plugin-next": "^16.0.1",
+        "@typescript-eslint/eslint-plugin": "^8.46.3",
+        "@typescript-eslint/parser": "^8.46.3",
+        "eslint": "^9.39.1",
+        "eslint-config-next": "15.5.6",
+        "eslint-config-prettier": "^10.1.8",
+        "prettier": "^3.6.2"
+    }
 }

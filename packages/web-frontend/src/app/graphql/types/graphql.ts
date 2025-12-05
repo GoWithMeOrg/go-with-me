@@ -1,5 +1,7 @@
+/* eslint-disable */
+import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
 export type Maybe<T> = T | null;
-export type InputMaybe<T> = Maybe<T>;
+export type InputMaybe<T> = T | null | undefined;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
@@ -12,7 +14,22 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
+  /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
   DateTime: { input: any; output: any; }
+};
+
+export type Categories = {
+  __typename?: 'Categories';
+  _id: Scalars['ID']['output'];
+  categories: Array<Scalars['String']['output']>;
+  ownerId: Scalars['ID']['output'];
+  ownerType: Scalars['String']['output'];
+};
+
+export type CreateCategoriesInput = {
+  categories: Array<Scalars['String']['input']>;
+  ownerId: Scalars['ID']['input'];
+  ownerType: Scalars['String']['input'];
 };
 
 export type CreateInterestInput = {
@@ -22,10 +39,8 @@ export type CreateInterestInput = {
 };
 
 export type CreateLocationInput = {
-  coordinates: Array<Scalars['Float']['input']>;
-  ownerId: Scalars['ID']['input'];
-  ownerType: Scalars['String']['input'];
-  properties?: InputMaybe<LocationPropertiesInput>;
+  geometry: LocationGeometryInput;
+  properties: LocationPropertiesInput;
 };
 
 export type CreateUserInput = {
@@ -60,9 +75,13 @@ export type LocationGeometry = {
   type: Scalars['String']['output'];
 };
 
+export type LocationGeometryInput = {
+  coordinates: Array<Scalars['Float']['input']>;
+};
+
 export type LocationProperties = {
   __typename?: 'LocationProperties';
-  address: Scalars['String']['output'];
+  address?: Maybe<Scalars['String']['output']>;
   createdAt: Scalars['DateTime']['output'];
   ownerId: Scalars['String']['output'];
   ownerType: Scalars['String']['output'];
@@ -71,25 +90,36 @@ export type LocationProperties = {
 
 export type LocationPropertiesInput = {
   address?: InputMaybe<Scalars['String']['input']>;
+  ownerId: Scalars['ID']['input'];
+  ownerType: Scalars['String']['input'];
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createCategories: Categories;
   createInterest: Interest;
   /** Создать локацию */
   createLocation: Location;
   /** Создать пользователя */
   createUser: User;
+  removeCategories: Categories;
   removeInterest: Interest;
   /** Удалить локацию */
   removeLocation: Scalars['Boolean']['output'];
   /** Удалить пользователя */
   removeUser: Scalars['Boolean']['output'];
+  updateCategories: Categories;
   updateInterest: Interest;
   /** Обновить локацию */
   updateLocation: Location;
   /** Обновить данные пользователя */
   updateUser: User;
+  updateUserProfile: UserProfile;
+};
+
+
+export type MutationCreateCategoriesArgs = {
+  createCategoriesInput: CreateCategoriesInput;
 };
 
 
@@ -108,6 +138,11 @@ export type MutationCreateUserArgs = {
 };
 
 
+export type MutationRemoveCategoriesArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
 export type MutationRemoveInterestArgs = {
   id: Scalars['ID']['input'];
 };
@@ -120,6 +155,11 @@ export type MutationRemoveLocationArgs = {
 
 export type MutationRemoveUserArgs = {
   id: Scalars['ID']['input'];
+};
+
+
+export type MutationUpdateCategoriesArgs = {
+  updateCategoriesInput: UpdateCategoriesInput;
 };
 
 
@@ -138,9 +178,25 @@ export type MutationUpdateUserArgs = {
   user: UpdateUserInput;
 };
 
+
+export type MutationUpdateUserProfileArgs = {
+  categoriesId: Scalars['ID']['input'];
+  interestId: Scalars['ID']['input'];
+  locationId: Scalars['ID']['input'];
+  updateCategoriesInput: UpdateCategoriesInput;
+  updateInterestInput: UpdateInterestInput;
+  updateLocationInput: UpdateLocationInput;
+  updateUserInput: UpdateUserInput;
+  userId: Scalars['ID']['input'];
+};
+
 export type Query = {
   __typename?: 'Query';
   adminRoute: Scalars['String']['output'];
+  /** Поиск категорий по id */
+  categoriesById: Categories;
+  /** Поиск категорий по ownerId */
+  categoriesByOwnerId: Categories;
   /** Поиск интересов по id */
   interestById: Interest;
   /** Поиск интересов по ownerId */
@@ -157,6 +213,16 @@ export type Query = {
   userProfile: UserProfile;
   /** Получить всех пользователей */
   users: Array<User>;
+};
+
+
+export type QueryCategoriesByIdArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryCategoriesByOwnerIdArgs = {
+  ownerId: Scalars['ID']['input'];
 };
 
 
@@ -189,17 +255,24 @@ export type QueryUserProfileArgs = {
   userId: Scalars['ID']['input'];
 };
 
+export type UpdateCategoriesInput = {
+  _id: Scalars['String']['input'];
+  categories: Array<Scalars['String']['input']>;
+};
+
 export type UpdateInterestInput = {
-  id: Scalars['ID']['input'];
-  interest?: InputMaybe<Array<Scalars['String']['input']>>;
-  ownerId?: InputMaybe<Scalars['ID']['input']>;
-  ownerType?: InputMaybe<Scalars['String']['input']>;
+  _id: Scalars['String']['input'];
+  interest: Array<Scalars['String']['input']>;
 };
 
 export type UpdateLocationInput = {
   _id: Scalars['ID']['input'];
-  coordinates?: InputMaybe<Array<Scalars['Float']['input']>>;
-  properties?: InputMaybe<LocationPropertiesInput>;
+  geometry?: InputMaybe<LocationGeometryInput>;
+  properties?: InputMaybe<UpdateLocationPropertiesInput>;
+};
+
+export type UpdateLocationPropertiesInput = {
+  address?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UpdateUserInput = {
@@ -228,7 +301,16 @@ export type User = {
 
 export type UserProfile = {
   __typename?: 'UserProfile';
+  categories?: Maybe<Categories>;
   interest?: Maybe<Interest>;
   location?: Maybe<Location>;
   user: User;
 };
+
+export type GetSessionQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetSessionQuery = { __typename?: 'Query', session?: { __typename?: 'User', _id: string, firstName: string, lastName: string, email: string, roles: Array<string> } | null };
+
+
+export const GetSessionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetSession"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"session"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"roles"}}]}}]}}]} as unknown as DocumentNode<GetSessionQuery, GetSessionQueryVariables>;

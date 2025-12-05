@@ -4,7 +4,7 @@ import { FC } from 'react';
 import { Controller } from 'react-hook-form';
 import { Button } from '@/components/shared/Button';
 import { ButtonLink } from '@/components/shared/ButtonLink';
-import { eventCategory, eventTypes } from '@/components/shared/Dropdown/dropdownLists';
+import { categoriesList, interestsList } from '@/components/shared/Dropdown/dropdownLists';
 import { Input } from '@/components/shared/Input';
 import { Label } from '@/components/shared/Label';
 import { Textarea } from '@/components/shared/Textarea';
@@ -20,8 +20,19 @@ import { useProfileForm } from './hooks/useProfileForm';
 import classes from './ProfileForm.module.css';
 
 export const ProfileForm: FC = () => {
-    const { error, user, location, interest, handleSubmit, onSubmit, control, handleUploadedFile } =
-        useProfileForm();
+    const {
+        error,
+        user,
+        location,
+        interest,
+        categories,
+        handleSubmit,
+        onSubmit,
+        control,
+        handleUploadedFile,
+    } = useProfileForm();
+
+    console.log(user);
 
     return (
         <>
@@ -83,13 +94,13 @@ export const ProfileForm: FC = () => {
                         <Controller
                             name="location"
                             control={control}
-                            defaultValue={location?.geometry.coordinates}
+                            defaultValue={location?.geometry?.coordinates}
                             render={({ field }) => (
                                 <Label label={'Локация'}>
                                     <Autocomplete
                                         className={classes.location}
                                         onPlaceSelect={field.onChange}
-                                        address={location?.properties?.address}
+                                        address={location.properties?.address as string}
                                         options={optionsFullAdress}
                                     />
                                 </Label>
@@ -110,28 +121,28 @@ export const ProfileForm: FC = () => {
                             )}
                         />
 
-                        {/* <Controller
-                            name="categories"
+                        <Controller
+                            name="categories.categories"
                             control={control}
                             render={({ field }) => (
                                 <SelectItems
-                                    categoryList={eventCategory}
-                                    eventCategories={[...(user?.categories ?? [])]}
+                                    categoryList={categoriesList}
+                                    eventCategories={[...(categories ?? [])]}
                                     titleCategories={'Выбрать категорию'}
                                     badgesShow
                                     onChange={field.onChange}
                                     filter={false}
                                 />
                             )}
-                        /> */}
+                        />
 
                         <Controller
                             name="interest.interest"
                             control={control}
                             render={({ field }) => (
                                 <SelectItems
-                                    categoryList={eventTypes}
-                                    eventCategories={[...(interest?.interest ?? [])]}
+                                    categoryList={interestsList}
+                                    eventCategories={[...(interest ?? [])]}
                                     titleCategories={'What subjects are you interested in?'}
                                     badgesShow
                                     onChange={field.onChange}

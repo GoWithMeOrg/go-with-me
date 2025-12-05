@@ -2,25 +2,20 @@ import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { UPDATE_USER_PROFILE } from '@/app/graphql/mutations/updateUserProfile';
 import { useSessionGQL } from '@/app/providers/session/hooks/useSesssionGQL';
-import { Interest, Location, User } from '@/app/types/User';
+import { Categories, Interest, Location, User } from '@/app/types/types';
 import { useUploadFile } from '@/components/widgets/UploadFile/hooks';
 import { useMutation, useQuery } from '@apollo/client/react';
 import { GET_USER_PROFILE_BY_ID } from '@go-with-me/api-scheme/graphql/userProfile';
 
-interface IFormProfile {
-    user: User;
-    location: Location;
-    interest: Interest;
-}
-
 export interface UserProfile {
     user: User;
     location: Location;
+    categories: Categories;
     interest: Interest;
 }
 
 export const useProfileForm = () => {
-    const { control, handleSubmit, watch } = useForm<IFormProfile>();
+    const { control, handleSubmit, watch } = useForm<UserProfile>();
     const { data: session } = useSessionGQL();
     const { onSubmitFile, getDeleteFile } = useUploadFile({});
 
@@ -37,9 +32,11 @@ export const useProfileForm = () => {
         variables: { userId: session?._id },
     });
 
+    console.log(userProfile);
     const user = userProfile?.userProfile.user;
-    const location = userProfile?.userProfile.location;
-    const interest = userProfile?.userProfile.interest;
+    const location = userProfile?.userProfile?.location;
+    const interest = userProfile?.userProfile?.interest?.interest;
+    const categories = userProfile?.userProfile?.categories?.categories;
 
     const [updateUserProfile] = useMutation(UPDATE_USER_PROFILE);
 
@@ -57,25 +54,24 @@ export const useProfileForm = () => {
             },
         };
 
-        console.log(newPlace);
-
         return newPlace;
     }
+
+    const isNewCategory = !userProfile?.userProfile.categories?._id;
+    const isNewInterest = !userProfile?.userProfile.interest?._id;
+    const isNewLocation = !userProfile?.userProfile.location?._id;
 
     const handleEditProfile = async (userProfileEdited: UserProfile) => {
         const transformedLocation = mapGooglePlaceToLocationInput(place);
 
-        if (!transformedLocation) {
-            console.error('Ошибка: transformedLocation пустой');
-            return;
-        }
-
         await updateUserProfile({
             variables: {
                 userId: user_id,
-                interestId: userProfile?.userProfile.interest?._id,
-                locationId: userProfile?.userProfile.location?._id,
+                interestId: userProfile?.userProfile.interest?._id || null,
+                categoriesId: userProfile?.userProfile.categories?._id || null,
+                locationId: userProfile?.userProfile.location?._id || null,
 
+                // Только обновляем
                 updateUserInput: {
                     _id: userProfile?.userProfile.user._id,
                     firstName: userProfileEdited.user.firstName,
@@ -85,22 +81,68 @@ export const useProfileForm = () => {
                     image: userProfileEdited.user.image,
                 },
 
-                updateLocationInput: {
-                    _id: userProfile?.userProfile.location._id,
-                    geometry: transformedLocation.geometry,
-                    properties: transformedLocation.properties,
-                },
+                // --- ЛОКАЦИЯ ---
+                ...(transformedLocation &&
+                    isNewLocation && {
+                        // ID НЕТ + ДАННЫЕ ЕСТЬ = СОЗДАНИЕ
+                        createLocationInput: {
+                            geometry: transformedLocation.geometry,
+                            properties: transformedLocation.properties,
+                        },
+                    }),
+                ...(transformedLocation &&
+                    !isNewLocation && {
+                        // ID ЕСТЬ + ДАННЫЕ ЕСТЬ = ОБНОВЛЕНИЕ
+                        updateLocationInput: {
+                            _id: userProfile?.userProfile.location._id,
+                            geometry: transformedLocation.geometry,
+                            properties: transformedLocation.properties,
+                        },
+                    }),
 
-                updateInterestInput: {
-                    _id: userProfile?.userProfile.interest._id,
-                    interest: userProfileEdited.interest.interest,
-                },
+                // --- КАТЕГОРИИ ---
+                ...(isNewCategory
+                    ? {
+                          // ID НЕТ = СОЗДАНИЕ
+                          createCategoriesInput: {
+                              // Предполагаем, что CreateCategoriesInput принимает 'categories'
+                              categories: userProfileEdited.categories.categories,
+                              ownerId: user_id,
+                              ownerType: 'User',
+                          },
+                      }
+                    : {
+                          // ID ЕСТЬ = ОБНОВЛЕНИЕ
+                          updateCategoriesInput: {
+                              _id: userProfile?.userProfile.categories._id,
+                              categories: userProfileEdited.categories.categories,
+                          },
+                      }),
+
+                // --- ИНТЕРЕСЫ ---
+                ...(isNewInterest
+                    ? {
+                          // ID НЕТ = СОЗДАНИЕ
+                          createInterestInput: {
+                              // Предполагаем, что CreateInterestInput принимает 'interest'
+                              interest: userProfileEdited.interest.interest,
+                              ownerId: user_id,
+                              ownerType: 'User',
+                          },
+                      }
+                    : {
+                          // ID ЕСТЬ = ОБНОВЛЕНИЕ
+                          updateInterestInput: {
+                              _id: userProfile?.userProfile.interest._id,
+                              interest: userProfileEdited.interest.interest,
+                          },
+                      }),
             },
         });
         refetch();
     };
 
-    const onSubmit: SubmitHandler<IFormProfile> = (event: UserProfile) => {
+    const onSubmit: SubmitHandler<UserProfile> = (event: UserProfile) => {
         handleEditProfile(event);
         if (file && presignUrl) {
             onSubmitFile(file, presignUrl);
@@ -120,6 +162,7 @@ export const useProfileForm = () => {
         user,
         location,
         interest,
+        categories,
         handleSubmit,
         onSubmit,
         control,

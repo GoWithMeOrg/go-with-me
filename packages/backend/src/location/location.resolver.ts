@@ -34,7 +34,8 @@ export class LocationResolver {
         description: 'Создать локацию',
     })
     createLocation(
-        @Args('createLocationInput') createLocationInput: CreateLocationInput
+        @Args('createLocationInput', { type: () => CreateLocationInput })
+        createLocationInput: CreateLocationInput
     ): Promise<Location | null> {
         return this.locationService.createLocation(createLocationInput);
     }

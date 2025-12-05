@@ -3,26 +3,22 @@ import gql from 'graphql-tag';
 export const GET_USER_PROFILE_BY_ID = gql`
     query UserProfile($userId: ID!) {
         userProfile(userId: $userId) {
+            categories {
+                _id
+                categories
+            }
             interest {
                 _id
                 interest
-                ownerId
-                ownerType
             }
             location {
                 _id
                 geometry {
                     coordinates
-                    type
                 }
                 properties {
                     address
-                    createdAt
-                    ownerId
-                    ownerType
-                    updatedAt
                 }
-                type
             }
             user {
                 _id
@@ -33,7 +29,6 @@ export const GET_USER_PROFILE_BY_ID = gql`
                 image
                 lastName
                 roles
-                updatedAt
             }
         }
     }

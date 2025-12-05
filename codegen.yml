@@ -18,19 +18,22 @@
 #         plugins:
 #             - typescript-operations
 
-schema: 'http://localhost:4000/graphql' # Ваш endpoint или локальный schema.gql
-documents: './packages/api-scheme/graphql/location.ts' # Документ с запросом для User
+schema: 'http://localhost:4000/graphql'
+documents: './packages/web-frontend/src/app/graphql/**/*.{ts,tsx}'
+
 generates:
-    # 1️⃣ Тип схемы User
-    ./packages/web-frontend/src/app/types/User.ts:
+    # 1️⃣ Генерация типов схемы (User, Location, Category и т.д.)
+    ./packages/web-frontend/src/app/graphql/types.ts:
         plugins:
             - typescript
         config:
-            onlyTypes: true # генерируем только типы
-            include: ['Location'] # только сущность User
+            onlyTypes: true
 
-    # 2️⃣ Типы операций с User
-    ./packages/web-frontend/src/app/types/UserOperations.ts:
+    # 2️⃣ Генерация типов для операций — каждый файл рядом со своей операцией
+    ./packages/web-frontend/src/app/graphql/:
+        preset: near-operation-file
+        presetConfig:
+            extension: .generated.ts # итоговое расширение файлов
+            baseTypesPath: types.ts # путь к типам схемы (из блока выше)
         plugins:
             - typescript-operations
-            - typescript

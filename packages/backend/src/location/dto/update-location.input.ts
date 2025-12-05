@@ -10,7 +10,7 @@ export class UpdateLocationPropertiesInput {
 
 @InputType()
 export class UpdateLocationInput {
-    @Field(() => ID)
+    @Field(() => ID, { nullable: true })
     _id: MongoSchema.Types.ObjectId;
 
     @Field(() => LocationGeometryInput, { nullable: true })

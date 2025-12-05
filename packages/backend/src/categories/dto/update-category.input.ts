@@ -3,9 +3,9 @@ import { Schema as MongoSchema } from 'mongoose';
 
 @InputType()
 export class UpdateCategoriesInput {
-    @Field(() => String)
+    @Field(() => String, { nullable: true })
     _id: MongoSchema.Types.ObjectId;
 
-    @Field(() => [String])
+    @Field(() => [String], { nullable: true })
     categories: string[];
 }

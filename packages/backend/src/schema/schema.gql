@@ -103,7 +103,7 @@ type Mutation {
 
   """Обновить данные пользователя"""
   updateUser(updateUserId: ID!, user: UpdateUserInput!): User!
-  updateUserProfile(categoriesId: ID!, interestId: ID!, locationId: ID!, updateCategoriesInput: UpdateCategoriesInput!, updateInterestInput: UpdateInterestInput!, updateLocationInput: UpdateLocationInput!, updateUserInput: UpdateUserInput!, userId: ID!): UserProfile!
+  updateUserProfile(categoriesId: ID, createCategoriesInput: CreateCategoriesInput, createInterestInput: CreateInterestInput, createLocationInput: CreateLocationInput, interestId: ID, locationId: ID, updateCategoriesInput: UpdateCategoriesInput, updateInterestInput: UpdateInterestInput, updateLocationInput: UpdateLocationInput, updateUserInput: UpdateUserInput, userId: ID!): UserProfile!
 }
 
 type Query {
@@ -140,17 +140,17 @@ type Query {
 }
 
 input UpdateCategoriesInput {
-  _id: String!
-  categories: [String!]!
+  _id: String
+  categories: [String!]
 }
 
 input UpdateInterestInput {
-  _id: String!
+  _id: String
   interest: [String!]!
 }
 
 input UpdateLocationInput {
-  _id: ID!
+  _id: ID
   geometry: LocationGeometryInput
   properties: UpdateLocationPropertiesInput
 }
@@ -183,6 +183,7 @@ type User {
 }
 
 type UserProfile {
+  categories: Categories
   interest: Interest
   location: Location
   user: User!

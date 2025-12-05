@@ -29,9 +29,9 @@ export class CategoriesService {
 
     async updateCategories(
         id: MongoSchema.Types.ObjectId,
-        updateInterestInput: UpdateCategoriesInput
+        updateCategoriesInput: UpdateCategoriesInput
     ) {
-        return await this.categoriesModel.findByIdAndUpdate(id, updateInterestInput, {
+        return await this.categoriesModel.findByIdAndUpdate(id, updateCategoriesInput, {
             new: true,
         });
     }

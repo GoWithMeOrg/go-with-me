@@ -11,14 +11,14 @@ export const useNotifications = () => {
         variables: {
             userId: user_id,
         },
-        pollInterval: 5000,
+        // pollInterval: 5000,
     });
 
     const { data: invations, refetch: refetchDataInvations } = useQuery(GET_INVATIONS, {
         variables: {
             userId: user_id,
         },
-        pollInterval: 5000,
+        // pollInterval: 5000,
     });
 
     //@ts-ignore
