@@ -5,6 +5,7 @@ import { UserProfileResolver } from './user-profile.resolver';
 import { UserProfileService } from './user-profile.service';
 import { InterestModule } from 'src/interest/interest.module';
 import { CategoriesModule } from 'src/categories/categories.module';
+import { TagModule } from 'src/tag/tag.module';
 
 @Module({
     imports: [
@@ -12,6 +13,7 @@ import { CategoriesModule } from 'src/categories/categories.module';
         forwardRef(() => LocationModule),
         forwardRef(() => CategoriesModule),
         forwardRef(() => InterestModule),
+        forwardRef(() => TagModule),
     ],
     providers: [UserProfileResolver, UserProfileService],
     exports: [UserProfileService], // если нужно вызывать сбор профиля из других модулей

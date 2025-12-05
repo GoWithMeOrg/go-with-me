@@ -15,6 +15,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { UserProfileModule } from './user-profile/user-profile.module';
 import { InterestModule } from './interest/interest.module';
 import { CategoriesModule } from './categories/categories.module';
+import { TagModule } from './tag/tag.module';
 
 @Module({
     imports: [
@@ -52,6 +53,8 @@ import { CategoriesModule } from './categories/categories.module';
         AuthModule,
 
         CategoriesModule,
+
+        TagModule,
     ],
 
     controllers: [],

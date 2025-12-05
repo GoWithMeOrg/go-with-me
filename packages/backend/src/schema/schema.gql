@@ -26,6 +26,12 @@ input CreateLocationInput {
   properties: LocationPropertiesInput!
 }
 
+input CreateTagInput {
+  ownerId: ID!
+  ownerType: String!
+  tags: [String!]!
+}
+
 input CreateUserInput {
   createdAt: DateTime!
   email: String!
@@ -84,6 +90,7 @@ type Mutation {
 
   """Создать локацию"""
   createLocation(createLocationInput: CreateLocationInput!): Location!
+  createTag(createTagInput: CreateTagInput!): Tag!
 
   """Создать пользователя"""
   createUser(createUserInput: CreateUserInput!): User!
@@ -92,6 +99,7 @@ type Mutation {
 
   """Удалить локацию"""
   removeLocation(id: ID!): Boolean!
+  removeTag(id: ID!): Tag!
 
   """Удалить пользователя"""
   removeUser(id: ID!): Boolean!
@@ -100,6 +108,7 @@ type Mutation {
 
   """Обновить локацию"""
   updateLocation(updateLocationInput: UpdateLocationInput!): Location!
+  updateTag(updateTagInput: UpdateTagInput!): Tag!
 
   """Обновить данные пользователя"""
   updateUser(updateUserId: ID!, user: UpdateUserInput!): User!
@@ -129,6 +138,12 @@ type Query {
   moderatorRoute: String!
   session: User
 
+  """Поиск категорий по id"""
+  tagById(id: ID!): Tag!
+
+  """Поиск категорий по ownerId"""
+  tagByOwnerId(ownerId: ID!): Tag!
+
   """Поиск пользователя по id"""
   user(id: ID!): User!
 
@@ -137,6 +152,13 @@ type Query {
 
   """Получить всех пользователей"""
   users: [User!]!
+}
+
+type Tag {
+  _id: ID!
+  ownerId: ID!
+  ownerType: String!
+  tags: [String!]!
 }
 
 input UpdateCategoriesInput {
@@ -157,6 +179,11 @@ input UpdateLocationInput {
 
 input UpdateLocationPropertiesInput {
   address: String
+}
+
+input UpdateTagInput {
+  _id: String
+  tags: [String!]
 }
 
 input UpdateUserInput {
