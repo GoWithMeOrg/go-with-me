@@ -1,5 +1,5 @@
 import { Resolver, Query, Args, ID, Mutation } from '@nestjs/graphql';
-import { UserProfile } from '../user-profile/dto/user-profile.type';
+import { UserProfile } from './dto/user-profile.entity';
 import { UserProfileService } from '../user-profile/user-profile.service';
 import { Schema as MongoSchema } from 'mongoose';
 import { UpdateUserInput } from 'src/user/dto/update-user.input';
@@ -10,6 +10,8 @@ import { UpdateCategoriesInput } from 'src/categories/dto/update-category.input'
 import { CreateLocationInput } from 'src/location/dto/create-location.input';
 import { CreateCategoriesInput } from 'src/categories/dto/create-category.input';
 import { CreateInterestInput } from 'src/interest/dto/create-interest.input';
+import { CreateTagInput } from 'src/tag/dto/create-tag.input';
+import { UpdateTagInput } from 'src/tag/dto/update-tag.input';
 
 @Resolver(() => UserProfile)
 export class UserProfileResolver {
@@ -32,30 +34,39 @@ export class UserProfileResolver {
         categoriesId: MongoSchema.Types.ObjectId,
         @Args('interestId', { type: () => ID, nullable: true })
         interestId: MongoSchema.Types.ObjectId,
+        @Args('tagId', { type: () => ID, nullable: true })
+        tagId: MongoSchema.Types.ObjectId,
 
         @Args('createLocationInput', { nullable: true }) createLocationInput: CreateLocationInput,
         @Args('createCategoriesInput', { nullable: true })
         createCategoriesInput: CreateCategoriesInput,
         @Args('createInterestInput', { nullable: true }) createInterestInput: CreateInterestInput,
+        @Args('createTagInput', { nullable: true }) createTagInput: CreateTagInput,
 
         @Args('updateUserInput', { nullable: true }) updateUserInput: UpdateUserInput,
         @Args('updateLocationInput', { nullable: true }) updateLocationInput: UpdateLocationInput,
         @Args('updateCategoriesInput', { nullable: true })
         updateCategoriesInput: UpdateCategoriesInput,
-        @Args('updateInterestInput', { nullable: true }) updateInterestInput: UpdateInterestInput
+        @Args('updateInterestInput', { nullable: true }) updateInterestInput: UpdateInterestInput,
+        @Args('updateTagInput', { nullable: true }) updateTagInput: UpdateTagInput
     ) {
         return this.profileService.updateProfile(
             userId,
             locationId,
             categoriesId,
             interestId,
+            tagId,
+
             createLocationInput,
             createCategoriesInput,
             createInterestInput,
+            createTagInput,
+
             updateUserInput,
             updateLocationInput,
             updateCategoriesInput,
-            updateInterestInput
+            updateInterestInput,
+            updateTagInput
         );
     }
 }

@@ -13,6 +13,9 @@ import { UpdateCategoriesInput } from 'src/categories/dto/update-category.input'
 import { CreateLocationInput } from 'src/location/dto/create-location.input';
 import { CreateCategoriesInput } from 'src/categories/dto/create-category.input';
 import { CreateInterestInput } from 'src/interest/dto/create-interest.input';
+import { CreateTagInput } from 'src/tag/dto/create-tag.input';
+import { UpdateTagInput } from 'src/tag/dto/update-tag.input';
+import { TagService } from 'src/tag/tag.service';
 
 @Injectable()
 export class UserProfileService {
@@ -20,7 +23,8 @@ export class UserProfileService {
         private readonly userService: UserService,
         private readonly locationService: LocationService,
         private readonly categoriesService: CategoriesService,
-        private readonly interestService: InterestService
+        private readonly interestService: InterestService,
+        private readonly tagService: TagService
     ) {}
 
     async updateProfile(
@@ -28,15 +32,18 @@ export class UserProfileService {
         locationId?: MongoSchema.Types.ObjectId,
         categoriesId?: MongoSchema.Types.ObjectId,
         interestId?: MongoSchema.Types.ObjectId,
+        tagId?: MongoSchema.Types.ObjectId,
 
         createLocationInput?: CreateLocationInput,
         createCategoriesInput?: CreateCategoriesInput,
         createInterestInput?: CreateInterestInput,
+        createTagInput?: CreateTagInput,
 
         updateUserInput?: UpdateUserInput,
         updateLocationInput?: UpdateLocationInput,
         updateCategoriesInput?: UpdateCategoriesInput,
-        updateInterestInput?: UpdateInterestInput
+        updateInterestInput?: UpdateInterestInput,
+        updateTagInput?: UpdateTagInput
     ) {
         const tasks: Promise<any>[] = [];
 
@@ -51,21 +58,6 @@ export class UserProfileService {
         } else if (createLocationInput) {
             tasks.push(this.locationService.createLocation(createLocationInput));
         }
-
-        // if (updateLocationInput) {
-        //     if (locationId) {
-        //         // ОБНОВЛЕНИЕ: ID есть, обновляем
-        //         tasks.push(this.locationService.updateLocation(locationId, updateLocationInput));
-        //     } else {
-        //         // СОЗДАНИЕ: ID нет, создаем новую локацию
-        //         tasks.push(
-        //             this.locationService.createLocation(createLocationInput).then((location) => {
-        //                 // Сохраняем ID, чтобы привязать его к пользователю позже
-        //                 newLocationId = location._id;
-        //             })
-        //         );
-        //     }
-        // }
 
         // ---- Обновляем категории ----
         if (categoriesId && updateCategoriesInput) {
@@ -83,7 +75,12 @@ export class UserProfileService {
             tasks.push(this.interestService.createInterest(createInterestInput));
         }
 
-        // tasks['properties.updatedAt'] = new Date();
+        // ---- Обновляем теги ----
+        if (tagId && updateTagInput) {
+            tasks.push(this.tagService.updateTag(tagId, updateTagInput));
+        } else if (createTagInput) {
+            tasks.push(this.tagService.createTag(createTagInput));
+        }
 
         // Выполняем обновления параллельно
         await Promise.all(tasks);
@@ -93,13 +90,15 @@ export class UserProfileService {
     }
 
     async buildProfile(userId: MongoSchema.Types.ObjectId) {
-        const [user, location, categories, interest] = await Promise.all([
+        const [user, location, categories, interest, tag] = await Promise.all([
             this.userService.getUserById(userId),
             this.locationService.getLocationByOwner(userId),
             this.categoriesService.getCategoriesByOwner(userId),
             this.interestService.getInterestByOwner(userId),
+            this.tagService.getTagByOwner(userId),
         ]);
 
-        return { user, location, categories, interest };
+        console.log(tag);
+        return { user, location, categories, interest, tag };
     }
 }

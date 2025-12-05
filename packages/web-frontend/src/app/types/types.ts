@@ -41,6 +41,12 @@ export type CreateLocationInput = {
   properties: LocationPropertiesInput;
 };
 
+export type CreateTagInput = {
+  ownerId: Scalars['ID']['input'];
+  ownerType: Scalars['String']['input'];
+  tags: Array<Scalars['String']['input']>;
+};
+
 export type CreateUserInput = {
   createdAt: Scalars['DateTime']['input'];
   email: Scalars['String']['input'];
@@ -98,18 +104,21 @@ export type Mutation = {
   createInterest: Interest;
   /** Создать локацию */
   createLocation: Location;
+  createTag: Tag;
   /** Создать пользователя */
   createUser: User;
   removeCategories: Categories;
   removeInterest: Interest;
   /** Удалить локацию */
   removeLocation: Scalars['Boolean']['output'];
+  removeTag: Tag;
   /** Удалить пользователя */
   removeUser: Scalars['Boolean']['output'];
   updateCategories: Categories;
   updateInterest: Interest;
   /** Обновить локацию */
   updateLocation: Location;
+  updateTag: Tag;
   /** Обновить данные пользователя */
   updateUser: User;
   updateUserProfile: UserProfile;
@@ -131,6 +140,11 @@ export type MutationCreateLocationArgs = {
 };
 
 
+export type MutationCreateTagArgs = {
+  createTagInput: CreateTagInput;
+};
+
+
 export type MutationCreateUserArgs = {
   createUserInput: CreateUserInput;
 };
@@ -147,6 +161,11 @@ export type MutationRemoveInterestArgs = {
 
 
 export type MutationRemoveLocationArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationRemoveTagArgs = {
   id: Scalars['ID']['input'];
 };
 
@@ -171,6 +190,11 @@ export type MutationUpdateLocationArgs = {
 };
 
 
+export type MutationUpdateTagArgs = {
+  updateTagInput: UpdateTagInput;
+};
+
+
 export type MutationUpdateUserArgs = {
   updateUserId: Scalars['ID']['input'];
   user: UpdateUserInput;
@@ -178,13 +202,19 @@ export type MutationUpdateUserArgs = {
 
 
 export type MutationUpdateUserProfileArgs = {
-  categoriesId: Scalars['ID']['input'];
-  interestId: Scalars['ID']['input'];
-  locationId: Scalars['ID']['input'];
-  updateCategoriesInput: UpdateCategoriesInput;
-  updateInterestInput: UpdateInterestInput;
-  updateLocationInput: UpdateLocationInput;
-  updateUserInput: UpdateUserInput;
+  categoriesId?: InputMaybe<Scalars['ID']['input']>;
+  createCategoriesInput?: InputMaybe<CreateCategoriesInput>;
+  createInterestInput?: InputMaybe<CreateInterestInput>;
+  createLocationInput?: InputMaybe<CreateLocationInput>;
+  createTagInput?: InputMaybe<CreateTagInput>;
+  interestId?: InputMaybe<Scalars['ID']['input']>;
+  locationId?: InputMaybe<Scalars['ID']['input']>;
+  tagId?: InputMaybe<Scalars['ID']['input']>;
+  updateCategoriesInput?: InputMaybe<UpdateCategoriesInput>;
+  updateInterestInput?: InputMaybe<UpdateInterestInput>;
+  updateLocationInput?: InputMaybe<UpdateLocationInput>;
+  updateTagInput?: InputMaybe<UpdateTagInput>;
+  updateUserInput?: InputMaybe<UpdateUserInput>;
   userId: Scalars['ID']['input'];
 };
 
@@ -205,6 +235,10 @@ export type Query = {
   locationByOwnerId: Location;
   moderatorRoute: Scalars['String']['output'];
   session?: Maybe<User>;
+  /** Поиск категорий по id */
+  tagById: Tag;
+  /** Поиск категорий по ownerId */
+  tagByOwnerId: Tag;
   /** Поиск пользователя по id */
   user: User;
   /** Составной профиль пользователя */
@@ -244,6 +278,16 @@ export type QueryLocationByOwnerIdArgs = {
 };
 
 
+export type QueryTagByIdArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryTagByOwnerIdArgs = {
+  ownerId: Scalars['ID']['input'];
+};
+
+
 export type QueryUserArgs = {
   id: Scalars['ID']['input'];
 };
@@ -253,24 +297,37 @@ export type QueryUserProfileArgs = {
   userId: Scalars['ID']['input'];
 };
 
+export type Tag = {
+  __typename?: 'Tag';
+  _id: Scalars['ID']['output'];
+  ownerId: Scalars['ID']['output'];
+  ownerType: Scalars['String']['output'];
+  tags: Array<Scalars['String']['output']>;
+};
+
 export type UpdateCategoriesInput = {
-  _id: Scalars['String']['input'];
-  categories: Array<Scalars['String']['input']>;
+  _id?: InputMaybe<Scalars['String']['input']>;
+  categories?: InputMaybe<Array<Scalars['String']['input']>>;
 };
 
 export type UpdateInterestInput = {
-  _id: Scalars['String']['input'];
+  _id?: InputMaybe<Scalars['String']['input']>;
   interest: Array<Scalars['String']['input']>;
 };
 
 export type UpdateLocationInput = {
-  _id: Scalars['ID']['input'];
+  _id?: InputMaybe<Scalars['ID']['input']>;
   geometry?: InputMaybe<LocationGeometryInput>;
   properties?: InputMaybe<UpdateLocationPropertiesInput>;
 };
 
 export type UpdateLocationPropertiesInput = {
   address?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type UpdateTagInput = {
+  _id?: InputMaybe<Scalars['String']['input']>;
+  tags?: InputMaybe<Array<Scalars['String']['input']>>;
 };
 
 export type UpdateUserInput = {
@@ -302,6 +359,7 @@ export type UserProfile = {
   categories?: Maybe<Categories>;
   interest?: Maybe<Interest>;
   location?: Maybe<Location>;
+  tags?: Maybe<Tag>;
   user: User;
 };
 

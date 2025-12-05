@@ -26,6 +26,7 @@ export const ProfileForm: FC = () => {
         location,
         interest,
         categories,
+        tags,
         handleSubmit,
         onSubmit,
         control,
@@ -149,17 +150,17 @@ export const ProfileForm: FC = () => {
                             )}
                         />
 
-                        {/* <Controller
-                            name="tags"
+                        <Controller
+                            name="tag.tags"
                             control={control}
                             render={({ field }) => (
                                 <CreateTag
                                     onChange={field.onChange}
-                                    eventTags={[...(userProfile?.user?.tags ?? [])]}
+                                    eventTags={[...(tags ?? [])]}
                                     title={'Добавить тег'}
                                 />
                             )}
-                        /> */}
+                        />
                     </div>
 
                     <div className={classes.buttons}>

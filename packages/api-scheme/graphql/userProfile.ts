@@ -3,6 +3,10 @@ import gql from 'graphql-tag';
 export const GET_USER_PROFILE_BY_ID = gql`
     query UserProfile($userId: ID!) {
         userProfile(userId: $userId) {
+            tag {
+                tags
+                _id
+            }
             categories {
                 _id
                 categories

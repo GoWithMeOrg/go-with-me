@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 export const UPDATE_USER_PROFILE = gql`
-    mutation UpdateUserProfile(
+    mutation Mutation(
         $userId: ID!
         $categoriesId: ID
         $createCategoriesInput: CreateCategoriesInput
@@ -13,6 +13,9 @@ export const UPDATE_USER_PROFILE = gql`
         $updateCategoriesInput: UpdateCategoriesInput
         $updateInterestInput: UpdateInterestInput
         $updateLocationInput: UpdateLocationInput
+        $createTagInput: CreateTagInput
+        $tagId: ID
+        $updateTagInput: UpdateTagInput
     ) {
         updateUserProfile(
             userId: $userId
@@ -26,6 +29,9 @@ export const UPDATE_USER_PROFILE = gql`
             updateCategoriesInput: $updateCategoriesInput
             updateInterestInput: $updateInterestInput
             updateLocationInput: $updateLocationInput
+            createTagInput: $createTagInput
+            tagId: $tagId
+            updateTagInput: $updateTagInput
         ) {
             categories {
                 _id
@@ -64,6 +70,12 @@ export const UPDATE_USER_PROFILE = gql`
                 lastName
                 roles
                 updatedAt
+            }
+            tag {
+                _id
+                ownerId
+                ownerType
+                tags
             }
         }
     }

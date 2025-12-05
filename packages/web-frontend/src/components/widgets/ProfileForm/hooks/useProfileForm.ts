@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { UPDATE_USER_PROFILE } from '@/app/graphql/mutations/updateUserProfile';
 import { useSessionGQL } from '@/app/providers/session/hooks/useSesssionGQL';
-import { Categories, Interest, Location, User } from '@/app/types/types';
+import { Categories, Interest, Location, Tag, User } from '@/app/types/types';
 import { useUploadFile } from '@/components/widgets/UploadFile/hooks';
 import { useMutation, useQuery } from '@apollo/client/react';
 import { GET_USER_PROFILE_BY_ID } from '@go-with-me/api-scheme/graphql/userProfile';
@@ -12,6 +12,7 @@ export interface UserProfile {
     location: Location;
     categories: Categories;
     interest: Interest;
+    tag: Tag;
 }
 
 export const useProfileForm = () => {
@@ -32,17 +33,19 @@ export const useProfileForm = () => {
         variables: { userId: session?._id },
     });
 
+    console.log(userProfile);
     const user = userProfile?.userProfile.user;
     const location = userProfile?.userProfile?.location;
     const interest = userProfile?.userProfile?.interest?.interest;
     const categories = userProfile?.userProfile?.categories?.categories;
+    const tags = userProfile?.userProfile?.tag?.tags;
 
     const [updateUserProfile] = useMutation(UPDATE_USER_PROFILE);
 
     const place = watch('location');
 
     function mapGooglePlaceToLocationInput(place: any) {
-        if (!place || !place.geometry) return null;
+        if (!place || !place.geometry || !place.geometry.location) return null;
         const newPlace = {
             geometry: {
                 coordinates: [place.geometry.location.lng(), place.geometry.location.lat()],
@@ -58,6 +61,7 @@ export const useProfileForm = () => {
     const isNewCategory = !userProfile?.userProfile.categories?._id;
     const isNewInterest = !userProfile?.userProfile.interest?._id;
     const isNewLocation = !userProfile?.userProfile.location?._id;
+    const isNewTag = !userProfile?.userProfile.tag?._id;
 
     const handleEditProfile = async (userProfileEdited: UserProfile) => {
         const transformedLocation = mapGooglePlaceToLocationInput(place);
@@ -67,6 +71,7 @@ export const useProfileForm = () => {
                 userId: user_id,
                 interestId: userProfile?.userProfile.interest?._id || null,
                 categoriesId: userProfile?.userProfile.categories?._id || null,
+                tagId: userProfile?.userProfile.tag?._id || null,
                 locationId: userProfile?.userProfile.location?._id || null,
 
                 // Только обновляем
@@ -139,6 +144,24 @@ export const useProfileForm = () => {
                               interest: userProfileEdited.interest.interest,
                           },
                       }),
+                // --- ТЕГИ ---
+                ...(isNewTag
+                    ? {
+                          // ID НЕТ = СОЗДАНИЕ
+                          createTagInput: {
+                              // Предполагаем, что CreateInterestInput принимает 'interest'
+                              tags: userProfileEdited.tag.tags,
+                              ownerId: user_id,
+                              ownerType: 'User',
+                          },
+                      }
+                    : {
+                          // ID ЕСТЬ = ОБНОВЛЕНИЕ
+                          updateTagInput: {
+                              _id: userProfile?.userProfile.tag._id,
+                              tags: userProfileEdited.tag.tags,
+                          },
+                      }),
             },
         });
         refetch();
@@ -165,6 +188,7 @@ export const useProfileForm = () => {
         location,
         interest,
         categories,
+        tags,
         handleSubmit,
         onSubmit,
         control,
