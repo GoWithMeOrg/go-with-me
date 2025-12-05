@@ -32,8 +32,6 @@ export const ProfileForm: FC = () => {
         handleUploadedFile,
     } = useProfileForm();
 
-    console.log(user);
-
     return (
         <>
             {!error && user && location && (
@@ -94,7 +92,7 @@ export const ProfileForm: FC = () => {
                         <Controller
                             name="location"
                             control={control}
-                            defaultValue={location?.geometry?.coordinates}
+                            defaultValue={location}
                             render={({ field }) => (
                                 <Label label={'Локация'}>
                                     <Autocomplete

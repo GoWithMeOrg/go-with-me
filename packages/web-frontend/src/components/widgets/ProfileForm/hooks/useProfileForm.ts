@@ -32,7 +32,6 @@ export const useProfileForm = () => {
         variables: { userId: session?._id },
     });
 
-    console.log(userProfile);
     const user = userProfile?.userProfile.user;
     const location = userProfile?.userProfile?.location;
     const interest = userProfile?.userProfile?.interest?.interest;
@@ -42,7 +41,6 @@ export const useProfileForm = () => {
 
     const place = watch('location');
 
-    console.log(place);
     function mapGooglePlaceToLocationInput(place: any) {
         if (!place || !place.geometry) return null;
         const newPlace = {
@@ -87,7 +85,11 @@ export const useProfileForm = () => {
                         // ID НЕТ + ДАННЫЕ ЕСТЬ = СОЗДАНИЕ
                         createLocationInput: {
                             geometry: transformedLocation.geometry,
-                            properties: transformedLocation.properties,
+                            properties: {
+                                address: transformedLocation.properties.address,
+                                ownerId: user_id,
+                                ownerType: 'User',
+                            },
                         },
                     }),
                 ...(transformedLocation &&
