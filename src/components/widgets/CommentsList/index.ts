@@ -1,1 +1,0 @@
-export { CommentsList } from "./CommentsList";

@@ -1,1 +1,0 @@
-export { CardWork } from "./CardWork";

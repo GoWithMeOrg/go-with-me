@@ -1,0 +1,123 @@
+.promo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-items: center;
+  margin: 11.88rem 0 12.88rem 0;
+}
+
+.promoDescription {
+  display: grid;
+}
+
+.promoText {
+  display: grid;
+  width: 30rem;
+  color: var(--main-color);
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.88rem;
+}
+
+.promoButton {
+  display: flex;
+  align-items: flex-end;
+}
+
+.promoLink {
+  display: flex;
+  justify-content: flex-start;
+  width: 30rem;
+  align-items: center;
+  color: var(--main-color);
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 2.13rem;
+  text-transform: none;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.titleArrow {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.19rem;
+  text-align: left;
+  text-transform: uppercase;
+  color: var(--main-color);
+  margin-right: 0.7rem;
+}
+
+.cardsEvents {
+  width: 100%;
+  margin-bottom: 6.3rem;
+}
+
+.cardsEventsTitle {
+  margin-bottom: 4.375rem;
+}
+
+.cardsEventsList {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-content: center;
+  position: relative;
+  margin-bottom: 0.875rem;
+}
+
+.cardsEventsList::after {
+  content: '';
+  position: absolute;
+  top: 4%;
+  left: -40%;
+  width: 170.5%;
+  height: 76%;
+  background-color: var(--white-color);
+  z-index: -1;
+}
+
+.cardsWorkList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.cardsWorkTitleWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 4.375rem;
+}
+
+.cardsWorkLink {
+  color: var(--additional-color);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.19rem;
+  text-align: center;
+  text-transform: uppercase;
+  margin-right: 1.25rem;
+}
+
+.cardsWorkLink:hover {
+  color: var(--main-color);
+}
+
+.eventsButton {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  background: none;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.19rem;
+  text-align: left;
+  text-transform: uppercase;
+  color: var(--main-color);
+  margin-right: 0.7rem;
+  cursor: pointer;
+  font-family: '__Inter_1870e5', '__Inter_Fallback_1870e5';
+}

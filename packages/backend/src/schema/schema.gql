@@ -1,0 +1,218 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Category {
+  _id: ID!
+  categories: [String!]!
+  ownerId: ID!
+  ownerType: String!
+}
+
+input CreateCategoryInput {
+  categories: [String!]!
+  ownerId: ID!
+  ownerType: String!
+}
+
+input CreateInterestInput {
+  interests: [String!]!
+  ownerId: ID!
+  ownerType: String!
+}
+
+input CreateLocationInput {
+  geometry: LocationGeometryInput!
+  properties: LocationPropertiesInput!
+}
+
+input CreateTagInput {
+  ownerId: ID!
+  ownerType: String!
+  tags: [String!]!
+}
+
+input CreateUserInput {
+  createdAt: DateTime!
+  email: String!
+  firstName: String!
+  image: String!
+  lastName: String!
+  roles: [String!]!
+  updatedAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Interest {
+  _id: ID!
+  interests: [String!]!
+  ownerId: ID!
+  ownerType: String!
+}
+
+type Location {
+  _id: String!
+  geometry: LocationGeometry!
+  properties: LocationProperties!
+  type: String!
+}
+
+type LocationGeometry {
+  coordinates: [Float!]!
+  type: String!
+}
+
+input LocationGeometryInput {
+  coordinates: [Float!]!
+}
+
+type LocationProperties {
+  address: String
+  createdAt: DateTime!
+  ownerId: String!
+  ownerType: String!
+  updatedAt: DateTime!
+}
+
+input LocationPropertiesInput {
+  address: String
+  ownerId: ID!
+  ownerType: String!
+}
+
+type Mutation {
+  createCategories(createCategoriesInput: CreateCategoryInput!): Category!
+  createInterest(createInterestInput: CreateInterestInput!): Interest!
+
+  """Создать локацию"""
+  createLocation(createLocationInput: CreateLocationInput!): Location!
+  createTag(createTagInput: CreateTagInput!): Tag!
+
+  """Создать пользователя"""
+  createUser(createUserInput: CreateUserInput!): User!
+  removeCategories(id: ID!): Category!
+  removeInterest(id: ID!): Interest!
+
+  """Удалить локацию"""
+  removeLocation(id: ID!): Boolean!
+  removeTag(id: ID!): Tag!
+
+  """Удалить пользователя"""
+  removeUser(id: ID!): Boolean!
+  updateCategories(updateCategoriesInput: UpdateCategoryInput!): Category!
+  updateInterest(updateInterestInput: UpdateInterestInput!): Interest!
+
+  """Обновить локацию"""
+  updateLocation(updateLocationInput: UpdateLocationInput!): Location!
+  updateTag(updateTagInput: UpdateTagInput!): Tag!
+
+  """Обновить данные пользователя"""
+  updateUser(updateUserId: ID!, user: UpdateUserInput!): User!
+  updateUserProfile(categoryId: ID, createCategoryInput: CreateCategoryInput, createInterestInput: CreateInterestInput, createLocationInput: CreateLocationInput, createTagInput: CreateTagInput, interestId: ID, locationId: ID, tagId: ID, updateCategoryInput: UpdateCategoryInput, updateInterestInput: UpdateInterestInput, updateLocationInput: UpdateLocationInput, updateTagInput: UpdateTagInput, updateUserInput: UpdateUserInput, userId: ID!): UserProfile!
+}
+
+type Query {
+  adminRoute: String!
+
+  """Поиск категорий по id"""
+  categoriesById(id: ID!): Category!
+
+  """Поиск категорий по ownerId"""
+  categoriesByOwnerId(ownerId: ID!): Category!
+
+  """Поиск интересов по id"""
+  interestById(id: ID!): Interest!
+
+  """Поиск интересов по ownerId"""
+  interestByOwnerId(ownerId: ID!): Interest!
+
+  """Поиск места по id"""
+  locationById(id: ID!): Location!
+
+  """Поиск места по ownerId"""
+  locationByOwnerId(ownerId: ID!): Location!
+  moderatorRoute: String!
+  session: User
+
+  """Поиск категорий по id"""
+  tagById(id: ID!): Tag!
+
+  """Поиск категорий по ownerId"""
+  tagByOwnerId(ownerId: ID!): Tag!
+
+  """Поиск пользователя по id"""
+  user(id: ID!): User!
+
+  """Составной профиль пользователя"""
+  userProfile(userId: ID!): UserProfile!
+
+  """Получить всех пользователей"""
+  users: [User!]!
+}
+
+type Tag {
+  _id: ID!
+  ownerId: ID!
+  ownerType: String!
+  tags: [String!]!
+}
+
+input UpdateCategoryInput {
+  _id: String
+  categories: [String!]
+}
+
+input UpdateInterestInput {
+  _id: String
+  interests: [String!]!
+}
+
+input UpdateLocationInput {
+  _id: ID
+  geometry: LocationGeometryInput
+  properties: UpdateLocationPropertiesInput
+}
+
+input UpdateLocationPropertiesInput {
+  address: String
+}
+
+input UpdateTagInput {
+  _id: String
+  tags: [String!]
+}
+
+input UpdateUserInput {
+  _id: String!
+  description: String
+  email: String
+  firstName: String
+  image: String
+  lastName: String
+  roles: [String!]
+  updatedAt: DateTime
+}
+
+type User {
+  _id: String!
+  createdAt: DateTime!
+  description: String
+  email: String!
+  firstName: String!
+  image: String
+  lastName: String!
+  roles: [String!]!
+  updatedAt: DateTime!
+}
+
+type UserProfile {
+  category: Category
+  interest: Interest
+  location: Location
+  tag: Tag
+  user: User!
+}

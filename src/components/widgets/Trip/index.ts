@@ -1,1 +1,0 @@
-export { Trip } from "./Trip";

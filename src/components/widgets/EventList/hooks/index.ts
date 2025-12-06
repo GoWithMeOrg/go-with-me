@@ -1,1 +1,0 @@
-export { useEventList } from "./useEventList";
