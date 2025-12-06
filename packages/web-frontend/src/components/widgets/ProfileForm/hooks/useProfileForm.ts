@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { UPDATE_USER_PROFILE } from '@/app/graphql/mutations/updateUserProfile';
+import { GET_USER_PROFILE_BY_ID } from '@/app/graphql/queries/userProfile';
 import { useSessionGQL } from '@/app/providers/session/hooks/useSesssionGQL';
 import { Category, Interest, Location, Tag, User } from '@/app/types/types';
 import { useUploadFile } from '@/components/widgets/UploadFile/hooks';
 import { useMutation, useQuery } from '@apollo/client/react';
-import { GET_USER_PROFILE_BY_ID } from '@go-with-me/api-scheme/graphql/userProfile';
 
 export interface UserProfile {
     user: User;
