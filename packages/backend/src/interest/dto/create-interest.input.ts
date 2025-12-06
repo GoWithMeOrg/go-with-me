@@ -1,9 +1,9 @@
-import { Field, Float, InputType, ID } from '@nestjs/graphql';
+import { Field, InputType, ID } from '@nestjs/graphql';
 
 @InputType()
 export class CreateInterestInput {
     @Field(() => [String])
-    interest: string[];
+    interests: string[];
 
     @Field(() => ID)
     ownerId: string;

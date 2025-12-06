@@ -16,7 +16,7 @@ input CreateCategoriesInput {
 }
 
 input CreateInterestInput {
-  interest: [String!]!
+  interests: [String!]!
   ownerId: ID!
   ownerType: String!
 }
@@ -49,7 +49,7 @@ scalar DateTime
 
 type Interest {
   _id: ID!
-  interest: [String!]!
+  interests: [String!]!
   ownerId: ID!
   ownerType: String!
 }
@@ -168,7 +168,7 @@ input UpdateCategoriesInput {
 
 input UpdateInterestInput {
   _id: String
-  interest: [String!]!
+  interests: [String!]!
 }
 
 input UpdateLocationInput {

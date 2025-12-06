@@ -36,7 +36,7 @@ export const useProfileForm = () => {
     console.log(userProfile);
     const user = userProfile?.userProfile.user;
     const location = userProfile?.userProfile?.location;
-    const interest = userProfile?.userProfile?.interest?.interest;
+    const interest = userProfile?.userProfile?.interest?.interests;
     const categories = userProfile?.userProfile?.categories?.categories;
     const tags = userProfile?.userProfile?.tag?.tags;
 
@@ -132,7 +132,7 @@ export const useProfileForm = () => {
                           // ID НЕТ = СОЗДАНИЕ
                           createInterestInput: {
                               // Предполагаем, что CreateInterestInput принимает 'interest'
-                              interest: userProfileEdited.interest.interest,
+                              interest: userProfileEdited.interest.interests,
                               ownerId: user_id,
                               ownerType: 'User',
                           },
@@ -141,7 +141,7 @@ export const useProfileForm = () => {
                           // ID ЕСТЬ = ОБНОВЛЕНИЕ
                           updateInterestInput: {
                               _id: userProfile?.userProfile.interest._id,
-                              interest: userProfileEdited.interest.interest,
+                              interest: userProfileEdited.interest.interests,
                           },
                       }),
                 // --- ТЕГИ ---

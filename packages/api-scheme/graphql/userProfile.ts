@@ -13,7 +13,7 @@ export const GET_USER_PROFILE_BY_ID = gql`
             }
             interest {
                 _id
-                interest
+                interests
             }
             location {
                 _id

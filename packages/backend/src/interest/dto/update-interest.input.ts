@@ -7,5 +7,5 @@ export class UpdateInterestInput {
     _id: MongoSchema.Types.ObjectId;
 
     @Field(() => [String])
-    interest: string[];
+    interests: string[];
 }

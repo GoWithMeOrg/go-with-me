@@ -31,7 +31,7 @@ export type CreateCategoriesInput = {
 };
 
 export type CreateInterestInput = {
-  interest: Array<Scalars['String']['input']>;
+  interests: Array<Scalars['String']['input']>;
   ownerId: Scalars['ID']['input'];
   ownerType: Scalars['String']['input'];
 };
@@ -60,7 +60,7 @@ export type CreateUserInput = {
 export type Interest = {
   __typename?: 'Interest';
   _id: Scalars['ID']['output'];
-  interest: Array<Scalars['String']['output']>;
+  interests: Array<Scalars['String']['output']>;
   ownerId: Scalars['ID']['output'];
   ownerType: Scalars['String']['output'];
 };
@@ -312,7 +312,7 @@ export type UpdateCategoriesInput = {
 
 export type UpdateInterestInput = {
   _id?: InputMaybe<Scalars['String']['input']>;
-  interest: Array<Scalars['String']['input']>;
+  interests: Array<Scalars['String']['input']>;
 };
 
 export type UpdateLocationInput = {
@@ -359,7 +359,7 @@ export type UserProfile = {
   categories?: Maybe<Categories>;
   interest?: Maybe<Interest>;
   location?: Maybe<Location>;
-  tags?: Maybe<Tag>;
+  tag?: Maybe<Tag>;
   user: User;
 };
 

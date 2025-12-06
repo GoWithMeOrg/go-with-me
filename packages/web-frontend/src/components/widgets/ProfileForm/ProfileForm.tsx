@@ -136,7 +136,7 @@ export const ProfileForm: FC = () => {
                         />
 
                         <Controller
-                            name="interest.interest"
+                            name="interest.interests"
                             control={control}
                             render={({ field }) => (
                                 <SelectItems

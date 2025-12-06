@@ -10,7 +10,7 @@ export class Interest {
 
     @Field(() => [String])
     @Prop({ type: [String] })
-    interest: string[];
+    interests: string[];
 
     @Field(() => ID)
     @Prop({ type: MongoSchema.Types.ObjectId, required: true })
