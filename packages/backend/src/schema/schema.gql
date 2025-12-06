@@ -2,14 +2,14 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Categories {
+type Category {
   _id: ID!
   categories: [String!]!
   ownerId: ID!
   ownerType: String!
 }
 
-input CreateCategoriesInput {
+input CreateCategoryInput {
   categories: [String!]!
   ownerId: ID!
   ownerType: String!
@@ -85,7 +85,7 @@ input LocationPropertiesInput {
 }
 
 type Mutation {
-  createCategories(createCategoriesInput: CreateCategoriesInput!): Categories!
+  createCategories(createCategoriesInput: CreateCategoryInput!): Category!
   createInterest(createInterestInput: CreateInterestInput!): Interest!
 
   """Создать локацию"""
@@ -94,7 +94,7 @@ type Mutation {
 
   """Создать пользователя"""
   createUser(createUserInput: CreateUserInput!): User!
-  removeCategories(id: ID!): Categories!
+  removeCategories(id: ID!): Category!
   removeInterest(id: ID!): Interest!
 
   """Удалить локацию"""
@@ -103,7 +103,7 @@ type Mutation {
 
   """Удалить пользователя"""
   removeUser(id: ID!): Boolean!
-  updateCategories(updateCategoriesInput: UpdateCategoriesInput!): Categories!
+  updateCategories(updateCategoriesInput: UpdateCategoryInput!): Category!
   updateInterest(updateInterestInput: UpdateInterestInput!): Interest!
 
   """Обновить локацию"""
@@ -112,17 +112,17 @@ type Mutation {
 
   """Обновить данные пользователя"""
   updateUser(updateUserId: ID!, user: UpdateUserInput!): User!
-  updateUserProfile(categoriesId: ID, createCategoriesInput: CreateCategoriesInput, createInterestInput: CreateInterestInput, createLocationInput: CreateLocationInput, createTagInput: CreateTagInput, interestId: ID, locationId: ID, tagId: ID, updateCategoriesInput: UpdateCategoriesInput, updateInterestInput: UpdateInterestInput, updateLocationInput: UpdateLocationInput, updateTagInput: UpdateTagInput, updateUserInput: UpdateUserInput, userId: ID!): UserProfile!
+  updateUserProfile(categoryId: ID, createCategoryInput: CreateCategoryInput, createInterestInput: CreateInterestInput, createLocationInput: CreateLocationInput, createTagInput: CreateTagInput, interestId: ID, locationId: ID, tagId: ID, updateCategoryInput: UpdateCategoryInput, updateInterestInput: UpdateInterestInput, updateLocationInput: UpdateLocationInput, updateTagInput: UpdateTagInput, updateUserInput: UpdateUserInput, userId: ID!): UserProfile!
 }
 
 type Query {
   adminRoute: String!
 
   """Поиск категорий по id"""
-  categoriesById(id: ID!): Categories!
+  categoriesById(id: ID!): Category!
 
   """Поиск категорий по ownerId"""
-  categoriesByOwnerId(ownerId: ID!): Categories!
+  categoriesByOwnerId(ownerId: ID!): Category!
 
   """Поиск интересов по id"""
   interestById(id: ID!): Interest!
@@ -161,7 +161,7 @@ type Tag {
   tags: [String!]!
 }
 
-input UpdateCategoriesInput {
+input UpdateCategoryInput {
   _id: String
   categories: [String!]
 }
@@ -210,7 +210,7 @@ type User {
 }
 
 type UserProfile {
-  categories: Categories
+  category: Category
   interest: Interest
   location: Location
   tag: Tag

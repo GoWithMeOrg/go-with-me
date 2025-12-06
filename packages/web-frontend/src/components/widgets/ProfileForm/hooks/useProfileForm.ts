@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { UPDATE_USER_PROFILE } from '@/app/graphql/mutations/updateUserProfile';
 import { useSessionGQL } from '@/app/providers/session/hooks/useSesssionGQL';
-import { Categories, Interest, Location, Tag, User } from '@/app/types/types';
+import { Category, Interest, Location, Tag, User } from '@/app/types/types';
 import { useUploadFile } from '@/components/widgets/UploadFile/hooks';
 import { useMutation, useQuery } from '@apollo/client/react';
 import { GET_USER_PROFILE_BY_ID } from '@go-with-me/api-scheme/graphql/userProfile';
@@ -10,7 +10,7 @@ import { GET_USER_PROFILE_BY_ID } from '@go-with-me/api-scheme/graphql/userProfi
 export interface UserProfile {
     user: User;
     location: Location;
-    categories: Categories;
+    category: Category;
     interest: Interest;
     tag: Tag;
 }
@@ -37,7 +37,7 @@ export const useProfileForm = () => {
     const user = userProfile?.userProfile.user;
     const location = userProfile?.userProfile?.location;
     const interest = userProfile?.userProfile?.interest?.interests;
-    const categories = userProfile?.userProfile?.categories?.categories;
+    const category = userProfile?.userProfile?.category?.categories;
     const tags = userProfile?.userProfile?.tag?.tags;
 
     const [updateUserProfile] = useMutation(UPDATE_USER_PROFILE);
@@ -58,7 +58,7 @@ export const useProfileForm = () => {
         return newPlace;
     }
 
-    const isNewCategory = !userProfile?.userProfile.categories?._id;
+    const isNewCategory = !userProfile?.userProfile.category?._id;
     const isNewInterest = !userProfile?.userProfile.interest?._id;
     const isNewLocation = !userProfile?.userProfile.location?._id;
     const isNewTag = !userProfile?.userProfile.tag?._id;
@@ -70,7 +70,7 @@ export const useProfileForm = () => {
             variables: {
                 userId: user_id,
                 interestId: userProfile?.userProfile.interest?._id || null,
-                categoriesId: userProfile?.userProfile.categories?._id || null,
+                categoryId: userProfile?.userProfile.category?._id || null,
                 tagId: userProfile?.userProfile.tag?._id || null,
                 locationId: userProfile?.userProfile.location?._id || null,
 
@@ -111,18 +111,23 @@ export const useProfileForm = () => {
                 ...(isNewCategory
                     ? {
                           // ID НЕТ = СОЗДАНИЕ
-                          createCategoriesInput: {
-                              // Предполагаем, что CreateCategoriesInput принимает 'categories'
-                              categories: userProfileEdited.categories.categories,
+                          //   createCategoryInput: {
+                          //       // Предполагаем, что CreateCategoriesInput принимает 'categories'
+                          //       category: userProfileEdited.category?.categories,
+                          //       ownerId: user_id,
+                          //       ownerType: 'User',
+                          //   },
+                          createCategoryInput: {
+                              categories: userProfileEdited.category?.categories,
                               ownerId: user_id,
                               ownerType: 'User',
                           },
                       }
                     : {
                           // ID ЕСТЬ = ОБНОВЛЕНИЕ
-                          updateCategoriesInput: {
-                              _id: userProfile?.userProfile.categories._id,
-                              categories: userProfileEdited.categories.categories,
+                          updateCategoryInput: {
+                              _id: userProfile?.userProfile.category._id,
+                              categories: userProfileEdited.category?.categories,
                           },
                       }),
 
@@ -132,7 +137,7 @@ export const useProfileForm = () => {
                           // ID НЕТ = СОЗДАНИЕ
                           createInterestInput: {
                               // Предполагаем, что CreateInterestInput принимает 'interest'
-                              interest: userProfileEdited.interest.interests,
+                              interests: userProfileEdited.interest?.interests,
                               ownerId: user_id,
                               ownerType: 'User',
                           },
@@ -141,7 +146,7 @@ export const useProfileForm = () => {
                           // ID ЕСТЬ = ОБНОВЛЕНИЕ
                           updateInterestInput: {
                               _id: userProfile?.userProfile.interest._id,
-                              interest: userProfileEdited.interest.interests,
+                              interests: userProfileEdited.interest?.interests,
                           },
                       }),
                 // --- ТЕГИ ---
@@ -150,7 +155,7 @@ export const useProfileForm = () => {
                           // ID НЕТ = СОЗДАНИЕ
                           createTagInput: {
                               // Предполагаем, что CreateInterestInput принимает 'interest'
-                              tags: userProfileEdited.tag.tags,
+                              tags: userProfileEdited.tag?.tags,
                               ownerId: user_id,
                               ownerType: 'User',
                           },
@@ -159,7 +164,7 @@ export const useProfileForm = () => {
                           // ID ЕСТЬ = ОБНОВЛЕНИЕ
                           updateTagInput: {
                               _id: userProfile?.userProfile.tag._id,
-                              tags: userProfileEdited.tag.tags,
+                              tags: userProfileEdited.tag?.tags,
                           },
                       }),
             },
@@ -187,7 +192,7 @@ export const useProfileForm = () => {
         user,
         location,
         interest,
-        categories,
+        category,
         tags,
         handleSubmit,
         onSubmit,

@@ -7,7 +7,7 @@ export const GET_USER_PROFILE_BY_ID = gql`
                 tags
                 _id
             }
-            categories {
+            category {
                 _id
                 categories
             }

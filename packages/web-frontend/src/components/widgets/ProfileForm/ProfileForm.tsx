@@ -25,7 +25,7 @@ export const ProfileForm: FC = () => {
         user,
         location,
         interest,
-        categories,
+        category,
         tags,
         handleSubmit,
         onSubmit,
@@ -121,12 +121,12 @@ export const ProfileForm: FC = () => {
                         />
 
                         <Controller
-                            name="categories.categories"
+                            name="category.categories"
                             control={control}
                             render={({ field }) => (
                                 <SelectItems
                                     categoryList={categoriesList}
-                                    eventCategories={[...(categories ?? [])]}
+                                    eventCategories={[...(category ?? [])]}
                                     titleCategories={'Выбрать категорию'}
                                     badgesShow
                                     onChange={field.onChange}

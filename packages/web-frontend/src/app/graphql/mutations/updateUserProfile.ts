@@ -3,14 +3,14 @@ import gql from 'graphql-tag';
 export const UPDATE_USER_PROFILE = gql`
     mutation Mutation(
         $userId: ID!
-        $categoriesId: ID
-        $createCategoriesInput: CreateCategoriesInput
+        $categoryId: ID
+        $createCategoryInput: CreateCategoryInput
         $updateUserInput: UpdateUserInput
         $createInterestInput: CreateInterestInput
         $createLocationInput: CreateLocationInput
         $interestId: ID
         $locationId: ID
-        $updateCategoriesInput: UpdateCategoriesInput
+        $updateCategoryInput: UpdateCategoryInput
         $updateInterestInput: UpdateInterestInput
         $updateLocationInput: UpdateLocationInput
         $createTagInput: CreateTagInput
@@ -19,21 +19,21 @@ export const UPDATE_USER_PROFILE = gql`
     ) {
         updateUserProfile(
             userId: $userId
-            categoriesId: $categoriesId
-            createCategoriesInput: $createCategoriesInput
+            categoryId: $categoryId
+            createCategoryInput: $createCategoryInput
             updateUserInput: $updateUserInput
             createInterestInput: $createInterestInput
             createLocationInput: $createLocationInput
             interestId: $interestId
             locationId: $locationId
-            updateCategoriesInput: $updateCategoriesInput
+            updateCategoryInput: $updateCategoryInput
             updateInterestInput: $updateInterestInput
             updateLocationInput: $updateLocationInput
             createTagInput: $createTagInput
             tagId: $tagId
             updateTagInput: $updateTagInput
         ) {
-            categories {
+            category {
                 _id
                 categories
                 ownerId
@@ -41,7 +41,7 @@ export const UPDATE_USER_PROFILE = gql`
             }
             interest {
                 _id
-                interest
+                interests
                 ownerId
                 ownerType
             }

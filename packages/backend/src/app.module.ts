@@ -1,21 +1,22 @@
 import { Module } from '@nestjs/common';
-
-import { ConfigModule, ConfigService } from '@nestjs/config';
-
-import { GraphQLModule } from '@nestjs/graphql';
-import { getGraphQLConfig } from './config/graphql.config';
 import { ApolloDriver } from '@nestjs/apollo';
-import { MongooseModule } from '@nestjs/mongoose';
-import { getMongooseConfig } from './config/mongoose.config';
-import { UserModule } from './user/user.module';
-import { LocationModule } from './location/location.module';
-import { AuthModule } from './auth/auth.module';
-import { RolesGuard } from './auth/guard/roles.guard';
 import { APP_GUARD } from '@nestjs/core';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { GraphQLModule } from '@nestjs/graphql';
+import { MongooseModule } from '@nestjs/mongoose';
+
+import { getGraphQLConfig } from './config/graphql.config';
+import { getMongooseConfig } from './config/mongoose.config';
+
+import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.module';
 import { UserProfileModule } from './user-profile/user-profile.module';
+import { LocationModule } from './location/location.module';
+import { CategoryModule } from './category/category.module';
 import { InterestModule } from './interest/interest.module';
-import { CategoriesModule } from './categories/categories.module';
 import { TagModule } from './tag/tag.module';
+
+import { RolesGuard } from './auth/guard/roles.guard';
 
 @Module({
     imports: [
@@ -44,15 +45,13 @@ import { TagModule } from './tag/tag.module';
 
         UserProfileModule,
 
-        CategoriesModule,
+        CategoryModule,
 
         InterestModule,
 
         LocationModule,
 
         AuthModule,
-
-        CategoriesModule,
 
         TagModule,
     ],

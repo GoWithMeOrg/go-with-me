@@ -4,7 +4,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 @ObjectType()
 @Schema({ timestamps: true })
-export class Categories {
+export class Category {
     @Field(() => ID)
     _id: MongoSchema.Types.ObjectId;
 
@@ -21,5 +21,5 @@ export class Categories {
     ownerType: 'User' | 'Event';
 }
 
-export type CategoriesDocument = Categories & Document;
-export const CategoriesSchema = SchemaFactory.createForClass(Categories);
+export type CategoryDocument = Category & Document;
+export const CategorySchema = SchemaFactory.createForClass(Category);

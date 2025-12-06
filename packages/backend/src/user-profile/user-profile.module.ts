@@ -1,17 +1,20 @@
 import { forwardRef, Module } from '@nestjs/common';
-import { LocationModule } from 'src/location/location.module';
+
 import { UserModule } from 'src/user/user.module';
-import { UserProfileResolver } from './user-profile.resolver';
-import { UserProfileService } from './user-profile.service';
+import { LocationModule } from 'src/location/location.module';
+import { CategoryModule } from 'src/category/category.module';
 import { InterestModule } from 'src/interest/interest.module';
-import { CategoriesModule } from 'src/categories/categories.module';
 import { TagModule } from 'src/tag/tag.module';
+
+import { UserProfileResolver } from './user-profile.resolver';
+
+import { UserProfileService } from './user-profile.service';
 
 @Module({
     imports: [
         forwardRef(() => UserModule),
         forwardRef(() => LocationModule),
-        forwardRef(() => CategoriesModule),
+        forwardRef(() => CategoryModule),
         forwardRef(() => InterestModule),
         forwardRef(() => TagModule),
     ],

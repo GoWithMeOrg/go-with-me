@@ -1,16 +1,19 @@
 import { Resolver, Query, Args, ID, Mutation } from '@nestjs/graphql';
-import { UserProfile } from './dto/user-profile.entity';
-import { UserProfileService } from '../user-profile/user-profile.service';
 import { Schema as MongoSchema } from 'mongoose';
-import { UpdateUserInput } from 'src/user/dto/update-user.input';
-import { UpdateLocationInput } from 'src/location/dto/update-location.input';
-import { UpdateInterestInput } from 'src/interest/dto/update-interest.input';
-import { UpdateCategoriesInput } from 'src/categories/dto/update-category.input';
+
+import { UserProfile } from './dto/user-profile.entity';
+
+import { UserProfileService } from '../user-profile/user-profile.service';
 
 import { CreateLocationInput } from 'src/location/dto/create-location.input';
-import { CreateCategoriesInput } from 'src/categories/dto/create-category.input';
+import { CreateCategoryInput } from 'src/category/dto/create-category.input';
 import { CreateInterestInput } from 'src/interest/dto/create-interest.input';
 import { CreateTagInput } from 'src/tag/dto/create-tag.input';
+
+import { UpdateUserInput } from 'src/user/dto/update-user.input';
+import { UpdateLocationInput } from 'src/location/dto/update-location.input';
+import { UpdateCategoryInput } from 'src/category/dto/update-category.input';
+import { UpdateInterestInput } from 'src/interest/dto/update-interest.input';
 import { UpdateTagInput } from 'src/tag/dto/update-tag.input';
 
 @Resolver(() => UserProfile)
@@ -30,41 +33,42 @@ export class UserProfileResolver {
         @Args('userId', { type: () => ID }) userId: MongoSchema.Types.ObjectId,
         @Args('locationId', { type: () => ID, nullable: true })
         locationId: MongoSchema.Types.ObjectId,
-        @Args('categoriesId', { type: () => ID, nullable: true })
-        categoriesId: MongoSchema.Types.ObjectId,
+        @Args('categoryId', { type: () => ID, nullable: true })
+        categoryId: MongoSchema.Types.ObjectId,
         @Args('interestId', { type: () => ID, nullable: true })
         interestId: MongoSchema.Types.ObjectId,
         @Args('tagId', { type: () => ID, nullable: true })
         tagId: MongoSchema.Types.ObjectId,
 
         @Args('createLocationInput', { nullable: true }) createLocationInput: CreateLocationInput,
-        @Args('createCategoriesInput', { nullable: true })
-        createCategoriesInput: CreateCategoriesInput,
+        @Args('createCategoryInput', { nullable: true })
+        createCategoryInput: CreateCategoryInput,
         @Args('createInterestInput', { nullable: true }) createInterestInput: CreateInterestInput,
         @Args('createTagInput', { nullable: true }) createTagInput: CreateTagInput,
 
         @Args('updateUserInput', { nullable: true }) updateUserInput: UpdateUserInput,
         @Args('updateLocationInput', { nullable: true }) updateLocationInput: UpdateLocationInput,
-        @Args('updateCategoriesInput', { nullable: true })
-        updateCategoriesInput: UpdateCategoriesInput,
+        @Args('updateCategoryInput', { nullable: true })
+        updateCategoryInput: UpdateCategoryInput,
+
         @Args('updateInterestInput', { nullable: true }) updateInterestInput: UpdateInterestInput,
         @Args('updateTagInput', { nullable: true }) updateTagInput: UpdateTagInput
     ) {
         return this.profileService.updateProfile(
             userId,
             locationId,
-            categoriesId,
+            categoryId,
             interestId,
             tagId,
 
             createLocationInput,
-            createCategoriesInput,
+            createCategoryInput,
             createInterestInput,
             createTagInput,
 
             updateUserInput,
             updateLocationInput,
-            updateCategoriesInput,
+            updateCategoryInput,
             updateInterestInput,
             updateTagInput
         );

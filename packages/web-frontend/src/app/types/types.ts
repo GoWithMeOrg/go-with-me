@@ -16,15 +16,15 @@ export type Scalars = {
   DateTime: { input: any; output: any; }
 };
 
-export type Categories = {
-  __typename?: 'Categories';
+export type Category = {
+  __typename?: 'Category';
   _id: Scalars['ID']['output'];
   categories: Array<Scalars['String']['output']>;
   ownerId: Scalars['ID']['output'];
   ownerType: Scalars['String']['output'];
 };
 
-export type CreateCategoriesInput = {
+export type CreateCategoryInput = {
   categories: Array<Scalars['String']['input']>;
   ownerId: Scalars['ID']['input'];
   ownerType: Scalars['String']['input'];
@@ -100,21 +100,21 @@ export type LocationPropertiesInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createCategories: Categories;
+  createCategories: Category;
   createInterest: Interest;
   /** Создать локацию */
   createLocation: Location;
   createTag: Tag;
   /** Создать пользователя */
   createUser: User;
-  removeCategories: Categories;
+  removeCategories: Category;
   removeInterest: Interest;
   /** Удалить локацию */
   removeLocation: Scalars['Boolean']['output'];
   removeTag: Tag;
   /** Удалить пользователя */
   removeUser: Scalars['Boolean']['output'];
-  updateCategories: Categories;
+  updateCategories: Category;
   updateInterest: Interest;
   /** Обновить локацию */
   updateLocation: Location;
@@ -126,7 +126,7 @@ export type Mutation = {
 
 
 export type MutationCreateCategoriesArgs = {
-  createCategoriesInput: CreateCategoriesInput;
+  createCategoriesInput: CreateCategoryInput;
 };
 
 
@@ -176,7 +176,7 @@ export type MutationRemoveUserArgs = {
 
 
 export type MutationUpdateCategoriesArgs = {
-  updateCategoriesInput: UpdateCategoriesInput;
+  updateCategoriesInput: UpdateCategoryInput;
 };
 
 
@@ -202,15 +202,15 @@ export type MutationUpdateUserArgs = {
 
 
 export type MutationUpdateUserProfileArgs = {
-  categoriesId?: InputMaybe<Scalars['ID']['input']>;
-  createCategoriesInput?: InputMaybe<CreateCategoriesInput>;
+  categoryId?: InputMaybe<Scalars['ID']['input']>;
+  createCategoryInput?: InputMaybe<CreateCategoryInput>;
   createInterestInput?: InputMaybe<CreateInterestInput>;
   createLocationInput?: InputMaybe<CreateLocationInput>;
   createTagInput?: InputMaybe<CreateTagInput>;
   interestId?: InputMaybe<Scalars['ID']['input']>;
   locationId?: InputMaybe<Scalars['ID']['input']>;
   tagId?: InputMaybe<Scalars['ID']['input']>;
-  updateCategoriesInput?: InputMaybe<UpdateCategoriesInput>;
+  updateCategoryInput?: InputMaybe<UpdateCategoryInput>;
   updateInterestInput?: InputMaybe<UpdateInterestInput>;
   updateLocationInput?: InputMaybe<UpdateLocationInput>;
   updateTagInput?: InputMaybe<UpdateTagInput>;
@@ -222,9 +222,9 @@ export type Query = {
   __typename?: 'Query';
   adminRoute: Scalars['String']['output'];
   /** Поиск категорий по id */
-  categoriesById: Categories;
+  categoriesById: Category;
   /** Поиск категорий по ownerId */
-  categoriesByOwnerId: Categories;
+  categoriesByOwnerId: Category;
   /** Поиск интересов по id */
   interestById: Interest;
   /** Поиск интересов по ownerId */
@@ -305,7 +305,7 @@ export type Tag = {
   tags: Array<Scalars['String']['output']>;
 };
 
-export type UpdateCategoriesInput = {
+export type UpdateCategoryInput = {
   _id?: InputMaybe<Scalars['String']['input']>;
   categories?: InputMaybe<Array<Scalars['String']['input']>>;
 };
@@ -356,7 +356,7 @@ export type User = {
 
 export type UserProfile = {
   __typename?: 'UserProfile';
-  categories?: Maybe<Categories>;
+  category?: Maybe<Category>;
   interest?: Maybe<Interest>;
   location?: Maybe<Location>;
   tag?: Maybe<Tag>;

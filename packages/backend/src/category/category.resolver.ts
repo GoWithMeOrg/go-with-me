@@ -1,50 +1,50 @@
 import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
-import { CategoriesService } from './categories.service';
+import { CategoryService } from './category.service';
 
 import { Schema as MongoSchema } from 'mongoose';
-import { Categories } from './entities/category.entity';
-import { CreateCategoriesInput } from './dto/create-category.input';
-import { UpdateCategoriesInput } from './dto/update-category.input';
+import { Category } from './entities/category.entity';
+import { CreateCategoryInput } from './dto/create-category.input';
+import { UpdateCategoryInput } from './dto/update-category.input';
 
-@Resolver(() => Categories)
-export class CategoriesResolver {
-    constructor(private readonly categoriesService: CategoriesService) {}
+@Resolver(() => Category)
+export class CategoryResolver {
+    constructor(private readonly categoriesService: CategoryService) {}
 
-    @Query(() => Categories, {
+    @Query(() => Category, {
         name: 'categoriesById',
         description: 'Поиск категорий по id',
     })
     getCategoriesById(
         @Args('id', { type: () => ID }) id: MongoSchema.Types.ObjectId
-    ): Promise<Categories | null> {
+    ): Promise<Category | null> {
         return this.categoriesService.getCategoriesById(id);
     }
 
-    @Query(() => Categories, {
+    @Query(() => Category, {
         name: 'categoriesByOwnerId',
         description: 'Поиск категорий по ownerId',
     })
     getCategoriesByOwner(
         @Args('ownerId', { type: () => ID })
         ownerId: MongoSchema.Types.ObjectId
-    ): Promise<Categories | null> {
+    ): Promise<Category | null> {
         return this.categoriesService.getCategoriesByOwner(ownerId);
     }
 
-    @Mutation(() => Categories)
-    createCategories(@Args('createCategoriesInput') createCategoriesInput: CreateCategoriesInput) {
+    @Mutation(() => Category)
+    createCategories(@Args('createCategoriesInput') createCategoriesInput: CreateCategoryInput) {
         return this.categoriesService.createCategories(createCategoriesInput);
     }
 
-    @Mutation(() => Categories)
-    updateCategories(@Args('updateCategoriesInput') updateCategoriesInput: UpdateCategoriesInput) {
+    @Mutation(() => Category)
+    updateCategories(@Args('updateCategoriesInput') updateCategoriesInput: UpdateCategoryInput) {
         return this.categoriesService.updateCategories(
             updateCategoriesInput._id,
             updateCategoriesInput
         );
     }
 
-    @Mutation(() => Categories)
+    @Mutation(() => Category)
     async removeCategories(
         @Args('id', { type: () => ID }) id: MongoSchema.Types.ObjectId
     ): Promise<boolean> {

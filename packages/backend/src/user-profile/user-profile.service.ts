@@ -3,26 +3,27 @@ import { Schema as MongoSchema } from 'mongoose';
 
 import { UserService } from 'src/user/user.service';
 import { LocationService } from 'src/location/location.service';
+import { CategoryService } from 'src/category/category.service';
 import { InterestService } from 'src/interest/interest.service';
-import { CategoriesService } from 'src/categories/categories.service';
+import { TagService } from 'src/tag/tag.service';
 
-import { UpdateLocationInput } from 'src/location/dto/update-location.input';
 import { UpdateUserInput } from 'src/user/dto/update-user.input';
+import { UpdateLocationInput } from 'src/location/dto/update-location.input';
+import { UpdateCategoryInput } from 'src/category/dto/update-category.input';
 import { UpdateInterestInput } from 'src/interest/dto/update-interest.input';
-import { UpdateCategoriesInput } from 'src/categories/dto/update-category.input';
+import { UpdateTagInput } from 'src/tag/dto/update-tag.input';
+
 import { CreateLocationInput } from 'src/location/dto/create-location.input';
-import { CreateCategoriesInput } from 'src/categories/dto/create-category.input';
+import { CreateCategoryInput } from 'src/category/dto/create-category.input';
 import { CreateInterestInput } from 'src/interest/dto/create-interest.input';
 import { CreateTagInput } from 'src/tag/dto/create-tag.input';
-import { UpdateTagInput } from 'src/tag/dto/update-tag.input';
-import { TagService } from 'src/tag/tag.service';
 
 @Injectable()
 export class UserProfileService {
     constructor(
         private readonly userService: UserService,
         private readonly locationService: LocationService,
-        private readonly categoriesService: CategoriesService,
+        private readonly categoryService: CategoryService,
         private readonly interestService: InterestService,
         private readonly tagService: TagService
     ) {}
@@ -30,18 +31,18 @@ export class UserProfileService {
     async updateProfile(
         userId: MongoSchema.Types.ObjectId,
         locationId?: MongoSchema.Types.ObjectId,
-        categoriesId?: MongoSchema.Types.ObjectId,
+        categoryId?: MongoSchema.Types.ObjectId,
         interestId?: MongoSchema.Types.ObjectId,
         tagId?: MongoSchema.Types.ObjectId,
 
         createLocationInput?: CreateLocationInput,
-        createCategoriesInput?: CreateCategoriesInput,
+        createCategoryInput?: CreateCategoryInput,
         createInterestInput?: CreateInterestInput,
         createTagInput?: CreateTagInput,
 
         updateUserInput?: UpdateUserInput,
         updateLocationInput?: UpdateLocationInput,
-        updateCategoriesInput?: UpdateCategoriesInput,
+        updateCategoryInput?: UpdateCategoryInput,
         updateInterestInput?: UpdateInterestInput,
         updateTagInput?: UpdateTagInput
     ) {
@@ -60,12 +61,10 @@ export class UserProfileService {
         }
 
         // ---- Обновляем категории ----
-        if (categoriesId && updateCategoriesInput) {
-            tasks.push(
-                this.categoriesService.updateCategories(categoriesId, updateCategoriesInput)
-            );
-        } else if (createCategoriesInput) {
-            tasks.push(this.categoriesService.createCategories(createCategoriesInput));
+        if (categoryId && updateCategoryInput) {
+            tasks.push(this.categoryService.updateCategories(categoryId, updateCategoryInput));
+        } else if (createCategoryInput) {
+            tasks.push(this.categoryService.createCategories(createCategoryInput));
         }
 
         // ---- Обновляем интересы ----
@@ -90,15 +89,14 @@ export class UserProfileService {
     }
 
     async buildProfile(userId: MongoSchema.Types.ObjectId) {
-        const [user, location, categories, interest, tag] = await Promise.all([
+        const [user, location, category, interest, tag] = await Promise.all([
             this.userService.getUserById(userId),
             this.locationService.getLocationByOwner(userId),
-            this.categoriesService.getCategoriesByOwner(userId),
+            this.categoryService.getCategoriesByOwner(userId),
             this.interestService.getInterestByOwner(userId),
             this.tagService.getTagByOwner(userId),
         ]);
 
-        console.log(tag);
-        return { user, location, categories, interest, tag };
+        return { user, location, category, interest, tag };
     }
 }
