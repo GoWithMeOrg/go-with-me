@@ -1,0 +1,43 @@
+type Event {
+  _id: ID!
+  name: String!
+  description: String
+  startDate: DateTime!
+  time: String
+  location: Location
+  image: String
+  organizer: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input CreateEventInput {
+  name: String!
+  description: String
+  startDate: DateTime!
+  time: String
+  location: CreateLocationInput
+  image: String
+  organizer: ID!
+}
+
+input UpdateEventInput {
+  name: String
+  description: String
+  startDate: DateTime
+  time: String
+  location: CreateLocationInput
+  image: String
+  updatedAt: DateTime
+}
+
+type Query {
+  event(id: ID!): Event
+  events: [Event!]!
+}
+
+type Mutation {
+  createEvent(createEventInput: CreateEventInput!): Event!
+  updateEvent(id: ID!, updateEventInput: UpdateEventInput!): Event!
+  removeEvent(id: ID!): Boolean!
+}

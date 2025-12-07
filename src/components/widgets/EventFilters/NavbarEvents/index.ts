@@ -1,1 +1,0 @@
-export { NavbarEvents } from "./NavbarEvents";

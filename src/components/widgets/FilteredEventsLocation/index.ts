@@ -1,1 +1,0 @@
-export { FilteredEventsLocation } from "./FilteredEventsLocation";

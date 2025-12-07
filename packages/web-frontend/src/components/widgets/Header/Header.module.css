@@ -1,0 +1,32 @@
+.header {
+  width: 100%;
+  height: 6.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 6.25rem;
+}
+
+.logo {
+  font-size: 1.13rem;
+  font-weight: 700;
+  line-height: 1.38rem;
+  margin-right: 4.375rem;
+}
+
+.headerSearch {
+  width: 36.25rem;
+}
+
+.headerSearchEvent {
+  width: 100%;
+  height: 3.13rem;
+  padding: 0.69rem 1.06rem 0.69rem 1.06rem;
+  background: var(--white-color);
+  border: 1px solid var(--additional-color);
+  border-radius: 0.25rem;
+  color: var(--main-color);
+  font-size: 1rem;
+  font-weight: 400;
+  text-align: left;
+}

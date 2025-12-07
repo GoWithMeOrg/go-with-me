@@ -1,0 +1,70 @@
+.container {
+  display: flex;
+  align-items: flex-end;
+  background-color: var(--accent-color);
+  width: 73.75rem;
+  height: 22rem;
+  border-radius: 1.25rem;
+  margin-bottom: 10.62rem;
+  padding: 7.3rem 6.25rem;
+  justify-content: space-between;
+  position: relative;
+}
+
+.wrapper {
+  width: 29rem;
+}
+
+.title {
+  margin-bottom: 2.5rem;
+}
+
+.logo {
+  position: absolute;
+  right: -3rem;
+  top: 2.5rem;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.link {
+  padding: 0.88rem 1.88rem;
+  color: var(--main-color);
+  font-size: 1.13rem;
+  font-weight: 700;
+  border: 2px solid var(--main-color);
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.one {
+  display: flex;
+  justify-content: center;
+  width: 80%;
+}
+
+.link:active {
+  color: var(--white-color);
+  background-color: var(--text-color);
+  border-color: var(--text-color);
+}
+
+.link:hover {
+  border: 0.13rem solid var(--hover-color);
+  border-radius: 0.25rem;
+  color: var(--hover-color);
+}
+
+.description {
+  font-size: inherit;
+  font-weight: inherit;
+  width: 23.63rem;
+  color: var(--main-color);
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.88rem;
+}

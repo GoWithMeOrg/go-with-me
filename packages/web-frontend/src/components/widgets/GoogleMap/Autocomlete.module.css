@@ -1,0 +1,22 @@
+.map {
+  margin-top: 50px;
+}
+
+.leg {
+  background: white;
+  font-size: 16px;
+}
+
+.buttonMap {
+  width: 10rem;
+  height: 3.13rem;
+  border: 0.13rem solid var(--main-color);
+  border-radius: 0.25rem;
+  background: none;
+  color: var(--main-color);
+  font-size: 1.13rem;
+  font-weight: 700;
+  line-height: 1.38rem;
+  text-align: center;
+  cursor: pointer;
+}

@@ -1,0 +1,31 @@
+.cardsWorkWrapper {
+  margin-bottom: 2.5rem;
+}
+
+.cardsWorkList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2.5rem;
+}
+
+.cardsWorkTitleWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 4.37rem;
+}
+
+.cardsWorkLink {
+  color: var(--additional-color);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.19rem;
+  text-align: center;
+  text-transform: uppercase;
+  margin-right: 1.25rem;
+}
+
+.cardsWorkLink:hover {
+  color: var(--main-color);
+}

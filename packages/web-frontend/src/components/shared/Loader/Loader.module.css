@@ -1,0 +1,63 @@
+/*Не рабочий */
+
+.loader1 {
+  width: 500px;
+  height: 25px;
+  border-radius: 25px;
+  top: 50%;
+  position: absolute;
+  transform: translate(-230%, -50%);
+  background:
+    repeating-linear-gradient(135deg, var(--main-color) 0 10px, var(--accent-color) 0 20px) 0/0%
+      no-repeat,
+    repeating-linear-gradient(135deg, #ddd 0 10px, #eee 0 20px) 0/100%;
+  animation: l3 2s infinite;
+}
+@keyframes l3 {
+  100% {
+    background-size: 100%;
+  }
+}
+
+/* Рабочий лоадер  */
+
+.loader2 {
+  width: 48px;
+  height: 48px;
+  display: block;
+  margin: 20px auto;
+  position: relative;
+  border: 3px solid var(--main-color);
+  border-radius: 50%;
+  box-sizing: border-box;
+  animation: animloader 2s linear infinite;
+}
+.loader2::after {
+  content: '';
+  box-sizing: border-box;
+  width: 6px;
+  height: 24px;
+  background: var(--main-color);
+  transform: rotate(-45deg);
+  position: absolute;
+  bottom: -20px;
+  left: 46px;
+}
+
+@keyframes animloader {
+  0% {
+    transform: translate(-10px, -10px);
+  }
+  25% {
+    transform: translate(-10px, 10px);
+  }
+  50% {
+    transform: translate(10px, 10px);
+  }
+  75% {
+    transform: translate(10px, -10px);
+  }
+  100% {
+    transform: translate(-10px, -10px);
+  }
+}

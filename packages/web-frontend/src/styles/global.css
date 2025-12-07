@@ -1,0 +1,79 @@
+:root {
+  --white-color: #ffffff;
+  --black-color: #333333;
+  --main-color: #091757;
+  --accent-color: #e3ef41;
+  --background-color: #f7f7fa;
+  --text-color: #575b75;
+  --additional-color: #a4a7bc;
+  --hover-color: #495aa8;
+  --error-color: #ff2f3b;
+
+  --desktop-width-container: 73.75rem;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--background-color);
+  overflow-x: hidden;
+  scrollbar-color: var(--additional-color) var(--white-color);
+}
+
+* {
+  padding: 0px;
+  margin: 0px;
+  border: none;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Links */
+
+a,
+a:link,
+a:visited {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+/* Common */
+
+aside,
+nav,
+footer,
+header,
+section,
+main {
+  display: block;
+}
+
+ul,
+ul li {
+  list-style: none;
+}
+
+img {
+  vertical-align: top;
+}
+
+input:focus,
+input:active,
+textarea:focus,
+select:focus,
+button:focus,
+button:active {
+  outline: none;
+}
+
+button {
+  background: none;
+}

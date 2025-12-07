@@ -1,0 +1,12 @@
+.selectedCategoriesLabel {
+  display: flex;
+  flex-direction: column;
+}
+
+.selectedCategoriesTitle {
+  color: var(--text-color);
+  font-size: 0.88rem;
+  font-weight: 500;
+  line-height: 1.625rem;
+  text-align: left;
+}

@@ -1,1 +1,0 @@
-export { GuestList } from "./GuestList";
