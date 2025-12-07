@@ -1,5 +1,6 @@
 'use client';
 
+import type { IEvent } from '@/app/types/Event';
 import Spinner from '@/assets/icons/spinner.svg';
 import { Carousel } from '@/components/shared/Carousel';
 import { Slide } from '@/components/shared/Slide';
@@ -11,7 +12,6 @@ import { Mode } from '@/components/widgets/CreateAndInvite/CreateAndInvite';
 import { EventFilters } from '@/components/widgets/EventFilters';
 import { useEventList } from '@/components/widgets/EventList/hooks';
 import { useQuery } from '@apollo/client/react';
-import { IEvent } from '@go-with-me/api-scheme/types/Event';
 import gql from 'graphql-tag';
 import type { NextPage } from 'next';
 import { User } from 'next-auth';

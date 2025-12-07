@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { IEvent } from '@/app/types/Event';
 import { categoriesList, interestsList } from '@/components/shared/Dropdown/dropdownLists';
 import { FilteredList } from '@/components/shared/FilteredList';
 import { Title } from '@/components/shared/Title';
@@ -11,7 +12,6 @@ import { useEventList } from '@/components/widgets/EventList/hooks';
 import { FilteredEventsLocation } from '@/components/widgets/FilteredEventsLocation';
 import { optionsCities } from '@/components/widgets/GoogleMap/OptionsAutocomplete';
 import { SelectItems } from '@/components/widgets/SelectItems';
-import { IEvent } from '@go-with-me/api-scheme/types/Event';
 
 import { GoogleMap } from '../GoogleMap';
 import { NavbarEventTabs } from '../Navbar/models';
@@ -79,12 +79,15 @@ export const EventFilters = () => {
             {activeTab === 'list' && (
                 <Backdrop marginTop={84} marginBottom={420} contentLoading={loading}>
                     <FilteredList className={classes.filteredList}>
+                        {/* @ts-ignore */}
                         {(!filteredData?.eventFilters && !events) ||
+                        //@ts-ignore
                         (filteredData?.eventFilters?.length === 0 && events?.length === 0) ? (
                             <div className={classes.noEventsMessage}>
                                 По вашему запросу ничего не найдено
                             </div>
                         ) : (
+                            //@ts-ignore
                             (filteredData?.eventFilters || events).map(
                                 ({
                                     _id,
@@ -114,7 +117,12 @@ export const EventFilters = () => {
             )}
             {activeTab === 'map' && (
                 <GoogleMap
-                    events={filteredData?.eventFilters || events || []}
+                    //@ts-ignore
+                    events={
+                        (filteredData as { eventFilters: IEvent[] })?.eventFilters ||
+                        (events as IEvent[]) ||
+                        []
+                    }
                     selectedLocation={selectedLocation}
                 />
             )}

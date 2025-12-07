@@ -2091,14 +2091,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@go-with-me/api-scheme@workspace:^, @go-with-me/api-scheme@workspace:packages/api-scheme":
-  version: 0.0.0-use.local
-  resolution: "@go-with-me/api-scheme@workspace:packages/api-scheme"
-  dependencies:
-    graphql-tag: "npm:^2.12.6"
-  languageName: unknown
-  linkType: soft
-
 "@go-with-me/backend@workspace:packages/backend":
   version: 0.0.0-use.local
   resolution: "@go-with-me/backend@workspace:packages/backend"
@@ -2153,7 +2145,6 @@ __metadata:
   resolution: "@go-with-me/web-frontend@workspace:packages/web-frontend"
   dependencies:
     "@apollo/client": "npm:^4.0.7"
-    "@go-with-me/api-scheme": "workspace:^"
     "@googlemaps/js-api-loader": "npm:^2.0.1"
     "@googlemaps/routing": "npm:^2.1.1"
     "@graphql-tools/schema": "npm:^10.0.25"

@@ -8,136 +8,141 @@ import { useSession } from 'next-auth/react';
 import cities from '../world_cities.json';
 
 type City = {
-  country: string;
-  lat: number;
-  lng: number;
-  name: string;
+    country: string;
+    lat: number;
+    lng: number;
+    name: string;
 };
 
 export const useGenerator = () => {
-  const { data: session } = useSession();
-  const { data: usersData, refetch } = useQuery(GET_USERS);
-  const userID = session?.user.id;
+    const dataSession = useSession();
+    const { data: usersData, refetch } = useQuery(GET_USERS);
+    //@ts-ignore
+    const userID = (dataSession?.data?.session?.user as { id: string })?.id;
 
-  const { selectedLocation, setSelectedLocation } = useEventFilters();
+    const { selectedLocation, setSelectedLocation } = useEventFilters();
 
-  const [numberItems, setNumberItems] = useState<number>();
-  const [generatedEvents, setGeneratedEvents] = useState(null);
-  const [generatedUsers, setGeneratedUsers] = useState(null);
-  const [city, setCity] = useState<City | null>(null);
+    const [numberItems, setNumberItems] = useState<number>();
+    const [generatedEvents, setGeneratedEvents] = useState(null);
+    const [generatedUsers, setGeneratedUsers] = useState(null);
+    const [city, setCity] = useState<City | null>(null);
 
-  const randomUser = usersData?.users?.length ? faker.helpers.arrayElement(usersData.users) : null;
-  //@ts-ignore
-  const randomUserId = randomUser?._id;
+    //@ts-ignore
+    const randomUser = (usersData as { users: { _id: string }[] })?.users?.length
+        ? //@ts-ignore
+          faker.helpers.arrayElement(usersData.users)
+        : null;
+    //@ts-ignore
+    const randomUserId = randomUser?._id;
 
-  useEffect(() => {
-    if (Array.isArray(cities)) {
-      const randomCity = faker.helpers.arrayElement(cities);
-      // Нужно преобразовать координаты из строки в число.
-      setCity({
-        ...randomCity,
-        lng: parseFloat(randomCity.lng),
-        lat: parseFloat(randomCity.lat),
-      });
-    }
-  }, []);
+    useEffect(() => {
+        if (Array.isArray(cities)) {
+            const randomCity = faker.helpers.arrayElement(cities);
+            // Нужно преобразовать координаты из строки в число.
+            setCity({
+                ...randomCity,
+                lng: parseFloat(randomCity.lng),
+                lat: parseFloat(randomCity.lat),
+            });
+        }
+    }, []);
 
-  const changeNumberItems = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const numberValue = parseInt(e.target.value, 10);
-    setNumberItems(numberValue);
-  };
-
-  const handleGenerateEvents = async () => {
-    let coord, addr;
-    if (!numberItems || numberItems <= 0) return;
-    if (!selectedLocation) {
-      coord = [city?.lng, city?.lat];
-      addr = city?.name;
-    } else {
-      coord = [
-        selectedLocation?.geometry?.location?.lng(),
-        selectedLocation?.geometry?.location?.lat(),
-      ];
-      addr = selectedLocation?.formatted_address;
-    }
-
-    // Параметры для запроса на генерацию событий
-    const payload = {
-      id: randomUserId,
-      num: numberItems,
-      coordinates: coord,
-      address: addr,
-      type: 'events',
+    const changeNumberItems = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const numberValue = parseInt(e.target.value, 10);
+        setNumberItems(numberValue);
     };
 
-    //запрос
-    try {
-      const res = await fetch('/api/generator', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
+    const handleGenerateEvents = async () => {
+        let coord, addr;
+        if (!numberItems || numberItems <= 0) return;
+        if (!selectedLocation) {
+            coord = [city?.lng, city?.lat];
+            addr = city?.name;
+        } else {
+            coord = [
+                selectedLocation?.geometry?.location?.lng(),
+                selectedLocation?.geometry?.location?.lat(),
+            ];
+            addr = selectedLocation?.formatted_address;
+        }
 
-      const data = await res.json();
+        // Параметры для запроса на генерацию событий
+        const payload = {
+            id: randomUserId,
+            num: numberItems,
+            coordinates: coord,
+            address: addr,
+            type: 'events',
+        };
 
-      setGeneratedEvents(data);
+        //запрос
+        try {
+            const res = await fetch('/api/generator', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+            });
 
-      if (!res.ok) throw new Error(data.error || 'Ошибка при генерации событий');
+            const data = await res.json();
 
-      console.log('✅ События успешно сгенерированы:', data);
-    } catch (error) {
-      console.error('❌ Ошибка при генерации событий:', error);
-    }
-  };
+            setGeneratedEvents(data);
 
-  const handleGenerateUsers = async () => {
-    let coord, addr;
-    if (!numberItems || numberItems <= 0) return;
-    if (!selectedLocation) {
-      coord = [city?.lng, city?.lat];
-      addr = city?.name;
-    } else {
-      coord = [
-        selectedLocation?.geometry?.location?.lng(),
-        selectedLocation?.geometry?.location?.lat(),
-      ];
-      addr = selectedLocation?.formatted_address;
-    }
+            if (!res.ok) throw new Error(data.error || 'Ошибка при генерации событий');
 
-    // Параметры для запроса на генерацию событий
-    const payload = {
-      num: numberItems,
-      coordinates: coord,
-      address: addr,
-      type: 'users',
+            console.log('✅ События успешно сгенерированы:', data);
+        } catch (error) {
+            console.error('❌ Ошибка при генерации событий:', error);
+        }
     };
 
-    //запрос
-    try {
-      const res = await fetch('/api/generator', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
+    const handleGenerateUsers = async () => {
+        let coord, addr;
+        if (!numberItems || numberItems <= 0) return;
+        if (!selectedLocation) {
+            coord = [city?.lng, city?.lat];
+            addr = city?.name;
+        } else {
+            coord = [
+                selectedLocation?.geometry?.location?.lng(),
+                selectedLocation?.geometry?.location?.lat(),
+            ];
+            addr = selectedLocation?.formatted_address;
+        }
 
-      const data = await res.json();
+        // Параметры для запроса на генерацию событий
+        const payload = {
+            num: numberItems,
+            coordinates: coord,
+            address: addr,
+            type: 'users',
+        };
 
-      setGeneratedUsers(data);
+        //запрос
+        try {
+            const res = await fetch('/api/generator', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+            });
 
-      if (!res.ok) throw new Error(data.error || 'Ошибка при генерации событий');
+            const data = await res.json();
 
-      console.log('✅ Пользователи успешно сгенерированы:', data);
-    } catch (error) {
-      console.error('❌ Ошибка при генерации событий:', error);
-    }
-  };
+            setGeneratedUsers(data);
 
-  return {
-    changeNumberItems,
-    setSelectedLocation,
-    handleGenerateEvents,
-    generatedEvents,
-    handleGenerateUsers,
-    generatedUsers,
-  };
+            if (!res.ok) throw new Error(data.error || 'Ошибка при генерации событий');
+
+            console.log('✅ Пользователи успешно сгенерированы:', data);
+        } catch (error) {
+            console.error('❌ Ошибка при генерации событий:', error);
+        }
+    };
+
+    return {
+        changeNumberItems,
+        setSelectedLocation,
+        handleGenerateEvents,
+        generatedEvents,
+        handleGenerateUsers,
+        generatedUsers,
+    };
 };

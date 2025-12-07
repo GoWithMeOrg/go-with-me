@@ -1,121 +1,66 @@
-# Use Node.js LTS version
-FROM node:22-alpine AS base
+# Frontend Production Dockerfile
+# Multi-stage build for optimized Next.js production image
 
-# Install dependencies only when needed
+FROM node:24-alpine AS base
+
+# Install pnpm
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+# Set working directory
+WORKDIR /workspace
+
+# Copy workspace files for dependency resolution
+COPY package.json  ./
+
+# Stage 1: Install dependencies
 FROM base AS deps
-WORKDIR /app
+WORKDIR /workspace
+COPY package.json  ./
+RUN pnpm install
 
-# Install dependencies based on the preferred package manager
-COPY package.json package-lock.json* ./
-RUN npm ci
-
-# Rebuild the source code only when needed
+# Stage 2: Build the application
 FROM base AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
+WORKDIR /workspace
 
-ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
+COPY --from=deps /workspace ./
+COPY tsconfig.json  ./
+COPY next.config.js ./next.config.js
+COPY next-env.d.ts ./next-env.d.ts
+COPY src ./src
+COPY package.json  ./
 
-# Add all environment variables
-ARG BASE_FETCH_URL
-ARG DO_SPACES_ACCESS_KEY
-ARG DO_SPACES_BUCKET
-ARG DO_SPACES_SECRET_KEY
-ARG DO_SPACES_URL
-ARG FACEBOOK_CLIENT_ID
-ARG FACEBOOK_CLIENT_SECRET
-ARG GOOGLE_CLIENT_ID
-ARG GOOGLE_CLIENT_SECRET
-ARG MONGODB_URI
-ARG NEXTAUTH_SECRET
-ARG NEXTAUTH_URL
-ARG NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
-ARG NEXT_PUBLIC_GRAPHQL_ENDPOINT
-ARG TWITTER_CLIENT_ID
-ARG TWITTER_CLIENT_SECRET
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
 
-ENV BASE_FETCH_URL=$BASE_FETCH_URL
-ENV DO_SPACES_ACCESS_KEY=$DO_SPACES_ACCESS_KEY
-ENV DO_SPACES_BUCKET=$DO_SPACES_BUCKET
-ENV DO_SPACES_SECRET_KEY=$DO_SPACES_SECRET_KEY
-ENV DO_SPACES_URL=$DO_SPACES_URL
-ENV FACEBOOK_CLIENT_ID=$FACEBOOK_CLIENT_ID
-ENV FACEBOOK_CLIENT_SECRET=$FACEBOOK_CLIENT_SECRET
-ENV GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
-ENV GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET
-ENV MONGODB_URI=$MONGODB_URI
-ENV NEXTAUTH_SECRET=$NEXTAUTH_SECRET
-ENV NEXTAUTH_URL=$NEXTAUTH_URL
-ENV NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=$NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
-ENV NEXT_PUBLIC_GRAPHQL_ENDPOINT=$NEXT_PUBLIC_GRAPHQL_ENDPOINT
-ENV TWITTER_CLIENT_ID=$TWITTER_CLIENT_ID
-ENV TWITTER_CLIENT_SECRET=$TWITTER_CLIENT_SECRET
+# Build the Next.js application
+# The standalone output will be in .next/standalone
+RUN pnpm build
 
-RUN rm -rf .next
-RUN npm run build
-
-# Production image, copy all the files and run next
-FROM base AS runner
+# Stage 3: Production image
+FROM node:24-alpine AS runner
 WORKDIR /app
 
-ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
+# Create non-root user
+RUN addgroup --system --gid 1001 nodejs && \
+  adduser --system --uid 1001 nextjs
 
-# Add all environment variables to runner
-ARG BASE_FETCH_URL
-ARG DO_SPACES_ACCESS_KEY
-ARG DO_SPACES_BUCKET
-ARG DO_SPACES_SECRET_KEY
-ARG DO_SPACES_URL
-ARG FACEBOOK_CLIENT_ID
-ARG FACEBOOK_CLIENT_SECRET
-ARG GOOGLE_CLIENT_ID
-ARG GOOGLE_CLIENT_SECRET
-ARG MONGODB_URI
-ARG NEXTAUTH_SECRET
-ARG NEXTAUTH_URL
-ARG NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
-ARG NEXT_PUBLIC_GRAPHQL_ENDPOINT
-ARG TWITTER_CLIENT_ID
-ARG TWITTER_CLIENT_SECRET
+COPY --from=builder --chown=nextjs:nodejs /workspace ./
 
-ENV BASE_FETCH_URL=$BASE_FETCH_URL
-ENV DO_SPACES_ACCESS_KEY=$DO_SPACES_ACCESS_KEY
-ENV DO_SPACES_BUCKET=$DO_SPACES_BUCKET
-ENV DO_SPACES_SECRET_KEY=$DO_SPACES_SECRET_KEY
-ENV DO_SPACES_URL=$DO_SPACES_URL
-ENV FACEBOOK_CLIENT_ID=$FACEBOOK_CLIENT_ID
-ENV FACEBOOK_CLIENT_SECRET=$FACEBOOK_CLIENT_SECRET
-ENV GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
-ENV GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET
-ENV MONGODB_URI=$MONGODB_URI
-ENV NEXTAUTH_SECRET=$NEXTAUTH_SECRET
-ENV NEXTAUTH_URL=$NEXTAUTH_URL
-ENV NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=$NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
-ENV NEXT_PUBLIC_GRAPHQL_ENDPOINT=$NEXT_PUBLIC_GRAPHQL_ENDPOINT
-ENV TWITTER_CLIENT_ID=$TWITTER_CLIENT_ID
-ENV TWITTER_CLIENT_SECRET=$TWITTER_CLIENT_SECRET
-
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-
-COPY --from=builder /app/public ./public
-
-# Set the correct permission for prerender cache
-RUN mkdir .next
-RUN chown nextjs:nodejs .next
-
-# Automatically leverage output traces to reduce image size
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
+# Switch to non-root user
 USER nextjs
 
+# Expose port
 EXPOSE 3000
 
-ENV PORT 3000
-ENV HOSTNAME "0.0.0.0"
+# Set environment variables
+ENV NODE_ENV=production
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
+ENV NEXT_TELEMETRY_DISABLED=1
 
-CMD ["node", "server.js"] 
+# Health check (adjust path if your app has a health endpoint)
+HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
+  CMD node -e "require('http').get('http://localhost:3000/', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})" || exit 1
+
+# Start the application
+CMD ["npm", "run", "start"]

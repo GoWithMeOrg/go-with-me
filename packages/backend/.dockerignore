@@ -1,6 +1,4 @@
 node_modules
-.next
-out
 dist
 npm-debug.log
 .env
@@ -19,8 +17,5 @@ coverage
 .gitignore
 README.md
 test
-tests
 *.md
-.storybook
-public
-build-docker.sh
+

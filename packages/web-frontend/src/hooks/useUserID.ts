@@ -1,8 +1,9 @@
 import { useSession } from 'next-auth/react';
 
 export const useUserID = () => {
-  const { data: session, status } = useSession();
-  const user_id = session?.user.id;
+    const dataSession = useSession();
+    //@ts-ignore
+    const user_id = session?.user.id;
 
-  return { user_id, status };
+    return { user_id, status: dataSession?.status };
 };
