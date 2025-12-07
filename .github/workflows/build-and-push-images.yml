@@ -41,17 +41,17 @@ jobs:
             #       # pnpm --filter @go-with-me/web-frontend test
             #       echo "Tests passed (placeholder)"
 
-            - name: Install doctl and log in to DO Registry
-              uses: digitalocean/action-doctl@v2
-              with:
-                  token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+            # - name: Install doctl and log in to DO Registry
+            #   uses: digitalocean/action-doctl@v2
+            #   with:
+            #       token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
             - name: Build and push frontend image
               uses: docker/build-push-action@v5
               with:
                   context: .
                   file: ./packages/web-frontend/Dockerfile
-                  push: true
+                  push: false
                   tags: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/frontend:latest
                   cache-from: type=gha
                   cache-to: type=gha,mode=max
@@ -62,7 +62,7 @@ jobs:
               with:
                   context: .
                   file: ./packages/backend/Dockerfile
-                  push: true
+                  push: false
                   tags: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/backend:latest
                   cache-from: type=gha
                   cache-to: type=gha,mode=max
