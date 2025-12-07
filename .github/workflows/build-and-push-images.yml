@@ -49,23 +49,23 @@ jobs:
             - name: Build and push frontend image
               uses: docker/build-push-action@v5
               with:
-                  context: .
+                  context: ./packages/web-frontend
                   file: ./packages/web-frontend/Dockerfile
                   push: false
                   tags: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/frontend:latest
-                  cache-from: type=gha
-                  cache-to: type=gha,mode=max
+                  # cache-from: type=gha
+                  # cache-to: type=gha,mode=max
                   platforms: linux/amd64
 
             - name: Build and push backend image
               uses: docker/build-push-action@v5
               with:
-                  context: .
+                  context: ./packages/backend
                   file: ./packages/backend/Dockerfile
                   push: false
                   tags: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/backend:latest
-                  cache-from: type=gha
-                  cache-to: type=gha,mode=max
+                  # cache-from: type=gha
+                  # cache-to: type=gha,mode=max
                   platforms: linux/amd64
 
             - name: Image digest (frontend)
