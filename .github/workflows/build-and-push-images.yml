@@ -42,32 +42,40 @@ jobs:
             #       # pnpm --filter @go-with-me/web-frontend test
             #       echo "Tests passed (placeholder)"
 
-            # - name: Install doctl and log in to DO Registry
-            #   uses: digitalocean/action-doctl@v2
-            #   with:
-            #       token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+            - name: Install doctl and log in to DO Registry
+              uses: digitalocean/action-doctl@v2
+              with:
+                  token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
-            - name: Build and push frontend image
+            - name: Login to DigitalOcean Container Registry
+              run: |
+                  doctl registry login --expiry-seconds 1200
+
+            - name: Build frontend image
               uses: docker/build-push-action@v5
               with:
                   context: ./packages/web-frontend
                   file: ./packages/web-frontend/Dockerfile
                   push: false
                   tags: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/frontend:latest
-                  # cache-from: type=gha
-                  # cache-to: type=gha,mode=max
                   platforms: linux/amd64
 
-            - name: Build and push backend image
+            - name: Build backend image
               uses: docker/build-push-action@v5
               with:
                   context: ./packages/backend
                   file: ./packages/backend/Dockerfile
                   push: false
                   tags: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/backend:latest
-                  # cache-from: type=gha
-                  # cache-to: type=gha,mode=max
                   platforms: linux/amd64
+
+            - name: Push frontend image to DOCR
+              run: |
+                  doctl registry docker push ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/frontend:latest
+
+            - name: Push backend image to DOCR
+              run: |
+                  doctl registry docker push ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/backend:latest
 
             - name: Image digest (frontend)
               run: |
