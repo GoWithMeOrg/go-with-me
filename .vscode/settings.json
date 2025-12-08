@@ -6,11 +6,13 @@
         "addgroup",
         "adduser",
         "Buildx",
+        "certbot",
         "Dockerfiles",
         "DOCR",
         "doctl",
         "googlemaps",
         "INITDB",
+        "letsencrypt",
         "mongodump",
         "mongorestore"
     ]

@@ -16,7 +16,9 @@ COPY package.json  ./
 FROM base AS deps
 WORKDIR /workspace
 COPY package.json  ./
-RUN pnpm install
+# Configure pnpm to allow build scripts (required for some packages like @apollo/protobufjs)
+RUN pnpm config set ignore-scripts false
+RUN pnpm install --frozen-lockfile
 
 # Stage 2: Build the application
 FROM base AS builder
