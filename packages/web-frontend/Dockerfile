@@ -10,12 +10,14 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 WORKDIR /workspace
 
 # Copy workspace files for dependency resolution
-COPY package.json  ./
+# COPY package.json  ./
+COPY package.json pnpm-lock.yaml ./
 
 # Stage 1: Install dependencies
 FROM base AS deps
 WORKDIR /workspace
-COPY package.json  ./
+#COPY package.json  ./
+COPY package.json pnpm-lock.yaml ./
 # Configure pnpm to allow build scripts (required for some packages like @apollo/protobufjs)
 RUN pnpm config set ignore-scripts false
 RUN pnpm install --frozen-lockfile
@@ -29,7 +31,8 @@ COPY tsconfig.json  ./
 COPY next.config.js ./next.config.js
 COPY next-env.d.ts ./next-env.d.ts
 COPY src ./src
-COPY package.json  ./
+COPY package.json pnpm-lock.yaml ./
+#COPY package.json  ./
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1

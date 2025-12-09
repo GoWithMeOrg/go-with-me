@@ -1,8 +1,6 @@
 # Production Docker Compose configuration for DigitalOcean Droplet
 # This file is used on the Droplet to run the production services
 
-version: '3.8'
-
 services:
   frontend:
     image: registry.digitalocean.com/go-with-me-dev/frontend:latest
