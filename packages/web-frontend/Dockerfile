@@ -11,13 +11,14 @@ WORKDIR /workspace
 
 # Copy workspace files for dependency resolution
 # COPY package.json  ./
-COPY package.json pnpm-lock.yaml ./
+COPY pnpm-lock.yaml package.json pnpm-workspace.yaml ./
 
 # Stage 1: Install dependencies
 FROM base AS deps
 WORKDIR /workspace
 #COPY package.json  ./
-COPY package.json pnpm-lock.yaml ./
+
+COPY pnpm-lock.yaml package.json pnpm-workspace.yaml ./
 # Configure pnpm to allow build scripts (required for some packages like @apollo/protobufjs)
 RUN pnpm config set ignore-scripts false
 RUN pnpm install --frozen-lockfile
@@ -27,11 +28,12 @@ FROM base AS builder
 WORKDIR /workspace
 
 COPY --from=deps /workspace ./
-COPY tsconfig.json  ./
-COPY next.config.js ./next.config.js
-COPY next-env.d.ts ./next-env.d.ts
+#COPY tsconfig.json  ./
+COPY packages/web-frontend/tsconfig.json ./tsconfig.json
+COPY packages/web-frontend/next.config.js ./next.config.js
+COPY packages/web-frontend/next-env.d.ts ./next-env.d.ts
 COPY src ./src
-COPY package.json pnpm-lock.yaml ./
+COPY pnpm-lock.yaml package.json pnpm-workspace.yaml ./
 #COPY package.json  ./
 
 ENV NODE_ENV=production
@@ -39,7 +41,8 @@ ENV NEXT_TELEMETRY_DISABLED=1
 
 # Build the Next.js application
 # The standalone output will be in .next/standalone
-RUN pnpm build
+#RUN pnpm build
+RUN pnpm --filter web-frontend run build
 
 # Stage 3: Production image
 FROM node:24-alpine AS runner
