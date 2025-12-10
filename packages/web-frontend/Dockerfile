@@ -11,14 +11,14 @@ WORKDIR /workspace
 
 # Copy workspace files for dependency resolution
 # COPY package.json  ./
-COPY ./pnpm-lock.yaml ./pnpm-workspace.yaml package.json ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
 # Stage 1: Install dependencies
 FROM base AS deps
 WORKDIR /workspace
 #COPY package.json  ./
 
-COPY ./pnpm-lock.yaml ./pnpm-workspace.yaml package.json ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 # Configure pnpm to allow build scripts (required for some packages like @apollo/protobufjs)
 RUN pnpm config set ignore-scripts false
 RUN pnpm install --frozen-lockfile
@@ -33,7 +33,7 @@ COPY packages/web-frontend/tsconfig.json ./tsconfig.json
 COPY packages/web-frontend/next.config.js ./next.config.js
 COPY packages/web-frontend/next-env.d.ts ./next-env.d.ts
 COPY src ./src
-COPY ./pnpm-lock.yaml ./pnpm-workspace.yaml package.json ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 #COPY package.json  ./
 
 ENV NODE_ENV=production
