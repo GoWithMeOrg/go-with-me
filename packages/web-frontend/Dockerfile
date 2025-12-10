@@ -18,7 +18,7 @@ FROM base AS deps
 WORKDIR /workspace
 #COPY package.json  ./
 
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY packages/web-frontend/package.json ./packages/web-frontend/package.json
 # Configure pnpm to allow build scripts (required for some packages like @apollo/protobufjs)
 RUN pnpm config set ignore-scripts false
 RUN pnpm install --frozen-lockfile
@@ -28,13 +28,7 @@ FROM base AS builder
 WORKDIR /workspace
 
 COPY --from=deps /workspace ./
-#COPY tsconfig.json  ./
-COPY packages/web-frontend/tsconfig.json ./tsconfig.json
-COPY packages/web-frontend/next.config.js ./next.config.js
-COPY packages/web-frontend/next-env.d.ts ./next-env.d.ts
-COPY packages/web-frontend/src ./src
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-#COPY package.json  ./
+COPY packages/web-frontend ./packages/web-frontend
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
@@ -52,7 +46,9 @@ WORKDIR /app
 RUN addgroup --system --gid 1001 nodejs && \
   adduser --system --uid 1001 nextjs
 
-COPY --from=builder --chown=nextjs:nodejs /workspace ./
+COPY --from=builder --chown=nextjs:nextjs /workspace/packages/web-frontend/.next/standalone ./
+COPY --from=builder --chown=nextjs:nextjs /workspace/packages/web-frontend/.next/static ./packages/web-frontend/.next/static
+COPY --from=builder --chown=nextjs:nextjs /workspace/packages/web-frontend/public ./packages/web-frontend/public
 
 # Switch to non-root user
 USER nextjs

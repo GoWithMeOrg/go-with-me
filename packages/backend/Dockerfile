@@ -1,5 +1,5 @@
 # Backend Production Dockerfile
-# Multi-stage build for optimized production image
+# Multi-stage build for optimized Next.js production image
 
 FROM node:24-alpine AS base
 
@@ -9,52 +9,58 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 # Set working directory
 WORKDIR /workspace
 
-# Copy workspace files
-COPY package.json  ./
+# Copy workspace files for dependency resolution
+# COPY package.json  ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
 # Stage 1: Install dependencies
 FROM base AS deps
 WORKDIR /workspace
-COPY package.json  ./
-RUN pnpm install
+#COPY package.json  ./
+
+COPY packages/backend/package.json packages/backend/package.json
+# Configure pnpm to allow build scripts (required for some packages like @apollo/protobufjs)
+RUN pnpm config set ignore-scripts false
+RUN pnpm install --frozen-lockfile
 
 # Stage 2: Build the application
 FROM base AS builder
 WORKDIR /workspace
-COPY --from=deps /workspace ./
-COPY packages/backend/tsconfig.build.json packages/backend/tsconfig.json  ./
-COPY packages/backend/src ./src
 
-COPY package.json  ./
+COPY --from=builder --chown=nestjs:nestjs /workspace/packages/backend/dist ./dist
+COPY --from=builder --chown=nestjs:nestjs /workspace/packages/backend/package.json ./package.json
 
 ENV NODE_ENV=production
-RUN pnpm build
+# Build the Next.js application
+# The standalone output will be in .next/standalone
+#RUN pnpm build
+RUN pnpm --filter backend run build
 
-# Stage 3: Production image
+
+# Stage 3: Runtime
 FROM node:24-alpine AS runner
 WORKDIR /app
 
 # Create non-root user
-RUN addgroup --system --gid 1001 nestjs && \
-  adduser --system --uid 1001 nestjs
+RUN addgroup --system --gid 1001 nestjs \
+    && adduser --system --uid 1001 nestjs
 
-# Copy necessary files from builder
-COPY --from=builder --chown=nestjs:nestjs /workspace ./
+COPY --from=builder --chown=nestjs:nodejs /workspace ./
+#COPY --from=builder --chown=nestjs:nestjs /workspace/packages/backend/dist ./dist
+#COPY --from=builder --chown=nestjs:nestjs /workspace/packages/backend/package.json ./
 
-# Switch to non-root user
 USER nestjs
 
-# Expose port
 EXPOSE 4000
 
-# Set environment variables
 ENV NODE_ENV=production
 ENV PORT=4000
+ENV HOSTNAME="0.0.0.0"
+ENV NEXT_TELEMETRY_DISABLED=1
 
-# Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
   CMD node -e "require('http').get('http://localhost:4000/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})" || exit 1
 
-# Start the application
 CMD ["node", "dist/main.js"]
+
 
