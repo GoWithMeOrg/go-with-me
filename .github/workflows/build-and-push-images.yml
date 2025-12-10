@@ -71,16 +71,16 @@ jobs:
 
             - name: Push frontend image to DOCR
               run: |
-                  docker push ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/frontend:latest
+                  docker push ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/frontend-latest
 
             - name: Push backend image to DOCR
               run: |
-                  docker push ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/backend:latest
+                  docker push ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/backend-latest
 
             - name: Image digest (frontend)
               run: |
-                  echo "Frontend image: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/frontend:latest"
+                  echo "Frontend image: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/frontend-latest"
 
             - name: Image digest (backend)
               run: |
-                  echo "Backend image: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/backend:latest"
+                  echo "Backend image: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/backend-latest"
