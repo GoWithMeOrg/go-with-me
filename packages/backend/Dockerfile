@@ -10,13 +10,11 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 WORKDIR /workspace
 
 # Copy workspace files for dependency resolution
-# COPY package.json  ./
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
 # Stage 1: Install dependencies
 FROM base AS deps
 WORKDIR /workspace
-#COPY package.json  ./
 
 COPY packages/backend/package.json packages/backend/package.json
 # Configure pnpm to allow build scripts (required for some packages like @apollo/protobufjs)
@@ -25,17 +23,14 @@ RUN pnpm install --frozen-lockfile
 
 # Stage 2: Build the application
 FROM base AS builder
-WORKDIR /workspace
-
-COPY --from=builder --chown=nestjs:nestjs /workspace/packages/backend/dist ./dist
-COPY --from=builder --chown=nestjs:nestjs /workspace/packages/backend/package.json ./package.json
+COPY --from=deps /workspace ./
+COPY packages/backend ./packages/backend
 
 ENV NODE_ENV=production
 # Build the Next.js application
 # The standalone output will be in .next/standalone
 #RUN pnpm build
 RUN pnpm --filter backend run build
-
 
 # Stage 3: Runtime
 FROM node:24-alpine AS runner
