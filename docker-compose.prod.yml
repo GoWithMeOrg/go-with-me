@@ -3,7 +3,7 @@
 
 services:
   frontend:
-    image: registry.digitalocean.com/go-with-me-dev:frontend-latest
+    image: registry.digitalocean.com/go-with-me-dev/my-app:frontend-latest
     container_name: gwm-frontend-prod
     restart: unless-stopped
     environment:
@@ -20,7 +20,7 @@ services:
     # No ports exposed - only accessible via reverse proxy
 
   backend:
-    image: registry.digitalocean.com/go-with-me-dev:backend-latest
+    image: registry.digitalocean.com/go-with-me-dev/my-app:backend-latest
     container_name: gwm-backend-prod
     restart: unless-stopped
     environment:
