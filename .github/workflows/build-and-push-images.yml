@@ -53,7 +53,7 @@ jobs:
             # --- ШАГИ ОЧИСТКИ ---
             - name: Start garbage collection
               run: |
-                  doctl registry garbage-collection start
+                  doctl registry garbage-collection start --force
             - name: Status garbage collection
               run: |
                   sleep 10
