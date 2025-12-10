@@ -51,13 +51,13 @@ jobs:
                   platforms: linux/amd64
 
             # --- ШАГИ ОЧИСТКИ ---
-            - name: Start garbage collection
-              run: |
-                  doctl registry garbage-collection start --force
-            - name: Status garbage collection
-              run: |
-                  sleep 10
-                  doctl registry garbage-collection status
+            #- name: Start garbage collection
+            #  run: |
+            #      doctl registry garbage-collection start --force
+            #- name: Status garbage collection
+            #  run: |
+            #      sleep 10
+            #      doctl registry garbage-collection status
             - name: Image digest (frontend)
               run: |
                   echo "Frontend image: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/app:frontend-latest"
