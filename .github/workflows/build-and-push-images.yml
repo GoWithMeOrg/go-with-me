@@ -56,7 +56,7 @@ jobs:
               with:
                   context: .
                   file: ./packages/web-frontend/Dockerfile
-                  push: false
+                  push: true
                   tags: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/frontend:latest
                   platforms: linux/amd64
 
@@ -65,17 +65,17 @@ jobs:
               with:
                   context: .
                   file: ./packages/backend/Dockerfile
-                  push: false
+                  push: true
                   tags: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/backend:latest
                   platforms: linux/amd64
 
             - name: Push frontend image to DOCR
               run: |
-                  doctl registry docker push ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/frontend:latest
+                  docker push ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/frontend:latest
 
             - name: Push backend image to DOCR
               run: |
-                  doctl registry docker push ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/backend:latest
+                  docker push ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/backend:latest
 
             - name: Image digest (frontend)
               run: |
