@@ -57,3 +57,15 @@ jobs:
             - name: Image digest (backend)
               run: |
                   echo "Backend image: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/my-app:backend-latest"
+			
+			- name: Start garbage collection
+              # Запускает сбор мусора. Он удаляет все висячие слои/образы (теги 'none').
+              # Обратите внимание, что эта команда только *инициирует* процесс на стороне DO.
+              run: |
+                  doctl registry garbage-collection start
+
+            - name:  Status garbage collection
+              # Дает небольшое время для начала процесса и проверяет его статус
+              run: |
+                  sleep 10
+                  doctl registry garbage-collection status
