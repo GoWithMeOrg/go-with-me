@@ -22,7 +22,7 @@ RUN pnpm install
 FROM base AS builder
 WORKDIR /workspace
 COPY --from=deps /workspace ./
-COPY tsconfig.build.json tsconfig.json  ./
+COPY packages/backend/tsconfig.build.json ./tsconfig.build.json packages/backend/tsconfig.json ./tsconfig.json  ./
 COPY packages/backend/src ./src
 
 COPY package.json  ./
