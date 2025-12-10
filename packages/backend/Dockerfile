@@ -45,9 +45,8 @@ WORKDIR /app
 RUN addgroup --system --gid 1001 nestjs \
     && adduser --system --uid 1001 nestjs
 
-COPY --from=builder --chown=nestjs:nodejs /workspace ./
-#COPY --from=builder --chown=nestjs:nestjs /workspace/packages/backend/dist ./dist
-#COPY --from=builder --chown=nestjs:nestjs /workspace/packages/backend/package.json ./
+COPY --from=builder --chown=nestjs:nestjs /workspace/packages/backend/dist ./dist
+COPY --from=builder --chown=nestjs:nestjs /workspace/packages/backend/package.json ./
 
 USER nestjs
 
