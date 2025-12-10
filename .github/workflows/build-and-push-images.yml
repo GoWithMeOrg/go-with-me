@@ -38,7 +38,7 @@ jobs:
                   context: .
                   file: ./packages/web-frontend/Dockerfile
                   push: true
-                  tags: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/my-app:frontend-latest
+                  tags: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/app:frontend-latest
                   platforms: linux/amd64
 
             - name: Build backend image
@@ -47,25 +47,21 @@ jobs:
                   context: .
                   file: ./packages/backend/Dockerfile
                   push: true
-                  tags: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/my-app:backend-latest
+                  tags: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/app:backend-latest
                   platforms: linux/amd64
 
-            - name: Image digest (frontend)
-              run: |
-                  echo "Frontend image: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/my-app:frontend-latest"
-
-            - name: Image digest (backend)
-              run: |
-                  echo "Backend image: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/my-app:backend-latest"
-			
-			- name: Start garbage collection
-              # Запускает сбор мусора. Он удаляет все висячие слои/образы (теги 'none').
-              # Обратите внимание, что эта команда только *инициирует* процесс на стороне DO.
+            # --- ШАГИ ОЧИСТКИ ---
+            - name: Start garbage collection
               run: |
                   doctl registry garbage-collection start
-
-            - name:  Status garbage collection
-              # Дает небольшое время для начала процесса и проверяет его статус
+            - name: Status garbage collection
               run: |
                   sleep 10
                   doctl registry garbage-collection status
+            - name: Image digest (frontend)
+              run: |
+                  echo "Frontend image: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/app:frontend-latest"
+
+            - name: Image digest (backend)
+              run: |
+                  echo "Backend image: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/app:backend-latest"
