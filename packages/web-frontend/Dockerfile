@@ -32,7 +32,7 @@ COPY --from=deps /workspace ./
 COPY packages/web-frontend/tsconfig.json ./tsconfig.json
 COPY packages/web-frontend/next.config.js ./next.config.js
 COPY packages/web-frontend/next-env.d.ts ./next-env.d.ts
-COPY src ./src
+COPY packages/web-frontend/src ./src
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 #COPY package.json  ./
 
