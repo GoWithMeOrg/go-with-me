@@ -38,7 +38,7 @@ jobs:
                   context: .
                   file: ./packages/web-frontend/Dockerfile
                   push: true
-                  tags: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}:frontend-latest
+                  tags: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/frontend-latest
                   platforms: linux/amd64
 
             - name: Build backend image
@@ -47,13 +47,13 @@ jobs:
                   context: .
                   file: ./packages/backend/Dockerfile
                   push: true
-                  tags: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}:backend-latest
+                  tags: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/backend-latest
                   platforms: linux/amd64
 
             - name: Image digest (frontend)
               run: |
-                  echo "Frontend image: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}:frontend-latest"
+                  echo "Frontend image: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/frontend-latest"
 
             - name: Image digest (backend)
               run: |
-                  echo "Backend image: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}:backend-latest"
+                  echo "Backend image: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/backend-latest"
