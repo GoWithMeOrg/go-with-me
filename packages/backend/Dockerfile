@@ -23,7 +23,7 @@ FROM base AS builder
 WORKDIR /workspace
 COPY --from=deps /workspace ./
 COPY tsconfig.build.json tsconfig.json  ./
-COPY src ./src
+COPY packages/backend/src ./src
 
 COPY package.json  ./
 
