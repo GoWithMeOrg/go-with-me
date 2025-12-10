@@ -57,7 +57,7 @@ jobs:
                   context: .
                   file: ./packages/web-frontend/Dockerfile
                   push: true
-                  tags: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/frontend:latest
+                  tags: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/frontend-latest
                   platforms: linux/amd64
 
             - name: Build backend image
@@ -66,7 +66,7 @@ jobs:
                   context: .
                   file: ./packages/backend/Dockerfile
                   push: true
-                  tags: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/backend:latest
+                  tags: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/backend-latest
                   platforms: linux/amd64
 
             - name: Push frontend image to DOCR
