@@ -3,23 +3,23 @@ import { useUserID } from '@/hooks/useUserID';
 import { useQuery } from '@apollo/client/react';
 
 export const useInvitationEvents = () => {
-  const { user_id } = useUserID();
+    const { user_id } = useUserID();
 
-  const {
-    loading: loadingEvents,
-    error: errorEvents,
-    data: dataEvents,
-  } = useQuery(GET_COMPANION_INVITATION_EVENTS, {
-    variables: {
-      organizerId: user_id,
-    },
-  });
+    const {
+        loading: loadingEvents,
+        error: errorEvents,
+        data: dataEvents,
+    } = useQuery(GET_COMPANION_INVITATION_EVENTS, {
+        variables: {
+            organizerId: user_id,
+        },
+    });
+    //@ts-ignore
+    const events = dataEvents?.companionInvitationEvent;
 
-  const events = dataEvents?.companionInvitationEvent;
-
-  return {
-    loadingEvents,
-    errorEvents,
-    events,
-  };
+    return {
+        loadingEvents,
+        errorEvents,
+        events,
+    };
 };

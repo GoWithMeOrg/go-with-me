@@ -1,6 +1,19 @@
 {
-  "graphql.config.load.legacy": false,
-  "graphql.config.cacheSchemaFileForLookup": true,
-  "graphql.allowLanguageServiceOverride": true,
-  "cSpell.words": ["INITDB", "mongodump", "mongorestore"]
+    "graphql.config.load.legacy": false,
+    "graphql.config.cacheSchemaFileForLookup": true,
+    "graphql.allowLanguageServiceOverride": true,
+    "cSpell.words": [
+        "addgroup",
+        "adduser",
+        "Buildx",
+        "certbot",
+        "Dockerfiles",
+        "DOCR",
+        "doctl",
+        "googlemaps",
+        "INITDB",
+        "letsencrypt",
+        "mongodump",
+        "mongorestore"
+    ]
 }

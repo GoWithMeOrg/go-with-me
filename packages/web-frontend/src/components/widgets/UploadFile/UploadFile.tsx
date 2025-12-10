@@ -1,7 +1,7 @@
 'use client';
 
 import { forwardRef, useEffect, useMemo } from 'react';
-import { Maybe } from '@/app/types/User';
+import { Maybe } from '@/app/types/types';
 import { Label } from '@/components/shared/Label';
 import { useUploadFile } from '@/components/widgets/UploadFile/hooks/useUploadFile';
 import Image from 'next/image';

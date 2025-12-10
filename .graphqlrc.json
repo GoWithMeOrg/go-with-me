@@ -1,13 +1,12 @@
 {
-  "projects": {
-    "default": {
-      "schema": "./packages/backend/src/schema/schema.gql",
-      "documents": [
-        "./packages/api-scheme/graphql/**/*.ts",
-        "./packages/web-frontend/src/**/*.ts",
-        "./packages/web-frontend/src/**/*.tsx",
-        "./packages/backend/src/**/*.graphql"
-      ]
+    "projects": {
+        "default": {
+            "schema": "./packages/backend/src/schema/schema.gql",
+            "documents": [
+                "./packages/web-frontend/src/**/*.ts",
+                "./packages/web-frontend/src/**/*.tsx",
+                "./packages/backend/src/**/*.graphql"
+            ]
+        }
     }
-  }
 }
