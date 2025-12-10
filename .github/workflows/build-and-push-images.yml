@@ -16,9 +16,7 @@ jobs:
         runs-on: ubuntu-latest
         environment: development
 
-        # Этот блок должен иметь 8 пробелов от начала строки
         steps:
-            # - name: и - uses: должны начинаться с 10 пробелов
             - name: Checkout code
               uses: actions/checkout@v4
 
@@ -40,8 +38,7 @@ jobs:
                   context: .
                   file: ./packages/web-frontend/Dockerfile
                   push: true
-                  # Одно репо с разными тегами для обхода лимита
-                  tags: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}:frontend-latest
+                  tags: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/frontend:latest
                   platforms: linux/amd64
 
             - name: Build backend image
@@ -50,15 +47,13 @@ jobs:
                   context: .
                   file: ./packages/backend/Dockerfile
                   push: true
-                  # Одно репо с разными тегами для обхода лимита
-                  tags: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}:backend-latest
+                  tags: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/backend:latest
                   platforms: linux/amd64
 
-            # Вывод логов (в порядке)
             - name: Image digest (frontend)
               run: |
-                  echo "Frontend image: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}:frontend-latest"
+                  echo "Frontend image: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/frontend:latest"
 
             - name: Image digest (backend)
               run: |
-                  echo "Backend image: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}:backend-latest"
+                  echo "Backend image: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/backend:latest"
