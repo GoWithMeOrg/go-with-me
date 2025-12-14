@@ -35,7 +35,7 @@ export const ProfileForm: FC = () => {
 
     return (
         <>
-            {!error && user && location && (
+            {!error && user && (
                 <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
                     <div className={classes.formField}>
                         <Controller
@@ -99,7 +99,7 @@ export const ProfileForm: FC = () => {
                                     <Autocomplete
                                         className={classes.location}
                                         onPlaceSelect={field.onChange}
-                                        address={location.properties?.address as string}
+                                        address={location?.properties?.address as string}
                                         options={optionsFullAdress}
                                     />
                                 </Label>

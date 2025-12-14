@@ -17,11 +17,20 @@ import { InterestModule } from './interest/interest.module';
 import { TagModule } from './tag/tag.module';
 
 import { RolesGuard } from './auth/guard/roles.guard';
+import { getLoggerConfig } from './config/logger.config';
+import { LoggerModule } from 'nestjs-pino';
 
 @Module({
     imports: [
         ConfigModule.forRoot({
             isGlobal: true,
+            cache: true,
+        }),
+
+        LoggerModule.forRootAsync({
+            imports: [ConfigModule],
+            useFactory: getLoggerConfig,
+            inject: [ConfigService],
         }),
 
         GraphQLModule.forRootAsync({
@@ -35,10 +44,6 @@ import { RolesGuard } from './auth/guard/roles.guard';
             imports: [ConfigModule],
             useFactory: getMongooseConfig,
             inject: [ConfigService],
-        }),
-
-        ConfigModule.forRoot({
-            cache: true,
         }),
 
         UserModule,
