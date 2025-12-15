@@ -1,0 +1,67 @@
+name: Build and Push Docker Images
+permissions:
+    contents: read
+
+on:
+    push:
+        branches:
+            - main
+            - feature/config-deploy
+        tags:
+            - "v*"
+    workflow_dispatch:
+
+jobs:
+    build-and-push:
+        runs-on: ubuntu-latest
+        environment: development
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v3
+
+            - name: Install doctl and log in to DO Registry
+              uses: digitalocean/action-doctl@v2
+              with:
+                  token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+            - name: Login to DigitalOcean Container Registry
+              run: |
+                  doctl registry login --expiry-seconds 1200
+
+            - name: Build frontend image
+              uses: docker/build-push-action@v5
+              with:
+                  context: .
+                  file: ./packages/web-frontend/Dockerfile
+                  push: true
+                  tags: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/app:frontend-latest
+                  platforms: linux/amd64
+
+            - name: Build backend image
+              uses: docker/build-push-action@v5
+              with:
+                  context: .
+                  file: ./packages/backend/Dockerfile
+                  push: true
+                  tags: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/app:backend-latest
+                  platforms: linux/amd64
+
+            # --- ШАГИ ОЧИСТКИ ---
+            #- name: Start garbage collection
+            #  run: |
+            #      doctl registry garbage-collection start --force
+            #- name: Status garbage collection
+            #  run: |
+            #      sleep 10
+            #      doctl registry garbage-collection status
+            - name: Image digest (frontend)
+              run: |
+                  echo "Frontend image: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/app:frontend-latest"
+
+            - name: Image digest (backend)
+              run: |
+                  echo "Backend image: ${{ vars.REGISTRY }}/${{ vars.REGISTRY_NAME }}/app:backend-latest"

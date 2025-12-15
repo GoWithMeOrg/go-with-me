@@ -1,0 +1,77 @@
+# Production Docker Compose configuration for DigitalOcean Droplet
+# This file is used on the Droplet to run the production services
+
+services:
+  frontend:
+    image: registry.digitalocean.com/go-with-me-dev/app:frontend-latest
+    container_name: gwm-frontend-prod
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - HOSTNAME=0.0.0.0
+      # Add your frontend environment variables here
+      # - NEXT_PUBLIC_GRAPHQL_ENDPOINT=https://MY_DOMAIN.COM/api/graphql
+      # - NEXTAUTH_URL=https://MY_DOMAIN.COM
+    networks:
+      - app-network
+    depends_on:
+      - backend
+    # No ports exposed - only accessible via reverse proxy
+
+  backend:
+    image: registry.digitalocean.com/go-with-me-dev/app:backend-latest
+    container_name: gwm-backend-prod
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=4000
+      # MongoDB connection string from DigitalOcean Managed Database
+      - MONGODB_URI=${MONGODB_URI}
+      # CORS configuration
+      - CORS_ORIGIN=${CORS_ORIGIN}
+      # Session configuration
+      - SESSION_COOKIE_SECURE=true
+      - SESSION_COOKIE_SAMESITE=none
+      - SESSION_COOKIE_DOMAIN=${SESSION_COOKIE_DOMAIN}
+      # Add other backend environment variables as needed
+    networks:
+      - app-network
+    # No ports exposed - only accessible via reverse proxy
+
+  reverse-proxy:
+    build:
+      context: ./infra/nginx
+      dockerfile: Dockerfile
+    container_name: gwm-nginx-prod
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./infra/nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./infra/nginx/certs:/etc/nginx/certs:ro
+      - certbot-data:/etc/letsencrypt:ro
+    networks:
+      - app-network
+    depends_on:
+      - frontend
+      - backend
+
+  # Certbot service for Let's Encrypt certificate management
+  certbot:
+    image: certbot/certbot:latest
+    container_name: gwm-certbot
+    volumes:
+      - certbot-data:/etc/letsencrypt
+      - ./infra/nginx/certs:/etc/nginx/certs
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  certbot-data:

@@ -1,5 +1,6 @@
 'use client';
 
+import { ITrip } from '@/app/types/Trip';
 import { Trip } from '@/components/widgets/Trip';
 import { gql } from '@apollo/client';
 import { useQuery } from '@apollo/client/react';
@@ -7,50 +8,52 @@ import type { NextPage } from 'next';
 import { useParams } from 'next/navigation';
 
 export interface PageProps {
-  params: Promise<{ trip_id: string }>;
+    params: Promise<{ trip_id: string }>;
 }
 
 const GET_TRIP_BY_ID = gql`
-  query GetTripById($id: ID!) {
-    trip(id: $id) {
-      _id
-      organizer {
-        name
-      }
-      name
-      description
-      events {
-        _id
-        name
-        location {
-          coordinates
+    query GetTripById($id: ID!) {
+        trip(id: $id) {
+            _id
+            organizer {
+                name
+            }
+            name
+            description
+            events {
+                _id
+                name
+                location {
+                    coordinates
+                }
+            }
+            startDate
+            endDate
         }
-      }
-      startDate
-      endDate
     }
-  }
 `;
 
-const TripPage: NextPage<PageProps> = (context) => {
-  const params = useParams();
-  const trip_id = params.trip_id;
-  const { data, error, loading } = useQuery(GET_TRIP_BY_ID, { variables: { id: trip_id } });
+const TripPage: NextPage<PageProps> = (context: PageProps) => {
+    const params = useParams();
+    const trip_id = params.trip_id;
+    const { data, error, loading } = useQuery<{ trip: ITrip }>(GET_TRIP_BY_ID, {
+        variables: { id: trip_id },
+    });
 
-  if (loading && !error) {
-    return <div>Loading...</div>;
-  }
+    if (loading && !error) {
+        return <div>Loading...</div>;
+    }
 
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
+    if (error) {
+        return <div>Error: {error.message}</div>;
+    }
 
-  return (
-    <div className="TripPage">
-      <h3>Trip Page</h3>
-      <Trip tripData={data.trip} />
-    </div>
-  );
+    return (
+        <div className="TripPage">
+            <h3>Trip Page</h3>
+            <Trip tripData={(data as { trip: ITrip })?.trip} />
+        </div>
+    );
 };
 
 export default TripPage;
