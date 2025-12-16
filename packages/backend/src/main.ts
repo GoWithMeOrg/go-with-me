@@ -2,6 +2,7 @@ import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import MongoStore from 'connect-mongo';
 import session from 'express-session';
+import { Logger } from 'nestjs-pino';
 import passport from 'passport';
 
 import { AppModule } from './app.module';
@@ -9,7 +10,11 @@ import { SessionSerializer } from './auth/serializer/session.serializer';
 import { isDev } from './utils/is-dev.utils';
 
 async function bootstrap() {
-    const app = await NestFactory.create(AppModule);
+    const app = await NestFactory.create(AppModule, {
+        bufferLogs: true,
+    });
+
+    app.useLogger(app.get(Logger));
 
     const configService = app.get(ConfigService);
 

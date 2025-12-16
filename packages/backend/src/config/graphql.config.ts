@@ -15,7 +15,7 @@ export async function getGraphQLConfig(configService: ConfigService): Promise<Ap
         driver: ApolloDriver,
         autoSchemaFile: join(process.cwd(), 'src/schema/schema.gql'), // автоматически генерировать схему GraphQL
         sortSchema: true, // сортировать схему по алфавиту
-        playground: false, //!isDev(configService), // включить GraphQL Playground в режиме разработки
+        playground: !isDev(configService), // включить GraphQL Playground в режиме разработки
         // graphiql: true,
         plugins: [ApolloServerPluginLandingPageLocalDefault()],
         context: ({ req, res }) => ({ req, res }), // передавать объекты запроса и ответа в контекст GraphQL
