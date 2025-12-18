@@ -9,21 +9,15 @@ WORKDIR /workspace
 # Stage 1: Build
 # --------------------------
 FROM base AS builder
-# Копируем файлы манифеста
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY packages/backend/package.json ./packages/backend/
+# Копируем вообще все файлы монорепозитория (это важно для pnpm)
+COPY . .
 
-# Устанавливаем ВСЕ зависимости (включая devDependencies для билда)
+# Устанавливаем зависимости
 RUN pnpm install --frozen-lockfile
 
-# Копируем исходный код
-COPY packages/backend ./packages/backend
-
-# Собираем проект
+# Собираем бэкенд
+# Замените 'backend', если в package.json другое имя
 RUN pnpm --filter backend run build
-
-# Удаляем dev-зависимости, оставляем только продакшн
-RUN pnpm install --prod --frozen-lockfile
 
 # --------------------------
 # Stage 2: Runtime
@@ -34,19 +28,25 @@ WORKDIR /app
 # Создаем пользователя
 RUN addgroup --system --gid 1001 nestjs && adduser --system --uid 1001 nestjs
 
-# Копируем зависимости из корня и из папки пакета
-# Это решит проблему с MODULE_NOT_FOUND
+# Копируем зависимости из корня (там лежат реальные файлы библиотек)
 COPY --from=builder /workspace/node_modules ./node_modules
-COPY --from=builder /workspace/packages/backend/node_modules ./packages/backend/node_modules
-COPY --from=builder /workspace/packages/backend/dist ./dist
-COPY --from=builder /workspace/packages/backend/package.json ./
+# Копируем папку бэкенда целиком (там лежат ссылки и package.json)
+COPY --from=builder /workspace/packages/backend ./packages/backend
+# Копируем корень package.json (иногда нужен для резолвинга)
+COPY --from=builder /workspace/package.json ./
+
+# Создаем симлинк или просто переходим к запуску
+# Мы будем запускать из /app/packages/backend
+WORKDIR /app/packages/backend
 
 RUN chown -R nestjs:nestjs /app
 USER nestjs
 
 ENV NODE_ENV=production
 ENV PORT=4000
+ENV HOSTNAME="0.0.0.0"
 
+# Путь к main.js теперь внутри папки пакета
 CMD ["node", "dist/main.js"]
 
 
