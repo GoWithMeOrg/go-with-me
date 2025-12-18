@@ -1,62 +1,44 @@
-# Backend Production Dockerfile
-# Multi-stage build for optimized Next.js production image
-
+# --------------------------
+# Stage 0: Base
+# --------------------------
 FROM node:24-alpine AS base
-
-# Install pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate
-
-# Set working directory
 WORKDIR /workspace
 
-# Copy workspace files for dependency resolution
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-
-# Stage 1: Install dependencies
-FROM base AS deps
-WORKDIR /workspace
-
-COPY packages/backend/package.json packages/backend/package.json
-# Configure pnpm to allow build scripts (required for some packages like @apollo/protobufjs)
-RUN pnpm config set ignore-scripts false
-RUN pnpm install --frozen-lockfile
-
-# Stage 2: Build the application
+# --------------------------
+# Stage 1: Build & Deploy
+# --------------------------
 FROM base AS builder
-COPY --from=deps /workspace ./
-COPY packages/backend ./packages/backend
-
-ENV NODE_ENV=production
-# Build the Next.js application
-# The standalone output will be in .next/standalone
-#RUN pnpm build
+# Копируем всё для корректной работы pnpm
+COPY . .
+# Устанавливаем зависимости и собираем бэкенд
+RUN pnpm install --frozen-lockfile
 RUN pnpm --filter backend run build
 
-# Stage 3: Runtime
+# ВАЖНЫЙ ШАГ: pnpm deploy вырезает бэкенд из монорепозитория 
+# в отдельную папку /out со всеми реальными зависимостями
+RUN pnpm --filter backend --prod deploy /out
+
+# --------------------------
+# Stage 2: Runtime
+# --------------------------
 FROM node:24-alpine AS runner
 WORKDIR /app
 
-# Create non-root user
-RUN addgroup --system --gid 1001 nestjs \
-    && adduser --system --uid 1001 nestjs
+# Копируем уже готовую изолированную папку /out
+COPY --from=builder /out ./
+# Копируем скомпилированные файлы из папки билда
+COPY --from=builder /workspace/packages/backend/dist ./dist
 
-COPY --from=builder --chown=nestjs:nestjs /workspace/packages/backend/dist ./dist
-COPY --from=builder --chown=nestjs:nestjs /workspace/packages/backend/package.json ./
-
-COPY --from=builder --chown=nestjs:nestjs /workspace/node_modules ./node_modules
-COPY --from=builder --chown=nestjs:nestjs /workspace/packages/backend/node_modules ./packages/backend/node_modules
-
+# Права доступа
+RUN addgroup --system --gid 1001 nestjs && adduser --system --uid 1001 nestjs
+RUN chown -R nestjs:nestjs /app
 USER nestjs
-
-EXPOSE 4000
 
 ENV NODE_ENV=production
 ENV PORT=4000
-ENV HOSTNAME="0.0.0.0"
 
-HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:4000/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})" || exit 1
-
+# Запуск из /app/dist/main.js
 CMD ["node", "dist/main.js"]
 
 
