@@ -34,4 +34,4 @@ EXPOSE 3000
 
 ENTRYPOINT []
 # Попробуйте этот путь. Если не сработает — заменим на "node server.js"
-CMD ["node", "packages/web-frontend/server.js"]
+CMD ["node", "server.js"]
