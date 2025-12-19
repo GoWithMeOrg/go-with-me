@@ -32,15 +32,14 @@ RUN addgroup --system --gid 1001 nestjs && adduser --system --uid 1001 nestjs
 # Копируем зависимости из корня (там лежат реальные файлы библиотек)
 COPY --from=builder --chown=nestjs:nestjs /workspace/node_modules ./node_modules
 # Копируем папку бэкенда целиком (там лежат ссылки и package.json)
-COPY --from=builder --chown=user:group /workspace/packages/backend ./packages/backend
+COPY --from=builder --chown=nestjs:nestjs /workspace/packages/backend ./packages/backend
 # Копируем корень package.json (иногда нужен для резолвинга)
-COPY --from=builder --chown=user:group /workspace/package.json ./
+COPY --from=builder --chown=nestjs:nestjs /workspace/package.json ./
 
 # Создаем симлинк или просто переходим к запуску
 # Мы будем запускать из /app/packages/backend
 WORKDIR /app/packages/backend
 
-#RUN chown -R nestjs:nestjs /app
 USER nestjs
 
 ENV NODE_ENV=production
