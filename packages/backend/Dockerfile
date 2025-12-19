@@ -39,7 +39,7 @@ WORKDIR /app
 # Create non-root user
 RUN addgroup --system --gid 1001 nestjs && adduser --system --uid 1001 nestjs
 
-COPY --from=builder --chown=nestjs:nestjs /node_modules ./node_modules
+COPY --from=builder --chown=nestjs:nestjs /workspace/node_modules ./node_modules
 COPY --from=builder --chown=nestjs:nestjs /workspace/packages/backend/dist ./dist
 COPY --from=builder --chown=nestjs:nestjs /workspace/packages/backend/package.json ./
 
