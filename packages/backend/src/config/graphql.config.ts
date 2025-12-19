@@ -13,7 +13,7 @@ import { isDev } from 'src/utils/is-dev.utils';
 export async function getGraphQLConfig(configService: ConfigService): Promise<ApolloDriverConfig> {
     return {
         driver: ApolloDriver,
-        autoSchemaFile: join(process.cwd(), 'src/schema/schema.gql'), // автоматически генерировать схему GraphQL
+        autoSchemaFile: isDev(configService) ? join(process.cwd(), 'src/schema/schema.gql') : true, // автоматически генерировать схему GraphQL
         sortSchema: true, // сортировать схему по алфавиту
         playground: !isDev(configService), // включить GraphQL Playground в режиме разработки
         // graphiql: true,
