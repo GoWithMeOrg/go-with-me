@@ -32,12 +32,14 @@ async function bootstrap() {
             secret: configService.getOrThrow('SESSION_SECRET'),
             resave: false,
             saveUninitialized: false,
+            proxy: !isDev(configService),
             store: MongoStore.create({
                 mongoUrl: configService.getOrThrow('MONGODB_URI'),
             }),
             cookie: {
                 secure: !isDev(configService), // Проверяем dev или prod,
                 httpOnly: true,
+                sameSite: !isDev(configService) ? 'lax' : 'lax',
                 maxAge: 1000 * 60 * 60 * 24, // 1 день
             },
         })
@@ -51,7 +53,7 @@ async function bootstrap() {
 
     passport.deserializeUser(sessionSerializer.deserializeUser.bind(sessionSerializer));
 
-    await app.listen(process.env.PORT ?? 4000);
+    await app.listen(configService.getOrThrow('PORT'));
 }
 
 bootstrap();
