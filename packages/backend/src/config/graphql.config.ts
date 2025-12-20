@@ -17,6 +17,7 @@ export async function getGraphQLConfig(configService: ConfigService): Promise<Ap
         autoSchemaFile: isDev(configService) ? join(process.cwd(), 'src/schema/schema.gql') : true, // автоматически генерировать схему GraphQL
         sortSchema: true, // сортировать схему по алфавиту
         csrfPrevention: !isDev(configService),
+        playground: false, // обязательно должен быть указан в false
         plugins: [
             isDev(configService)
                 ? ApolloServerPluginLandingPageLocalDefault()

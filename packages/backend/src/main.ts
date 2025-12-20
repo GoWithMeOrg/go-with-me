@@ -19,7 +19,7 @@ async function bootstrap() {
     const configService = app.get(ConfigService);
 
     app.enableCors({
-        origin: configService.getOrThrow('NEXT_PUBLIC_BASE_URL'), // фронтенд
+        origin: configService.getOrThrow('ALLOWED_ORIGIN'), // фронтенд
         credentials: true,
     });
 
@@ -49,4 +49,5 @@ async function bootstrap() {
 
     await app.listen(process.env.PORT ?? 4000);
 }
+
 bootstrap();
