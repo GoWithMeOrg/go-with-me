@@ -29,7 +29,7 @@ input CreateLocationInput {
 input CreateTagInput {
   ownerId: ID!
   ownerType: String!
-  tags: [String!]!
+  tags: [String!]
 }
 
 input CreateUserInput {
