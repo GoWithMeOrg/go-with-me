@@ -14,7 +14,7 @@ async function bootstrap() {
         bufferLogs: true,
     });
 
-    app.setGlobalPrefix('api');
+    // app.setGlobalPrefix('api');
 
     app.getHttpAdapter().getInstance().set('trust proxy', 1);
 
