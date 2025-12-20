@@ -18,12 +18,12 @@ RUN addgroup --system --gid 1001 nextjs && adduser --system --uid 1001 nextjs
 
 # Копируем standalone файлы. 
 # Next.js копирует туда node_modules и файлы монорепозитория.
-COPY --from=builder --chown=nextjs:nextjs /workspace/packages/web-frontend/.next/standalone ./
-COPY --from=builder --chown=nextjs:nextjs /workspace/packages/web-frontend/.next/static ./packages/web-frontend/.next/static
-COPY --from=builder --chown=nextjs:nextjs /workspace/packages/web-frontend/public ./packages/web-frontend/public
+COPY --from=builder --chown=nextjs:nextjs /workspace/packages/frontend/.next/standalone ./
+COPY --from=builder --chown=nextjs:nextjs /workspace/packages/frontend/.next/static ./packages/frontend/.next/static
+COPY --from=builder --chown=nextjs:nextjs /workspace/packages/frontend/public ./packages/frontend/public
 COPY --from=builder --chown=nextjs:nextjs /workspace/package.json ./
 
-WORKDIR /app/packages/web-frontend
+WORKDIR /app/packages/frontend
 USER nextjs
 
 ENV NODE_ENV=production
