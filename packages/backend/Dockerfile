@@ -1,60 +1,59 @@
-# Backend Production Dockerfile
-# Multi-stage build for optimized Next.js production image
-
+# --------------------------
+# Stage 0: Base
+# --------------------------
 FROM node:24-alpine AS base
-
-# Install pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate
-
-# Set working directory
 WORKDIR /workspace
 
-# Copy workspace files for dependency resolution
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
-# Stage 1: Install dependencies
-FROM base AS deps
-WORKDIR /workspace
+# --------------------------
+# Stage 1: Build
+# --------------------------
+FROM base AS builder
+# Копируем вообще все файлы монорепозитория (это важно для pnpm)
+COPY . .
 
-COPY packages/backend/package.json packages/backend/package.json
-# Configure pnpm to allow build scripts (required for some packages like @apollo/protobufjs)
-RUN pnpm config set ignore-scripts false
+# Устанавливаем зависимости
 RUN pnpm install --frozen-lockfile
 
-# Stage 2: Build the application
-FROM base AS builder
-COPY --from=deps /workspace ./
-COPY packages/backend ./packages/backend
-
-ENV NODE_ENV=production
-# Build the Next.js application
-# The standalone output will be in .next/standalone
-#RUN pnpm build
+# Собираем бэкенд
+# Замените 'backend', если в package.json другое имя
 RUN pnpm --filter backend run build
 
-# Stage 3: Runtime
+# --------------------------
+# Stage 2: Runtime
+# --------------------------
 FROM node:24-alpine AS runner
 WORKDIR /app
 
-# Create non-root user
-RUN addgroup --system --gid 1001 nestjs \
-    && adduser --system --uid 1001 nestjs
+# Создаем пользователя
+RUN addgroup --system --gid 1001 nestjs && adduser --system --uid 1001 nestjs
 
-COPY --from=builder --chown=nestjs:nestjs /workspace/packages/backend/dist ./dist
-COPY --from=builder --chown=nestjs:nestjs /workspace/packages/backend/package.json ./
+# Копируем зависимости из корня (там лежат реальные файлы библиотек)
+COPY --from=builder --chown=nestjs:nestjs /workspace/node_modules ./node_modules
+# Копируем папку бэкенда целиком (там лежат ссылки и package.json)
+COPY --from=builder --chown=nestjs:nestjs /workspace/packages/backend ./packages/backend
+# Копируем корень package.json (иногда нужен для резолвинга)
+COPY --from=builder --chown=nestjs:nestjs /workspace/package.json ./
+
+# Создаем симлинк или просто переходим к запуску
+# Мы будем запускать из /app/packages/backend
+WORKDIR /app/packages/backend
 
 USER nestjs
-
-EXPOSE 4000
 
 ENV NODE_ENV=production
 ENV PORT=4000
 ENV HOSTNAME="0.0.0.0"
-ENV NEXT_TELEMETRY_DISABLED=1
 
-HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:4000/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})" || exit 1
+EXPOSE 4000
 
+# Путь к main.js теперь внутри папки пакета
 CMD ["node", "dist/main.js"]
+
+
+
+
+
 
 

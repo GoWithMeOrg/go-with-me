@@ -1,4 +1,5 @@
 import { join } from 'path';
+import { ApolloServerPluginLandingPageDisabled } from '@apollo/server/plugin/disabled';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ConfigService } from '@nestjs/config';
@@ -13,11 +14,15 @@ import { isDev } from 'src/utils/is-dev.utils';
 export async function getGraphQLConfig(configService: ConfigService): Promise<ApolloDriverConfig> {
     return {
         driver: ApolloDriver,
-        autoSchemaFile: join(process.cwd(), 'src/schema/schema.gql'), // автоматически генерировать схему GraphQL
+        autoSchemaFile: isDev(configService) ? join(process.cwd(), 'src/schema/schema.gql') : true, // автоматически генерировать схему GraphQL
         sortSchema: true, // сортировать схему по алфавиту
-        playground: !isDev(configService), // включить GraphQL Playground в режиме разработки
-        // graphiql: true,
-        plugins: [ApolloServerPluginLandingPageLocalDefault()],
+        csrfPrevention: !isDev(configService),
+        playground: false, // обязательно должен быть указан в false
+        plugins: [
+            isDev(configService)
+                ? ApolloServerPluginLandingPageLocalDefault()
+                : ApolloServerPluginLandingPageDisabled(),
+        ],
         context: ({ req, res }) => ({ req, res }), // передавать объекты запроса и ответа в контекст GraphQL
     };
 }

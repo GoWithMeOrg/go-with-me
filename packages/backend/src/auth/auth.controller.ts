@@ -45,7 +45,7 @@ export class AuthController {
                 if (err) {
                     // Ошибка при логине — направляем пользователя на страницу ошибки
                     // console.error('req.logIn error', err);
-                    res.redirect('http://localhost:3000/error');
+                    // res.redirect('http://localhost:3000/error');
                     return resolve(null);
                 }
 
@@ -55,14 +55,14 @@ export class AuthController {
                         if (saveErr) console.error('session save error', saveErr);
                         console.log('session saved, session.passport =', req.session?.passport);
                         res.redirect(
-                            `${this.configService.getOrThrow('NEXT_PUBLIC_BASE_URL') + '/events'}`
+                            `${this.configService.getOrThrow('ALLOWED_ORIGIN') + '/events'}`
                         );
                         return resolve(null);
                     });
                 } else {
                     // если save не доступен — просто редиректим
                     console.log('session.save not available, skipping save');
-                    res.redirect(this.configService.getOrThrow('NEXT_PUBLIC_BASE_URL'));
+                    res.redirect(this.configService.getOrThrow('ALLOWED_ORIGIN'));
                     return resolve(null);
                 }
             });
@@ -121,22 +121,48 @@ export class AuthController {
     // 	return { ok: true, user: (req as any).user };
     // }
 
+    // logout(@Req() req: ReqWithPassport, @Res() res: Response) {
+    //     // Важно: дождаться завершения req.logout, затем удалять сессию.
+    //     // Иначе возможна гонка: если session.destroy вызван раньше, passport может
+    //     // попытаться вызвать req.session.regenerate и получить undefined.
+    //     req.logout((err?: Error | null) => {
+    //         if (err) {
+    //             console.error('req.logout error', err);
+    //         }
+    //         if (req.session && typeof req.session.destroy === 'function') {
+    //             req.session.destroy((destroyErr?: Error | null) => {
+    //                 if (destroyErr) console.error('session.destroy error', destroyErr);
+    //                 return res.redirect(this.configService.getOrThrow('ALLOWED_ORIGIN'));
+    //             });
+    //         } else {
+    //             return res.redirect(this.configService.getOrThrow('ALLOWED_ORIGIN'));
+    //         }
+    //     });
+    // }
     @Get('logout')
     logout(@Req() req: ReqWithPassport, @Res() res: Response) {
-        // Важно: дождаться завершения req.logout, затем удалять сессию.
-        // Иначе возможна гонка: если session.destroy вызван раньше, passport может
-        // попытаться вызвать req.session.regenerate и получить undefined.
-        req.logout((err?: Error | null) => {
+        // 1. Берем URL фронтенда. Добавляем запасной вариант (fallback), чтобы не было undefined
+        const frontendUrl = this.configService.get('ALLOWED_ORIGIN');
+
+        req.logout((err) => {
             if (err) {
-                console.error('req.logout error', err);
+                console.error('Passport logout error:', err);
             }
-            if (req.session && typeof req.session.destroy === 'function') {
-                req.session.destroy((destroyErr?: Error | null) => {
-                    if (destroyErr) console.error('session.destroy error', destroyErr);
-                    return res.redirect(this.configService.getOrThrow('NEXT_PUBLIC_BASE_URL'));
+
+            if (req.session) {
+                req.session.destroy((destroyErr) => {
+                    if (destroyErr) {
+                        console.error('Session destroy error:', destroyErr);
+                    }
+
+                    // 2. Очищаем куку сессии явно, чтобы браузер её забыл
+                    res.clearCookie('connect.sid'); // Убедитесь, что имя куки совпадает с вашим (по умолчанию connect.sid)
+
+                    // 3. Выполняем редирект на чистый URL фронтенда
+                    return res.redirect(frontendUrl);
                 });
             } else {
-                return res.redirect(this.configService.getOrThrow('NEXT_PUBLIC_BASE_URL'));
+                return res.redirect(frontendUrl);
             }
         });
     }

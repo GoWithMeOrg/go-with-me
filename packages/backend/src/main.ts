@@ -14,12 +14,16 @@ async function bootstrap() {
         bufferLogs: true,
     });
 
+    if (!isDev) {
+        app.getHttpAdapter().getInstance().set('trust proxy', 1);
+    }
+
     app.useLogger(app.get(Logger));
 
     const configService = app.get(ConfigService);
 
     app.enableCors({
-        origin: configService.getOrThrow('NEXT_PUBLIC_BASE_URL'), // фронтенд
+        origin: configService.getOrThrow('ALLOWED_ORIGIN'), // фронтенд
         credentials: true,
     });
 
@@ -28,12 +32,14 @@ async function bootstrap() {
             secret: configService.getOrThrow('SESSION_SECRET'),
             resave: false,
             saveUninitialized: false,
+            proxy: !isDev(configService),
             store: MongoStore.create({
                 mongoUrl: configService.getOrThrow('MONGODB_URI'),
             }),
             cookie: {
                 secure: !isDev(configService), // Проверяем dev или prod,
                 httpOnly: true,
+                sameSite: !isDev(configService) ? 'lax' : 'lax',
                 maxAge: 1000 * 60 * 60 * 24, // 1 день
             },
         })
@@ -47,6 +53,7 @@ async function bootstrap() {
 
     passport.deserializeUser(sessionSerializer.deserializeUser.bind(sessionSerializer));
 
-    await app.listen(process.env.PORT ?? 4000);
+    await app.listen(configService.getOrThrow('PORT'));
 }
+
 bootstrap();
