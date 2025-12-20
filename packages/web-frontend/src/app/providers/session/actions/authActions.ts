@@ -44,14 +44,15 @@ export function signIn(provider: AuthProvider, redirectUrl?: string) {
 }
 
 export async function logout() {
-    try {
-        await fetch(`${process.env.NEXT_PUBLIC_AUTH_LOGOUT_URL}`, {
-            method: 'GET',
-            credentials: 'include',
-        });
-    } catch (error) {
-        console.error('Ошибка при logout:', error);
-    }
+    // Просто перенаправляем браузер на эндпоинт логаута на бэкенде
+    // Бэкенд сам сделает res.redirect обратно на фронт после очистки сессии
+    const logoutUrl = process.env.NEXT_PUBLIC_AUTH_LOGOUT_URL;
 
-    window.location.href = `${process.env.NEXT_PUBLIC_BASE_URL}`;
+    if (logoutUrl) {
+        window.location.href = logoutUrl;
+    } else {
+        console.error('Logout URL не найден');
+        // Фолбек, если переменная не подгрузилась
+        window.location.href = '/';
+    }
 }
