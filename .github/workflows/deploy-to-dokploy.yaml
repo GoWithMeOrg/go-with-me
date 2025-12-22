@@ -22,4 +22,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Deploy Frontend
-              run: curl -X POST "${{ secrets.DOKPLOY_PROD_FRONTEND_WEBHOOK }}"
+              run: |
+                  curl -L -X POST "${{ secrets.DOKPLOY_PROD_FRONTEND_WEBHOOK }}" \
+                  -H "Content-Type: application/json" \
+                  -d '{}'
