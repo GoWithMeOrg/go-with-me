@@ -23,6 +23,7 @@ jobs:
         steps:
             - name: Deploy Frontend
               run: |
-                  curl -L -X POST "${{ secrets.DOKPLOY_PROD_FRONTEND_WEBHOOK }}" \
+                  curl -v -L -X POST "${{ secrets.DOKPLOY_PROD_FRONTEND_WEBHOOK }}" \
                   -H "Content-Type: application/json" \
-                  -d '{}'
+                  -d '{}' \
+                  --fail
