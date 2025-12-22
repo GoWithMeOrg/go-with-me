@@ -6,35 +6,67 @@ permissions:
 on:
     push:
         branches:
-            - main # Слушаем пуши в main для DEV деплоя
+            - main
         tags:
-            - "v*" # Релиз (Prod Both)
-            - "b*" # Релиз (Prod Backend)
-            - "f*" # Релиз (Prod Frontend)
+            - "v*" # Оба (Prod)
+            - "b*" # Только бэкенд (Prod)
+            - "f*" # Только фронтенд (Prod)
 
 jobs:
+    # JOB ДЛЯ БЭКЕНДА
     deploy-backend:
         runs-on: ubuntu-latest
         steps:
-            # 1. DEV: Срабатывает при обычном пуше в main
+            - uses: actions/checkout@v4
+
+            # Проверяем, изменилось ли что-то в папке backend
+            - name: Check for backend changes
+              uses: dorny/paths-filter@v2
+              id: filter
+              with:
+                  filters: |
+                      backend:
+                        - 'backend/**'
+                        - '.github/workflows/**'
+
+            # 1. DEV: Пуш в main + изменения в папке backend
             - name: Deploy Backend (Dev)
-              if: github.event_name == 'push' && github.ref_type != 'tag'
+              if: |
+                  github.event_name == 'push' && 
+                  github.ref_type != 'tag' && 
+                  steps.filter.outputs.backend == 'true'
               run: curl -X POST "${{ secrets.DOKPLOY_BACKEND_DEV_WEBHOOK }}"
 
-            # 2. PROD: Срабатывает только при создании тегов v* или b*
+            # 2. PROD: Создание тегов v* или b* (фильтр папок тут обычно игнорируем, так как тег — это осознанный релиз)
             - name: Deploy Backend (Prod)
               if: startsWith(github.ref, 'refs/tags/v') || startsWith(github.ref, 'refs/tags/b')
               run: curl -X POST "${{ secrets.DOKPLOY_BACKEND_WEBHOOK }}"
 
+    # JOB ДЛЯ ФРОНТЕНДА
     deploy-frontend:
         runs-on: ubuntu-latest
         steps:
-            # 1. DEV: Срабатывает при обычном пуше в main
+            - uses: actions/checkout@v4
+
+            # Проверяем, изменилось ли что-то в папке frontend
+            - name: Check for frontend changes
+              uses: dorny/paths-filter@v2
+              id: filter
+              with:
+                  filters: |
+                      frontend:
+                        - 'frontend/**'
+                        - '.github/workflows/**'
+
+            # 1. DEV: Пуш в main + изменения в папке frontend
             - name: Deploy Frontend (Dev)
-              if: github.event_name == 'push' && github.ref_type != 'tag'
+              if: |
+                  github.event_name == 'push' && 
+                  github.ref_type != 'tag' && 
+                  steps.filter.outputs.frontend == 'true'
               run: curl -X POST "${{ secrets.DOKPLOY_FRONTEND_DEV_WEBHOOK }}"
 
-            # 2. PROD: Срабатывает только при создании тегов v* или f*
+            # 2. PROD: Создание тегов v* или f*
             - name: Deploy Frontend (Prod)
               if: startsWith(github.ref, 'refs/tags/v') || startsWith(github.ref, 'refs/tags/f')
               run: curl -X POST "${{ secrets.DOKPLOY_FRONTEND_WEBHOOK }}"
