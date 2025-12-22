@@ -4,10 +4,12 @@ permissions:
     contents: read
 on:
     push:
+        branches:
+            - main # Для автодеплоя DEV при обычном пуше
         tags:
-            - "v*" # Общий релиз (оба)
-            - "b*" # Только бэкенд (backend)
-            - "f*" # Только фронтенд (frontend)
+            - "v*" # Prod (оба)
+            - "b*" # Prod (backend)
+            - "f*" # Prod (frontend)
 
 jobs:
     # JOB ДЛЯ БЭКЕНДА
