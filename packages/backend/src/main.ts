@@ -18,7 +18,7 @@ async function bootstrap() {
 
     const configService = app.get(ConfigService);
 
-    if (!isDev || configService.getOrThrow('TRUST_PROXY')) {
+    if (!isDev || configService.getOrThrow('TRUST_PROXY') === true) {
         app.getHttpAdapter().getInstance().set('trust proxy', 1);
     }
 
