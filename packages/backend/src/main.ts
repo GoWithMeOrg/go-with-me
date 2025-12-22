@@ -18,9 +18,7 @@ async function bootstrap() {
 
     const configService = app.get(ConfigService);
 
-    if (!isDev || configService.getOrThrow('TRUST_PROXY')) {
-        app.getHttpAdapter().getInstance().set('trust proxy', 1);
-    }
+    app.getHttpAdapter().getInstance().set('trust proxy', 1);
 
     app.enableCors({
         origin: configService.getOrThrow('ALLOWED_ORIGIN'), // фронтенд
