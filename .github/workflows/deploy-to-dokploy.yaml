@@ -2,24 +2,39 @@ name: Deploy to Dokploy
 
 permissions:
     contents: read
+
 on:
     push:
+        branches:
+            - main # Слушаем пуши в main для DEV деплоя
         tags:
-            - "v*" # Общий релиз (оба)
-            - "b*" # Только бэкенд (backend)
-            - "f*" # Только фронтенд (frontend)
+            - "v*" # Релиз (Prod Both)
+            - "b*" # Релиз (Prod Backend)
+            - "f*" # Релиз (Prod Frontend)
 
 jobs:
     deploy-backend:
-        if: startsWith(github.ref, 'refs/tags/v') || startsWith(github.ref, 'refs/tags/b')
         runs-on: ubuntu-latest
         steps:
-            - name: Deploy Backend
+            # 1. DEV: Срабатывает при обычном пуше в main
+            - name: Deploy Backend (Dev)
+              if: github.event_name == 'push' && github.ref_type != 'tag'
+              run: curl -X POST "${{ secrets.DOKPLOY_BACKEND_DEV_WEBHOOK }}"
+
+            # 2. PROD: Срабатывает только при создании тегов v* или b*
+            - name: Deploy Backend (Prod)
+              if: startsWith(github.ref, 'refs/tags/v') || startsWith(github.ref, 'refs/tags/b')
               run: curl -X POST "${{ secrets.DOKPLOY_BACKEND_WEBHOOK }}"
 
     deploy-frontend:
-        if: startsWith(github.ref, 'refs/tags/v') || startsWith(github.ref, 'refs/tags/f')
         runs-on: ubuntu-latest
         steps:
-            - name: Deploy Frontend
+            # 1. DEV: Срабатывает при обычном пуше в main
+            - name: Deploy Frontend (Dev)
+              if: github.event_name == 'push' && github.ref_type != 'tag'
+              run: curl -X POST "${{ secrets.DOKPLOY_FRONTEND_DEV_WEBHOOK }}"
+
+            # 2. PROD: Срабатывает только при создании тегов v* или f*
+            - name: Deploy Frontend (Prod)
+              if: startsWith(github.ref, 'refs/tags/v') || startsWith(github.ref, 'refs/tags/f')
               run: curl -X POST "${{ secrets.DOKPLOY_FRONTEND_WEBHOOK }}"
