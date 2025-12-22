@@ -2,15 +2,12 @@ name: Deploy to Dokploy
 
 permissions:
     contents: read
-
 on:
     push:
-        branches:
-            - main
         tags:
-            - "v*" # Оба (Prod)
-            - "b*" # Только бэкенд (Prod)
-            - "f*" # Только фронтенд (Prod)
+            - "v*" # Общий релиз (оба)
+            - "b*" # Только бэкенд (backend)
+            - "f*" # Только фронтенд (frontend)
 
 jobs:
     # JOB ДЛЯ БЭКЕНДА
