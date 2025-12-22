@@ -1,4 +1,7 @@
-name: Deploy Monorepo
+name: Deploy DEV
+
+permissions:
+    contents: read
 
 on:
     push:
