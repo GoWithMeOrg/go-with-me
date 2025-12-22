@@ -26,7 +26,8 @@ jobs:
             backend: ${{ steps.filter.outputs.backend }}
 
         steps:
-            - uses: actions/checkout@v4
+            - name: Checkout repository
+              uses: actions/checkout@v4
               with:
                   fetch-depth: 0
 
@@ -36,9 +37,11 @@ jobs:
               with:
                   filters: |
                       frontend:
-                        - 'frontend/**'
+                        - 'packages/frontend/**'
+                        - '.github/workflows/**'
                       backend:
-                        - 'backend/**'
+                        - 'packages/backend/**'
+                        - '.github/workflows/**'
 
     # =========================
     # BACKEND
@@ -51,24 +54,28 @@ jobs:
             needs.detect-changes.outputs.backend == 'true' &&
             (
               github.ref == 'refs/heads/main' ||
+              github.ref == 'refs/heads/feature/deploy-config' ||
               startsWith(github.ref, 'refs/tags/v') ||
               startsWith(github.ref, 'refs/tags/b')
             )
 
         steps:
-            - uses: actions/checkout@v4
+            - name: Checkout repository
+              uses: actions/checkout@v4
 
-            - name: Deploy Backend
+            - name: Deploy Backend to Dokploy
               run: |
-                  if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+                  if [[ "${{ github.ref }}" == "refs/heads/main" || "${{ github.ref }}" == "refs/heads/feature/deploy-config" ]]; then
                     WEBHOOK="${{ secrets.DOKPLOY_DEV_BACKEND_WEBHOOK }}"
                   else
                     WEBHOOK="${{ secrets.DOKPLOY_PROD_BACKEND_WEBHOOK }}"
                   fi
 
+                  echo "Deploying backend via Dokploy webhook"
+
                   curl -f -s -S -L -X POST "$WEBHOOK" \
-                  -H "Content-Type: application/json" \
-                  -d '{}'
+                    -H "Content-Type: application/json" \
+                    -d '{}'
 
     # =========================
     # FRONTEND
@@ -81,21 +88,25 @@ jobs:
             needs.detect-changes.outputs.frontend == 'true' &&
             (
               github.ref == 'refs/heads/main' ||
+              github.ref == 'refs/heads/feature/deploy-config' ||
               startsWith(github.ref, 'refs/tags/v') ||
               startsWith(github.ref, 'refs/tags/f')
             )
 
         steps:
-            - uses: actions/checkout@v4
+            - name: Checkout repository
+              uses: actions/checkout@v4
 
-            - name: Deploy Frontend
+            - name: Deploy Frontend to Dokploy
               run: |
-                  if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+                  if [[ "${{ github.ref }}" == "refs/heads/main" || "${{ github.ref }}" == "refs/heads/feature/deploy-config" ]]; then
                     WEBHOOK="${{ secrets.DOKPLOY_DEV_FRONTEND_WEBHOOK }}"
                   else
                     WEBHOOK="${{ secrets.DOKPLOY_PROD_FRONTEND_WEBHOOK }}"
                   fi
 
+                  echo "Deploying frontend via Dokploy webhook"
+
                   curl -f -s -S -L -X POST "$WEBHOOK" \
-                  -H "Content-Type: application/json" \
-                  -d '{}'
+                    -H "Content-Type: application/json" \
+                    -d '{}'
