@@ -35,7 +35,10 @@ jobs:
                   github.event_name == 'push' && 
                   github.ref_type != 'tag' && 
                   steps.filter.outputs.backend == 'true'
-              run: curl -X POST "${{ secrets.DOKPLOY_DEV_BACKEND_WEBHOOK }}"
+              run: |
+                  curl -L -X POST "${{ secrets.DOKPLOY_DEV_FRONTEND_WEBHOOK }}" \
+                  -H "Content-Type: application/json" \
+                  -d '{}'
 
             # 2. PROD: Создание тегов v* или b* (фильтр папок тут обычно игнорируем, так как тег — это осознанный релиз)
             - name: Deploy Backend (Prod)
