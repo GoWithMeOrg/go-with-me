@@ -32,7 +32,7 @@ export default function HomePage() {
                     <Promo />
                     <section className={classes.popularEvents}>
                         <div className={classes.popularEventsHeader}>
-                            <Title title={'Проверка фвыаваыа'} tag={'h2'} />
+                            <Title title={'Popular Event List'} tag={'h2'} />
                         </div>
 
                         <EventList sizeCard={SizeCard.ML} limit={9} offset={9} sort={'startDate'} />
