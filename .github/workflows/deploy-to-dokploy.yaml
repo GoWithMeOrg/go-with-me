@@ -25,5 +25,5 @@ jobs:
               run: |
                   curl -v -L -X POST "${{ secrets.DOKPLOY_PROD_FRONTEND_WEBHOOK }}" \
                   -H "Content-Type: application/json" \
-                  -d '{}' \
+                  -d '{"branch": "feature/deploy-config"}' \
                   --fail
