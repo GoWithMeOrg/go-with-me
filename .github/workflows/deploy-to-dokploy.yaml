@@ -2,111 +2,24 @@ name: Deploy to Dokploy
 
 permissions:
     contents: read
-
 on:
     push:
-        branches:
-            - main
-            - feature/deploy-config
         tags:
-            - "v*"
-            - "b*"
-            - "f*"
+            - "v*" # Общий релиз (оба)
+            - "b*" # Только бэкенд (backend)
+            - "f*" # Только фронтенд (frontend)
 
-# =========================
-# DETECT CHANGES
-# =========================
 jobs:
-    detect-changes:
-        name: Detect Changes
-        runs-on: ubuntu-latest
-
-        outputs:
-            frontend: ${{ steps.filter.outputs.frontend }}
-            backend: ${{ steps.filter.outputs.backend }}
-
-        steps:
-            - name: Checkout repository
-              uses: actions/checkout@v4
-              with:
-                  fetch-depth: 0
-
-            - name: Detect frontend/backend changes
-              id: filter
-              uses: dorny/paths-filter@v3
-              with:
-                  filters: |
-                      frontend:
-                        - 'packages/frontend/**'
-                        - '.github/workflows/**'
-                      backend:
-                        - 'packages/backend/**'
-                        - '.github/workflows/**'
-
-    # =========================
-    # BACKEND
-    # =========================
     deploy-backend:
-        name: Deploy Backend
-        needs: detect-changes
+        if: startsWith(github.ref, 'refs/tags/v') || startsWith(github.ref, 'refs/tags/b')
         runs-on: ubuntu-latest
-        if: |
-            needs.detect-changes.outputs.backend == 'true' &&
-            (
-              github.ref == 'refs/heads/main' ||
-              github.ref == 'refs/heads/feature/deploy-config' ||
-              startsWith(github.ref, 'refs/tags/v') ||
-              startsWith(github.ref, 'refs/tags/b')
-            )
-
         steps:
-            - name: Checkout repository
-              uses: actions/checkout@v4
+            - name: Deploy Backend
+              run: curl -X POST "${{ secrets.DOKPLOY_PROD_BACKEND_WEBHOOK }}"
 
-            - name: Deploy Backend to Dokploy
-              run: |
-                  if [[ "${{ github.ref }}" == "refs/heads/main" || "${{ github.ref }}" == "refs/heads/feature/deploy-config" ]]; then
-                    WEBHOOK="${{ secrets.DOKPLOY_DEV_BACKEND_WEBHOOK }}"
-                  else
-                    WEBHOOK="${{ secrets.DOKPLOY_PROD_BACKEND_WEBHOOK }}"
-                  fi
-
-                  echo "Deploying backend via Dokploy webhook"
-
-                  curl -f -s -S -L -X POST "$WEBHOOK" \
-                    -H "Content-Type: application/json" \
-                    -d '{}'
-
-    # =========================
-    # FRONTEND
-    # =========================
     deploy-frontend:
-        name: Deploy Frontend
-        needs: detect-changes
+        if: startsWith(github.ref, 'refs/tags/v') || startsWith(github.ref, 'refs/tags/f')
         runs-on: ubuntu-latest
-        if: |
-            needs.detect-changes.outputs.frontend == 'true' &&
-            (
-              github.ref == 'refs/heads/main' ||
-              github.ref == 'refs/heads/feature/deploy-config' ||
-              startsWith(github.ref, 'refs/tags/v') ||
-              startsWith(github.ref, 'refs/tags/f')
-            )
-
         steps:
-            - name: Checkout repository
-              uses: actions/checkout@v4
-
-            - name: Deploy Frontend to Dokploy
-              run: |
-                  if [[ "${{ github.ref }}" == "refs/heads/main" || "${{ github.ref }}" == "refs/heads/feature/deploy-config" ]]; then
-                    WEBHOOK="${{ secrets.DOKPLOY_DEV_FRONTEND_WEBHOOK }}"
-                  else
-                    WEBHOOK="${{ secrets.DOKPLOY_PROD_FRONTEND_WEBHOOK }}"
-                  fi
-
-                  echo "Deploying frontend via Dokploy webhook"
-
-                  curl -f -s -S -L -X POST "$WEBHOOK" \
-                    -H "Content-Type: application/json" \
-                    -d '{}'
+            - name: Deploy Frontend
+              run: curl -X POST "${{ secrets.DOKPLOY_PROD_FRONTEND_WEBHOOK }}"
