@@ -1,0 +1,25 @@
+name: Deploy to Dokploy
+
+permissions:
+    contents: read
+on:
+    push:
+        tags:
+            - "v*" # Общий релиз (оба)
+            - "b*" # Только бэкенд (backend)
+            - "f*" # Только фронтенд (frontend)
+
+jobs:
+    deploy-backend:
+        if: startsWith(github.ref, 'refs/tags/v') || startsWith(github.ref, 'refs/tags/b')
+        runs-on: ubuntu-latest
+        steps:
+            - name: Deploy Backend
+              run: curl -X POST "${{ secrets.DOKPLOY_BACKEND_WEBHOOK }}"
+
+    deploy-frontend:
+        if: startsWith(github.ref, 'refs/tags/v') || startsWith(github.ref, 'refs/tags/f')
+        runs-on: ubuntu-latest
+        steps:
+            - name: Deploy Frontend
+              run: curl -X POST "${{ secrets.DOKPLOY_FRONTEND_WEBHOOK }}"
