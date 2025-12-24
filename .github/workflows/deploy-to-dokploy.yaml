@@ -27,7 +27,8 @@ jobs:
               with:
                   filters: |
                       backend:
-                        - 'backend/**'
+                        - 'packages/backend/**'
+                        - '.github/workflows/**'
 
             # 1. DEV: Пуш в main + изменения в backend
             - name: Deploy Backend (Dev)
@@ -67,7 +68,8 @@ jobs:
               with:
                   filters: |
                       frontend:
-                        - 'frontend/**'
+                        - 'packages/frontend/**'
+                        - '.github/workflows/**'
 
             # 1. DEV: Пуш в main + изменения в frontend
             - name: Deploy Frontend (Dev)
