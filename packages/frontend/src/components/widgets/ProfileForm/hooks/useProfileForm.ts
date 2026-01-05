@@ -18,7 +18,10 @@ export interface UserProfile {
 export const useProfileForm = () => {
     const { control, handleSubmit, watch } = useForm<UserProfile>();
     const { data: session } = useSessionGQL();
-    const { onSubmitFile, getDeleteFile } = useUploadFile({});
+    const {
+        onSubmitFile,
+        // getDeleteFile
+    } = useUploadFile({});
 
     const [file, setFile] = useState<File | null>(null);
     const [presignUrl, setPresignUrl] = useState<string | null>(null);
@@ -177,7 +180,8 @@ export const useProfileForm = () => {
         if (file && presignUrl) {
             onSubmitFile(file, presignUrl);
             if (user?.image && file) {
-                getDeleteFile(user?.image);
+                // getDeleteFile(user?.image);
+                console.log('uload');
             }
         }
     };
