@@ -99,7 +99,7 @@ type Mutation {
   deleteFile(fileKey: String!): Boolean!
 
   """Получить пресайнд-ссылку для прямой загрузки файла в MinIO/S3"""
-  getPresignedUrl(input: UploadFileInput!, userId: String!): PresignedUrlResponse!
+  getPresignedUrl(entityId: String!, folder: String! = "events", input: UploadFileInput!): PresignedUrlResponse!
   removeCategories(id: ID!): Category!
   removeInterest(id: ID!): Interest!
 

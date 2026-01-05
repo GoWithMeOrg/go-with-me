@@ -5,6 +5,7 @@ import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { customAlphabet } from 'nanoid';
 import { InjectS3 } from 'nestjs-s3';
 import { PresignedUrlResponse } from './dto/presigned-url.response';
+import { StorageFolder } from './types/storage-folder';
 
 @Injectable()
 export class StorageService {
@@ -16,13 +17,14 @@ export class StorageService {
     ) {}
 
     async getPresignedUrl(
-        userId: string,
         fileName: string,
-        fileType: string
+        fileType: string,
+        entityId: string,
+        folder: StorageFolder = 'users'
     ): Promise<PresignedUrlResponse> {
         const bucket = this.configService.getOrThrow('S3_BUCKET_NAME');
         const fileExtension = fileName.split('.').pop();
-        const fileKey = `users/${userId}/${this.nanoid()}.${fileExtension}`;
+        const fileKey = `${folder}/${entityId}/${this.nanoid()}.${fileExtension}`;
 
         const command = new PutObjectCommand({
             Bucket: bucket,

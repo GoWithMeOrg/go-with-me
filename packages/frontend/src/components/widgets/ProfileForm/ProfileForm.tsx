@@ -13,8 +13,8 @@ import { Autocomplete } from '@/components/widgets/GoogleMap';
 import { optionsFullAdress } from '@/components/widgets/GoogleMap/OptionsAutocomplete';
 import { SelectItems } from '@/components/widgets/SelectItems';
 import { UploadFile } from '@/components/widgets/UploadFile';
-import { UploadFileSizes } from '@/components/widgets/UploadFile/UploadFile';
 
+import { UploadFileSizes } from '../UploadFile/types/storage-folder';
 import { useProfileForm } from './hooks/useProfileForm';
 
 import classes from './ProfileForm.module.css';
@@ -43,6 +43,8 @@ export const ProfileForm: FC = () => {
                             control={control}
                             render={({ field }) => (
                                 <UploadFile
+                                    entityId={user._id}
+                                    folder={'users'}
                                     imageUrl={user?.image}
                                     width={180}
                                     height={180}
