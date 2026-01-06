@@ -1,7 +1,7 @@
 # Stage 0: Base
 FROM node:24-alpine AS base
 
-RUN corepack disable
+RUN npm install -g pnpm@10.27.0
 
 WORKDIR /workspace
 

@@ -3,8 +3,7 @@
 # --------------------------
 FROM node:24-alpine AS base
 
-# Полностью отключаем corepack
-RUN corepack disable
+RUN npm install -g pnpm@10.27.0
 
 WORKDIR /workspace
 
