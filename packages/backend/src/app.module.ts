@@ -15,10 +15,13 @@ import { LocationModule } from './location/location.module';
 import { CategoryModule } from './category/category.module';
 import { InterestModule } from './interest/interest.module';
 import { TagModule } from './tag/tag.module';
+import { StorageModule } from './storage/storage.module';
 
 import { RolesGuard } from './auth/guard/roles.guard';
 import { getLoggerConfig } from './config/logger.config';
 import { LoggerModule } from 'nestjs-pino';
+import { S3Module } from 'nestjs-s3';
+import { getS3ModuleConfig } from './config/s3module.config';
 
 @Module({
     imports: [
@@ -46,6 +49,12 @@ import { LoggerModule } from 'nestjs-pino';
             inject: [ConfigService],
         }),
 
+        S3Module.forRootAsync({
+            imports: [ConfigModule],
+            useFactory: getS3ModuleConfig,
+            inject: [ConfigService],
+        }),
+
         UserModule,
 
         UserProfileModule,
@@ -59,6 +68,8 @@ import { LoggerModule } from 'nestjs-pino';
         AuthModule,
 
         TagModule,
+
+        StorageModule,
     ],
 
     controllers: [],

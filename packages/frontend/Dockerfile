@@ -1,11 +1,15 @@
 # Stage 0: Base
 FROM node:24-alpine AS base
-RUN corepack enable && corepack prepare pnpm@latest --activate
+
+RUN corepack disable
+
 WORKDIR /workspace
 
 # Stage 1: Build
 FROM base AS builder
+
 COPY . .
+
 RUN pnpm install --frozen-lockfile
 
 RUN pnpm --filter web-frontend run build

@@ -2,9 +2,11 @@
 # Stage 0: Base
 # --------------------------
 FROM node:24-alpine AS base
-RUN corepack enable && corepack prepare pnpm@latest --activate
-WORKDIR /workspace
 
+# Полностью отключаем corepack
+RUN corepack disable
+
+WORKDIR /workspace
 
 # --------------------------
 # Stage 1: Build
@@ -15,9 +17,6 @@ COPY . .
 
 # Устанавливаем зависимости
 RUN pnpm install --frozen-lockfile
-
-# Собираем бэкенд
-# Замените 'backend', если в package.json другое имя
 RUN pnpm --filter backend run build
 
 # --------------------------
