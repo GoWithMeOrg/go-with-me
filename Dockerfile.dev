@@ -2,7 +2,7 @@ FROM node:24-alpine
 
 # Устанавливаем pnpm глобально в образ
 RUN npm config set registry https://registry.npmmirror.com
-RUN npm install -g pnpm@10.26.2
+RUN npm install -g pnpm@10.27.0
 
 # Настраиваем переменные для корректной работы путей pnpm
 ENV PNPM_HOME="/root/.local/share/pnpm"
