@@ -54,7 +54,7 @@ const useEvent = ({ event, sessionUserID }: EventProps) => {
     const router = useRouter();
 
     const [deleteEventMutation] = useMutation(DELETE_EVENT_MUTATION);
-    const { getDeleteFile } = useUploadFile({});
+    const { deleteFile } = useUploadFile({});
 
     const [organizer, setOrganizer] = useState(true);
     const [copied, setCopied] = useState(false);
@@ -106,7 +106,7 @@ const useEvent = ({ event, sessionUserID }: EventProps) => {
             //@ts-ignore
             const imageUrl = data.events.find((event: any) => event?._id === eventId).image;
             //удаляем картинку
-            await getDeleteFile(imageUrl);
+            await deleteFile(imageUrl);
             router.push('/events');
         } catch (error) {
             console.error('Error deleting event: ', error);
