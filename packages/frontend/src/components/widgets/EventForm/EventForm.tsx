@@ -14,9 +14,9 @@ import { SelectItems } from '@/components/widgets/SelectItems';
 import { Time } from '@/components/widgets/Time';
 import { UploadFile } from '@/components/widgets/UploadFile';
 import { useUploadFile } from '@/components/widgets/UploadFile/hooks';
-import { UploadFileSizes } from '@/components/widgets/UploadFile/UploadFile';
 
 import { Location } from '../Location';
+import { UploadFileSizes } from '../UploadFile/types/storage-folder';
 
 import classes from './EventForm.module.css';
 
@@ -56,7 +56,7 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
     const { control, handleSubmit, watch } = useForm<IFormInputs>();
     const [file, setFile] = useState<File | null>(null);
     const [presignUrl, setPresignUrl] = useState<string | null>(null);
-    const { onSubmitFile, getDeleteFile } = useUploadFile({});
+    const { onSubmitFile, deleteFile } = useUploadFile({});
 
     //@ts-ignore
     const onSubmit: SubmitHandler<IFormInputs> = (event: EventType) => {
@@ -64,7 +64,7 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
         if (file && presignUrl) {
             onSubmitFile(file, presignUrl);
             if (eventData.image && file) {
-                getDeleteFile(eventData.image);
+                deleteFile(eventData.image);
             }
         }
     };
@@ -198,6 +198,8 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                         control={control}
                         render={({ field }) => (
                             <UploadFile
+                                entityId={eventData?._id as string}
+                                folder={'events'}
                                 imageUrl={eventData.image}
                                 width={460}
                                 height={324}
