@@ -26,6 +26,11 @@ input CreateLocationInput {
   properties: LocationPropertiesInput!
 }
 
+input CreateRoleInput {
+  description: String
+  role: String!
+}
+
 input CreateTagInput {
   ownerId: ID!
   ownerType: String!
@@ -90,6 +95,7 @@ type Mutation {
 
   """Создать локацию"""
   createLocation(createLocationInput: CreateLocationInput!): Location!
+  createRole(createRoleInput: CreateRoleInput!): Role!
   createTag(createTagInput: CreateTagInput!): Tag!
 
   """Создать пользователя"""
@@ -105,6 +111,7 @@ type Mutation {
 
   """Удалить локацию"""
   removeLocation(id: ID!): Boolean!
+  removeRole(id: ID!): Role!
   removeTag(id: ID!): Tag!
 
   """Удалить пользователя"""
@@ -114,6 +121,7 @@ type Mutation {
 
   """Обновить локацию"""
   updateLocation(updateLocationInput: UpdateLocationInput!): Location!
+  updateRole(updateRoleInput: UpdateRoleInput!): Role!
   updateTag(updateTagInput: UpdateTagInput!): Tag!
 
   """Обновить данные пользователя"""
@@ -153,6 +161,15 @@ type Query {
   """Поиск места по ownerId"""
   locationByOwnerId(ownerId: ID!): Location!
   moderatorRoute: String!
+
+  """Поиск роли по id"""
+  roleById(id: ID!): Role!
+
+  """Поиск роли по названию"""
+  roleByName(role: String!): Role!
+
+  """Получить все роли"""
+  roles: [Role!]!
   session: User
 
   """Поиск категорий по id"""
@@ -169,6 +186,12 @@ type Query {
 
   """Получить всех пользователей"""
   users: [User!]!
+}
+
+type Role {
+  _id: ID!
+  description: String!
+  role: String!
 }
 
 type Tag {
@@ -196,6 +219,12 @@ input UpdateLocationInput {
 
 input UpdateLocationPropertiesInput {
   address: String
+}
+
+input UpdateRoleInput {
+  _id: String!
+  description: String
+  role: String
 }
 
 input UpdateTagInput {

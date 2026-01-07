@@ -1,0 +1,62 @@
+import { ConflictException, Injectable } from '@nestjs/common';
+import { DeleteResult, Model, Schema as MongoSchema } from 'mongoose';
+import { CreateRoleInput } from './dto/create-role.input';
+import { UpdateRoleInput } from './dto/update-role.input';
+import { InjectModel } from '@nestjs/mongoose';
+import { Role, RoleDocument } from './entities/role.entity';
+
+@Injectable()
+export class RoleService {
+    constructor(
+        @InjectModel(Role.name)
+        private roleModel: Model<RoleDocument>
+    ) {}
+
+    async getAllRoles(): Promise<Role[]> {
+        return this.roleModel.find().exec();
+    }
+
+    async getRoleByName(roleName: string): Promise<Role | null> {
+        return this.roleModel.findOne({ role: roleName }).exec();
+    }
+
+    async getRoleById(id: MongoSchema.Types.ObjectId): Promise<Role | null> {
+        return this.roleModel.findById(id).exec();
+    }
+
+    async createRole(createRoleInput: CreateRoleInput): Promise<Role> {
+        // Проверяем, существует ли уже роль с таким названием
+        const existingRole = await this.roleModel
+            .findOne({
+                role: createRoleInput.role,
+            })
+            .exec();
+
+        if (existingRole) {
+            throw new ConflictException(`Role with name '${createRoleInput.role}' already exists`);
+        }
+
+        const createdRole = new this.roleModel(createRoleInput);
+        return createdRole.save();
+    }
+
+    async updateRole(
+        id: MongoSchema.Types.ObjectId,
+        updateRoleInput: UpdateRoleInput
+    ): Promise<Role | null> {
+        const existingRole = await this.roleModel.findById(id).exec();
+
+        if (!existingRole) {
+            return null;
+        }
+
+        // Обновляем только те поля, которые были переданы
+        Object.assign(existingRole, updateRoleInput);
+
+        return existingRole.save();
+    }
+
+    async removeRole(id: MongoSchema.Types.ObjectId): Promise<DeleteResult> {
+        return await this.roleModel.deleteOne({ _id: id }).exec();
+    }
+}
