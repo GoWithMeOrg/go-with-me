@@ -15,15 +15,15 @@ export class RoleService {
     ) {}
 
     async getAllRoles(): Promise<Role[]> {
-        return this.roleModel.find().exec();
+        return this.roleModel.find().populate('permissions').exec();
     }
 
     async getRoleByName(roleName: string): Promise<Role | null> {
-        return this.roleModel.findOne({ role: roleName }).exec();
+        return this.roleModel.findOne({ role: roleName }).populate('permissions').exec();
     }
 
     async getRoleById(id: MongoSchema.Types.ObjectId): Promise<Role | null> {
-        return this.roleModel.findById(id).exec();
+        return this.roleModel.findById(id).populate('permissions').exec();
     }
 
     async createRole(createRoleInput: CreateRoleInput): Promise<Role> {
@@ -38,8 +38,15 @@ export class RoleService {
             throw new ConflictException(`Role with name '${createRoleInput.role}' already exists`);
         }
 
-        const createdRole = new this.roleModel(createRoleInput);
-        return createdRole.save();
+        // Создаем новую роль с ID прав, если они указаны
+        const createdRole = new this.roleModel({
+            ...createRoleInput,
+            permissions: createRoleInput.permissionIds || [],
+        });
+
+        const savedRole = await createdRole.save();
+
+        return savedRole;
     }
 
     async updateRole(

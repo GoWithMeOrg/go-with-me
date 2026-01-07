@@ -35,6 +35,7 @@ input CreatePermissionInput {
 
 input CreateRoleInput {
   description: String
+  permissionIds: [String!]
   role: String!
 }
 
@@ -218,6 +219,7 @@ type Query {
 type Role {
   _id: ID!
   description: String!
+  permissions: [Permission!]!
   role: String!
 }
 
@@ -259,6 +261,7 @@ input UpdatePermissionInput {
 input UpdateRoleInput {
   _id: String!
   description: String
+  permissionIds: [String!]
   role: String
 }
 
