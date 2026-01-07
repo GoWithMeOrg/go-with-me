@@ -26,6 +26,13 @@ input CreateLocationInput {
   properties: LocationPropertiesInput!
 }
 
+input CreatePermissionInput {
+  action: String!
+  description: String!
+  permission: String!
+  resource: String!
+}
+
 input CreateRoleInput {
   description: String
   role: String!
@@ -95,6 +102,7 @@ type Mutation {
 
   """Создать локацию"""
   createLocation(createLocationInput: CreateLocationInput!): Location!
+  createPermission(createPermissionInput: CreatePermissionInput!): Permission!
   createRole(createRoleInput: CreateRoleInput!): Role!
   createTag(createTagInput: CreateTagInput!): Tag!
 
@@ -111,6 +119,7 @@ type Mutation {
 
   """Удалить локацию"""
   removeLocation(id: ID!): Boolean!
+  removePermission(id: ID!): Permission!
   removeRole(id: ID!): Role!
   removeTag(id: ID!): Tag!
 
@@ -121,12 +130,21 @@ type Mutation {
 
   """Обновить локацию"""
   updateLocation(updateLocationInput: UpdateLocationInput!): Location!
+  updatePermission(updatePermissionInput: UpdatePermissionInput!): Permission!
   updateRole(updateRoleInput: UpdateRoleInput!): Role!
   updateTag(updateTagInput: UpdateTagInput!): Tag!
 
   """Обновить данные пользователя"""
   updateUser(updateUserId: ID!, user: UpdateUserInput!): User!
   updateUserProfile(categoryId: ID, createCategoryInput: CreateCategoryInput, createInterestInput: CreateInterestInput, createLocationInput: CreateLocationInput, createTagInput: CreateTagInput, interestId: ID, locationId: ID, tagId: ID, updateCategoryInput: UpdateCategoryInput, updateInterestInput: UpdateInterestInput, updateLocationInput: UpdateLocationInput, updateTagInput: UpdateTagInput, updateUserInput: UpdateUserInput, userId: ID!): UserProfile!
+}
+
+type Permission {
+  _id: ID!
+  action: String!
+  description: String!
+  permission: String!
+  resource: String!
 }
 
 type PresignedUrlResponse {
@@ -161,6 +179,15 @@ type Query {
   """Поиск места по ownerId"""
   locationByOwnerId(ownerId: ID!): Location!
   moderatorRoute: String!
+
+  """Получить все права"""
+  permission: [Permission!]!
+
+  """Поиск роли по id"""
+  permissionById(id: ID!): Permission!
+
+  """Поиск роли по названию"""
+  permissionByName(permission: String!): Permission!
 
   """Поиск роли по id"""
   roleById(id: ID!): Role!
@@ -219,6 +246,14 @@ input UpdateLocationInput {
 
 input UpdateLocationPropertiesInput {
   address: String
+}
+
+input UpdatePermissionInput {
+  _id: String!
+  action: String
+  description: String
+  permission: String
+  resource: String
 }
 
 input UpdateRoleInput {

@@ -1,8 +1,10 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { DeleteResult, Model, Schema as MongoSchema } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
+
 import { CreateRoleInput } from './dto/create-role.input';
 import { UpdateRoleInput } from './dto/update-role.input';
-import { InjectModel } from '@nestjs/mongoose';
+
 import { Role, RoleDocument } from './entities/role.entity';
 
 @Injectable()
@@ -48,6 +50,21 @@ export class RoleService {
 
         if (!existingRole) {
             return null;
+        }
+
+        // Проверяем, не конфликтует ли новое имя роли с существующей
+        if (updateRoleInput.role && updateRoleInput.role !== existingRole.role) {
+            const conflictingRole = await this.roleModel
+                .findOne({
+                    role: updateRoleInput.role,
+                })
+                .exec();
+
+            if (conflictingRole && conflictingRole._id !== id) {
+                throw new ConflictException(
+                    `Role with name '${updateRoleInput.role}' already exists`
+                );
+            }
         }
 
         // Обновляем только те поля, которые были переданы

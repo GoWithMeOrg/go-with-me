@@ -21,9 +21,10 @@ import { CategoryModule } from './category/category.module';
 import { InterestModule } from './interest/interest.module';
 import { TagModule } from './tag/tag.module';
 import { StorageModule } from './storage/storage.module';
+import { RoleModule } from './role/role.module';
+import { PermissionModule } from './permission/permission.module';
 
 import { RolesGuard } from './auth/guard/roles.guard';
-import { RoleModule } from './role/role.module';
 
 @Module({
     imports: [
@@ -74,6 +75,8 @@ import { RoleModule } from './role/role.module';
         StorageModule,
 
         RoleModule,
+
+        PermissionModule,
     ],
 
     controllers: [],

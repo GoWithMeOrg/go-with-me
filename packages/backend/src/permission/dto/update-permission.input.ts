@@ -1,10 +1,10 @@
 import { InputType, Field, PartialType } from '@nestjs/graphql';
 import { Schema as MongoSchema } from 'mongoose';
 
-import { CreateRoleInput } from './create-role.input';
+import { CreatePermissionInput } from './create-permission.input';
 
 @InputType()
-export class UpdateRoleInput extends PartialType(CreateRoleInput) {
+export class UpdatePermissionInput extends PartialType(CreatePermissionInput) {
     @Field(() => String)
     _id: MongoSchema.Types.ObjectId;
 }
