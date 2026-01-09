@@ -9,21 +9,21 @@ const config: CodegenConfig = {
         './packages/backend/src/**/*.gql', // Маленькие модули (если Schema First)
     ],
     documents: [
-        'packages/web-frontend/src/app/graphql/**/*.{ts,tsx}',
+        'packages/frontend/src/app/graphql/**/*.{ts,tsx}',
         // Все ваши исключения
-        '!packages/web-frontend/src/app/graphql/mutations/companionRequest.ts',
-        '!packages/web-frontend/src/app/graphql/mutations/companions.ts',
-        '!packages/web-frontend/src/app/graphql/mutations/invations.ts',
-        '!packages/web-frontend/src/app/graphql/mutations/join.ts',
-        '!packages/web-frontend/src/app/graphql/mutations/like.ts',
-        '!packages/web-frontend/src/app/graphql/mutations/updateUserProfile.ts',
-        '!packages/web-frontend/src/app/graphql/mutations/user.ts',
+        '!packages/frontend/src/app/graphql/mutations/companionRequest.ts',
+        '!packages/frontend/src/app/graphql/mutations/companions.ts',
+        '!packages/frontend/src/app/graphql/mutations/invations.ts',
+        '!packages/frontend/src/app/graphql/mutations/join.ts',
+        '!packages/frontend/src/app/graphql/mutations/like.ts',
+        '!packages/frontend/src/app/graphql/mutations/updateUserProfile.ts',
+        '!packages/frontend/src/app/graphql/mutations/user.ts',
     ],
 
     generates: {
         // 2. ЕДИНАЯ ТОЧКА ВЫВОДА ДЛЯ ВСЕХ ТИПОВ
         // Создаем один большой файл 'index.ts' в указанной вами директории.
-        'packages/web-frontend/src/app/types/types.ts': {
+        'packages/frontend/src/app/types/types.ts': {
             plugins: [
                 // Плагин для генерации базовых типов схемы (интерфейсы User, Post, Enums, Inputs)
                 'typescript',
