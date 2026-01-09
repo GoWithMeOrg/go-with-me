@@ -46,13 +46,11 @@ input CreateTagInput {
 }
 
 input CreateUserInput {
-  createdAt: DateTime!
   email: String!
   firstName: String!
   image: String!
   lastName: String!
-  roles: [String!]!
-  updatedAt: DateTime!
+  roleIds: [String!]
 }
 
 """
@@ -98,6 +96,8 @@ input LocationPropertiesInput {
 }
 
 type Mutation {
+  """добавать роль пользователю"""
+  addUserRole(roleName: String!, userId: String!): User!
   createCategories(createCategoriesInput: CreateCategoryInput!): Category!
   createInterest(createInterestInput: CreateInterestInput!): Interest!
 
@@ -126,6 +126,9 @@ type Mutation {
 
   """Удалить пользователя"""
   removeUser(id: ID!): Boolean!
+
+  """добавать роль пользователю"""
+  removeUserRole(roleName: String!, userId: String!): User!
   updateCategories(updateCategoriesInput: UpdateCategoryInput!): Category!
   updateInterest(updateInterestInput: UpdateInterestInput!): Interest!
 
@@ -272,13 +275,11 @@ input UpdateTagInput {
 
 input UpdateUserInput {
   _id: String!
-  description: String
   email: String
   firstName: String
   image: String
   lastName: String
-  roles: [String!]
-  updatedAt: DateTime
+  roleIds: [String!]
 }
 
 input UploadFileInput {
@@ -291,14 +292,12 @@ input UploadFileInput {
 
 type User {
   _id: String!
-  createdAt: DateTime!
   description: String
   email: String!
   firstName: String!
   image: String
   lastName: String!
-  roles: [String!]!
-  updatedAt: DateTime!
+  roles: [Role!]
 }
 
 type UserProfile {

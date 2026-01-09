@@ -1,11 +1,21 @@
-import { Resolver, Query, Mutation, Args, ID, ResolveField, Parent } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
+import { UseGuards } from '@nestjs/common';
+import { Schema as MongoSchema } from 'mongoose';
+
 import { UserService } from './user.service';
+import { LocationService } from 'src/location/location.service';
+
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
+
 import { User } from './entities/user.entity';
-import { Location } from '../location/entities/location.entity';
-import { Schema as MongoSchema } from 'mongoose';
-import { LocationService } from 'src/location/location.service';
+
+import { SessionAuthGuard } from 'src/auth/guard/session-auth.guard';
+import { RolesGuard } from 'src/auth/guard/roles.guard';
+
+import { Roles } from 'src/auth/decorators/roles.decorator';
+
+import { UserRole } from 'src/auth/types/roles.enum';
 
 @Resolver(() => User)
 export class UserResolver {
@@ -20,12 +30,7 @@ export class UserResolver {
     })
     async getUserById(@Args('id', { type: () => ID }) id: MongoSchema.Types.ObjectId) {
         return await this.userService.getUserById(id);
-    } // дополнительный запрос при это поле в User нет поля локация
-    // @ResolveField(() => Location, { nullable: true })
-    // async location(@Parent() user: User) {
-    //     // Мы ищем локацию, которая принадлежит этому юзеру
-    //     return await this.locationService.getLocationByOwner(user._id);
-    // }
+    }
 
     @Query(() => [User], {
         name: 'users',
@@ -63,5 +68,31 @@ export class UserResolver {
     ): Promise<boolean> {
         const result = await this.userService.removeUser(id);
         return result.deletedCount > 0;
+    }
+
+    @Mutation(() => User, {
+        name: 'addUserRole',
+        description: 'добавать роль пользователю',
+    })
+    @UseGuards(SessionAuthGuard, RolesGuard)
+    @Roles(UserRole.ADMIN) // Только администратор может назначать роли
+    async addUserRole(
+        @Args('userId') userId: string,
+        @Args('roleName') roleName: string
+    ): Promise<User> {
+        return this.userService.addRoleByName(userId, roleName);
+    }
+
+    @Mutation(() => User, {
+        name: 'removeUserRole',
+        description: 'добавать роль пользователю',
+    })
+    @UseGuards(SessionAuthGuard, RolesGuard)
+    @Roles(UserRole.ADMIN)
+    async removeRoleByName(
+        @Args('userId') userId: string,
+        @Args('roleName') roleName: string
+    ): Promise<User> {
+        return this.userService.removeRoleByName(userId, roleName);
     }
 }

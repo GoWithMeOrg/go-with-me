@@ -1,7 +1,8 @@
 import { ObjectType, Field } from '@nestjs/graphql';
 import { Document, Schema as MongoSchema } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Role } from 'src/auth/interfaces/role.interface';
+
+import { Role } from 'src/role/entities/role.entity';
 @ObjectType()
 @Schema({ timestamps: true })
 export class User {
@@ -28,17 +29,9 @@ export class User {
     @Prop({ type: String })
     description: string;
 
-    @Field(() => [String])
-    @Prop({ type: [String], enum: Object.values(Role), default: [Role.USER] })
+    @Field(() => [Role], { nullable: true })
+    @Prop({ type: [{ type: 'ObjectId', ref: 'Role' }] })
     roles: Role[];
-
-    @Field(() => Date)
-    @Prop({ type: Date, default: Date.now })
-    createdAt: Date;
-
-    @Field(() => Date)
-    @Prop({ type: Date, default: Date.now })
-    updatedAt: Date;
 }
 
 export type UserDocument = User & Document;

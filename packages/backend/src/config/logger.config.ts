@@ -13,6 +13,11 @@ export async function getLoggerConfig(configService: ConfigService) {
                           colorize: true,
                           translateTime: 'SYS:standard',
                           singleLine: false,
+                          redact: [
+                              'req.headers', // Все заголовки запроса
+                              'res.headers', // Все заголовки ответа
+                              'req.headers.cookie', //
+                          ],
                       },
                   },
               }

@@ -1,10 +1,10 @@
-import { Role } from '../interfaces/role.interface';
+import { Schema as MongoSchema } from 'mongoose';
 
 // информация о пользователе, которая сохраняется в сессии / передаётся в passport
 export type AuthUserPayload = {
-  _id: string | undefined;
-  email?: string;
-  firstName?: string;
-  lastName?: string;
-  roles?: Role[];
+    _id: string | undefined;
+    email?: string;
+    firstName?: string;
+    lastName?: string;
+    roles?: MongoSchema.Types.ObjectId[];
 };

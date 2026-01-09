@@ -26,6 +26,10 @@ export class RoleService {
         return this.roleModel.findById(id).populate('permissions').exec();
     }
 
+    async getRolesByIds(roleIds: string[]) {
+        return this.roleModel.find({ _id: { $in: roleIds } }).exec();
+    }
+
     async createRole(createRoleInput: CreateRoleInput): Promise<Role> {
         // Проверяем, существует ли уже роль с таким названием
         const existingRole = await this.roleModel
