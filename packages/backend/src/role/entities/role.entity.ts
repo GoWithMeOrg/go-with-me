@@ -11,7 +11,7 @@ export class Role {
 
     @Field(() => String)
     @Prop({ required: true, unique: true })
-    role: string;
+    name: string;
 
     @Field(() => [Permission])
     @Prop({ type: [{ type: 'ObjectId', ref: 'Permission' }] })

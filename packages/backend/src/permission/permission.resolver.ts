@@ -23,12 +23,12 @@ export class PermissionResolver {
         name: 'permissionByName',
         description: 'Поиск роли по названию',
     })
-    async getRoleByName(
-        @Args('permission', { type: () => String }) permission: string
+    async getPermissionByName(
+        @Args('name', { type: () => String }) name: string
     ): Promise<Permission> {
-        const result = await this.permissionService.getPermissionByName(permission);
+        const result = await this.permissionService.getPermissionByName(name);
         if (!result) {
-            throw new Error(`Role with name '${permission}' not found`);
+            throw new Error(`Role with name '${name}' not found`);
         }
         return result;
     }

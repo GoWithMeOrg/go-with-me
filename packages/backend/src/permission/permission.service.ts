@@ -16,7 +16,7 @@ export class PermissionService {
     }
 
     async getPermissionByName(permissionName: string): Promise<Permission | null> {
-        return this.permissionModel.findOne({ permission: permissionName }).exec();
+        return this.permissionModel.findOne({ name: permissionName }).exec();
     }
 
     async getPermissionById(id: MongoSchema.Types.ObjectId): Promise<Permission | null> {
@@ -27,13 +27,13 @@ export class PermissionService {
         // Проверяем, существует ли уже право с таким названием
         const existingPermission = await this.permissionModel
             .findOne({
-                permission: createPermissionInput.permission,
+                permission: createPermissionInput.name,
             })
             .exec();
 
         if (existingPermission) {
             throw new ConflictException(
-                `Permission with name '${createPermissionInput.permission}' already exists`
+                `Permission with name '${createPermissionInput.name}' already exists`
             );
         }
 
@@ -52,19 +52,16 @@ export class PermissionService {
         }
 
         // Проверяем, не конфликтует ли новое право с существующей
-        if (
-            updatePermissionInput.permission &&
-            updatePermissionInput.permission !== existingPermission.permission
-        ) {
+        if (updatePermissionInput.name && updatePermissionInput.name !== existingPermission.name) {
             const conflictingPermission = await this.permissionModel
                 .findOne({
-                    Permission: updatePermissionInput.permission,
+                    Permission: updatePermissionInput.name,
                 })
                 .exec();
 
             if (conflictingPermission && conflictingPermission._id !== id) {
                 throw new ConflictException(
-                    `Permission with name '${updatePermissionInput.permission}' already exists`
+                    `Permission with name '${updatePermissionInput.name}' already exists`
                 );
             }
         }

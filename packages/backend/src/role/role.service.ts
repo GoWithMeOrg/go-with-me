@@ -19,7 +19,7 @@ export class RoleService {
     }
 
     async getRoleByName(roleName: string): Promise<Role | null> {
-        return this.roleModel.findOne({ role: roleName }).populate('permissions').exec();
+        return this.roleModel.findOne({ name: roleName }).populate('permissions').exec();
     }
 
     async getRoleById(id: MongoSchema.Types.ObjectId): Promise<Role | null> {
@@ -34,12 +34,12 @@ export class RoleService {
         // Проверяем, существует ли уже роль с таким названием
         const existingRole = await this.roleModel
             .findOne({
-                role: createRoleInput.role,
+                role: createRoleInput.name,
             })
             .exec();
 
         if (existingRole) {
-            throw new ConflictException(`Role with name '${createRoleInput.role}' already exists`);
+            throw new ConflictException(`Role with name '${createRoleInput.name}' already exists`);
         }
 
         // Создаем новую роль с ID прав, если они указаны
@@ -64,16 +64,16 @@ export class RoleService {
         }
 
         // Проверяем, не конфликтует ли новое имя роли с существующей
-        if (updateRoleInput.role && updateRoleInput.role !== existingRole.role) {
+        if (updateRoleInput.name && updateRoleInput.name !== existingRole.name) {
             const conflictingRole = await this.roleModel
                 .findOne({
-                    role: updateRoleInput.role,
+                    role: updateRoleInput.name,
                 })
                 .exec();
 
             if (conflictingRole && conflictingRole._id !== id) {
                 throw new ConflictException(
-                    `Role with name '${updateRoleInput.role}' already exists`
+                    `Role with name '${updateRoleInput.name}' already exists`
                 );
             }
         }

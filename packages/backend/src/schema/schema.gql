@@ -2,6 +2,13 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+enum Action {
+  CREATE
+  DELETE
+  EDIT
+  READ
+}
+
 type Category {
   _id: ID!
   categories: [String!]!
@@ -27,16 +34,16 @@ input CreateLocationInput {
 }
 
 input CreatePermissionInput {
-  action: String!
+  action: [Action!]!
   description: String!
-  permission: String!
-  resource: String!
+  name: String!
+  resource: Resource!
 }
 
 input CreateRoleInput {
   description: String
+  name: String!
   permissionIds: [String!]
-  role: String!
 }
 
 input CreateTagInput {
@@ -145,10 +152,10 @@ type Mutation {
 
 type Permission {
   _id: ID!
-  action: String!
+  action: [Action!]!
   description: String!
-  permission: String!
-  resource: String!
+  name: String!
+  resource: Resource!
 }
 
 type PresignedUrlResponse {
@@ -191,13 +198,13 @@ type Query {
   permissionById(id: ID!): Permission!
 
   """Поиск роли по названию"""
-  permissionByName(permission: String!): Permission!
+  permissionByName(name: String!): Permission!
 
   """Поиск роли по id"""
   roleById(id: ID!): Role!
 
   """Поиск роли по названию"""
-  roleByName(role: String!): Role!
+  roleByName(name: String!): Role!
 
   """Получить все роли"""
   roles: [Role!]!
@@ -219,11 +226,19 @@ type Query {
   users: [User!]!
 }
 
+enum Resource {
+  COMMENT
+  EVENT
+  ROLE
+  TRIP
+  USER
+}
+
 type Role {
   _id: ID!
   description: String!
+  name: String!
   permissions: [Permission!]!
-  role: String!
 }
 
 type Tag {
@@ -255,17 +270,17 @@ input UpdateLocationPropertiesInput {
 
 input UpdatePermissionInput {
   _id: String!
-  action: String
+  action: [Action!]
   description: String
-  permission: String
-  resource: String
+  name: String
+  resource: Resource
 }
 
 input UpdateRoleInput {
   _id: String!
   description: String
+  name: String
   permissionIds: [String!]
-  role: String
 }
 
 input UpdateTagInput {

@@ -41,20 +41,31 @@ export type CreateLocationInput = {
   properties: LocationPropertiesInput;
 };
 
+export type CreatePermissionInput = {
+  action: Scalars['String']['input'];
+  description: Scalars['String']['input'];
+  permission: Scalars['String']['input'];
+  resource: Scalars['String']['input'];
+};
+
+export type CreateRoleInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  permissionIds?: InputMaybe<Array<Scalars['String']['input']>>;
+  role: Scalars['String']['input'];
+};
+
 export type CreateTagInput = {
   ownerId: Scalars['ID']['input'];
   ownerType: Scalars['String']['input'];
-  tags: Array<Scalars['String']['input']>;
+  tags?: InputMaybe<Array<Scalars['String']['input']>>;
 };
 
 export type CreateUserInput = {
-  createdAt: Scalars['DateTime']['input'];
   email: Scalars['String']['input'];
   firstName: Scalars['String']['input'];
   image: Scalars['String']['input'];
   lastName: Scalars['String']['input'];
-  roles: Array<Scalars['String']['input']>;
-  updatedAt: Scalars['DateTime']['input'];
+  roleIds?: InputMaybe<Array<Scalars['String']['input']>>;
 };
 
 export type Interest = {
@@ -100,28 +111,48 @@ export type LocationPropertiesInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  /** добавать роль пользователю */
+  addUserRole: User;
   createCategories: Category;
   createInterest: Interest;
   /** Создать локацию */
   createLocation: Location;
+  createPermission: Permission;
+  createRole: Role;
   createTag: Tag;
   /** Создать пользователя */
   createUser: User;
+  /** Удалить файл из хранилища по его ключу */
+  deleteFile: Scalars['Boolean']['output'];
+  /** Получить пресайнд-ссылку для прямой загрузки файла в MinIO/S3 */
+  getPresignedUrl: PresignedUrlResponse;
   removeCategories: Category;
   removeInterest: Interest;
   /** Удалить локацию */
   removeLocation: Scalars['Boolean']['output'];
+  removePermission: Permission;
+  removeRole: Role;
   removeTag: Tag;
   /** Удалить пользователя */
   removeUser: Scalars['Boolean']['output'];
+  /** добавать роль пользователю */
+  removeUserRole: User;
   updateCategories: Category;
   updateInterest: Interest;
   /** Обновить локацию */
   updateLocation: Location;
+  updatePermission: Permission;
+  updateRole: Role;
   updateTag: Tag;
   /** Обновить данные пользователя */
   updateUser: User;
   updateUserProfile: UserProfile;
+};
+
+
+export type MutationAddUserRoleArgs = {
+  roleName: Scalars['String']['input'];
+  userId: Scalars['String']['input'];
 };
 
 
@@ -140,6 +171,16 @@ export type MutationCreateLocationArgs = {
 };
 
 
+export type MutationCreatePermissionArgs = {
+  createPermissionInput: CreatePermissionInput;
+};
+
+
+export type MutationCreateRoleArgs = {
+  createRoleInput: CreateRoleInput;
+};
+
+
 export type MutationCreateTagArgs = {
   createTagInput: CreateTagInput;
 };
@@ -147,6 +188,18 @@ export type MutationCreateTagArgs = {
 
 export type MutationCreateUserArgs = {
   createUserInput: CreateUserInput;
+};
+
+
+export type MutationDeleteFileArgs = {
+  fileKey: Scalars['String']['input'];
+};
+
+
+export type MutationGetPresignedUrlArgs = {
+  entityId: Scalars['String']['input'];
+  folder?: Scalars['String']['input'];
+  input: UploadFileInput;
 };
 
 
@@ -165,6 +218,16 @@ export type MutationRemoveLocationArgs = {
 };
 
 
+export type MutationRemovePermissionArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationRemoveRoleArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
 export type MutationRemoveTagArgs = {
   id: Scalars['ID']['input'];
 };
@@ -172,6 +235,12 @@ export type MutationRemoveTagArgs = {
 
 export type MutationRemoveUserArgs = {
   id: Scalars['ID']['input'];
+};
+
+
+export type MutationRemoveUserRoleArgs = {
+  roleName: Scalars['String']['input'];
+  userId: Scalars['String']['input'];
 };
 
 
@@ -187,6 +256,16 @@ export type MutationUpdateInterestArgs = {
 
 export type MutationUpdateLocationArgs = {
   updateLocationInput: UpdateLocationInput;
+};
+
+
+export type MutationUpdatePermissionArgs = {
+  updatePermissionInput: UpdatePermissionInput;
+};
+
+
+export type MutationUpdateRoleArgs = {
+  updateRoleInput: UpdateRoleInput;
 };
 
 
@@ -218,6 +297,25 @@ export type MutationUpdateUserProfileArgs = {
   userId: Scalars['ID']['input'];
 };
 
+export type Permission = {
+  __typename?: 'Permission';
+  _id: Scalars['ID']['output'];
+  action: Scalars['String']['output'];
+  description: Scalars['String']['output'];
+  permission: Scalars['String']['output'];
+  resource: Scalars['String']['output'];
+};
+
+export type PresignedUrlResponse = {
+  __typename?: 'PresignedUrlResponse';
+  /** Путь к файлу для сохранения в БД (Key) */
+  fileKey: Scalars['String']['output'];
+  /** URL для загрузки файла (метод PUT) */
+  presignedUrl: Scalars['String']['output'];
+  /** Публичная ссылка для отображения */
+  publicUrl: Scalars['String']['output'];
+};
+
 export type Query = {
   __typename?: 'Query';
   adminRoute: Scalars['String']['output'];
@@ -234,6 +332,18 @@ export type Query = {
   /** Поиск места по ownerId */
   locationByOwnerId: Location;
   moderatorRoute: Scalars['String']['output'];
+  /** Получить все права */
+  permission: Array<Permission>;
+  /** Поиск роли по id */
+  permissionById: Permission;
+  /** Поиск роли по названию */
+  permissionByName: Permission;
+  /** Поиск роли по id */
+  roleById: Role;
+  /** Поиск роли по названию */
+  roleByName: Role;
+  /** Получить все роли */
+  roles: Array<Role>;
   session?: Maybe<User>;
   /** Поиск категорий по id */
   tagById: Tag;
@@ -278,6 +388,26 @@ export type QueryLocationByOwnerIdArgs = {
 };
 
 
+export type QueryPermissionByIdArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryPermissionByNameArgs = {
+  permission: Scalars['String']['input'];
+};
+
+
+export type QueryRoleByIdArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryRoleByNameArgs = {
+  role: Scalars['String']['input'];
+};
+
+
 export type QueryTagByIdArgs = {
   id: Scalars['ID']['input'];
 };
@@ -295,6 +425,14 @@ export type QueryUserArgs = {
 
 export type QueryUserProfileArgs = {
   userId: Scalars['ID']['input'];
+};
+
+export type Role = {
+  __typename?: 'Role';
+  _id: Scalars['ID']['output'];
+  description: Scalars['String']['output'];
+  permissions: Array<Permission>;
+  role: Scalars['String']['output'];
 };
 
 export type Tag = {
@@ -325,6 +463,21 @@ export type UpdateLocationPropertiesInput = {
   address?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type UpdatePermissionInput = {
+  _id: Scalars['String']['input'];
+  action?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  permission?: InputMaybe<Scalars['String']['input']>;
+  resource?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type UpdateRoleInput = {
+  _id: Scalars['String']['input'];
+  description?: InputMaybe<Scalars['String']['input']>;
+  permissionIds?: InputMaybe<Array<Scalars['String']['input']>>;
+  role?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type UpdateTagInput = {
   _id?: InputMaybe<Scalars['String']['input']>;
   tags?: InputMaybe<Array<Scalars['String']['input']>>;
@@ -332,26 +485,29 @@ export type UpdateTagInput = {
 
 export type UpdateUserInput = {
   _id: Scalars['String']['input'];
-  description?: InputMaybe<Scalars['String']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   firstName?: InputMaybe<Scalars['String']['input']>;
   image?: InputMaybe<Scalars['String']['input']>;
   lastName?: InputMaybe<Scalars['String']['input']>;
-  roles?: InputMaybe<Array<Scalars['String']['input']>>;
-  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  roleIds?: InputMaybe<Array<Scalars['String']['input']>>;
+};
+
+export type UploadFileInput = {
+  /** Оригинальное имя файла */
+  fileName: Scalars['String']['input'];
+  /** MIME-тип файла */
+  fileType: Scalars['String']['input'];
 };
 
 export type User = {
   __typename?: 'User';
   _id: Scalars['String']['output'];
-  createdAt: Scalars['DateTime']['output'];
   description?: Maybe<Scalars['String']['output']>;
   email: Scalars['String']['output'];
   firstName: Scalars['String']['output'];
   image?: Maybe<Scalars['String']['output']>;
   lastName: Scalars['String']['output'];
-  roles: Array<Scalars['String']['output']>;
-  updatedAt: Scalars['DateTime']['output'];
+  roles?: Maybe<Array<Role>>;
 };
 
 export type UserProfile = {
@@ -362,8 +518,3 @@ export type UserProfile = {
   tag?: Maybe<Tag>;
   user: User;
 };
-
-export type GetSessionQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetSessionQuery = { __typename?: 'Query', session?: { __typename?: 'User', _id: string, firstName: string, lastName: string, email: string, roles: Array<string> } | null };

@@ -1,15 +1,17 @@
 import { InputType, Field } from '@nestjs/graphql';
+import { Resource } from '../enums/resource.enum';
+import { Action } from '../enums/action.enum';
 
 @InputType()
 export class CreatePermissionInput {
     @Field(() => String)
-    permission: string;
+    name: string;
 
-    @Field(() => String)
-    action: string; // read, write, delete, execute
+    @Field(() => [Action])
+    action: Action[];
 
-    @Field(() => String)
-    resource: string;
+    @Field(() => Resource)
+    resource: Resource;
 
     @Field(() => String)
     description: string;

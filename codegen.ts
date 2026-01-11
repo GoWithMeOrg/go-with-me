@@ -8,17 +8,7 @@ const config: CodegenConfig = {
         './packages/backend/src/schema/schema.gql', // Большая схема
         './packages/backend/src/**/*.gql', // Маленькие модули (если Schema First)
     ],
-    documents: [
-        'packages/frontend/src/app/graphql/**/*.{ts,tsx}',
-        // Все ваши исключения
-        '!packages/frontend/src/app/graphql/mutations/companionRequest.ts',
-        '!packages/frontend/src/app/graphql/mutations/companions.ts',
-        '!packages/frontend/src/app/graphql/mutations/invations.ts',
-        '!packages/frontend/src/app/graphql/mutations/join.ts',
-        '!packages/frontend/src/app/graphql/mutations/like.ts',
-        '!packages/frontend/src/app/graphql/mutations/updateUserProfile.ts',
-        '!packages/frontend/src/app/graphql/mutations/user.ts',
-    ],
+    documents: ['!packages/frontend/src/app/graphql/**/*.{ts,tsx}'],
 
     generates: {
         // 2. ЕДИНАЯ ТОЧКА ВЫВОДА ДЛЯ ВСЕХ ТИПОВ

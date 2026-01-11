@@ -24,10 +24,10 @@ export class RoleResolver {
         name: 'roleByName',
         description: 'Поиск роли по названию',
     })
-    async getRoleByName(@Args('role', { type: () => String }) role: string): Promise<Role> {
-        const result = await this.roleService.getRoleByName(role);
+    async getRoleByName(@Args('name', { type: () => String }) name: string): Promise<Role> {
+        const result = await this.roleService.getRoleByName(name);
         if (!result) {
-            throw new Error(`Role with name '${role}' not found`);
+            throw new Error(`Role with name '${name}' not found`);
         }
         return result;
     }
