@@ -5,9 +5,9 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Schema as MongoSchema } from 'mongoose';
 
 import { AuthService } from '../../auth.service';
-import { RoleService } from '../../../role/role.service';
+import { RoleService } from '../../../modules/role/role.service';
 
-import { UserService } from 'src/user/user.service';
+import { UserService } from 'src/modules/user/user.service';
 
 import { AuthUserPayload } from 'src/auth/dto/auth-user.payload';
 

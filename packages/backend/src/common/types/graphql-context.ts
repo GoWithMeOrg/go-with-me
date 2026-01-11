@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
 import type { Session } from 'express-session';
 
-import { User } from 'src/user/entities/user.entity';
+import { User } from 'src/modules/user/entities/user.entity';
 
 // Типизированный запрос с поддержкой passport
 export type ReqWithPassport = Request & {

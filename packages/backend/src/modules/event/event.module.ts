@@ -7,12 +7,12 @@ import { LocationModule } from '../location/location.module';
 import { UserModule } from '../user/user.module';
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([{ name: 'Event', schema: EventSchema }]),
-    LocationModule,
-    UserModule,
-  ],
-  providers: [EventResolver, EventService],
-  exports: [EventService, MongooseModule],
+    imports: [
+        MongooseModule.forFeature([{ name: 'Event', schema: EventSchema }]),
+        LocationModule,
+        UserModule,
+    ],
+    providers: [EventResolver, EventService],
+    exports: [EventService, MongooseModule],
 })
 export class EventModule {}

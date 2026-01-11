@@ -16,6 +16,13 @@ export type Scalars = {
   DateTime: { input: any; output: any; }
 };
 
+export enum Action {
+  Create = 'CREATE',
+  Delete = 'DELETE',
+  Edit = 'EDIT',
+  Read = 'READ'
+}
+
 export type Category = {
   __typename?: 'Category';
   _id: Scalars['ID']['output'];
@@ -42,16 +49,16 @@ export type CreateLocationInput = {
 };
 
 export type CreatePermissionInput = {
-  action: Scalars['String']['input'];
+  action: Array<Action>;
   description: Scalars['String']['input'];
-  permission: Scalars['String']['input'];
-  resource: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  resource: Resource;
 };
 
 export type CreateRoleInput = {
   description?: InputMaybe<Scalars['String']['input']>;
+  name: Scalars['String']['input'];
   permissionIds?: InputMaybe<Array<Scalars['String']['input']>>;
-  role: Scalars['String']['input'];
 };
 
 export type CreateTagInput = {
@@ -300,10 +307,10 @@ export type MutationUpdateUserProfileArgs = {
 export type Permission = {
   __typename?: 'Permission';
   _id: Scalars['ID']['output'];
-  action: Scalars['String']['output'];
+  action: Array<Action>;
   description: Scalars['String']['output'];
-  permission: Scalars['String']['output'];
-  resource: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+  resource: Resource;
 };
 
 export type PresignedUrlResponse = {
@@ -394,7 +401,7 @@ export type QueryPermissionByIdArgs = {
 
 
 export type QueryPermissionByNameArgs = {
-  permission: Scalars['String']['input'];
+  name: Scalars['String']['input'];
 };
 
 
@@ -404,7 +411,7 @@ export type QueryRoleByIdArgs = {
 
 
 export type QueryRoleByNameArgs = {
-  role: Scalars['String']['input'];
+  name: Scalars['String']['input'];
 };
 
 
@@ -427,12 +434,20 @@ export type QueryUserProfileArgs = {
   userId: Scalars['ID']['input'];
 };
 
+export enum Resource {
+  Comment = 'COMMENT',
+  Event = 'EVENT',
+  Role = 'ROLE',
+  Trip = 'TRIP',
+  User = 'USER'
+}
+
 export type Role = {
   __typename?: 'Role';
   _id: Scalars['ID']['output'];
   description: Scalars['String']['output'];
+  name: Scalars['String']['output'];
   permissions: Array<Permission>;
-  role: Scalars['String']['output'];
 };
 
 export type Tag = {
@@ -465,17 +480,17 @@ export type UpdateLocationPropertiesInput = {
 
 export type UpdatePermissionInput = {
   _id: Scalars['String']['input'];
-  action?: InputMaybe<Scalars['String']['input']>;
+  action?: InputMaybe<Array<Action>>;
   description?: InputMaybe<Scalars['String']['input']>;
-  permission?: InputMaybe<Scalars['String']['input']>;
-  resource?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  resource?: InputMaybe<Resource>;
 };
 
 export type UpdateRoleInput = {
   _id: Scalars['String']['input'];
   description?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
   permissionIds?: InputMaybe<Array<Scalars['String']['input']>>;
-  role?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UpdateTagInput = {

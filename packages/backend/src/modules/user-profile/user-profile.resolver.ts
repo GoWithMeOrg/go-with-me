@@ -3,18 +3,18 @@ import { Schema as MongoSchema } from 'mongoose';
 
 import { UserProfile } from './dto/user-profile.entity';
 
-import { UserProfileService } from '../user-profile/user-profile.service';
+import { UserProfileService } from './user-profile.service';
 
-import { CreateLocationInput } from 'src/location/dto/create-location.input';
-import { CreateCategoryInput } from 'src/category/dto/create-category.input';
-import { CreateInterestInput } from 'src/interest/dto/create-interest.input';
-import { CreateTagInput } from 'src/tag/dto/create-tag.input';
+import { CreateLocationInput } from 'src/modules/location/dto/create-location.input';
+import { CreateCategoryInput } from 'src/modules/category/dto/create-category.input';
+import { CreateInterestInput } from 'src/modules/interest/dto/create-interest.input';
+import { CreateTagInput } from 'src/modules/tag/dto/create-tag.input';
 
-import { UpdateUserInput } from 'src/user/dto/update-user.input';
-import { UpdateLocationInput } from 'src/location/dto/update-location.input';
-import { UpdateCategoryInput } from 'src/category/dto/update-category.input';
-import { UpdateInterestInput } from 'src/interest/dto/update-interest.input';
-import { UpdateTagInput } from 'src/tag/dto/update-tag.input';
+import { UpdateUserInput } from 'src/modules/user/dto/update-user.input';
+import { UpdateLocationInput } from 'src/modules/location/dto/update-location.input';
+import { UpdateCategoryInput } from 'src/modules/category/dto/update-category.input';
+import { UpdateInterestInput } from 'src/modules/interest/dto/update-interest.input';
+import { UpdateTagInput } from 'src/modules/tag/dto/update-tag.input';
 
 @Resolver(() => UserProfile)
 export class UserProfileResolver {

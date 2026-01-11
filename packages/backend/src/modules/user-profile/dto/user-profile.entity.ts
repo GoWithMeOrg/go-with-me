@@ -1,10 +1,10 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 
-import { User } from 'src/user/entities/user.entity';
-import { Location } from 'src/location/entities/location.entity';
-import { Category } from 'src/category/entities/category.entity';
-import { Interest } from 'src/interest/entities/interest.entity';
-import { Tag } from 'src/tag/entities/tag.entity';
+import { User } from 'src/modules/user/entities/user.entity';
+import { Location } from 'src/modules/location/entities/location.entity';
+import { Category } from 'src/modules/category/entities/category.entity';
+import { Interest } from 'src/modules/interest/entities/interest.entity';
+import { Tag } from 'src/modules/tag/entities/tag.entity';
 
 @ObjectType()
 export class UserProfile {

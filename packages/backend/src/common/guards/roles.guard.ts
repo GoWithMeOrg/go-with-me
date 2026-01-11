@@ -5,7 +5,7 @@ import { Schema as MongoSchema } from 'mongoose';
 
 import { ROLES_KEY } from '../decorators/roles.decorator';
 
-import { User } from 'src/user/entities/user.entity';
+import { User } from 'src/modules/user/entities/user.entity';
 
 @Injectable()
 export class RolesGuard implements CanActivate {

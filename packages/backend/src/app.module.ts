@@ -13,18 +13,18 @@ import { getLoggerConfig } from './config/logger.config';
 import { getS3ModuleConfig } from './config/s3module.config';
 
 import { AuthModule } from './auth/auth.module';
-import { UserModule } from './user/user.module';
+import { UserModule } from './modules/user/user.module';
 
-import { UserProfileModule } from './user-profile/user-profile.module';
-import { LocationModule } from './location/location.module';
-import { CategoryModule } from './category/category.module';
-import { InterestModule } from './interest/interest.module';
-import { TagModule } from './tag/tag.module';
-import { StorageModule } from './storage/storage.module';
-import { RoleModule } from './role/role.module';
-import { PermissionModule } from './permission/permission.module';
+import { UserProfileModule } from './modules/user-profile/user-profile.module';
+import { LocationModule } from './modules/location/location.module';
+import { CategoryModule } from './modules/category/category.module';
+import { InterestModule } from './modules/interest/interest.module';
+import { TagModule } from './modules/tag/tag.module';
+import { StorageModule } from './modules/storage/storage.module';
+import { RoleModule } from './modules/role/role.module';
+import { PermissionModule } from './modules/permission/permission.module';
 
-import { RolesGuard } from './auth/guard/roles.guard';
+import { RolesGuard } from './common/guards/roles.guard';
 
 @Module({
     imports: [

@@ -3,19 +3,19 @@ import { UseGuards } from '@nestjs/common';
 import { Schema as MongoSchema } from 'mongoose';
 
 import { UserService } from './user.service';
-import { LocationService } from 'src/location/location.service';
+import { LocationService } from 'src/modules/location/location.service';
 
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 
 import { User } from './entities/user.entity';
 
-import { SessionAuthGuard } from 'src/auth/guard/session-auth.guard';
-import { RolesGuard } from 'src/auth/guard/roles.guard';
+import { SessionAuthGuard } from 'src/common/guards/session-auth.guard';
+import { RolesGuard } from 'src/common/guards/roles.guard';
 
-import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Roles } from '../../common/decorators/roles.decorator';
 
-import { UserRole } from 'src/auth/types/roles.enum';
+import { UserRole } from 'src/common/enums/roles.enum';
 
 @Resolver(() => User)
 export class UserResolver {
