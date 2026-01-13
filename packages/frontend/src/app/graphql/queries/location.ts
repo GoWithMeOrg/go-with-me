@@ -10,10 +10,8 @@ export const GET_LOCATION_BY_ID = gql`
             }
             properties {
                 address
-                createdAt
                 ownerId
                 ownerType
-                updatedAt
             }
             type
         }
@@ -30,10 +28,8 @@ export const GET_LOCATION_BY_OWNER_ID = gql`
             }
             properties {
                 address
-                createdAt
                 ownerId
                 ownerType
-                updatedAt
             }
             type
         }

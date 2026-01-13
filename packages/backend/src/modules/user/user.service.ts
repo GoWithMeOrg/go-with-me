@@ -6,13 +6,16 @@ import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 
 import { User, UserDocument } from './entities/user.entity';
+import { Role, RoleDocument } from '../role/entities/role.entity';
 
 @Injectable()
 export class UserService {
-    roleModel: any;
     constructor(
         @InjectModel(User.name)
-        private userModel: Model<UserDocument>
+        private userModel: Model<UserDocument>,
+
+        @InjectModel(Role.name)
+        private roleModel: Model<RoleDocument>
     ) {}
 
     getAllUsers(): Promise<User[] | null> {

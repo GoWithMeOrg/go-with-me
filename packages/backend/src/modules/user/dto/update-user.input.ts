@@ -1,10 +1,13 @@
-import { Field, InputType, PartialType } from '@nestjs/graphql';
+import { Field, ID, InputType, PartialType } from '@nestjs/graphql';
 import { Schema as MongoSchema } from 'mongoose';
-import { Role } from 'src/modules/role/entities/role.entity';
+
 import { CreateUserInput } from './create-user.input';
 
 @InputType()
 export class UpdateUserInput extends PartialType(CreateUserInput) {
-    @Field(() => String)
+    @Field(() => ID)
     _id: MongoSchema.Types.ObjectId;
+
+    @Field(() => String, { nullable: true })
+    description: string;
 }

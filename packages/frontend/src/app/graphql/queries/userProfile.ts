@@ -26,13 +26,11 @@ export const GET_USER_PROFILE_BY_ID = gql`
             }
             user {
                 _id
-                createdAt
                 description
                 email
                 firstName
                 image
                 lastName
-                roles
             }
         }
     }

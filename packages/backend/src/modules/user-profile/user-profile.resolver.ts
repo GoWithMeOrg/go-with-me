@@ -1,7 +1,7 @@
 import { Resolver, Query, Args, ID, Mutation } from '@nestjs/graphql';
 import { Schema as MongoSchema } from 'mongoose';
 
-import { UserProfile } from './dto/user-profile.entity';
+import { UserProfile } from './entities/user-profile.entity';
 
 import { UserProfileService } from './user-profile.service';
 

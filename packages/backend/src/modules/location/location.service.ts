@@ -39,8 +39,6 @@ export class LocationService {
                 address: input.properties?.address,
                 ownerId: input.properties?.ownerId,
                 ownerType: input.properties?.ownerType,
-                createdAt: new Date(),
-                updatedAt: new Date(),
             },
         });
         return location.save();
