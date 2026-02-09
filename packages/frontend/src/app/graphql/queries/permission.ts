@@ -1,17 +1,15 @@
 import gql from 'graphql-tag';
 
-export const GET_PERMISSIONS = gql`
+export const GET_ALL_PERMISSIONS = gql`
     query Permissions {
         permissions {
             _id
             action
             description
-            name
             isActive
+            name
             resource {
-                _id
                 name
-                slug
             }
         }
     }

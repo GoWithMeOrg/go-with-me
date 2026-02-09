@@ -3,9 +3,8 @@ import { RoleManagement } from '@/components/widgets/RoleManagement';
 
 const RoleManagementPage = () => {
     return (
-        <div style={{ gridColumnStart: '2' }}>
+        <div style={{ gridColumn: '2 / span 10' }}>
             <RoleManagement />
-            <PermissionManagement />
         </div>
     );
 };

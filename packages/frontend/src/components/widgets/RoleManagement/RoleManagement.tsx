@@ -1,193 +1,182 @@
 'use client';
 
-import { Action, Resource, Role } from '@/app/types/types';
-import { Button } from '@/components/shared/Button';
+import { Role } from '@/app/graphql/types';
+import ArrowMenu from '@/assets/icons/arrowMenu.svg';
 import { Checkbox } from '@/components/shared/Checkbox';
-import { Input } from '@/components/shared/Input';
-import { Label } from '@/components/shared/Label';
+import { FilteredList } from '@/components/shared/FilteredList';
 import { Title } from '@/components/shared/Title';
 
-import useRoleManager from './hooks/useRoleManager';
+import useRoleManagement from './hooks/useRoleManagement';
 
 import classes from './RoleManagement.module.css';
 
 export const RoleManagement = () => {
     const {
         dataRoles,
-        loading,
-        error,
-        handleCreateRole,
-        isFormVisible,
-        handleSubmit,
-        editingRole,
-        formData,
-        setFormData,
-        handlePermissionChange,
-        handleCancel,
-        handleEditRole,
-        handleDeleteRole,
-    } = useRoleManager();
-
-    if (loading) return <div className={classes.loading}>Loading roles...</div>;
-    if (error) return <div className={classes.error}>Error loading roles: {error.message}</div>;
+        groupByResource,
+        expandedRole,
+        toggleRole,
+        handleTogglePermission,
+        dataPermissions,
+    } = useRoleManagement();
 
     return (
         <div className={classes.container}>
             <div className={classes.header}>
-                <Title tag="h1">Role Management</Title>
-                <Button onClick={handleCreateRole} size="normal">
-                    Create New Role
-                </Button>
+                <Title tag="h2">Role Management</Title>
             </div>
 
-            {isFormVisible && (
-                <div className={classes.formContainer}>
-                    <form onSubmit={handleSubmit} className={classes.form}>
-                        <div className={classes.formHeader}>
-                            <Title tag="h2">{editingRole ? 'Edit Role' : 'Create New Role'}</Title>
-                        </div>
+            <div className={classes.resourceList}>
+                <FilteredList>
+                    {dataRoles?.roles && (
+                        <ul>
+                            {dataRoles?.roles.map((role: Role) => {
+                                const isExpanded = expandedRole.includes(role.name);
 
-                        <div className={classes.formField}>
-                            <Label label="Role Name">
-                                <Input
-                                    type="text"
-                                    value={formData.name}
-                                    onChange={(e) =>
-                                        setFormData({ ...formData, name: e.target.value })
-                                    }
-                                    required
-                                    placeholder="Enter role name"
-                                />
-                            </Label>
-                        </div>
-
-                        <div className={classes.permissionsSection}>
-                            <h3 className={classes.sectionTitle}>Permissions</h3>
-                            <div className={classes.permissionsGrid}>
-                                <div className={classes.permissionsHeader}>
-                                    <div className={classes.resourceHeader}>Resource</div>
-                                    {Object.values(Action).map((action) => (
-                                        <div key={action} className={classes.actionHeader}>
-                                            {action}
-                                        </div>
-                                    ))}
-                                </div>
-
-                                {Object.values(Resource).map((resource) => (
-                                    <div key={resource} className={classes.permissionRow}>
-                                        <div className={classes.resourceName}>{resource}</div>
-                                        {Object.values(Action).map((action) => (
+                                return (
+                                    <li key={role._id} style={{ marginBottom: '1rem' }}>
+                                        <div className={classes.accordionItem}>
                                             <div
-                                                key={`${resource}-${action}`}
-                                                className={classes.actionCheckbox}
+                                                className={`${classes.accordionHeader} ${isExpanded ? classes.active : ''}`}
+                                                onClick={() => toggleRole(role.name)}
                                             >
-                                                <Checkbox
-                                                    id={`${resource}-${action}`}
-                                                    checked={
-                                                        formData.permissions[resource]?.[action] ||
-                                                        false
-                                                    }
-                                                    onChange={(checked) =>
-                                                        handlePermissionChange(
-                                                            resource,
-                                                            action,
-                                                            checked
-                                                        )
-                                                    }
-                                                />
+                                                <div className={classes.accordionTitleGroup}>
+                                                    <h3 className={classes.resourceName}>
+                                                        Role: {role.name}
+                                                    </h3>
+
+                                                    <ArrowMenu
+                                                        style={{
+                                                            marginRight: '1rem',
+                                                            transform: isExpanded
+                                                                ? 'rotate(180deg)'
+                                                                : 'rotate(0deg)',
+                                                        }}
+                                                    />
+                                                </div>
                                             </div>
-                                        ))}
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-
-                        <div className={classes.formActions}>
-                            <Button type="submit" size="normal">
-                                {editingRole ? 'Update Role' : 'Create Role'}
-                            </Button>
-                            <Button
-                                type="button"
-                                onClick={handleCancel}
-                                className={classes.cancelButton}
-                            >
-                                Cancel
-                            </Button>
-                        </div>
-                    </form>
-                </div>
-            )}
-
-            <div className={classes.rolesList}>
-                <h2 className={classes.sectionTitle}>Existing Roles</h2>
-
-                {dataRoles?.roles?.length === 0 ? (
-                    <div className={classes.emptyState}>
-                        No roles found. Create your first role!
-                    </div>
-                ) : (
-                    <div className={classes.rolesGrid}>
-                        {dataRoles?.roles?.map((role: Role) => (
-                            <div key={role._id} className={classes.roleCard}>
-                                <div className={classes.roleHeader}>
-                                    <h3 className={classes.roleName}>{role.name}</h3>
-                                    <div className={classes.roleActions}>
-                                        <Button
-                                            onClick={() => handleEditRole(role)}
-                                            size="normal"
-                                            className={classes.editButton}
-                                        >
-                                            Edit
-                                        </Button>
-                                        <Button
-                                            onClick={() => handleDeleteRole(role._id)}
-                                            size="normal"
-                                            className={classes.deleteButton}
-                                        >
-                                            Delete
-                                        </Button>
-                                    </div>
-                                </div>
-                                <div className={classes.rolePermissions}>
-                                    <h4 className={classes.permissionsTitle}>Permissions:</h4>
-                                    {role.permissions.length === 0 ? (
-                                        <div className={classes.noPermissions}>
-                                            No permissions assigned
                                         </div>
-                                    ) : (
-                                        <div className={classes.permissionsList}>
-                                            {/* {role.permissions.map((permission, index) => (
-                                                <div key={index} className={classes.permissionItem}>
-                                                    <span className={classes.permissionResource}>
-                                                        {permission.resource}:
-                                                        {role.permissions.map(
-                                                            (permission, index) => (
+
+                                        {isExpanded && (
+                                            <div className={classes.accordionContent}>
+                                                <div className={classes.listHeader}>
+                                                    <div>Action</div>
+                                                    <div>Permission</div>
+                                                    <div>Description</div>
+                                                </div>
+                                                <div className={classes.accordionContent}>
+                                                    {dataPermissions?.permissions &&
+                                                        // Группируем права по имени ресурса
+                                                        Object.entries(
+                                                            groupByResource(
+                                                                dataPermissions?.permissions
+                                                            )
+                                                        ).map(([resourceName, perms]) => (
+                                                            <div
+                                                                key={resourceName}
+                                                                className={
+                                                                    classes.resourceGroupWrapper
+                                                                }
+                                                            >
                                                                 <div
-                                                                    key={index}
                                                                     className={
-                                                                        classes.permissionItem
+                                                                        classes.resourceSubHeader
                                                                     }
                                                                 >
                                                                     <span
                                                                         className={
-                                                                            classes.permissionActions
+                                                                            classes.resourceLabel
                                                                         }
                                                                     >
-                                                                        {permission.action}
+                                                                        Resource:
+                                                                    </span>
+                                                                    <span
+                                                                        className={
+                                                                            classes.resourceName
+                                                                        }
+                                                                    >
+                                                                        {resourceName}
                                                                     </span>
                                                                 </div>
-                                                            )
-                                                        )}
-                                                    </span>
+
+                                                                <div>
+                                                                    {perms.map((perm) => {
+                                                                        // Проверяем, есть ли это право у текущей роли
+                                                                        const isAssigned =
+                                                                            role.permissions?.some(
+                                                                                (p: any) =>
+                                                                                    (p._id || p) ===
+                                                                                    perm._id
+                                                                            );
+
+                                                                        return (
+                                                                            <div
+                                                                                key={perm._id}
+                                                                                className={
+                                                                                    classes.permissionRow
+                                                                                }
+                                                                            >
+                                                                                <div>
+                                                                                    <span
+                                                                                        className={`${classes.actionTag} ${classes[perm.action.toLowerCase()]}`}
+                                                                                    >
+                                                                                        {
+                                                                                            perm.action
+                                                                                        }
+                                                                                    </span>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <span
+                                                                                        className={
+                                                                                            classes.permName
+                                                                                        }
+                                                                                    >
+                                                                                        {perm.name}
+                                                                                    </span>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <span>
+                                                                                        {perm.description ||
+                                                                                            '—'}
+                                                                                    </span>
+                                                                                </div>
+
+                                                                                <div
+                                                                                    className={
+                                                                                        classes.colCheckbox
+                                                                                    }
+                                                                                >
+                                                                                    <Checkbox
+                                                                                        id={
+                                                                                            perm._id
+                                                                                        }
+                                                                                        checked={
+                                                                                            isAssigned
+                                                                                        }
+                                                                                        onChange={() =>
+                                                                                            handleTogglePermission(
+                                                                                                role._id,
+                                                                                                perm._id,
+                                                                                                isAssigned
+                                                                                            )
+                                                                                        }
+                                                                                    />
+                                                                                </div>
+                                                                            </div>
+                                                                        );
+                                                                    })}
+                                                                </div>
+                                                            </div>
+                                                        ))}
                                                 </div>
-                                            ))} */}
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                )}
+                                            </div>
+                                        )}
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    )}
+                </FilteredList>
             </div>
         </div>
     );

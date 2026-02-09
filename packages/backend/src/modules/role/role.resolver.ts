@@ -36,8 +36,10 @@ export class RoleResolver {
         description: 'Поиск роли по id',
         nullable: true,
     })
-    async getRoleById(@Args('id', { type: () => ID }) id: string): Promise<Role | null> {
-        return this.roleService.getRoleById(new MongoSchema.Types.ObjectId(id) as any);
+    async getRoleById(
+        @Args('id', { type: () => ID }) id: MongoSchema.Types.ObjectId
+    ): Promise<Role | null> {
+        return this.roleService.getRoleById(id);
     }
 
     @Mutation(() => Role)
@@ -52,13 +54,31 @@ export class RoleResolver {
         return this.roleService.updateRole(updateRoleInput._id, updateRoleInput);
     }
 
+    @Mutation(() => Role)
+    async addPermissionToRole(
+        @Args('roleId', { type: () => ID }) roleId: MongoSchema.Types.ObjectId,
+        @Args('permissionId', { type: () => [ID] }) permissionId: MongoSchema.Types.ObjectId[]
+    ) {
+        return this.roleService.addPermission(roleId, permissionId);
+    }
+
+    @Mutation(() => Role)
+    async removePermissionFromRole(
+        @Args('roleId', { type: () => ID }) roleId: MongoSchema.Types.ObjectId,
+        @Args('permissionId', { type: () => ID }) permissionId: MongoSchema.Types.ObjectId
+    ) {
+        return this.roleService.removePermission(roleId, permissionId);
+    }
+
     @Mutation(() => Boolean, {
         // возвращаем Boolean, а не Role
         name: 'removeRole',
         description: 'Удаление роли',
     })
-    async removeRole(@Args('id', { type: () => ID }) id: string): Promise<boolean> {
-        const result = await this.roleService.removeRole(new MongoSchema.Types.ObjectId(id));
+    async removeRole(
+        @Args('id', { type: () => ID }) id: MongoSchema.Types.ObjectId
+    ): Promise<boolean> {
+        const result = await this.roleService.removeRole(id);
         return result.deletedCount > 0;
     }
 }

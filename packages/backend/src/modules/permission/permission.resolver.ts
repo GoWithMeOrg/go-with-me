@@ -15,8 +15,8 @@ export class PermissionResolver {
         name: 'permissions',
         description: 'Получить все права',
     })
-    async getPermissions(): Promise<Permission[]> {
-        return this.permissionService.getPermissions();
+    async getAllPermissions(): Promise<Permission[]> {
+        return this.permissionService.getAllPermissions();
     }
 
     @Query(() => Permission, {

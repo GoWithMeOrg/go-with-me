@@ -1,20 +1,18 @@
-import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types, Schema as MongoSchema } from 'mongoose';
 
 import { Permission, PermissionDocument } from './entities/permission.entity';
-import { CreatePermissionInput } from './dto/create-permission.input';
-import { UpdatePermissionInput } from './dto/update-permission.input';
-import { ResourceService } from '../resource/resource.service';
-import { DeleteResult } from '../delete-result/delete-result.entity';
 import { Resource } from '../resource/entities/resource.entity';
 import { Action } from './enums/action.enum';
+import { Role } from '../role/entities/role.entity';
 
 @Injectable()
 export class PermissionService {
     constructor(
         @InjectModel(Permission.name) private permissionModel: Model<PermissionDocument>,
-        @InjectModel(Resource.name) private resourceModel: Model<Resource>
+        @InjectModel(Resource.name) private resourceModel: Model<Resource>,
+        @InjectModel(Role.name) private roleModel: Model<Role>
     ) {}
 
     async createResourcePermissions(resourceId: MongoSchema.Types.ObjectId) {
@@ -69,8 +67,7 @@ export class PermissionService {
         return permission.save();
     }
 
-    // Добавляем .populate('resource'), чтобы GraphQL получал объект ресурса, а не только ID
-    async getPermissions(): Promise<Permission[]> {
+    async getAllPermissions(): Promise<Permission[]> {
         return this.permissionModel.find().populate('resource').exec();
     }
 

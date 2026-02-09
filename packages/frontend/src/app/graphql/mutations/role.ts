@@ -47,3 +47,30 @@ export const REMOVE_ROLE = gql`
         removeRole(id: $removeRoleId)
     }
 `;
+
+export const ADD_PERMISSION_TO_ROLE = gql`
+    mutation AddPermissionToRole($permissionId: [ID!]!, $roleId: ID!) {
+        addPermissionToRole(permissionId: $permissionId, roleId: $roleId) {
+            _id
+            description
+            name
+            permissions {
+                _id
+            }
+        }
+    }
+`;
+
+export const REMOVE_PERMISSION_FROM_ROLE = gql`
+    mutation RemovePermissionFromRole($permissionId: ID!, $roleId: ID!) {
+        removePermissionFromRole(permissionId: $permissionId, roleId: $roleId) {
+            name
+            _id
+            description
+            permissions {
+                name
+                _id
+            }
+        }
+    }
+`;

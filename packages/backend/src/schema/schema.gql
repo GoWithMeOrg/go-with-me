@@ -89,6 +89,8 @@ input LocationPropertiesInput {
 }
 
 type Mutation {
+  addPermissionToRole(permissionId: [ID!]!, roleId: ID!): Role!
+
   """добавать роль пользователю"""
   addUserRole(roleName: String!, userId: ID!): User!
   createCategories(createCategoriesInput: CreateCategoryInput!): Category!
@@ -124,6 +126,7 @@ type Mutation {
 
   """Удалить локацию"""
   removeLocation(id: ID!): Boolean!
+  removePermissionFromRole(permissionId: ID!, roleId: ID!): Role!
 
   """Удаление роли"""
   removeRole(id: ID!): Boolean!

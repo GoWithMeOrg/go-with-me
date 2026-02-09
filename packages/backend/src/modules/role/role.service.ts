@@ -56,19 +56,33 @@ export class RoleService {
         return savedRole.populate(this.deepPopulate);
     }
 
-    async addPermission(roleId: string, permissionId: string): Promise<Role> {
+    async addPermission(
+        roleId: MongoSchema.Types.ObjectId,
+        permissionId: MongoSchema.Types.ObjectId[]
+    ): Promise<Role> {
         const role = await this.roleModel
-            .findByIdAndUpdate(
-                roleId,
-                { $addToSet: { permissions: new MongoSchema.Types.ObjectId(permissionId) } }, // $addToSet не добавит ID, если он уже есть
-                { new: true }
-            )
+            .findByIdAndUpdate(roleId, { $addToSet: { permissions: permissionId } }, { new: true })
             .populate({
                 path: 'permissions',
                 populate: { path: 'resource' },
             });
 
         if (!role) throw new NotFoundException('Role not found');
+        return role;
+    }
+
+    async removePermission(
+        roleId: MongoSchema.Types.ObjectId,
+        permissionId: MongoSchema.Types.ObjectId
+    ): Promise<Role> {
+        const role = await this.roleModel
+            .findByIdAndUpdate(roleId, { $pull: { permissions: permissionId } }, { new: true })
+            .populate({ path: 'permissions', populate: { path: 'resource' } });
+
+        if (!role) {
+            throw new NotFoundException(`Role with ID ${roleId} not found`);
+        }
+
         return role;
     }
 

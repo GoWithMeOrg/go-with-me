@@ -3,9 +3,8 @@ import {
     CREATE_RESOURCE_PERMISSION,
     TOGGLE_PERMISSION_STATUS,
 } from '@/app/graphql/mutations/permission';
-import { GET_PERMISSIONS } from '@/app/graphql/queries/permission';
 import { Action, Permission } from '@/app/graphql/types';
-import { useMutation, useQuery } from '@apollo/client/react';
+import { useMutation } from '@apollo/client/react';
 
 const usePermissionManager = () => {
     const [editingPermission, setEditingPermission] = useState<Permission | null>(null);
@@ -13,13 +12,6 @@ const usePermissionManager = () => {
     const [expandedResources, setExpandedResources] = useState<string[]>([]);
 
     const totalActionsCount = Object.keys(Action).length;
-
-    const {
-        data: dataPermissions,
-        loading,
-        error,
-        refetch,
-    } = useQuery<{ permission: Permission[] }>(GET_PERMISSIONS);
 
     const [createResourcePermissions] = useMutation(CREATE_RESOURCE_PERMISSION, {
         refetchQueries: ['SearchResources'],
@@ -34,7 +26,6 @@ const usePermissionManager = () => {
         } catch (error) {
             console.error('Ошибка при создании прав ресурса:', error);
         }
-        refetch();
     };
 
     const handleToggleActiveStatus = async (permissionId: string) => {
@@ -45,7 +36,6 @@ const usePermissionManager = () => {
         } catch (error) {
             console.error('Ошибка при смене статуса права:', error);
         }
-        refetch();
     };
 
     const toggleResource = (resource: string) => {
@@ -55,9 +45,6 @@ const usePermissionManager = () => {
     };
 
     return {
-        dataPermissions,
-        loading,
-        error,
         isFormVisible,
         editingPermission,
 
