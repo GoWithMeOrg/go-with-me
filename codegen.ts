@@ -2,32 +2,25 @@ import type { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
     overwrite: true,
-
-    // 1. КОНФИГУРАЦИЯ СХЕМЫ И ДОКУМЕНТОВ (ОСТАЕТСЯ КАК ЕСТЬ)
-    schema: [
-        './packages/backend/src/schema/schema.gql', // Большая схема
-        './packages/backend/src/**/*.gql', // Маленькие модули (если Schema First)
-    ],
-    documents: ['!packages/frontend/src/app/graphql/**/*.{ts,tsx}'],
+    // Подхватываем схему из файлов бэкенда
+    schema: ['./packages/backend/src/schema/schema.gql', './packages/backend/src/**/*.gql'],
+    // теперь он ищет запросы в папке фронтенда
+    documents: ['packages/frontend/src/**/*.{ts,tsx}'],
 
     generates: {
-        // 2. ЕДИНАЯ ТОЧКА ВЫВОДА ДЛЯ ВСЕХ ТИПОВ
-        // Создаем один большой файл 'index.ts' в указанной вами директории.
         'packages/frontend/src/app/types/types.ts': {
             plugins: [
-                // Плагин для генерации базовых типов схемы (интерфейсы User, Post, Enums, Inputs)
-                'typescript',
-                // Плагин для генерации типов запросов/мутаций (QueryType, MutationVariables)
-                'typescript-operations',
-                // 💡 Добавьте сюда плагин для вашего HTTP-клиента,
-                // например, 'typescript-react-apollo' или 'typescript-react-query', если вы его используете.
+                'typescript', // Базовые типы (Scalars, Enums)
+                'typescript-operations', // Типы Query и Mutation
+                'typescript-react-apollo', // Генерирует готовые хуки (useSearchQuery и т.д.)
             ],
             config: {
-                // Убедитесь, что фрагменты не маскируются (по вашему запросу)
-                fragmentMasking: false,
-                // Добавьте, если нужно сгенерировать TS-док-ноды (нужно для некоторых клиентов)
-                // exportFragmentDocument: true,
-                // exportOperationDocument: true,
+                // Важные настройки для удобства:
+                withHooks: true, // Сгенерирует готовые хуки типа useSearchLazyQuery
+                withComponent: false, // Не генерировать старые классовые компоненты
+                withHOC: false, // Не генерировать HOC
+                typesPrefix: 'I', // (Опционально) Добавит 'I' к интерфейсам: IUser
+                maybeValue: 'T | null', // Как обрабатывать nullable поля
             },
         },
     },

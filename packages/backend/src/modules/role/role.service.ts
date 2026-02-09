@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { DeleteResult, Model, Schema as MongoSchema } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 
@@ -14,16 +14,24 @@ export class RoleService {
         private roleModel: Model<RoleDocument>
     ) {}
 
-    async getAllRoles(): Promise<Role[]> {
-        return this.roleModel.find().populate('permissions').exec();
+    // Хелпер для повторяющегося глубокого populate
+    private get deepPopulate() {
+        return {
+            path: 'permissions',
+            populate: { path: 'resource' },
+        };
+    }
+
+    async getRoles(): Promise<Role[]> {
+        return this.roleModel.find().populate(this.deepPopulate).exec();
     }
 
     async getRoleByName(roleName: string): Promise<Role | null> {
-        return this.roleModel.findOne({ name: roleName }).populate('permissions').exec();
+        return this.roleModel.findOne({ name: roleName }).populate(this.deepPopulate).exec();
     }
 
     async getRoleById(id: MongoSchema.Types.ObjectId): Promise<Role | null> {
-        return this.roleModel.findById(id).populate('permissions').exec();
+        return this.roleModel.findById(id).populate(this.deepPopulate).exec();
     }
 
     async getRolesByIds(roleIds: string[]) {
@@ -31,26 +39,37 @@ export class RoleService {
     }
 
     async createRole(createRoleInput: CreateRoleInput): Promise<Role> {
-        // Проверяем, существует ли уже роль с таким названием
-        const existingRole = await this.roleModel
-            .findOne({
-                role: createRoleInput.name,
-            })
-            .exec();
+        const existingRole = await this.roleModel.findOne({ name: createRoleInput.name }).exec();
 
         if (existingRole) {
             throw new ConflictException(`Role with name '${createRoleInput.name}' already exists`);
         }
 
-        // Создаем новую роль с ID прав, если они указаны
         const createdRole = new this.roleModel({
-            ...createRoleInput,
+            name: createRoleInput.name,
             permissions: createRoleInput.permissionIds || [],
+            description: createRoleInput.description,
         });
 
         const savedRole = await createdRole.save();
 
-        return savedRole;
+        return savedRole.populate(this.deepPopulate);
+    }
+
+    async addPermission(roleId: string, permissionId: string): Promise<Role> {
+        const role = await this.roleModel
+            .findByIdAndUpdate(
+                roleId,
+                { $addToSet: { permissions: new MongoSchema.Types.ObjectId(permissionId) } }, // $addToSet не добавит ID, если он уже есть
+                { new: true }
+            )
+            .populate({
+                path: 'permissions',
+                populate: { path: 'resource' },
+            });
+
+        if (!role) throw new NotFoundException('Role not found');
+        return role;
     }
 
     async updateRole(
@@ -58,30 +77,22 @@ export class RoleService {
         updateRoleInput: UpdateRoleInput
     ): Promise<Role | null> {
         const existingRole = await this.roleModel.findById(id).exec();
+        if (!existingRole) throw new NotFoundException('Role not found');
 
-        if (!existingRole) {
-            return null;
-        }
-
-        // Проверяем, не конфликтует ли новое имя роли с существующей
         if (updateRoleInput.name && updateRoleInput.name !== existingRole.name) {
             const conflictingRole = await this.roleModel
-                .findOne({
-                    role: updateRoleInput.name,
-                })
+                .findOne({ name: updateRoleInput.name })
                 .exec();
-
-            if (conflictingRole && conflictingRole._id !== id) {
+            if (conflictingRole) {
                 throw new ConflictException(
                     `Role with name '${updateRoleInput.name}' already exists`
                 );
             }
         }
 
-        // Обновляем только те поля, которые были переданы
         Object.assign(existingRole, updateRoleInput);
-
-        return existingRole.save();
+        const updatedRole = await existingRole.save();
+        return updatedRole.populate(this.deepPopulate);
     }
 
     async removeRole(id: MongoSchema.Types.ObjectId): Promise<DeleteResult> {

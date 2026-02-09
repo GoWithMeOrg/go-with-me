@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { COMPANION_REQUEST_MUTATION } from '@/app/graphql/mutations/companionRequest';
-import { REMOVE_COMPANION_MUTATION } from '@/app/graphql/mutations/companions';
+// import { COMPANION_REQUEST_MUTATION } from '@/app/graphql/mutations/companionRequest';
+// import { REMOVE_COMPANION_MUTATION } from '@/app/graphql/mutations/companions';
 import { GET_COMPANIONS, GET_FIND_COMPANION } from '@/app/graphql/queries/companions';
 import { useUserID } from '@/hooks/useUserID';
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client/react';
@@ -23,8 +23,8 @@ export const useCompanionSearch = () => {
         variables: { userId: user_id, limit },
     });
 
-    const [CompanionRequest] = useMutation(COMPANION_REQUEST_MUTATION);
-    const [RemoveCompanion] = useMutation(REMOVE_COMPANION_MUTATION);
+    // const [CompanionRequest] = useMutation(COMPANION_REQUEST_MUTATION);
+    // const [RemoveCompanion] = useMutation(REMOVE_COMPANION_MUTATION);
 
     const handleFindCompanion = (e: React.ChangeEvent<HTMLInputElement>) => {
         const inputValue = e.target.value;

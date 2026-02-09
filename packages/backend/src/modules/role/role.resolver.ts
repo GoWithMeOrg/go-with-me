@@ -1,10 +1,9 @@
+import { NotFoundException } from '@nestjs/common';
 import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
 import { Schema as MongoSchema } from 'mongoose';
 
-import { RoleService } from './role.service';
-
 import { Role } from './entities/role.entity';
-
+import { RoleService } from './role.service';
 import { CreateRoleInput } from './dto/create-role.input';
 import { UpdateRoleInput } from './dto/update-role.input';
 
@@ -16,8 +15,8 @@ export class RoleResolver {
         name: 'roles',
         description: 'Получить все роли',
     })
-    async getAllRoles(): Promise<Role[]> {
-        return this.roleService.getAllRoles();
+    async getRoles(): Promise<Role[]> {
+        return this.roleService.getRoles();
     }
 
     @Query(() => Role, {
@@ -27,7 +26,7 @@ export class RoleResolver {
     async getRoleByName(@Args('name', { type: () => String }) name: string): Promise<Role> {
         const result = await this.roleService.getRoleByName(name);
         if (!result) {
-            throw new Error(`Role with name '${name}' not found`);
+            throw new NotFoundException(`Role with name '${name}' not found`);
         }
         return result;
     }
@@ -35,28 +34,31 @@ export class RoleResolver {
     @Query(() => Role, {
         name: 'roleById',
         description: 'Поиск роли по id',
+        nullable: true,
     })
-    getRoleById(
-        @Args('id', { type: () => ID }) id: MongoSchema.Types.ObjectId
-    ): Promise<Role | null> {
-        return this.roleService.getRoleById(id);
+    async getRoleById(@Args('id', { type: () => ID }) id: string): Promise<Role | null> {
+        return this.roleService.getRoleById(new MongoSchema.Types.ObjectId(id) as any);
     }
 
     @Mutation(() => Role)
-    createRole(@Args('createRoleInput') createRoleInput: CreateRoleInput): Promise<Role> {
+    async createRole(@Args('createRoleInput') createRoleInput: CreateRoleInput): Promise<Role> {
         return this.roleService.createRole(createRoleInput);
     }
 
     @Mutation(() => Role)
-    updateRole(@Args('updateRoleInput') updateRoleInput: UpdateRoleInput): Promise<Role | null> {
+    async updateRole(
+        @Args('updateRoleInput') updateRoleInput: UpdateRoleInput
+    ): Promise<Role | null> {
         return this.roleService.updateRole(updateRoleInput._id, updateRoleInput);
     }
 
-    @Mutation(() => Role)
-    async removeRole(
-        @Args('id', { type: () => ID }) id: MongoSchema.Types.ObjectId
-    ): Promise<boolean> {
-        const result = await this.roleService.removeRole(id);
-        return !!result;
+    @Mutation(() => Boolean, {
+        // возвращаем Boolean, а не Role
+        name: 'removeRole',
+        description: 'Удаление роли',
+    })
+    async removeRole(@Args('id', { type: () => ID }) id: string): Promise<boolean> {
+        const result = await this.roleService.removeRole(new MongoSchema.Types.ObjectId(id));
+        return result.deletedCount > 0;
     }
 }

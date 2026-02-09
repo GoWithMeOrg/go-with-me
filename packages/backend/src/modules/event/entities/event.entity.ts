@@ -37,14 +37,6 @@ export class Event {
     @Field(() => User)
     @Prop({ type: MongoSchema.Types.ObjectId, ref: 'User', required: true })
     organizer: MongoSchema.Types.ObjectId | User;
-
-    @Field(() => Date)
-    @Prop({ type: Date, default: Date.now })
-    createdAt: Date;
-
-    @Field(() => Date)
-    @Prop({ type: Date, default: Date.now })
-    updatedAt: Date;
 }
 
 export type EventDocument = Event & Document;

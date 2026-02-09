@@ -14,10 +14,10 @@ export class Role {
     name: string;
 
     @Field(() => [Permission])
-    @Prop({ type: [{ type: 'ObjectId', ref: 'Permission' }] })
+    @Prop({ type: [{ type: MongoSchema.Types.ObjectId, ref: 'Permission' }] })
     permissions: Permission[];
 
-    @Field(() => String)
+    @Field(() => String, { nullable: true })
     @Prop({ default: '' })
     description: string;
 }

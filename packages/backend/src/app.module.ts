@@ -23,6 +23,7 @@ import { TagModule } from './modules/tag/tag.module';
 import { StorageModule } from './modules/storage/storage.module';
 import { RoleModule } from './modules/role/role.module';
 import { PermissionModule } from './modules/permission/permission.module';
+import { ResourceModule } from './modules/resource/resource.module';
 
 import { RolesGuard } from './common/guards/roles.guard';
 
@@ -77,6 +78,10 @@ import { RolesGuard } from './common/guards/roles.guard';
         RoleModule,
 
         PermissionModule,
+
+        // EntityRegistryModule,
+
+        ResourceModule,
     ],
 
     controllers: [],

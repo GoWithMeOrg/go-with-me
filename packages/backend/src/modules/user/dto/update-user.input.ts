@@ -6,7 +6,7 @@ import { CreateUserInput } from './create-user.input';
 @InputType()
 export class UpdateUserInput extends PartialType(CreateUserInput) {
     @Field(() => ID)
-    _id: MongoSchema.Types.ObjectId;
+    _id: string;
 
     @Field(() => String, { nullable: true })
     description: string;

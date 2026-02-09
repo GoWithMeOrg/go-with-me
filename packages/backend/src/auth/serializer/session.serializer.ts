@@ -14,7 +14,16 @@ export class SessionSerializer {
 
     async deserializeUser(id: string, done: Function) {
         try {
-            const user = await this.userModel.findById(id).populate('roles');
+            const user = await this.userModel
+                .findById(id)
+                .populate({
+                    path: 'roles',
+                    populate: {
+                        path: 'permissions',
+                        populate: { path: 'resource' },
+                    },
+                })
+                .lean();
 
             const userSession = {
                 _id: user?._id,

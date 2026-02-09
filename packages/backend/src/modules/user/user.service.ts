@@ -51,7 +51,7 @@ export class UserService {
 
     // user.service.ts или auth.service.ts
 
-    async addRoleByName(userId: string, roleName: string): Promise<User> {
+    async addRoleByName(userId: MongoSchema.Types.ObjectId, roleName: string): Promise<User> {
         // 1. Ищем роль в базе данных по названию
         const role = await this.roleModel.findOne({ role: roleName }).exec();
 
@@ -76,7 +76,7 @@ export class UserService {
         return updatedUser;
     }
 
-    async removeRoleByName(userId: string, roleName: string): Promise<User> {
+    async removeRoleByName(userId: MongoSchema.Types.ObjectId, roleName: string): Promise<User> {
         // 1. Находим документ роли, чтобы получить её _id
         const role = await this.roleModel.findOne({ role: roleName }).exec();
 

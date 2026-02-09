@@ -33,17 +33,10 @@ input CreateLocationInput {
   properties: LocationPropertiesInput!
 }
 
-input CreatePermissionInput {
-  action: [Action!]!
-  description: String!
-  name: String!
-  resource: Resource!
-}
-
 input CreateRoleInput {
   description: String
   name: String!
-  permissionIds: [String!]
+  permissionIds: [String]
 }
 
 input CreateTagInput {
@@ -97,13 +90,17 @@ input LocationPropertiesInput {
 
 type Mutation {
   """добавать роль пользователю"""
-  addUserRole(roleName: String!, userId: String!): User!
+  addUserRole(roleName: String!, userId: ID!): User!
   createCategories(createCategoriesInput: CreateCategoryInput!): Category!
   createInterest(createInterestInput: CreateInterestInput!): Interest!
 
   """Создать локацию"""
   createLocation(createLocationInput: CreateLocationInput!): Location!
-  createPermission(createPermissionInput: CreatePermissionInput!): Permission!
+
+  """
+  Creates missing CRUD permissions for a specific resource based on Action enum
+  """
+  createResourcePermissions(resourceId: ID!): [Permission!]!
   createRole(createRoleInput: CreateRoleInput!): Role!
   createTag(createTagInput: CreateTagInput!): Tag!
 
@@ -115,26 +112,36 @@ type Mutation {
 
   """Получить пресайнд-ссылку для прямой загрузки файла в MinIO/S3"""
   getPresignedUrl(entityId: String!, folder: String! = "events", input: UploadFileInput!): PresignedUrlResponse!
+  registerResource(
+    """Отображаемое имя (например: Мероприятия)"""
+    name: String!
+
+    """Техническое имя (например: EVENT)"""
+    slug: String!
+  ): Resource!
   removeCategories(id: ID!): Category!
   removeInterest(id: ID!): Interest!
 
   """Удалить локацию"""
   removeLocation(id: ID!): Boolean!
-  removePermission(id: ID!): Permission!
-  removeRole(id: ID!): Role!
+
+  """Удаление роли"""
+  removeRole(id: ID!): Boolean!
   removeTag(id: ID!): Tag!
 
   """Удалить пользователя"""
   removeUser(id: ID!): Boolean!
 
   """добавать роль пользователю"""
-  removeUserRole(roleName: String!, userId: String!): User!
+  removeUserRole(roleName: String!, userId: ID!): User!
+
+  """Переключает статус активности права (включает/выключает)"""
+  togglePermissionStatus(id: ID!): Permission!
   updateCategories(updateCategoriesInput: UpdateCategoryInput!): Category!
   updateInterest(updateInterestInput: UpdateInterestInput!): Interest!
 
   """Обновить локацию"""
   updateLocation(updateLocationInput: UpdateLocationInput!): Location!
-  updatePermission(updatePermissionInput: UpdatePermissionInput!): Permission!
   updateRole(updateRoleInput: UpdateRoleInput!): Role!
   updateTag(updateTagInput: UpdateTagInput!): Tag!
 
@@ -145,8 +152,9 @@ type Mutation {
 
 type Permission {
   _id: ID!
-  action: [Action!]!
-  description: String!
+  action: Action!
+  description: String
+  isActive: Boolean!
   name: String!
   resource: Resource!
 }
@@ -184,23 +192,30 @@ type Query {
   locationByOwnerId(ownerId: ID!): Location!
   moderatorRoute: String!
 
-  """Получить все права"""
-  permission: [Permission!]!
+  """Поиск права по id"""
+  permissionById(id: ID!): Permission
 
-  """Поиск роли по id"""
-  permissionById(id: ID!): Permission!
-
-  """Поиск роли по названию"""
+  """Поиск права по названию"""
   permissionByName(name: String!): Permission!
 
+  """Получить все права"""
+  permissions: [Permission!]!
+  resourceBySlug(slug: String!): Resource
+
+  """Список всех зарегистрированных ресурсов"""
+  resources: [Resource!]!
+
   """Поиск роли по id"""
-  roleById(id: ID!): Role!
+  roleById(id: ID!): Role
 
   """Поиск роли по названию"""
   roleByName(name: String!): Role!
 
   """Получить все роли"""
   roles: [Role!]!
+
+  """Поиск ресурсов по названию или слагу для управления ролями"""
+  searchResources(query: String): [Resource!]!
   session: User
 
   """Поиск категорий по id"""
@@ -219,17 +234,16 @@ type Query {
   users: [User!]!
 }
 
-enum Resource {
-  COMMENT
-  EVENT
-  ROLE
-  TRIP
-  USER
+type Resource {
+  _id: ID!
+  name: String!
+  permissions: [Permission!]
+  slug: String!
 }
 
 type Role {
   _id: ID!
-  description: String!
+  description: String
   name: String!
   permissions: [Permission!]!
 }
@@ -259,14 +273,6 @@ input UpdateLocationInput {
 
 input UpdateLocationPropertiesInput {
   address: String
-}
-
-input UpdatePermissionInput {
-  _id: String!
-  action: [Action!]
-  description: String
-  name: String
-  resource: Resource
 }
 
 input UpdateRoleInput {

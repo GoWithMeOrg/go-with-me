@@ -7,6 +7,14 @@ import { User, UserDocument } from 'src/modules/user/entities/user.entity';
 export class AuthService {
     constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
+    private readonly userPopulateConfig = {
+        path: 'roles',
+        populate: {
+            path: 'permissions',
+            populate: { path: 'resource', select: 'slug' },
+        },
+    };
+
     async validateUser(userdata: {
         firstName: string;
         lastName: string;
@@ -14,9 +22,14 @@ export class AuthService {
         email: string;
         roles?: string[];
     }): Promise<User> {
+        // const user = await this.userModel
+        //     .findOne({ email: userdata.email })
+        //     .populate('roles')
+        //     .exec();
+
         const user = await this.userModel
             .findOne({ email: userdata.email })
-            .populate('roles')
+            .populate(this.userPopulateConfig)
             .exec();
 
         if (user) return user;
@@ -26,11 +39,11 @@ export class AuthService {
             lastName: userdata.lastName,
             image: userdata.image || '',
             email: userdata.email,
-            roles: [],
+            roles: userdata.roles || [],
         });
 
         const savedUser = await newUser.save();
 
-        return savedUser.populate('roles');
+        return savedUser.populate(this.userPopulateConfig);
     }
 }

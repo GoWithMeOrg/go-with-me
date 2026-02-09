@@ -1,17 +1,48 @@
 import gql from 'graphql-tag';
 
 export const GET_USER_BY_ID = gql`
-    query User($userId: ID!) {
+    query GetUserById($userId: ID!) {
         user(id: $userId) {
             _id
-            createdAt
             description
             email
             firstName
             image
             lastName
-            roles
-            updatedAt
+            roles {
+                _id
+                description
+                name
+                permissions {
+                    _id
+                    action
+                    description
+                    name
+                    resource {
+                        _id
+                        name
+                        slug
+                    }
+                }
+            }
         }
     }
 `;
+
+// export const GET_USERS = gql`
+//     query GetUsers {
+//         users {
+//             _id
+//             firstName
+//             lastName
+//             email
+//             description
+//             image
+//             roles {
+//                 _id
+//                 name
+//                 description
+//             }
+//         }
+//     }
+// `;

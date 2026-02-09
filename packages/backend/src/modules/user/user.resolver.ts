@@ -77,7 +77,7 @@ export class UserResolver {
     @UseGuards(SessionAuthGuard, RolesGuard)
     @Roles(UserRole.ADMIN) // Только администратор может назначать роли
     async addUserRole(
-        @Args('userId') userId: string,
+        @Args('userId', { type: () => ID }) userId: MongoSchema.Types.ObjectId,
         @Args('roleName') roleName: string
     ): Promise<User> {
         return this.userService.addRoleByName(userId, roleName);
@@ -90,7 +90,7 @@ export class UserResolver {
     @UseGuards(SessionAuthGuard, RolesGuard)
     @Roles(UserRole.ADMIN)
     async removeRoleByName(
-        @Args('userId') userId: string,
+        @Args('userId', { type: () => ID }) userId: MongoSchema.Types.ObjectId,
         @Args('roleName') roleName: string
     ): Promise<User> {
         return this.userService.removeRoleByName(userId, roleName);
