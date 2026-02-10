@@ -6,11 +6,12 @@
         "packages/*"
     ],
     "scripts": {
-        "frontend:dev": "pnpm --filter web-frontend dev",
+        "build": "pnpm --filter \"*\" build",
+        "frontend:dev": "pnpm --filter frontend dev",
         "backend:dev": "pnpm --filter backend nest start --watch",
-        "frontend:lint": "pnpm -r exec eslint packages/web-frontend --fix",
+        "frontend:lint": "pnpm -r exec eslint packages/frontend --fix",
         "backend:lint": "pnpm -r exec eslint packages/backend --fix",
-        "frontend:format": "prettier packages/web-frontend -w",
+        "frontend:format": "prettier packages/frontend -w",
         "backend:format": "prettier packages/backend -w",
         "import:mongo": "./scripts/import-mongo-data.sh",
         "codegen": "graphql-codegen --config codegen.ts",

@@ -1,4 +1,4 @@
-import { Maybe } from '@/app/types/types';
+import { Maybe } from '@/app/graphql/types';
 
 import { StorageFolder, UploadFileSizes } from '../types/storage-folder';
 

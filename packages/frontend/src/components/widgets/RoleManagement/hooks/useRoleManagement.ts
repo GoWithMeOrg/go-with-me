@@ -11,6 +11,7 @@ import { Permission, Role } from '@/app/graphql/types';
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client/react';
 
 const useRoleManagement = () => {
+    // Удаление роли??? Подумать о деактивации роли isActive??
     const [expandedRole, setExpandedRole] = useState<string[]>([]);
     const [expandedPermission, setExpandedPermission] = useState<string[]>([]);
 
@@ -56,7 +57,7 @@ const useRoleManagement = () => {
                     },
                 },
             });
-            return true; // Для сброса формы на фронте
+            return true;
         } catch (e) {
             return false;
         }
@@ -72,7 +73,7 @@ const useRoleManagement = () => {
         if (success) {
             setNewRoleName('');
             setSelectedPerms([]);
-            setIsCreatePanelOpen(false); // Закрываем панель
+            setIsCreatePanelOpen(false);
             alert('Role created!');
         }
     };

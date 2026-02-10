@@ -22,7 +22,6 @@ export const RoleManagement = () => {
         dataPermissions,
 
         isCreatePanelOpen,
-        setIsCreatePanelOpen,
 
         handleCreateRoleBtn,
         newRoleName,
