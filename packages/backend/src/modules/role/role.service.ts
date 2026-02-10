@@ -47,13 +47,14 @@ export class RoleService {
 
         const createdRole = new this.roleModel({
             name: createRoleInput.name,
+            // Проверь, что в DTO это именно permissionIds, а в модели permissions
             permissions: createRoleInput.permissionIds || [],
             description: createRoleInput.description,
         });
 
         const savedRole = await createdRole.save();
 
-        return savedRole.populate(this.deepPopulate);
+        return await savedRole.populate(this.deepPopulate);
     }
 
     async addPermission(

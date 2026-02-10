@@ -4,18 +4,11 @@ export const CREATE_ROLE = gql`
     mutation CreateRole($createRoleInput: CreateRoleInput!) {
         createRole(createRoleInput: $createRoleInput) {
             _id
-            description
             name
             permissions {
                 _id
-                action
-                description
                 name
-                resource {
-                    _id
-                    name
-                    slug
-                }
+                action
             }
         }
     }

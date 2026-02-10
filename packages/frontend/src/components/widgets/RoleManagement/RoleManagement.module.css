@@ -201,3 +201,97 @@
     text-align: center;
     width: fit-content;
 }
+
+/* Контейнер для всех карточек ресурсов */
+.matrixContainer {
+    display: grid;
+    /* Создает колонки шириной минимум 250px, заполняя всё пространство */
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: #f8fafc; /* Легкий фон, чтобы отделить от основного списка */
+    border-radius: 8px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+/* Карточка отдельного ресурса */
+.resourceCard {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 1rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #475569;
+    margin-bottom: 0.75rem;
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+
+/* Сетка прав внутри карточки */
+.permsGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.permMiniRow {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+}
+
+.actionLabel {
+    color: #1e293b;
+}
+
+/* Панель управления (имя + кнопка) */
+.panelHeader {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.roleNameInput {
+    flex: 1;
+    padding: 0.6rem 1rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    outline: none;
+}
+
+.roleNameInput:focus {
+    border-color: #3b82f6;
+}
+
+.selectAllBtn {
+    background: none;
+    border: none;
+    color: #3b82f6;
+    font-size: 0.75rem;
+    cursor: pointer;
+    font-weight: 500;
+    padding: 2px 4px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.selectAllBtn:hover {
+    background: #eff6ff;
+    text-decoration: underline;
+}
