@@ -36,13 +36,12 @@ export class ResourceService implements OnModuleInit {
         // 2. Выполняем один запрос
         return this.resourceModel
             .find(filter)
-            .populate('permissions')
-            .limit(query ? 5 : 10) // Если ищем — топ 10, если просто открыли — топ 50
-            .sort({ name: 1 }) // Сортировка по алфавиту для удобства UI
+            .limit(query ? 5 : 10)
+            .sort({ name: 1 })
             .exec();
     }
 
-    // Регистрация нового ресурса (та самая кнопка в админке)
+    // Регистрация нового ресурса
     async registerResource(slug: string, name: string): Promise<Resource> {
         const newResource = new this.resourceModel({
             slug: slug.toUpperCase(),
@@ -78,7 +77,7 @@ export class ResourceService implements OnModuleInit {
         }
     }
 
-    // Вспомогательный метод для красивого имени (UserLocation -> User Location)
+    // Вспомогательный метод для имени
     private formatName(name: string): string {
         return name
             .replace(/([A-Z])/g, ' $1')

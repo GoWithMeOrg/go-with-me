@@ -240,7 +240,7 @@ type Query {
 type Resource {
   _id: ID!
   name: String!
-  permissions: [Permission!]
+  permissions: [Permission!]!
   slug: String!
 }
 

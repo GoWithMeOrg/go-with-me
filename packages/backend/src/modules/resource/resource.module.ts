@@ -1,4 +1,4 @@
-import { forwardRef, Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { ResourceService } from './resource.service';
 import { ResourceResolver } from './resource.resolver';
 import { MongooseModule } from '@nestjs/mongoose';

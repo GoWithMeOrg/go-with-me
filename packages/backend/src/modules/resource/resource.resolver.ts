@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, ResolveField, Parent, HideField } from '@nestjs/graphql';
 import { ResourceService } from './resource.service';
 import { Resource } from './entities/resource.entity';
 import { UseGuards } from '@nestjs/common';
@@ -6,10 +6,22 @@ import { Roles } from 'src/common/decorators/roles.decorator';
 import { SessionAuthGuard } from 'src/common/guards/session-auth.guard';
 import { RolesGuard } from 'src/common/guards/roles.guard';
 import { UserRole } from 'src/common/enums/roles.enum';
+import { Permission } from '../permission/entities/permission.entity';
+import { PermissionService } from '../permission/permission.service';
 
 @Resolver(() => Resource)
 export class ResourceResolver {
-    constructor(private readonly resourceService: ResourceService) {}
+    constructor(
+        private readonly resourceService: ResourceService,
+        private readonly permissionService: PermissionService
+    ) {}
+
+    @ResolveField(() => [Permission])
+    async permissions(@Parent() resource: Resource) {
+        const { _id } = resource;
+        // Запрашиваем права напрямую через сервис разрешений
+        return this.permissionService.getPermissionsByResourceId(_id);
+    }
 
     // Получить список всех ресурсов, которые уже есть в базе данных
     @Query(() => [Resource], {

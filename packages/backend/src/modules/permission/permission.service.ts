@@ -5,14 +5,12 @@ import { Model, Types, Schema as MongoSchema } from 'mongoose';
 import { Permission, PermissionDocument } from './entities/permission.entity';
 import { Resource } from '../resource/entities/resource.entity';
 import { Action } from './enums/action.enum';
-import { Role } from '../role/entities/role.entity';
 
 @Injectable()
 export class PermissionService {
     constructor(
         @InjectModel(Permission.name) private permissionModel: Model<PermissionDocument>,
-        @InjectModel(Resource.name) private resourceModel: Model<Resource>,
-        @InjectModel(Role.name) private roleModel: Model<Role>
+        @InjectModel(Resource.name) private resourceModel: Model<Resource>
     ) {}
 
     async createResourcePermissions(resourceId: MongoSchema.Types.ObjectId) {
@@ -69,6 +67,12 @@ export class PermissionService {
 
     async getAllPermissions(): Promise<Permission[]> {
         return this.permissionModel.find().populate('resource').exec();
+    }
+
+    async getPermissionsByResourceId(
+        resourceId: MongoSchema.Types.ObjectId
+    ): Promise<Permission[]> {
+        return this.permissionModel.find({ resource: resourceId }).exec();
     }
 
     async getPermissionByName(permissionName: string): Promise<Permission | null> {
