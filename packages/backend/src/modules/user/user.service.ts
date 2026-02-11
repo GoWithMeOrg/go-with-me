@@ -23,7 +23,10 @@ export class UserService {
     }
 
     getUserById(id: MongoSchema.Types.ObjectId): Promise<User | null> {
-        return this.userModel.findById(id);
+        return this.userModel
+            .findById(id)
+            .populate({ path: 'roles', populate: { path: 'permissions' } })
+            .exec();
     }
 
     getPublicProfile(id: MongoSchema.Types.ObjectId) {

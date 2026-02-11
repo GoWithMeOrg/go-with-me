@@ -11,9 +11,7 @@ import { UserRole } from 'src/common/enums/roles.enum';
 export class ResourceResolver {
     constructor(private readonly resourceService: ResourceService) {}
 
-    /**
-     * Получить список всех ресурсов, которые уже есть в базе данных
-     */
+    // Получить список всех ресурсов, которые уже есть в базе данных
     @Query(() => [Resource], {
         name: 'resources',
         description: 'Список всех зарегистрированных ресурсов',
@@ -34,18 +32,14 @@ export class ResourceResolver {
         return this.resourceService.searchResources(query);
     }
 
-    /**
-     * Найти один конкретный ресурс по его техническому имени (slug)
-     */
+    // Найти один конкретный ресурс по его техническому имени (slug)
     @Query(() => Resource, { name: 'resourceBySlug', nullable: true })
     async findOne(@Args('slug') slug: string) {
         return this.resourceService.findBySlug(slug);
     }
 
-    /**
-     * Регистрация новой сущности в системе прав.
-     * Эту мутацию мы будем вызывать из админки, когда находим новую модель в коде.
-     */
+    // Регистрация новой сущности в системе прав.
+    // Эту мутацию мы будем вызывать из админки, когда находим новую модель в коде.
     @Mutation(() => Resource)
     async registerResource(
         @Args('slug', { description: 'Техническое имя (например: EVENT)' }) slug: string,

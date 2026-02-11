@@ -47,7 +47,6 @@ export class RoleService {
 
         const createdRole = new this.roleModel({
             name: createRoleInput.name,
-            // Проверь, что в DTO это именно permissionIds, а в модели permissions
             permissions: createRoleInput.permissionIds || [],
             description: createRoleInput.description,
         });

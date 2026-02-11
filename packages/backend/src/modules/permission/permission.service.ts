@@ -37,7 +37,7 @@ export class PermissionService {
         // 4. Фильтруем те, которых не хватает
         const missingActions = allActions.filter((action) => !existingActions.includes(action));
 
-        // 5. Если чего-то не хватает — создаем пачкой (Bulk Insert)
+        // 5. Если чего-то не хватает — создаем пачкой
         if (missingActions.length > 0) {
             const newPermissions = missingActions.map((action) => ({
                 action,
