@@ -15,5 +15,5 @@ export class CreateUserInput {
     email: string;
 
     @Field(() => [String], { nullable: true })
-    roleIds?: string[];
+    roles?: string[];
 }

@@ -19,6 +19,6 @@ import { UserProfileService } from './user-profile.service';
         forwardRef(() => TagModule),
     ],
     providers: [UserProfileResolver, UserProfileService],
-    exports: [UserProfileService], // если нужно вызывать сбор профиля из других модулей
+    exports: [UserProfileService],
 })
 export class UserProfileModule {}

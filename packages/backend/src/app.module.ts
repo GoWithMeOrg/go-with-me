@@ -26,6 +26,7 @@ import { PermissionModule } from './modules/permission/permission.module';
 import { ResourceModule } from './modules/resource/resource.module';
 
 import { RolesGuard } from './common/guards/roles.guard';
+import { SeedsModule } from './modules/seeds/seeds.module';
 
 @Module({
     imports: [
@@ -82,6 +83,8 @@ import { RolesGuard } from './common/guards/roles.guard';
         // EntityRegistryModule,
 
         ResourceModule,
+
+        SeedsModule,
     ],
 
     controllers: [],

@@ -50,7 +50,7 @@ input CreateUserInput {
   firstName: String!
   image: String!
   lastName: String!
-  roleIds: [String!]
+  roles: [String!]
 }
 
 type Interest {
@@ -137,6 +137,9 @@ type Mutation {
 
   """добавать роль пользователю"""
   removeUserRole(roleName: String!, userId: ID!): User!
+
+  """Генерация тестовых данных (доступно только в DEV режиме)"""
+  seedUsers(inputs: SeedUserInput!): SeedUserResult!
 
   """Переключает статус активности права (включает/выключает)"""
   togglePermissionStatus(id: ID!): Permission!
@@ -251,6 +254,22 @@ type Role {
   permissions: [Permission!]!
 }
 
+input SeedUserInput {
+  category: CreateCategoryInput
+  interest: CreateInterestInput
+  location: CreateLocationInput
+  tag: CreateTagInput
+  user: CreateUserInput
+}
+
+type SeedUserResult {
+  category: Category
+  interest: Interest
+  location: Location
+  tag: Tag
+  user: User
+}
+
 type Tag {
   _id: ID!
   ownerId: ID!
@@ -297,7 +316,7 @@ input UpdateUserInput {
   firstName: String
   image: String
   lastName: String
-  roleIds: [String!]
+  roles: [String!]
 }
 
 input UploadFileInput {

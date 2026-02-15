@@ -30,18 +30,16 @@ export const GET_USER_BY_ID = gql`
 `;
 
 // export const GET_USERS = gql`
-//     query GetUsers {
+//     query Users {
 //         users {
 //             _id
-//             firstName
-//             lastName
-//             email
 //             description
+//             email
+//             firstName
 //             image
+//             lastName
 //             roles {
 //                 _id
-//                 name
-//                 description
 //             }
 //         }
 //     }
