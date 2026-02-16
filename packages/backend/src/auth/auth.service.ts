@@ -22,11 +22,6 @@ export class AuthService {
         email: string;
         roles?: string[];
     }): Promise<User> {
-        // const user = await this.userModel
-        //     .findOne({ email: userdata.email })
-        //     .populate('roles')
-        //     .exec();
-
         const user = await this.userModel
             .findOne({ email: userdata.email })
             .populate(this.userPopulateConfig)

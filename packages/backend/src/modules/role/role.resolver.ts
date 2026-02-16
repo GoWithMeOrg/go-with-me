@@ -1,4 +1,4 @@
-import { NotFoundException } from '@nestjs/common';
+import { NotFoundException, UseGuards } from '@nestjs/common';
 import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
 import { Schema as MongoSchema } from 'mongoose';
 
@@ -6,8 +6,14 @@ import { Role } from './entities/role.entity';
 import { RoleService } from './role.service';
 import { CreateRoleInput } from './dto/create-role.input';
 import { UpdateRoleInput } from './dto/update-role.input';
+import { SessionAuthGuard } from 'src/common/guards/session-auth.guard';
+import { RolesGuard } from 'src/common/guards/roles.guard';
+import { Roles } from 'src/common/decorators/roles.decorator';
+import { User } from '../user/entities/user.entity';
 
 @Resolver(() => Role)
+@UseGuards(SessionAuthGuard, RolesGuard)
+@Roles('admin')
 export class RoleResolver {
     constructor(private readonly roleService: RoleService) {}
 
@@ -40,6 +46,17 @@ export class RoleResolver {
         @Args('id', { type: () => ID }) id: MongoSchema.Types.ObjectId
     ): Promise<Role | null> {
         return this.roleService.getRoleById(id);
+    }
+
+    @Query(() => User, {
+        name: 'roleByUserId',
+        description: 'Поиск роли по id пользователя',
+        nullable: true,
+    })
+    async getRoleByUserId(
+        @Args('userId', { type: () => ID }) userId: MongoSchema.Types.ObjectId
+    ): Promise<User | null> {
+        return this.roleService.getRoleByUserId(userId);
     }
 
     @Mutation(() => Role)

@@ -6,12 +6,15 @@ import { CreateRoleInput } from './dto/create-role.input';
 import { UpdateRoleInput } from './dto/update-role.input';
 
 import { Role, RoleDocument } from './entities/role.entity';
+import { User, UserDocument } from '../user/entities/user.entity';
 
 @Injectable()
 export class RoleService {
     constructor(
         @InjectModel(Role.name)
-        private roleModel: Model<RoleDocument>
+        private roleModel: Model<RoleDocument>,
+        @InjectModel(User.name)
+        private userModel: Model<UserDocument>
     ) {}
 
     // Хелпер для повторяющегося глубокого populate
@@ -32,6 +35,10 @@ export class RoleService {
 
     async getRoleById(id: MongoSchema.Types.ObjectId): Promise<Role | null> {
         return this.roleModel.findById(id).populate(this.deepPopulate).exec();
+    }
+
+    async getRoleByUserId(userId: MongoSchema.Types.ObjectId): Promise<User | null> {
+        return this.userModel.findById(userId).populate('roles').exec();
     }
 
     async getRolesByIds(roleIds: string[]) {

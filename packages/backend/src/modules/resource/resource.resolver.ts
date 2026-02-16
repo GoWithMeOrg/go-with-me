@@ -5,7 +5,6 @@ import { UseGuards } from '@nestjs/common';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { SessionAuthGuard } from 'src/common/guards/session-auth.guard';
 import { RolesGuard } from 'src/common/guards/roles.guard';
-import { UserRole } from 'src/common/enums/roles.enum';
 import { Permission } from '../permission/entities/permission.entity';
 import { PermissionService } from '../permission/permission.service';
 
@@ -37,7 +36,7 @@ export class ResourceResolver {
         description: 'Поиск ресурсов по названию или слагу для управления ролями',
     })
     @UseGuards(SessionAuthGuard, RolesGuard)
-    @Roles(UserRole.ADMIN) // Поиск ресурсов доступен только админам
+    @Roles('admin') // Поиск ресурсов доступен только админам
     async searchResources(
         @Args('query', { type: () => String, nullable: true }) query?: string
     ): Promise<Resource[]> {

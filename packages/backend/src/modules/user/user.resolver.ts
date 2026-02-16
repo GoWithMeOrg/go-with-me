@@ -3,7 +3,6 @@ import { UseGuards } from '@nestjs/common';
 import { Schema as MongoSchema } from 'mongoose';
 
 import { UserService } from './user.service';
-import { LocationService } from 'src/modules/location/location.service';
 
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
@@ -15,14 +14,9 @@ import { RolesGuard } from 'src/common/guards/roles.guard';
 
 import { Roles } from '../../common/decorators/roles.decorator';
 
-import { UserRole } from 'src/common/enums/roles.enum';
-
 @Resolver(() => User)
 export class UserResolver {
-    constructor(
-        private readonly userService: UserService,
-        private readonly locationService: LocationService
-    ) {}
+    constructor(private readonly userService: UserService) {}
 
     @Query(() => User, {
         name: 'user',
@@ -75,7 +69,7 @@ export class UserResolver {
         description: 'добавать роль пользователю',
     })
     @UseGuards(SessionAuthGuard, RolesGuard)
-    @Roles(UserRole.ADMIN) // Только администратор может назначать роли
+    @Roles('admin') // Только администратор может назначать роли
     async addUserRole(
         @Args('userId', { type: () => ID }) userId: MongoSchema.Types.ObjectId,
         @Args('roleName') roleName: string
@@ -88,7 +82,7 @@ export class UserResolver {
         description: 'добавать роль пользователю',
     })
     @UseGuards(SessionAuthGuard, RolesGuard)
-    @Roles(UserRole.ADMIN)
+    @Roles('admin')
     async removeRoleByName(
         @Args('userId', { type: () => ID }) userId: MongoSchema.Types.ObjectId,
         @Args('roleName') roleName: string

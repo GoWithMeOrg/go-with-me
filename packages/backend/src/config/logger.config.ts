@@ -7,17 +7,16 @@ export async function getLoggerConfig(configService: ConfigService) {
         pinoHttp: isDev(configService)
             ? {
                   level: 'debug',
+                  redact: {
+                      paths: ['req.headers', 'res.headers'],
+                      remove: true,
+                  },
                   transport: {
                       target: 'pino-pretty',
                       options: {
                           colorize: true,
                           translateTime: 'SYS:standard',
                           singleLine: false,
-                          redact: [
-                              'req.headers', // Все заголовки запроса
-                              'res.headers', // Все заголовки ответа
-                              'req.headers.cookie', //
-                          ],
                       },
                   },
               }

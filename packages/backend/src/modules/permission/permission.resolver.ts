@@ -2,12 +2,14 @@ import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
 import { Schema as MongoSchema } from 'mongoose';
 import { PermissionService } from './permission.service';
 import { Permission } from './entities/permission.entity';
-import { CreatePermissionInput } from './dto/create-permission.input';
-import { UpdatePermissionInput } from './dto/update-permission.input';
-import { NotFoundException } from '@nestjs/common';
-import { DeleteResult } from '../delete-result/delete-result.entity';
+import { NotFoundException, UseGuards } from '@nestjs/common';
+import { SessionAuthGuard } from 'src/common/guards/session-auth.guard';
+import { RolesGuard } from 'src/common/guards/roles.guard';
+import { Roles } from 'src/common/decorators/roles.decorator';
 
 @Resolver(() => Permission)
+@UseGuards(SessionAuthGuard, RolesGuard)
+@Roles('admin')
 export class PermissionResolver {
     constructor(private readonly permissionService: PermissionService) {}
 
@@ -46,12 +48,6 @@ export class PermissionResolver {
         return this.permissionService.getPermissionById(new MongoSchema.Types.ObjectId(id) as any);
     }
 
-    // @Mutation(() => Permission)
-    // async createPermission(
-    //     @Args('createPermissionInput') createPermissionInput: CreatePermissionInput
-    // ): Promise<Permission> {
-    //     return this.permissionService.createPermission(createPermissionInput);
-    // }
     @Mutation(() => [Permission], {
         name: 'createResourcePermissions',
         description:

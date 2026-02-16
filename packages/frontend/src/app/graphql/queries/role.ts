@@ -20,3 +20,13 @@ export const GET_ROLES = gql`
         }
     }
 `;
+
+export const GET_ROLES_BY_USER_ID = gql`
+    query RoleByUserId($userId: ID!) {
+        roleByUserId(userId: $userId) {
+            roles {
+                name
+            }
+        }
+    }
+`;

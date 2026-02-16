@@ -10,7 +10,6 @@ import { Roles } from '../common/decorators/roles.decorator';
 
 import type { GqlContext } from 'src/common/types/graphql-context';
 
-import { UserRole } from '../common/enums/roles.enum';
 @Resolver(() => User)
 export class AuthResolver {
     @Query(() => User, { nullable: true })
@@ -22,7 +21,7 @@ export class AuthResolver {
     // резолвер с требованием роли ADMIN
     @Query(() => String)
     @UseGuards(SessionAuthGuard, RolesGuard)
-    @Roles(UserRole.ADMIN)
+    @Roles('admin')
     async adminRoute(@Context() context: GqlContext): Promise<string> {
         return 'Доступ только для администраторов';
     }
@@ -30,7 +29,7 @@ export class AuthResolver {
     // резолвер с требованиями ролей админа и модератора
     @Query(() => String)
     @UseGuards(SessionAuthGuard, RolesGuard)
-    @Roles(UserRole.ADMIN, UserRole.MODERATOR)
+    @Roles('admin', 'moderator')
     async moderatorRoute(@Context() context: GqlContext): Promise<string> {
         return 'Доступ для администраторов и модераторов';
     }

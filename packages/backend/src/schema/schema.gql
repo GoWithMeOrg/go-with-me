@@ -217,6 +217,9 @@ type Query {
   """Поиск роли по названию"""
   roleByName(name: String!): Role!
 
+  """Поиск роли по id пользователя"""
+  roleByUserId(userId: ID!): User
+
   """Получить все роли"""
   roles: [Role!]!
 

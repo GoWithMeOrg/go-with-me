@@ -20,7 +20,7 @@ export class SessionAuthGuard implements CanActivate {
 
         // Добавить логирование для отладки
         console.log('Session user:', req?.user);
-        // return !!req?.user;
-        return true;
+        return !!req?.user;
+        //return true;
     }
 }

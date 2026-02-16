@@ -23,8 +23,7 @@ import { RolesGuard } from '../common/guards/roles.guard';
 
 import { Roles } from '../common/decorators/roles.decorator';
 import { SessionService } from 'src/modules/session/session.service';
-
-import { UserRole } from '../common/enums/roles.enum';
+import { Role } from 'src/modules/role/entities/role.entity';
 
 @Controller('auth')
 export class AuthController {
@@ -42,7 +41,7 @@ export class AuthController {
     @UseGuards(GoogleOAuthGuard)
     async googleAuthRedirect(@Req() req: ReqWithPassport, @Res() res: Response) {
         // req.user уже есть после авторизации через Google
-        console.log('google callback req.user =', req.user);
+        // console.log('google callback req.user =', req.user);
         const user = req.user;
 
         return new Promise((resolve) => {
@@ -83,7 +82,7 @@ export class AuthController {
 
     @Get('profile/:user_id/private')
     @UseGuards(SessionAuthGuard, RolesGuard)
-    @Roles(UserRole.USER, UserRole.ADMIN)
+    @Roles('user', 'admin')
     async getProfileById(
         @Param('id') id: MongooSchema.Types.ObjectId,
         @Req() req: ReqWithPassport
@@ -91,8 +90,8 @@ export class AuthController {
         const currentUser = req.user as User;
 
         // Извлекаем текстовые имена ролей для проверки
-        const userRoleNames = currentUser.roles.map((r: any) => r.role);
-        const isAdmin = userRoleNames.includes(UserRole.ADMIN);
+        const userRoleNames = currentUser.roles.map((role: Role) => role.name);
+        const isAdmin = userRoleNames.includes('admin');
 
         // Сравнение ID: приводим к строке, так как из БД может прийти ObjectId
         const isOwner = String(currentUser._id) === String(id);
@@ -153,5 +152,15 @@ export class AuthController {
         if (!userId) throw new ForbiddenException('Not authenticated');
         const ok = await this.sessionService.deleteSessionById(sid, String(userId));
         return { ok };
+    }
+}
+
+@Controller('admin') // Все роуты внутри будут начинаться с /admin
+@UseGuards(SessionAuthGuard, RolesGuard)
+export class AdminController {
+    @Get('roles')
+    @Roles('admin')
+    getRoles() {
+        return ['admin', 'user', 'moderator'];
     }
 }
