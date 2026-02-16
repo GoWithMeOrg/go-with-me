@@ -1,4 +1,4 @@
-import { gql } from 'graphql-tag';
+import { gql } from '@apollo/client';
 
 export const GET_ROLES = gql`
     query GetRoles {
@@ -27,6 +27,15 @@ export const GET_ROLES_BY_USER_ID = gql`
             roles {
                 name
             }
+        }
+    }
+`;
+
+export const GET_ROLES_BY_NAME = gql`
+    query RoleByName($name: String!) {
+        roleByName(name: $name) {
+            _id
+            name
         }
     }
 `;

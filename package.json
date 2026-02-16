@@ -14,8 +14,7 @@
         "frontend:format": "prettier packages/frontend -w",
         "backend:format": "prettier packages/backend -w",
         "import:mongo": "./scripts/import-mongo-data.sh",
-        "codegen": "graphql-codegen --config codegen.ts",
-        "codegen:watch": "graphql-codegen --config codegen.ts --watch"
+        "codegen": "graphql-codegen --config codegen.ts"
     },
     "devDependencies": {
         "@eslint/eslintrc": "^3.3.1",

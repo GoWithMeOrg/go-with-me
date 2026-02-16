@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { SEED_USERS } from '@/app/graphql/mutations/seedUsers';
+import { GET_ROLES_BY_NAME } from '@/app/graphql/queries/role';
+import { RoleByNameQuery, RoleByNameQueryVariables } from '@/app/graphql/types';
 import { categoriesList, interestsList } from '@/components/shared/Dropdown/dropdownLists';
-import { useMutation } from '@apollo/client/react';
+import { useMutation, useQuery } from '@apollo/client/react';
 import { faker } from '@faker-js/faker';
 
 import { tagsList } from '../tagList';
@@ -12,6 +14,12 @@ export const useGeneratorUser = () => {
     const [generatedUsers, setGeneratedUsers] = useState<string>('');
 
     const { generateLocation } = useGeneratorLocation();
+
+    const { data } = useQuery<RoleByNameQuery, RoleByNameQueryVariables>(GET_ROLES_BY_NAME, {
+        variables: {
+            name: 'user',
+        },
+    });
 
     const [seedUsers] = useMutation(SEED_USERS);
 
@@ -28,7 +36,7 @@ export const useGeneratorUser = () => {
                 const firstName = faker.person.firstName();
                 const lastName = faker.person.lastName();
                 const email = faker.internet.email({ firstName, lastName }).toLowerCase();
-                const roles = ['69848ba22f26db2c3f2ffe43'];
+                const roles = data?.roleByName?._id;
                 const location = generateLocation();
                 const categories = faker.helpers.arrayElements(categoriesList, { min: 1, max: 5 });
                 const interests = faker.helpers.arrayElements(interestsList, { min: 1, max: 5 });

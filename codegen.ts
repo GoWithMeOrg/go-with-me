@@ -2,25 +2,36 @@ import type { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
     overwrite: true,
-    // Подхватываем схему из файлов бэкенда
-    schema: ['./packages/backend/src/schema/schema.gql', './packages/backend/src/**/*.gql'],
-    // теперь он ищет запросы в папке фронтенда
-    documents: ['packages/frontend/src/**/*.{ts,tsx}'],
+    schema: ['./packages/backend/src/schema/schema.gql', './packages/backend/src/backend/**/*.gql'],
+
+    // Рекурсивно ищем gql‑теги в TS/TSX
+    documents: [
+        'packages/frontend/src/app/graphql/queries/*.{ts,tsx}',
+
+        '!packages/frontend/src/app/graphql/mutations/companionRequest.ts',
+        '!packages/frontend/src/app/graphql/mutations/companions.ts',
+        '!packages/frontend/src/app/graphql/mutations/invations.ts',
+        '!packages/frontend/src/app/graphql/mutations/join.ts',
+        '!packages/frontend/src/app/graphql/mutations/like.ts',
+
+        '!packages/frontend/src/app/graphql/queries/applications.ts',
+        '!packages/frontend/src/app/graphql/queries/companions.ts',
+        '!packages/frontend/src/app/graphql/queries/events.ts',
+        '!packages/frontend/src/app/graphql/queries/findUsers.ts',
+        '!packages/frontend/src/app/graphql/queries/invations.ts',
+        '!packages/frontend/src/app/graphql/queries/joined.ts',
+        '!packages/frontend/src/app/graphql/queries/liked.ts',
+    ],
+
+    ignoreNoDocuments: true,
 
     generates: {
-        'packages/frontend/src/app/types/types.ts': {
-            plugins: [
-                'typescript', // Базовые типы (Scalars, Enums)
-                'typescript-operations', // Типы Query и Mutation
-                'typescript-react-apollo', // Генерирует готовые хуки (useSearchQuery и т.д.)
-            ],
+        // Общие типы для всей frontend‑части
+        'packages/frontend/src/app/graphql/types.ts': {
+            plugins: ['typescript', 'typescript-operations', 'typed-document-node'],
             config: {
-                // Важные настройки для удобства:
-                withHooks: true, // Сгенерирует готовые хуки типа useSearchLazyQuery
-                withComponent: false, // Не генерировать старые классовые компоненты
-                withHOC: false, // Не генерировать HOC
-                typesPrefix: 'I', // (Опционально) Добавит 'I' к интерфейсам: IUser
-                maybeValue: 'T | null', // Как обрабатывать nullable поля
+                avoidOptionals: true,
+                nonOptionalTypename: true,
             },
         },
     },
