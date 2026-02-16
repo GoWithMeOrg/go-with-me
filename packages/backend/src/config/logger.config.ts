@@ -7,6 +7,10 @@ export async function getLoggerConfig(configService: ConfigService) {
         pinoHttp: isDev(configService)
             ? {
                   level: 'debug',
+                  redact: {
+                      paths: ['req.headers', 'res.headers'],
+                      remove: true,
+                  },
                   transport: {
                       target: 'pino-pretty',
                       options: {

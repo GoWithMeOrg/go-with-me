@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
 
 export const GET_LOCATION_BY_ID = gql`
     query LocationById($locationById: ID!) {
@@ -10,10 +10,8 @@ export const GET_LOCATION_BY_ID = gql`
             }
             properties {
                 address
-                createdAt
                 ownerId
                 ownerType
-                updatedAt
             }
             type
         }
@@ -30,10 +28,8 @@ export const GET_LOCATION_BY_OWNER_ID = gql`
             }
             properties {
                 address
-                createdAt
                 ownerId
                 ownerType
-                updatedAt
             }
             type
         }

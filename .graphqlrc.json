@@ -3,8 +3,8 @@
         "default": {
             "schema": "./packages/backend/src/schema/schema.gql",
             "documents": [
-                "./packages/web-frontend/src/**/*.ts",
-                "./packages/web-frontend/src/**/*.tsx",
+                "./packages/frontend/src/**/*.ts",
+                "./packages/frontend/src/**/*.tsx",
                 "./packages/backend/src/**/*.graphql"
             ]
         }

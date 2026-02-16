@@ -2,6 +2,13 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+enum Action {
+  CREATE
+  DELETE
+  EDIT
+  READ
+}
+
 type Category {
   _id: ID!
   categories: [String!]!
@@ -26,6 +33,12 @@ input CreateLocationInput {
   properties: LocationPropertiesInput!
 }
 
+input CreateRoleInput {
+  description: String
+  name: String!
+  permissionIds: [String]
+}
+
 input CreateTagInput {
   ownerId: ID!
   ownerType: String!
@@ -33,19 +46,12 @@ input CreateTagInput {
 }
 
 input CreateUserInput {
-  createdAt: DateTime!
   email: String!
   firstName: String!
   image: String!
   lastName: String!
-  roles: [String!]!
-  updatedAt: DateTime!
+  roles: [String!]
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 type Interest {
   _id: ID!
@@ -72,10 +78,8 @@ input LocationGeometryInput {
 
 type LocationProperties {
   address: String
-  createdAt: DateTime!
   ownerId: String!
   ownerType: String!
-  updatedAt: DateTime!
 }
 
 input LocationPropertiesInput {
@@ -85,11 +89,21 @@ input LocationPropertiesInput {
 }
 
 type Mutation {
+  addPermissionToRole(permissionId: [ID!]!, roleId: ID!): Role!
+
+  """добавать роль пользователю"""
+  addUserRole(roleName: String!, userId: ID!): User!
   createCategories(createCategoriesInput: CreateCategoryInput!): Category!
   createInterest(createInterestInput: CreateInterestInput!): Interest!
 
   """Создать локацию"""
   createLocation(createLocationInput: CreateLocationInput!): Location!
+
+  """
+  Creates missing CRUD permissions for a specific resource based on Action enum
+  """
+  createResourcePermissions(resourceId: ID!): [Permission!]!
+  createRole(createRoleInput: CreateRoleInput!): Role!
   createTag(createTagInput: CreateTagInput!): Tag!
 
   """Создать пользователя"""
@@ -100,25 +114,55 @@ type Mutation {
 
   """Получить пресайнд-ссылку для прямой загрузки файла в MinIO/S3"""
   getPresignedUrl(entityId: String!, folder: String! = "events", input: UploadFileInput!): PresignedUrlResponse!
+  registerResource(
+    """Отображаемое имя (например: Мероприятия)"""
+    name: String!
+
+    """Техническое имя (например: EVENT)"""
+    slug: String!
+  ): Resource!
   removeCategories(id: ID!): Category!
   removeInterest(id: ID!): Interest!
 
   """Удалить локацию"""
   removeLocation(id: ID!): Boolean!
+  removePermissionFromRole(permissionId: ID!, roleId: ID!): Role!
+
+  """Удаление роли"""
+  removeRole(id: ID!): Boolean!
   removeTag(id: ID!): Tag!
 
   """Удалить пользователя"""
   removeUser(id: ID!): Boolean!
+
+  """добавать роль пользователю"""
+  removeUserRole(roleName: String!, userId: ID!): User!
+
+  """Генерация тестовых данных (доступно только в DEV режиме)"""
+  seedUsers(inputs: SeedUserInput!): SeedUserResult!
+
+  """Переключает статус активности права (включает/выключает)"""
+  togglePermissionStatus(id: ID!): Permission!
   updateCategories(updateCategoriesInput: UpdateCategoryInput!): Category!
   updateInterest(updateInterestInput: UpdateInterestInput!): Interest!
 
   """Обновить локацию"""
   updateLocation(updateLocationInput: UpdateLocationInput!): Location!
+  updateRole(updateRoleInput: UpdateRoleInput!): Role!
   updateTag(updateTagInput: UpdateTagInput!): Tag!
 
   """Обновить данные пользователя"""
   updateUser(updateUserId: ID!, user: UpdateUserInput!): User!
   updateUserProfile(categoryId: ID, createCategoryInput: CreateCategoryInput, createInterestInput: CreateInterestInput, createLocationInput: CreateLocationInput, createTagInput: CreateTagInput, interestId: ID, locationId: ID, tagId: ID, updateCategoryInput: UpdateCategoryInput, updateInterestInput: UpdateInterestInput, updateLocationInput: UpdateLocationInput, updateTagInput: UpdateTagInput, updateUserInput: UpdateUserInput, userId: ID!): UserProfile!
+}
+
+type Permission {
+  _id: ID!
+  action: Action!
+  description: String
+  isActive: Boolean!
+  name: String!
+  resource: Resource!
 }
 
 type PresignedUrlResponse {
@@ -153,6 +197,34 @@ type Query {
   """Поиск места по ownerId"""
   locationByOwnerId(ownerId: ID!): Location!
   moderatorRoute: String!
+
+  """Поиск права по id"""
+  permissionById(id: ID!): Permission
+
+  """Поиск права по названию"""
+  permissionByName(name: String!): Permission!
+
+  """Получить все права"""
+  permissions: [Permission!]!
+  resourceBySlug(slug: String!): Resource
+
+  """Список всех зарегистрированных ресурсов"""
+  resources: [Resource!]!
+
+  """Поиск роли по id"""
+  roleById(id: ID!): Role
+
+  """Поиск роли по названию"""
+  roleByName(name: String!): Role!
+
+  """Поиск роли по id пользователя"""
+  roleByUserId(userId: ID!): User
+
+  """Получить все роли"""
+  roles: [Role!]!
+
+  """Поиск ресурсов по названию или слагу для управления ролями"""
+  searchResources(query: String): [Resource!]!
   session: User
 
   """Поиск категорий по id"""
@@ -169,6 +241,36 @@ type Query {
 
   """Получить всех пользователей"""
   users: [User!]!
+}
+
+type Resource {
+  _id: ID!
+  name: String!
+  permissions: [Permission!]!
+  slug: String!
+}
+
+type Role {
+  _id: ID!
+  description: String
+  name: String!
+  permissions: [Permission!]!
+}
+
+input SeedUserInput {
+  category: CreateCategoryInput
+  interest: CreateInterestInput
+  location: CreateLocationInput
+  tag: CreateTagInput
+  user: CreateUserInput
+}
+
+type SeedUserResult {
+  category: Category
+  interest: Interest
+  location: Location
+  tag: Tag
+  user: User
 }
 
 type Tag {
@@ -198,20 +300,26 @@ input UpdateLocationPropertiesInput {
   address: String
 }
 
+input UpdateRoleInput {
+  _id: String!
+  description: String
+  name: String
+  permissionIds: [String!]
+}
+
 input UpdateTagInput {
   _id: String
   tags: [String!]
 }
 
 input UpdateUserInput {
-  _id: String!
+  _id: ID!
   description: String
   email: String
   firstName: String
   image: String
   lastName: String
   roles: [String!]
-  updatedAt: DateTime
 }
 
 input UploadFileInput {
@@ -223,15 +331,13 @@ input UploadFileInput {
 }
 
 type User {
-  _id: String!
-  createdAt: DateTime!
+  _id: ID!
   description: String
   email: String!
   firstName: String!
   image: String
   lastName: String!
-  roles: [String!]!
-  updatedAt: DateTime!
+  roles: [Role!]
 }
 
 type UserProfile {

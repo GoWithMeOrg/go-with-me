@@ -53,23 +53,17 @@ export const UPDATE_USER_PROFILE = gql`
                 }
                 properties {
                     address
-                    createdAt
                     ownerId
                     ownerType
-                    updatedAt
                 }
                 type
             }
             user {
-                _id
-                createdAt
                 description
                 email
                 firstName
                 image
                 lastName
-                roles
-                updatedAt
             }
             tag {
                 _id

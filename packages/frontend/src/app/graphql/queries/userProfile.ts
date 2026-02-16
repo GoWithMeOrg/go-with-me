@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
 
 export const GET_USER_PROFILE_BY_ID = gql`
     query UserProfile($userId: ID!) {
@@ -26,13 +26,11 @@ export const GET_USER_PROFILE_BY_ID = gql`
             }
             user {
                 _id
-                createdAt
                 description
                 email
                 firstName
                 image
                 lastName
-                roles
             }
         }
     }

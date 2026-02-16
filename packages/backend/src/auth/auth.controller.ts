@@ -8,18 +8,22 @@ import {
     UseGuards,
     Delete,
 } from '@nestjs/common';
-import type { Response } from 'express';
-import type { ReqWithPassport } from 'src/auth/types/graphql-context';
-import { GoogleOAuthGuard } from './GoogleAuth/guard/google-oauth.guard';
-import { SessionAuthGuard } from './guard/session-auth.guard';
-import { Roles } from './decorators/roles.decorator';
-import { Role } from './interfaces/role.interface';
-import { RolesGuard } from './guard/roles.guard';
-import { User } from 'src/user/entities/user.entity';
-import { UserService } from 'src/user/user.service';
-import { SessionService } from 'src/session/session.service';
-import { Schema as MongooSchema } from 'mongoose';
 import { ConfigService } from '@nestjs/config';
+import type { Response } from 'express';
+import { Schema as MongooSchema } from 'mongoose';
+
+import type { ReqWithPassport } from 'src/common/types/graphql-context';
+
+import { UserService } from 'src/modules/user/user.service';
+import { User } from 'src/modules/user/entities/user.entity';
+
+import { GoogleOAuthGuard } from './GoogleAuth/guard/google-oauth.guard';
+import { SessionAuthGuard } from '../common/guards/session-auth.guard';
+import { RolesGuard } from '../common/guards/roles.guard';
+
+import { Roles } from '../common/decorators/roles.decorator';
+import { SessionService } from 'src/modules/session/session.service';
+import { Role } from 'src/modules/role/entities/role.entity';
 
 @Controller('auth')
 export class AuthController {
@@ -37,7 +41,7 @@ export class AuthController {
     @UseGuards(GoogleOAuthGuard)
     async googleAuthRedirect(@Req() req: ReqWithPassport, @Res() res: Response) {
         // req.user уже есть после авторизации через Google
-        console.log('google callback req.user =', req.user);
+        // console.log('google callback req.user =', req.user);
         const user = req.user;
 
         return new Promise((resolve) => {
@@ -78,67 +82,28 @@ export class AuthController {
 
     @Get('profile/:user_id/private')
     @UseGuards(SessionAuthGuard, RolesGuard)
-    @Roles(Role.USER, Role.ADMIN)
+    @Roles('user', 'admin')
     async getProfileById(
         @Param('id') id: MongooSchema.Types.ObjectId,
         @Req() req: ReqWithPassport
     ) {
         const currentUser = req.user as User;
 
+        // Извлекаем текстовые имена ролей для проверки
+        const userRoleNames = currentUser.roles.map((role: Role) => role.name);
+        const isAdmin = userRoleNames.includes('admin');
+
+        // Сравнение ID: приводим к строке, так как из БД может прийти ObjectId
+        const isOwner = String(currentUser._id) === String(id);
+
         // Проверяем, имеет ли пользователь доступ к этому профилю
-        if (currentUser._id !== id && !currentUser.roles.includes(Role.ADMIN)) {
+        if (!isOwner && !isAdmin) {
             throw new ForbiddenException('Нет прав для просмотра этого профиля');
         }
 
         return this.userService.getUserById(id);
     }
 
-    // Диагностический эндпоинт: возвращает req.user и информацию о сессии (без guard)
-    // @Get('session-check')
-    // sessionCheck(@Req() req: Request) {
-    // 	console.log('session-check - req.user =', (req as any).user);
-    // 	console.log('session-check - req.sessionID =', (req as any).sessionID);
-    // 	console.log(
-    // 		'session-check - req.session =',
-    // 		JSON.stringify((req as any).session || {}),
-    // 	);
-    // 	console.log(
-    // 		'session-check - req.session.passport =',
-    // 		(req as any).session?.passport,
-    // 	);
-    // 	return {
-    // 		user: (req as any).user || null,
-    // 		sessionID: (req as any).sessionID || null,
-    // 		session: (req as any).session || null,
-    // 	};
-    // }
-
-    // Диагностический эндпоинт: защищён SessionAuthGuard
-    // @Get('session-protected')
-    // @UseGuards(SessionAuthGuard)
-    // sessionProtected(@Req() req: Request) {
-    // 	console.log('session-protected - req.user =', (req as any).user);
-    // 	return { ok: true, user: (req as any).user };
-    // }
-
-    // logout(@Req() req: ReqWithPassport, @Res() res: Response) {
-    //     // Важно: дождаться завершения req.logout, затем удалять сессию.
-    //     // Иначе возможна гонка: если session.destroy вызван раньше, passport может
-    //     // попытаться вызвать req.session.regenerate и получить undefined.
-    //     req.logout((err?: Error | null) => {
-    //         if (err) {
-    //             console.error('req.logout error', err);
-    //         }
-    //         if (req.session && typeof req.session.destroy === 'function') {
-    //             req.session.destroy((destroyErr?: Error | null) => {
-    //                 if (destroyErr) console.error('session.destroy error', destroyErr);
-    //                 return res.redirect(this.configService.getOrThrow('ALLOWED_ORIGIN'));
-    //             });
-    //         } else {
-    //             return res.redirect(this.configService.getOrThrow('ALLOWED_ORIGIN'));
-    //         }
-    //     });
-    // }
     @Get('logout')
     logout(@Req() req: ReqWithPassport, @Res() res: Response) {
         // 1. Берем URL фронтенда. Добавляем запасной вариант (fallback), чтобы не было undefined
@@ -187,5 +152,15 @@ export class AuthController {
         if (!userId) throw new ForbiddenException('Not authenticated');
         const ok = await this.sessionService.deleteSessionById(sid, String(userId));
         return { ok };
+    }
+}
+
+@Controller('admin') // Все роуты внутри будут начинаться с /admin
+@UseGuards(SessionAuthGuard, RolesGuard)
+export class AdminController {
+    @Get('roles')
+    @Roles('admin')
+    getRoles() {
+        return ['admin', 'user', 'moderator'];
     }
 }

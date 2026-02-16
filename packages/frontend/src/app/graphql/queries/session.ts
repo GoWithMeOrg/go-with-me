@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
 
 export const GET_SESSION = gql`
     query GetSession {
@@ -7,7 +7,6 @@ export const GET_SESSION = gql`
             firstName
             lastName
             email
-            roles
         }
     }
 `;

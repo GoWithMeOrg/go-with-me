@@ -19,11 +19,13 @@ A monorepo application with Next.js frontend and NestJS backend.
 ### Running Locally
 
 1. Install dependencies:
+
 ```bash
 pnpm install
 ```
 
 2. Start development servers:
+
 ```bash
 # Frontend (Next.js)
 pnpm --filter web-frontend dev
@@ -41,6 +43,7 @@ docker-compose up
 ```
 
 This will start:
+
 - Frontend on `http://localhost:3000`
 - Backend on `http://localhost:4000`
 - MongoDB on `localhost:27017`
@@ -63,13 +66,13 @@ This project is configured for deployment to a DigitalOcean Droplet using Docker
 
 1. **Developer pushes to `main` branch**
 2. **GitHub Actions** (`build-and-push-images.yml`):
-   - Runs tests
-   - Builds Docker images for frontend and backend
-   - Pushes images to DigitalOcean Container Registry
+    - Runs tests
+    - Builds Docker images for frontend and backend
+    - Pushes images to DigitalOcean Container Registry
 3. **GitHub Actions** (`deploy-to-droplet.yml`):
-   - Connects to Droplet via SSH
-   - Pulls latest images from DOCR
-   - Updates services with `docker-compose up -d`
+    - Connects to Droplet via SSH
+    - Pulls latest images from DOCR
+    - Updates services with `docker-compose up -d`
 
 ### Initial Setup
 
@@ -93,13 +96,16 @@ Add the following secrets to your GitHub repository:
 Replace placeholders in the following files:
 
 **`docker-compose.prod.yml`**:
+
 - `MY_REGISTRY` → Your DOCR registry name
 - `MY_DOMAIN.COM` → Your domain (e.g., `tribeplans.ru`)
 
 **`.github/workflows/build-and-push-images.yml`**:
+
 - `MY_REGISTRY` → Your DOCR registry name
 
 **`infra/nginx/conf.d/default.conf`**:
+
 - `MY_DOMAIN.COM` → Your domain (e.g., `tribeplans.ru`)
 
 #### 4. Droplet Setup
@@ -197,8 +203,8 @@ docker-compose -f docker-compose.prod.yml up -d
 #### Updating Domains
 
 1. Update `MY_DOMAIN.COM` in:
-   - `docker-compose.prod.yml`
-   - `infra/nginx/conf.d/default.conf`
+    - `docker-compose.prod.yml`
+    - `infra/nginx/conf.d/default.conf`
 2. Update DNS records to point to your Droplet IP
 3. Restart nginx: `docker-compose -f docker-compose.prod.yml restart reverse-proxy`
 
@@ -297,3 +303,7 @@ pnpm --filter @go-with-me/backend start:prod   # Start production server
 ## License
 
 [Your License Here]
+
+# генерация типов из схемы
+
+npx graphql-codegen --config

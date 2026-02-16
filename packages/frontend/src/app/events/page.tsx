@@ -14,8 +14,6 @@ import { useEventList } from '@/components/widgets/EventList/hooks';
 import { useQuery } from '@apollo/client/react';
 import gql from 'graphql-tag';
 import type { NextPage } from 'next';
-import { User } from 'next-auth';
-import { useSession } from 'next-auth/react';
 
 import classes from './page.module.css';
 
@@ -26,7 +24,6 @@ const GET_SESSION = gql`
             firstName
             lastName
             email
-            roles
         }
     }
 `;

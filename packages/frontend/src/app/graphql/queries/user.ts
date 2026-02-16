@@ -1,17 +1,46 @@
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
 
 export const GET_USER_BY_ID = gql`
-    query User($userId: ID!) {
+    query GetUserById($userId: ID!) {
         user(id: $userId) {
             _id
-            createdAt
             description
             email
             firstName
             image
             lastName
-            roles
-            updatedAt
+            roles {
+                _id
+                description
+                name
+                permissions {
+                    _id
+                    action
+                    description
+                    name
+                    resource {
+                        _id
+                        name
+                        slug
+                    }
+                }
+            }
         }
     }
 `;
+
+// export const GET_USERS = gql`
+//     query Users {
+//         users {
+//             _id
+//             description
+//             email
+//             firstName
+//             image
+//             lastName
+//             roles {
+//                 _id
+//             }
+//         }
+//     }
+// `;
