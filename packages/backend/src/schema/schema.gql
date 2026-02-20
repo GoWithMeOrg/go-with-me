@@ -185,6 +185,9 @@ type Query {
   """Поиск категорий по ownerId"""
   categoriesByOwnerId(ownerId: ID!): Category!
 
+  """Найти пользователей по email или имени"""
+  findByEmailOrName(query: String): [User!]!
+
   """Поиск интересов по id"""
   interestById(id: ID!): Interest!
 

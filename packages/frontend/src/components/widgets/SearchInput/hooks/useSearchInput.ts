@@ -31,8 +31,8 @@ export const useSearchInput = <TData, TVariables extends OperationVariables = an
         let timeoutId: ReturnType<typeof setTimeout>;
 
         const fn = (inputValue: string) => {
-            // отправляем запрос только если 3 и более символов
-            if (inputValue.trim().length >= 3) {
+            // отправляем запрос только если 2 и более символов
+            if (inputValue.trim().length >= 2) {
                 load({
                     variables: {
                         query: inputValue,
@@ -60,10 +60,19 @@ export const useSearchInput = <TData, TVariables extends OperationVariables = an
         debouncedLoad(inputValue);
     };
 
+    const clearSearch = () => {
+        setSearchValue('');
+        debouncedLoad.cancel();
+    };
+
+    // Очищаем данные когда поле пустое
+    const filteredSearchData = searchValue.trim().length >= 2 ? searchData : [];
+
     return {
         handleSearch,
+        clearSearch,
         searchValue,
-        searchData,
+        searchData: filteredSearchData,
         loading,
         error,
         called,

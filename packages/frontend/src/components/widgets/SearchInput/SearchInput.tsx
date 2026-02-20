@@ -1,5 +1,6 @@
 'use client';
 
+import ClearInput from '@/assets/icons/clearInput.svg';
 import Search from '@/assets/icons/search.svg';
 
 import { SearchInputProps, SearchVariables } from './interfaces/interfaces';
@@ -11,11 +12,10 @@ export const SearchInput = <TData, TVariables extends SearchVariables>({
     placeholder,
     onChange,
     loading,
+    value = '', // ← Добавить value
+    onClear, // ← Добавить onClear
 }: SearchInputProps<TData, TVariables>) => {
-    // Передаем всё в хук. Хук теперь возвращает данные, если они понадобятся для выпадающего списка
-
-    if (loading) return <div className={classes.loading}>Loading permission...</div>;
-    if (error) return <div className={classes.error}>Error loading permission</div>;
+    const showClearIcon = value.length > 0 && !loading;
 
     return (
         <div className={classes.container}>
@@ -23,17 +23,21 @@ export const SearchInput = <TData, TVariables extends SearchVariables>({
                 <input
                     className={`${classes.input} ${error ? classes.error : ''}`}
                     onChange={onChange}
-                    // value={value}
                     placeholder={placeholder}
+                    value={value}
                 />
-                {/* Показываем иконку или лоадер прямо в поле */}
                 {loading ? (
                     <div className={classes.spinner} />
+                ) : showClearIcon ? (
+                    <ClearInput
+                        className={classes.icon}
+                        onClick={onClear}
+                        style={{ cursor: 'pointer' }}
+                    />
                 ) : (
                     <Search className={classes.icon} />
                 )}
             </div>
-
             {error && <div className={classes.errorMessage}>Error loading data</div>}
         </div>
     );

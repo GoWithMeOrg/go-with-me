@@ -34,6 +34,16 @@ export class UserResolver {
         return this.userService.getAllUsers();
     }
 
+    @Query(() => [User], {
+        name: 'findByEmailOrName',
+        description: 'Найти пользователей по email или имени',
+    })
+    findByEmailOrName(
+        @Args('query', { type: () => String, nullable: true }) query?: string
+    ): Promise<User[] | null> {
+        return this.userService.findByEmailOrName(query);
+    }
+
     @Mutation(() => User, {
         name: 'createUser',
         description: 'Создать пользователя',

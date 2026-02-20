@@ -33,6 +33,27 @@ export class UserService {
         return this.userModel.findById(id).select('firstName lastName image description');
     }
 
+    async findByEmailOrName(query?: string): Promise<User[] | null> {
+        return this.userModel
+            .find({
+                $or: [
+                    { email: { $regex: query, $options: 'i' } },
+                    { firstName: { $regex: query, $options: 'i' } },
+                    { lastName: { $regex: query, $options: 'i' } },
+                    {
+                        $expr: {
+                            $regexMatch: {
+                                input: { $concat: ['$firstName', ' ', '$lastName'] },
+                                regex: query,
+                                options: 'i',
+                            },
+                        },
+                    },
+                ],
+            })
+            .exec();
+    }
+
     createUser(createUserInput: CreateUserInput) {
         const createUser = new this.userModel(createUserInput);
         return createUser.save();

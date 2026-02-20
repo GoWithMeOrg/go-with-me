@@ -27,6 +27,7 @@ import { ResourceModule } from './modules/resource/resource.module';
 
 import { RolesGuard } from './common/guards/roles.guard';
 import { SeedsModule } from './modules/seeds/seeds.module';
+import { CompanionModule } from './modules/companion/companion.module';
 
 @Module({
     imports: [
@@ -85,6 +86,8 @@ import { SeedsModule } from './modules/seeds/seeds.module';
         ResourceModule,
 
         SeedsModule,
+
+        CompanionModule,
     ],
 
     controllers: [],
