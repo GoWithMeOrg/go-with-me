@@ -25,14 +25,11 @@ import classes from './Companions.module.css';
 
 const Companions: FC = () => {
     const {
-        handleFindUsers,
         handleFindCompanion,
         sendRequestCompanion,
-        findUsers,
         companions,
-        // searchValue,
+
         searchValueCompanion,
-        clearInput,
         clearInputCompanion,
         showAllCompanions,
         select,
