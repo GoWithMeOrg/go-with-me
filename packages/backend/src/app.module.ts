@@ -28,6 +28,7 @@ import { ResourceModule } from './modules/resource/resource.module';
 import { RolesGuard } from './common/guards/roles.guard';
 import { SeedsModule } from './modules/seeds/seeds.module';
 import { CompanionModule } from './modules/companion/companion.module';
+import { CompanionRequestModule } from './modules/companion-request/companion-request.module';
 
 @Module({
     imports: [
@@ -88,6 +89,8 @@ import { CompanionModule } from './modules/companion/companion.module';
         SeedsModule,
 
         CompanionModule,
+
+        CompanionRequestModule,
     ],
 
     controllers: [],
