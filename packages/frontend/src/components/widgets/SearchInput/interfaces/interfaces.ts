@@ -10,16 +10,6 @@ export interface SearchVariables extends OperationVariables {
     search: string;
 }
 
-// export interface SearchInputProps<
-//     TData = any,
-//     TVariables extends SearchVariables = any,
-// > extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
-//     error?: boolean;
-//     searchQuery: DocumentNode; // Делаем обязательным, чтобы избежать ошибки Apollo
-//     onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-//     loading?: boolean;
-// }
-
 export interface SearchInputProps<
     TData = any,
     TVariables extends SearchVariables = any,
@@ -30,4 +20,5 @@ export interface SearchInputProps<
     onClear?: () => void; // ← Добавить
     value?: string; // ← Добавить
     loading?: boolean;
+    label?: string;
 }
