@@ -82,8 +82,6 @@ import { CompanionRequestModule } from './modules/companion-request/companion-re
 
         PermissionModule,
 
-        // EntityRegistryModule,
-
         ResourceModule,
 
         SeedsModule,

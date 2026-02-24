@@ -149,17 +149,23 @@ const Companions: FC = () => {
                         {companions?.map((card: any) => (
                             <CardCompanion
                                 id={card._id}
-                                name={card.name}
+                                name={`${card.firstName + ' ' + card.lastName}`}
                                 image={card.image}
                                 key={card._id}
                                 onChange={(isChecked) => handleCheckboxChange(card._id, isChecked)}
                                 select={select}
                                 checked={checkedCompanions[card._id] ?? false}
                                 onClickPopupInvitation={() =>
-                                    openPopupInvitationCompanion(card._id, card.name)
+                                    openPopupInvitationCompanion(
+                                        card._id,
+                                        `${card.firstName + ' ' + card.lastName}`
+                                    )
                                 }
                                 onClickPopupDelete={() =>
-                                    openPopupDeleteCompanion(card._id, card.name)
+                                    openPopupDeleteCompanion(
+                                        card._id,
+                                        `${card.firstName + ' ' + card.lastName}`
+                                    )
                                 }
                             />
                         ))}

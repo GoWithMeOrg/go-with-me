@@ -14,7 +14,7 @@ export class Companion {
 
     @Field(() => ID)
     @Prop({ type: MongoSchema.Types.ObjectId, required: true })
-    ownerId: string;
+    ownerId: MongoSchema.Types.ObjectId;
 
     @Field(() => String)
     @Prop({ type: String, enum: ['User'], required: true })
