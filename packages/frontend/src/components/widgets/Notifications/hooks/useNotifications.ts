@@ -2,7 +2,6 @@ import { GET_APPLICATIONS } from '@/app/graphql/queries/applications';
 import { GET_INVATIONS } from '@/app/graphql/queries/invations';
 import { useSessionGQL } from '@/app/providers/session/hooks/useSesssionGQL';
 import { useQuery } from '@apollo/client/react';
-import { useSession } from 'next-auth/react';
 
 export const useNotifications = () => {
     const { data: session } = useSessionGQL();

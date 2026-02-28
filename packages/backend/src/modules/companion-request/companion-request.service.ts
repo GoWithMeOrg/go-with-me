@@ -13,9 +13,7 @@ export class CompanionRequestService {
         private companionRequestModel: Model<CompanionRequestDocument>
     ) {}
 
-    /**
-     * Отправить заявку в компаньоны
-     */
+    // Отправить заявку в компаньоны
 
     async sendRequestCompanion(
         senderId: MongoSchema.Types.ObjectId,

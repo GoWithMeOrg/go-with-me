@@ -293,6 +293,10 @@ type SeedUserResult {
   user: User
 }
 
+type Subscription {
+  sendRequestCompanion: CompanionRequest!
+}
+
 type Tag {
   _id: ID!
   ownerId: ID!

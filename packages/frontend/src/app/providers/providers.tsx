@@ -4,8 +4,11 @@ import React from 'react';
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
 import { CombinedGraphQLErrors, CombinedProtocolErrors } from '@apollo/client/errors';
 import { ErrorLink } from '@apollo/client/link/error';
+import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { ApolloProvider } from '@apollo/client/react';
+import { getMainDefinition } from '@apollo/client/utilities';
 import { APIProvider } from '@vis.gl/react-google-maps';
+import { createClient } from 'graphql-ws';
 
 type Props = {
     children?: React.ReactNode;
@@ -26,11 +29,20 @@ const errorLink = new ErrorLink(({ error, operation }) => {
 });
 
 const createApolloClient = () => {
+    const httpLink = new HttpLink({
+        uri: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT,
+        credentials: 'include',
+    });
+
+    // const wsLink = new GraphQLWsLink(
+    //     createClient({
+    //         url: 'wss://<YOUR-HASURA-INSTANCE-URL>/v1/graphql',
+    //     })
+    // );
+
     return new ApolloClient({
         ssrMode: false,
-        link: errorLink.concat(
-            new HttpLink({ uri: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT, credentials: 'include' })
-        ),
+        link: errorLink.concat(httpLink),
         cache: new InMemoryCache(),
     });
 };

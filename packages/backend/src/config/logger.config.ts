@@ -19,9 +19,12 @@ export async function getLoggerConfig(configService: ConfigService) {
                           singleLine: false,
                       },
                   },
+                  // Отключить автоматическое логирование HTTP запросов
+                  autoLogging: false,
               }
             : {
                   level: 'info',
+                  autoLogging: false,
               },
     };
 }

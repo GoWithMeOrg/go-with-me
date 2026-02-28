@@ -4,6 +4,8 @@ import { CompanionRequestResolver } from './companion-request.resolver';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Companion, CompanionSchema } from '../companion/entities/companion.entity';
 import { CompanionRequest, CompanionRequestSchema } from './entities/companion-request.entity';
+import { PubSub } from 'graphql-subscriptions';
+import { PUB_SUB } from 'src/common/constants/pub-sub.constants';
 
 @Module({
     imports: [
@@ -12,7 +14,14 @@ import { CompanionRequest, CompanionRequestSchema } from './entities/companion-r
             { name: CompanionRequest.name, schema: CompanionRequestSchema },
         ]),
     ],
-    providers: [CompanionRequestResolver, CompanionRequestService],
-    exports: [CompanionRequestService],
+    providers: [
+        CompanionRequestResolver,
+        CompanionRequestService,
+        {
+            provide: PUB_SUB,
+            useValue: new PubSub(),
+        },
+    ],
+    exports: [CompanionRequestService, PUB_SUB],
 })
 export class CompanionRequestModule {}
