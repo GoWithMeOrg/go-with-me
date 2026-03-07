@@ -1,13 +1,13 @@
 'use client';
 
 import React from 'react';
-import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
-import { CombinedGraphQLErrors, CombinedProtocolErrors } from '@apollo/client/errors';
+import { ApolloClient, ApolloLink, HttpLink, InMemoryCache } from '@apollo/client';
+import { CombinedGraphQLErrors } from '@apollo/client/errors';
 import { ErrorLink } from '@apollo/client/link/error';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { ApolloProvider } from '@apollo/client/react';
-import { getMainDefinition } from '@apollo/client/utilities';
 import { APIProvider } from '@vis.gl/react-google-maps';
+import { OperationTypeNode } from 'graphql';
 import { createClient } from 'graphql-ws';
 
 type Props = {
@@ -18,10 +18,8 @@ const errorLink = new ErrorLink(({ error, operation }) => {
     if (CombinedGraphQLErrors.is(error)) {
         error.errors.forEach(({ message, locations, path, extensions }) => {
             if (extensions?.code === 'UNAUTHORIZED') {
-                // Проверяем текущий URL
-                const currentUrl = window.location.href.replace(/\/$/, ''); //отсекаем /
+                const currentUrl = window.location.href.replace(/\/$/, '');
                 const targetUrl = process.env.NEXT_PUBLIC_BASE_URL as string;
-                // перенаправляем на главную страницу
                 if (currentUrl !== targetUrl) window.location.href = targetUrl;
             }
         });
@@ -34,15 +32,24 @@ const createApolloClient = () => {
         credentials: 'include',
     });
 
-    // const wsLink = new GraphQLWsLink(
-    //     createClient({
-    //         url: 'wss://<YOUR-HASURA-INSTANCE-URL>/v1/graphql',
-    //     })
-    // );
+    const wsLink = new GraphQLWsLink(
+        createClient({
+            url: process.env.NEXT_PUBLIC_GRAPHQL_WS_ENDPOINT as string,
+            connectionParams: {},
+        })
+    );
+
+    const splitLink = ApolloLink.split(
+        ({ operationType }) => {
+            return operationType === OperationTypeNode.SUBSCRIPTION;
+        },
+        wsLink,
+        httpLink
+    );
 
     return new ApolloClient({
         ssrMode: false,
-        link: errorLink.concat(httpLink),
+        link: errorLink.concat(splitLink),
         cache: new InMemoryCache(),
     });
 };

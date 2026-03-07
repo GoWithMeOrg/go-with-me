@@ -17,7 +17,7 @@ export class SessionAuthGuard implements CanActivate {
             });
         }
 
-        console.log('Session user:', req?.user);
+        // console.log('Session user:', req?.user);
         return !!req?.user;
     }
 }

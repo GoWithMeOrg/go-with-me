@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { COMPANION_REQUEST_MUTATION } from '@/app/graphql/mutations/companionRequest';
+import { SEND_REQUEST_COMPANION_MUTATION } from '@/app/graphql/mutations/companionRequest';
 import { REMOVE_COMPANION_MUTATION } from '@/app/graphql/mutations/companions';
 import { GET_COMPANIONS_BY_OWNER_ID, GET_FIND_COMPANION } from '@/app/graphql/queries/companions';
 import { CompanionsResponse, QueryCompanionsByOwnerIdArgs } from '@/app/graphql/types';
@@ -27,7 +27,7 @@ export const useCompanionSearch = () => {
         }
     );
 
-    const [CompanionRequest] = useMutation(COMPANION_REQUEST_MUTATION);
+    const [CompanionRequest] = useMutation(SEND_REQUEST_COMPANION_MUTATION);
     const [RemoveCompanion] = useMutation(REMOVE_COMPANION_MUTATION);
 
     const handleFindCompanion = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,7 +52,7 @@ export const useCompanionSearch = () => {
     const companionRequest = async (id: string) => {
         try {
             await CompanionRequest({
-                variables: { senderId: user_id, receiverId: id },
+                variables: { sender: user_id, receiver: id },
             });
         } catch (error) {
             console.error('Error sending companion request: ', error);

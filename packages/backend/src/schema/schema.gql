@@ -18,8 +18,8 @@ type Category {
 
 type CompanionRequest {
   _id: ID!
-  receiver_id: ID!
-  sender_id: ID!
+  receiver: User!
+  sender: User!
   status: String!
 }
 
@@ -153,7 +153,7 @@ type Mutation {
 
   """Генерация тестовых данных (доступно только в DEV режиме)"""
   seedUsers(inputs: SeedUserInput!): SeedUserResult!
-  sendRequestCompanion(receiver_id: ID!, sender_id: ID!): CompanionRequest!
+  sendRequestCompanion(receiver: ID!, sender: ID!): CompanionRequest!
 
   """Переключает статус активности права (включает/выключает)"""
   togglePermissionStatus(id: ID!): Permission!
@@ -204,6 +204,7 @@ type Query {
 
   """Найти пользователей по email или имени"""
   findByEmailOrName(query: String): [User!]!
+  getCompanionRequests(user_id: ID!): [CompanionRequest!]!
 
   """Поиск интересов по id"""
   interestById(id: ID!): Interest!

@@ -19,7 +19,6 @@ export interface ApplicationProps {
 export const Application: FC<ApplicationProps> = ({ id, name, status, image, senderId }) => {
     const { acceptRequest, rejectRequest } = useApplication({ id });
 
-    console.log(id);
     return (
         <div id={id} className={classes.invation}>
             <div className={classes.image}>

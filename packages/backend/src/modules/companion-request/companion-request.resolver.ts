@@ -1,4 +1,4 @@
-import { Resolver, Mutation, Args, ID, Subscription, Context } from '@nestjs/graphql';
+import { Resolver, Mutation, Args, ID, Subscription, Query } from '@nestjs/graphql';
 import { CompanionRequestService } from './companion-request.service';
 import { CompanionRequest } from './entities/companion-request.entity';
 import { UseGuards, Inject } from '@nestjs/common';
@@ -7,7 +7,9 @@ import { RolesGuard } from 'src/common/guards/roles.guard';
 import { Schema as MongoSchema } from 'mongoose';
 import { PubSub } from 'graphql-subscriptions';
 import { PUB_SUB } from 'src/common/constants/pub-sub.constants';
-import { GqlContext } from 'src/common/types/graphql-context';
+import { GqlAuthGuard } from 'src/common/guards/gql-auth.guard';
+import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import { User } from '../user/entities/user.entity';
 
 @Resolver(() => CompanionRequest)
 export class CompanionRequestResolver {
@@ -16,51 +18,66 @@ export class CompanionRequestResolver {
         @Inject(PUB_SUB) private pubSub: PubSub
     ) {}
 
-    //Отправить заявку в компаньоны
-    @Mutation(() => CompanionRequest)
+    @Query(() => [CompanionRequest])
     @UseGuards(SessionAuthGuard, RolesGuard)
+    async getCompanionRequests(
+        @Args('user_id', { type: () => ID }) user_id: MongoSchema.Types.ObjectId
+    ): Promise<CompanionRequest[]> {
+        return this.companionRequestService.getCompanionRequests(user_id);
+    }
+
+    // @Mutation(() => CompanionRequest)
+    // @UseGuards(GqlAuthGuard, RolesGuard)
+    // async sendRequestCompanion(
+    //     @CurrentUser() user: User,
+    //     @Args('receiver', { type: () => ID }) receiver: MongoSchema.Types.ObjectId
+    // ) {
+    //     const request = await this.companionRequestService.sendRequestCompanion(user._id, receiver);
+
+    //     await this.pubSub.publish('sendRequestCompanion', {
+    //         sendRequestCompanion: request,
+    //         currentUserId: user._id.toString(),
+    //     });
+
+    //     return request;
+    // }
+
+    //Удалить после тестирования и раскоментировать код выше
+    @Mutation(() => CompanionRequest)
+    @UseGuards(GqlAuthGuard, RolesGuard)
     async sendRequestCompanion(
-        @Args('sender_id', { type: () => ID }) sender_id: MongoSchema.Types.ObjectId,
-        @Args('receiver_id', { type: () => ID }) receiver_id: MongoSchema.Types.ObjectId
-    ): Promise<CompanionRequest> {
-        const newCompanionRequest = await this.companionRequestService.sendRequestCompanion(
-            sender_id,
-            receiver_id
-        );
+        @CurrentUser() user: User,
+        @Args('receiver', { type: () => ID }) receiver: MongoSchema.Types.ObjectId,
+        // временно для тестов
+        @Args('sender', { type: () => ID }) sender: MongoSchema.Types.ObjectId
+    ) {
+        // Используем senderId, если передан, иначе текущий пользователь
+        const request = await this.companionRequestService.sendRequestCompanion(sender, receiver);
+
         await this.pubSub.publish('sendRequestCompanion', {
-            sendRequestCompanion: newCompanionRequest,
+            sendRequestCompanion: request,
+            currentUserId: user._id.toString(), // событие для получателя
         });
-        return newCompanionRequest;
+
+        return request;
     }
 
     @Subscription(() => CompanionRequest, {
         name: 'sendRequestCompanion',
-        filter: (payload, variables, context: GqlContext) => {
-            const user = context.user || context.req?.user;
+        // filter по payload вместо context
+        filter: (payload) => {
+            const request = payload.sendRequestCompanion;
+            const receiverId =
+                request.receiver?._id?.toString?.() || request.receiver?.toString?.();
 
-            if (!user) {
-                console.warn('[Subscription Filter] No user in context');
-                return false;
-            }
-
-            const request: CompanionRequest = payload.sendRequestCompanion;
-
-            if (!request) {
-                console.warn('[Subscription Filter] Invalid payload');
-                return false;
-            }
-
-            const currentUserId = user._id?.toString();
-            const receiverId = request.receiver_id?.toString();
-
-            return receiverId === currentUserId;
+            // проверяем, что событие предназначено для пользователя
+            return receiverId === payload.currentUserId;
         },
     })
     sendRequestCompanionSubscription() {
         return this.pubSub.asyncIterableIterator('sendRequestCompanion');
     }
 
-    //Принять заявку в компаньоны
     @Mutation(() => CompanionRequest)
     @UseGuards(SessionAuthGuard, RolesGuard)
     async acceptCompanionRequest(
@@ -78,17 +95,6 @@ export class CompanionRequestResolver {
     //     @Args('request_id', { type: () => ID }) request_id: string
     // ): Promise<CompanionRequest | null> {
     //     return this.companionRequestService.rejectRequest(request_id);
-    // }
-
-    /**
-     * Получить входящие заявки для пользователя
-     */
-    // @Query(() => [CompanionRequest], { name: 'incomingCompanionRequests' })
-    // @UseGuards(SessionAuthGuard, RolesGuard)
-    // async getIncomingRequests(
-    //     @Args('user_id', { type: () => ID }) user_id: string
-    // ): Promise<CompanionRequest[]> {
-    //     return this.companionRequestService.getIncomingRequests(user_id);
     // }
 
     /**

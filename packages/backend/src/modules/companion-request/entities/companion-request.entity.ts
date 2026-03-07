@@ -1,7 +1,8 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { Document, Schema as MongoSchema } from 'mongoose';
+import { Document, Schema as MongoSchema, Types } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { CompanionRequestStatus } from '../enums/companion-request.enum';
+import { User } from 'src/modules/user/entities/user.entity';
 
 @ObjectType()
 @Schema({ timestamps: true })
@@ -9,13 +10,13 @@ export class CompanionRequest {
     @Field(() => ID)
     _id: MongoSchema.Types.ObjectId;
 
-    @Field(() => ID)
+    @Field(() => User)
     @Prop({ type: MongoSchema.Types.ObjectId, required: true, ref: 'User' })
-    sender_id: MongoSchema.Types.ObjectId;
+    sender: User;
 
-    @Field(() => ID)
+    @Field(() => User)
     @Prop({ type: MongoSchema.Types.ObjectId, required: true, ref: 'User' })
-    receiver_id: MongoSchema.Types.ObjectId;
+    receiver: User;
 
     @Field(() => String)
     @Prop({

@@ -13,23 +13,38 @@ export class CompanionRequestService {
         private companionRequestModel: Model<CompanionRequestDocument>
     ) {}
 
-    // Отправить заявку в компаньоны
+    // Получить все заявки по id пользователя
+    async getCompanionRequests(
+        user_id: MongoSchema.Types.ObjectId
+    ): Promise<CompanionRequestDocument[]> {
+        return await this.companionRequestModel
+            .find({
+                $or: [
+                    { sender: user_id, status: CompanionRequestStatus.PENDING },
+                    { receiver: user_id, status: CompanionRequestStatus.PENDING },
+                ],
+            })
+            .populate('sender')
+            .populate('receiver')
+            .exec();
+    }
 
+    // Отправить заявку в компаньоны
     async sendRequestCompanion(
-        senderId: MongoSchema.Types.ObjectId,
-        receiverId: MongoSchema.Types.ObjectId
+        sender_id: MongoSchema.Types.ObjectId,
+        receiver_id: MongoSchema.Types.ObjectId
     ): Promise<CompanionRequestDocument> {
-        if (senderId === receiverId) {
+        if (sender_id === receiver_id) {
             throw new Error('Нельзя отправить запрос самому себе');
         }
 
         // Проверка на уже существующую дружбу
         const existingCompanions = await this.companionModel
             .findOne({
-                ownerId: senderId,
+                ownerId: sender_id,
             })
             .exec();
-        if (existingCompanions?.companions.some((id) => id === receiverId)) {
+        if (existingCompanions?.companions.some((id) => id === receiver_id)) {
             throw new Error('Пользователь уже у вас в друзьях');
         }
 
@@ -38,13 +53,13 @@ export class CompanionRequestService {
             .findOne({
                 $or: [
                     {
-                        sender_id: senderId,
-                        receiver_id: receiverId,
+                        sender: sender_id,
+                        receiver: receiver_id,
                         status: CompanionRequestStatus.PENDING,
                     },
                     {
-                        sender_id: receiverId,
-                        receiver_id: senderId,
+                        sender: receiver_id,
+                        receiver: sender_id,
                         status: CompanionRequestStatus.PENDING,
                     },
                 ],
@@ -57,12 +72,14 @@ export class CompanionRequestService {
 
         // Создание новой заявки
         const newRequest = new this.companionRequestModel({
-            sender_id: senderId,
-            receiver_id: receiverId,
+            sender: sender_id,
+            receiver: receiver_id,
             status: CompanionRequestStatus.PENDING,
         });
 
-        return await newRequest.save();
+        const saved = await newRequest.save();
+        await saved.populate(['sender', 'receiver']);
+        return saved;
     }
 
     // async acceptCompanionRequest: { requestId }: { requestId: string }) => {
@@ -118,15 +135,15 @@ export class CompanionRequestService {
         // Добавить пользователей в друзья друг другу
         await this.companionModel
             .findOneAndUpdate(
-                { ownerId: request.sender_id },
-                { $addToSet: { companions: request.receiver_id } },
+                { ownerId: request.sender },
+                { $addToSet: { companions: request.receiver } },
                 { upsert: true }
             )
             .exec();
         await this.companionModel
             .findOneAndUpdate(
-                { ownerId: request.receiver_id },
-                { $addToSet: { companions: request.sender_id } },
+                { ownerId: request.receiver },
+                { $addToSet: { companions: request.sender } },
                 { upsert: true }
             )
             .exec();
@@ -179,13 +196,6 @@ export class CompanionRequestService {
     //         })
     //         .populate('receiver_id')
     //         .exec();
-    // }
-
-    /**
-     * Получить заявку по ID
-     */
-    // async findOne(id: string): Promise<CompanionRequestDocument | null> {
-    //     return this.companionRequestModel.findById(id).exec();
     // }
 
     /**

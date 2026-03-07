@@ -38,7 +38,7 @@ async function bootstrap() {
             cookie: {
                 secure: !isDev(configService), // Проверяем dev или prod,
                 httpOnly: true,
-                sameSite: !isDev(configService) ? 'none' : 'lax',
+                sameSite: 'lax', // Всегда lax для работы с WebSocket
                 maxAge: 1000 * 60 * 60 * 24, // 1 день
             },
         })

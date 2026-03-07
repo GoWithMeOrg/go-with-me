@@ -1,9 +1,9 @@
 import gql from 'graphql-tag';
 
-export const COMPANION_REQUEST_MUTATION = gql`
-    mutation CompanionRequest($senderId: ID!, $receiverId: ID!) {
-        companionRequest(sender_id: $senderId, receiver_id: $receiverId) {
-            id
+export const SEND_REQUEST_COMPANION_MUTATION = gql`
+    mutation SendRequestCompanion($receiver: ID!, $sender: ID!) {
+        sendRequestCompanion(receiver: $receiver, sender: $sender) {
+            _id
             status
         }
     }

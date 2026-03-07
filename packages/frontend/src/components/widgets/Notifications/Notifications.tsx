@@ -7,7 +7,7 @@ import { useNotifications } from './hooks';
 import classes from './Notifications.module.css';
 
 export const Notifications: FC = () => {
-    const { dataApplications, dataInvations } = useNotifications();
+    const { requests } = useNotifications();
 
     interface IInvitation {
         id: string;
@@ -41,7 +41,7 @@ export const Notifications: FC = () => {
 
     return (
         <div className={classes.notificationsList}>
-            {dataInvations?.map((invitation: IInvitation) => (
+            {/* {dataInvations?.map((invitation: IInvitation) => (
                 <Invitation
                     key={invitation.invitation.id}
                     invitation_id={invitation.invitation.id}
@@ -58,15 +58,15 @@ export const Notifications: FC = () => {
                     organizer_id={invitation.invitation.event.organizer._id}
                     sender_id={invitation.invitation.sender._id}
                 />
-            ))}
+            ))} */}
 
-            {dataApplications?.map((application: any) => (
+            {requests?.map((application) => (
                 <Application
-                    key={application.id}
-                    id={application.id}
-                    name={application.sender.name}
+                    key={application._id}
+                    id={application._id}
+                    name={`${application.sender.firstName + ' ' + application.sender.lastName}`}
                     senderId={application.sender._id}
-                    image={application.sender.image}
+                    image={application.sender.image as string}
                     status={application.status}
                 />
             ))}
