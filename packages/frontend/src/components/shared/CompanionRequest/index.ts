@@ -1,0 +1,1 @@
+export { CompanionRequest } from './CompanionRequest';

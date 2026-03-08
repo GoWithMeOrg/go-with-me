@@ -1,5 +1,5 @@
-import React, { FC } from 'react';
-import { Application } from '@/components/shared/Application';
+import { FC } from 'react';
+import { CompanionRequest } from '@/components/shared/CompanionRequest';
 import { Invitation } from '@/components/widgets/Invitation';
 
 import { useNotifications } from './hooks';
@@ -60,14 +60,14 @@ export const Notifications: FC = () => {
                 />
             ))} */}
 
-            {requests?.map((application) => (
-                <Application
-                    key={application._id}
-                    id={application._id}
-                    name={`${application.sender.firstName + ' ' + application.sender.lastName}`}
-                    senderId={application.sender._id}
-                    image={application.sender.image as string}
-                    status={application.status}
+            {requests?.map((request) => (
+                <CompanionRequest
+                    key={request._id}
+                    request_id={request._id}
+                    name={`${request.sender.firstName + ' ' + request.sender.lastName}`}
+                    sender_id={request.sender._id}
+                    image={request.sender.image as string}
+                    status={request.status}
                 />
             ))}
             {/* <SystemNotification /> */}

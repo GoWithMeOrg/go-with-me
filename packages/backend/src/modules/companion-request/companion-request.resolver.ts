@@ -26,29 +26,13 @@ export class CompanionRequestResolver {
         return this.companionRequestService.getCompanionRequests(user_id);
     }
 
-    // @Mutation(() => CompanionRequest)
-    // @UseGuards(GqlAuthGuard, RolesGuard)
-    // async sendRequestCompanion(
-    //     @CurrentUser() user: User,
-    //     @Args('receiver', { type: () => ID }) receiver: MongoSchema.Types.ObjectId
-    // ) {
-    //     const request = await this.companionRequestService.sendRequestCompanion(user._id, receiver);
-
-    //     await this.pubSub.publish('sendRequestCompanion', {
-    //         sendRequestCompanion: request,
-    //         currentUserId: user._id.toString(),
-    //     });
-
-    //     return request;
-    // }
-
     //Удалить после тестирования и раскоментировать код выше
     @Mutation(() => CompanionRequest)
     @UseGuards(GqlAuthGuard, RolesGuard)
     async sendRequestCompanion(
         @CurrentUser() user: User,
         @Args('receiver', { type: () => ID }) receiver: MongoSchema.Types.ObjectId,
-        // временно для тестов
+        // временно для тестов. Нужно будет удалить строку с отправителем.
         @Args('sender', { type: () => ID }) sender: MongoSchema.Types.ObjectId
     ) {
         // Используем senderId, если передан, иначе текущий пользователь
@@ -81,52 +65,19 @@ export class CompanionRequestResolver {
     @Mutation(() => CompanionRequest)
     @UseGuards(SessionAuthGuard, RolesGuard)
     async acceptCompanionRequest(
+        @CurrentUser() user: User,
         @Args('request_id', { type: () => ID }) request_id: MongoSchema.Types.ObjectId
     ): Promise<CompanionRequest | null> {
         return this.companionRequestService.acceptCompanionRequest(request_id);
     }
 
-    /**
-     * Отклонить заявку в компаньоны
-     */
-    // @Mutation(() => CompanionRequest)
-    // @UseGuards(SessionAuthGuard, RolesGuard)
-    // async rejectCompanionRequest(
-    //     @Args('request_id', { type: () => ID }) request_id: string
-    // ): Promise<CompanionRequest | null> {
-    //     return this.companionRequestService.rejectRequest(request_id);
-    // }
-
-    /**
-     * Получить исходящие заявки пользователя
-     */
-    // @Query(() => [CompanionRequest], { name: 'outgoingCompanionRequests' })
-    // @UseGuards(SessionAuthGuard, RolesGuard)
-    // async getOutgoingRequests(
-    //     @Args('user_id', { type: () => ID }) user_id: string
-    // ): Promise<CompanionRequest[]> {
-    //     return this.companionRequestService.getOutgoingRequests(user_id);
-    // }
-
-    /**
-     * Получить заявку по ID
-     */
-    // @Query(() => CompanionRequest, { name: 'companionRequest', nullable: true })
-    // @UseGuards(SessionAuthGuard, RolesGuard)
-    // async getCompanionRequest(
-    //     @Args('id', { type: () => ID }) id: string
-    // ): Promise<CompanionRequest | null> {
-    //     return this.companionRequestService.findOne(id);
-    // }
-
-    /**
-     * Удалить заявку
-     */
-    // @Mutation(() => CompanionRequest, { nullable: true })
-    // @UseGuards(SessionAuthGuard, RolesGuard)
-    // async removeCompanionRequest(
-    //     @Args('id', { type: () => ID }) id: string
-    // ): Promise<CompanionRequest | null> {
-    //     return this.companionRequestService.remove(id);
-    // }
+    // Отклонить заявку в компаньоны
+    @Mutation(() => CompanionRequest)
+    @UseGuards(SessionAuthGuard, RolesGuard)
+    async rejectCompanionRequest(
+        @CurrentUser() user: User,
+        @Args('request_id', { type: () => ID }) request_id: MongoSchema.Types.ObjectId
+    ): Promise<CompanionRequest | null> {
+        return this.companionRequestService.rejectCompanionRequest(request_id);
+    }
 }

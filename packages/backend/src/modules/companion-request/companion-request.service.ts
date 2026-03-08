@@ -19,10 +19,7 @@ export class CompanionRequestService {
     ): Promise<CompanionRequestDocument[]> {
         return await this.companionRequestModel
             .find({
-                $or: [
-                    { sender: user_id, status: CompanionRequestStatus.PENDING },
-                    { receiver: user_id, status: CompanionRequestStatus.PENDING },
-                ],
+                $or: [{ receiver: user_id, status: CompanionRequestStatus.PENDING }],
             })
             .populate('sender')
             .populate('receiver')
@@ -116,17 +113,13 @@ export class CompanionRequestService {
     // }
 
     // Принять заявку в компаньоны
-
     async acceptCompanionRequest(
-        requestId: MongoSchema.Types.ObjectId
+        request_id: MongoSchema.Types.ObjectId
     ): Promise<CompanionRequest | null> {
-        const request = await this.companionRequestModel.findById(requestId).exec();
+        const request = await this.companionRequestModel.findById(request_id).exec();
+
         if (!request) {
             throw new Error('Заявка не найдена');
-        }
-
-        if (request.status !== CompanionRequestStatus.PENDING) {
-            throw new Error('Заявка уже обработана');
         }
 
         request.status = CompanionRequestStatus.ACCEPTED;
@@ -151,57 +144,14 @@ export class CompanionRequestService {
         return request;
     }
 
-    /**
-     * Отклонить заявку в компаньоны
-     */
-    // async rejectRequest(requestId: string): Promise<CompanionRequestDocument | null> {
-    //     const request = await this.companionRequestModel.findById(requestId).exec();
-    //     if (!request) {
-    //         throw new Error('Заявка не найдена');
-    //     }
+    // Отклонить заявку в компаньоны
+    async rejectCompanionRequest(request_id: MongoSchema.Types.ObjectId) {
+        const request = await this.companionRequestModel.findById(request_id).exec();
 
-    //     if (request.status !== CompanionRequestStatus.PENDING) {
-    //         throw new Error('Заявка уже обработана');
-    //     }
+        if (!request) {
+            throw new Error('Заявка не найдена');
+        }
 
-    //     request.status = CompanionRequestStatus.DECLINED;
-    //     return request.save();
-    // }
-
-    /**
-     * Получить входящие заявки для пользователя
-     */
-    // async getIncomingRequests(
-    //     userId: MongoSchema.Types.ObjectId
-    // ): Promise<CompanionRequestDocument[]> {
-    //     return this.companionRequestModel
-    //         .find({
-    //             receiver_id: userId,
-    //             status: CompanionRequestStatus.PENDING,
-    //         })
-    //         .populate('sender_id')
-    //         .exec();
-    // }
-
-    /**
-     * Получить исходящие заявки пользователя
-     */
-    // async getOutgoingRequests(
-    //     userId: MongoSchema.Types.ObjectId
-    // ): Promise<CompanionRequestDocument[]> {
-    //     return this.companionRequestModel
-    //         .find({
-    //             sender_id: userId,
-    //             status: CompanionRequestStatus.PENDING,
-    //         })
-    //         .populate('receiver_id')
-    //         .exec();
-    // }
-
-    /**
-     * Удалить заявку
-     */
-    // async remove(id: string): Promise<CompanionRequestDocument | null> {
-    //     return this.companionRequestModel.findByIdAndDelete(id).exec();
-    // }
+        return await this.companionRequestModel.findByIdAndDelete(request_id);
+    }
 }

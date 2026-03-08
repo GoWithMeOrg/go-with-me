@@ -58,15 +58,9 @@ export const useNotifications = () => {
         return () => unsubscribe();
     }, [user_id, subscribeToMore]);
 
-    const requests = data?.getCompanionRequests || [];
+    const requests = data?.getCompanionRequests?.filter((req) => req?.status === 'PENDING') || [];
 
-    return { requests };
+    const hasNewNotifications = requests.length > 0;
 
-    //@ts-ignore
-    // const dataApplications = data?.getApplications || [];
-    //@ts-ignore
-
-    // const dataInvations = invations?.getInvitation || [];
-
-    // return { dataInvations, refetchDataInvations };
+    return { requests, hasNewNotifications };
 };

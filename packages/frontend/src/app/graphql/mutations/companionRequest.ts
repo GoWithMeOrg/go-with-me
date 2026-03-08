@@ -9,19 +9,19 @@ export const SEND_REQUEST_COMPANION_MUTATION = gql`
     }
 `;
 
-export const ACCEPT_COMPANION_MUTATION = gql`
+export const ACCEPT_COMPANION_REQUEST_MUTATION = gql`
     mutation AcceptCompanionRequest($requestId: ID!) {
         acceptCompanionRequest(request_id: $requestId) {
-            id
             status
+            _id
         }
     }
 `;
 
-export const REJECT_COMPANION_MUTATION = gql`
+export const REJECT_COMPANION_REQUEST_MUTATION = gql`
     mutation RejectCompanionRequest($requestId: ID!) {
         rejectCompanionRequest(request_id: $requestId) {
-            id
+            _id
             status
         }
     }

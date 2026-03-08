@@ -9,7 +9,7 @@ interface INavbar {
     activeTab: NavbarTabs;
 }
 export const Navbar = ({ onTabClick, activeTab }: INavbar) => {
-    //   const { dataApplications } = useNotifications();
+    const { hasNewNotifications } = useNotifications();
 
     return (
         <div className={classes.navbar}>
@@ -25,11 +25,11 @@ export const Navbar = ({ onTabClick, activeTab }: INavbar) => {
             </div>
 
             <div className={classes.personal}>
-                {/* {dataApplications.length > 0 ? (
-          <div className={classes.redDot}></div>
-        ) : (
-          <div className={classes.whiteDot}></div>
-        )} */}
+                {hasNewNotifications ? (
+                    <div className={classes.redDot}></div>
+                ) : (
+                    <div className={classes.whiteDot}></div>
+                )}
 
                 <div
                     data-profile="profile-notifications"

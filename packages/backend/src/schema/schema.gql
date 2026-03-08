@@ -134,7 +134,9 @@ type Mutation {
     """Техническое имя (например: EVENT)"""
     slug: String!
   ): Resource!
+  rejectCompanionRequest(request_id: ID!): CompanionRequest!
   removeCategories(id: ID!): Category!
+  removeCompanion(companion_id: ID!, user_id: ID!): Boolean!
   removeInterest(id: ID!): Interest!
 
   """Удалить локацию"""

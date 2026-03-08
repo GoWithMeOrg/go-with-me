@@ -1,10 +1,13 @@
 import { Resolver, Query, Mutation, Args, Int, ID } from '@nestjs/graphql';
 import { CompanionService } from './companion.service';
 import { Companion } from './entities/companion.entity';
+import { UseGuards } from '@nestjs/common';
 
 import { Schema as MongoSchema } from 'mongoose';
 import { User } from '../user/entities/user.entity';
 import { CompanionsResponse } from './entities/companions-response.entity';
+import { SessionAuthGuard } from 'src/common/guards/session-auth.guard';
+import { RolesGuard } from 'src/common/guards/roles.guard';
 
 @Resolver(() => Companion)
 export class CompanionResolver {
@@ -25,28 +28,12 @@ export class CompanionResolver {
         return this.companionService.getCompanionsByOwner(ownerId, limit, offset);
     }
 
-    // @Mutation(() => Companion)
-    // createCompanion(@Args('createCompanionInput') createCompanionInput: CreateCompanionInput) {
-    //     return this.companionService.create(createCompanionInput);
-    // }
-
-    // @Query(() => [Companion], { name: 'companion' })
-    // findAll() {
-    //     return this.companionService.findAll();
-    // }
-
-    // @Query(() => Companion, { name: 'companion' })
-    // findOne(@Args('id', { type: () => Int }) id: number) {
-    //     return this.companionService.findOne(id);
-    // }
-
-    // @Mutation(() => Companion)
-    // updateCompanion(@Args('updateCompanionInput') updateCompanionInput: UpdateCompanionInput) {
-    //     return this.companionService.update(updateCompanionInput.id, updateCompanionInput);
-    // }
-
-    // @Mutation(() => Companion)
-    // removeCompanion(@Args('id', { type: () => Int }) id: number) {
-    //     return this.companionService.remove(id);
-    // }
+    @Mutation(() => Boolean)
+    @UseGuards(SessionAuthGuard, RolesGuard)
+    removeCompanion(
+        @Args('user_id', { type: () => ID }) userId: MongoSchema.Types.ObjectId,
+        @Args('companion_id', { type: () => ID }) companionId: MongoSchema.Types.ObjectId
+    ): Promise<boolean> {
+        return this.companionService.removeCompanion(userId, companionId);
+    }
 }
