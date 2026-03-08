@@ -84,4 +84,38 @@ export class CompanionService {
             return false;
         }
     }
+
+    async findCompanion(
+        ownerId: MongoSchema.Types.ObjectId,
+        query?: string
+    ): Promise<{ companions: User[] }> {
+        const getCompanions = await this.companionModel
+            .findOne({ ownerId })
+            .populate<{ companions: User[] }>({
+                path: 'companions',
+            });
+        if (!getCompanions) {
+            return { companions: [] };
+        }
+
+        let filteredCompanions = getCompanions.companions;
+
+        // Фильтрация по query (email или имя)
+        if (query) {
+            const isEmail = query.includes('@');
+            if (isEmail) {
+                filteredCompanions = filteredCompanions.filter(
+                    (companion) => companion.email === query
+                );
+            } else {
+                filteredCompanions = filteredCompanions.filter((companion) =>
+                    `${companion.firstName} ${companion.lastName}`
+                        .toLowerCase()
+                        .includes(query.toLowerCase())
+                );
+            }
+        }
+
+        return { companions: filteredCompanions };
+    }
 }

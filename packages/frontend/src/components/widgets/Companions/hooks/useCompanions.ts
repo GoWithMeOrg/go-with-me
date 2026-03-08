@@ -44,11 +44,14 @@ export const useCompanions = () => {
     return {
         sendRequestCompanion,
         // Поиск и управление компаньонами
-        handleFindCompanion: companionSearchHook.handleFindCompanion,
-        searchValueCompanion: companionSearchHook.searchValueCompanion,
-        setSearchValueCompanion: companionSearchHook.setSearchValueCompanion,
-        clearInputCompanion: companionSearchHook.clearInputCompanion,
         companions: companionSearchHook.companions,
+        searchDataCompanion: companionSearchHook.searchDataCompanion,
+        calledCompanion: companionSearchHook.calledCompanion,
+        clearSearchCompanion: companionSearchHook.clearSearchCompanion,
+        loadingCompanion: companionSearchHook.loadingCompanion,
+        searchValueCompanion: companionSearchHook.searchValueCompanion,
+        handleSearchCompanion: companionSearchHook.handleSearchCompanion,
+
         totalCompanions: companionSearchHook.totalCompanions,
         removeCompanion: companionSearchHook.removeCompanion,
         companionRequest: companionSearchHook.companionRequest,

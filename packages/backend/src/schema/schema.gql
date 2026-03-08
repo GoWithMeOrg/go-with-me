@@ -206,6 +206,9 @@ type Query {
 
   """Найти пользователей по email или имени"""
   findByEmailOrName(query: String): [User!]!
+
+  """Поиск компаньонов по email или имени"""
+  findCompanion(query: String): CompanionsResponse!
   getCompanionRequests(user_id: ID!): [CompanionRequest!]!
 
   """Поиск интересов по id"""

@@ -4,16 +4,26 @@ import { REMOVE_COMPANION_MUTATION } from '@/app/graphql/mutations/companions';
 import { GET_COMPANIONS_BY_OWNER_ID, GET_FIND_COMPANION } from '@/app/graphql/queries/companions';
 import { CompanionsResponse, QueryCompanionsByOwnerIdArgs } from '@/app/graphql/types';
 import { useUserID } from '@/hooks/useUserID';
-import { useLazyQuery, useMutation, useQuery } from '@apollo/client/react';
+import { useMutation, useQuery } from '@apollo/client/react';
+
+import { useSearchInput } from '../../SearchInput/hooks/useSearchInput';
 
 export const useCompanionSearch = () => {
-    const [searchValueCompanion, setSearchValueCompanion] = useState('');
     const defaulShowCompanions = 12;
     const [limit, setLimit] = useState<number>(defaulShowCompanions);
-
-    const [loadCompanion, { data: findCompanion, called: findCompanionCalled }] =
-        useLazyQuery(GET_FIND_COMPANION);
     const { user_id } = useUserID();
+
+    const {
+        handleSearch: handleSearchCompanion,
+        searchData: searchDataCompanion,
+        called: calledCompanion,
+        clearSearch: clearSearchCompanion,
+        loading: loadingCompanion,
+        searchValue: searchValueCompanion,
+    } = useSearchInput<{ findCompanion: CompanionsResponse }, { query?: string | null }>({
+        searchQuery: GET_FIND_COMPANION,
+        dataKey: 'findCompanion',
+    });
 
     const {
         loading: loadingCompanions,
@@ -30,22 +40,12 @@ export const useCompanionSearch = () => {
     const [CompanionRequest] = useMutation(SEND_REQUEST_COMPANION_MUTATION);
     const [RemoveCompanion] = useMutation(REMOVE_COMPANION_MUTATION);
 
-    const handleFindCompanion = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const inputValue = e.target.value;
-        setSearchValueCompanion(inputValue);
-        const isEmail = inputValue.includes('@');
-        const variables = {
-            userId: user_id,
-            ...(isEmail ? { email: inputValue } : { name: inputValue }),
-        };
-        loadCompanion({ variables });
-    };
+    const companions =
+        searchValueCompanion && searchDataCompanion?.companions?.length > 0
+            ? searchDataCompanion.companions
+            : dataCompanions?.companionsByOwnerId?.companions;
 
-    const clearInputCompanion = () => setSearchValueCompanion('');
-
-    const companions = searchValueCompanion
-        ? findCompanion?.findCompanion
-        : dataCompanions?.companionsByOwnerId?.companions;
+    console.log(searchDataCompanion);
 
     const totalCompanions = dataCompanions?.companionsByOwnerId?.totalCompanions;
 
@@ -76,10 +76,6 @@ export const useCompanionSearch = () => {
     };
 
     return {
-        searchValueCompanion,
-        setSearchValueCompanion,
-        handleFindCompanion,
-        clearInputCompanion,
         companions,
         totalCompanions,
         companionRequest,
@@ -87,11 +83,17 @@ export const useCompanionSearch = () => {
         refetchCompanions,
         loadingCompanions,
         errorCompanions,
-        findCompanionCalled,
         user_id,
         defaulShowCompanions,
         limit,
         setLimit,
         showAllCompanions,
+
+        searchDataCompanion,
+        calledCompanion,
+        clearSearchCompanion,
+        loadingCompanion,
+        searchValueCompanion,
+        handleSearchCompanion,
     };
 };

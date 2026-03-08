@@ -15,11 +15,14 @@ export const GET_COMPANIONS_BY_OWNER_ID = gql`
 `;
 
 export const GET_FIND_COMPANION = gql`
-    query FindCompanion($userId: ID!, $email: String, $name: String) {
-        findCompanion(user_id: $userId, email: $email, name: $name) {
-            _id
-            name
-            image
+    query FindCompanion($query: String) {
+        findCompanion(query: $query) {
+            companions {
+                _id
+                firstName
+                lastName
+                image
+            }
         }
     }
 `;

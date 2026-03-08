@@ -1,13 +1,11 @@
 'use client';
 
 import { FC } from 'react';
+import { GET_FIND_COMPANION } from '@/app/graphql/queries/companions';
 import { FIND_BY_EMAIL_OR_NAME } from '@/app/graphql/queries/users';
-import ClearInput from '@/assets/icons/clearInput.svg';
-import Search from '@/assets/icons/search.svg';
+import { FindByEmailOrNameQuery, FindByEmailOrNameQueryVariables } from '@/app/graphql/types';
 import { Button } from '@/components/shared/Button';
 import { FilteredList } from '@/components/shared/FilteredList';
-import { Input } from '@/components/shared/Input';
-import { Label } from '@/components/shared/Label';
 import { Popup } from '@/components/shared/Popup';
 import { Span } from '@/components/shared/Span';
 import { Title } from '@/components/shared/Title';
@@ -25,12 +23,9 @@ import classes from './Companions.module.css';
 
 const Companions: FC = () => {
     const {
-        handleFindCompanion,
         sendRequestCompanion,
         companions,
 
-        searchValueCompanion,
-        clearInputCompanion,
         showAllCompanions,
         select,
         limit,
@@ -61,12 +56,37 @@ const Companions: FC = () => {
         checkedCompanions,
 
         state,
+
+        searchDataCompanion,
+        clearSearchCompanion,
+        loadingCompanion,
+        searchValueCompanion,
+        handleSearchCompanion,
     } = useCompanions();
 
-    const { handleSearch, searchData, called, clearSearch, loading, searchValue } = useSearchInput({
+    const {
+        handleSearch: handleSearchUsers,
+        searchData: searchDataUsers,
+        called: calledUsers,
+        clearSearch: clearSearchUsers,
+        loading: loadingUsers,
+        searchValue: searchValueUsers,
+    } = useSearchInput<FindByEmailOrNameQuery, FindByEmailOrNameQueryVariables>({
         searchQuery: FIND_BY_EMAIL_OR_NAME,
         dataKey: 'findByEmailOrName',
     });
+
+    // const {
+    //     handleSearch: handleSearchCompanion,
+    //     searchData: searchDataCompanion,
+    //     called: calledCompanion,
+    //     clearSearch: clearSearchCompanion,
+    //     loading: loadingCompanion,
+    //     searchValue: searchValueCompanion,
+    // } = useSearchInput({
+    //     searchQuery: GET_FIND_COMPANION,
+    //     dataKey: 'findCompanion',
+    // });
 
     return (
         <div className={classes.searchCompanions}>
@@ -76,18 +96,18 @@ const Companions: FC = () => {
 
             <SearchInput
                 searchQuery={FIND_BY_EMAIL_OR_NAME}
-                onChange={handleSearch}
-                onClear={clearSearch}
-                loading={loading}
-                value={searchValue}
+                onChange={handleSearchUsers}
+                onClear={clearSearchUsers}
+                loading={loadingUsers}
+                value={searchValueUsers}
                 label="Search by name or email"
             />
 
             <FilteredList className={classes.filteredList}>
-                {called && !searchData && searchData === 0 ? (
+                {calledUsers && !searchDataUsers && searchDataUsers === 0 ? (
                     <Span title={'По вашему запросу ничего не найдено'} />
                 ) : (
-                    searchData.map((card: any) => (
+                    searchDataUsers.map((card: any) => (
                         <CardAddCompanion
                             key={card._id}
                             id={card._id}
@@ -113,24 +133,14 @@ const Companions: FC = () => {
                     <div className={classes.line}></div>
 
                     <div className={classes.filtersCompanion}>
-                        <Label label={''} className={classes.findCompanions}>
-                            <Input
-                                onChange={handleFindCompanion}
-                                type="text"
-                                className={classes.findInput}
-                                value={searchValueCompanion ?? ''}
-                            />
-                            {searchValueCompanion === '' && (
-                                <Search className={classes.searchIconCompanions} />
-                            )}
-
-                            {searchValueCompanion !== '' && (
-                                <ClearInput
-                                    className={classes.searchIconCompanions}
-                                    onClick={clearInputCompanion}
-                                />
-                            )}
-                        </Label>
+                        <SearchInput
+                            searchQuery={GET_FIND_COMPANION}
+                            onChange={handleSearchCompanion}
+                            onClear={clearSearchCompanion}
+                            loading={loadingCompanion}
+                            value={searchValueCompanion}
+                            label=""
+                        />
 
                         <Button
                             resetDefaultStyles

@@ -8,6 +8,7 @@ import { User } from '../user/entities/user.entity';
 import { CompanionsResponse } from './entities/companions-response.entity';
 import { SessionAuthGuard } from 'src/common/guards/session-auth.guard';
 import { RolesGuard } from 'src/common/guards/roles.guard';
+import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 
 @Resolver(() => Companion)
 export class CompanionResolver {
@@ -26,6 +27,19 @@ export class CompanionResolver {
         offset?: number
     ): Promise<{ companions: User[]; totalCompanions: number }> {
         return this.companionService.getCompanionsByOwner(ownerId, limit, offset);
+    }
+
+    @Query(() => CompanionsResponse, {
+        name: 'findCompanion',
+        description: 'Поиск компаньонов по email или имени',
+    })
+    @UseGuards(SessionAuthGuard, RolesGuard)
+    findCompanion(
+        @CurrentUser() user: User,
+        @Args('query', { type: () => String, nullable: true })
+        query?: string
+    ): Promise<{ companions: User[] }> {
+        return this.companionService.findCompanion(user._id, query);
     }
 
     @Mutation(() => Boolean)
