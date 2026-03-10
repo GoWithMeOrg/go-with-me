@@ -3,7 +3,7 @@
 import { FC } from 'react';
 import { GET_FIND_COMPANION } from '@/app/graphql/queries/companions';
 import { FIND_BY_EMAIL_OR_NAME } from '@/app/graphql/queries/users';
-import { FindByEmailOrNameQuery, FindByEmailOrNameQueryVariables } from '@/app/graphql/types';
+import { FindByEmailOrNameQuery, FindByEmailOrNameQueryVariables, User } from '@/app/graphql/types';
 import { Button } from '@/components/shared/Button';
 import { FilteredList } from '@/components/shared/FilteredList';
 import { Popup } from '@/components/shared/Popup';
@@ -71,22 +71,10 @@ const Companions: FC = () => {
         clearSearch: clearSearchUsers,
         loading: loadingUsers,
         searchValue: searchValueUsers,
-    } = useSearchInput<FindByEmailOrNameQuery, FindByEmailOrNameQueryVariables>({
+    } = useSearchInput<{ findByEmailOrName: User[] }>({
         searchQuery: FIND_BY_EMAIL_OR_NAME,
         dataKey: 'findByEmailOrName',
     });
-
-    // const {
-    //     handleSearch: handleSearchCompanion,
-    //     searchData: searchDataCompanion,
-    //     called: calledCompanion,
-    //     clearSearch: clearSearchCompanion,
-    //     loading: loadingCompanion,
-    //     searchValue: searchValueCompanion,
-    // } = useSearchInput({
-    //     searchQuery: GET_FIND_COMPANION,
-    //     dataKey: 'findCompanion',
-    // });
 
     return (
         <div className={classes.searchCompanions}>
@@ -107,12 +95,12 @@ const Companions: FC = () => {
                 {calledUsers && !searchDataUsers && searchDataUsers === 0 ? (
                     <Span title={'По вашему запросу ничего не найдено'} />
                 ) : (
-                    searchDataUsers.map((card: any) => (
+                    searchDataUsers.map((card) => (
                         <CardAddCompanion
                             key={card._id}
                             id={card._id}
                             name={`${card.firstName + ' ' + card.lastName}`}
-                            image={card.image}
+                            image={card.image as string}
                             onClickPopupRequest={() =>
                                 openPopupRequestUser(
                                     card._id,
@@ -124,7 +112,7 @@ const Companions: FC = () => {
                 )}
             </FilteredList>
 
-            {companions?.length > 0 && (
+            {companions && companions?.length > 0 && (
                 <div className={classes.companions}>
                     <div className={classes.header}>
                         <Title tag={'h3'} title="My companions" />
@@ -156,11 +144,11 @@ const Companions: FC = () => {
                     </div>
 
                     <FilteredList className={classes.companionsList}>
-                        {companions?.map((card: any) => (
+                        {companions?.map((card) => (
                             <CardCompanion
                                 id={card._id}
                                 name={`${card.firstName + ' ' + card.lastName}`}
-                                image={card.image}
+                                image={card.image as string}
                                 key={card._id}
                                 onChange={(isChecked) => handleCheckboxChange(card._id, isChecked)}
                                 select={select}

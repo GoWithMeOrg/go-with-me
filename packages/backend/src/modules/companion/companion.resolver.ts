@@ -29,7 +29,7 @@ export class CompanionResolver {
         return this.companionService.getCompanionsByOwner(ownerId, limit, offset);
     }
 
-    @Query(() => CompanionsResponse, {
+    @Query(() => [User], {
         name: 'findCompanion',
         description: 'Поиск компаньонов по email или имени',
     })
@@ -38,7 +38,7 @@ export class CompanionResolver {
         @CurrentUser() user: User,
         @Args('query', { type: () => String, nullable: true })
         query?: string
-    ): Promise<{ companions: User[] }> {
+    ): Promise<User[]> {
         return this.companionService.findCompanion(user._id, query);
     }
 

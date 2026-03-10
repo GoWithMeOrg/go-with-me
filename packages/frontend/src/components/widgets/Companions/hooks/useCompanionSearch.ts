@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { SEND_REQUEST_COMPANION_MUTATION } from '@/app/graphql/mutations/companionRequest';
 import { REMOVE_COMPANION_MUTATION } from '@/app/graphql/mutations/companions';
 import { GET_COMPANIONS_BY_OWNER_ID, GET_FIND_COMPANION } from '@/app/graphql/queries/companions';
-import { CompanionsResponse, QueryCompanionsByOwnerIdArgs } from '@/app/graphql/types';
+import { CompanionsResponse, QueryCompanionsByOwnerIdArgs, User } from '@/app/graphql/types';
 import { useUserID } from '@/hooks/useUserID';
 import { useMutation, useQuery } from '@apollo/client/react';
 
@@ -20,10 +20,12 @@ export const useCompanionSearch = () => {
         clearSearch: clearSearchCompanion,
         loading: loadingCompanion,
         searchValue: searchValueCompanion,
-    } = useSearchInput<{ findCompanion: CompanionsResponse }, { query?: string | null }>({
+    } = useSearchInput<{ findCompanion: User[] }>({
         searchQuery: GET_FIND_COMPANION,
         dataKey: 'findCompanion',
     });
+
+    console.log(searchDataCompanion);
 
     const {
         loading: loadingCompanions,
@@ -41,11 +43,9 @@ export const useCompanionSearch = () => {
     const [RemoveCompanion] = useMutation(REMOVE_COMPANION_MUTATION);
 
     const companions =
-        searchValueCompanion && searchDataCompanion?.companions?.length > 0
-            ? searchDataCompanion.companions
+        searchValueCompanion && searchDataCompanion?.length > 0
+            ? searchDataCompanion
             : dataCompanions?.companionsByOwnerId?.companions;
-
-    console.log(searchDataCompanion);
 
     const totalCompanions = dataCompanions?.companionsByOwnerId?.totalCompanions;
 

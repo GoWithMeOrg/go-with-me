@@ -17,12 +17,10 @@ export const GET_COMPANIONS_BY_OWNER_ID = gql`
 export const GET_FIND_COMPANION = gql`
     query FindCompanion($query: String) {
         findCompanion(query: $query) {
-            companions {
-                _id
-                firstName
-                lastName
-                image
-            }
+            _id
+            firstName
+            lastName
+            image
         }
     }
 `;

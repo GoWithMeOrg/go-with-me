@@ -88,17 +88,20 @@ export class CompanionService {
     async findCompanion(
         ownerId: MongoSchema.Types.ObjectId,
         query?: string
-    ): Promise<{ companions: User[] }> {
+    ): Promise<User[]> {
         const getCompanions = await this.companionModel
             .findOne({ ownerId })
             .populate<{ companions: User[] }>({
                 path: 'companions',
-            });
+            })
+            .lean()
+            .exec();
+
         if (!getCompanions) {
-            return { companions: [] };
+            return [];
         }
 
-        let filteredCompanions = getCompanions.companions;
+        let filteredCompanions = getCompanions.companions || [];
 
         // Фильтрация по query (email или имя)
         if (query) {
@@ -116,6 +119,6 @@ export class CompanionService {
             }
         }
 
-        return { companions: filteredCompanions };
+        return filteredCompanions;
     }
 }
