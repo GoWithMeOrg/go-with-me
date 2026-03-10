@@ -24,8 +24,11 @@ export const PermissionManagement = () => {
         totalActionsCount,
     } = usePermissionManager();
 
-    const { handleSearch, searchData, clearSearch, loading, searchValue } = useSearchInput({
+    const { handleSearch, searchData, clearSearch, loading, searchValue } = useSearchInput<{
+        searchResources: Resource[];
+    }>({
         searchQuery: SEARCH_RESOURCES,
+        dataKey: 'searchResources',
     });
 
     console.log(searchData);

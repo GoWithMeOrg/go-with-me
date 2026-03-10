@@ -1,13 +1,13 @@
 import gql from 'graphql-tag';
 
 export const GET_COMPANIONS_BY_OWNER_ID = gql`
-    query CompanionsByOwnerId($ownerId: ID!, $limit: Int, $offset: Int) {
-        companionsByOwnerId(ownerId: $ownerId, limit: $limit, offset: $offset) {
+    query CompanionsByOwnerId($ownerId: ID!, $offset: Int, $limit: Int) {
+        companionsByOwnerId(ownerId: $ownerId, offset: $offset, limit: $limit) {
             companions {
+                _id
                 firstName
                 lastName
                 image
-                _id
             }
             totalCompanions
         }

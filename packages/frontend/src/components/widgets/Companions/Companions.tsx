@@ -57,7 +57,6 @@ const Companions: FC = () => {
 
         state,
 
-        searchDataCompanion,
         clearSearchCompanion,
         loadingCompanion,
         searchValueCompanion,
@@ -75,6 +74,8 @@ const Companions: FC = () => {
         searchQuery: FIND_BY_EMAIL_OR_NAME,
         dataKey: 'findByEmailOrName',
     });
+
+    console.log(searchDataUsers);
 
     return (
         <div className={classes.searchCompanions}>

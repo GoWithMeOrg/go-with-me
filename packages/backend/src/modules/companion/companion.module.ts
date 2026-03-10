@@ -17,6 +17,6 @@ import {
         ]),
     ],
     providers: [CompanionResolver, CompanionService],
-    exports: [CompanionService],
+    exports: [CompanionService, MongooseModule],
 })
 export class CompanionModule {}

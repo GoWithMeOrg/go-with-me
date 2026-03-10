@@ -11,6 +11,7 @@ import { User } from './entities/user.entity';
 
 import { SessionAuthGuard } from 'src/common/guards/session-auth.guard';
 import { RolesGuard } from 'src/common/guards/roles.guard';
+import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 
 import { Roles } from '../../common/decorators/roles.decorator';
 
@@ -38,10 +39,12 @@ export class UserResolver {
         name: 'findByEmailOrName',
         description: 'Найти пользователей по email или имени',
     })
+    @UseGuards(SessionAuthGuard)
     findByEmailOrName(
+        @CurrentUser() user: User,
         @Args('query', { type: () => String, nullable: true }) query?: string
     ): Promise<User[] | null> {
-        return this.userService.findByEmailOrName(query);
+        return this.userService.findByEmailOrName(query, user._id);
     }
 
     @Mutation(() => User, {
