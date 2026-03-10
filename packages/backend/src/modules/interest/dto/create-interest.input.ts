@@ -5,9 +5,9 @@ export class CreateInterestInput {
     @Field(() => [String])
     interests: string[];
 
-    @Field(() => ID)
+    @Field(() => ID, { nullable: true })
     ownerId: string;
 
-    @Field(() => String)
+    @Field(() => String, { nullable: true })
     ownerType: 'User' | 'Event';
 }

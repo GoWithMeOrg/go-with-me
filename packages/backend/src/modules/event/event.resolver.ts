@@ -6,6 +6,10 @@ import { Event } from './entities/event.entity';
 import { UserService } from '../user/user.service';
 import { User } from '../user/entities/user.entity';
 import { Schema as MongoSchema } from 'mongoose';
+import { CreateLocationInput } from '../location/dto/create-location.input';
+import { CreateCategoryInput } from '../category/dto/create-category.input';
+import { CreateInterestInput } from '../interest/dto/create-interest.input';
+import { CreateTagInput } from '../tag/dto/create-tag.input';
 
 @Resolver(() => Event)
 export class EventResolver {
@@ -35,8 +39,20 @@ export class EventResolver {
         name: 'createEvent',
         description: 'Создать событие',
     })
-    createEvent(@Args('createEventInput') createEventInput: CreateEventInput) {
-        return this.eventService.createEvent(createEventInput);
+    createEvent(
+        @Args('createEventInput') createEventInput: CreateEventInput,
+        @Args('createLocationInput', { nullable: true }) createLocationInput: CreateLocationInput,
+        @Args('createCategoryInput', { nullable: true }) createCategoryInput: CreateCategoryInput,
+        @Args('createInterestInput', { nullable: true }) createInterestInput: CreateInterestInput,
+        @Args('createTagInput', { nullable: true }) createTagInput: CreateTagInput
+    ) {
+        return this.eventService.createEvent(
+            createEventInput,
+            createLocationInput,
+            createCategoryInput,
+            createInterestInput,
+            createTagInput
+        );
     }
 
     @Mutation(() => Event, {
@@ -66,9 +82,7 @@ export class EventResolver {
         if (event.organizer instanceof User) {
             return event.organizer;
         }
-        const user = await this.userService.getUserById(
-            event.organizer as MongoSchema.Types.ObjectId
-        );
+        const user = await this.userService.getUserById(event.organizer);
         return user as User;
     }
 }

@@ -5,9 +5,9 @@ export class CreateCategoryInput {
     @Field(() => [String])
     categories: string[];
 
-    @Field(() => ID)
-    ownerId: string;
+    @Field(() => ID, { nullable: true })
+    ownerId?: string;
 
-    @Field(() => String)
-    ownerType: 'User' | 'Event';
+    @Field(() => String, { nullable: true })
+    ownerType?: 'User' | 'Event';
 }

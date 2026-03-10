@@ -13,6 +13,8 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
+  /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
+  DateTime: { input: any; output: any; }
 };
 
 export enum Action {
@@ -50,6 +52,16 @@ export type CreateCategoryInput = {
   ownerType: Scalars['String']['input'];
 };
 
+export type CreateEventInput = {
+  description: InputMaybe<Scalars['String']['input']>;
+  endDate: Scalars['DateTime']['input'];
+  image: InputMaybe<Scalars['String']['input']>;
+  name: Scalars['String']['input'];
+  organizerId: Scalars['ID']['input'];
+  startDate: Scalars['DateTime']['input'];
+  time: InputMaybe<Scalars['String']['input']>;
+};
+
 export type CreateInterestInput = {
   interests: Array<Scalars['String']['input']>;
   ownerId: Scalars['ID']['input'];
@@ -79,6 +91,22 @@ export type CreateUserInput = {
   image: Scalars['String']['input'];
   lastName: Scalars['String']['input'];
   roles: InputMaybe<Array<Scalars['String']['input']>>;
+};
+
+export type Event = {
+  __typename: 'Event';
+  _id: Scalars['ID']['output'];
+  category: Maybe<Category>;
+  description: Maybe<Scalars['String']['output']>;
+  endDate: Scalars['DateTime']['output'];
+  image: Maybe<Scalars['String']['output']>;
+  interest: Maybe<Interest>;
+  location: Maybe<Location>;
+  name: Scalars['String']['output'];
+  organizer: User;
+  startDate: Scalars['DateTime']['output'];
+  tag: Maybe<Tag>;
+  time: Maybe<Scalars['String']['output']>;
 };
 
 export type Interest = {
@@ -127,6 +155,8 @@ export type Mutation = {
   /** добавать роль пользователю */
   addUserRole: User;
   createCategories: Category;
+  /** Создать событие */
+  createEvent: Event;
   createInterest: Interest;
   /** Создать локацию */
   createLocation: Location;
@@ -144,6 +174,8 @@ export type Mutation = {
   rejectCompanionRequest: CompanionRequest;
   removeCategories: Category;
   removeCompanion: Scalars['Boolean']['output'];
+  /** Удалить событие */
+  removeEvent: Scalars['Boolean']['output'];
   removeInterest: Interest;
   /** Удалить локацию */
   removeLocation: Scalars['Boolean']['output'];
@@ -161,6 +193,8 @@ export type Mutation = {
   /** Переключает статус активности права (включает/выключает) */
   togglePermissionStatus: Permission;
   updateCategories: Category;
+  /** Обновить данные события */
+  updateEvent: Event;
   updateInterest: Interest;
   /** Обновить локацию */
   updateLocation: Location;
@@ -191,6 +225,11 @@ export type MutationAddUserRoleArgs = {
 
 export type MutationCreateCategoriesArgs = {
   createCategoriesInput: CreateCategoryInput;
+};
+
+
+export type MutationCreateEventArgs = {
+  createEventInput: CreateEventInput;
 };
 
 
@@ -258,6 +297,11 @@ export type MutationRemoveCompanionArgs = {
 };
 
 
+export type MutationRemoveEventArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
 export type MutationRemoveInterestArgs = {
   id: Scalars['ID']['input'];
 };
@@ -313,6 +357,12 @@ export type MutationTogglePermissionStatusArgs = {
 
 export type MutationUpdateCategoriesArgs = {
   updateCategoriesInput: UpdateCategoryInput;
+};
+
+
+export type MutationUpdateEventArgs = {
+  id: Scalars['ID']['input'];
+  updateEventInput: UpdateEventInput;
 };
 
 
@@ -388,6 +438,10 @@ export type Query = {
   categoriesByOwnerId: Category;
   /** Поиск интересов по ownerId */
   companionsByOwnerId: CompanionsResponse;
+  /** Получить событие по id */
+  event: Event;
+  /** Получить все события */
+  events: Array<Event>;
   /** Найти пользователей по email или имени */
   findByEmailOrName: Array<User>;
   /** Поиск компаньонов по email или имени */
@@ -449,6 +503,11 @@ export type QueryCompanionsByOwnerIdArgs = {
   limit: InputMaybe<Scalars['Int']['input']>;
   offset: InputMaybe<Scalars['Int']['input']>;
   ownerId: Scalars['ID']['input'];
+};
+
+
+export type QueryEventArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
@@ -590,6 +649,15 @@ export type Tag = {
 export type UpdateCategoryInput = {
   _id: InputMaybe<Scalars['String']['input']>;
   categories: InputMaybe<Array<Scalars['String']['input']>>;
+};
+
+export type UpdateEventInput = {
+  _id: InputMaybe<Scalars['String']['input']>;
+  email: InputMaybe<Scalars['String']['input']>;
+  firstName: InputMaybe<Scalars['String']['input']>;
+  image: InputMaybe<Scalars['String']['input']>;
+  lastName: InputMaybe<Scalars['String']['input']>;
+  roles: InputMaybe<Array<Scalars['String']['input']>>;
 };
 
 export type UpdateInterestInput = {
