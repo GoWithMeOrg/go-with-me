@@ -3,7 +3,7 @@ import { Schema as MongoSchema } from 'mongoose';
 
 @InputType()
 export class CreateEventInput {
-    @Field(() => ID)
+    @Field(() => ID, { nullable: true })
     organizer: MongoSchema.Types.ObjectId;
 
     @Field(() => String)

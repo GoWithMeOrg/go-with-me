@@ -2,8 +2,9 @@
 
 import { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { eventCategory, eventTypes, IEvent } from '@/app/types/Event';
+import { Event } from '@/app/graphql/types';
 import { Button } from '@/components/shared/Button';
+import { categoriesList, interestsList } from '@/components/shared/Dropdown/dropdownLists';
 import { Input } from '@/components/shared/Input';
 import { Label } from '@/components/shared/Label';
 import { Textarea } from '@/components/shared/Textarea';
@@ -17,10 +18,11 @@ import { useUploadFile } from '@/components/widgets/UploadFile/hooks';
 
 import { Location } from '../Location';
 import { UploadFileSizes } from '../UploadFile/types/storage-folder';
+import { useEventForm } from './hooks/useEventForm';
 
 import classes from './EventForm.module.css';
 
-export type EventType = Partial<IEvent>;
+export type EventType = Partial<Event>;
 
 export enum Status {
     PUBLIC = 'public',
@@ -50,17 +52,18 @@ interface IFormInputs {
 
 interface IEventFormProps {
     eventData: EventType;
-    onSubmitEvent: (event: EventType) => void;
 }
-export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
-    const { control, handleSubmit, watch } = useForm<IFormInputs>();
+export const EventForm = ({ eventData }: IEventFormProps) => {
+    const { control, handleSubmit, watch } = useForm();
+    const { handleCreateEvent } = useEventForm();
+
     const [file, setFile] = useState<File | null>(null);
     const [presignUrl, setPresignUrl] = useState<string | null>(null);
     const { onSubmitFile, deleteFile } = useUploadFile({});
 
     //@ts-ignore
-    const onSubmit: SubmitHandler<IFormInputs> = (event: EventType) => {
-        onSubmitEvent(event);
+    const onSubmit: SubmitHandler = (event: Event) => {
+        handleCreateEvent(event);
         if (file && presignUrl) {
             onSubmitFile(file, presignUrl);
             if (eventData.image && file) {
@@ -147,7 +150,7 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                             <Controller
                                 name="time"
                                 control={control}
-                                render={({ field }) => <Time time={eventData.time} {...field} />}
+                                render={({ field }) => <Time time={eventData?.time} {...field} />}
                             />
                         </div>
 
@@ -156,8 +159,8 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                             control={control}
                             render={({ field }) => (
                                 <SelectItems
-                                    categoryList={eventCategory}
-                                    eventCategories={[...(eventData.categories ?? [])]}
+                                    categoryList={categoriesList}
+                                    eventCategories={[...(eventData.category?.categories ?? [])]}
                                     titleCategories={'Выбрать категорию'}
                                     badgesShow
                                     onChange={field.onChange}
@@ -167,12 +170,12 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                         />
 
                         <Controller
-                            name="types"
+                            name="interests"
                             control={control}
                             render={({ field }) => (
                                 <SelectItems
-                                    categoryList={eventTypes}
-                                    eventCategories={[...(eventData.types ?? [])]}
+                                    categoryList={interestsList}
+                                    eventCategories={[...(eventData.interest?.interests ?? [])]}
                                     titleCategories={'Выбрать тип'}
                                     badgesShow
                                     onChange={field.onChange}
@@ -187,7 +190,7 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                             render={({ field }) => (
                                 <CreateTag
                                     onChange={field.onChange}
-                                    eventTags={[...(eventData.tags ?? [])]}
+                                    eventTags={[...(eventData.tag?.tags ?? [])]}
                                     title={'Создать тег'}
                                 />
                             )}
@@ -218,5 +221,3 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
         </div>
     );
 };
-
-export default EventForm;

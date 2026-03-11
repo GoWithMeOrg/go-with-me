@@ -24,13 +24,17 @@ export class EventService {
     ) {}
 
     async createEvent(
+        organizer: MongoSchema.Types.ObjectId,
         createEventInput: CreateEventInput,
         createLocationInput?: CreateLocationInput,
         createCategoryInput?: CreateCategoryInput,
         createInterestInput?: CreateInterestInput,
         createTagInput?: CreateTagInput
     ): Promise<Event> {
-        const event = new this.eventModel(createEventInput);
+        const event = new this.eventModel({
+            ...createEventInput,
+            organizer,
+        });
         const savedEvent = await event.save();
 
         if (createLocationInput) {

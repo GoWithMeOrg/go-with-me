@@ -10,6 +10,7 @@ import { CreateLocationInput } from '../location/dto/create-location.input';
 import { CreateCategoryInput } from '../category/dto/create-category.input';
 import { CreateInterestInput } from '../interest/dto/create-interest.input';
 import { CreateTagInput } from '../tag/dto/create-tag.input';
+import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 
 @Resolver(() => Event)
 export class EventResolver {
@@ -44,9 +45,11 @@ export class EventResolver {
         @Args('createLocationInput', { nullable: true }) createLocationInput: CreateLocationInput,
         @Args('createCategoryInput', { nullable: true }) createCategoryInput: CreateCategoryInput,
         @Args('createInterestInput', { nullable: true }) createInterestInput: CreateInterestInput,
-        @Args('createTagInput', { nullable: true }) createTagInput: CreateTagInput
+        @Args('createTagInput', { nullable: true }) createTagInput: CreateTagInput,
+        @CurrentUser() user: User
     ) {
         return this.eventService.createEvent(
+            user._id,
             createEventInput,
             createLocationInput,
             createCategoryInput,

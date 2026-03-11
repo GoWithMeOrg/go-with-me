@@ -1,8 +1,5 @@
 import { IUser } from './User';
 
-export const eventCategory = ['sport', 'culture', 'education', 'entertainment', 'other'];
-export const eventTypes = ['online', 'offline'];
-
 export interface IEvent {
     _id: string;
     organizer_id: string;

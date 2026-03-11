@@ -39,7 +39,7 @@ input CreateEventInput {
   endDate: DateTime!
   image: String
   name: String!
-  organizer: ID!
+  organizer: ID
   startDate: DateTime!
   time: String
 }
