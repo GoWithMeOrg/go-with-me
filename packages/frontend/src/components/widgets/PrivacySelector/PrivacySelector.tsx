@@ -1,17 +1,15 @@
-import classes from './PrivacySelector.module.css';
+import { FC } from 'react';
 
-interface PrivacySelectorProps {
-    options?: Record<string, string>;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    selected: string;
-}
+import { PrivacySelectorProps } from './interfaces/PrivacySelectorProps';
+
+import classes from './PrivacySelector.module.css';
 
 const PRIVACY_OPTIONS = [
     { key: 'Public', label: 'Public' },
     { key: 'Private', label: 'Private' },
 ] as const;
 
-export const PrivacySelector = ({ options, onChange, selected }: PrivacySelectorProps) => {
+export const PrivacySelector: FC<PrivacySelectorProps> = ({ options, onChange, selected }) => {
     return (
         <div className={classes.confidentiality}>
             <span className={classes.confidentialityTitle}>Privacy</span>

@@ -10,13 +10,13 @@ import { Label } from '@/components/shared/Label';
 import { Textarea } from '@/components/shared/Textarea';
 import { CreateTag } from '@/components/widgets/CreateTag';
 import { Date } from '@/components/widgets/Date';
+import { LocationPicker } from '@/components/widgets/LocationPicker';
+import { PrivacySelector } from '@/components/widgets/PrivacySelector';
 import { SelectItems } from '@/components/widgets/SelectItems';
 import { Time } from '@/components/widgets/Time';
 import { UploadFile } from '@/components/widgets/UploadFile';
 import { useUploadFile } from '@/components/widgets/UploadFile/hooks';
 
-import { Location } from '../Location';
-import { PrivacySelector } from '../Privacy/PrivacySelector';
 import { UploadFileSizes } from '../UploadFile/types/storage-folder';
 import { useEventForm } from './hooks/useEventForm';
 
@@ -73,7 +73,7 @@ export const EventForm = ({ eventData }: IEventFormProps) => {
                             name="location"
                             control={control}
                             render={({ field }) => (
-                                <Location
+                                <LocationPicker
                                     locationEvent={eventData?.location}
                                     onChange={field.onChange}
                                 />

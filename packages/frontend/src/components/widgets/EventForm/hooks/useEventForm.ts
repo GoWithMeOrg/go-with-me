@@ -1,6 +1,5 @@
 import { useForm } from 'react-hook-form';
 import { CREATE_EVENT_MUTATION } from '@/app/graphql/mutations/event';
-import { Event } from '@/app/graphql/types';
 import { useMutation } from '@apollo/client/react';
 
 export const useEventForm = () => {
@@ -8,21 +7,21 @@ export const useEventForm = () => {
 
     const [createEvent] = useMutation(CREATE_EVENT_MUTATION);
 
-    const place = watch('location');
+    // const place = watch('location');
 
-    function mapGooglePlaceToLocationInput(place: any) {
-        if (!place || !place.geometry || !place.geometry.location) return null;
-        const newPlace = {
-            geometry: {
-                coordinates: [place.geometry.location.lng(), place.geometry.location.lat()],
-            },
-            properties: {
-                address: place.formatted_address,
-            },
-        };
+    // function mapGooglePlaceToLocationInput(place: any) {
+    //     if (!place || !place.geometry || !place.geometry.location) return null;
+    //     const newPlace = {
+    //         geometry: {
+    //             coordinates: [place.geometry.location.lng(), place.geometry.location.lat()],
+    //         },
+    //         properties: {
+    //             address: place.formatted_address,
+    //         },
+    //     };
 
-        return newPlace;
-    }
+    //     return newPlace;
+    // }
 
     const handleCreateEvent = async (createEventForm: any) => {
         console.log(createEventForm);
