@@ -1,5 +1,6 @@
 import { Field, InputType, ID } from '@nestjs/graphql';
 import { Schema as MongoSchema } from 'mongoose';
+import { Privacy } from '../enum/privacy.enum';
 
 @InputType()
 export class CreateEventInput {
@@ -20,6 +21,9 @@ export class CreateEventInput {
 
     @Field(() => String, { nullable: true })
     time?: string;
+
+    @Field(() => Privacy)
+    privacy: Privacy;
 
     @Field(() => String, { nullable: true })
     image?: string;

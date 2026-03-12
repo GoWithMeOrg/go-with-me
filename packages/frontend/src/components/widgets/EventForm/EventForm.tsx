@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { Event } from '@/app/graphql/types';
+import { Event, Privacy } from '@/app/graphql/types';
 import { Button } from '@/components/shared/Button';
 import { categoriesList, interestsList } from '@/components/shared/Dropdown/dropdownLists';
 import { Input } from '@/components/shared/Input';
@@ -10,45 +10,19 @@ import { Label } from '@/components/shared/Label';
 import { Textarea } from '@/components/shared/Textarea';
 import { CreateTag } from '@/components/widgets/CreateTag';
 import { Date } from '@/components/widgets/Date';
-import { EventStatus } from '@/components/widgets/EventStatus';
 import { SelectItems } from '@/components/widgets/SelectItems';
 import { Time } from '@/components/widgets/Time';
 import { UploadFile } from '@/components/widgets/UploadFile';
 import { useUploadFile } from '@/components/widgets/UploadFile/hooks';
 
 import { Location } from '../Location';
+import { PrivacySelector } from '../Privacy/PrivacySelector';
 import { UploadFileSizes } from '../UploadFile/types/storage-folder';
 import { useEventForm } from './hooks/useEventForm';
 
 import classes from './EventForm.module.css';
 
 export type EventType = Partial<Event>;
-
-export enum Status {
-    PUBLIC = 'public',
-    PRIVATE = 'private',
-}
-
-interface IFormInputs {
-    organizer_id: string;
-    name: string;
-    description: string;
-    startDate: string;
-    endDate: string;
-    time: string;
-    location: {
-        type: 'Point';
-        coordinates: [number, number];
-        properties: {
-            address: string;
-        };
-    };
-    image: string;
-    status: Status;
-    categories: string[];
-    types: string[];
-    tags: string[];
-}
 
 interface IEventFormProps {
     eventData: EventType;
@@ -107,11 +81,15 @@ export const EventForm = ({ eventData }: IEventFormProps) => {
                         />
 
                         <Controller
-                            name="status"
+                            name="privacy"
                             control={control}
-                            defaultValue={(eventData.status || Status.PUBLIC) as Status}
+                            defaultValue={eventData.privacy || Privacy.Public}
                             render={({ field }) => (
-                                <EventStatus options={Status} selected={field.value} {...field} />
+                                <PrivacySelector
+                                    options={Privacy}
+                                    selected={field.value}
+                                    {...field}
+                                />
                             )}
                         />
 

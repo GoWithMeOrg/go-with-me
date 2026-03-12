@@ -40,6 +40,7 @@ input CreateEventInput {
   image: String
   name: String!
   organizer: ID
+  privacy: Privacy!
   startDate: DateTime!
   time: String
 }
@@ -84,12 +85,13 @@ type Event {
   _id: ID!
   category: Category
   description: String
-  endDate: DateTime!
+  endDate: DateTime
   image: String
   interest: Interest
   location: Location
   name: String!
   organizer: User!
+  privacy: Privacy!
   startDate: DateTime!
   tag: Tag
   time: String
@@ -231,6 +233,11 @@ type PresignedUrlResponse {
   publicUrl: String!
 }
 
+enum Privacy {
+  PRIVATE
+  PUBLIC
+}
+
 type Query {
   adminRoute: String!
 
@@ -367,6 +374,7 @@ input UpdateEventInput {
   image: String
   name: String
   organizer: ID
+  privacy: Privacy
   startDate: DateTime
   time: String
 }

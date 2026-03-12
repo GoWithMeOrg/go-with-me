@@ -48,8 +48,8 @@ export type CompanionsResponse = {
 
 export type CreateCategoryInput = {
   categories: Array<Scalars['String']['input']>;
-  ownerId: Scalars['ID']['input'];
-  ownerType: Scalars['String']['input'];
+  ownerId: InputMaybe<Scalars['ID']['input']>;
+  ownerType: InputMaybe<Scalars['String']['input']>;
 };
 
 export type CreateEventInput = {
@@ -57,15 +57,16 @@ export type CreateEventInput = {
   endDate: Scalars['DateTime']['input'];
   image: InputMaybe<Scalars['String']['input']>;
   name: Scalars['String']['input'];
-  organizerId: Scalars['ID']['input'];
+  organizer: InputMaybe<Scalars['ID']['input']>;
+  privacy: Privacy;
   startDate: Scalars['DateTime']['input'];
   time: InputMaybe<Scalars['String']['input']>;
 };
 
 export type CreateInterestInput = {
   interests: Array<Scalars['String']['input']>;
-  ownerId: Scalars['ID']['input'];
-  ownerType: Scalars['String']['input'];
+  ownerId: InputMaybe<Scalars['ID']['input']>;
+  ownerType: InputMaybe<Scalars['String']['input']>;
 };
 
 export type CreateLocationInput = {
@@ -80,8 +81,8 @@ export type CreateRoleInput = {
 };
 
 export type CreateTagInput = {
-  ownerId: Scalars['ID']['input'];
-  ownerType: Scalars['String']['input'];
+  ownerId: InputMaybe<Scalars['ID']['input']>;
+  ownerType: InputMaybe<Scalars['String']['input']>;
   tags: InputMaybe<Array<Scalars['String']['input']>>;
 };
 
@@ -98,12 +99,13 @@ export type Event = {
   _id: Scalars['ID']['output'];
   category: Maybe<Category>;
   description: Maybe<Scalars['String']['output']>;
-  endDate: Scalars['DateTime']['output'];
+  endDate: Maybe<Scalars['DateTime']['output']>;
   image: Maybe<Scalars['String']['output']>;
   interest: Maybe<Interest>;
   location: Maybe<Location>;
   name: Scalars['String']['output'];
   organizer: User;
+  privacy: Privacy;
   startDate: Scalars['DateTime']['output'];
   tag: Maybe<Tag>;
   time: Maybe<Scalars['String']['output']>;
@@ -144,8 +146,8 @@ export type LocationProperties = {
 
 export type LocationPropertiesInput = {
   address: InputMaybe<Scalars['String']['input']>;
-  ownerId: Scalars['ID']['input'];
-  ownerType: Scalars['String']['input'];
+  ownerId: InputMaybe<Scalars['ID']['input']>;
+  ownerType: InputMaybe<Scalars['String']['input']>;
 };
 
 export type Mutation = {
@@ -229,7 +231,11 @@ export type MutationCreateCategoriesArgs = {
 
 
 export type MutationCreateEventArgs = {
+  createCategoryInput: InputMaybe<CreateCategoryInput>;
   createEventInput: CreateEventInput;
+  createInterestInput: InputMaybe<CreateInterestInput>;
+  createLocationInput: InputMaybe<CreateLocationInput>;
+  createTagInput: InputMaybe<CreateTagInput>;
 };
 
 
@@ -428,6 +434,11 @@ export type PresignedUrlResponse = {
   /** Публичная ссылка для отображения */
   publicUrl: Scalars['String']['output'];
 };
+
+export enum Privacy {
+  Private = 'PRIVATE',
+  Public = 'PUBLIC'
+}
 
 export type Query = {
   __typename: 'Query';
@@ -652,12 +663,15 @@ export type UpdateCategoryInput = {
 };
 
 export type UpdateEventInput = {
-  _id: InputMaybe<Scalars['String']['input']>;
-  email: InputMaybe<Scalars['String']['input']>;
-  firstName: InputMaybe<Scalars['String']['input']>;
+  _id: Scalars['ID']['input'];
+  description: InputMaybe<Scalars['String']['input']>;
+  endDate: InputMaybe<Scalars['DateTime']['input']>;
   image: InputMaybe<Scalars['String']['input']>;
-  lastName: InputMaybe<Scalars['String']['input']>;
-  roles: InputMaybe<Array<Scalars['String']['input']>>;
+  name: InputMaybe<Scalars['String']['input']>;
+  organizer: InputMaybe<Scalars['ID']['input']>;
+  privacy: InputMaybe<Privacy>;
+  startDate: InputMaybe<Scalars['DateTime']['input']>;
+  time: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UpdateInterestInput = {

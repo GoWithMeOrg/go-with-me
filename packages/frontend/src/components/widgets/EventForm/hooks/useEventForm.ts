@@ -30,6 +30,7 @@ export const useEventForm = () => {
         const variables: any = {
             createEventInput: {
                 name: createEventForm.name,
+                privacy: createEventForm.privacy,
                 description: createEventForm.description,
                 startDate: createEventForm.startDate,
                 endDate: createEventForm.endDate,

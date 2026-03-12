@@ -1,11 +1,11 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
 import { Document, Schema as MongoSchema } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Location, LocationSchema } from '../../location/entities/location.entity';
-import { User } from '../../user/entities/user.entity';
+import { Location } from '../../location/entities/location.entity';
 import { Category } from 'src/modules/category/entities/category.entity';
 import { Interest } from 'src/modules/interest/entities/interest.entity';
 import { Tag } from 'src/modules/tag/entities/tag.entity';
+import { Privacy } from '../enum/privacy.enum';
 
 @ObjectType()
 @Schema({ timestamps: true })
@@ -29,13 +29,17 @@ export class Event {
     @Prop({ type: Date, required: true })
     startDate: Date;
 
-    @Field(() => Date)
-    @Prop({ type: Date, required: true })
+    @Field(() => Date, { nullable: true })
+    @Prop({ type: Date })
     endDate: Date;
 
     @Field(() => String, { nullable: true })
     @Prop({ type: String })
     time?: string;
+
+    @Field(() => Privacy)
+    @Prop({ type: String, enum: Privacy, required: true })
+    privacy: Privacy;
 
     @Field(() => String, { nullable: true })
     @Prop({ type: String })
