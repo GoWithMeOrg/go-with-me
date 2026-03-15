@@ -3,7 +3,6 @@ import { usePopup } from '@/components/shared/Popup/hooks';
 import { APIProviderContext, useApiIsLoaded, useMapsLibrary } from '@vis.gl/react-google-maps';
 
 export interface LocationData {
-    type: 'Point';
     coordinates: [number, number];
     properties: {
         address: string;
@@ -36,9 +35,7 @@ export interface UseLocationPickerReturn {
 
 const popupMode: 'map' = 'map';
 
-export const useLocationPicker = (
-    props: UseLocationPickerProps
-): UseLocationPickerReturn => {
+export const useLocationPicker = (props: UseLocationPickerProps): UseLocationPickerReturn => {
     const apiIsLoaded = useApiIsLoaded();
     const geocoding = useMapsLibrary('geocoding');
     const mapAPI = useContext(APIProviderContext);
@@ -70,7 +67,6 @@ export const useLocationPicker = (
     useEffect(() => {
         if (prevSelectedPlaceRef.current !== selectedPlace && props.onChange) {
             const newPlace: LocationData = {
-                type: 'Point',
                 coordinates: [
                     selectedPlace?.geometry?.location?.lng() ?? 0,
                     selectedPlace?.geometry?.location?.lat() ?? 0,

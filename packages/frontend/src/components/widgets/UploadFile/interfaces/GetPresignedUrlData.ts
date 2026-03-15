@@ -4,3 +4,8 @@ export interface GetPresignedUrlData {
         publicUrl: string;
     };
 }
+
+export interface UploadData {
+    file: File;
+    presignUrl: string;
+}

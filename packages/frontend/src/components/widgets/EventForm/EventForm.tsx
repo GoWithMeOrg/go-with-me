@@ -1,8 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { Event, Privacy } from '@/app/graphql/types';
+import { Controller } from 'react-hook-form';
+import { Privacy } from '@/app/graphql/types';
 import { Button } from '@/components/shared/Button';
 import { categoriesList, interestsList } from '@/components/shared/Dropdown/dropdownLists';
 import { Input } from '@/components/shared/Input';
@@ -15,56 +14,28 @@ import { PrivacySelector } from '@/components/widgets/PrivacySelector';
 import { SelectItems } from '@/components/widgets/SelectItems';
 import { Time } from '@/components/widgets/Time';
 import { UploadFile } from '@/components/widgets/UploadFile';
-import { useUploadFile } from '@/components/widgets/UploadFile/hooks';
 
 import { UploadFileSizes } from '../UploadFile/types/storage-folder';
 import { useEventForm } from './hooks/useEventForm';
+import { EventFormProps } from './interfaces/EventFormData';
 
 import classes from './EventForm.module.css';
 
-export type EventType = Partial<Event>;
-
-interface IEventFormProps {
-    eventData: EventType;
-}
-export const EventForm = ({ eventData }: IEventFormProps) => {
-    const { control, handleSubmit, watch } = useForm();
-    const { handleCreateEvent } = useEventForm();
-
-    const [file, setFile] = useState<File | null>(null);
-    const [presignUrl, setPresignUrl] = useState<string | null>(null);
-    const { onSubmitFile, deleteFile } = useUploadFile({});
-
-    //@ts-ignore
-    const onSubmit: SubmitHandler = (event: Event) => {
-        handleCreateEvent(event);
-        if (file && presignUrl) {
-            onSubmitFile(file, presignUrl);
-            if (eventData.image && file) {
-                deleteFile(eventData.image);
-            }
-        }
-    };
-
-    const handleUploadedFile = (file: File, preUrl: string) => {
-        setFile(file);
-        setPresignUrl(preUrl);
-    };
+export const EventForm = ({ eventData }: EventFormProps) => {
+    const { control, handleSubmit, handleUploadedFile, onSubmitData } = useEventForm();
 
     return (
         <div className={classes.container}>
-            <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
+            <form onSubmit={handleSubmit(onSubmitData)} className={classes.form}>
                 <div className={classes.formWrapper}>
                     <div className={classes.formField}>
                         <Controller
                             name="name"
                             control={control}
+                            defaultValue={eventData?.name || ''}
                             render={({ field }) => (
                                 <Label label={'Название'}>
-                                    <Input
-                                        defaultValue={eventData.name || ''}
-                                        onChange={field.onChange}
-                                    />
+                                    <Input {...field} onChange={field.onChange} />
                                 </Label>
                             )}
                         />
@@ -72,9 +43,10 @@ export const EventForm = ({ eventData }: IEventFormProps) => {
                         <Controller
                             name="location"
                             control={control}
+                            defaultValue={eventData?.location}
                             render={({ field }) => (
                                 <LocationPicker
-                                    locationEvent={eventData?.location}
+                                    locationEvent={eventData?.location as any}
                                     onChange={field.onChange}
                                 />
                             )}
@@ -83,7 +55,7 @@ export const EventForm = ({ eventData }: IEventFormProps) => {
                         <Controller
                             name="privacy"
                             control={control}
-                            defaultValue={eventData.privacy || Privacy.Public}
+                            defaultValue={eventData?.privacy || Privacy.Public}
                             render={({ field }) => (
                                 <PrivacySelector
                                     options={Privacy}
@@ -96,12 +68,10 @@ export const EventForm = ({ eventData }: IEventFormProps) => {
                         <Controller
                             name="description"
                             control={control}
+                            defaultValue={eventData?.description || ''}
                             render={({ field }) => (
                                 <Label label={'Описание'}>
-                                    <Textarea
-                                        defaultValue={eventData.description || ''}
-                                        onChange={field.onChange}
-                                    />
+                                    <Textarea {...field} onChange={field.onChange} />
                                 </Label>
                             )}
                         />
@@ -110,17 +80,19 @@ export const EventForm = ({ eventData }: IEventFormProps) => {
                             <Controller
                                 name="startDate"
                                 control={control}
+                                defaultValue={eventData?.startDate}
                                 render={({ field }) => (
-                                    <Date title={'Начало'} date={eventData.startDate} {...field} />
+                                    <Date title={'Начало'} date={eventData?.startDate} {...field} />
                                 )}
                             />
                             <Controller
                                 name="endDate"
                                 control={control}
+                                defaultValue={eventData?.endDate}
                                 render={({ field }) => (
                                     <Date
                                         title={'Завершение'}
-                                        date={eventData.endDate}
+                                        date={eventData?.endDate}
                                         {...field}
                                     />
                                 )}
@@ -128,6 +100,7 @@ export const EventForm = ({ eventData }: IEventFormProps) => {
                             <Controller
                                 name="time"
                                 control={control}
+                                defaultValue={eventData?.time}
                                 render={({ field }) => <Time time={eventData?.time} {...field} />}
                             />
                         </div>
@@ -135,10 +108,11 @@ export const EventForm = ({ eventData }: IEventFormProps) => {
                         <Controller
                             name="categories"
                             control={control}
+                            defaultValue={eventData?.categories}
                             render={({ field }) => (
                                 <SelectItems
                                     categoryList={categoriesList}
-                                    eventCategories={[...(eventData.category?.categories ?? [])]}
+                                    eventCategories={eventData?.categories || []}
                                     titleCategories={'Выбрать категорию'}
                                     badgesShow
                                     onChange={field.onChange}
@@ -150,10 +124,11 @@ export const EventForm = ({ eventData }: IEventFormProps) => {
                         <Controller
                             name="interests"
                             control={control}
+                            defaultValue={eventData?.interests}
                             render={({ field }) => (
                                 <SelectItems
                                     categoryList={interestsList}
-                                    eventCategories={[...(eventData.interest?.interests ?? [])]}
+                                    eventCategories={eventData?.interests || []}
                                     titleCategories={'Выбрать тип'}
                                     badgesShow
                                     onChange={field.onChange}
@@ -165,10 +140,11 @@ export const EventForm = ({ eventData }: IEventFormProps) => {
                         <Controller
                             name="tags"
                             control={control}
+                            defaultValue={eventData?.tags}
                             render={({ field }) => (
                                 <CreateTag
                                     onChange={field.onChange}
-                                    eventTags={[...(eventData.tag?.tags ?? [])]}
+                                    eventTags={eventData?.tags || []}
                                     title={'Создать тег'}
                                 />
                             )}
@@ -177,11 +153,12 @@ export const EventForm = ({ eventData }: IEventFormProps) => {
                     <Controller
                         name="image"
                         control={control}
+                        defaultValue={eventData?.image}
                         render={({ field }) => (
                             <UploadFile
                                 entityId={eventData?._id as string}
                                 folder={'events'}
-                                imageUrl={eventData.image}
+                                imageUrl={eventData?.image}
                                 width={460}
                                 height={324}
                                 onUploadedFile={handleUploadedFile}

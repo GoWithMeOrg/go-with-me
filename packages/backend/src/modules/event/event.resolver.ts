@@ -41,12 +41,12 @@ export class EventResolver {
         description: 'Создать событие',
     })
     createEvent(
+        @CurrentUser() user: User,
         @Args('createEventInput') createEventInput: CreateEventInput,
         @Args('createLocationInput', { nullable: true }) createLocationInput: CreateLocationInput,
         @Args('createCategoryInput', { nullable: true }) createCategoryInput: CreateCategoryInput,
         @Args('createInterestInput', { nullable: true }) createInterestInput: CreateInterestInput,
-        @Args('createTagInput', { nullable: true }) createTagInput: CreateTagInput,
-        @CurrentUser() user: User
+        @Args('createTagInput', { nullable: true }) createTagInput: CreateTagInput
     ) {
         return this.eventService.createEvent(
             user._id,

@@ -49,6 +49,7 @@ export class EventService {
             savedEvent.location = createdLocation;
             await savedEvent.save();
         }
+
         if (createCategoryInput) {
             const createCategory = await this.categoryService.createCategories({
                 ...createCategoryInput,
@@ -58,6 +59,7 @@ export class EventService {
             savedEvent.category = createCategory;
             await savedEvent.save();
         }
+
         if (createInterestInput) {
             const createInterests = await this.interestService.createInterest({
                 ...createInterestInput,
@@ -68,6 +70,7 @@ export class EventService {
             savedEvent.interest = createInterests;
             await savedEvent.save();
         }
+
         if (createTagInput) {
             const createTag = await this.tagService.createTag({
                 ...createTagInput,

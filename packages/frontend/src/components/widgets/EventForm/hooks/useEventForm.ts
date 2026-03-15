@@ -1,76 +1,96 @@
-import { useForm } from 'react-hook-form';
+import { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { CREATE_EVENT_MUTATION } from '@/app/graphql/mutations/event';
+import { useUploadFile } from '@/components/widgets/UploadFile/hooks';
 import { useMutation } from '@apollo/client/react';
 
-export const useEventForm = () => {
-    const { control, handleSubmit, watch } = useForm();
+import { UploadData } from '../../UploadFile/interfaces/GetPresignedUrlData';
+import { CreateEventVariables, EventFormData } from '../interfaces/EventFormData';
 
-    const [createEvent] = useMutation(CREATE_EVENT_MUTATION);
-
-    // const place = watch('location');
-
-    // function mapGooglePlaceToLocationInput(place: any) {
-    //     if (!place || !place.geometry || !place.geometry.location) return null;
-    //     const newPlace = {
-    //         geometry: {
-    //             coordinates: [place.geometry.location.lng(), place.geometry.location.lat()],
-    //         },
-    //         properties: {
-    //             address: place.formatted_address,
-    //         },
-    //     };
-
-    //     return newPlace;
-    // }
-
-    const handleCreateEvent = async (createEventForm: any) => {
-        console.log(createEventForm);
-
-        const variables: any = {
-            createEventInput: {
-                name: createEventForm.name,
-                privacy: createEventForm.privacy,
-                description: createEventForm.description,
-                startDate: createEventForm.startDate,
-                endDate: createEventForm.endDate,
-                time: createEventForm.time,
-                image: createEventForm.image,
-            },
-        };
-
-        if (createEventForm.location?.coordinates) {
-            variables.createLocationInput = {
-                geometry: {
-                    coordinates: createEventForm.location.coordinates,
-                },
-                properties: {
-                    address: createEventForm.location.properties?.address,
-                },
-            };
-        }
-
-        if (createEventForm.categories?.length > 0) {
-            variables.createCategoryInput = {
-                categories: createEventForm.categories,
-            };
-        }
-
-        if (createEventForm.interests?.length > 0) {
-            variables.createInterestInput = {
-                interests: createEventForm.interests,
-            };
-        }
-
-        if (createEventForm.tags?.length > 0) {
-            variables.createTagInput = {
-                tags: createEventForm.tags,
-            };
-        }
-
-        console.log('Итоговые переменные для GraphQL:', variables);
-
-        await createEvent({ variables });
+const buildEventVariables = (data: EventFormData): CreateEventVariables => {
+    const variables: CreateEventVariables = {
+        createEventInput: {
+            name: data.name,
+            privacy: data.privacy,
+            description: data.description,
+            startDate: data.startDate,
+            endDate: data.endDate,
+            time: data.time,
+            image: data.image,
+        },
     };
 
-    return { handleCreateEvent };
+    if (data.location?.coordinates) {
+        variables.createLocationInput = {
+            geometry: { coordinates: data.location.coordinates },
+            properties: { address: data.location.properties?.address },
+        };
+    }
+
+    if (data.categories?.length) {
+        variables.createCategoryInput = { categories: data.categories };
+    }
+
+    if (data.interests?.length) {
+        variables.createInterestInput = { interests: data.interests };
+    }
+
+    if (data.tags?.length) {
+        variables.createTagInput = { tags: data.tags };
+    }
+
+    return variables;
+};
+
+export const useEventForm = () => {
+    const { control, handleSubmit } = useForm<EventFormData>();
+
+    const [uploadData, setUploadData] = useState<UploadData | null>(null);
+    const [originalImage, setOriginalImage] = useState<string | null>(null);
+
+    const { onSubmitFile, deleteFile } = useUploadFile({});
+    const [createEvent] = useMutation(CREATE_EVENT_MUTATION);
+
+    const handleCreateEvent = async (data: EventFormData): Promise<void> => {
+        const variables = buildEventVariables(data);
+
+        try {
+            await createEvent({ variables });
+        } catch (error) {
+            console.error('Ошибка при создании события:', error);
+            throw error;
+        }
+    };
+
+    const handleUploadedFile = (file: File, presignUrl: string): void => {
+        setUploadData({ file, presignUrl });
+    };
+
+    const handleImageLoad = (imageUrl: string): void => {
+        setOriginalImage(imageUrl);
+    };
+
+    const onSubmitData: SubmitHandler<EventFormData> = async (data) => {
+        try {
+            await handleCreateEvent(data);
+
+            if (uploadData) {
+                await onSubmitFile(uploadData.file, uploadData.presignUrl);
+
+                if (originalImage) {
+                    await deleteFile(originalImage);
+                }
+            }
+        } catch (error) {
+            console.error('Ошибка при отправке формы:', error);
+        }
+    };
+
+    return {
+        control,
+        handleSubmit,
+        handleUploadedFile,
+        handleImageLoad,
+        onSubmitData,
+    };
 };

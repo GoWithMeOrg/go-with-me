@@ -1,4 +1,5 @@
-import { forwardRef, useEffect, useState } from 'react';
+'use client';
+
 import Marker from '@/assets/icons/marker.svg';
 import { Button } from '@/components/shared/Button';
 import { Popup } from '@/components/shared/Popup';
@@ -13,16 +14,13 @@ import classes from './LocationPicker.module.css';
 
 interface LocationPickerProps {
     locationEvent?: {
-        type: 'Point';
         coordinates: [number, number];
         properties: {
             address: string;
         };
     };
     onPlaceChange?: (selectedPlace: google.maps.places.PlaceResult | null) => void;
-
     onChange?: (location: {
-        type: 'Point';
         coordinates: [number, number];
         properties: {
             address: string;
@@ -46,40 +44,8 @@ export const LocationPicker = (props: LocationPickerProps) => {
         handleHidePopup,
     } = useLocationPicker(props);
 
-    const [isMounted, setIsMounted] = useState(false);
-
-    useEffect(() => {
-        setIsMounted(true);
-    }, []);
-
-    const isReady = isMounted && apiIsLoaded && mapAPI;
-
-    if (!isReady) {
-        return (
-            <div className={classes.locationForm}>
-                <div className={classes.labelFindMap} suppressHydrationWarning={true}>
-                    <span className={classes.titleInput}>Место/Адрес</span>
-                    <Button
-                        className={classes.btnFindMap}
-                        onClick={handleMapButtonClick}
-                        resetDefaultStyles={true}
-                    >
-                        <Marker style={{ marginRight: '0.25rem' }} />
-                        Найти на карте
-                    </Button>
-                </div>
-                <Autocomplete
-                    className={classes.fieldInput}
-                    onPlaceSelect={handlePlaceSelect}
-                    address={props.locationEvent?.properties?.address}
-                    options={optionsFullAdress}
-                />
-            </div>
-        );
-    }
-
     return (
-        <div className={classes.locationForm} suppressHydrationWarning={true}>
+        <div className={classes.locationForm}>
             <div className={classes.labelFindMap}>
                 <span className={classes.titleInput}>Место/Адрес</span>
                 <Button
