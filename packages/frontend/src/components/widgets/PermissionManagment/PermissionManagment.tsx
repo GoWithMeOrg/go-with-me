@@ -24,9 +24,14 @@ export const PermissionManagement = () => {
         totalActionsCount,
     } = usePermissionManager();
 
-    const { handleSearch, searchData } = useSearchInput<any>({
+    const { handleSearch, searchData, clearSearch, loading, searchValue } = useSearchInput<{
+        searchResources: Resource[];
+    }>({
         searchQuery: SEARCH_RESOURCES,
+        dataKey: 'searchResources',
     });
+
+    console.log(searchData);
 
     return (
         <div className={classes.container}>
@@ -39,9 +44,13 @@ export const PermissionManagement = () => {
                     searchQuery={SEARCH_RESOURCES}
                     placeholder="search..."
                     onChange={handleSearch}
+                    onClear={clearSearch}
+                    loading={loading}
+                    value={searchValue}
+                    label="Search by name or email"
                 />
                 <FilteredList>
-                    {searchData.length > 0 && (
+                    {searchData && searchData.length > 0 && (
                         <ul>
                             {searchData.map((resource: Resource) => {
                                 const isExpanded = expandedResources.includes(resource.name);

@@ -1,9 +1,9 @@
-import { useSession } from 'next-auth/react';
+import { useSessionGQL } from '@/app/providers/session/hooks/useSesssionGQL';
 
 export const useUserID = () => {
-    const dataSession = useSession();
+    const { data, status } = useSessionGQL();
     //@ts-ignore
-    const user_id = session?.user.id;
+    const user_id = data?._id;
 
-    return { user_id, status: dataSession?.status };
+    return { user_id, status };
 };

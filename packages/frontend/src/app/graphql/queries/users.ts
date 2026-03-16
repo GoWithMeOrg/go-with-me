@@ -10,3 +10,15 @@ export const GET_USERS = gql`
         }
     }
 `;
+
+export const FIND_BY_EMAIL_OR_NAME = gql`
+    query FindByEmailOrName($query: String) {
+        findByEmailOrName(query: $query) {
+            _id
+            firstName
+            lastName
+            email
+            image
+        }
+    }
+`;

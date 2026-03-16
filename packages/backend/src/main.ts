@@ -1,16 +1,17 @@
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
-import MongoStore from 'connect-mongo';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import session from 'express-session';
 import { Logger } from 'nestjs-pino';
 import passport from 'passport';
 
 import { AppModule } from './app.module';
 import { SessionSerializer } from './auth/serializer/session.serializer';
+import { getMongoStore } from './config/mongo-store.config';
 import { isDev } from './utils/is-dev.utils';
 
 async function bootstrap() {
-    const app = await NestFactory.create(AppModule, {
+    const app = await NestFactory.create<NestExpressApplication>(AppModule, {
         bufferLogs: true,
     });
 
@@ -33,13 +34,11 @@ async function bootstrap() {
             resave: false,
             saveUninitialized: false,
             proxy: !isDev(configService),
-            store: MongoStore.create({
-                mongoUrl: configService.getOrThrow('MONGODB_URI'),
-            }),
+            store: getMongoStore(configService),
             cookie: {
                 secure: !isDev(configService), // Проверяем dev или prod,
                 httpOnly: true,
-                sameSite: !isDev(configService) ? 'lax' : 'lax',
+                sameSite: 'lax', // Всегда lax для работы с WebSocket
                 maxAge: 1000 * 60 * 60 * 24, // 1 день
             },
         })

@@ -39,8 +39,8 @@ const Profile: NextPage = () => {
                         </div>
                     </div>
                     {activeTab === NavbarTabs.PERSONAL && <ProfileForm />}
-                    {/* {activeTab === NavbarTabs.NOTIFICATIONS && <Notifications />} */}
-                    {/* {activeTab === NavbarTabs.COMPANIONS && <Companions />} */}
+                    {activeTab === NavbarTabs.NOTIFICATIONS && <Notifications />}
+                    {activeTab === NavbarTabs.COMPANIONS && <Companions />}
                     {/* {activeTab === NavbarTabs.EVENTS && <Events onTabClick={handleTabClick} />} */}
                 </div>
             </div>

@@ -57,7 +57,7 @@ export class AuthController {
                 if (req.session && typeof req.session.save === 'function') {
                     req.session.save((saveErr?: Error | null) => {
                         if (saveErr) console.error('session save error', saveErr);
-                        console.log('session saved, session.passport =', req.session?.passport);
+                        // console.log('session saved, session.passport =', req.session?.passport);
                         res.redirect(
                             `${this.configService.getOrThrow('ALLOWED_ORIGIN') + '/events'}`
                         );
@@ -65,7 +65,7 @@ export class AuthController {
                     });
                 } else {
                     // если save не доступен — просто редиректим
-                    console.log('session.save not available, skipping save');
+                    // console.log('session.save not available, skipping save');
                     res.redirect(this.configService.getOrThrow('ALLOWED_ORIGIN'));
                     return resolve(null);
                 }

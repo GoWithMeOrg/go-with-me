@@ -16,6 +16,18 @@ type Category {
   ownerType: String!
 }
 
+type CompanionRequest {
+  _id: ID!
+  receiver: User!
+  sender: User!
+  status: String!
+}
+
+type CompanionsResponse {
+  companions: [User!]!
+  totalCompanions: Int!
+}
+
 input CreateCategoryInput {
   categories: [String!]!
   ownerId: ID!
@@ -89,6 +101,7 @@ input LocationPropertiesInput {
 }
 
 type Mutation {
+  acceptCompanionRequest(request_id: ID!): CompanionRequest!
   addPermissionToRole(permissionId: [ID!]!, roleId: ID!): Role!
 
   """добавать роль пользователю"""
@@ -121,7 +134,9 @@ type Mutation {
     """Техническое имя (например: EVENT)"""
     slug: String!
   ): Resource!
+  rejectCompanionRequest(request_id: ID!): CompanionRequest!
   removeCategories(id: ID!): Category!
+  removeCompanion(companion_id: ID!, user_id: ID!): Boolean!
   removeInterest(id: ID!): Interest!
 
   """Удалить локацию"""
@@ -140,6 +155,7 @@ type Mutation {
 
   """Генерация тестовых данных (доступно только в DEV режиме)"""
   seedUsers(inputs: SeedUserInput!): SeedUserResult!
+  sendRequestCompanion(receiver: ID!, sender: ID!): CompanionRequest!
 
   """Переключает статус активности права (включает/выключает)"""
   togglePermissionStatus(id: ID!): Permission!
@@ -184,6 +200,16 @@ type Query {
 
   """Поиск категорий по ownerId"""
   categoriesByOwnerId(ownerId: ID!): Category!
+
+  """Поиск интересов по ownerId"""
+  companionsByOwnerId(limit: Int, offset: Int, ownerId: ID!): CompanionsResponse!
+
+  """Найти пользователей по email или имени"""
+  findByEmailOrName(query: String): [User!]!
+
+  """Поиск компаньонов по email или имени"""
+  findCompanion(query: String): [User!]!
+  getCompanionRequests(user_id: ID!): [CompanionRequest!]!
 
   """Поиск интересов по id"""
   interestById(id: ID!): Interest!
@@ -271,6 +297,10 @@ type SeedUserResult {
   location: Location
   tag: Tag
   user: User
+}
+
+type Subscription {
+  sendRequestCompanion: CompanionRequest!
 }
 
 type Tag {

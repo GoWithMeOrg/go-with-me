@@ -3,35 +3,32 @@ import { Button } from '@/components/shared/Button';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { useApplication } from './hooks';
+import { useCompanionRequest } from './hooks';
+import { CompanionRequestProps } from './interfaces/CompanionRequestProps';
 
-import classes from './Application.module.css';
+import classes from './CompanionRequest.module.css';
 
-export interface ApplicationProps {
-    id: string;
-    key: string;
-    senderId?: string;
-    name: string;
-    image: string;
-    status: string;
-}
+export const CompanionRequest: FC<CompanionRequestProps> = ({
+    request_id,
+    name,
+    status,
+    image,
+    sender_id,
+}) => {
+    const { acceptRequest, rejectRequest } = useCompanionRequest({ request_id });
 
-export const Application: FC<ApplicationProps> = ({ id, name, status, image, senderId }) => {
-    const { acceptRequest, rejectRequest } = useApplication({ id });
-
-    console.log(id);
     return (
-        <div id={id} className={classes.invation}>
+        <div id={request_id} className={classes.invation}>
             <div className={classes.image}>
                 {image && (
-                    <Link href={`/profile/${senderId}/public`}>
+                    <Link href={`/profile/${sender_id}/public`}>
                         <Image src={image} alt="img" width={92} height={92} />
                     </Link>
                 )}
             </div>
 
             <div className={classes.info}>
-                <Link href={`/profile/${senderId}/public`}>
+                <Link href={`/profile/${sender_id}/public`}>
                     <span className={classes.title}>{name}</span>
                 </Link>
 

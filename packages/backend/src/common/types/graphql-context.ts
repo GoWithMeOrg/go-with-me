@@ -12,8 +12,9 @@ export type ReqWithPassport = Request & {
     session: Session & { passport?: { user?: string } };
 };
 
-// GraphQL context
+// GraphQL context (HTTP)
 export type GqlContext = {
     req: ReqWithPassport;
-    res: Response;
+    res?: Response;
+    user?: Partial<User> | null; // Для WebSocket subscriptions
 };

@@ -1,13 +1,13 @@
 import { ChangeEvent, InputHTMLAttributes } from 'react';
 import { DocumentNode, OperationVariables } from '@apollo/client';
 
-export interface SearchProps<TData> {
+export interface SearchProps<TData, TItem> {
     searchQuery: DocumentNode;
-    dataKey?: keyof TData;
+    dataKey: keyof TData; // Ключ обязателен
 }
 
 export interface SearchVariables extends OperationVariables {
-    search: string;
+    query: string;
 }
 
 export interface SearchInputProps<
@@ -15,7 +15,10 @@ export interface SearchInputProps<
     TVariables extends SearchVariables = any,
 > extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
     error?: boolean;
-    searchQuery: DocumentNode; // Делаем обязательным, чтобы избежать ошибки Apollo
+    searchQuery: DocumentNode;
     onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+    onClear?: () => void;
+    value?: string;
     loading?: boolean;
+    label?: string;
 }

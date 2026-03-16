@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export const GET_INVATIONS = gql`
-    query GetInvitation($userId: ID!) {
-        getInvitation(user_id: $userId) {
+    query GetInvitation($user_id: ID!) {
+        getInvitation(user_id: $user_id) {
             id
             createdAt
             invitation {

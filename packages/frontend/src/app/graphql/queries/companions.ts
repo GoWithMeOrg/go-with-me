@@ -1,24 +1,25 @@
 import gql from 'graphql-tag';
 
-export const GET_COMPANIONS = gql`
-    query Companions($userId: String!, $limit: Int) {
-        companions(user_id: $userId, limit: $limit) {
-            totalCompanions
+export const GET_COMPANIONS_BY_OWNER_ID = gql`
+    query CompanionsByOwnerId($ownerId: ID!, $offset: Int, $limit: Int) {
+        companionsByOwnerId(ownerId: $ownerId, offset: $offset, limit: $limit) {
             companions {
                 _id
-                email
-                name
+                firstName
+                lastName
                 image
             }
+            totalCompanions
         }
     }
 `;
 
 export const GET_FIND_COMPANION = gql`
-    query FindCompanion($userId: ID!, $email: String, $name: String) {
-        findCompanion(user_id: $userId, email: $email, name: $name) {
+    query FindCompanion($query: String) {
+        findCompanion(query: $query) {
             _id
-            name
+            firstName
+            lastName
             image
         }
     }

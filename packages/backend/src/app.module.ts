@@ -3,7 +3,7 @@ import { ApolloDriver } from '@nestjs/apollo';
 import { APP_GUARD } from '@nestjs/core';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
-import { MongooseModule } from '@nestjs/mongoose';
+import { MongooseModule, getModelToken } from '@nestjs/mongoose';
 import { LoggerModule } from 'nestjs-pino';
 import { S3Module } from 'nestjs-s3';
 
@@ -27,6 +27,8 @@ import { ResourceModule } from './modules/resource/resource.module';
 
 import { RolesGuard } from './common/guards/roles.guard';
 import { SeedsModule } from './modules/seeds/seeds.module';
+import { CompanionModule } from './modules/companion/companion.module';
+import { CompanionRequestModule } from './modules/companion-request/companion-request.module';
 
 @Module({
     imports: [
@@ -43,9 +45,9 @@ import { SeedsModule } from './modules/seeds/seeds.module';
 
         GraphQLModule.forRootAsync({
             driver: ApolloDriver,
-            imports: [ConfigModule],
+            imports: [ConfigModule, UserModule],
             useFactory: getGraphQLConfig,
-            inject: [ConfigService],
+            inject: [ConfigService, getModelToken('User')],
         }),
 
         MongooseModule.forRootAsync({
@@ -80,11 +82,13 @@ import { SeedsModule } from './modules/seeds/seeds.module';
 
         PermissionModule,
 
-        // EntityRegistryModule,
-
         ResourceModule,
 
         SeedsModule,
+
+        CompanionModule,
+
+        CompanionRequestModule,
     ],
 
     controllers: [],
