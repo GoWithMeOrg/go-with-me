@@ -1,4 +1,4 @@
-import { COMPANION_REQUEST_MUTATION } from '@/app/graphql/mutations/companionRequest';
+import { SEND_REQUEST_COMPANION_MUTATION } from '@/app/graphql/mutations/companionRequest';
 import { GET_IS_USER_COMPANION } from '@/app/graphql/queries/companions';
 import { GET_ORGANIZER_EVENTS } from '@/app/graphql/queries/events';
 import { GET_USER_BY_ID } from '@/app/graphql/queries/user';
@@ -24,7 +24,7 @@ export const usePublicProfile = () => {
 
     const userCompanion = (isCompanion as { isUserCompanion: boolean })?.isUserCompanion;
 
-    const [CompanionRequest] = useMutation(COMPANION_REQUEST_MUTATION);
+    const [CompanionRequest] = useMutation(SEND_REQUEST_COMPANION_MUTATION);
 
     const popupsHook = useDialogModal({
         receiver_ids: [(userData as { user: { _id: string } })?.user?._id],

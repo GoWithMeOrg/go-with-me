@@ -1,15 +1,16 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import type { IEvent } from '@/app/types/Event';
+import { Event as EventType } from '@/app/graphql/types';
 import { useUploadFile } from '@/components/widgets/UploadFile/hooks';
+import { useUserID } from '@/hooks/useUserID';
 import { useMutation, useQuery } from '@apollo/client/react';
 import dayjs from 'dayjs';
 import gql from 'graphql-tag';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 export interface EventProps {
-    event: IEvent;
+    event: EventType;
     sessionUserID?: string | null;
 }
 
@@ -50,19 +51,21 @@ const DELETE_EVENT_MUTATION = gql`
     }
 `;
 
-const useEvent = ({ event, sessionUserID }: EventProps) => {
+const useEvent = ({ event }: EventProps) => {
+    const { user_id } = useUserID();
     const router = useRouter();
+    console.log(event.organizer.firstName);
 
     const [deleteEventMutation] = useMutation(DELETE_EVENT_MUTATION);
     const { deleteFile } = useUploadFile({});
 
     const [organizer, setOrganizer] = useState(true);
     const [copied, setCopied] = useState(false);
-    const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(
+    const [markerPosition, setMarkerPosition] = useState(
         event?.location !== undefined
             ? {
-                  lng: event.location.coordinates[0],
-                  lat: event.location?.coordinates[1],
+                  lng: event?.location?.geometry?.coordinates[0] as number,
+                  lat: event.location?.geometry?.coordinates[1] as number,
               }
             : null
     );
@@ -93,8 +96,8 @@ const useEvent = ({ event, sessionUserID }: EventProps) => {
     };
 
     useEffect(() => {
-        setOrganizer(sessionUserID === event?.organizer_id);
-    }, [event?.organizer_id, sessionUserID]);
+        setOrganizer(user_id === event?.organizer._id);
+    }, [event?.organizer._id, user_id]);
 
     const handleDelete = async (eventId: string) => {
         try {
@@ -113,11 +116,7 @@ const useEvent = ({ event, sessionUserID }: EventProps) => {
         }
     };
 
-    const coord: [number, number] = [
-        event?.location.coordinates[0] as number,
-        event?.location.coordinates[1] as number,
-    ];
-
+    const coord: [number, number] = event?.location?.geometry.coordinates as [number, number];
     const dayOfWeek = dayjs(event?.startDate).day();
     const days = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
     const day = days[dayOfWeek];

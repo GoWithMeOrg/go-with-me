@@ -250,18 +250,18 @@ type Query {
   """Поиск интересов по ownerId"""
   companionsByOwnerId(limit: Int, offset: Int, ownerId: ID!): CompanionsResponse!
 
-  """Получить событие по id"""
-  event(id: ID!): Event!
-
-  """Получить все события"""
-  events: [Event!]!
-
   """Найти пользователей по email или имени"""
   findByEmailOrName(query: String): [User!]!
 
   """Поиск компаньонов по email или имени"""
   findCompanion(query: String): [User!]!
   getCompanionRequests(user_id: ID!): [CompanionRequest!]!
+
+  """Получить событие по id"""
+  getEventById(event_id: ID!): Event!
+
+  """Получить все события организатора"""
+  getEventsByOrganizer(organizer_id: ID!): [Event!]!
 
   """Поиск интересов по id"""
   interestById(id: ID!): Interest!

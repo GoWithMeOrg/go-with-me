@@ -11,17 +11,17 @@ const config: CodegenConfig = {
         'packages/frontend/src/app/graphql/subscriptions/*.{ts,tsx}',
 
         // Исключаем конкретные файлы мутаций
-        '!packages/frontend/src/app/graphql/mutations/companionRequest.ts',
-        '!packages/frontend/src/app/graphql/mutations/companions.ts',
+        // '!packages/frontend/src/app/graphql/mutations/companionRequest.ts',
+        // '!packages/frontend/src/app/graphql/mutations/companions.ts',
         '!packages/frontend/src/app/graphql/mutations/invations.ts',
         '!packages/frontend/src/app/graphql/mutations/join.ts',
         '!packages/frontend/src/app/graphql/mutations/like.ts',
 
         // Исключаем конкретные файлы queries
-        '!packages/frontend/src/app/graphql/queries/applications.ts',
-        '!packages/frontend/src/app/graphql/queries/companions.ts',
-        '!packages/frontend/src/app/graphql/queries/events.ts',
-        '!packages/frontend/src/app/graphql/queries/findUsers.ts',
+        // '!packages/frontend/src/app/graphql/queries/applications.ts',
+        // '!packages/frontend/src/app/graphql/queries/companions.ts',
+        // '!packages/frontend/src/app/graphql/queries/events.ts',
+        // '!packages/frontend/src/app/graphql/queries/findUsers.ts',
         '!packages/frontend/src/app/graphql/queries/invations.ts',
         '!packages/frontend/src/app/graphql/queries/joined.ts',
         '!packages/frontend/src/app/graphql/queries/liked.ts',

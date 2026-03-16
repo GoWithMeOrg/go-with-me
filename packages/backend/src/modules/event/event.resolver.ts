@@ -20,21 +20,30 @@ export class EventResolver {
     ) {}
 
     @Query(() => Event, {
-        name: 'event',
+        name: 'getEventById',
         description: 'Получить событие по id',
     })
-    getEvent(@Args('id', { type: () => ID }) id: MongoSchema.Types.ObjectId) {
-        console.log('getEvent', id);
-        return this.eventService.getEventById(id);
+    getEventById(@Args('event_id', { type: () => ID }) event_id: MongoSchema.Types.ObjectId) {
+        return this.eventService.getEventById(event_id);
     }
 
     @Query(() => [Event], {
-        name: 'events',
-        description: 'Получить все события',
+        name: 'getEventsByOrganizer',
+        description: 'Получить все события организатора',
     })
-    getAllEvents() {
-        return this.eventService.getAllEvents();
+    getEventsByOrganizer(
+        @Args('organizer_id', { type: () => ID }) organizer_id: MongoSchema.Types.ObjectId
+    ) {
+        return this.eventService.getEventsByOrganizer(organizer_id);
     }
+
+    // @Query(() => [Event], {
+    //     name: 'events',
+    //     description: 'Получить все события',
+    // })
+    // getAllEvents() {
+    //     return this.eventService.getAllEvents();
+    // }
 
     @Mutation(() => Event, {
         name: 'createEvent',

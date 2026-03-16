@@ -1,5 +1,6 @@
 'use client';
 
+import { GET_EVENTS_BY_ID } from '@/app/graphql/queries/events';
 import type { IEvent } from '@/app/types/Event';
 import { ButtonBack } from '@/components/shared/ButtonBack';
 import { Loader } from '@/components/shared/Loader';
@@ -19,38 +20,6 @@ interface PageProps {
 interface GetEventData {
     event: IEvent;
 }
-
-const GET_EVENT = gql`
-    query GetEvent($id: ID!) {
-        event(id: $id) {
-            _id
-            organizer_id
-            organizer {
-                _id
-                name
-                email
-                image
-                emailVerified
-            }
-            name
-            location {
-                coordinates
-                properties {
-                    address
-                }
-            }
-            description
-            startDate
-            endDate
-            time
-            status
-            categories
-            types
-            tags
-            image
-        }
-    }
-`;
 
 const UPDATE_EVENT = gql`
     #graphql
@@ -74,24 +43,25 @@ const EventEditPage: NextPage<PageProps> = () => {
     const params = useParams();
     const event_id = params.event_id;
 
-    const { loading, error, data, refetch } = useQuery<GetEventData>(GET_EVENT, {
-        variables: { id: event_id },
+    const { loading, error, data, refetch } = useQuery(GET_EVENTS_BY_ID, {
+        variables: { eventId: event_id },
     });
 
+    console.log(data);
     const [updateEvent] = useMutation(UPDATE_EVENT);
 
-    const handleEditEvent = (eventEdited: Partial<IEvent>) => {
-        updateEvent({
-            variables: {
-                id: event_id,
-                event: { ...eventEdited, organizer_id: data?.event?.organizer_id },
-            },
-        }).then((response) => {
-            console.log('EventEditPage: ', response);
-            router.push(`/events/${event_id}`);
-        });
-        refetch();
-    };
+    // const handleEditEvent = (eventEdited: Partial<IEvent>) => {
+    //     updateEvent({
+    //         variables: {
+    //             id: event_id,
+    //             event: { ...eventEdited, organizer_id: data?.event?.organizer_id },
+    //         },
+    //     }).then((response) => {
+    //         console.log('EventEditPage: ', response);
+    //         router.push(`/events/${event_id}`);
+    //     });
+    //     refetch();
+    // };
 
     return (
         <div className={classes.createEventFormWrapper}>
@@ -102,9 +72,9 @@ const EventEditPage: NextPage<PageProps> = () => {
             {loading && <Loader num={1} />}
             {error && <p>Error : {error.message}</p>}
 
-            {!error && data?.event && (
-                <EventForm eventData={data.event} onSubmitEvent={handleEditEvent} />
-            )}
+            {/* {!error && data?.event && (
+                <EventForm eventData={data}  />
+            )} */}
         </div>
     );
 };

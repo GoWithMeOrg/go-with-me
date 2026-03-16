@@ -17,16 +17,16 @@ const Generator: NextPage = () => {
         changeNumberItems,
         setSelectedLocation,
         // handleGenerateEvents,
-        // generatedEvents,
+        generatedEvents,
         handleGenerateUsers,
         generatedUsers,
     } = useGenerator();
 
     return (
         <div className={classes.generator}>
-            {/* <h3>Генератор случайных событий</h3> */}
+            {/* <h3>Генератор случайных событий</h3>
 
-            {/* <div>
+            <div>
                 <Label label="Укажите количество событий">
                     <Input type="number" onChange={changeNumberItems} min="1" max="10" />
                 </Label>
@@ -39,9 +39,9 @@ const Generator: NextPage = () => {
                 <Button className={classes.generateButton} onClick={handleGenerateEvents}>
                     Сгенерировать события
                 </Button>
-            </div>
+            </div> */}
 
-            {generatedEvents && <Label label={'Cобытия сгенерированы'} className={classes.label} />} */}
+            {generatedEvents && <Label label={'Cобытия сгенерированы'} className={classes.label} />}
 
             <h3 style={{ marginTop: '50px' }}>Генератор пользователей</h3>
 
