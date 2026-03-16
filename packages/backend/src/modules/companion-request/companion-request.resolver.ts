@@ -26,7 +26,6 @@ export class CompanionRequestResolver {
         return this.companionRequestService.getCompanionRequests(user_id);
     }
 
-    //Удалить после тестирования и раскоментировать код выше
     @Mutation(() => CompanionRequest)
     @UseGuards(GqlAuthGuard, RolesGuard)
     async sendRequestCompanion(
