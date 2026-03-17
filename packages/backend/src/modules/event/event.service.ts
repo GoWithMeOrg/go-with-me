@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Schema as MongoSchema } from 'mongoose';
 import { Event } from './entities/event.entity';
 import { CreateEventInput } from './dto/create-event.input';
-import { CreateEventRelationsInput } from './interfaces/create-event-relations.input';
+import { EventRelationsInput } from './interfaces/create-event-relations.input';
 import { EnrichEventHelper, EventWithRelations } from './helpers/enrich-event.helper';
 import { EventCrudService } from './services/event-crud.service';
 import { EventQueryService } from './services/event-query.service';
@@ -20,12 +20,12 @@ export class EventService {
     async createEvent(
         organizer: MongoSchema.Types.ObjectId,
         createEventInput: CreateEventInput,
-        relations?: CreateEventRelationsInput
+        relations?: EventRelationsInput
     ): Promise<Event> {
         const event = await this.crudService.create(organizer, createEventInput);
 
         if (relations) {
-            await this.relationsService.attachRelations(event, relations);
+            await this.relationsService.createRelations(event, relations);
         }
 
         return event;

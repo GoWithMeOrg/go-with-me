@@ -1,20 +1,12 @@
 import { Injectable } from '@nestjs/common';
+import { Schema as MongoSchema } from 'mongoose';
+
 import { Event } from '../entities/event.entity';
 import { LocationService } from '../../location/location.service';
 import { CategoryService } from '../../category/category.service';
 import { InterestService } from '../../interest/interest.service';
 import { TagService } from '../../tag/tag.service';
-import { CreateLocationInput } from '../../location/dto/create-location.input';
-import { CreateCategoryInput } from '../../category/dto/create-category.input';
-import { CreateInterestInput } from '../../interest/dto/create-interest.input';
-import { CreateTagInput } from '../../tag/dto/create-tag.input';
-
-export interface EventRelationsInput {
-    location?: CreateLocationInput;
-    category?: CreateCategoryInput;
-    interest?: CreateInterestInput;
-    tag?: CreateTagInput;
-}
+import { EventRelationsInput } from '../interfaces/create-event-relations.input';
 
 @Injectable()
 export class EventRelationsService {
@@ -25,8 +17,11 @@ export class EventRelationsService {
         private readonly tagService: TagService
     ) {}
 
-    async attachRelations(event: Event & { _id: any }, input: EventRelationsInput): Promise<void> {
-        const eventId = event._id.toString();
+    async createRelations(
+        event: Event & { _id: MongoSchema.Types.ObjectId },
+        input: EventRelationsInput
+    ): Promise<void> {
+        const eventId = event._id;
         const updates: Partial<Event> = {};
 
         if (input.location) {
