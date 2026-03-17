@@ -11,6 +11,7 @@ import { CreateCategoryInput } from '../category/dto/create-category.input';
 import { CreateInterestInput } from '../interest/dto/create-interest.input';
 import { CreateTagInput } from '../tag/dto/create-tag.input';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import { CreateEventRelationsInput } from './interfaces/create-event-relations.input';
 
 @Resolver(() => Event)
 export class EventResolver {
@@ -61,14 +62,13 @@ export class EventResolver {
         @Args('createInterestInput', { nullable: true }) createInterestInput: CreateInterestInput,
         @Args('createTagInput', { nullable: true }) createTagInput: CreateTagInput
     ) {
-        return this.eventService.createEvent(
-            user._id,
-            createEventInput,
-            createLocationInput,
-            createCategoryInput,
-            createInterestInput,
-            createTagInput
-        );
+        const relations: CreateEventRelationsInput = {
+            location: createLocationInput,
+            category: createCategoryInput,
+            interest: createInterestInput,
+            tag: createTagInput,
+        };
+        return this.eventService.createEvent(user._id, createEventInput, relations);
     }
 
     @Mutation(() => Event, {

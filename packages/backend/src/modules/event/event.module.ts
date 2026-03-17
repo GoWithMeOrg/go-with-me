@@ -9,6 +9,9 @@ import { CategoryModule } from '../category/category.module';
 import { InterestModule } from '../interest/interest.module';
 import { TagModule } from '../tag/tag.module';
 import { EnrichEventHelper } from './helpers/enrich-event.helper';
+import { EventCrudService } from './services/event-crud.service';
+import { EventQueryService } from './services/event-query.service';
+import { EventRelationsService } from './services/event-relations.service';
 
 @Module({
     imports: [
@@ -19,7 +22,14 @@ import { EnrichEventHelper } from './helpers/enrich-event.helper';
         InterestModule,
         TagModule,
     ],
-    providers: [EventResolver, EventService, EnrichEventHelper],
+    providers: [
+        EventResolver,
+        EventService,
+        EnrichEventHelper,
+        EventCrudService,
+        EventQueryService,
+        EventRelationsService,
+    ],
     exports: [EventService, MongooseModule],
 })
 export class EventModule {}

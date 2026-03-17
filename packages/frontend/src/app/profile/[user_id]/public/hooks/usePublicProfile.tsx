@@ -1,6 +1,6 @@
 import { SEND_REQUEST_COMPANION_MUTATION } from '@/app/graphql/mutations/companionRequest';
 import { GET_IS_USER_COMPANION } from '@/app/graphql/queries/companions';
-import { GET_ORGANIZER_EVENTS } from '@/app/graphql/queries/events';
+import { GET_EVENTS_BY_ORGANIZER } from '@/app/graphql/queries/events';
 import { GET_USER_BY_ID } from '@/app/graphql/queries/user';
 import { useDialogModal } from '@/components/widgets/DialogModal/hooks/useDialogModal';
 import { useUserID } from '@/hooks/useUserID';
@@ -14,7 +14,7 @@ export const usePublicProfile = () => {
     const isOwner = user_id === params.user_id;
 
     const { data: userData } = useQuery(GET_USER_BY_ID, { variables: { userId: params.user_id } });
-    const { data: eventsData } = useQuery(GET_ORGANIZER_EVENTS, {
+    const { data: eventsData } = useQuery(GET_EVENTS_BY_ORGANIZER, {
         variables: { organizerId: params.user_id },
     });
 
