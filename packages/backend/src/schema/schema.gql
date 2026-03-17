@@ -12,8 +12,8 @@ enum Action {
 type Category {
   _id: ID!
   categories: [String!]!
-  ownerId: ID!
-  ownerType: String!
+  ownerId: ID
+  ownerType: String
 }
 
 type CompanionRequest {
@@ -100,8 +100,8 @@ type Event {
 type Interest {
   _id: ID!
   interests: [String!]!
-  ownerId: ID!
-  ownerType: String!
+  ownerId: ID
+  ownerType: String
 }
 
 type Location {
@@ -170,12 +170,12 @@ type Mutation {
     slug: String!
   ): Resource!
   rejectCompanionRequest(request_id: ID!): CompanionRequest!
-  removeCategories(id: ID!): Category!
+  removeCategories(category_id: ID!): Category!
   removeCompanion(companion_id: ID!, user_id: ID!): Boolean!
 
   """Удалить событие"""
   removeEvent(id: ID!): Boolean!
-  removeInterest(id: ID!): Interest!
+  removeInterest(interest_id: ID!): Interest!
 
   """Удалить локацию"""
   removeLocation(id: ID!): Boolean!
@@ -183,7 +183,7 @@ type Mutation {
 
   """Удаление роли"""
   removeRole(id: ID!): Boolean!
-  removeTag(id: ID!): Tag!
+  removeTag(tag_id: ID!): Tag!
 
   """Удалить пользователя"""
   removeUser(id: ID!): Boolean!
@@ -197,16 +197,16 @@ type Mutation {
 
   """Переключает статус активности права (включает/выключает)"""
   togglePermissionStatus(id: ID!): Permission!
-  updateCategories(updateCategoriesInput: UpdateCategoryInput!): Category!
+  updateCategories(category_id: ID!, updateCategoriesInput: UpdateCategoryInput!): Category!
 
   """Обновить данные события"""
-  updateEvent(id: ID!, updateEventInput: UpdateEventInput!): Event!
-  updateInterest(updateInterestInput: UpdateInterestInput!): Interest!
+  updateEvent(createCategoryInput: CreateCategoryInput, createInterestInput: CreateInterestInput, createLocationInput: CreateLocationInput, createTagInput: CreateTagInput, id: ID!, updateEventInput: UpdateEventInput!): Event!
+  updateInterest(interest_id: ID!, updateInterestInput: UpdateInterestInput!): Interest!
 
   """Обновить локацию"""
-  updateLocation(updateLocationInput: UpdateLocationInput!): Location!
+  updateLocation(location_id: ID!, updateLocationInput: UpdateLocationInput!): Location!
   updateRole(updateRoleInput: UpdateRoleInput!): Role!
-  updateTag(updateTagInput: UpdateTagInput!): Tag!
+  updateTag(tag_id: ID!, updateTagInput: UpdateTagInput!): Tag!
 
   """Обновить данные пользователя"""
   updateUser(updateUserId: ID!, user: UpdateUserInput!): User!
@@ -242,7 +242,7 @@ type Query {
   adminRoute: String!
 
   """Поиск категорий по id"""
-  categoriesById(id: ID!): Category!
+  categoriesById(icategory_id: ID!): Category!
 
   """Поиск категорий по ownerId"""
   categoriesByOwnerId(ownerId: ID!): Category!
@@ -267,7 +267,7 @@ type Query {
   getEventsByOrganizer(organizer_id: ID!): [Event!]!
 
   """Поиск интересов по id"""
-  interestById(id: ID!): Interest!
+  interestById(interest_id: ID!): Interest!
 
   """Поиск интересов по ownerId"""
   interestByOwnerId(ownerId: ID!): Interest!
@@ -309,7 +309,7 @@ type Query {
   session: User
 
   """Поиск категорий по id"""
-  tagById(id: ID!): Tag!
+  tagById(tag_id: ID!): Tag!
 
   """Поиск категорий по ownerId"""
   tagByOwnerId(ownerId: ID!): Tag!
@@ -360,18 +360,18 @@ type Subscription {
 
 type Tag {
   _id: ID!
-  ownerId: ID!
-  ownerType: String!
+  ownerId: ID
+  ownerType: String
   tags: [String!]!
 }
 
 input UpdateCategoryInput {
-  _id: String
   categories: [String!]
+  ownerId: ID
+  ownerType: String
 }
 
 input UpdateEventInput {
-  _id: ID!
   description: String
   endDate: DateTime
   image: String
@@ -383,18 +383,14 @@ input UpdateEventInput {
 }
 
 input UpdateInterestInput {
-  _id: String
-  interests: [String!]!
+  interests: [String!]
+  ownerId: ID
+  ownerType: String
 }
 
 input UpdateLocationInput {
-  _id: ID
   geometry: LocationGeometryInput
-  properties: UpdateLocationPropertiesInput
-}
-
-input UpdateLocationPropertiesInput {
-  address: String
+  properties: LocationPropertiesInput
 }
 
 input UpdateRoleInput {
@@ -405,7 +401,8 @@ input UpdateRoleInput {
 }
 
 input UpdateTagInput {
-  _id: String
+  ownerId: ID
+  ownerType: String
   tags: [String!]
 }
 

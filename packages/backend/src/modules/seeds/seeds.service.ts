@@ -39,7 +39,7 @@ export class SeedsService {
         const createdUser = await this.userService.createUser(user);
         finalResult.user = createdUser;
 
-        const userId = createdUser._id.toString();
+        const userId = createdUser._id;
 
         // Объект для хранения промисов, чтобы запустить их параллельно
         const tasks: Record<string, Promise<any>> = {};

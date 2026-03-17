@@ -1,11 +1,5 @@
-import { InputType, Field } from '@nestjs/graphql';
-import { Schema as MongoSchema } from 'mongoose';
+import { InputType, PartialType } from '@nestjs/graphql';
+import { CreateCategoryInput } from './create-category.input';
 
 @InputType()
-export class UpdateCategoryInput {
-    @Field(() => String, { nullable: true })
-    _id: MongoSchema.Types.ObjectId;
-
-    @Field(() => [String], { nullable: true })
-    categories: string[];
-}
+export class UpdateCategoryInput extends PartialType(CreateCategoryInput) {}

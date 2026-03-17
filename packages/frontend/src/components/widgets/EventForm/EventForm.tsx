@@ -16,8 +16,8 @@ import { Time } from '@/components/widgets/Time';
 import { UploadFile } from '@/components/widgets/UploadFile';
 
 import { UploadFileSizes } from '../UploadFile/types/storage-folder';
+import { EventFormProps } from './eventForm.interfaces';
 import { useEventForm } from './hooks/useEventForm';
-import { EventFormProps } from './interfaces/EventFormData';
 
 import classes from './EventForm.module.css';
 
@@ -32,7 +32,7 @@ export const EventForm = ({ eventData }: EventFormProps) => {
                         <Controller
                             name="name"
                             control={control}
-                            defaultValue={eventData?.name || ''}
+                            defaultValue={eventData?.name}
                             render={({ field }) => (
                                 <Label label={'Название'}>
                                     <Input {...field} onChange={field.onChange} />
@@ -46,7 +46,7 @@ export const EventForm = ({ eventData }: EventFormProps) => {
                             defaultValue={eventData?.location}
                             render={({ field }) => (
                                 <LocationPicker
-                                    locationEvent={eventData?.location as any}
+                                    locationEvent={eventData?.location}
                                     onChange={field.onChange}
                                 />
                             )}
@@ -68,10 +68,14 @@ export const EventForm = ({ eventData }: EventFormProps) => {
                         <Controller
                             name="description"
                             control={control}
-                            defaultValue={eventData?.description || ''}
+                            defaultValue={eventData?.description}
                             render={({ field }) => (
                                 <Label label={'Описание'}>
-                                    <Textarea {...field} onChange={field.onChange} />
+                                    <Textarea
+                                        {...field}
+                                        value={field.value as string}
+                                        onChange={field.onChange}
+                                    />
                                 </Label>
                             )}
                         />
@@ -100,19 +104,19 @@ export const EventForm = ({ eventData }: EventFormProps) => {
                             <Controller
                                 name="time"
                                 control={control}
-                                defaultValue={eventData?.time}
+                                defaultValue={eventData?.time as string}
                                 render={({ field }) => <Time time={eventData?.time} {...field} />}
                             />
                         </div>
 
                         <Controller
-                            name="categories"
+                            name="category"
                             control={control}
-                            defaultValue={eventData?.categories}
+                            defaultValue={eventData?.category?.categories}
                             render={({ field }) => (
                                 <SelectItems
                                     categoryList={categoriesList}
-                                    eventCategories={eventData?.categories || []}
+                                    eventCategories={eventData?.category?.categories}
                                     titleCategories={'Выбрать категорию'}
                                     badgesShow
                                     onChange={field.onChange}
@@ -122,13 +126,13 @@ export const EventForm = ({ eventData }: EventFormProps) => {
                         />
 
                         <Controller
-                            name="interests"
+                            name="interest"
                             control={control}
-                            defaultValue={eventData?.interests}
+                            defaultValue={eventData?.interest?.interests}
                             render={({ field }) => (
                                 <SelectItems
                                     categoryList={interestsList}
-                                    eventCategories={eventData?.interests || []}
+                                    eventCategories={eventData?.interest?.interests}
                                     titleCategories={'Выбрать тип'}
                                     badgesShow
                                     onChange={field.onChange}
@@ -138,13 +142,13 @@ export const EventForm = ({ eventData }: EventFormProps) => {
                         />
 
                         <Controller
-                            name="tags"
+                            name="tag"
                             control={control}
-                            defaultValue={eventData?.tags}
+                            defaultValue={eventData?.tag?.tags}
                             render={({ field }) => (
                                 <CreateTag
                                     onChange={field.onChange}
-                                    eventTags={eventData?.tags || []}
+                                    eventTags={eventData?.tag?.tags || []}
                                     title={'Создать тег'}
                                 />
                             )}

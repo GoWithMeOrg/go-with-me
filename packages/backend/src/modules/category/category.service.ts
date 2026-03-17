@@ -13,8 +13,8 @@ export class CategoryService {
     ) {}
 
     // --- получить категории по ID ---
-    async getCategoriesById(id: MongoSchema.Types.ObjectId): Promise<Category | null> {
-        return await this.categoryModel.findById(id).exec();
+    async getCategoriesById(category_id: MongoSchema.Types.ObjectId): Promise<Category | null> {
+        return await this.categoryModel.findById(category_id).exec();
     }
 
     // --- получить интересы по владельцу ---
@@ -28,15 +28,15 @@ export class CategoryService {
     }
 
     async updateCategories(
-        id: MongoSchema.Types.ObjectId,
+        category_id: MongoSchema.Types.ObjectId,
         updateCategoryInput: UpdateCategoryInput
-    ) {
-        return await this.categoryModel.findByIdAndUpdate(id, updateCategoryInput, {
+    ): Promise<Category | null> {
+        return await this.categoryModel.findByIdAndUpdate(category_id, updateCategoryInput, {
             new: true,
         });
     }
 
-    async removeCategories(id: MongoSchema.Types.ObjectId): Promise<DeleteResult> {
-        return await this.categoryModel.deleteOne({ _id: id }).exec();
+    async removeCategories(category_id: MongoSchema.Types.ObjectId): Promise<DeleteResult> {
+        return await this.categoryModel.deleteOne({ _id: category_id }).exec();
     }
 }

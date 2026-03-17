@@ -19,3 +19,25 @@ export const CREATE_EVENT_MUTATION = gql`
         }
     }
 `;
+
+export const UPDATE_EVENT_MUTATION = gql`
+    mutation UpdateEvent(
+        $id: ID!
+        $updateEventInput: UpdateEventInput!
+        $createCategoryInput: CreateCategoryInput
+        $createInterestInput: CreateInterestInput
+        $createLocationInput: CreateLocationInput
+        $createTagInput: CreateTagInput
+    ) {
+        updateEvent(
+            id: $id
+            updateEventInput: $updateEventInput
+            createCategoryInput: $createCategoryInput
+            createInterestInput: $createInterestInput
+            createLocationInput: $createLocationInput
+            createTagInput: $createTagInput
+        ) {
+            _id
+        }
+    }
+`;

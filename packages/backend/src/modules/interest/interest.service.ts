@@ -13,8 +13,8 @@ export class InterestService {
     ) {}
 
     // --- получить интересы по ID ---
-    async getInterestById(id: MongoSchema.Types.ObjectId): Promise<Interest | null> {
-        return await this.interestModel.findById(id).exec();
+    async getInterestById(interest_id: MongoSchema.Types.ObjectId): Promise<Interest | null> {
+        return await this.interestModel.findById(interest_id).exec();
     }
 
     // --- получить интересы по владельцу ---
@@ -27,13 +27,16 @@ export class InterestService {
         return await createInterest.save();
     }
 
-    async updateInterest(id: MongoSchema.Types.ObjectId, updateInterestInput: UpdateInterestInput) {
-        return await this.interestModel.findByIdAndUpdate(id, updateInterestInput, {
+    async updateInterest(
+        interest_id: MongoSchema.Types.ObjectId,
+        updateInterestInput: UpdateInterestInput
+    ) {
+        return await this.interestModel.findByIdAndUpdate(interest_id, updateInterestInput, {
             new: true,
         });
     }
 
-    async removeInterest(id: MongoSchema.Types.ObjectId): Promise<DeleteResult> {
-        return await this.interestModel.deleteOne({ _id: id }).exec();
+    async removeInterest(interest_id: MongoSchema.Types.ObjectId): Promise<DeleteResult> {
+        return await this.interestModel.deleteOne({ _id: interest_id }).exec();
     }
 }

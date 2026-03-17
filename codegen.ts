@@ -33,7 +33,7 @@ const config: CodegenConfig = {
         'packages/frontend/src/app/graphql/types.ts': {
             plugins: ['typescript', 'typescript-operations', 'typed-document-node'],
             config: {
-                avoidOptionals: true,
+                avoidOptionals: false,
                 nonOptionalTypename: true,
             },
         },

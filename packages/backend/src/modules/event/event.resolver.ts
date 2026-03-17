@@ -1,17 +1,20 @@
 import { Resolver, Query, Mutation, Args, ID, ResolveField, Parent, Int } from '@nestjs/graphql';
+import { Schema as MongoSchema } from 'mongoose';
+
+import { User } from '../user/entities/user.entity';
+import { Event } from './entities/event.entity';
+
+import { UserService } from '../user/user.service';
 import { EventService } from './event.service';
+
 import { CreateEventInput } from './dto/create-event.input';
 import { UpdateEventInput } from './dto/update-event.input';
-import { Event } from './entities/event.entity';
-import { UserService } from '../user/user.service';
-import { User } from '../user/entities/user.entity';
-import { Schema as MongoSchema } from 'mongoose';
 import { CreateLocationInput } from '../location/dto/create-location.input';
 import { CreateCategoryInput } from '../category/dto/create-category.input';
 import { CreateInterestInput } from '../interest/dto/create-interest.input';
 import { CreateTagInput } from '../tag/dto/create-tag.input';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
-import { CreateEventRelationsInput } from './interfaces/create-event-relations.input';
+import { EventRelationsInput } from './interfaces/create-event-relations.input';
 
 @Resolver(() => Event)
 export class EventResolver {
@@ -62,7 +65,7 @@ export class EventResolver {
         @Args('createInterestInput', { nullable: true }) createInterestInput: CreateInterestInput,
         @Args('createTagInput', { nullable: true }) createTagInput: CreateTagInput
     ) {
-        const relations: CreateEventRelationsInput = {
+        const relations: EventRelationsInput = {
             location: createLocationInput,
             category: createCategoryInput,
             interest: createInterestInput,
@@ -77,9 +80,19 @@ export class EventResolver {
     })
     updateEvent(
         @Args('id', { type: () => ID }) id: MongoSchema.Types.ObjectId,
-        @Args('updateEventInput') updateEventInput: UpdateEventInput
+        @Args('updateEventInput') updateEventInput: UpdateEventInput,
+        @Args('createLocationInput', { nullable: true }) createLocationInput: CreateLocationInput,
+        @Args('createCategoryInput', { nullable: true }) createCategoryInput: CreateCategoryInput,
+        @Args('createInterestInput', { nullable: true }) createInterestInput: CreateInterestInput,
+        @Args('createTagInput', { nullable: true }) createTagInput: CreateTagInput
     ) {
-        return this.eventService.updateEvent(id, updateEventInput);
+        const relations: EventRelationsInput = {
+            location: createLocationInput,
+            category: createCategoryInput,
+            interest: createInterestInput,
+            tag: createTagInput,
+        };
+        return this.eventService.updateEvent(id, updateEventInput, relations);
     }
 
     @Mutation(() => Boolean, {

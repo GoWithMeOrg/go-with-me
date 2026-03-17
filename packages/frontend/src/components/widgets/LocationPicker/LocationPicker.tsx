@@ -19,6 +19,7 @@ interface LocationPickerProps {
             address: string;
         };
     };
+
     onPlaceChange?: (selectedPlace: google.maps.places.PlaceResult | null) => void;
     onChange?: (location: {
         coordinates: [number, number];

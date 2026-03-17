@@ -16,19 +16,19 @@ export class EventCrudService {
         return event.save();
     }
 
+    async update(
+        event_id: MongoSchema.Types.ObjectId,
+        input: Partial<CreateEventInput>
+    ): Promise<Event | null> {
+        return this.eventModel.findByIdAndUpdate(event_id, input, { new: true }).exec();
+    }
+
     async findById(id: MongoSchema.Types.ObjectId): Promise<Event | null> {
         return this.eventModel.findById(id).exec();
     }
 
     async findByOrganizer(organizerId: MongoSchema.Types.ObjectId): Promise<Event[]> {
         return this.eventModel.find({ organizer: organizerId }).exec();
-    }
-
-    async update(
-        id: MongoSchema.Types.ObjectId,
-        input: Partial<CreateEventInput>
-    ): Promise<Event | null> {
-        return this.eventModel.findByIdAndUpdate(id, input, { new: true }).exec();
     }
 
     async delete(id: MongoSchema.Types.ObjectId): Promise<{ deletedCount: number }> {

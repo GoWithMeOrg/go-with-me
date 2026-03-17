@@ -42,8 +42,6 @@ const Event: FC<EventProps> = ({ event }) => {
 
     const popupMode = (status === 'authenticated' ? 'map' : 'auth') as 'auth' | 'map';
 
-    console.log(event?.organizer?.image);
-
     const { showPopup, setShowPopup, handleShowPopup, handleHidePopup } = usePopup({ popupMode });
 
     return (

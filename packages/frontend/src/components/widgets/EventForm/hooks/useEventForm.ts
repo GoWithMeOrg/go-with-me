@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { CREATE_EVENT_MUTATION } from '@/app/graphql/mutations/event';
+import { CreateEventMutationVariables } from '@/app/graphql/types';
 import { useUploadFile } from '@/components/widgets/UploadFile/hooks';
 import { useMutation } from '@apollo/client/react';
 
 import { UploadData } from '../../UploadFile/interfaces/GetPresignedUrlData';
-import { CreateEventVariables, EventFormData } from '../interfaces/EventFormData';
+import { EventFormData } from '../eventForm.interfaces';
 
-const buildEventVariables = (data: EventFormData): CreateEventVariables => {
-    const variables: CreateEventVariables = {
+const buildEventVariables = (data: EventFormData) => {
+    const variables: CreateEventMutationVariables = {
         createEventInput: {
             name: data.name,
             privacy: data.privacy,
@@ -20,23 +21,23 @@ const buildEventVariables = (data: EventFormData): CreateEventVariables => {
         },
     };
 
-    if (data.location?.coordinates) {
+    if (data.location) {
         variables.createLocationInput = {
-            geometry: { coordinates: data.location.coordinates },
+            geometry: { coordinates: data.location.geometry?.coordinates },
             properties: { address: data.location.properties?.address },
         };
     }
 
-    if (data.categories?.length) {
-        variables.createCategoryInput = { categories: data.categories };
+    if (data.category?.length) {
+        variables.createCategoryInput = { categories: data.category };
     }
 
-    if (data.interests?.length) {
-        variables.createInterestInput = { interests: data.interests };
+    if (data.interest?.length) {
+        variables.createInterestInput = { interests: data.interest };
     }
 
-    if (data.tags?.length) {
-        variables.createTagInput = { tags: data.tags };
+    if (data.tag?.length) {
+        variables.createTagInput = { tags: data.tag };
     }
 
     return variables;
@@ -53,9 +54,9 @@ export const useEventForm = () => {
 
     const handleCreateEvent = async (data: EventFormData): Promise<void> => {
         const variables = buildEventVariables(data);
-
+        console.log(variables);
         try {
-            await createEvent({ variables });
+            // await createEvent({ variables });
         } catch (error) {
             console.error('Ошибка при создании события:', error);
             throw error;

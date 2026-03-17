@@ -59,9 +59,16 @@ export class EventService {
 
     async updateEvent(
         id: MongoSchema.Types.ObjectId,
-        updateEventInput: Partial<CreateEventInput>
+        updateEventInput: Partial<CreateEventInput>,
+        relations?: EventRelationsInput
     ): Promise<Event | null> {
-        return this.crudService.update(id, updateEventInput);
+        const event = await this.crudService.update(id, updateEventInput);
+
+        if (relations && event) {
+            await this.relationsService.updateRelations(event, relations);
+        }
+
+        return event;
     }
 
     async removeEvent(id: MongoSchema.Types.ObjectId): Promise<{ deletedCount: number }> {

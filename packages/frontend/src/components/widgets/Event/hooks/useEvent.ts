@@ -54,7 +54,6 @@ const DELETE_EVENT_MUTATION = gql`
 const useEvent = ({ event }: EventProps) => {
     const { user_id } = useUserID();
     const router = useRouter();
-    console.log(event.organizer.firstName);
 
     const [deleteEventMutation] = useMutation(DELETE_EVENT_MUTATION);
     const { deleteFile } = useUploadFile({});

@@ -65,4 +65,59 @@ export class EventRelationsService {
             await (event as any).save();
         }
     }
+
+    async updateRelations(
+        event: Event & { _id: MongoSchema.Types.ObjectId },
+        input: EventRelationsInput
+    ): Promise<void> {
+        const eventId = event._id;
+        const updates: Partial<Event> = {};
+
+        if (input.location) {
+            const existingLocation = await this.locationService.getLocationByOwner(eventId);
+            if (existingLocation?._id) {
+                updates.location =
+                    (await this.locationService.updateLocation(
+                        existingLocation._id,
+                        input.location
+                    )) ?? undefined;
+            }
+        }
+
+        if (input.category) {
+            const existingCategory = await this.categoryService.getCategoriesByOwner(eventId);
+            if (existingCategory?._id) {
+                updates.category =
+                    (await this.categoryService.updateCategories(
+                        existingCategory._id,
+                        input.category
+                    )) ?? undefined;
+            }
+        }
+
+        if (input.interest) {
+            const existingInterest = await this.interestService.getInterestByOwner(eventId);
+            if (existingInterest?._id) {
+                updates.interest =
+                    (await this.interestService.updateInterest(
+                        existingInterest._id,
+                        input.interest
+                    )) ?? undefined;
+            }
+        }
+
+        if (input.tag) {
+            const existingTag = await this.tagService.getTagByOwner(eventId);
+            if (existingTag?._id) {
+                updates.tag =
+                    (await this.tagService.updateTag(existingTag._id, input.tag)) ?? undefined;
+            }
+        }
+
+        // одно сохранение вместо четырёх
+        if (Object.keys(updates).length > 0) {
+            Object.assign(event, updates);
+            await (event as any).save();
+        }
+    }
 }
