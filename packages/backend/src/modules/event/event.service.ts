@@ -11,10 +11,7 @@ import { CreateLocationInput } from '../location/dto/create-location.input';
 import { CreateCategoryInput } from '../category/dto/create-category.input';
 import { CreateInterestInput } from '../interest/dto/create-interest.input';
 import { CreateTagInput } from '../tag/dto/create-tag.input';
-import { Category } from '../category/entities/category.entity';
-import { Interest } from '../interest/entities/interest.entity';
-import { Tag } from '../tag/entities/tag.entity';
-import { Location } from '../location/entities/location.entity';
+import { EnrichEventHelper, EventWithRelations } from './helpers/enrich-event.helper';
 
 @Injectable()
 export class EventService {
@@ -24,7 +21,8 @@ export class EventService {
         private readonly locationService: LocationService,
         private readonly categoryService: CategoryService,
         private readonly interestService: InterestService,
-        private readonly tagService: TagService
+        private readonly tagService: TagService,
+        private readonly enrichEvent: EnrichEventHelper
     ) {}
 
     async createEvent(
@@ -89,62 +87,49 @@ export class EventService {
         return savedEvent;
     }
 
-    // async getAllEvents(): Promise<Event[]> {
-    //     return this.eventModel.find().exec();
-    // }
-
-    async getEventsByOrganizer(organizer_id: MongoSchema.Types.ObjectId): Promise<
-        (Omit<Event, 'location' | 'category' | 'interest' | 'tag'> & {
-            location?: Location | null;
-            category?: Category | null;
-            interest?: Interest | null;
-            tag?: Tag | null;
-        })[]
-    > {
+    async getEventsByOrganizer(
+        organizer_id: MongoSchema.Types.ObjectId
+    ): Promise<EventWithRelations[]> {
         const events = await this.eventModel.find({ organizer: organizer_id }).exec();
+        return this.enrichEvent.enrichEventsWithRelations(events);
+    }
 
-        const eventsWithRelations = await Promise.all(
-            events.map(async (event) => {
-                const [location, category, interest, tag] = await Promise.all([
-                    this.locationService.getLocationByOwner(event._id),
-                    this.categoryService.getCategoriesByOwner(event._id),
-                    this.interestService.getInterestByOwner(event._id),
-                    this.tagService.getTagByOwner(event._id),
-                ]);
+    async getAllEvents(
+        limit?: number,
+        offset?: number,
+        sort?: string
+    ): Promise<EventWithRelations[]> {
+        const now = new Date();
+        const query = {
+            startDate: { $gte: now },
+        };
 
-                return {
-                    ...event.toObject(),
-                    location,
-                    category,
-                    interest,
-                    tag,
-                };
-            })
-        );
+        let sortOptions: Record<string, 1 | -1> = {};
+        if (sort) {
+            const [field, order] = sort.split(':');
+            sortOptions[field] = order === 'desc' ? -1 : 1;
+        } else {
+            sortOptions = { startDate: -1 };
+        }
 
-        return eventsWithRelations;
+        const events = await this.eventModel
+            .find(query)
+            .sort(sortOptions)
+            .skip(offset || 0)
+            .limit(limit || 10)
+            .exec();
+
+        return this.enrichEvent.enrichEventsWithRelations(events);
     }
 
     async getEventById(event_id: MongoSchema.Types.ObjectId) {
-        const [event, location, category, interest, tag] = await Promise.all([
-            this.eventModel.findById(event_id),
-            this.locationService.getLocationByOwner(event_id),
-            this.categoryService.getCategoriesByOwner(event_id),
-            this.interestService.getInterestByOwner(event_id),
-            this.tagService.getTagByOwner(event_id),
-        ]);
+        const event = await this.eventModel.findById(event_id);
 
         if (!event) {
             throw new NotFoundException(`Event ${event_id} not found`);
         }
 
-        return {
-            ...event.toObject(),
-            location,
-            category,
-            interest,
-            tag,
-        };
+        return this.enrichEvent.enrichEventWithRelations(event);
     }
 
     async updateEvent(

@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, ID, ResolveField, Parent } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, ID, ResolveField, Parent, Int } from '@nestjs/graphql';
 import { EventService } from './event.service';
 import { CreateEventInput } from './dto/create-event.input';
 import { UpdateEventInput } from './dto/update-event.input';
@@ -37,13 +37,17 @@ export class EventResolver {
         return this.eventService.getEventsByOrganizer(organizer_id);
     }
 
-    // @Query(() => [Event], {
-    //     name: 'events',
-    //     description: 'Получить все события',
-    // })
-    // getAllEvents() {
-    //     return this.eventService.getAllEvents();
-    // }
+    @Query(() => [Event], {
+        name: 'getAllEvents',
+        description: 'Получить все активные события с пагинацией и сортировкой',
+    })
+    getAllEvents(
+        @Args('limit', { type: () => Int, nullable: true }) limit?: number,
+        @Args('offset', { type: () => Int, nullable: true }) offset?: number,
+        @Args('sort', { type: () => String, nullable: true }) sort?: string
+    ) {
+        return this.eventService.getAllEvents(limit, offset, sort);
+    }
 
     @Mutation(() => Event, {
         name: 'createEvent',

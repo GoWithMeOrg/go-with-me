@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
 
 export const REMOVE_COMPANION_MUTATION = gql`
     mutation RemoveCompanion($userId: ID!, $companionId: ID!) {

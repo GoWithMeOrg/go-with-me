@@ -16,13 +16,16 @@ export const GET_EVENTS = gql`
             }
             image
             organizer {
+                _id
+                firstName
+                lastName
                 image
             }
         }
     }
 `;
 
-export const GET_ORGANIZER_EVENTS = gql`
+export const GET_EVENTS_BY_ORGANIZER = gql`
     query GetEventsByOrganizer($organizerId: ID!) {
         getEventsByOrganizer(organizer_id: $organizerId) {
             _id

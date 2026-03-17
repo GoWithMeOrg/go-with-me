@@ -255,6 +255,9 @@ type Query {
 
   """Поиск компаньонов по email или имени"""
   findCompanion(query: String): [User!]!
+
+  """Получить все активные события с пагинацией и сортировкой"""
+  getAllEvents(limit: Int, offset: Int, sort: String): [Event!]!
   getCompanionRequests(user_id: ID!): [CompanionRequest!]!
 
   """Получить событие по id"""
