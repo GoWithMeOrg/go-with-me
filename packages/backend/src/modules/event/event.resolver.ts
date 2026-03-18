@@ -100,10 +100,9 @@ export class EventResolver {
         description: 'Удалить событие',
     })
     async removeEvent(
-        @Args('id', { type: () => ID }) id: MongoSchema.Types.ObjectId
+        @Args('event_id', { type: () => ID }) event_id: MongoSchema.Types.ObjectId
     ): Promise<boolean> {
-        const result = await this.eventService.removeEvent(id);
-        return result.deletedCount > 0;
+        return this.eventService.removeEvent(event_id);
     }
 
     @ResolveField(() => User, { name: 'organizer' })

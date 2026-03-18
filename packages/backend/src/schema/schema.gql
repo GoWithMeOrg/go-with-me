@@ -174,7 +174,7 @@ type Mutation {
   removeCompanion(companion_id: ID!, user_id: ID!): Boolean!
 
   """Удалить событие"""
-  removeEvent(id: ID!): Boolean!
+  removeEvent(event_id: ID!): Boolean!
   removeInterest(interest_id: ID!): Interest!
 
   """Удалить локацию"""

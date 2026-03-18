@@ -1,61 +1,23 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { REMOVE_EVENT_MUTATION } from '@/app/graphql/mutations/event';
 import { Event as EventType } from '@/app/graphql/types';
 import { useUploadFile } from '@/components/widgets/UploadFile/hooks';
 import { useUserID } from '@/hooks/useUserID';
-import { useMutation, useQuery } from '@apollo/client/react';
+import { useMutation } from '@apollo/client/react';
 import dayjs from 'dayjs';
-import gql from 'graphql-tag';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 export interface EventProps {
     event: EventType;
-    sessionUserID?: string | null;
 }
-
-const GET_EVENTS = gql`
-    query GetEvents($limit: Int!, $offset: Int!, $sort: String!) {
-        events(limit: $limit, offset: $offset, sort: $sort) {
-            _id
-            organizer {
-                _id
-                name
-                email
-                image
-            }
-            name
-            description
-            startDate
-            endDate
-            time
-            location {
-                coordinates
-                properties {
-                    address
-                }
-            }
-            status
-            categories
-            tags
-            image
-        }
-    }
-`;
-
-const DELETE_EVENT_MUTATION = gql`
-    mutation DeleteEvent($id: ID!) {
-        deleteEvent(id: $id) {
-            _id
-        }
-    }
-`;
 
 const useEvent = ({ event }: EventProps) => {
     const { user_id } = useUserID();
     const router = useRouter();
 
-    const [deleteEventMutation] = useMutation(DELETE_EVENT_MUTATION);
+    const [removeEvent] = useMutation(REMOVE_EVENT_MUTATION);
     const { deleteFile } = useUploadFile({});
 
     const [organizer, setOrganizer] = useState(true);
@@ -76,14 +38,6 @@ const useEvent = ({ event }: EventProps) => {
     if (typeof window !== 'undefined')
         url = `${window.location.origin}${pathname}${searchParams ? `?${searchParams}` : ''}`;
 
-    const { loading, error, data, refetch } = useQuery(GET_EVENTS, {
-        variables: {
-            limit: 0,
-            offset: 0,
-            sort: 'startDate',
-        },
-    });
-
     const handleCopyLink = async () => {
         try {
             await navigator.clipboard.writeText(url);
@@ -98,17 +52,19 @@ const useEvent = ({ event }: EventProps) => {
         setOrganizer(user_id === event?.organizer._id);
     }, [event?.organizer._id, user_id]);
 
-    const handleDelete = async (eventId: string) => {
+    const handleRemoveEvent = async (eventId: string) => {
         try {
-            await deleteEventMutation({
-                variables: { id: eventId },
+            // Находим картинку события перед удалением
+            const eventData = event?.image;
+
+            await removeEvent({
+                variables: { eventId },
             });
 
-            //Находим картинку события
-            //@ts-ignore
-            const imageUrl = data.events.find((event: any) => event?._id === eventId).image;
-            //удаляем картинку
-            await deleteFile(imageUrl);
+            // Удаляем картинку
+            if (eventData) {
+                await deleteFile(eventData);
+            }
             router.push('/events');
         } catch (error) {
             console.error('Error deleting event: ', error);
@@ -124,7 +80,7 @@ const useEvent = ({ event }: EventProps) => {
         organizer,
         setOrganizer,
         markerPosition,
-        handleDelete,
+        handleRemoveEvent,
         coord,
         day,
         copied,

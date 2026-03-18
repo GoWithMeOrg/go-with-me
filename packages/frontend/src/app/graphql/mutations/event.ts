@@ -41,3 +41,9 @@ export const UPDATE_EVENT_MUTATION = gql`
         }
     }
 `;
+
+export const REMOVE_EVENT_MUTATION = gql`
+    mutation RemoveEvent($eventId: ID!) {
+        removeEvent(event_id: $eventId)
+    }
+`;

@@ -120,4 +120,26 @@ export class EventRelationsService {
             await (event as any).save();
         }
     }
+
+    async deleteRelations(eventId: MongoSchema.Types.ObjectId): Promise<void> {
+        const existingLocation = await this.locationService.getLocationByOwner(eventId);
+        if (existingLocation?._id) {
+            await this.locationService.removeLocation(existingLocation._id);
+        }
+
+        const existingCategory = await this.categoryService.getCategoriesByOwner(eventId);
+        if (existingCategory?._id) {
+            await this.categoryService.removeCategories(existingCategory._id);
+        }
+
+        const existingInterest = await this.interestService.getInterestByOwner(eventId);
+        if (existingInterest?._id) {
+            await this.interestService.removeInterest(existingInterest._id);
+        }
+
+        const existingTag = await this.tagService.getTagByOwner(eventId);
+        if (existingTag?._id) {
+            await this.tagService.removeTag(existingTag._id);
+        }
+    }
 }

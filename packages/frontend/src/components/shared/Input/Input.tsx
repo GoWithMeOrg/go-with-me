@@ -10,7 +10,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 export const Input: FC<InputProps> = ({ className, error, onChange, ...rest }) => {
     const inputCss = [classes.input, className].filter(Boolean).join(' ');
 
-    return <input className={inputCss} {...rest} onChange={onChange} />;
+    return <input className={inputCss} onChange={onChange} {...rest} />;
 };
 
 Input.displayName = 'Input';

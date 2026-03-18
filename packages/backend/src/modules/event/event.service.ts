@@ -71,7 +71,9 @@ export class EventService {
         return event;
     }
 
-    async removeEvent(id: MongoSchema.Types.ObjectId): Promise<{ deletedCount: number }> {
-        return this.crudService.delete(id);
+    async removeEvent(event_id: MongoSchema.Types.ObjectId): Promise<boolean> {
+        await this.relationsService.deleteRelations(event_id);
+        const result = await this.crudService.delete(event_id);
+        return result.deletedCount > 0;
     }
 }

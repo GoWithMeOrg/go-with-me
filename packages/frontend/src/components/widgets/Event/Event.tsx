@@ -34,10 +34,9 @@ const Event: FC<EventProps> = ({ event }) => {
 
     const { handleJoin, isJoined } = useJoin({ event_id: event?._id, user_id });
 
-    const { organizer, markerPosition, handleDelete, coord, day, copied, handleCopyLink } =
+    const { organizer, markerPosition, handleRemoveEvent, coord, day, copied, handleCopyLink } =
         useEvent({
             event,
-            user_id,
         });
 
     const popupMode = (status === 'authenticated' ? 'map' : 'auth') as 'auth' | 'map';
@@ -123,7 +122,7 @@ const Event: FC<EventProps> = ({ event }) => {
                                 Редактировать
                             </Link>
 
-                            <Button size="big" onClick={() => handleDelete(event?._id)}>
+                            <Button size="big" onClick={() => handleRemoveEvent(event?._id)}>
                                 Удалить
                             </Button>
                         </div>
