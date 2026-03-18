@@ -58,11 +58,11 @@ export class EventService {
     }
 
     async updateEvent(
-        id: MongoSchema.Types.ObjectId,
+        event_id: MongoSchema.Types.ObjectId,
         updateEventInput: Partial<CreateEventInput>,
         relations?: EventRelationsInput
     ): Promise<Event | null> {
-        const event = await this.crudService.update(id, updateEventInput);
+        const event = await this.crudService.update(event_id, updateEventInput);
 
         if (relations && event) {
             await this.relationsService.updateRelations(event, relations);

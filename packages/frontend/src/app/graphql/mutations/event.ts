@@ -22,7 +22,7 @@ export const CREATE_EVENT_MUTATION = gql`
 
 export const UPDATE_EVENT_MUTATION = gql`
     mutation UpdateEvent(
-        $id: ID!
+        $updateEventId: ID!
         $updateEventInput: UpdateEventInput!
         $createCategoryInput: CreateCategoryInput
         $createInterestInput: CreateInterestInput
@@ -30,7 +30,7 @@ export const UPDATE_EVENT_MUTATION = gql`
         $createTagInput: CreateTagInput
     ) {
         updateEvent(
-            id: $id
+            event_id: $updateEventId
             updateEventInput: $updateEventInput
             createCategoryInput: $createCategoryInput
             createInterestInput: $createInterestInput

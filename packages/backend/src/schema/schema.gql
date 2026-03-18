@@ -200,7 +200,7 @@ type Mutation {
   updateCategories(category_id: ID!, updateCategoriesInput: UpdateCategoryInput!): Category!
 
   """Обновить данные события"""
-  updateEvent(createCategoryInput: CreateCategoryInput, createInterestInput: CreateInterestInput, createLocationInput: CreateLocationInput, createTagInput: CreateTagInput, id: ID!, updateEventInput: UpdateEventInput!): Event!
+  updateEvent(createCategoryInput: CreateCategoryInput, createInterestInput: CreateInterestInput, createLocationInput: CreateLocationInput, createTagInput: CreateTagInput, event_id: ID!, updateEventInput: UpdateEventInput!): Event!
   updateInterest(interest_id: ID!, updateInterestInput: UpdateInterestInput!): Interest!
 
   """Обновить локацию"""

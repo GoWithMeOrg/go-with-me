@@ -79,7 +79,7 @@ export class EventResolver {
         description: 'Обновить данные события',
     })
     updateEvent(
-        @Args('id', { type: () => ID }) id: MongoSchema.Types.ObjectId,
+        @Args('event_id', { type: () => ID }) event_id: MongoSchema.Types.ObjectId,
         @Args('updateEventInput') updateEventInput: UpdateEventInput,
         @Args('createLocationInput', { nullable: true }) createLocationInput: CreateLocationInput,
         @Args('createCategoryInput', { nullable: true }) createCategoryInput: CreateCategoryInput,
@@ -92,7 +92,7 @@ export class EventResolver {
             interest: createInterestInput,
             tag: createTagInput,
         };
-        return this.eventService.updateEvent(id, updateEventInput, relations);
+        return this.eventService.updateEvent(event_id, updateEventInput, relations);
     }
 
     @Mutation(() => Boolean, {

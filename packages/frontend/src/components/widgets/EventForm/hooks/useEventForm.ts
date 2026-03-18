@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { CREATE_EVENT_MUTATION } from '@/app/graphql/mutations/event';
-import { CreateEventMutationVariables } from '@/app/graphql/types';
+import { CREATE_EVENT_MUTATION, UPDATE_EVENT_MUTATION } from '@/app/graphql/mutations/event';
+import { CreateEventMutationVariables, UpdateEventMutationVariables } from '@/app/graphql/types';
 import { useUploadFile } from '@/components/widgets/UploadFile/hooks';
 import { useMutation } from '@apollo/client/react';
 
@@ -21,10 +21,10 @@ const buildEventVariables = (data: EventFormData) => {
         },
     };
 
-    if (data.location) {
+    if (data.location?.geometry?.coordinates && data.location.properties?.address) {
         variables.createLocationInput = {
-            geometry: { coordinates: data.location.geometry?.coordinates },
-            properties: { address: data.location.properties?.address },
+            geometry: { coordinates: data.location.geometry.coordinates },
+            properties: { address: data.location.properties.address },
         };
     }
 
@@ -43,7 +43,43 @@ const buildEventVariables = (data: EventFormData) => {
     return variables;
 };
 
-export const useEventForm = () => {
+const buildUpdateVariables = (id: string, data: EventFormData): UpdateEventMutationVariables => {
+    const variables: UpdateEventMutationVariables = {
+        updateEventId: id,
+        updateEventInput: {
+            name: data.name,
+            privacy: data.privacy,
+            description: data.description,
+            startDate: data.startDate,
+            endDate: data.endDate,
+            time: data.time,
+            image: data.image,
+        },
+    };
+
+    if (data.location?.geometry?.coordinates && data.location.properties?.address) {
+        variables.createLocationInput = {
+            geometry: { coordinates: data.location.geometry.coordinates },
+            properties: { address: data.location.properties.address },
+        };
+    }
+
+    if (data.category?.length) {
+        variables.createCategoryInput = { categories: data.category };
+    }
+
+    if (data.interest?.length) {
+        variables.createInterestInput = { interests: data.interest };
+    }
+
+    if (data.tag?.length) {
+        variables.createTagInput = { tags: data.tag };
+    }
+
+    return variables;
+};
+
+export const useEventForm = (eventId?: string) => {
     const { control, handleSubmit } = useForm<EventFormData>();
 
     const [uploadData, setUploadData] = useState<UploadData | null>(null);
@@ -51,6 +87,7 @@ export const useEventForm = () => {
 
     const { onSubmitFile, deleteFile } = useUploadFile({});
     const [createEvent] = useMutation(CREATE_EVENT_MUTATION);
+    const [updateEvent] = useMutation(UPDATE_EVENT_MUTATION);
 
     const handleCreateEvent = async (data: EventFormData): Promise<void> => {
         const variables = buildEventVariables(data);
@@ -59,6 +96,19 @@ export const useEventForm = () => {
             // await createEvent({ variables });
         } catch (error) {
             console.error('Ошибка при создании события:', error);
+            throw error;
+        }
+    };
+
+    const handleEditEvent = async (data: EventFormData) => {
+        if (!eventId) {
+            throw new Error('Event ID is required for update');
+        }
+        const variables = buildUpdateVariables(eventId, data);
+        try {
+            await updateEvent({ variables });
+        } catch (error) {
+            console.error('Ошибка при редактировании события:', error);
             throw error;
         }
     };
@@ -87,11 +137,28 @@ export const useEventForm = () => {
         }
     };
 
+    const onSubmitEditData: SubmitHandler<EventFormData> = async (data) => {
+        try {
+            await handleEditEvent(data);
+
+            if (uploadData) {
+                await onSubmitFile(uploadData.file, uploadData.presignUrl);
+
+                if (originalImage) {
+                    await deleteFile(originalImage);
+                }
+            }
+        } catch (error) {
+            console.error('Ошибка при отправке формы:', error);
+        }
+    };
+
     return {
         control,
         handleSubmit,
         handleUploadedFile,
         handleImageLoad,
         onSubmitData,
+        onSubmitEditData,
     };
 };

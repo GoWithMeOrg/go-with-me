@@ -9,24 +9,26 @@ import { Label } from '@/components/shared/Label';
 import { Textarea } from '@/components/shared/Textarea';
 import { CreateTag } from '@/components/widgets/CreateTag';
 import { Date } from '@/components/widgets/Date';
+import { EventFormProps } from '@/components/widgets/EventForm/eventForm.interfaces';
+import { useEventForm } from '@/components/widgets/EventForm/hooks/useEventForm';
 import { LocationPicker } from '@/components/widgets/LocationPicker';
 import { PrivacySelector } from '@/components/widgets/PrivacySelector';
 import { SelectItems } from '@/components/widgets/SelectItems';
 import { Time } from '@/components/widgets/Time';
 import { UploadFile } from '@/components/widgets/UploadFile';
-
-import { UploadFileSizes } from '../UploadFile/types/storage-folder';
-import { EventFormProps } from './eventForm.interfaces';
-import { useEventForm } from './hooks/useEventForm';
+import { UploadFileSizes } from '@/components/widgets/UploadFile/types/storage-folder';
 
 import classes from './EventForm.module.css';
 
 export const EventForm = ({ eventData }: EventFormProps) => {
-    const { control, handleSubmit, handleUploadedFile, onSubmitData } = useEventForm();
+    const { control, handleSubmit, handleUploadedFile, onSubmitData, onSubmitEditData } =
+        useEventForm(eventData?._id);
+
+    const onSubmit = eventData ? onSubmitEditData : onSubmitData;
 
     return (
         <div className={classes.container}>
-            <form onSubmit={handleSubmit(onSubmitData)} className={classes.form}>
+            <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
                 <div className={classes.formWrapper}>
                     <div className={classes.formField}>
                         <Controller
@@ -112,11 +114,10 @@ export const EventForm = ({ eventData }: EventFormProps) => {
                         <Controller
                             name="category"
                             control={control}
-                            defaultValue={eventData?.category?.categories}
                             render={({ field }) => (
                                 <SelectItems
                                     categoryList={categoriesList}
-                                    eventCategories={eventData?.category?.categories}
+                                    eventCategories={[...(eventData?.category?.categories ?? [])]}
                                     titleCategories={'Выбрать категорию'}
                                     badgesShow
                                     onChange={field.onChange}
@@ -128,11 +129,10 @@ export const EventForm = ({ eventData }: EventFormProps) => {
                         <Controller
                             name="interest"
                             control={control}
-                            defaultValue={eventData?.interest?.interests}
                             render={({ field }) => (
                                 <SelectItems
                                     categoryList={interestsList}
-                                    eventCategories={eventData?.interest?.interests}
+                                    eventCategories={[...(eventData?.interest?.interests ?? [])]}
                                     titleCategories={'Выбрать тип'}
                                     badgesShow
                                     onChange={field.onChange}
@@ -148,7 +148,7 @@ export const EventForm = ({ eventData }: EventFormProps) => {
                             render={({ field }) => (
                                 <CreateTag
                                     onChange={field.onChange}
-                                    eventTags={eventData?.tag?.tags || []}
+                                    eventTags={field.value || []}
                                     title={'Создать тег'}
                                 />
                             )}
