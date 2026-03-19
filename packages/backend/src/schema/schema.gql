@@ -161,7 +161,7 @@ type Mutation {
   deleteFile(fileKey: String!): Boolean!
 
   """Получить пресайнд-ссылку для прямой загрузки файла в MinIO/S3"""
-  getPresignedUrl(folder: String! = "events", input: UploadFileInput!, user_id: String!): PresignedUrlResponse!
+  getPresignedUrl(folder: String! = "events", input: UploadFileInput!): PresignedUrlResponse!
   registerResource(
     """Отображаемое имя (например: Мероприятия)"""
     name: String!

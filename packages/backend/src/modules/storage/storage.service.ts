@@ -6,6 +6,7 @@ import { customAlphabet } from 'nanoid';
 import { InjectS3 } from 'nestjs-s3';
 import { PresignedUrlResponse } from './dto/presigned-url.response';
 import { StorageFolder } from './types/storage-folder';
+import { Schema as MongoSchema } from 'mongoose';
 
 @Injectable()
 export class StorageService {
@@ -19,7 +20,7 @@ export class StorageService {
     async getPresignedUrl(
         fileName: string,
         fileType: string,
-        user_id: string,
+        user_id: MongoSchema.Types.ObjectId,
         folder: StorageFolder
     ): Promise<PresignedUrlResponse> {
         const bucket = this.configService.getOrThrow('S3_BUCKET_NAME');

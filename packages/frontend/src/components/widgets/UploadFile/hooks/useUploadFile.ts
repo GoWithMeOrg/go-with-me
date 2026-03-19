@@ -2,13 +2,11 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { DELETE_FILE_MUTATION, GET_PRESIGNED_URL } from '@/app/graphql/mutations/upload';
 import { GetPresignedUrlMutation } from '@/app/graphql/types';
 import { validImageTypes } from '@/constants/constants';
-import { useUserID } from '@/hooks/useUserID';
 import { useMutation } from '@apollo/client/react';
 
 import { UploadFileProps } from '../interfaces/UploadFileProps';
 
 export const useUploadFile = ({ onChange, folder, onUploadedFile }: UploadFileProps) => {
-    const { user_id } = useUserID();
     const uploadRef = useRef<HTMLInputElement>(null);
 
     const [publicUrl, setPublicUrl] = useState<string | null>(null);
@@ -36,7 +34,6 @@ export const useUploadFile = ({ onChange, folder, onUploadedFile }: UploadFilePr
     const getPresignedUrl = async (file: File) => {
         const { data } = await getPresignedUrlMutation({
             variables: {
-                userId: user_id,
                 input: {
                     fileName: file.name,
                     fileType: file.type,

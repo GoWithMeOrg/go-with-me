@@ -41,7 +41,7 @@ export const EventForm: FC<EventFormProps> = ({ eventData }) => {
                         <Controller
                             name="name"
                             control={control}
-                            defaultValue={eventData?.name}
+                            defaultValue={eventData?.name as string}
                             render={({ field }) => (
                                 <Label label={'Название'}>
                                     <Input {...field} onChange={field.onChange} />
