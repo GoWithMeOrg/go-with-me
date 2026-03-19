@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect, useMemo } from 'react';
 import { Label } from '@/components/shared/Label';
 import { useUploadFile } from '@/components/widgets/UploadFile/hooks/useUploadFile';
 import Image from 'next/image';
@@ -21,61 +20,51 @@ export const UploadFile: React.FC<IUploadFileForm> = ({
     entityId,
     folder,
 }) => {
-    const { uploadedFile, uploadRef, handleFileChange, onSubmitFile, presignUrl } = useUploadFile({
-        onChange: onChange,
-        folder: folder,
-        entityId: entityId,
+    const { uploadRef, previewUrl, isUploading, error, handleFileChange } = useUploadFile({
+        onChange,
+        folder,
+        entityId,
+        onUploadedFile,
     });
 
-    // Передаем данные наверх, когда файл выбран и ссылка получена
-    useEffect(() => {
-        if (uploadedFile && presignUrl) {
-            onUploadedFile?.(uploadedFile, presignUrl, onSubmitFile);
-        }
-    }, [uploadedFile, presignUrl, onSubmitFile, onUploadedFile]);
+    const uploadFileCssString = [
+        sizeType === UploadFileSizes.event && classes.event,
+        sizeType === UploadFileSizes.profile && classes.profile,
+        className,
+    ]
+        .filter(Boolean)
+        .join(' ');
 
-    const uploadFileCssString = useMemo(
-        () =>
-            [
-                sizeType === UploadFileSizes.event && classes.event,
-                sizeType === UploadFileSizes.profile && classes.profile,
-                className,
-            ]
-                .filter(Boolean)
-                .join(' '),
-        [className, sizeType]
-    );
+    const displayUrl = previewUrl ?? imageUrl ?? null;
 
     return (
         <div className={uploadFileCssString}>
-            {!imageUrl && !uploadedFile && <div className={classes.previewBackground} />}
+            {!displayUrl && <div className={classes.previewBackground} />}
 
             <div className={classes.previewImage}>
-                {imageUrl && !uploadedFile && (
+                {displayUrl && (
                     <Image
                         className={classes.image}
-                        src={imageUrl}
+                        src={displayUrl}
                         width={width}
                         height={height}
-                        alt="preview"
-                        priority
-                    />
-                )}
-                {uploadedFile && (
-                    <Image
-                        className={classes.image}
-                        src={URL.createObjectURL(uploadedFile)}
-                        width={width}
-                        height={height}
-                        alt="new upload"
-                        style={{
-                            objectFit: 'cover',
-                            objectPosition: 'center',
-                            borderRadius: '0.25rem',
-                        }}
+                        alt={previewUrl ? 'new upload' : 'preview'}
+                        priority={!previewUrl}
+                        style={
+                            previewUrl
+                                ? {
+                                      objectFit: 'cover',
+                                      objectPosition: 'center',
+                                      borderRadius: '0.25rem',
+                                  }
+                                : undefined
+                        }
                     />
                 )}
             </div>
+
+            {isUploading && <div className={classes.loadingOverlay}>Загрузка...</div>}
+            {error && <p className={classes.error}>{error}</p>}
 
             <Label label="Загрузить фото" htmlFor="fileInput" className={classes.customFileInput}>
                 <input
@@ -85,6 +74,7 @@ export const UploadFile: React.FC<IUploadFileForm> = ({
                     className={classes.customFile}
                     onChange={handleFileChange}
                     accept="image/*"
+                    disabled={isUploading}
                 />
             </Label>
         </div>

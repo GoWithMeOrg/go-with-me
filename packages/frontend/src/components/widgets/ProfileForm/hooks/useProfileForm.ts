@@ -1,10 +1,9 @@
-import { useState } from 'react';
+import { useRef } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { UPDATE_USER_PROFILE } from '@/app/graphql/mutations/updateUserProfile';
 import { GET_USER_PROFILE_BY_ID } from '@/app/graphql/queries/userProfile';
 import { Category, Interest, Location, Tag, User } from '@/app/graphql/types';
 import { useSessionGQL } from '@/app/providers/session/hooks/useSesssionGQL';
-import { useUploadFile } from '@/components/widgets/UploadFile/hooks';
 import { useMutation, useQuery } from '@apollo/client/react';
 
 export interface UserProfile {
@@ -20,17 +19,17 @@ export const useProfileForm = () => {
     const { data: session } = useSessionGQL();
     const user_id = session?._id;
 
-    const { onSubmitFile, deleteFile } = useUploadFile({});
-
-    const [file, setFile] = useState<File | null>(null);
-    const [presignUrl, setPresignUrl] = useState<string | null>(null);
+    // submit и deleteFile приходят из UploadFile через onUploadedFile
+    const submitFileRef = useRef<(() => Promise<void>) | null>(null);
+    const uploadedFileRef = useRef<File | null>(null);
+    const deleteFileRef = useRef<((url: string) => Promise<void>) | null>(null);
 
     const {
         data: userProfile,
         error,
         refetch,
     } = useQuery<{ userProfile: UserProfile }>(GET_USER_PROFILE_BY_ID, {
-        variables: { userId: session?._id },
+        variables: { userId: user_id },
     });
 
     const user = userProfile?.userProfile.user;
@@ -44,8 +43,9 @@ export const useProfileForm = () => {
     const place = watch('location');
 
     function mapGooglePlaceToLocationInput(place: any) {
-        if (!place || !place.geometry || !place.geometry.location) return null;
-        const newPlace = {
+        if (!place?.geometry?.location) return null;
+
+        return {
             geometry: {
                 coordinates: [place.geometry.location.lng(), place.geometry.location.lat()],
             },
@@ -53,8 +53,6 @@ export const useProfileForm = () => {
                 address: place.formatted_address,
             },
         };
-
-        return newPlace;
     }
 
     const isNewCategory = !userProfile?.userProfile.category?._id;
@@ -73,7 +71,6 @@ export const useProfileForm = () => {
                 tagId: userProfile?.userProfile.tag?._id || null,
                 locationId: userProfile?.userProfile.location?._id || null,
 
-                // Только обновляем
                 updateUserInput: {
                     _id: userProfile?.userProfile.user._id,
                     firstName: userProfileEdited.user.firstName,
@@ -86,7 +83,6 @@ export const useProfileForm = () => {
                 // --- ЛОКАЦИЯ ---
                 ...(transformedLocation &&
                     isNewLocation && {
-                        // ID НЕТ + ДАННЫЕ ЕСТЬ = СОЗДАНИЕ
                         createLocationInput: {
                             geometry: transformedLocation.geometry,
                             properties: {
@@ -98,7 +94,6 @@ export const useProfileForm = () => {
                     }),
                 ...(transformedLocation &&
                     !isNewLocation && {
-                        // ID ЕСТЬ + ДАННЫЕ ЕСТЬ = ОБНОВЛЕНИЕ
                         updateLocationInput: {
                             _id: userProfile?.userProfile.location._id,
                             geometry: transformedLocation.geometry,
@@ -109,13 +104,6 @@ export const useProfileForm = () => {
                 // --- КАТЕГОРИИ ---
                 ...(isNewCategory
                     ? {
-                          // ID НЕТ = СОЗДАНИЕ
-                          //   createCategoryInput: {
-                          //       // Предполагаем, что CreateCategoriesInput принимает 'categories'
-                          //       category: userProfileEdited.category?.categories,
-                          //       ownerId: user_id,
-                          //       ownerType: 'User',
-                          //   },
                           createCategoryInput: {
                               categories: userProfileEdited.category?.categories,
                               ownerId: user_id,
@@ -123,9 +111,7 @@ export const useProfileForm = () => {
                           },
                       }
                     : {
-                          // ID ЕСТЬ = ОБНОВЛЕНИЕ
                           updateCategoryInput: {
-                              _id: userProfile?.userProfile.category._id,
                               categories: userProfileEdited.category?.categories,
                           },
                       }),
@@ -133,58 +119,77 @@ export const useProfileForm = () => {
                 // --- ИНТЕРЕСЫ ---
                 ...(isNewInterest
                     ? {
-                          // ID НЕТ = СОЗДАНИЕ
                           createInterestInput: {
-                              // Предполагаем, что CreateInterestInput принимает 'interest'
                               interests: userProfileEdited.interest?.interests,
                               ownerId: user_id,
                               ownerType: 'User',
                           },
                       }
                     : {
-                          // ID ЕСТЬ = ОБНОВЛЕНИЕ
                           updateInterestInput: {
-                              _id: userProfile?.userProfile.interest._id,
                               interests: userProfileEdited.interest?.interests,
                           },
                       }),
+
                 // --- ТЕГИ ---
                 ...(isNewTag
                     ? {
-                          // ID НЕТ = СОЗДАНИЕ
                           createTagInput: {
-                              // Предполагаем, что CreateInterestInput принимает 'interest'
                               tags: userProfileEdited.tag?.tags,
                               ownerId: user_id,
                               ownerType: 'User',
                           },
                       }
                     : {
-                          // ID ЕСТЬ = ОБНОВЛЕНИЕ
                           updateTagInput: {
-                              _id: userProfile?.userProfile.tag._id,
                               tags: userProfileEdited.tag?.tags,
                           },
                       }),
             },
         });
+
         refetch();
     };
 
-    const onSubmit: SubmitHandler<UserProfile> = (event: UserProfile) => {
-        handleEditProfile(event);
-        if (file && presignUrl) {
-            onSubmitFile(file, presignUrl);
-            if (user?.image && file) {
-                // console.log(user?.image);
-                deleteFile(user?.image);
-            }
+    const handleUploadFile = async () => {
+        const submit = submitFileRef.current;
+        const file = uploadedFileRef.current;
+        const deleteFile = deleteFileRef.current;
+
+        if (!submit || !file) return;
+
+        await submit();
+
+        if (deleteFile && user?.image) {
+            await deleteFile(user.image);
+            console.log('старый файл удалён');
+        } else {
+            console.warn('удаление пропущено', {
+                hasDeleteFile: !!deleteFile,
+                hasOldImage: !!user?.image,
+            });
         }
     };
 
-    const handleUploadedFile = (file: File, preUrl: string) => {
-        setFile(file);
-        setPresignUrl(preUrl);
+    const onSubmit: SubmitHandler<UserProfile> = async (data: UserProfile) => {
+        try {
+            await handleEditProfile(data);
+            await handleUploadFile();
+        } catch (err) {
+            console.error('Ошибка при сохранении профиля:', err);
+        }
+    };
+
+    // передаётся в UploadFile как onUploadedFile
+    const onUploadedFile = (
+        file: File,
+        presignedUrl: string,
+        submit: () => Promise<void>,
+        deleteFile: (url: string) => Promise<void>
+    ) => {
+        uploadedFileRef.current = file;
+        submitFileRef.current = submit;
+        deleteFileRef.current = deleteFile;
     };
 
     return {
@@ -197,7 +202,7 @@ export const useProfileForm = () => {
         handleSubmit,
         onSubmit,
         control,
-        handleUploadedFile,
+        onUploadedFile,
         user_id,
     };
 };

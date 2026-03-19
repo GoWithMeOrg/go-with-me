@@ -30,7 +30,7 @@ export const ProfileForm: FC = () => {
         handleSubmit,
         onSubmit,
         control,
-        handleUploadedFile,
+        onUploadedFile,
     } = useProfileForm();
 
     return (
@@ -49,8 +49,8 @@ export const ProfileForm: FC = () => {
                                     width={180}
                                     height={180}
                                     sizeType={UploadFileSizes.profile}
-                                    onUploadedFile={handleUploadedFile}
-                                    {...field}
+                                    onChange={field.onChange} // ← только onChange из field
+                                    onUploadedFile={onUploadedFile} // ← теперь не перезапишется
                                 />
                             )}
                         />

@@ -1,7 +1,14 @@
 import { StorageFolder } from '../types/storage-folder';
 
 export interface IUploadFile {
-    onChange?: (url: string) => void;
-    folder?: StorageFolder;
-    entityId?: string;
+    onChange?: (...event: any[]) => void;
+    onUploadedFile?: (
+        file: File,
+        presignedUrl: string,
+        submit: () => Promise<void>,
+        deleteFile: (url: string) => Promise<void>
+    ) => void;
+
+    folder: StorageFolder;
+    entityId: string;
 }

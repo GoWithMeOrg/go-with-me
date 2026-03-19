@@ -10,8 +10,9 @@ export interface IUploadFileForm {
     onChange?: (...event: any[]) => void;
     onUploadedFile?: (
         file: File,
-        preUrl: string,
-        onSubmitFile: (file: File, preUrl: string) => void
+        presignedUrl: string,
+        submit: () => Promise<void>,
+        deleteFile: (url: string) => Promise<void>
     ) => void;
     sizeType?: UploadFileSizes;
     className?: string;
