@@ -14,15 +14,10 @@ export class StorageResolver {
     })
     async getPresignedUrl(
         @Args('input') input: UploadFileInput,
-        @Args('entityId') entityId: string,
+        @Args('user_id') user_id: string,
         @Args('folder', { defaultValue: 'events' }) folder: StorageFolder
     ) {
-        return this.storageService.getPresignedUrl(
-            input.fileName,
-            input.fileType,
-            entityId,
-            folder
-        );
+        return this.storageService.getPresignedUrl(input.fileName, input.fileType, user_id, folder);
     }
 
     @Mutation(() => Boolean, {

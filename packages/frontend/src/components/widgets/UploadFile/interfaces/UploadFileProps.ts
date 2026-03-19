@@ -1,4 +1,4 @@
-import { StorageFolder } from '@/components/widgets/UploadFile/types/storage-folder';
+import { StorageFolder } from '../types/storage-folder';
 
 export interface UploadFileProps {
     onChange?: (...event: any[]) => void;
@@ -8,5 +8,4 @@ export interface UploadFileProps {
     ) => void;
 
     folder: StorageFolder;
-    entityId: string;
 }

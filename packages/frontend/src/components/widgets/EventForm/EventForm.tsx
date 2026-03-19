@@ -1,5 +1,6 @@
 'use client';
 
+import { FC, useRef } from 'react';
 import { Controller } from 'react-hook-form';
 import { Privacy } from '@/app/graphql/types';
 import { Button } from '@/components/shared/Button';
@@ -20,9 +21,15 @@ import { UploadFileSizes } from '@/components/widgets/UploadFile/types/storage-f
 
 import classes from './EventForm.module.css';
 
-export const EventForm = ({ eventData }: EventFormProps) => {
-    const { control, handleSubmit, handleUploadedFile, onSubmitData, onSubmitEditData } =
-        useEventForm(eventData?._id);
+export const EventForm: FC<EventFormProps> = ({ eventData }) => {
+    const submitFileRef = useRef<(() => Promise<void>) | null>(null);
+    const deleteFileRef = useRef<((url: string) => Promise<void>) | null>(null);
+
+    const { control, handleSubmit, onSubmitData, onSubmitEditData } = useEventForm({
+        eventData,
+        submitFileRef,
+        deleteFileRef,
+    });
 
     const onSubmit = eventData ? onSubmitEditData : onSubmitData;
 
@@ -160,14 +167,16 @@ export const EventForm = ({ eventData }: EventFormProps) => {
                         defaultValue={eventData?.image}
                         render={({ field }) => (
                             <UploadFile
-                                entityId={eventData?._id as string}
-                                folder={'events'}
+                                folder="users/events"
                                 imageUrl={eventData?.image}
                                 width={460}
                                 height={324}
-                                onUploadedFile={handleUploadedFile}
-                                {...field}
                                 sizeType={UploadFileSizes.event}
+                                onChange={field.onChange}
+                                onUploadedFile={(submit, deleteFile) => {
+                                    submitFileRef.current = submit;
+                                    deleteFileRef.current = deleteFile;
+                                }}
                             />
                         )}
                     />

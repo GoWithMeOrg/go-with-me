@@ -35,8 +35,7 @@ export const ProfileForm: FC = () => {
                             control={control}
                             render={({ field }) => (
                                 <UploadFile
-                                    entityId={user._id}
-                                    folder="users"
+                                    folder="users/avatars"
                                     imageUrl={user?.image}
                                     width={180}
                                     height={180}

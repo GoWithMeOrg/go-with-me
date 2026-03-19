@@ -1,12 +1,9 @@
-import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { CREATE_EVENT_MUTATION, UPDATE_EVENT_MUTATION } from '@/app/graphql/mutations/event';
 import { CreateEventMutationVariables, UpdateEventMutationVariables } from '@/app/graphql/types';
-import { useUploadFile } from '@/components/widgets/UploadFile/hooks';
 import { useMutation } from '@apollo/client/react';
 
-import { UploadData } from '../../UploadFile/interfaces/GetPresignedUrlData';
-import { EventFormData } from '../eventForm.interfaces';
+import { EventFormData, UseEventFormProps } from '../eventForm.interfaces';
 
 const buildEventVariables = (data: EventFormData) => {
     const variables: CreateEventMutationVariables = {
@@ -79,13 +76,9 @@ const buildUpdateVariables = (id: string, data: EventFormData): UpdateEventMutat
     return variables;
 };
 
-export const useEventForm = (eventId?: string) => {
+export const useEventForm = ({ eventData, submitFileRef, deleteFileRef }: UseEventFormProps) => {
     const { control, handleSubmit } = useForm<EventFormData>();
 
-    const [uploadData, setUploadData] = useState<UploadData | null>(null);
-    const [originalImage, setOriginalImage] = useState<string | null>(null);
-
-    const { onSubmitFile, deleteFile } = useUploadFile({});
     const [createEvent] = useMutation(CREATE_EVENT_MUTATION);
     const [updateEvent] = useMutation(UPDATE_EVENT_MUTATION);
 
@@ -93,7 +86,7 @@ export const useEventForm = (eventId?: string) => {
         const variables = buildEventVariables(data);
         console.log(variables);
         try {
-            // await createEvent({ variables });
+            await createEvent({ variables });
         } catch (error) {
             console.error('Ошибка при создании события:', error);
             throw error;
@@ -101,10 +94,10 @@ export const useEventForm = (eventId?: string) => {
     };
 
     const handleEditEvent = async (data: EventFormData) => {
-        if (!eventId) {
+        if (!eventData?._id) {
             throw new Error('Event ID is required for update');
         }
-        const variables = buildUpdateVariables(eventId, data);
+        const variables = buildUpdateVariables(eventData._id, data);
         try {
             await updateEvent({ variables });
         } catch (error) {
@@ -113,24 +106,16 @@ export const useEventForm = (eventId?: string) => {
         }
     };
 
-    const handleUploadedFile = (file: File, presignUrl: string): void => {
-        setUploadData({ file, presignUrl });
-    };
-
-    const handleImageLoad = (imageUrl: string): void => {
-        setOriginalImage(imageUrl);
-    };
-
     const onSubmitData: SubmitHandler<EventFormData> = async (data) => {
         try {
             await handleCreateEvent(data);
 
-            if (uploadData) {
-                await onSubmitFile(uploadData.file, uploadData.presignUrl);
+            if (submitFileRef.current) {
+                await submitFileRef.current();
+            }
 
-                if (originalImage) {
-                    await deleteFile(originalImage);
-                }
+            if (deleteFileRef.current && eventData?.image) {
+                await deleteFileRef.current(eventData.image);
             }
         } catch (error) {
             console.error('Ошибка при отправке формы:', error);
@@ -141,12 +126,12 @@ export const useEventForm = (eventId?: string) => {
         try {
             await handleEditEvent(data);
 
-            if (uploadData) {
-                await onSubmitFile(uploadData.file, uploadData.presignUrl);
+            if (submitFileRef.current) {
+                await submitFileRef.current();
+            }
 
-                if (originalImage) {
-                    await deleteFile(originalImage);
-                }
+            if (deleteFileRef.current && eventData?.image) {
+                await deleteFileRef.current(eventData.image);
             }
         } catch (error) {
             console.error('Ошибка при отправке формы:', error);
@@ -156,9 +141,8 @@ export const useEventForm = (eventId?: string) => {
     return {
         control,
         handleSubmit,
-        handleUploadedFile,
-        handleImageLoad,
         onSubmitData,
         onSubmitEditData,
+        originalImage: eventData?.image,
     };
 };

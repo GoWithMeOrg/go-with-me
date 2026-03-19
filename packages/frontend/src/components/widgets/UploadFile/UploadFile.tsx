@@ -17,13 +17,11 @@ export const UploadFile: FC<UploadFileFormData> = ({
     onUploadedFile,
     sizeType,
     className,
-    entityId,
     folder,
 }) => {
     const { uploadRef, previewUrl, isUploading, error, handleFileChange } = useUploadFile({
         onChange,
         folder,
-        entityId,
         onUploadedFile,
     });
 

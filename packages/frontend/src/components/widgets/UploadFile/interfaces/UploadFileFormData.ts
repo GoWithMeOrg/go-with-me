@@ -5,7 +5,6 @@ import {
 } from '@/components/widgets/UploadFile/types/storage-folder';
 
 export interface UploadFileFormData {
-    entityId: string;
     folder: StorageFolder;
 
     imageUrl?: Maybe<string>;

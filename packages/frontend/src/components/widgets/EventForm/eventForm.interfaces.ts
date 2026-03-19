@@ -1,3 +1,4 @@
+import { RefObject } from 'react';
 import type {
     Event,
     LocationGeometryInput,
@@ -24,4 +25,10 @@ export type EventFormData = {
 
 export interface EventFormProps {
     eventData?: Event;
+}
+
+export interface UseEventFormProps {
+    eventData?: Event;
+    submitFileRef: RefObject<(() => Promise<void>) | null>;
+    deleteFileRef: RefObject<((url: string) => Promise<void>) | null>;
 }

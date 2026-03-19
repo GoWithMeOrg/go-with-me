@@ -1,1 +1,1 @@
-export type StorageFolder = 'users' | 'events' | 'trips';
+export type StorageFolder = 'users/avatars' | 'users/events' | 'users/trips';

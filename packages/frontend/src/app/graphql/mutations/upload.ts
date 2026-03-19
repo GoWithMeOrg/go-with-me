@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const GET_PRESIGNED_URL = gql`
-    mutation GetPresignedUrl($entityId: String!, $input: UploadFileInput!, $folder: String!) {
-        getPresignedUrl(entityId: $entityId, input: $input, folder: $folder) {
+    mutation GetPresignedUrl($userId: String!, $input: UploadFileInput!, $folder: String!) {
+        getPresignedUrl(user_id: $userId, input: $input, folder: $folder) {
             presignedUrl
             publicUrl
         }
