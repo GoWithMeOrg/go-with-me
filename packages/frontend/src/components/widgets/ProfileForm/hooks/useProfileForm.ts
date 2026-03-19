@@ -1,28 +1,16 @@
-import { useRef } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { UPDATE_USER_PROFILE } from '@/app/graphql/mutations/updateUserProfile';
 import { GET_USER_PROFILE_BY_ID } from '@/app/graphql/queries/userProfile';
-import { Category, Interest, Location, Tag, User } from '@/app/graphql/types';
+import { UserProfile } from '@/app/graphql/types';
 import { useSessionGQL } from '@/app/providers/session/hooks/useSesssionGQL';
 import { useMutation, useQuery } from '@apollo/client/react';
 
-export interface UserProfile {
-    user: User;
-    location: Location;
-    category: Category;
-    interest: Interest;
-    tag: Tag;
-}
+import { UseProfileFormProps } from '../interfaces/UseProfileFormProps';
 
-export const useProfileForm = () => {
+export const useProfileForm = ({ submitFileRef, deleteFileRef }: UseProfileFormProps) => {
     const { control, handleSubmit, watch } = useForm<UserProfile>();
     const { data: session } = useSessionGQL();
     const user_id = session?._id;
-
-    // submit и deleteFile приходят из UploadFile через onUploadedFile
-    const submitFileRef = useRef<(() => Promise<void>) | null>(null);
-    const uploadedFileRef = useRef<File | null>(null);
-    const deleteFileRef = useRef<((url: string) => Promise<void>) | null>(null);
 
     const {
         data: userProfile,
@@ -95,7 +83,6 @@ export const useProfileForm = () => {
                 ...(transformedLocation &&
                     !isNewLocation && {
                         updateLocationInput: {
-                            _id: userProfile?.userProfile.location._id,
                             geometry: transformedLocation.geometry,
                             properties: transformedLocation.properties,
                         },
@@ -151,45 +138,28 @@ export const useProfileForm = () => {
         refetch();
     };
 
-    const handleUploadFile = async () => {
-        const submit = submitFileRef.current;
-        const file = uploadedFileRef.current;
-        const deleteFile = deleteFileRef.current;
-
-        if (!submit || !file) return;
-
-        await submit();
-
-        if (deleteFile && user?.image) {
-            await deleteFile(user.image);
-            console.log('старый файл удалён');
-        } else {
-            console.warn('удаление пропущено', {
-                hasDeleteFile: !!deleteFile,
-                hasOldImage: !!user?.image,
-            });
-        }
+    const onUploadedFile = (
+        submit: () => Promise<void>,
+        deleteFile: (url: string) => Promise<void>
+    ) => {
+        submitFileRef.current = submit;
+        deleteFileRef.current = deleteFile;
     };
 
     const onSubmit: SubmitHandler<UserProfile> = async (data: UserProfile) => {
         try {
             await handleEditProfile(data);
-            await handleUploadFile();
+
+            if (submitFileRef.current) {
+                await submitFileRef.current();
+            }
+
+            if (deleteFileRef.current && user?.image) {
+                await deleteFileRef.current(user.image);
+            }
         } catch (err) {
             console.error('Ошибка при сохранении профиля:', err);
         }
-    };
-
-    // передаётся в UploadFile как onUploadedFile
-    const onUploadedFile = (
-        file: File,
-        presignedUrl: string,
-        submit: () => Promise<void>,
-        deleteFile: (url: string) => Promise<void>
-    ) => {
-        uploadedFileRef.current = file;
-        submitFileRef.current = submit;
-        deleteFileRef.current = deleteFile;
     };
 
     return {

@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { DELETE_FILE_MUTATION, GET_PRESIGNED_URL } from '@/app/graphql/mutations/upload';
+import { GetPresignedUrlMutation } from '@/app/graphql/types';
 import { validImageTypes } from '@/constants/constants';
 import { useMutation } from '@apollo/client/react';
 
-import { GetPresignedUrlData } from '../interfaces/GetPresignedUrlData';
-import { IUploadFile } from '../interfaces/IUploadFile';
+import { UploadFileProps } from '../interfaces/UploadFileProps';
 
-export const useUploadFile = ({ onChange, folder, entityId, onUploadedFile }: IUploadFile) => {
+export const useUploadFile = ({ onChange, folder, entityId, onUploadedFile }: UploadFileProps) => {
     const uploadRef = useRef<HTMLInputElement>(null);
 
     const [publicUrl, setPublicUrl] = useState<string | null>(null);
@@ -28,7 +28,7 @@ export const useUploadFile = ({ onChange, folder, entityId, onUploadedFile }: IU
         };
     }, []);
 
-    const [getPresignedUrlMutation] = useMutation<GetPresignedUrlData>(GET_PRESIGNED_URL);
+    const [getPresignedUrlMutation] = useMutation<GetPresignedUrlMutation>(GET_PRESIGNED_URL);
     const [deleteFileMutation] = useMutation(DELETE_FILE_MUTATION);
 
     const getPresignedUrl = async (file: File) => {
@@ -48,6 +48,26 @@ export const useUploadFile = ({ onChange, folder, entityId, onUploadedFile }: IU
         }
 
         return data.getPresignedUrl;
+    };
+
+    const deleteFile = async (fileUrl: string) => {
+        const key = new URL(fileUrl).pathname.replace(/^\/[^\/]+\//, '');
+
+        try {
+            await deleteFileMutation({ variables: { fileKey: key } });
+
+            // очищаем всё состояние
+            if (previewObjectUrlRef.current) {
+                URL.revokeObjectURL(previewObjectUrlRef.current);
+                previewObjectUrlRef.current = null;
+            }
+            setPublicUrl(null);
+            setPreviewUrl(null);
+            presignUrlRef.current = null;
+            uploadedFileRef.current = null;
+        } catch (err) {
+            console.error('Delete error:', err);
+        }
     };
 
     const submitFile = useCallback(async () => {
@@ -97,32 +117,12 @@ export const useUploadFile = ({ onChange, folder, entityId, onUploadedFile }: IU
             setPublicUrl(newPublicUrl);
             onChange?.(newPublicUrl);
             console.log('передаём в onUploadedFile:', { submitFile, deleteFile });
-            onUploadedFile?.(file, presignedUrl, submitFile, deleteFile);
+            onUploadedFile?.(submitFile, deleteFile);
         } catch (err) {
             setError('Failed to prepare upload');
             console.error(err);
         } finally {
             setIsUploading(false);
-        }
-    };
-
-    const deleteFile = async (fileUrl: string) => {
-        const key = new URL(fileUrl).pathname.replace(/^\/[^\/]+\//, '');
-
-        try {
-            await deleteFileMutation({ variables: { fileKey: key } });
-
-            // очищаем всё состояние
-            if (previewObjectUrlRef.current) {
-                URL.revokeObjectURL(previewObjectUrlRef.current);
-                previewObjectUrlRef.current = null;
-            }
-            setPublicUrl(null);
-            setPreviewUrl(null);
-            presignUrlRef.current = null;
-            uploadedFileRef.current = null;
-        } catch (err) {
-            console.error('Delete error:', err);
         }
     };
 
