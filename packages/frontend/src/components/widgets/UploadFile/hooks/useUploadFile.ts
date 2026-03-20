@@ -73,7 +73,9 @@ export const useUploadFile = ({ onChange, folder, onUploadedFile }: UploadFilePr
         const file = uploadedFileRef.current;
         const preUrl = presignUrlRef.current;
 
-        if (!file || !preUrl) return;
+        if (!file || !preUrl) {
+            throw new Error('No file or presigned URL to upload');
+        }
 
         const response = await fetch(preUrl, {
             method: 'PUT',
@@ -115,7 +117,6 @@ export const useUploadFile = ({ onChange, folder, onUploadedFile }: UploadFilePr
 
             setPublicUrl(newPublicUrl);
             onChange?.(newPublicUrl);
-            console.log('передаём в onUploadedFile:', { submitFile, deleteFile });
             onUploadedFile?.(submitFile, deleteFile);
         } catch (err) {
             setError('Failed to prepare upload');

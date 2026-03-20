@@ -25,13 +25,11 @@ export const EventForm: FC<EventFormProps> = ({ eventData }) => {
     const submitFileRef = useRef<(() => Promise<void>) | null>(null);
     const deleteFileRef = useRef<((url: string) => Promise<void>) | null>(null);
 
-    const { control, handleSubmit, onSubmitData, onSubmitEditData } = useEventForm({
+    const { control, handleSubmit, onSubmit } = useEventForm({
         eventData,
         submitFileRef,
         deleteFileRef,
     });
-
-    const onSubmit = eventData ? onSubmitEditData : onSubmitData;
 
     return (
         <div className={classes.container}>
@@ -41,10 +39,13 @@ export const EventForm: FC<EventFormProps> = ({ eventData }) => {
                         <Controller
                             name="name"
                             control={control}
-                            defaultValue={eventData?.name as string}
                             render={({ field }) => (
                                 <Label label={'Название'}>
-                                    <Input {...field} onChange={field.onChange} />
+                                    <Input
+                                        {...field}
+                                        defaultValue={eventData?.name as string}
+                                        onChange={field.onChange}
+                                    />
                                 </Label>
                             )}
                         />
@@ -77,12 +78,10 @@ export const EventForm: FC<EventFormProps> = ({ eventData }) => {
                         <Controller
                             name="description"
                             control={control}
-                            defaultValue={eventData?.description}
                             render={({ field }) => (
                                 <Label label={'Описание'}>
                                     <Textarea
-                                        {...field}
-                                        value={field.value as string}
+                                        defaultValue={eventData?.description as string}
                                         onChange={field.onChange}
                                     />
                                 </Label>
