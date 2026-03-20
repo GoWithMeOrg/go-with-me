@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, useRef } from 'react';
+import { FC, useRef, useState } from 'react';
 import { Controller } from 'react-hook-form';
 import { Privacy } from '@/app/graphql/types';
 import { Button } from '@/components/shared/Button';

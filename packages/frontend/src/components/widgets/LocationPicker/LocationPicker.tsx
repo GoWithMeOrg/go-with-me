@@ -3,11 +3,11 @@
 import Marker from '@/assets/icons/marker.svg';
 import { Button } from '@/components/shared/Button';
 import { Popup } from '@/components/shared/Popup';
-import { CustomMapControl, Geolocation, MapHandler } from '@/components/widgets/GoogleMap';
-import Autocomplete from '@/components/widgets/GoogleMap/Autocomplete';
-import { optionsFullAdress } from '@/components/widgets/GoogleMap/OptionsAutocomplete';
+import { CustomMapControl, MapHandler } from '@/components/widgets/GoogleMap';
 import { AdvancedMarker, ControlPosition, Map, Pin } from '@vis.gl/react-google-maps';
 
+import { Autocomplete } from '../Autocomlete/Autocomplete';
+import AutocompleteResult from './AutocompleteResult';
 import { useLocationPicker } from './hooks/useLocationPicker';
 
 import classes from './LocationPicker.module.css';
@@ -15,33 +15,27 @@ import classes from './LocationPicker.module.css';
 interface LocationPickerProps {
     locationEvent?: {
         coordinates: [number, number];
-        properties: {
-            address: string;
-        };
+        properties: { address: string };
     };
-
-    onPlaceChange?: (selectedPlace: google.maps.places.PlaceResult | null) => void;
+    onPlaceChange?: (selectedPlace: google.maps.places.Place | null) => void;
     onChange?: (location: {
         coordinates: [number, number];
-        properties: {
-            address: string;
-        };
+        properties: { address: string };
     }) => void;
 }
 
 export const LocationPicker = (props: LocationPickerProps) => {
     const {
-        apiIsLoaded,
-        mapAPI,
         showPopup,
         container,
         popupCss,
         refPopup,
         markerPosition,
         selectedPlace,
+        setSelectedPlace,
         handleMapButtonClick,
         handleMapClick,
-        handlePlaceSelect,
+        handlePlaceSelect, // ← теперь async, обёртка в Autocomplete не нужна
         handleHidePopup,
     } = useLocationPicker(props);
 
@@ -59,16 +53,7 @@ export const LocationPicker = (props: LocationPickerProps) => {
                 </Button>
             </div>
 
-            <Autocomplete
-                className={classes.fieldInput}
-                onPlaceSelect={handlePlaceSelect}
-                address={
-                    selectedPlace !== null
-                        ? selectedPlace.formatted_address
-                        : props.locationEvent?.properties?.address
-                }
-                options={optionsFullAdress}
-            />
+            <Autocomplete onPlaceSelect={handlePlaceSelect} />
 
             <Popup
                 showPopup={showPopup}
@@ -85,33 +70,24 @@ export const LocationPicker = (props: LocationPickerProps) => {
                     mapId={'<Your custom MapId here>'}
                     onClick={handleMapClick}
                 >
-                    <AdvancedMarker
-                        position={markerPosition}
-                        title={'AdvancedMarker with customized pin.'}
-                    >
+                    <AdvancedMarker position={markerPosition} title={'Выбранное место'}>
                         <Pin
                             background={'#FBBC04'}
                             borderColor={'#1e89a1'}
                             glyphColor={'#0f677a'}
-                        ></Pin>
-                    </AdvancedMarker>
-                    <CustomMapControl controlPosition={ControlPosition.TOP}>
-                        <Autocomplete
-                            onPlaceSelect={handlePlaceSelect}
-                            className={classes.inputFindMap}
-                            address={
-                                selectedPlace !== null
-                                    ? selectedPlace.formatted_address
-                                    : props.locationEvent?.properties?.address
-                            }
-                            options={optionsFullAdress}
                         />
+                    </AdvancedMarker>
+
+                    <CustomMapControl controlPosition={ControlPosition.TOP}>
+                        <Autocomplete onPlaceSelect={handlePlaceSelect} />
                     </CustomMapControl>
+
                     <MapHandler place={selectedPlace} />
+                    <AutocompleteResult place={selectedPlace} />
                 </Map>
+
                 <div className={classes.buttonBlockMap}>
-                    <Geolocation />
-                    <Button className={classes.buttonMap} onClick={handleHidePopup}></Button>
+                    <Button className={classes.buttonMap} onClick={handleHidePopup} />
                 </div>
             </Popup>
         </div>

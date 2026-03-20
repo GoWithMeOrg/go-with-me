@@ -1,4 +1,4 @@
-export { Autocomplete } from './Autocomplete';
+export { Autocomplete } from './Autocomplete_old';
 export { CustomMapControl } from './CustomMapControl';
 export { Directions } from './Directions';
 export { Geocoding } from './Geocoding';

@@ -11,7 +11,7 @@ export interface LocationData {
 
 export interface UseLocationPickerProps {
     locationEvent?: LocationData;
-    onPlaceChange?: (selectedPlace: google.maps.places.PlaceResult | null) => void;
+    onPlaceChange?: (selectedPlace: google.maps.places.Place | null) => void;
     onChange?: (location: LocationData) => void;
 }
 
@@ -24,10 +24,11 @@ export interface UseLocationPickerReturn {
     popupCss: any;
     refPopup: any;
     markerPosition: google.maps.LatLngLiteral | null;
-    selectedPlace: google.maps.places.PlaceResult | null;
+    selectedPlace: google.maps.places.Place | null;
+    setSelectedPlace: (place: google.maps.places.Place | null) => void;
     handleMapButtonClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
     handleMapClick: (e: { detail: { latLng: google.maps.LatLngLiteral | null } }) => void;
-    handlePlaceSelect: (selectedPlace: google.maps.places.PlaceResult | null) => void;
+    handlePlaceSelect: (selectedPlace: google.maps.places.Place | null) => void;
     handleShowPopup: () => void;
     handleHidePopup: () => void;
     setShowPopup: (show: boolean) => void;
@@ -35,7 +36,7 @@ export interface UseLocationPickerReturn {
 
 const popupMode: 'map' = 'map';
 
-export const useLocationPicker = (props: UseLocationPickerProps): UseLocationPickerReturn => {
+export const useLocationPicker = (props: UseLocationPickerProps) => {
     const apiIsLoaded = useApiIsLoaded();
     const geocoding = useMapsLibrary('geocoding');
     const mapAPI = useContext(APIProviderContext);
@@ -55,24 +56,24 @@ export const useLocationPicker = (props: UseLocationPickerProps): UseLocationPic
     const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(
         props.locationEvent?.coordinates !== undefined
             ? {
-                  lat: props.locationEvent.coordinates[1],
                   lng: props.locationEvent.coordinates[0],
+                  lat: props.locationEvent.coordinates[1],
               }
             : null
     );
 
-    const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
-    const prevSelectedPlaceRef = useRef<google.maps.places.PlaceResult | null>(selectedPlace);
+    const [selectedPlace, setSelectedPlace] = useState<google.maps.places.Place | null>(null);
+    const prevSelectedPlaceRef = useRef<google.maps.places.Place | null>(selectedPlace);
 
     useEffect(() => {
         if (prevSelectedPlaceRef.current !== selectedPlace && props.onChange) {
-            const newPlace: LocationData = {
+            const newPlace = {
                 coordinates: [
-                    selectedPlace?.geometry?.location?.lng() ?? 0,
-                    selectedPlace?.geometry?.location?.lat() ?? 0,
-                ],
+                    selectedPlace?.location?.lng() ?? 0,
+                    selectedPlace?.location?.lat() ?? 0,
+                ] as [number, number],
                 properties: {
-                    address: selectedPlace?.formatted_address ?? '',
+                    address: selectedPlace?.formattedAddress ?? '',
                 },
             };
 
@@ -98,12 +99,19 @@ export const useLocationPicker = (props: UseLocationPickerProps): UseLocationPic
             const pos = e.detail.latLng as google.maps.LatLngLiteral;
             geocoder.geocode({ location: pos }, (results, status) => {
                 if (status === 'OK' && results !== null) {
-                    const newPlace = results[0];
+                    const geocoderResult = results[0];
+                    const newPlace = {
+                        geometry: {
+                            location: geocoderResult.geometry?.location,
+                        },
+                        formattedAddress: geocoderResult.formatted_address,
+                        addressComponents: geocoderResult.address_components,
+                    } as unknown as google.maps.places.Place;
                     setSelectedPlace(newPlace);
-                    if (newPlace.geometry?.location) {
+                    if (geocoderResult.geometry?.location) {
                         setMarkerPosition({
-                            lat: newPlace.geometry.location.lat(),
-                            lng: newPlace.geometry.location.lng(),
+                            lat: geocoderResult.geometry.location.lat(),
+                            lng: geocoderResult.geometry.location.lng(),
                         });
                     }
                 }
@@ -112,18 +120,15 @@ export const useLocationPicker = (props: UseLocationPickerProps): UseLocationPic
         [geocoding]
     );
 
-    const handlePlaceSelect = useCallback(
-        (selectedPlace: google.maps.places.PlaceResult | null) => {
-            setSelectedPlace(selectedPlace);
-            if (selectedPlace?.geometry?.location) {
-                setMarkerPosition({
-                    lat: selectedPlace.geometry.location.lat(),
-                    lng: selectedPlace.geometry.location.lng(),
-                });
-            }
-        },
-        []
-    );
+    const handlePlaceSelect = useCallback((selectedPlace: google.maps.places.Place | null) => {
+        setSelectedPlace(selectedPlace);
+        if (selectedPlace?.location) {
+            setMarkerPosition({
+                lat: selectedPlace.location.lat(),
+                lng: selectedPlace.location.lng(),
+            });
+        }
+    }, []);
 
     return {
         apiIsLoaded,
@@ -135,6 +140,7 @@ export const useLocationPicker = (props: UseLocationPickerProps): UseLocationPic
         refPopup,
         markerPosition,
         selectedPlace,
+        setSelectedPlace,
         handleMapButtonClick,
         handleMapClick,
         handlePlaceSelect,
