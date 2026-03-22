@@ -32,11 +32,11 @@ export const LocationPicker = (props: LocationPickerProps) => {
         refPopup,
         markerPosition,
         selectedPlace,
-        setSelectedPlace,
         handleMapButtonClick,
         handleMapClick,
-        handlePlaceSelect, // ← теперь async, обёртка в Autocomplete не нужна
+        handlePlaceSelect,
         handleHidePopup,
+        autocompleteValue,
     } = useLocationPicker(props);
 
     return (
@@ -53,7 +53,7 @@ export const LocationPicker = (props: LocationPickerProps) => {
                 </Button>
             </div>
 
-            <Autocomplete onPlaceSelect={handlePlaceSelect} />
+            <Autocomplete value={autocompleteValue} onPlaceSelect={handlePlaceSelect} />
 
             <Popup
                 showPopup={showPopup}
@@ -64,7 +64,7 @@ export const LocationPicker = (props: LocationPickerProps) => {
                 <Map
                     style={{ height: '600px' }}
                     defaultZoom={markerPosition ? 15 : 3}
-                    defaultCenter={markerPosition || { lat: 22.54992, lng: 0 }}
+                    defaultCenter={markerPosition ?? { lat: 22.54992, lng: 0 }}
                     gestureHandling={'greedy'}
                     disableDefaultUI={false}
                     mapId={'<Your custom MapId here>'}
@@ -79,10 +79,9 @@ export const LocationPicker = (props: LocationPickerProps) => {
                     </AdvancedMarker>
 
                     <CustomMapControl controlPosition={ControlPosition.TOP}>
-                        <Autocomplete onPlaceSelect={handlePlaceSelect} />
+                        <Autocomplete value={autocompleteValue} onPlaceSelect={handlePlaceSelect} />
                     </CustomMapControl>
 
-                    <MapHandler place={selectedPlace} />
                     <AutocompleteResult place={selectedPlace} />
                 </Map>
 

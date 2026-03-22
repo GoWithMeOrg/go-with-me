@@ -5,8 +5,9 @@ import { AutocompleteProps } from './interfaces/Autocomplete.interface';
 
 import classes from '@/components/widgets/Autocomlete/Autocomlete.module.css';
 
-export const Autocomplete = ({ onPlaceSelect }: AutocompleteProps) => {
+export const Autocomplete = ({ value, onPlaceSelect }: AutocompleteProps) => {
     const { inputValue, suggestions, handleInput, handleSuggestionClick } = useAutocomplete({
+        value,
         onPlaceSelect,
     });
 

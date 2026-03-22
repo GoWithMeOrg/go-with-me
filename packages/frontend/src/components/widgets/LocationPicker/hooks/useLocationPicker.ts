@@ -15,31 +15,19 @@ export interface UseLocationPickerProps {
     onChange?: (location: LocationData) => void;
 }
 
-export interface UseLocationPickerReturn {
-    apiIsLoaded: boolean;
-    mapAPI: any;
-    geocoding: any;
-    showPopup: boolean;
-    container: any;
-    popupCss: any;
-    refPopup: any;
-    markerPosition: google.maps.LatLngLiteral | null;
-    selectedPlace: google.maps.places.Place | null;
-    setSelectedPlace: (place: google.maps.places.Place | null) => void;
-    handleMapButtonClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
-    handleMapClick: (e: { detail: { latLng: google.maps.LatLngLiteral | null } }) => void;
-    handlePlaceSelect: (selectedPlace: google.maps.places.Place | null) => void;
-    handleShowPopup: () => void;
-    handleHidePopup: () => void;
-    setShowPopup: (show: boolean) => void;
-}
+const PLACE_FIELDS: string[] = ['location', 'formattedAddress', 'addressComponents', 'displayName'];
 
 const popupMode: 'map' = 'map';
 
 export const useLocationPicker = (props: UseLocationPickerProps) => {
     const apiIsLoaded = useApiIsLoaded();
     const geocoding = useMapsLibrary('geocoding');
+    const places = useMapsLibrary('places');
     const mapAPI = useContext(APIProviderContext);
+
+    const [displayValue, setDisplayValue] = useState<string>(
+        props.locationEvent?.properties.address ?? ''
+    );
 
     const {
         showPopup,
@@ -49,9 +37,7 @@ export const useLocationPicker = (props: UseLocationPickerProps) => {
         container,
         popupCss,
         refPopup,
-    } = usePopup({
-        popupMode,
-    });
+    } = usePopup({ popupMode });
 
     const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(
         props.locationEvent?.coordinates !== undefined
@@ -63,23 +49,23 @@ export const useLocationPicker = (props: UseLocationPickerProps) => {
     );
 
     const [selectedPlace, setSelectedPlace] = useState<google.maps.places.Place | null>(null);
-    const prevSelectedPlaceRef = useRef<google.maps.places.Place | null>(selectedPlace);
+    const autocompleteValue = selectedPlace?.formattedAddress;
+    console.log(selectedPlace?.formattedAddress);
+    const prevSelectedPlaceRef = useRef<google.maps.places.Place | null>(null);
 
     useEffect(() => {
-        if (prevSelectedPlaceRef.current !== selectedPlace && props.onChange) {
-            const newPlace = {
-                coordinates: [
-                    selectedPlace?.location?.lng() ?? 0,
-                    selectedPlace?.location?.lat() ?? 0,
-                ] as [number, number],
-                properties: {
-                    address: selectedPlace?.formattedAddress ?? '',
-                },
-            };
+        if (prevSelectedPlaceRef.current === selectedPlace || !props.onChange) return;
 
-            props.onChange(newPlace);
-            prevSelectedPlaceRef.current = selectedPlace;
-        }
+        const location = selectedPlace?.location;
+
+        props.onChange({
+            coordinates: [location?.lng() ?? 0, location?.lat() ?? 0],
+            properties: {
+                address: selectedPlace?.formattedAddress ?? '',
+            },
+        });
+
+        prevSelectedPlaceRef.current = selectedPlace;
     }, [selectedPlace, props]);
 
     const handleMapButtonClick = useCallback(
@@ -90,62 +76,134 @@ export const useLocationPicker = (props: UseLocationPickerProps) => {
         [handleShowPopup]
     );
 
-    const handleMapClick = useCallback(
-        (e: { detail: { latLng: google.maps.LatLngLiteral | null } }) => {
-            setMarkerPosition(e.detail.latLng);
+    // const handleMapClick = useCallback(
+    //     async (e: { detail: { latLng: google.maps.LatLngLiteral | null } }) => {
+    //         const latLng = e.detail.latLng;
+    //         if (!latLng || !geocoding || !places) return;
 
-            if (!geocoding) return;
+    //         setMarkerPosition(latLng);
+
+    //         const geocoder = new geocoding.Geocoder();
+    //         const { results } = await geocoder.geocode({ location: latLng });
+    //         const topResult = results?.[0];
+
+    //         if (!topResult?.place_id) return;
+
+    //         const place = new places.Place({ id: topResult.place_id });
+    //         await place.fetchFields({ fields: PLACE_FIELDS });
+
+    //         setSelectedPlace(place);
+
+    //         if (place.location) {
+    //             setMarkerPosition({
+    //                 lat: place.location.lat(),
+    //                 lng: place.location.lng(),
+    //             });
+    //         }
+    //     },
+    //     [geocoding, places]
+    // );
+
+    // const handlePlaceSelect = useCallback(
+    //     async (place: google.maps.places.Place | null) => {
+    //         if (!place) {
+    //             setSelectedPlace(null);
+    //             return;
+    //         }
+
+    //         if (!place.formattedAddress && places) {
+    //             await place.fetchFields({ fields: PLACE_FIELDS });
+    //         }
+
+    //         setSelectedPlace(place);
+
+    //         if (place.location) {
+    //             setMarkerPosition({
+    //                 lat: place.location.lat(),
+    //                 lng: place.location.lng(),
+    //             });
+    //         }
+    //     },
+    //     [places]
+    // );
+
+    const handleMapClick = useCallback(
+        async (e: { detail: { latLng: google.maps.LatLngLiteral | null } }) => {
+            const latLng = e.detail.latLng;
+            if (!latLng || !geocoding || !places) return;
+
+            setMarkerPosition(latLng);
+
             const geocoder = new geocoding.Geocoder();
-            const pos = e.detail.latLng as google.maps.LatLngLiteral;
-            geocoder.geocode({ location: pos }, (results, status) => {
-                if (status === 'OK' && results !== null) {
-                    const geocoderResult = results[0];
-                    const newPlace = {
-                        geometry: {
-                            location: geocoderResult.geometry?.location,
-                        },
-                        formattedAddress: geocoderResult.formatted_address,
-                        addressComponents: geocoderResult.address_components,
-                    } as unknown as google.maps.places.Place;
-                    setSelectedPlace(newPlace);
-                    if (geocoderResult.geometry?.location) {
-                        setMarkerPosition({
-                            lat: geocoderResult.geometry.location.lat(),
-                            lng: geocoderResult.geometry.location.lng(),
-                        });
-                    }
-                }
-            });
+            const { results } = await geocoder.geocode({ location: latLng });
+            const topResult = results?.[0];
+
+            if (!topResult?.place_id) return;
+
+            // Мгновенно — геокодер уже вернул адрес
+            setDisplayValue(topResult.formatted_address);
+
+            // fetchFields в фоне — для полного объекта Place
+            const place = new places.Place({ id: topResult.place_id });
+            await place.fetchFields({ fields: PLACE_FIELDS });
+            setSelectedPlace(place);
+
+            if (place.location) {
+                setMarkerPosition({
+                    lat: place.location.lat(),
+                    lng: place.location.lng(),
+                });
+            }
         },
-        [geocoding]
+        [geocoding, places]
     );
 
-    const handlePlaceSelect = useCallback((selectedPlace: google.maps.places.Place | null) => {
-        setSelectedPlace(selectedPlace);
-        if (selectedPlace?.location) {
-            setMarkerPosition({
-                lat: selectedPlace.location.lat(),
-                lng: selectedPlace.location.lng(),
-            });
-        }
-    }, []);
+    const handlePlaceSelect = useCallback(
+        async (place: google.maps.places.Place | null) => {
+            if (!place) {
+                setSelectedPlace(null);
+                setDisplayValue('');
+                return;
+            }
+
+            if (!place.formattedAddress && places) {
+                await place.fetchFields({ fields: PLACE_FIELDS });
+            }
+
+            // Autocomplete сам уже показал адрес в инпуте при выборе,
+            // displayValue синхронизируем для второго инпута
+            setDisplayValue(place.formattedAddress ?? '');
+            setSelectedPlace(place);
+
+            if (place.location) {
+                setMarkerPosition({
+                    lat: place.location.lat(),
+                    lng: place.location.lng(),
+                });
+            }
+        },
+        [places]
+    );
 
     return {
         apiIsLoaded,
         mapAPI,
         geocoding,
         showPopup,
+        setShowPopup,
         container,
         popupCss,
         refPopup,
         markerPosition,
         selectedPlace,
+        autocompleteValue,
         setSelectedPlace,
         handleMapButtonClick,
         handleMapClick,
         handlePlaceSelect,
         handleShowPopup,
         handleHidePopup,
-        setShowPopup,
+
+        displayValue,
     };
 };

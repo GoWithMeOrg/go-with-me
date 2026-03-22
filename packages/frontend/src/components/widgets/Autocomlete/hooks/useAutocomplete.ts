@@ -3,19 +3,18 @@ import { useAutocompleteSuggestions } from '@/components/widgets/Autocomlete/hoo
 import { useMapsLibrary } from '@vis.gl/react-google-maps';
 
 interface useAutocompleteProps {
+    value?: string;
     onPlaceSelect: (place: google.maps.places.Place | null) => void;
 }
 
-export const useAutocomplete = ({ onPlaceSelect }: useAutocompleteProps) => {
+export const useAutocomplete = ({ value, onPlaceSelect }: useAutocompleteProps) => {
     const places = useMapsLibrary('places');
-    const [inputValue, setInputValue] = useState<string>('');
+    const [inputValue, setInputValue] = useState<string>(value ?? '');
     const [isUserTyping, setIsUserTyping] = useState(false);
     const { suggestions, resetSession } = useAutocompleteSuggestions(inputValue, isUserTyping);
 
-    // Reset isUserTyping after input stops changing
     const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-    // Cleanup timeout on unmount
     useEffect(() => {
         return () => {
             if (typingTimeoutRef.current) {
@@ -23,6 +22,16 @@ export const useAutocomplete = ({ onPlaceSelect }: useAutocompleteProps) => {
             }
         };
     }, []);
+
+    const prevValueRef = useRef<string | null | undefined>(undefined);
+
+    useEffect(() => {
+        if (value === prevValueRef.current) return;
+        prevValueRef.current = value;
+
+        setInputValue(value ?? '');
+        resetSession();
+    }, [value]);
 
     const handleInput = useCallback((event: FormEvent<HTMLInputElement>) => {
         setIsUserTyping(true);
