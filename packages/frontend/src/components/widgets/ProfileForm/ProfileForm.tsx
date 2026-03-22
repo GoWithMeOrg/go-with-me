@@ -9,8 +9,8 @@ import { Input } from '@/components/shared/Input';
 import { Label } from '@/components/shared/Label';
 import { Textarea } from '@/components/shared/Textarea';
 import { CreateTag } from '@/components/widgets/CreateTag';
-import { Autocomplete } from '@/components/widgets/GoogleMap';
 import { optionsFullAdress } from '@/components/widgets/GoogleMap/OptionsAutocomplete';
+import { Autocomplete } from '@/components/widgets/MapComponents/Autocomplete/Autocomplete';
 import { useProfileForm } from '@/components/widgets/ProfileForm/hooks/useProfileForm';
 import { SelectItems } from '@/components/widgets/SelectItems';
 import { UploadFile } from '@/components/widgets/UploadFile';
@@ -93,10 +93,8 @@ export const ProfileForm: FC = () => {
                             render={({ field }) => (
                                 <Label label={'Локация'}>
                                     <Autocomplete
-                                        className={classes.location}
                                         onPlaceSelect={field.onChange}
-                                        address={location?.properties?.address as string}
-                                        options={optionsFullAdress}
+                                        value={location?.properties?.address as string}
                                     />
                                 </Label>
                             )}

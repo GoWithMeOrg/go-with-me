@@ -1,11 +1,9 @@
 import React, { useEffect } from 'react';
-import { AdvancedMarker, Pin, useMap } from '@vis.gl/react-google-maps';
+import { useMap } from '@vis.gl/react-google-maps';
 
-interface Props {
-    place: google.maps.places.Place | null;
-}
+import { AutocompleteResultProps } from './interfaces/AutocompleteResultProps';
 
-const AutocompleteResult = ({ place }: Props) => {
+const AutocompleteResult = ({ place }: AutocompleteResultProps) => {
     const map = useMap();
 
     useEffect(() => {

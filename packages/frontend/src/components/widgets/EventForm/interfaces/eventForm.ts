@@ -1,10 +1,6 @@
 import { RefObject } from 'react';
-import type {
-    Event,
-    LocationGeometryInput,
-    LocationPropertiesInput,
-    Privacy,
-} from '@/app/graphql/types';
+import type { Event, Privacy } from '@/app/graphql/types';
+import { LocationType } from '@/components/widgets/MapComponents/types/types';
 
 export type EventFormData = {
     name: string;
@@ -14,10 +10,7 @@ export type EventFormData = {
     endDate?: string;
     time?: string | null;
     image?: string | null;
-    location?: {
-        geometry: LocationGeometryInput;
-        properties: LocationPropertiesInput;
-    } | null;
+    location?: LocationType | null;
     category?: string[];
     interest?: string[];
     tag?: string[];

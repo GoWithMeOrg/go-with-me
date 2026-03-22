@@ -9,7 +9,7 @@ import {
 import { useMutation } from '@apollo/client/react';
 import { useRouter } from 'next/navigation';
 
-import { EventFormData, UseEventFormProps } from '../eventForm.interfaces';
+import { EventFormData, UseEventFormProps } from '../interfaces/eventForm';
 
 // Формирует общие данные для мутаций создания и обновления события
 const buildEventInput = (data: EventFormData) => ({

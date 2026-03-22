@@ -3,7 +3,7 @@ import { Input } from '@/components/shared/Input';
 import { useAutocomplete } from './hooks/useAutocomplete';
 import { AutocompleteProps } from './interfaces/Autocomplete.interface';
 
-import classes from '@/components/widgets/Autocomlete/Autocomlete.module.css';
+import classes from '@/components/widgets/MapComponents/Autocomplete/Autocomlete.module.css';
 
 export const Autocomplete = ({ value, onPlaceSelect }: AutocompleteProps) => {
     const { inputValue, suggestions, handleInput, handleSuggestionClick } = useAutocomplete({

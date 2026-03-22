@@ -4,21 +4,17 @@ import { FC } from 'react';
 import Marker from '@/assets/icons/marker.svg';
 import { Button } from '@/components/shared/Button';
 import { Popup } from '@/components/shared/Popup';
+import { Autocomplete } from '@/components/widgets/MapComponents/Autocomplete/Autocomplete';
+import AutocompleteControl from '@/components/widgets/MapComponents/AutocompleteControl/AutocompleteControl';
+import AutocompleteResult from '@/components/widgets/MapComponents/AutocompleteResult/AutocompleteResult';
 import { AdvancedMarker, ControlPosition, Map } from '@vis.gl/react-google-maps';
 
-import { Autocomplete } from '../Autocomlete/Autocomplete';
-import AutocompleteControl from './AutocompleteControl';
-import AutocompleteResult from './AutocompleteResult';
-import { LocationData, useLocationPicker } from './hooks/useLocationPicker';
+import { useLocationPicker } from './hooks/useLocationPicker';
+import { LocationPickerProps } from './interfaces/LocationPickerProps';
 
 import classes from './LocationPicker.module.css';
 
-interface LocationPickerProps {
-    locationEvent?: LocationData;
-    onChange?: (location: LocationData) => void;
-}
-
-export const LocationPicker: FC<LocationPickerProps> = (props: LocationPickerProps) => {
+export const LocationPicker: FC<LocationPickerProps> = ({ locationData, onChange }) => {
     const {
         showPopup,
         container,
@@ -31,7 +27,7 @@ export const LocationPicker: FC<LocationPickerProps> = (props: LocationPickerPro
         handleHidePopup,
         autocompleteValue,
         markerPosition,
-    } = useLocationPicker(props);
+    } = useLocationPicker({ locationData, onChange });
 
     return (
         <div className={classes.locationForm}>
@@ -47,7 +43,10 @@ export const LocationPicker: FC<LocationPickerProps> = (props: LocationPickerPro
                 </Button>
             </div>
 
-            <Autocomplete value={autocompleteValue as string} onPlaceSelect={handlePlaceSelect} />
+            <Autocomplete
+                value={autocompleteValue || (locationData?.properties.address as string)}
+                onPlaceSelect={handlePlaceSelect}
+            />
 
             <Popup
                 showPopup={showPopup}
@@ -66,7 +65,9 @@ export const LocationPicker: FC<LocationPickerProps> = (props: LocationPickerPro
                 >
                     <AutocompleteControl controlPosition={ControlPosition.TOP_CENTER}>
                         <Autocomplete
-                            value={autocompleteValue as string}
+                            value={
+                                autocompleteValue || (locationData?.properties.address as string)
+                            }
                             onPlaceSelect={handlePlaceSelect}
                         />
                     </AutocompleteControl>

@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { Autocomplete } from '@/components/widgets/GoogleMap';
+import { Autocomplete } from '@/components/widgets/MapComponents/Autocomplete/Autocomplete';
 import { MAP_CONSTANTS } from '@/constants/map';
 import {
     APIProviderContext,

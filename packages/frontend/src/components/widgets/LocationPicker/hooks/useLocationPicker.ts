@@ -1,42 +1,29 @@
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { usePopup } from '@/components/shared/Popup/hooks';
+import { UseLocationPickerProps } from '@/components/widgets/LocationPicker/interfaces/UseLocationPickerProps';
 import { APIProviderContext, useApiIsLoaded, useMapsLibrary } from '@vis.gl/react-google-maps';
-
-export interface LocationData {
-    geometry: {
-        coordinates: [number, number];
-    };
-    properties: {
-        address: string;
-    };
-}
-
-export interface UseLocationPickerProps {
-    locationEvent?: LocationData;
-    onChange?: (location: LocationData) => void;
-}
 
 const PLACE_FIELDS: string[] = ['location', 'formattedAddress', 'addressComponents', 'displayName'];
 
 const popupMode: 'map' = 'map';
 
-export const useLocationPicker = (props: UseLocationPickerProps) => {
+export const useLocationPicker = ({ locationData, onChange }: UseLocationPickerProps) => {
     const apiIsLoaded = useApiIsLoaded();
     const geocoding = useMapsLibrary('geocoding');
     const places = useMapsLibrary('places');
     const mapAPI = useContext(APIProviderContext);
 
     const [displayValue, setDisplayValue] = useState<string>(
-        props.locationEvent?.properties.address ?? ''
+        locationData?.properties.address ?? ''
     );
 
     const [selectedPlace, setSelectedPlace] = useState<google.maps.places.Place | null>(null);
 
     const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(
-        props.locationEvent?.geometry !== undefined
+        locationData?.geometry !== undefined
             ? {
-                  lng: props.locationEvent.geometry.coordinates[0],
-                  lat: props.locationEvent.geometry.coordinates[1],
+                  lng: locationData.geometry.coordinates[0],
+                  lat: locationData.geometry.coordinates[1],
               }
             : null
     );
@@ -55,9 +42,9 @@ export const useLocationPicker = (props: UseLocationPickerProps) => {
 
     const prevSelectedPlaceRef = useRef<google.maps.places.Place | null>(null);
 
-    const onPlaceChangeRef = useRef(props.onChange);
+    const onPlaceChangeRef = useRef(onChange);
     useEffect(() => {
-        onPlaceChangeRef.current = props.onChange;
+        onPlaceChangeRef.current = onChange;
     });
 
     useEffect(() => {

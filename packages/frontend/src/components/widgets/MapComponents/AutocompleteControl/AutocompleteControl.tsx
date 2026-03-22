@@ -1,12 +1,8 @@
 import React from 'react';
-import { ControlPosition, MapControl } from '@vis.gl/react-google-maps';
+import { CustomAutocompleteControlProps } from '@/components/widgets/MapComponents/AutocompleteControl/types/CustomAutocompleteControlProps';
+import { MapControl } from '@vis.gl/react-google-maps';
 
 import classes from '@/components/widgets/LocationPicker/LocationPicker.module.css';
-
-type CustomAutocompleteControlProps = {
-    controlPosition: ControlPosition;
-    children: React.ReactNode;
-};
 
 const AutocompleteControl = ({ controlPosition, children }: CustomAutocompleteControlProps) => {
     return (

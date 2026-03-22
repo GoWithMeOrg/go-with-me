@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, useRef, useState } from 'react';
+import { FC, useRef } from 'react';
 import { Controller } from 'react-hook-form';
 import { Privacy } from '@/app/graphql/types';
 import { Button } from '@/components/shared/Button';
@@ -10,9 +10,10 @@ import { Label } from '@/components/shared/Label';
 import { Textarea } from '@/components/shared/Textarea';
 import { CreateTag } from '@/components/widgets/CreateTag';
 import { Date } from '@/components/widgets/Date';
-import { EventFormProps } from '@/components/widgets/EventForm/eventForm.interfaces';
 import { useEventForm } from '@/components/widgets/EventForm/hooks/useEventForm';
+import { EventFormProps } from '@/components/widgets/EventForm/interfaces/eventForm';
 import { LocationPicker } from '@/components/widgets/LocationPicker';
+import { LocationType } from '@/components/widgets/MapComponents/types/types';
 import { PrivacySelector } from '@/components/widgets/PrivacySelector';
 import { SelectItems } from '@/components/widgets/SelectItems';
 import { Time } from '@/components/widgets/Time';
@@ -59,7 +60,7 @@ export const EventForm: FC<EventFormProps> = ({ eventData }) => {
                             defaultValue={eventData?.location}
                             render={({ field }) => (
                                 <LocationPicker
-                                    locationEvent={eventData?.location}
+                                    locationData={eventData?.location as LocationType}
                                     onChange={field.onChange}
                                 />
                             )}
