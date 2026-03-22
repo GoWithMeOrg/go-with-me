@@ -8,7 +8,7 @@ export function useAutocompleteSuggestions(
     isUserTyping: boolean,
     requestOptions: Partial<google.maps.places.AutocompleteRequest> = {}
 ): UseAutocompleteSuggestionsReturn {
-    const placesLib = useMapsLibrary('places');
+    const places = useMapsLibrary('places');
 
     const sessionTokenRef = useRef<google.maps.places.AutocompleteSessionToken | null>(null);
     const isPlaceSelectedRef = useRef(false);
@@ -17,7 +17,7 @@ export function useAutocompleteSuggestions(
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        if (!placesLib) return;
+        if (!places) return;
 
         if (isUserTyping) {
             isPlaceSelectedRef.current = false;
@@ -25,7 +25,7 @@ export function useAutocompleteSuggestions(
 
         if (isPlaceSelectedRef.current) return;
 
-        const { AutocompleteSessionToken, AutocompleteSuggestion } = placesLib;
+        const { AutocompleteSessionToken, AutocompleteSuggestion } = places;
 
         if (!sessionTokenRef.current) {
             sessionTokenRef.current = new AutocompleteSessionToken();
@@ -57,7 +57,7 @@ export function useAutocompleteSuggestions(
         return () => {
             cancelled = true;
         };
-    }, [placesLib, inputString, isUserTyping, requestOptions]);
+    }, [places, inputString, isUserTyping, requestOptions]);
 
     const resetSession = useCallback(() => {
         sessionTokenRef.current = null;

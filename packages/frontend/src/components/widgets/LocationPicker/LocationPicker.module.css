@@ -111,3 +111,7 @@
 .buttonMap:hover::after {
     background-color: var(--hover-color);
 }
+
+.autocompleteControl {
+    margin-top: 10px;
+}

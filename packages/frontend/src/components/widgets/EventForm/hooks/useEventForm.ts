@@ -25,6 +25,7 @@ const buildEventInput = (data: EventFormData) => ({
 // Формирует дополнительные поля (location, category, interest, tag) для мутаций
 const buildAdditionalFields = (data: EventFormData) => {
     const fields: Partial<CreateEventMutationVariables> = {};
+    console.log('входные данные', data);
 
     if (data.location?.geometry?.coordinates && data.location.properties?.address) {
         fields.createLocationInput = {
@@ -45,6 +46,7 @@ const buildAdditionalFields = (data: EventFormData) => {
         fields.createTagInput = { tags: data.tag };
     }
 
+    console.log(fields.createLocationInput);
     return fields;
 };
 
@@ -82,7 +84,7 @@ const handleFileOperations = async (
 };
 
 export const useEventForm = ({ eventData, submitFileRef, deleteFileRef }: UseEventFormProps) => {
-    const { control, handleSubmit } = useForm<EventFormData>({
+    const { control, handleSubmit, watch } = useForm<EventFormData>({
         defaultValues: {
             name: eventData?.name ?? '',
             privacy: eventData?.privacy ?? undefined,
@@ -159,5 +161,7 @@ export const useEventForm = ({ eventData, submitFileRef, deleteFileRef }: UseEve
         onSubmit,
         originalImage: eventData?.image,
         isEditMode,
+
+        watch,
     };
 };

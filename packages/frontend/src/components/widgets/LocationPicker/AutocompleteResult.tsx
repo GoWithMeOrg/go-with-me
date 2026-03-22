@@ -15,11 +15,13 @@ const AutocompleteResult = ({ place }: Props) => {
 
     if (!place) return null;
 
-    return (
-        <AdvancedMarker position={place.location}>
-            <Pin background={'#FBBC04'} borderColor={'#1e89a1'} glyphColor={'#0f677a'} />
-        </AdvancedMarker>
-    );
+    return null;
+
+    // return (
+    //     <AdvancedMarker position={place.location}>
+    //         <Pin background={'#FBBC04'} borderColor={'#1e89a1'} glyphColor={'#0f677a'} />
+    //     </AdvancedMarker>
+    // );
 };
 
 export default React.memo(AutocompleteResult);

@@ -1,42 +1,36 @@
 'use client';
 
+import { FC } from 'react';
 import Marker from '@/assets/icons/marker.svg';
 import { Button } from '@/components/shared/Button';
 import { Popup } from '@/components/shared/Popup';
-import { CustomMapControl, MapHandler } from '@/components/widgets/GoogleMap';
-import { AdvancedMarker, ControlPosition, Map, Pin } from '@vis.gl/react-google-maps';
+import { AdvancedMarker, ControlPosition, Map } from '@vis.gl/react-google-maps';
 
 import { Autocomplete } from '../Autocomlete/Autocomplete';
+import AutocompleteControl from './AutocompleteControl';
 import AutocompleteResult from './AutocompleteResult';
-import { useLocationPicker } from './hooks/useLocationPicker';
+import { LocationData, useLocationPicker } from './hooks/useLocationPicker';
 
 import classes from './LocationPicker.module.css';
 
 interface LocationPickerProps {
-    locationEvent?: {
-        coordinates: [number, number];
-        properties: { address: string };
-    };
-    onPlaceChange?: (selectedPlace: google.maps.places.Place | null) => void;
-    onChange?: (location: {
-        coordinates: [number, number];
-        properties: { address: string };
-    }) => void;
+    locationEvent?: LocationData;
+    onChange?: (location: LocationData) => void;
 }
 
-export const LocationPicker = (props: LocationPickerProps) => {
+export const LocationPicker: FC<LocationPickerProps> = (props: LocationPickerProps) => {
     const {
         showPopup,
         container,
         popupCss,
         refPopup,
-        markerPosition,
         selectedPlace,
         handleMapButtonClick,
         handleMapClick,
         handlePlaceSelect,
         handleHidePopup,
         autocompleteValue,
+        markerPosition,
     } = useLocationPicker(props);
 
     return (
@@ -53,7 +47,7 @@ export const LocationPicker = (props: LocationPickerProps) => {
                 </Button>
             </div>
 
-            <Autocomplete value={autocompleteValue} onPlaceSelect={handlePlaceSelect} />
+            <Autocomplete value={autocompleteValue as string} onPlaceSelect={handlePlaceSelect} />
 
             <Popup
                 showPopup={showPopup}
@@ -63,24 +57,29 @@ export const LocationPicker = (props: LocationPickerProps) => {
             >
                 <Map
                     style={{ height: '600px' }}
-                    defaultZoom={markerPosition ? 15 : 3}
-                    defaultCenter={markerPosition ?? { lat: 22.54992, lng: 0 }}
+                    defaultZoom={3}
+                    defaultCenter={{ lat: 22.54992, lng: 0 }}
                     gestureHandling={'greedy'}
                     disableDefaultUI={false}
                     mapId={'<Your custom MapId here>'}
                     onClick={handleMapClick}
                 >
-                    <AdvancedMarker position={markerPosition} title={'Выбранное место'}>
-                        <Pin
-                            background={'#FBBC04'}
-                            borderColor={'#1e89a1'}
-                            glyphColor={'#0f677a'}
+                    <AutocompleteControl controlPosition={ControlPosition.TOP_CENTER}>
+                        <Autocomplete
+                            value={autocompleteValue as string}
+                            onPlaceSelect={handlePlaceSelect}
                         />
-                    </AdvancedMarker>
+                    </AutocompleteControl>
 
-                    <CustomMapControl controlPosition={ControlPosition.TOP}>
-                        <Autocomplete value={autocompleteValue} onPlaceSelect={handlePlaceSelect} />
-                    </CustomMapControl>
+                    {markerPosition && (
+                        <AdvancedMarker position={markerPosition}>
+                            <gmp-pin
+                                background={'#FBBC04'}
+                                borderColor={'#1e89a1'}
+                                glyphColor={'#0f677a'}
+                            />
+                        </AdvancedMarker>
+                    )}
 
                     <AutocompleteResult place={selectedPlace} />
                 </Map>

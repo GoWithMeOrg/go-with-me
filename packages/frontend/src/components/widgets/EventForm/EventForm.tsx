@@ -25,12 +25,15 @@ export const EventForm: FC<EventFormProps> = ({ eventData }) => {
     const submitFileRef = useRef<(() => Promise<void>) | null>(null);
     const deleteFileRef = useRef<((url: string) => Promise<void>) | null>(null);
 
-    const { control, handleSubmit, onSubmit } = useEventForm({
+    const { control, handleSubmit, onSubmit, watch } = useEventForm({
         eventData,
         submitFileRef,
         deleteFileRef,
     });
 
+    const placeLocation = watch('location');
+
+    console.log(placeLocation);
     return (
         <div className={classes.container}>
             <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>

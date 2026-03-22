@@ -12,7 +12,7 @@ export const Autocomplete = ({ value, onPlaceSelect }: AutocompleteProps) => {
     });
 
     return (
-        <div className={classes['autocomplete-container']}>
+        <div>
             <Input
                 value={inputValue}
                 placeholder="Search for a place"
