@@ -15,31 +15,34 @@ import classes from './page.module.css';
 const Generator: NextPage = () => {
     const {
         changeNumberItems,
+        changeNumberEvents,
         setSelectedLocation,
-        // handleGenerateEvents,
+        handleGenerateEvents,
         generatedEvents,
         handleGenerateUsers,
         generatedUsers,
+        numberEvents,
     } = useGenerator();
 
     return (
         <div className={classes.generator}>
-            {/* <h3>Генератор случайных событий</h3>
+            <h3>Генератор случайных событий</h3>
 
             <div>
                 <Label label="Укажите количество событий">
-                    <Input type="number" onChange={changeNumberItems} min="1" max="10" />
+                    <Input
+                        type="number"
+                        onChange={changeNumberEvents}
+                        value={numberEvents ?? ''}
+                        min="1"
+                        max="10"
+                    />
                 </Label>
-
-                <FilteredEventsLocation
-                    onChange={setSelectedLocation}
-                    options={optionsFullAdress}
-                />
 
                 <Button className={classes.generateButton} onClick={handleGenerateEvents}>
                     Сгенерировать события
                 </Button>
-            </div> */}
+            </div>
 
             {generatedEvents && <Label label={'Cобытия сгенерированы'} className={classes.label} />}
 

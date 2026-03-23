@@ -1,6 +1,6 @@
 'use client';
 
-import type { IEvent } from '@/app/types/Event';
+import type { Event } from '@/app/graphql/types';
 import Spinner from '@/assets/icons/spinner.svg';
 import { Carousel } from '@/components/shared/Carousel';
 import { Slide } from '@/components/shared/Slide';
@@ -62,7 +62,7 @@ const EventListPage: NextPage = () => {
         <div className={classes.eventListPage}>
             <Title tag={'h1'} title="Найди свое племя" className={classes.title} />
             <Carousel title={'Рекомендуемые события'} hideButton={false} marginBottom="7.5rem">
-                {filterEventsImage.map((slide: IEvent) => (
+                {filterEventsImage.map((slide: Event) => (
                     <Slide
                         key={slide._id}
                         id={slide._id}
@@ -71,8 +71,11 @@ const EventListPage: NextPage = () => {
                         image={slide.image as string}
                         startDate={slide.startDate as Date}
                         time={slide.time as string}
-                        coord={[slide.location.coordinates[0], slide.location.coordinates[1]]}
-                        avatar={slide.organizer.image}
+                        coord={[
+                            slide.location?.geometry.coordinates[0] as number,
+                            slide.location?.geometry.coordinates[1] as number,
+                        ]}
+                        avatar={slide.organizer.image as string}
                         showAvatar={false}
                     />
                 ))}
@@ -81,7 +84,7 @@ const EventListPage: NextPage = () => {
             <EventFilters />
 
             <Carousel title={'События твоих друзей'} hideButton marginBottom="4.25rem">
-                {filterEventsImage.map((slide: IEvent) => (
+                {filterEventsImage.map((slide: Event) => (
                     <Slide
                         key={slide._id}
                         id={slide._id}
@@ -90,24 +93,30 @@ const EventListPage: NextPage = () => {
                         image={slide.image as string}
                         startDate={slide.startDate as Date}
                         time={slide.time as string}
-                        coord={[slide.location.coordinates[0], slide.location.coordinates[1]]}
-                        avatar={slide.organizer.image}
+                        coord={[
+                            slide.location?.geometry.coordinates[0] as number,
+                            slide.location?.geometry.coordinates[1] as number,
+                        ]}
+                        avatar={slide.organizer.image as string}
                         showAvatar
                     />
                 ))}
             </Carousel>
 
             <Carousel title={'События поблизости'} hideButton marginBottom="6.25rem">
-                {filterEventsImage.map((slide: IEvent) => (
+                {filterEventsImage.map((slide: Event) => (
                     <CardEvent
                         key={slide._id}
                         id={slide._id}
                         name={slide.name}
-                        description={slide.description}
-                        coord={[slide.location.coordinates[0], slide.location.coordinates[1]]}
+                        description={slide.description as string}
+                        coord={[
+                            slide.location?.geometry.coordinates[0] as number,
+                            slide.location?.geometry.coordinates[1] as number,
+                        ]}
                         startDate={slide.startDate}
-                        time={slide.time}
-                        image={slide.image}
+                        time={slide.time as string}
+                        image={slide.image as string}
                         size={SizeCard.ML}
                     />
                 ))}

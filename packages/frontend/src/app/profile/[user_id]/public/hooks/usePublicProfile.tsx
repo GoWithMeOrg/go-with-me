@@ -1,5 +1,5 @@
 import { SEND_REQUEST_COMPANION_MUTATION } from '@/app/graphql/mutations/companionRequest';
-import { GET_IS_USER_COMPANION } from '@/app/graphql/queries/companions';
+// import { GET_IS_USER_COMPANION } from '@/app/graphql/queries/companions';
 import { GET_EVENTS_BY_ORGANIZER } from '@/app/graphql/queries/events';
 import { GET_USER_BY_ID } from '@/app/graphql/queries/user';
 import { useDialogModal } from '@/components/widgets/DialogModal/hooks/useDialogModal';
@@ -18,11 +18,11 @@ export const usePublicProfile = () => {
         variables: { organizerId: params.user_id },
     });
 
-    const { data: isCompanion } = useQuery(GET_IS_USER_COMPANION, {
-        variables: { userId: user_id, companionId: params.user_id },
-    });
+    // const { data: isCompanion } = useQuery(GET_IS_USER_COMPANION, {
+    //     variables: { userId: user_id, companionId: params.user_id },
+    // });
 
-    const userCompanion = (isCompanion as { isUserCompanion: boolean })?.isUserCompanion;
+    // const userCompanion = (isCompanion as { isUserCompanion: boolean })?.isUserCompanion;
 
     const [CompanionRequest] = useMutation(SEND_REQUEST_COMPANION_MUTATION);
 
@@ -61,7 +61,7 @@ export const usePublicProfile = () => {
         openPopupInvitationCompanion: popupsHook.openPopupInvitationCompanion,
 
         companionRequest,
-        userCompanion,
+        // userCompanion,
 
         state: popupsHook.state,
     };

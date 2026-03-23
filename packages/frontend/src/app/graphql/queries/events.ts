@@ -4,10 +4,15 @@ export const GET_EVENTS = gql`
     query GetAllEvents($limit: Int, $offset: Int, $sort: String) {
         getAllEvents(limit: $limit, offset: $offset, sort: $sort) {
             _id
-            name
+            category {
+                categories
+            }
             description
-            startDate
-            time
+            endDate
+            image
+            interest {
+                interests
+            }
             location {
                 geometry {
                     coordinates
@@ -16,13 +21,19 @@ export const GET_EVENTS = gql`
                     address
                 }
             }
-            image
+            name
             organizer {
                 _id
                 firstName
                 lastName
                 image
             }
+            privacy
+            startDate
+            tag {
+                tags
+            }
+            time
         }
     }
 `;
