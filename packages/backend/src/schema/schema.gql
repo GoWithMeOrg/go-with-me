@@ -97,6 +97,13 @@ type Event {
   time: String
 }
 
+input EventRelationsInput {
+  category: CreateCategoryInput
+  interest: CreateInterestInput
+  location: CreateLocationInput
+  tag: CreateTagInput
+}
+
 type Interest {
   _id: ID!
   interests: [String!]!
@@ -190,6 +197,11 @@ type Mutation {
 
   """добавать роль пользователю"""
   removeUserRole(roleName: String!, userId: ID!): User!
+
+  """
+  Генерация событий от разных пользователей (доступно только в DEV режиме)
+  """
+  seedEvents(inputs: SeedEventsInput!): Event!
 
   """Генерация тестовых данных (доступно только в DEV режиме)"""
   seedUsers(inputs: SeedUserInput!): SeedUserResult!
@@ -336,6 +348,12 @@ type Role {
   description: String
   name: String!
   permissions: [Permission!]!
+}
+
+input SeedEventsInput {
+  event: CreateEventInput!
+  organizer: ID!
+  relations: EventRelationsInput
 }
 
 input SeedUserInput {

@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { Schema as MongoSchema } from 'mongoose';
+
 import { UserService } from '../user/user.service';
 import { LocationService } from '../location/location.service';
 import { CategoryService } from '../category/category.service';
@@ -11,15 +13,22 @@ import { CreateInterestInput } from '../interest/dto/create-interest.input';
 import { CreateTagInput } from '../tag/dto/create-tag.input';
 import { CreateUserInput } from '../user/dto/create-user.input';
 import { SeedUserResult } from './entities/seed-user.entity';
+import { Event } from '../event/entities/event.entity';
+import { EventService } from '../event/event.service';
+import { CreateEventInput } from '../event/dto/create-event.input';
+import { EventRelationsInput } from '../event/interfaces/create-event-relations.input';
+import { EventRelationsService } from '../event/services/event-relations.service';
 
 @Injectable()
 export class SeedsService {
     constructor(
         private readonly userService: UserService,
+        private readonly eventService: EventService,
         private readonly locationService: LocationService,
         private readonly categoryService: CategoryService,
         private readonly interestService: InterestService,
-        private readonly tagService: TagService
+        private readonly tagService: TagService,
+        private readonly relationsService: EventRelationsService
     ) {}
 
     async seedUsers(inputs: {
@@ -77,5 +86,16 @@ export class SeedsService {
         });
 
         return finalResult as SeedUserResult;
+    }
+
+    async seedEvents(
+        createEventInput: CreateEventInput,
+        organizer: MongoSchema.Types.ObjectId,
+        relations?: EventRelationsInput
+    ): Promise<Event> {
+        const createdEvent = await this.eventService.createEvent(organizer, createEventInput);
+        if (relations) await this.relationsService.createRelations(createdEvent, relations);
+
+        return createdEvent;
     }
 }

@@ -30,6 +30,6 @@ import { EventRelationsService } from './services/event-relations.service';
         EventQueryService,
         EventRelationsService,
     ],
-    exports: [EventService, MongooseModule],
+    exports: [EventService, EventRelationsService, MongooseModule],
 })
 export class EventModule {}
