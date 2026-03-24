@@ -51,12 +51,6 @@ input CreateInterestInput {
   ownerType: String
 }
 
-input CreateLikeInput {
-  ownerId: ID
-  ownerType: String
-  user: ID!
-}
-
 input CreateLocationInput {
   geometry: LocationGeometryInput!
   properties: LocationPropertiesInput!
@@ -119,8 +113,8 @@ type Interest {
 
 type Like {
   _id: ID!
-  ownerId: ID
-  ownerType: String
+  ownerId: ID!
+  ownerType: String!
   user: ID!
 }
 
@@ -163,7 +157,7 @@ type Mutation {
   """Создать событие"""
   createEvent(createCategoryInput: CreateCategoryInput, createEventInput: CreateEventInput!, createInterestInput: CreateInterestInput, createLocationInput: CreateLocationInput, createTagInput: CreateTagInput): Event!
   createInterest(createInterestInput: CreateInterestInput!): Interest!
-  createLike(createLikeInput: CreateLikeInput!): Like!
+  createLike(ownerId: ID!, ownerType: String!): Like!
 
   """Создать локацию"""
   createLocation(createLocationInput: CreateLocationInput!): Location!
@@ -281,6 +275,7 @@ type Query {
 
   """Поиск компаньонов по email или имени"""
   findCompanion(query: String): [User!]!
+  findLikesByOwnerId(ownerId: ID!): [Like!]!
 
   """Получить все активные события с пагинацией и сортировкой"""
   getAllEvents(limit: Int, offset: Int, sort: String): [Event!]!

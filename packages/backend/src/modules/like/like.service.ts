@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Like, LikeDocument } from './entities/like.entity';
-import { Model } from 'mongoose';
-import { Schema as MongoSchema } from 'mongoose';
+import { Model, Schema as MongoSchema } from 'mongoose';
 
 @Injectable()
 export class LikeService {
@@ -11,8 +10,20 @@ export class LikeService {
         private likeModel: Model<LikeDocument>
     ) {}
 
-    async createLike(user: MongoSchema.Types.ObjectId) {
-        const createLike = new this.likeModel(user);
-        return await createLike.save();
+    async createLike(
+        user: MongoSchema.Types.ObjectId,
+        ownerId: MongoSchema.Types.ObjectId,
+        ownerType: 'Event' | 'Comment' | 'Trip'
+    ) {
+        const like = new this.likeModel({ user, ownerId, ownerType });
+        return await like.save();
+    }
+
+    async findByOwnerId(ownerId: MongoSchema.Types.ObjectId) {
+        return this.likeModel.find({ ownerId }).exec();
+    }
+
+    async deleteLike(like_id: MongoSchema.Types.ObjectId) {
+        return this.likeModel.findByIdAndDelete(like_id).exec();
     }
 }
