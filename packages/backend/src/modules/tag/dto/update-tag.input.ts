@@ -1,11 +1,5 @@
-import { InputType, Field } from '@nestjs/graphql';
-import { Schema as MongoSchema } from 'mongoose';
+import { InputType, PartialType } from '@nestjs/graphql';
+import { CreateTagInput } from './create-tag.input';
 
 @InputType()
-export class UpdateTagInput {
-    @Field(() => String, { nullable: true })
-    _id: MongoSchema.Types.ObjectId;
-
-    @Field(() => [String], { nullable: true })
-    tags: string[];
-}
+export class UpdateTagInput extends PartialType(CreateTagInput) {}

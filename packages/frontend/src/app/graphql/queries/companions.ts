@@ -25,8 +25,8 @@ export const GET_FIND_COMPANION = gql`
     }
 `;
 
-export const GET_IS_USER_COMPANION = gql`
-    query IsUserCompanion($userId: ID!, $companionId: ID!) {
-        isUserCompanion(user_id: $userId, companion_id: $companionId)
-    }
-`;
+// export const GET_IS_USER_COMPANION = gql`
+//     query IsUserCompanion($userId: ID!, $companionId: ID!) {
+//         isUserCompanion(user_id: $userId, companion_id: $companionId)
+//     }
+// `;

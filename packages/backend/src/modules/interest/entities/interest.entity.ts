@@ -12,12 +12,12 @@ export class Interest {
     @Prop({ type: [String] })
     interests: string[];
 
-    @Field(() => ID)
-    @Prop({ type: MongoSchema.Types.ObjectId, required: true })
+    @Field(() => ID, { nullable: true })
+    @Prop({ type: MongoSchema.Types.ObjectId, required: false })
     ownerId: string;
 
-    @Field(() => String)
-    @Prop({ type: String, enum: ['User', 'Event'], required: true })
+    @Field(() => String, { nullable: true })
+    @Prop({ type: String, enum: ['User', 'Event'], required: false })
     ownerType: 'User' | 'Event';
 }
 

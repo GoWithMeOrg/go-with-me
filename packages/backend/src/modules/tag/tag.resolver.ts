@@ -15,9 +15,9 @@ export class TagResolver {
         description: 'Поиск категорий по id',
     })
     getTagById(
-        @Args('id', { type: () => ID }) id: MongoSchema.Types.ObjectId
+        @Args('tag_id', { type: () => ID }) tag_id: MongoSchema.Types.ObjectId
     ): Promise<Tag | null> {
-        return this.tagService.getTagById(id);
+        return this.tagService.getTagById(tag_id);
     }
 
     @Query(() => Tag, {
@@ -37,15 +37,18 @@ export class TagResolver {
     }
 
     @Mutation(() => Tag)
-    updateTag(@Args('updateTagInput') updateTagInput: UpdateTagInput) {
-        return this.tagService.updateTag(updateTagInput._id, updateTagInput);
+    updateTag(
+        @Args('updateTagInput') updateTagInput: UpdateTagInput,
+        @Args('tag_id', { type: () => ID }) tag_id: MongoSchema.Types.ObjectId
+    ) {
+        return this.tagService.updateTag(tag_id, updateTagInput);
     }
 
     @Mutation(() => Tag)
     async removeTag(
-        @Args('id', { type: () => ID }) id: MongoSchema.Types.ObjectId
+        @Args('tag_id', { type: () => ID }) tag_id: MongoSchema.Types.ObjectId
     ): Promise<boolean> {
-        const result = await this.tagService.removeTag(id);
+        const result = await this.tagService.removeTag(tag_id);
         return result.deletedCount > 0;
     }
 }

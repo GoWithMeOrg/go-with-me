@@ -12,8 +12,8 @@ enum Action {
 type Category {
   _id: ID!
   categories: [String!]!
-  ownerId: ID!
-  ownerType: String!
+  ownerId: ID
+  ownerType: String
 }
 
 type CompanionRequest {
@@ -30,14 +30,25 @@ type CompanionsResponse {
 
 input CreateCategoryInput {
   categories: [String!]!
-  ownerId: ID!
-  ownerType: String!
+  ownerId: ID
+  ownerType: String
+}
+
+input CreateEventInput {
+  description: String
+  endDate: DateTime!
+  image: String
+  name: String!
+  organizer: ID
+  privacy: Privacy!
+  startDate: DateTime!
+  time: String
 }
 
 input CreateInterestInput {
   interests: [String!]!
-  ownerId: ID!
-  ownerType: String!
+  ownerId: ID
+  ownerType: String
 }
 
 input CreateLocationInput {
@@ -52,8 +63,8 @@ input CreateRoleInput {
 }
 
 input CreateTagInput {
-  ownerId: ID!
-  ownerType: String!
+  ownerId: ID
+  ownerType: String
   tags: [String!]
 }
 
@@ -65,11 +76,39 @@ input CreateUserInput {
   roles: [String!]
 }
 
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Event {
+  _id: ID!
+  category: Category
+  description: String
+  endDate: DateTime
+  image: String
+  interest: Interest
+  location: Location
+  name: String!
+  organizer: User!
+  privacy: Privacy!
+  startDate: DateTime!
+  tag: Tag
+  time: String
+}
+
+input EventRelationsInput {
+  category: CreateCategoryInput
+  interest: CreateInterestInput
+  location: CreateLocationInput
+  tag: CreateTagInput
+}
+
 type Interest {
   _id: ID!
   interests: [String!]!
-  ownerId: ID!
-  ownerType: String!
+  ownerId: ID
+  ownerType: String
 }
 
 type Location {
@@ -96,8 +135,8 @@ type LocationProperties {
 
 input LocationPropertiesInput {
   address: String
-  ownerId: ID!
-  ownerType: String!
+  ownerId: ID
+  ownerType: String
 }
 
 type Mutation {
@@ -107,6 +146,9 @@ type Mutation {
   """добавать роль пользователю"""
   addUserRole(roleName: String!, userId: ID!): User!
   createCategories(createCategoriesInput: CreateCategoryInput!): Category!
+
+  """Создать событие"""
+  createEvent(createCategoryInput: CreateCategoryInput, createEventInput: CreateEventInput!, createInterestInput: CreateInterestInput, createLocationInput: CreateLocationInput, createTagInput: CreateTagInput): Event!
   createInterest(createInterestInput: CreateInterestInput!): Interest!
 
   """Создать локацию"""
@@ -126,7 +168,7 @@ type Mutation {
   deleteFile(fileKey: String!): Boolean!
 
   """Получить пресайнд-ссылку для прямой загрузки файла в MinIO/S3"""
-  getPresignedUrl(entityId: String!, folder: String! = "events", input: UploadFileInput!): PresignedUrlResponse!
+  getPresignedUrl(folder: String! = "events", input: UploadFileInput!): PresignedUrlResponse!
   registerResource(
     """Отображаемое имя (например: Мероприятия)"""
     name: String!
@@ -135,9 +177,12 @@ type Mutation {
     slug: String!
   ): Resource!
   rejectCompanionRequest(request_id: ID!): CompanionRequest!
-  removeCategories(id: ID!): Category!
+  removeCategories(category_id: ID!): Category!
   removeCompanion(companion_id: ID!, user_id: ID!): Boolean!
-  removeInterest(id: ID!): Interest!
+
+  """Удалить событие"""
+  removeEvent(event_id: ID!): Boolean!
+  removeInterest(interest_id: ID!): Interest!
 
   """Удалить локацию"""
   removeLocation(id: ID!): Boolean!
@@ -145,7 +190,7 @@ type Mutation {
 
   """Удаление роли"""
   removeRole(id: ID!): Boolean!
-  removeTag(id: ID!): Tag!
+  removeTag(tag_id: ID!): Tag!
 
   """Удалить пользователя"""
   removeUser(id: ID!): Boolean!
@@ -153,19 +198,27 @@ type Mutation {
   """добавать роль пользователю"""
   removeUserRole(roleName: String!, userId: ID!): User!
 
+  """
+  Генерация событий от разных пользователей (доступно только в DEV режиме)
+  """
+  seedEvents(inputs: SeedEventsInput!): Event!
+
   """Генерация тестовых данных (доступно только в DEV режиме)"""
   seedUsers(inputs: SeedUserInput!): SeedUserResult!
   sendRequestCompanion(receiver: ID!, sender: ID!): CompanionRequest!
 
   """Переключает статус активности права (включает/выключает)"""
   togglePermissionStatus(id: ID!): Permission!
-  updateCategories(updateCategoriesInput: UpdateCategoryInput!): Category!
-  updateInterest(updateInterestInput: UpdateInterestInput!): Interest!
+  updateCategories(category_id: ID!, updateCategoriesInput: UpdateCategoryInput!): Category!
+
+  """Обновить данные события"""
+  updateEvent(createCategoryInput: CreateCategoryInput, createInterestInput: CreateInterestInput, createLocationInput: CreateLocationInput, createTagInput: CreateTagInput, event_id: ID!, updateEventInput: UpdateEventInput!): Event!
+  updateInterest(interest_id: ID!, updateInterestInput: UpdateInterestInput!): Interest!
 
   """Обновить локацию"""
-  updateLocation(updateLocationInput: UpdateLocationInput!): Location!
+  updateLocation(location_id: ID!, updateLocationInput: UpdateLocationInput!): Location!
   updateRole(updateRoleInput: UpdateRoleInput!): Role!
-  updateTag(updateTagInput: UpdateTagInput!): Tag!
+  updateTag(tag_id: ID!, updateTagInput: UpdateTagInput!): Tag!
 
   """Обновить данные пользователя"""
   updateUser(updateUserId: ID!, user: UpdateUserInput!): User!
@@ -192,11 +245,16 @@ type PresignedUrlResponse {
   publicUrl: String!
 }
 
+enum Privacy {
+  PRIVATE
+  PUBLIC
+}
+
 type Query {
   adminRoute: String!
 
   """Поиск категорий по id"""
-  categoriesById(id: ID!): Category!
+  categoriesById(category_id: ID!): Category!
 
   """Поиск категорий по ownerId"""
   categoriesByOwnerId(ownerId: ID!): Category!
@@ -209,10 +267,19 @@ type Query {
 
   """Поиск компаньонов по email или имени"""
   findCompanion(query: String): [User!]!
+
+  """Получить все активные события с пагинацией и сортировкой"""
+  getAllEvents(limit: Int, offset: Int, sort: String): [Event!]!
   getCompanionRequests(user_id: ID!): [CompanionRequest!]!
 
+  """Получить событие по id"""
+  getEventById(event_id: ID!): Event!
+
+  """Получить все события организатора"""
+  getEventsByOrganizer(organizer_id: ID!): [Event!]!
+
   """Поиск интересов по id"""
-  interestById(id: ID!): Interest!
+  interestById(interest_id: ID!): Interest!
 
   """Поиск интересов по ownerId"""
   interestByOwnerId(ownerId: ID!): Interest!
@@ -254,7 +321,7 @@ type Query {
   session: User
 
   """Поиск категорий по id"""
-  tagById(id: ID!): Tag!
+  tagById(tag_id: ID!): Tag!
 
   """Поиск категорий по ownerId"""
   tagByOwnerId(ownerId: ID!): Tag!
@@ -283,6 +350,12 @@ type Role {
   permissions: [Permission!]!
 }
 
+input SeedEventsInput {
+  event: CreateEventInput!
+  organizer: ID!
+  relations: EventRelationsInput
+}
+
 input SeedUserInput {
   category: CreateCategoryInput
   interest: CreateInterestInput
@@ -305,29 +378,37 @@ type Subscription {
 
 type Tag {
   _id: ID!
-  ownerId: ID!
-  ownerType: String!
+  ownerId: ID
+  ownerType: String
   tags: [String!]!
 }
 
 input UpdateCategoryInput {
-  _id: String
   categories: [String!]
+  ownerId: ID
+  ownerType: String
+}
+
+input UpdateEventInput {
+  description: String
+  endDate: DateTime
+  image: String
+  name: String
+  organizer: ID
+  privacy: Privacy
+  startDate: DateTime
+  time: String
 }
 
 input UpdateInterestInput {
-  _id: String
-  interests: [String!]!
+  interests: [String!]
+  ownerId: ID
+  ownerType: String
 }
 
 input UpdateLocationInput {
-  _id: ID
   geometry: LocationGeometryInput
-  properties: UpdateLocationPropertiesInput
-}
-
-input UpdateLocationPropertiesInput {
-  address: String
+  properties: LocationPropertiesInput
 }
 
 input UpdateRoleInput {
@@ -338,7 +419,8 @@ input UpdateRoleInput {
 }
 
 input UpdateTagInput {
-  _id: String
+  ownerId: ID
+  ownerType: String
   tags: [String!]
 }
 

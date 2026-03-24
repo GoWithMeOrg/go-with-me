@@ -1,6 +1,6 @@
 'use client';
 
-import { FC } from 'react';
+import { FC, useRef } from 'react';
 import { Controller } from 'react-hook-form';
 import { Button } from '@/components/shared/Button';
 import { ButtonLink } from '@/components/shared/ButtonLink';
@@ -9,29 +9,21 @@ import { Input } from '@/components/shared/Input';
 import { Label } from '@/components/shared/Label';
 import { Textarea } from '@/components/shared/Textarea';
 import { CreateTag } from '@/components/widgets/CreateTag';
-import { Autocomplete } from '@/components/widgets/GoogleMap';
 import { optionsFullAdress } from '@/components/widgets/GoogleMap/OptionsAutocomplete';
+import { Autocomplete } from '@/components/widgets/MapComponents/Autocomplete/Autocomplete';
+import { useProfileForm } from '@/components/widgets/ProfileForm/hooks/useProfileForm';
 import { SelectItems } from '@/components/widgets/SelectItems';
 import { UploadFile } from '@/components/widgets/UploadFile';
-
-import { UploadFileSizes } from '../UploadFile/types/storage-folder';
-import { useProfileForm } from './hooks/useProfileForm';
+import { UploadFileSizes } from '@/components/widgets/UploadFile/types/storage-folder';
 
 import classes from './ProfileForm.module.css';
 
 export const ProfileForm: FC = () => {
-    const {
-        error,
-        user,
-        location,
-        interest,
-        category,
-        tags,
-        handleSubmit,
-        onSubmit,
-        control,
-        handleUploadedFile,
-    } = useProfileForm();
+    const submitFileRef = useRef<(() => Promise<void>) | null>(null);
+    const deleteFileRef = useRef<((url: string) => Promise<void>) | null>(null);
+
+    const { error, user, location, interest, category, tags, handleSubmit, onSubmit, control } =
+        useProfileForm({ submitFileRef, deleteFileRef });
 
     return (
         <>
@@ -43,14 +35,16 @@ export const ProfileForm: FC = () => {
                             control={control}
                             render={({ field }) => (
                                 <UploadFile
-                                    entityId={user._id}
-                                    folder={'users'}
+                                    folder="users/avatars"
                                     imageUrl={user?.image}
                                     width={180}
                                     height={180}
                                     sizeType={UploadFileSizes.profile}
-                                    onUploadedFile={handleUploadedFile}
-                                    {...field}
+                                    onChange={field.onChange}
+                                    onUploadedFile={(submit, deleteFile) => {
+                                        submitFileRef.current = submit;
+                                        deleteFileRef.current = deleteFile;
+                                    }}
                                 />
                             )}
                         />
@@ -99,10 +93,8 @@ export const ProfileForm: FC = () => {
                             render={({ field }) => (
                                 <Label label={'Локация'}>
                                     <Autocomplete
-                                        className={classes.location}
                                         onPlaceSelect={field.onChange}
-                                        address={location?.properties?.address as string}
-                                        options={optionsFullAdress}
+                                        value={location?.properties?.address as string}
                                     />
                                 </Label>
                             )}

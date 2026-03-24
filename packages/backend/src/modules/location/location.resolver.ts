@@ -14,9 +14,9 @@ export class LocationResolver {
         description: 'Поиск места по id',
     })
     getLocationById(
-        @Args('id', { type: () => ID }) id: MongoSchema.Types.ObjectId
+        @Args('id', { type: () => ID }) location_location_id: MongoSchema.Types.ObjectId
     ): Promise<Location | null> {
-        return this.locationService.getLocationById(id);
+        return this.locationService.getLocationById(location_location_id);
     }
 
     @Query(() => Location, {
@@ -45,9 +45,10 @@ export class LocationResolver {
         description: 'Обновить локацию',
     })
     updateLocation(
-        @Args('updateLocationInput') updateLocationInput: UpdateLocationInput
+        @Args('updateLocationInput') updateLocationInput: UpdateLocationInput,
+        @Args('location_id', { type: () => ID }) location_id: MongoSchema.Types.ObjectId
     ): Promise<Location | null> {
-        return this.locationService.updateLocation(updateLocationInput._id, updateLocationInput);
+        return this.locationService.updateLocation(location_id, updateLocationInput);
     }
 
     @Mutation(() => Boolean, {
@@ -55,9 +56,9 @@ export class LocationResolver {
         description: 'Удалить локацию',
     })
     async removeLocation(
-        @Args('id', { type: () => ID }) id: MongoSchema.Types.ObjectId
+        @Args('id', { type: () => ID }) location_id: MongoSchema.Types.ObjectId
     ): Promise<boolean> {
-        const result = await this.locationService.removeLocation(id);
+        const result = await this.locationService.removeLocation(location_id);
         return result.deletedCount > 0;
     }
 }

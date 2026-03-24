@@ -1,37 +1,79 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { Schema as MongoSchema } from 'mongoose';
+import { Event } from './entities/event.entity';
 import { CreateEventInput } from './dto/create-event.input';
-import { UpdateEventInput } from './dto/update-event.input';
-import { InjectModel } from '@nestjs/mongoose';
-import { Event, EventDocument } from './entities/event.entity';
-import { DeleteResult, Model, Schema as MongoSchema } from 'mongoose';
+import { EventRelationsInput } from './interfaces/create-event-relations.input';
+import { EnrichEventHelper, EventWithRelations } from './helpers/enrich-event.helper';
+import { EventCrudService } from './services/event-crud.service';
+import { EventQueryService } from './services/event-query.service';
+import { EventRelationsService } from './services/event-relations.service';
 
 @Injectable()
 export class EventService {
-  constructor(
-    @InjectModel(Event.name)
-    private eventModel: Model<EventDocument>
-  ) {}
+    constructor(
+        private readonly crudService: EventCrudService,
+        private readonly queryService: EventQueryService,
+        private readonly relationsService: EventRelationsService,
+        private readonly enrichEvent: EnrichEventHelper
+    ) {}
 
-  getAllEvents() {
-    return this.eventModel.find();
-  }
+    async createEvent(
+        organizer: MongoSchema.Types.ObjectId,
+        createEventInput: CreateEventInput,
+        relations?: EventRelationsInput
+    ): Promise<Event> {
+        const event = await this.crudService.create(organizer, createEventInput);
 
-  getEventById(id: MongoSchema.Types.ObjectId) {
-    return this.eventModel.findById(id);
-  }
+        if (relations) {
+            await this.relationsService.createRelations(event, relations);
+        }
 
-  createEvent(createEventInput: CreateEventInput) {
-    const createEvent = new this.eventModel(createEventInput);
-    return createEvent.save();
-  }
+        return event;
+    }
 
-  updateEvent(id: MongoSchema.Types.ObjectId, updateEventInput: UpdateEventInput) {
-    return this.eventModel.findByIdAndUpdate(id, updateEventInput, {
-      new: true,
-    });
-  }
+    async getAllEvents(
+        limit?: number,
+        offset?: number,
+        sort?: string
+    ): Promise<EventWithRelations[]> {
+        const events = await this.queryService.findUpcoming(limit, offset, sort);
+        return this.enrichEvent.enrichEventsWithRelations(events);
+    }
 
-  removeEvent(id: MongoSchema.Types.ObjectId): Promise<DeleteResult> {
-    return this.eventModel.deleteOne({ _id: id }).exec();
-  }
+    async getEventById(event_id: MongoSchema.Types.ObjectId): Promise<EventWithRelations> {
+        const event = await this.crudService.findById(event_id);
+
+        if (!event) {
+            throw new NotFoundException(`Event ${event_id} not found`);
+        }
+
+        return this.enrichEvent.enrichEventWithRelations(event);
+    }
+
+    async getEventsByOrganizer(
+        organizer_id: MongoSchema.Types.ObjectId
+    ): Promise<EventWithRelations[]> {
+        const events = await this.crudService.findByOrganizer(organizer_id);
+        return this.enrichEvent.enrichEventsWithRelations(events);
+    }
+
+    async updateEvent(
+        event_id: MongoSchema.Types.ObjectId,
+        updateEventInput: Partial<CreateEventInput>,
+        relations?: EventRelationsInput
+    ): Promise<Event | null> {
+        const event = await this.crudService.update(event_id, updateEventInput);
+
+        if (relations && event) {
+            await this.relationsService.updateRelations(event, relations);
+        }
+
+        return event;
+    }
+
+    async removeEvent(event_id: MongoSchema.Types.ObjectId): Promise<boolean> {
+        await this.relationsService.deleteRelations(event_id);
+        const result = await this.crudService.delete(event_id);
+        return result.deletedCount > 0;
+    }
 }

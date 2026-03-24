@@ -12,12 +12,12 @@ export class Tag {
     @Prop({ type: [String] })
     tags: string[];
 
-    @Field(() => ID)
-    @Prop({ type: MongoSchema.Types.ObjectId, required: true })
+    @Field(() => ID, { nullable: true })
+    @Prop({ type: MongoSchema.Types.ObjectId, required: false })
     ownerId: string;
 
-    @Field(() => String)
-    @Prop({ type: String, enum: ['User', 'Event'], required: true })
+    @Field(() => String, { nullable: true })
+    @Prop({ type: String, enum: ['User', 'Event'], required: false })
     ownerType: 'User' | 'Event';
 }
 

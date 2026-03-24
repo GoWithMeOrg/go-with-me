@@ -1,93 +1,139 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { DELETE_FILE_MUTATION, GET_PRESIGNED_URL } from '@/app/graphql/mutations/upload';
+import { GetPresignedUrlMutation } from '@/app/graphql/types';
 import { validImageTypes } from '@/constants/constants';
 import { useMutation } from '@apollo/client/react';
 
-import { GetPresignedUrlData } from '../interfaces/GetPresignedUrlData';
-import { IUploadFile } from '../interfaces/IUploadFile';
+import { UploadFileProps } from '../interfaces/UploadFileProps';
 
-export const useUploadFile = ({ onChange, folder, entityId }: IUploadFile) => {
+export const useUploadFile = ({ onChange, folder, onUploadedFile }: UploadFileProps) => {
     const uploadRef = useRef<HTMLInputElement>(null);
-    const [url, setUrl] = useState<string | null>(null);
-    const [presignUrl, setPresignUrl] = useState<string | null>(null);
-    const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
-    const [getPresignedUrlMutation] = useMutation<GetPresignedUrlData>(GET_PRESIGNED_URL);
+    const [publicUrl, setPublicUrl] = useState<string | null>(null);
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+    const [isUploading, setIsUploading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    // внутренние данные без лишних ре-рендеров
+    const presignUrlRef = useRef<string | null>(null);
+    const uploadedFileRef = useRef<File | null>(null);
+    const previewObjectUrlRef = useRef<string | null>(null);
+
+    // освобождаем object URL при размонтировании
+    useEffect(() => {
+        return () => {
+            if (previewObjectUrlRef.current) {
+                URL.revokeObjectURL(previewObjectUrlRef.current);
+            }
+        };
+    }, []);
+
+    const [getPresignedUrlMutation] = useMutation<GetPresignedUrlMutation>(GET_PRESIGNED_URL);
     const [deleteFileMutation] = useMutation(DELETE_FILE_MUTATION);
 
-    useEffect(() => {
-        if (url !== null) {
-            onChange?.(url);
+    const getPresignedUrl = async (file: File) => {
+        const { data } = await getPresignedUrlMutation({
+            variables: {
+                input: {
+                    fileName: file.name,
+                    fileType: file.type,
+                },
+                folder,
+            },
+        });
+
+        if (!data?.getPresignedUrl) {
+            throw new Error('Failed to get presigned URL');
         }
-    }, [onChange, url]);
+
+        return data.getPresignedUrl;
+    };
+
+    const deleteFile = async (fileUrl: string) => {
+        const key = new URL(fileUrl).pathname.replace(/^\/[^\/]+\//, '');
+
+        try {
+            await deleteFileMutation({ variables: { fileKey: key } });
+
+            // очищаем всё состояние
+            if (previewObjectUrlRef.current) {
+                URL.revokeObjectURL(previewObjectUrlRef.current);
+                previewObjectUrlRef.current = null;
+            }
+            setPublicUrl(null);
+            setPreviewUrl(null);
+            presignUrlRef.current = null;
+            uploadedFileRef.current = null;
+        } catch (err) {
+            console.error('Delete error:', err);
+        }
+    };
+
+    const submitFile = useCallback(async () => {
+        const file = uploadedFileRef.current;
+        const preUrl = presignUrlRef.current;
+
+        if (!file || !preUrl) {
+            throw new Error('No file or presigned URL to upload');
+        }
+
+        const response = await fetch(preUrl, {
+            method: 'PUT',
+            body: file,
+            headers: { 'Content-Type': file.type },
+        });
+
+        if (!response.ok) {
+            throw new Error(`S3 upload failed: ${response.status}`);
+        }
+    }, []);
 
     const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (!file) return;
 
         if (!validImageTypes.includes(file.type)) {
-            console.error('Invalid file type. Please select an image.');
+            setError('Invalid file type. Please select an image.');
             return;
-        } else {
-            setUploadedFile(file);
-            getPresignedUrl(file);
         }
-    };
 
-    const getPresignedUrl = async (uploadedFile: File) => {
-        const { data } = await getPresignedUrlMutation({
-            variables: {
-                input: {
-                    fileName: uploadedFile.name,
-                    fileType: uploadedFile.type,
-                },
-                entityId: entityId,
-                folder: folder,
-            },
-        });
+        setError(null);
+        setIsUploading(true);
 
-        if (data?.getPresignedUrl) {
-            const { presignedUrl, publicUrl } = data.getPresignedUrl;
-
-            setPresignUrl(presignedUrl);
-            setUrl(publicUrl);
-        }
-    };
-
-    const onSubmitFile = async (uploadedFile: File, preUrl: string) => {
-        if (!uploadedFile && !preUrl) return;
-        const response = await fetch(preUrl, {
-            method: 'PUT',
-            body: uploadedFile,
-            headers: {
-                'Content-Type': uploadedFile.type, // Обязательно! Должно совпадать с подписью
-            },
-        });
-        if (!response.ok) {
-            throw new Error('Error saving file');
-        }
-    };
-
-    const deleteFile = async (fileUrl: string) => {
-        const url = new URL(fileUrl);
-        const key = url.pathname.replace(/^\/[^\/]+\//, '');
-        const fileKey = `${key}`;
         try {
-            await deleteFileMutation({ variables: { fileKey } });
+            const { presignedUrl, publicUrl: newPublicUrl } = await getPresignedUrl(file);
+
+            // обновляем внутреннее состояние
+            presignUrlRef.current = presignedUrl;
+            uploadedFileRef.current = file;
+
+            // создаём локальный preview
+            if (previewObjectUrlRef.current) {
+                URL.revokeObjectURL(previewObjectUrlRef.current);
+            }
+            const objectUrl = URL.createObjectURL(file);
+            previewObjectUrlRef.current = objectUrl;
+            setPreviewUrl(objectUrl);
+
+            setPublicUrl(newPublicUrl);
+            onChange?.(newPublicUrl);
+            onUploadedFile?.(submitFile, deleteFile);
         } catch (err) {
-            console.error('Delete error:', err);
+            setError('Failed to prepare upload');
+            console.error(err);
+        } finally {
+            setIsUploading(false);
         }
     };
 
     return {
-        url,
-        presignUrl,
-        uploadedFile,
-        setUploadedFile,
         uploadRef,
+        publicUrl,
+        previewUrl,
+        isUploading,
+        error,
         handleFileChange,
-        getPresignedUrl,
-        onSubmitFile,
+        submitFile,
         deleteFile,
     };
 };

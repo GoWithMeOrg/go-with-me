@@ -1,5 +1,5 @@
 import { Field, Float, InputType, ID } from '@nestjs/graphql';
-
+import { Schema as MongoSchema } from 'mongoose';
 @InputType()
 export class LocationGeometryInput {
     @Field(() => [Float])
@@ -11,10 +11,10 @@ export class LocationPropertiesInput {
     @Field(() => String, { nullable: true })
     address?: string;
 
-    @Field(() => ID)
-    ownerId: string;
+    @Field(() => ID, { nullable: true })
+    ownerId: MongoSchema.Types.ObjectId;
 
-    @Field(() => String)
+    @Field(() => String, { nullable: true })
     ownerType: 'User' | 'Event';
 }
 

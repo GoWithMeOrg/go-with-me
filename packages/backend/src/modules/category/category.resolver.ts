@@ -15,9 +15,9 @@ export class CategoryResolver {
         description: 'Поиск категорий по id',
     })
     getCategoriesById(
-        @Args('id', { type: () => ID }) id: MongoSchema.Types.ObjectId
+        @Args('category_id', { type: () => ID }) category_id: MongoSchema.Types.ObjectId
     ): Promise<Category | null> {
-        return this.categoriesService.getCategoriesById(id);
+        return this.categoriesService.getCategoriesById(category_id);
     }
 
     @Query(() => Category, {
@@ -37,18 +37,18 @@ export class CategoryResolver {
     }
 
     @Mutation(() => Category)
-    updateCategories(@Args('updateCategoriesInput') updateCategoriesInput: UpdateCategoryInput) {
-        return this.categoriesService.updateCategories(
-            updateCategoriesInput._id,
-            updateCategoriesInput
-        );
+    updateCategories(
+        @Args('category_id', { type: () => ID }) category_id: MongoSchema.Types.ObjectId,
+        @Args('updateCategoriesInput') updateCategoriesInput: UpdateCategoryInput
+    ) {
+        return this.categoriesService.updateCategories(category_id, updateCategoriesInput);
     }
 
     @Mutation(() => Category)
     async removeCategories(
-        @Args('id', { type: () => ID }) id: MongoSchema.Types.ObjectId
+        @Args('category_id', { type: () => ID }) category_id: MongoSchema.Types.ObjectId
     ): Promise<boolean> {
-        const result = await this.categoriesService.removeCategories(id);
+        const result = await this.categoriesService.removeCategories(category_id);
         return result.deletedCount > 0;
     }
 }

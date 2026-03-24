@@ -1,79 +1,40 @@
 'use client';
 
-import { useState } from 'react';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { eventCategory, eventTypes, IEvent } from '@/app/types/Event';
+import { FC, useRef } from 'react';
+import { Controller } from 'react-hook-form';
+import { Privacy } from '@/app/graphql/types';
 import { Button } from '@/components/shared/Button';
+import { categoriesList, interestsList } from '@/components/shared/Dropdown/dropdownLists';
 import { Input } from '@/components/shared/Input';
 import { Label } from '@/components/shared/Label';
 import { Textarea } from '@/components/shared/Textarea';
 import { CreateTag } from '@/components/widgets/CreateTag';
 import { Date } from '@/components/widgets/Date';
-import { EventStatus } from '@/components/widgets/EventStatus';
+import { useEventForm } from '@/components/widgets/EventForm/hooks/useEventForm';
+import { EventFormProps } from '@/components/widgets/EventForm/interfaces/eventForm';
+import { LocationPicker } from '@/components/widgets/LocationPicker';
+import { LocationType } from '@/components/widgets/MapComponents/types/types';
+import { PrivacySelector } from '@/components/widgets/PrivacySelector';
 import { SelectItems } from '@/components/widgets/SelectItems';
 import { Time } from '@/components/widgets/Time';
 import { UploadFile } from '@/components/widgets/UploadFile';
-import { useUploadFile } from '@/components/widgets/UploadFile/hooks';
-
-import { Location } from '../Location';
-import { UploadFileSizes } from '../UploadFile/types/storage-folder';
+import { UploadFileSizes } from '@/components/widgets/UploadFile/types/storage-folder';
 
 import classes from './EventForm.module.css';
 
-export type EventType = Partial<IEvent>;
+export const EventForm: FC<EventFormProps> = ({ eventData }) => {
+    const submitFileRef = useRef<(() => Promise<void>) | null>(null);
+    const deleteFileRef = useRef<((url: string) => Promise<void>) | null>(null);
 
-export enum Status {
-    PUBLIC = 'public',
-    PRIVATE = 'private',
-}
+    const { control, handleSubmit, onSubmit, watch } = useEventForm({
+        eventData,
+        submitFileRef,
+        deleteFileRef,
+    });
 
-interface IFormInputs {
-    organizer_id: string;
-    name: string;
-    description: string;
-    startDate: string;
-    endDate: string;
-    time: string;
-    location: {
-        type: 'Point';
-        coordinates: [number, number];
-        properties: {
-            address: string;
-        };
-    };
-    image: string;
-    status: Status;
-    categories: string[];
-    types: string[];
-    tags: string[];
-}
+    const placeLocation = watch('location');
 
-interface IEventFormProps {
-    eventData: EventType;
-    onSubmitEvent: (event: EventType) => void;
-}
-export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
-    const { control, handleSubmit, watch } = useForm<IFormInputs>();
-    const [file, setFile] = useState<File | null>(null);
-    const [presignUrl, setPresignUrl] = useState<string | null>(null);
-    const { onSubmitFile, deleteFile } = useUploadFile({});
-
-    //@ts-ignore
-    const onSubmit: SubmitHandler<IFormInputs> = (event: EventType) => {
-        onSubmitEvent(event);
-        if (file && presignUrl) {
-            onSubmitFile(file, presignUrl);
-            if (eventData.image && file) {
-                deleteFile(eventData.image);
-            }
-        }
-    };
-
-    const handleUploadedFile = (file: File, preUrl: string) => {
-        setFile(file);
-        setPresignUrl(preUrl);
-    };
-
+    console.log(placeLocation);
     return (
         <div className={classes.container}>
             <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
@@ -85,7 +46,8 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                             render={({ field }) => (
                                 <Label label={'Название'}>
                                     <Input
-                                        defaultValue={eventData.name || ''}
+                                        {...field}
+                                        defaultValue={eventData?.name as string}
                                         onChange={field.onChange}
                                     />
                                 </Label>
@@ -95,20 +57,25 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                         <Controller
                             name="location"
                             control={control}
+                            defaultValue={eventData?.location}
                             render={({ field }) => (
-                                <Location
-                                    locationEvent={eventData?.location}
+                                <LocationPicker
+                                    locationData={eventData?.location as LocationType}
                                     onChange={field.onChange}
                                 />
                             )}
                         />
 
                         <Controller
-                            name="status"
+                            name="privacy"
                             control={control}
-                            defaultValue={(eventData.status || Status.PUBLIC) as Status}
+                            defaultValue={eventData?.privacy || Privacy.Public}
                             render={({ field }) => (
-                                <EventStatus options={Status} selected={field.value} {...field} />
+                                <PrivacySelector
+                                    options={Privacy}
+                                    selected={field.value}
+                                    {...field}
+                                />
                             )}
                         />
 
@@ -118,7 +85,7 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                             render={({ field }) => (
                                 <Label label={'Описание'}>
                                     <Textarea
-                                        defaultValue={eventData.description || ''}
+                                        defaultValue={eventData?.description as string}
                                         onChange={field.onChange}
                                     />
                                 </Label>
@@ -129,17 +96,19 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                             <Controller
                                 name="startDate"
                                 control={control}
+                                defaultValue={eventData?.startDate}
                                 render={({ field }) => (
-                                    <Date title={'Начало'} date={eventData.startDate} {...field} />
+                                    <Date title={'Начало'} date={eventData?.startDate} {...field} />
                                 )}
                             />
                             <Controller
                                 name="endDate"
                                 control={control}
+                                defaultValue={eventData?.endDate}
                                 render={({ field }) => (
                                     <Date
                                         title={'Завершение'}
-                                        date={eventData.endDate}
+                                        date={eventData?.endDate}
                                         {...field}
                                     />
                                 )}
@@ -147,17 +116,18 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                             <Controller
                                 name="time"
                                 control={control}
-                                render={({ field }) => <Time time={eventData.time} {...field} />}
+                                defaultValue={eventData?.time as string}
+                                render={({ field }) => <Time time={eventData?.time} {...field} />}
                             />
                         </div>
 
                         <Controller
-                            name="categories"
+                            name="category"
                             control={control}
                             render={({ field }) => (
                                 <SelectItems
-                                    categoryList={eventCategory}
-                                    eventCategories={[...(eventData.categories ?? [])]}
+                                    categoryList={categoriesList}
+                                    eventCategories={[...(eventData?.category?.categories ?? [])]}
                                     titleCategories={'Выбрать категорию'}
                                     badgesShow
                                     onChange={field.onChange}
@@ -167,12 +137,12 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                         />
 
                         <Controller
-                            name="types"
+                            name="interest"
                             control={control}
                             render={({ field }) => (
                                 <SelectItems
-                                    categoryList={eventTypes}
-                                    eventCategories={[...(eventData.types ?? [])]}
+                                    categoryList={interestsList}
+                                    eventCategories={[...(eventData?.interest?.interests ?? [])]}
                                     titleCategories={'Выбрать тип'}
                                     badgesShow
                                     onChange={field.onChange}
@@ -182,12 +152,13 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                         />
 
                         <Controller
-                            name="tags"
+                            name="tag"
                             control={control}
+                            defaultValue={eventData?.tag?.tags}
                             render={({ field }) => (
                                 <CreateTag
                                     onChange={field.onChange}
-                                    eventTags={[...(eventData.tags ?? [])]}
+                                    eventTags={field.value || []}
                                     title={'Создать тег'}
                                 />
                             )}
@@ -196,16 +167,19 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
                     <Controller
                         name="image"
                         control={control}
+                        defaultValue={eventData?.image}
                         render={({ field }) => (
                             <UploadFile
-                                entityId={eventData?._id as string}
-                                folder={'events'}
-                                imageUrl={eventData.image}
+                                folder="users/events"
+                                imageUrl={eventData?.image}
                                 width={460}
                                 height={324}
-                                onUploadedFile={handleUploadedFile}
-                                {...field}
                                 sizeType={UploadFileSizes.event}
+                                onChange={field.onChange}
+                                onUploadedFile={(submit, deleteFile) => {
+                                    submitFileRef.current = submit;
+                                    deleteFileRef.current = deleteFile;
+                                }}
                             />
                         )}
                     />
@@ -218,5 +192,3 @@ export const EventForm = ({ eventData, onSubmitEvent }: IEventFormProps) => {
         </div>
     );
 };
-
-export default EventForm;

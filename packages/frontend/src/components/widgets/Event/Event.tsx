@@ -18,10 +18,10 @@ import { Geocoding } from '@/components/widgets/GoogleMap/Geocoding';
 import { Join } from '@/components/widgets/Join';
 import useJoin from '@/components/widgets/Join/hooks/useJoin';
 import { Like } from '@/components/widgets/Like';
+import { useUserID } from '@/hooks/useUserID';
 import { formatDate } from '@/utils/formatDate';
 import { AdvancedMarker, Map, Pin } from '@vis.gl/react-google-maps';
 import dayjs from 'dayjs';
-import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -30,19 +30,16 @@ import useEvent, { EventProps } from './hooks/useEvent';
 import classes from './Event.module.css';
 
 const Event: FC<EventProps> = ({ event }) => {
-    const dataSession = useSession();
-    //@ts-ignore
-    const sessionUserID = dataSession?.data?.session?.user?.id ?? null;
+    const { user_id, status } = useUserID();
 
-    const { handleJoin, isJoined } = useJoin({ event_id: event?._id, user_id: sessionUserID });
+    const { handleJoin, isJoined } = useJoin({ event_id: event?._id, user_id });
 
-    const { organizer, markerPosition, handleDelete, coord, day, copied, handleCopyLink } =
+    const { organizer, markerPosition, handleRemoveEvent, coord, day, copied, handleCopyLink } =
         useEvent({
             event,
-            sessionUserID,
         });
 
-    const popupMode = (dataSession?.status === 'authenticated' ? 'map' : 'auth') as 'auth' | 'map';
+    const popupMode = (status === 'authenticated' ? 'map' : 'auth') as 'auth' | 'map';
 
     const { showPopup, setShowPopup, handleShowPopup, handleHidePopup } = usePopup({ popupMode });
 
@@ -83,12 +80,12 @@ const Event: FC<EventProps> = ({ event }) => {
                                 }}
                             />
                             {day} {dayjs(event?.startDate).format('DD.MM.YY')} |{' '}
-                            {formatDate(event?.time, 'HH:mm')}
+                            {formatDate(event?.time as string, 'HH:mm')}
                         </div>
 
                         <div className={classes.eventStatus}>
                             <Lock style={{ transform: 'scale(1.1)', marginRight: '0.5rem' }} />
-                            <div className={classes.status}>{event?.status}</div>
+                            <div className={classes.status}>{event?.privacy}</div>
                             <Button
                                 className={classes.buttonGoogleMaps}
                                 resetDefaultStyles
@@ -109,7 +106,7 @@ const Event: FC<EventProps> = ({ event }) => {
                     </div>
 
                     <div className={classes.badges}>
-                        <Badges badges={event?.types || []} size={Sizes.SMALL} />
+                        <Badges badges={event?.category?.categories || []} size={Sizes.SMALL} />
                     </div>
 
                     <div className={classes.invitations}>
@@ -125,13 +122,13 @@ const Event: FC<EventProps> = ({ event }) => {
                                 Редактировать
                             </Link>
 
-                            <Button size="big" onClick={() => handleDelete(event?._id)}>
+                            <Button size="big" onClick={() => handleRemoveEvent(event?._id)}>
                                 Удалить
                             </Button>
                         </div>
                     ) : (
                         <div className={classes.buttons}>
-                            {dataSession?.status === 'unauthenticated' ? (
+                            {status === 'unauthenticated' ? (
                                 <>
                                     <Button className={classes.join} onClick={handleShowPopup}>
                                         {'Участвовать'}
@@ -147,7 +144,7 @@ const Event: FC<EventProps> = ({ event }) => {
                                         {isJoined ? 'Участник' : 'Участвовать'}
                                     </Button>
 
-                                    <Like event_id={event?._id} user_id={sessionUserID as string} />
+                                    <Like event_id={event?._id} user_id={user_id as string} />
                                 </>
                             )}
                         </div>
@@ -173,16 +170,16 @@ const Event: FC<EventProps> = ({ event }) => {
                 <Popup
                     showPopup={showPopup}
                     setShowPopup={setShowPopup}
-                    popupMode={dataSession?.status === 'authenticated' ? 'map' : 'auth'}
+                    popupMode={status === 'authenticated' ? 'map' : 'auth'}
                 >
-                    {dataSession?.status === 'authenticated' ? (
+                    {status === 'authenticated' ? (
                         <>
                             <Map
                                 style={{ height: '600px' }}
                                 defaultZoom={14}
                                 defaultCenter={{
-                                    lat: event?.location.coordinates[1],
-                                    lng: event?.location.coordinates[0],
+                                    lng: event?.location?.geometry.coordinates[0] as number,
+                                    lat: event?.location?.geometry.coordinates[1] as number,
                                 }}
                                 gestureHandling="greedy"
                                 disableDefaultUI={false}
@@ -221,9 +218,8 @@ const Event: FC<EventProps> = ({ event }) => {
                     <div className={classes.eventOrganizer}>
                         <div className={classes.organizerImage}>
                             <Avatar
-                                image={event?.organizer.image}
-                                //@ts-ignore
-                                name={event?.organizer.name}
+                                image={event?.organizer?.image as string}
+                                name={`${event?.organizer?.firstName} ${event?.organizer?.lastName}`}
                                 scale={2.7}
                                 id={event?.organizer._id as string}
                             />
@@ -231,7 +227,9 @@ const Event: FC<EventProps> = ({ event }) => {
 
                         <div className={classes.organizerName}>
                             {/* @ts-ignore */}
-                            <span className={classes.name}>{event?.organizer.name}</span>
+                            <span
+                                className={classes.name}
+                            >{`${event?.organizer?.firstName} ${event?.organizer?.lastName}`}</span>
                             <span className={classes.organizer}>Организатор</span>
                             {/* <div className={classes.linkChat}>
                                 <Link href={`/profile`} className={classes.link}>
