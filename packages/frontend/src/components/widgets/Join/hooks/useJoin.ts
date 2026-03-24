@@ -1,48 +1,50 @@
-import { JOIN_MUTATION } from '@/app/graphql/mutations/join';
-import { GET_JOINED_EVENTS, JOINED_BY_USER, JOINED_BY_USERS } from '@/app/graphql/queries/joined';
-import { IGetJoined, IJoined } from '@/components/widgets/Join/types/IJoined';
-import { JoinProps } from '@/components/widgets/Join/types/JoinProps';
+import { TOGGLE_JOIN_MUTATION } from '@/app/graphql/mutations/join';
+import { GET_JOINED_USERS_BY_OWNER_ID, IS_JOINED_BY_USER } from '@/app/graphql/queries/join';
+import { Join } from '@/app/graphql/types';
+import { JoinProps } from '@/components/widgets/Join/interfaces/JoinProps';
 import { useMutation, useQuery } from '@apollo/client/react';
 
-const useJoin = ({ event_id, user_id }: JoinProps) => {
-  const [joinEventMutation] = useMutation(JOIN_MUTATION);
-  const { data, refetch: refetchJoinedUsers } = useQuery<IGetJoined | null>(JOINED_BY_USERS, {
-    variables: { eventId: event_id },
-  });
+const useJoin = ({ owner_id, ownerType }: JoinProps) => {
+    const [toggleJoin] = useMutation(TOGGLE_JOIN_MUTATION);
+    const { data: isJoinedUsersData } = useQuery<{
+        getJoinedUsersByOwnerId: Join[];
+    }>(GET_JOINED_USERS_BY_OWNER_ID, {
+        variables: { ownerId: owner_id },
+    });
 
-  const { data: joinedByUser, refetch: refetchJoinedUser } = useQuery<{
-    joinedByUser: IJoined | null;
-  }>(JOINED_BY_USER, {
-    variables: { eventId: event_id, userId: user_id },
-  });
+    const { data: isJoinedData, refetch } = useQuery<{ isJoinedByUser: boolean }>(
+        IS_JOINED_BY_USER,
+        {
+            variables: { ownerId: owner_id },
+        }
+    );
 
-  const joinedUsers = data?.joinedByUsers.length;
-  const isJoined = joinedByUser?.joinedByUser?.isJoined;
+    const isJoined = !!isJoinedData?.isJoinedByUser;
+    const joinedUsers = isJoinedUsersData?.getJoinedUsersByOwnerId.length;
 
-  const handleJoin = async () => {
-    try {
-      await joinEventMutation({
-        variables: { eventId: event_id, userId: user_id },
-        refetchQueries: [
-          {
-            query: GET_JOINED_EVENTS,
-            variables: { userId: user_id },
-          },
-        ],
-        awaitRefetchQueries: true,
-      });
-    } catch (error) {
-      console.error('Error deleting event: ', error);
-    }
-    refetchJoinedUsers();
-    refetchJoinedUser();
-  };
+    const handleJoin = async () => {
+        try {
+            await toggleJoin({
+                variables: { ownerId: owner_id, ownerType },
+                refetchQueries: [
+                    {
+                        query: GET_JOINED_USERS_BY_OWNER_ID,
+                        variables: { ownerId: owner_id },
+                    },
+                ],
+                awaitRefetchQueries: true,
+            });
+        } catch (error) {
+            console.error('Error deleting join: ', error);
+        }
+        refetch();
+    };
 
-  return {
-    handleJoin,
-    joinedUsers,
-    isJoined,
-  };
+    return {
+        handleJoin,
+        joinedUsers,
+        isJoined,
+    };
 };
 
 export default useJoin;

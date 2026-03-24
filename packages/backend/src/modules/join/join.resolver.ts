@@ -19,10 +19,10 @@ export class JoinResolver {
     }
 
     @Query(() => [Join])
-    async getJoinedByOwnerId(
+    async getJoinedUsersByOwnerId(
         @Args('ownerId', { type: () => ID }) ownerId: MongoSchema.Types.ObjectId
     ) {
-        return this.joinService.getJoinedByOwnerId(ownerId);
+        return this.joinService.getJoinedUsersByOwnerId(ownerId);
     }
 
     @Query(() => Boolean, { nullable: true })

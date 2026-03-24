@@ -30,9 +30,9 @@ import useEvent, { EventProps } from './hooks/useEvent';
 import classes from './Event.module.css';
 
 const Event: FC<EventProps> = ({ event }) => {
-    const { user_id, status } = useUserID();
+    const { status } = useUserID();
 
-    const { handleJoin, isJoined } = useJoin({ event_id: event?._id, user_id });
+    const { handleJoin, isJoined } = useJoin({ owner_id: event?._id, ownerType: 'Event' });
 
     const { organizer, markerPosition, handleRemoveEvent, coord, day, copied, handleCopyLink } =
         useEvent({
@@ -110,7 +110,7 @@ const Event: FC<EventProps> = ({ event }) => {
                     </div>
 
                     <div className={classes.invitations}>
-                        <Join event_id={event?._id} />
+                        <Join owner_id={event?._id} ownerType="Event" />
                     </div>
 
                     {organizer ? (

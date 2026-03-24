@@ -27,7 +27,7 @@ export class JoinService {
         }
     }
 
-    async getJoinedByOwnerId(ownerId: MongoSchema.Types.ObjectId) {
+    async getJoinedUsersByOwnerId(ownerId: MongoSchema.Types.ObjectId) {
         return this.joinModel.find({ ownerId }).exec();
     }
 

@@ -111,6 +111,13 @@ type Interest {
   ownerType: String
 }
 
+type Join {
+  _id: ID!
+  ownerId: ID!
+  ownerType: String!
+  user: ID!
+}
+
 type Like {
   _id: ID!
   ownerId: ID!
@@ -213,6 +220,7 @@ type Mutation {
   """Генерация тестовых данных (доступно только в DEV режиме)"""
   seedUsers(inputs: SeedUserInput!): SeedUserResult!
   sendRequestCompanion(receiver: ID!, sender: ID!): CompanionRequest!
+  toggleJoin(ownerId: ID!, ownerType: String!): Boolean!
   toggleLike(ownerId: ID!, ownerType: String!): Boolean!
 
   """Переключает статус активности права (включает/выключает)"""
@@ -285,6 +293,7 @@ type Query {
 
   """Получить все события организатора"""
   getEventsByOrganizer(organizer_id: ID!): [Event!]!
+  getJoinedUsersByOwnerId(ownerId: ID!): [Join!]!
   getLikesByOwnerId(ownerId: ID!): [Like!]!
 
   """Поиск интересов по id"""
@@ -292,6 +301,7 @@ type Query {
 
   """Поиск интересов по ownerId"""
   interestByOwnerId(ownerId: ID!): Interest!
+  isJoinedByUser(owner_id: ID!): Boolean
   isLikedByUser(owner_id: ID!): Boolean
 
   """Поиск места по id"""
