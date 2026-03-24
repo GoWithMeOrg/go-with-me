@@ -268,7 +268,7 @@ type Query {
   adminRoute: String!
 
   """Поиск категорий по id"""
-  categoriesById(icategory_id: ID!): Category!
+  categoriesById(category_id: ID!): Category!
 
   """Поиск категорий по ownerId"""
   categoriesByOwnerId(ownerId: ID!): Category!
