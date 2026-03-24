@@ -1,12 +1,7 @@
 import gql from 'graphql-tag';
 
-export const LIKE_MUTATION = gql`
-  mutation LikeEvent($eventId: ID!, $userId: ID!) {
-    like(event_id: $eventId, user_id: $userId) {
-      _id
-      event_id
-      user_id
-      isLiked
+export const TOGGLE_LIKE_MUTATION = gql`
+    mutation ToggleLike($ownerId: ID!, $ownerType: String!) {
+        toggleLike(ownerId: $ownerId, ownerType: $ownerType)
     }
-  }
 `;

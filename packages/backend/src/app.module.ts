@@ -30,6 +30,7 @@ import { SeedsModule } from './modules/seeds/seeds.module';
 import { CompanionModule } from './modules/companion/companion.module';
 import { CompanionRequestModule } from './modules/companion-request/companion-request.module';
 import { EventModule } from './modules/event/event.module';
+import { LikeModule } from './modules/like/like.module';
 
 @Module({
     imports: [
@@ -92,6 +93,8 @@ import { EventModule } from './modules/event/event.module';
         CompanionRequestModule,
 
         EventModule,
+
+        LikeModule,
     ],
 
     controllers: [],

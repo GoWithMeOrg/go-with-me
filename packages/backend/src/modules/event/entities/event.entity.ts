@@ -6,6 +6,7 @@ import { Category } from 'src/modules/category/entities/category.entity';
 import { Interest } from 'src/modules/interest/entities/interest.entity';
 import { Tag } from 'src/modules/tag/entities/tag.entity';
 import { Privacy } from '../enum/privacy.enum';
+import { Like } from 'src/modules/like/entities/like.entity';
 
 @ObjectType()
 @Schema({ timestamps: true })

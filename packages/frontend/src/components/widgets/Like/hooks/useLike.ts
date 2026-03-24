@@ -1,27 +1,20 @@
-import { LIKE_MUTATION } from '@/app/graphql/mutations/like';
-import { GET_LIKED_EVENTS, LIKED } from '@/app/graphql/queries/liked';
-import { ILike } from '@/components/widgets/Like/types/Ilike';
-import { LikeProps } from '@/components/widgets/Like/types/LikeProps';
+import { TOGGLE_LIKE_MUTATION } from '@/app/graphql/mutations/like';
+import { IS_LIKED_BY_USER } from '@/app/graphql/queries/like';
+import { LikeProps } from '@/components/widgets/Like/interfaces/LikeProps';
 import { useMutation, useQuery } from '@apollo/client/react';
 
-const useLike = ({ event_id, user_id }: LikeProps) => {
-    const [likeMutation] = useMutation(LIKE_MUTATION);
-    const { data, refetch } = useQuery<{ liked: ILike | null }>(LIKED, {
-        variables: { eventId: event_id, userId: user_id },
+const useLike = ({ owner_id, ownerType }: LikeProps) => {
+    const [toggleLike] = useMutation(TOGGLE_LIKE_MUTATION);
+    const { data: isLikedData, refetch } = useQuery<{ isLikedByUser: boolean }>(IS_LIKED_BY_USER, {
+        variables: { ownerId: owner_id },
     });
 
-    const isLiked = data?.liked?.isLiked;
+    const isLiked = !!isLikedData?.isLikedByUser;
 
     const handleLike = async () => {
         try {
-            await likeMutation({
-                variables: { eventId: event_id, userId: user_id },
-                refetchQueries: [
-                    {
-                        query: GET_LIKED_EVENTS,
-                        variables: { userId: user_id },
-                    },
-                ],
+            await toggleLike({
+                variables: { ownerId: owner_id, ownerType },
                 awaitRefetchQueries: true,
             });
         } catch (error) {
