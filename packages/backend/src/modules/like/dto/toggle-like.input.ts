@@ -2,7 +2,7 @@ import { InputType, Field, ID } from '@nestjs/graphql';
 import { Schema as MongoSchema } from 'mongoose';
 
 @InputType()
-export class CreateLikeInput {
+export class ToggleLikeInput {
     @Field(() => ID)
     user: MongoSchema.Types.ObjectId;
 

@@ -9,20 +9,28 @@ import { User } from '../user/entities/user.entity';
 export class LikeResolver {
     constructor(private readonly likeService: LikeService) {}
 
-    @Mutation(() => Like)
-    async createLike(
+    @Mutation(() => Boolean)
+    async toggleLike(
         @CurrentUser() user: User,
         @Args('ownerId', { type: () => ID }) ownerId: MongoSchema.Types.ObjectId,
         @Args('ownerType') ownerType: 'Event' | 'Comment' | 'Trip'
-    ) {
-        return this.likeService.createLike(user._id, ownerId, ownerType);
+    ): Promise<boolean> {
+        return this.likeService.toggleLike(user._id, ownerId, ownerType);
     }
 
     @Query(() => [Like])
-    async findLikesByOwnerId(
+    async getLikesByOwnerId(
         @Args('ownerId', { type: () => ID }) ownerId: MongoSchema.Types.ObjectId
     ) {
-        return this.likeService.findByOwnerId(ownerId);
+        return this.likeService.getLikeByOwnerId(ownerId);
+    }
+
+    @Query(() => Boolean, { nullable: true })
+    async isLikedByUser(
+        @CurrentUser() user: User,
+        @Args('owner_id', { type: () => ID }) owner_id: MongoSchema.Types.ObjectId
+    ) {
+        return this.likeService.isLikedByUser(owner_id, user._id);
     }
 
     // @Mutation(() => Like, { nullable: true })

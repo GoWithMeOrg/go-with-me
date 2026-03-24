@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { GET_ORGANIZER_EVENTS } from '@/app/graphql/queries/events';
 import { GET_DECLINED_EVENTS } from '@/app/graphql/queries/invations';
 import { GET_JOINED_EVENTS } from '@/app/graphql/queries/joined';
-import { GET_LIKED_EVENTS } from '@/app/graphql/queries/liked';
+import { GET_LIKED_EVENTS } from '@/app/graphql/queries/like';
 import { useQuery } from '@apollo/client/react';
 import { useSession } from 'next-auth/react';
 

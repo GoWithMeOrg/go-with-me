@@ -157,7 +157,6 @@ type Mutation {
   """Создать событие"""
   createEvent(createCategoryInput: CreateCategoryInput, createEventInput: CreateEventInput!, createInterestInput: CreateInterestInput, createLocationInput: CreateLocationInput, createTagInput: CreateTagInput): Event!
   createInterest(createInterestInput: CreateInterestInput!): Interest!
-  createLike(ownerId: ID!, ownerType: String!): Like!
 
   """Создать локацию"""
   createLocation(createLocationInput: CreateLocationInput!): Location!
@@ -214,6 +213,7 @@ type Mutation {
   """Генерация тестовых данных (доступно только в DEV режиме)"""
   seedUsers(inputs: SeedUserInput!): SeedUserResult!
   sendRequestCompanion(receiver: ID!, sender: ID!): CompanionRequest!
+  toggleLike(ownerId: ID!, ownerType: String!): Boolean!
 
   """Переключает статус активности права (включает/выключает)"""
   togglePermissionStatus(id: ID!): Permission!
@@ -275,7 +275,6 @@ type Query {
 
   """Поиск компаньонов по email или имени"""
   findCompanion(query: String): [User!]!
-  findLikesByOwnerId(ownerId: ID!): [Like!]!
 
   """Получить все активные события с пагинацией и сортировкой"""
   getAllEvents(limit: Int, offset: Int, sort: String): [Event!]!
@@ -286,12 +285,14 @@ type Query {
 
   """Получить все события организатора"""
   getEventsByOrganizer(organizer_id: ID!): [Event!]!
+  getLikesByOwnerId(ownerId: ID!): [Like!]!
 
   """Поиск интересов по id"""
   interestById(interest_id: ID!): Interest!
 
   """Поиск интересов по ownerId"""
   interestByOwnerId(ownerId: ID!): Interest!
+  isLikedByUser(owner_id: ID!): Boolean
 
   """Поиск места по id"""
   locationById(id: ID!): Location!
