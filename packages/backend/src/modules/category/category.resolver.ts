@@ -15,7 +15,7 @@ export class CategoryResolver {
         description: 'Поиск категорий по id',
     })
     getCategoriesById(
-        @Args('icategory_id', { type: () => ID }) category_id: MongoSchema.Types.ObjectId
+        @Args('category_id', { type: () => ID }) category_id: MongoSchema.Types.ObjectId
     ): Promise<Category | null> {
         return this.categoriesService.getCategoriesById(category_id);
     }
