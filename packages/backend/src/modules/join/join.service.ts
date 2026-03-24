@@ -35,7 +35,7 @@ export class JoinService {
         owner_id: MongoSchema.Types.ObjectId,
         user_id: MongoSchema.Types.ObjectId
     ): Promise<boolean> {
-        const like = await this.joinModel.findOne({ ownerId: owner_id, user: user_id }).exec();
-        return !!like;
+        const join = await this.joinModel.findOne({ ownerId: owner_id, user: user_id }).exec();
+        return !!join;
     }
 }
