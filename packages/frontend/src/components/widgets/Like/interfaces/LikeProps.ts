@@ -1,3 +1,4 @@
 export interface LikeProps {
-    event_id: string;
+    owner_id: string;
+    ownerType: string;
 }

@@ -3,10 +3,10 @@ import { IS_LIKED_BY_USER } from '@/app/graphql/queries/like';
 import { LikeProps } from '@/components/widgets/Like/interfaces/LikeProps';
 import { useMutation, useQuery } from '@apollo/client/react';
 
-const useLike = ({ event_id }: LikeProps) => {
+const useLike = ({ owner_id, ownerType }: LikeProps) => {
     const [toggleLike] = useMutation(TOGGLE_LIKE_MUTATION);
     const { data: isLikedData, refetch } = useQuery<{ isLikedByUser: boolean }>(IS_LIKED_BY_USER, {
-        variables: { ownerId: event_id },
+        variables: { ownerId: owner_id },
     });
 
     const isLiked = !!isLikedData?.isLikedByUser;
@@ -14,7 +14,7 @@ const useLike = ({ event_id }: LikeProps) => {
     const handleLike = async () => {
         try {
             await toggleLike({
-                variables: { ownerId: event_id, ownerType: 'Event' },
+                variables: { ownerId: owner_id, ownerType },
                 awaitRefetchQueries: true,
             });
         } catch (error) {

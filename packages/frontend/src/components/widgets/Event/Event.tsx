@@ -144,7 +144,7 @@ const Event: FC<EventProps> = ({ event }) => {
                                         {isJoined ? 'Участник' : 'Участвовать'}
                                     </Button>
 
-                                    <Like event_id={event?._id} />
+                                    <Like owner_id={event?._id} ownerType="Event" />
                                 </>
                             )}
                         </div>
