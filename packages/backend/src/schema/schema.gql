@@ -51,6 +51,12 @@ input CreateInterestInput {
   ownerType: String
 }
 
+input CreateLikeInput {
+  ownerId: ID
+  ownerType: String
+  user: ID!
+}
+
 input CreateLocationInput {
   geometry: LocationGeometryInput!
   properties: LocationPropertiesInput!
@@ -111,6 +117,13 @@ type Interest {
   ownerType: String
 }
 
+type Like {
+  _id: ID!
+  ownerId: ID
+  ownerType: String
+  user: ID!
+}
+
 type Location {
   _id: String!
   geometry: LocationGeometry!
@@ -150,6 +163,7 @@ type Mutation {
   """Создать событие"""
   createEvent(createCategoryInput: CreateCategoryInput, createEventInput: CreateEventInput!, createInterestInput: CreateInterestInput, createLocationInput: CreateLocationInput, createTagInput: CreateTagInput): Event!
   createInterest(createInterestInput: CreateInterestInput!): Interest!
+  createLike(createLikeInput: CreateLikeInput!): Like!
 
   """Создать локацию"""
   createLocation(createLocationInput: CreateLocationInput!): Location!
