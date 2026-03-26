@@ -16,6 +16,15 @@ type Category {
   ownerType: String
 }
 
+type Comment {
+  _id: ID!
+  author: ID!
+  content: String!
+  ownerId: ID!
+  ownerType: String!
+  parentId: ID
+}
+
 type CompanionRequest {
   _id: ID!
   receiver: User!
@@ -32,6 +41,13 @@ input CreateCategoryInput {
   categories: [String!]!
   ownerId: ID
   ownerType: String
+}
+
+input CreateCommentInput {
+  content: String!
+  ownerId: ID!
+  ownerType: OwnerType!
+  parentId: ID
 }
 
 input CreateEventInput {
@@ -160,6 +176,7 @@ type Mutation {
   """добавать роль пользователю"""
   addUserRole(roleName: String!, userId: ID!): User!
   createCategories(createCategoriesInput: CreateCategoryInput!): Category!
+  createComment(createCommentInput: CreateCommentInput!): Comment!
 
   """Создать событие"""
   createEvent(createCategoryInput: CreateCategoryInput, createEventInput: CreateEventInput!, createInterestInput: CreateInterestInput, createLocationInput: CreateLocationInput, createTagInput: CreateTagInput): Event!
@@ -167,6 +184,7 @@ type Mutation {
 
   """Создать локацию"""
   createLocation(createLocationInput: CreateLocationInput!): Location!
+  createReply(createCommentInput: CreateCommentInput!): Comment!
 
   """
   Creates missing CRUD permissions for a specific resource based on Action enum
@@ -226,6 +244,7 @@ type Mutation {
   """Переключает статус активности права (включает/выключает)"""
   togglePermissionStatus(id: ID!): Permission!
   updateCategories(category_id: ID!, updateCategoriesInput: UpdateCategoryInput!): Category!
+  updateComment(commentId: ID!, updateCommentInput: UpdateCommentInput!): Comment!
 
   """Обновить данные события"""
   updateEvent(createCategoryInput: CreateCategoryInput, createInterestInput: CreateInterestInput, createLocationInput: CreateLocationInput, createTagInput: CreateTagInput, event_id: ID!, updateEventInput: UpdateEventInput!): Event!
@@ -239,6 +258,13 @@ type Mutation {
   """Обновить данные пользователя"""
   updateUser(updateUserId: ID!, user: UpdateUserInput!): User!
   updateUserProfile(categoryId: ID, createCategoryInput: CreateCategoryInput, createInterestInput: CreateInterestInput, createLocationInput: CreateLocationInput, createTagInput: CreateTagInput, interestId: ID, locationId: ID, tagId: ID, updateCategoryInput: UpdateCategoryInput, updateInterestInput: UpdateInterestInput, updateLocationInput: UpdateLocationInput, updateTagInput: UpdateTagInput, updateUserInput: UpdateUserInput, userId: ID!): UserProfile!
+}
+
+enum OwnerType {
+  COMMENT
+  EVENT
+  TRIP
+  USER
 }
 
 type Permission {
@@ -286,6 +312,7 @@ type Query {
 
   """Получить все активные события с пагинацией и сортировкой"""
   getAllEvents(limit: Int, offset: Int, sort: String): [Event!]!
+  getCommentsByOwnerId(ownerId: ID!): [Comment!]!
   getCompanionRequests(user_id: ID!): [CompanionRequest!]!
 
   """Получить событие по id"""
@@ -407,6 +434,13 @@ input UpdateCategoryInput {
   categories: [String!]
   ownerId: ID
   ownerType: String
+}
+
+input UpdateCommentInput {
+  content: String
+  ownerId: ID
+  ownerType: OwnerType
+  parentId: ID
 }
 
 input UpdateEventInput {

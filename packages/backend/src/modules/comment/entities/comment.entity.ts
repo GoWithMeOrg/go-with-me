@@ -1,6 +1,7 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
 import { Document, Schema as MongoSchema } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { OwnerType } from 'src/common/enums/owner-type.enum';
 
 @ObjectType()
 @Schema({ timestamps: true })
@@ -21,8 +22,8 @@ export class Comment {
     ownerId: MongoSchema.Types.ObjectId;
 
     @Field(() => String)
-    @Prop({ type: String, enum: ['Event', 'Trip'], required: true })
-    ownerType: 'Event' | 'Trip';
+    @Prop({ type: String, enum: OwnerType, required: true })
+    ownerType: OwnerType;
 
     @Field(() => ID, { nullable: true })
     @Prop({ type: MongoSchema.Types.ObjectId, ref: 'Comment', default: null })
