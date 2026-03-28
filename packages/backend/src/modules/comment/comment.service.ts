@@ -21,7 +21,8 @@ export class CommentService {
             author,
             ...createCommentInput,
         });
-        return await createComment.save();
+        const savedComment = await createComment.save();
+        return await savedComment.populate('author');
     }
 
     async createReply(author: MongoSchema.Types.ObjectId, createCommentInput: CreateCommentInput) {
@@ -39,16 +40,17 @@ export class CommentService {
         }
 
         // Защита от вложенных ответов
-        if (parent.parentId) {
-            throw new BadRequestException('Нельзя отвечать на ответ');
-        }
+        // if (parent.parentId) {
+        //     throw new BadRequestException('Нельзя отвечать на ответ');
+        // }
 
         const reply = new this.commentModel({
             author,
             ...createCommentInput,
         });
 
-        return await reply.save();
+        const savedReply = await reply.save();
+        return await savedReply.populate('author');
     }
 
     async updateComment(
@@ -66,13 +68,11 @@ export class CommentService {
             throw new BadRequestException('Только автор может редактировать свой комментарий');
         }
 
-        const updatedComment = await this.commentModel.findByIdAndUpdate(
-            commentId,
-            updateCommentInput,
-            {
+        const updatedComment = await this.commentModel
+            .findByIdAndUpdate(commentId, updateCommentInput, {
                 new: true,
-            }
-        );
+            })
+            .populate('author');
 
         if (!updatedComment) {
             throw new NotFoundException('Комментарий не найден');
@@ -82,6 +82,6 @@ export class CommentService {
     }
 
     async getCommentsByOwnerId(ownerId: MongoSchema.Types.ObjectId) {
-        return this.commentModel.find({ ownerId }).exec();
+        return this.commentModel.find({ ownerId }).populate('author').exec();
     }
 }

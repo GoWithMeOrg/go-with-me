@@ -32,6 +32,16 @@ export type Category = {
   ownerType?: Maybe<Scalars['String']['output']>;
 };
 
+export type Comment = {
+  __typename: 'Comment';
+  _id: Scalars['ID']['output'];
+  author: Scalars['ID']['output'];
+  content: Scalars['String']['output'];
+  ownerId: Scalars['ID']['output'];
+  ownerType: Scalars['String']['output'];
+  parentId?: Maybe<Scalars['ID']['output']>;
+};
+
 export type CompanionRequest = {
   __typename: 'CompanionRequest';
   _id: Scalars['ID']['output'];
@@ -50,6 +60,13 @@ export type CreateCategoryInput = {
   categories: Array<Scalars['String']['input']>;
   ownerId?: InputMaybe<Scalars['ID']['input']>;
   ownerType?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type CreateCommentInput = {
+  content: Scalars['String']['input'];
+  ownerId: Scalars['ID']['input'];
+  ownerType: OwnerType;
+  parentId?: InputMaybe<Scalars['ID']['input']>;
 };
 
 export type CreateEventInput = {
@@ -98,6 +115,7 @@ export type Event = {
   __typename: 'Event';
   _id: Scalars['ID']['output'];
   category?: Maybe<Category>;
+  comments?: Maybe<Array<Comment>>;
   description?: Maybe<Scalars['String']['output']>;
   endDate?: Maybe<Scalars['DateTime']['output']>;
   image?: Maybe<Scalars['String']['output']>;
@@ -180,11 +198,13 @@ export type Mutation = {
   /** добавать роль пользователю */
   addUserRole: User;
   createCategories: Category;
+  createComment: Comment;
   /** Создать событие */
   createEvent: Event;
   createInterest: Interest;
   /** Создать локацию */
   createLocation: Location;
+  createReply: Comment;
   /** Creates missing CRUD permissions for a specific resource based on Action enum */
   createResourcePermissions: Array<Permission>;
   createRole: Role;
@@ -222,6 +242,7 @@ export type Mutation = {
   /** Переключает статус активности права (включает/выключает) */
   togglePermissionStatus: Permission;
   updateCategories: Category;
+  updateComment: Comment;
   /** Обновить данные события */
   updateEvent: Event;
   updateInterest: Interest;
@@ -257,6 +278,11 @@ export type MutationCreateCategoriesArgs = {
 };
 
 
+export type MutationCreateCommentArgs = {
+  createCommentInput: CreateCommentInput;
+};
+
+
 export type MutationCreateEventArgs = {
   createCategoryInput?: InputMaybe<CreateCategoryInput>;
   createEventInput: CreateEventInput;
@@ -273,6 +299,11 @@ export type MutationCreateInterestArgs = {
 
 export type MutationCreateLocationArgs = {
   createLocationInput: CreateLocationInput;
+};
+
+
+export type MutationCreateReplyArgs = {
+  createCommentInput: CreateCommentInput;
 };
 
 
@@ -410,6 +441,12 @@ export type MutationUpdateCategoriesArgs = {
 };
 
 
+export type MutationUpdateCommentArgs = {
+  commentId: Scalars['ID']['input'];
+  updateCommentInput: UpdateCommentInput;
+};
+
+
 export type MutationUpdateEventArgs = {
   createCategoryInput?: InputMaybe<CreateCategoryInput>;
   createInterestInput?: InputMaybe<CreateInterestInput>;
@@ -466,6 +503,13 @@ export type MutationUpdateUserProfileArgs = {
   userId: Scalars['ID']['input'];
 };
 
+export enum OwnerType {
+  Comment = 'COMMENT',
+  Event = 'EVENT',
+  Trip = 'TRIP',
+  User = 'USER'
+}
+
 export type Permission = {
   __typename: 'Permission';
   _id: Scalars['ID']['output'];
@@ -506,6 +550,7 @@ export type Query = {
   findCompanion: Array<User>;
   /** Получить все активные события с пагинацией и сортировкой */
   getAllEvents: Array<Event>;
+  getCommentsByOwnerId: Array<Comment>;
   getCompanionRequests: Array<CompanionRequest>;
   /** Получить событие по id */
   getEventById: Event;
@@ -588,6 +633,11 @@ export type QueryGetAllEventsArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type QueryGetCommentsByOwnerIdArgs = {
+  ownerId: Scalars['ID']['input'];
 };
 
 
@@ -756,6 +806,13 @@ export type UpdateCategoryInput = {
   categories?: InputMaybe<Array<Scalars['String']['input']>>;
   ownerId?: InputMaybe<Scalars['ID']['input']>;
   ownerType?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type UpdateCommentInput = {
+  content?: InputMaybe<Scalars['String']['input']>;
+  ownerId?: InputMaybe<Scalars['ID']['input']>;
+  ownerType?: InputMaybe<OwnerType>;
+  parentId?: InputMaybe<Scalars['ID']['input']>;
 };
 
 export type UpdateEventInput = {
@@ -1072,7 +1129,7 @@ export type GetEventByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetEventByIdQuery = { __typename: 'Query', getEventById: { __typename: 'Event', _id: string, description?: string | null, endDate?: any | null, image?: string | null, name: string, privacy: Privacy, startDate: any, time?: string | null, category?: { __typename: 'Category', categories: Array<string> } | null, interest?: { __typename: 'Interest', interests: Array<string> } | null, location?: { __typename: 'Location', geometry: { __typename: 'LocationGeometry', coordinates: Array<number> }, properties: { __typename: 'LocationProperties', address?: string | null } } | null, tag?: { __typename: 'Tag', tags: Array<string> } | null, organizer: { __typename: 'User', _id: string, firstName: string, lastName: string, image?: string | null } } };
+export type GetEventByIdQuery = { __typename: 'Query', getEventById: { __typename: 'Event', _id: string, description?: string | null, endDate?: any | null, image?: string | null, name: string, privacy: Privacy, startDate: any, time?: string | null, category?: { __typename: 'Category', categories: Array<string> } | null, interest?: { __typename: 'Interest', interests: Array<string> } | null, location?: { __typename: 'Location', geometry: { __typename: 'LocationGeometry', coordinates: Array<number> }, properties: { __typename: 'LocationProperties', address?: string | null } } | null, tag?: { __typename: 'Tag', tags: Array<string> } | null, organizer: { __typename: 'User', _id: string, firstName: string, lastName: string, image?: string | null }, comments?: Array<{ __typename: 'Comment', _id: string, author: string, content: string, parentId?: string | null }> | null } };
 
 export type IsJoinedByUserQueryVariables = Exact<{
   ownerId: Scalars['ID']['input'];
@@ -1211,7 +1268,7 @@ export const CompanionsByOwnerIdDocument = {"kind":"Document","definitions":[{"k
 export const FindCompanionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"FindCompanion"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"query"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"findCompanion"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"query"},"value":{"kind":"Variable","name":{"kind":"Name","value":"query"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"image"}}]}}]}}]} as unknown as DocumentNode<FindCompanionQuery, FindCompanionQueryVariables>;
 export const GetAllEventsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetAllEvents"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"limit"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"offset"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"sort"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getAllEvents"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"Variable","name":{"kind":"Name","value":"limit"}}},{"kind":"Argument","name":{"kind":"Name","value":"offset"},"value":{"kind":"Variable","name":{"kind":"Name","value":"offset"}}},{"kind":"Argument","name":{"kind":"Name","value":"sort"},"value":{"kind":"Variable","name":{"kind":"Name","value":"sort"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"category"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"categories"}}]}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"endDate"}},{"kind":"Field","name":{"kind":"Name","value":"image"}},{"kind":"Field","name":{"kind":"Name","value":"interest"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"interests"}}]}},{"kind":"Field","name":{"kind":"Name","value":"location"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"geometry"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"coordinates"}}]}},{"kind":"Field","name":{"kind":"Name","value":"properties"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"address"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"organizer"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"image"}}]}},{"kind":"Field","name":{"kind":"Name","value":"privacy"}},{"kind":"Field","name":{"kind":"Name","value":"startDate"}},{"kind":"Field","name":{"kind":"Name","value":"tag"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"tags"}}]}},{"kind":"Field","name":{"kind":"Name","value":"time"}}]}}]}}]} as unknown as DocumentNode<GetAllEventsQuery, GetAllEventsQueryVariables>;
 export const GetEventsByOrganizerDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetEventsByOrganizer"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"organizerId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getEventsByOrganizer"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"organizer_id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"organizerId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"category"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"categories"}}]}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"endDate"}},{"kind":"Field","name":{"kind":"Name","value":"image"}},{"kind":"Field","name":{"kind":"Name","value":"interest"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"interests"}}]}},{"kind":"Field","name":{"kind":"Name","value":"location"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"geometry"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"coordinates"}}]}},{"kind":"Field","name":{"kind":"Name","value":"properties"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"address"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"organizer"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"image"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}}]}},{"kind":"Field","name":{"kind":"Name","value":"privacy"}},{"kind":"Field","name":{"kind":"Name","value":"startDate"}},{"kind":"Field","name":{"kind":"Name","value":"tag"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"tags"}}]}},{"kind":"Field","name":{"kind":"Name","value":"time"}}]}}]}}]} as unknown as DocumentNode<GetEventsByOrganizerQuery, GetEventsByOrganizerQueryVariables>;
-export const GetEventByIdDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetEventById"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"eventId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getEventById"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"event_id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"eventId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"category"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"categories"}}]}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"endDate"}},{"kind":"Field","name":{"kind":"Name","value":"image"}},{"kind":"Field","name":{"kind":"Name","value":"interest"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"interests"}}]}},{"kind":"Field","name":{"kind":"Name","value":"location"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"geometry"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"coordinates"}}]}},{"kind":"Field","name":{"kind":"Name","value":"properties"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"address"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"privacy"}},{"kind":"Field","name":{"kind":"Name","value":"startDate"}},{"kind":"Field","name":{"kind":"Name","value":"tag"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"tags"}}]}},{"kind":"Field","name":{"kind":"Name","value":"time"}},{"kind":"Field","name":{"kind":"Name","value":"organizer"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"image"}}]}}]}}]}}]} as unknown as DocumentNode<GetEventByIdQuery, GetEventByIdQueryVariables>;
+export const GetEventByIdDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetEventById"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"eventId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getEventById"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"event_id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"eventId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"category"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"categories"}}]}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"endDate"}},{"kind":"Field","name":{"kind":"Name","value":"image"}},{"kind":"Field","name":{"kind":"Name","value":"interest"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"interests"}}]}},{"kind":"Field","name":{"kind":"Name","value":"location"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"geometry"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"coordinates"}}]}},{"kind":"Field","name":{"kind":"Name","value":"properties"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"address"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"privacy"}},{"kind":"Field","name":{"kind":"Name","value":"startDate"}},{"kind":"Field","name":{"kind":"Name","value":"tag"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"tags"}}]}},{"kind":"Field","name":{"kind":"Name","value":"time"}},{"kind":"Field","name":{"kind":"Name","value":"organizer"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"image"}}]}},{"kind":"Field","name":{"kind":"Name","value":"comments"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"author"}},{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"parentId"}}]}}]}}]}}]} as unknown as DocumentNode<GetEventByIdQuery, GetEventByIdQueryVariables>;
 export const IsJoinedByUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"isJoinedByUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"ownerId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"isJoinedByUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"owner_id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"ownerId"}}}]}]}}]} as unknown as DocumentNode<IsJoinedByUserQuery, IsJoinedByUserQueryVariables>;
 export const GetJoinedUsersByOwnerIdDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getJoinedUsersByOwnerId"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"ownerId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getJoinedUsersByOwnerId"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"ownerId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"ownerId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"ownerId"}},{"kind":"Field","name":{"kind":"Name","value":"ownerType"}},{"kind":"Field","name":{"kind":"Name","value":"user"}}]}}]}}]} as unknown as DocumentNode<GetJoinedUsersByOwnerIdQuery, GetJoinedUsersByOwnerIdQueryVariables>;
 export const IsLikedByUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"IsLikedByUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"ownerId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"isLikedByUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"owner_id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"ownerId"}}}]}]}}]} as unknown as DocumentNode<IsLikedByUserQuery, IsLikedByUserQueryVariables>;

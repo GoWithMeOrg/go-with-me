@@ -2,6 +2,7 @@ import { ObjectType, Field, ID } from '@nestjs/graphql';
 import { Document, Schema as MongoSchema } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { OwnerType } from 'src/common/enums/owner-type.enum';
+import { User } from 'src/modules/user/entities/user.entity';
 
 @ObjectType()
 @Schema({ timestamps: true })
@@ -9,9 +10,9 @@ export class Comment {
     @Field(() => ID)
     _id: MongoSchema.Types.ObjectId;
 
-    @Field(() => ID)
-    @Prop({ type: MongoSchema.Types.ObjectId, required: true })
-    author: MongoSchema.Types.ObjectId;
+    @Field(() => User)
+    @Prop({ type: MongoSchema.Types.ObjectId, ref: 'User', required: true })
+    author: User;
 
     @Field(() => String)
     @Prop({ type: String, required: true })
@@ -25,9 +26,15 @@ export class Comment {
     @Prop({ type: String, enum: OwnerType, required: true })
     ownerType: OwnerType;
 
-    @Field(() => ID, { nullable: true })
+    @Field(() => Comment, { nullable: true })
     @Prop({ type: MongoSchema.Types.ObjectId, ref: 'Comment', default: null })
-    parentId?: MongoSchema.Types.ObjectId;
+    parent?: Comment;
+
+    @Field()
+    createdAt: Date;
+
+    @Field()
+    updatedAt: Date;
 }
 
 export type CommentDocument = Comment & Document;

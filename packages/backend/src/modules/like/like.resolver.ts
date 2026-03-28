@@ -1,4 +1,4 @@
-import { Resolver, Mutation, Args, Query, ID } from '@nestjs/graphql';
+import { Resolver, Mutation, Args, Query, ID, Int } from '@nestjs/graphql';
 import { LikeService } from './like.service';
 import { Like } from './entities/like.entity';
 import { Schema as MongoSchema } from 'mongoose';
@@ -22,7 +22,14 @@ export class LikeResolver {
     async getLikesByOwnerId(
         @Args('ownerId', { type: () => ID }) ownerId: MongoSchema.Types.ObjectId
     ) {
-        return this.likeService.getLikeByOwnerId(ownerId);
+        return this.likeService.getLikesByOwnerId(ownerId);
+    }
+
+    @Query(() => Int)
+    async getLikesCount(
+        @Args('ownerId', { type: () => ID }) ownerId: MongoSchema.Types.ObjectId
+    ): Promise<number> {
+        return this.likeService.getLikesCount(ownerId);
     }
 
     @Query(() => Boolean, { nullable: true })

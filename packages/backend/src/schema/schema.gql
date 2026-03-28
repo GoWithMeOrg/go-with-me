@@ -18,11 +18,13 @@ type Category {
 
 type Comment {
   _id: ID!
-  author: ID!
+  author: User!
   content: String!
+  createdAt: DateTime!
   ownerId: ID!
   ownerType: String!
-  parentId: ID
+  parent: Comment
+  updatedAt: DateTime!
 }
 
 type CompanionRequest {
@@ -322,6 +324,7 @@ type Query {
   getEventsByOrganizer(organizer_id: ID!): [Event!]!
   getJoinedUsersByOwnerId(ownerId: ID!): [Join!]!
   getLikesByOwnerId(ownerId: ID!): [Like!]!
+  getLikesCount(ownerId: ID!): Int!
 
   """Поиск интересов по id"""
   interestById(interest_id: ID!): Interest!

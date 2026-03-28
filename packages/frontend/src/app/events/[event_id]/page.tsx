@@ -2,15 +2,10 @@
 
 import { GET_EVENTS_BY_ID } from '@/app/graphql/queries/events';
 import { Event as EventType } from '@/app/graphql/types';
-import { useSessionGQL } from '@/app/providers/session/hooks/useSesssionGQL';
-import type { IComment } from '@/app/types/Comment';
 import Spinner from '@/assets/icons/spinner.svg';
-import { ButtonBack } from '@/components/shared/ButtonBack';
 import { Backdrop } from '@/components/widgets/Backdrop';
 import { CommentsList } from '@/components/widgets/CommentsList';
 import { Event } from '@/components/widgets/Event';
-import { useUserID } from '@/hooks/useUserID';
-import { gql } from '@apollo/client';
 import { useQuery } from '@apollo/client/react';
 import type { NextPage } from 'next';
 import { useParams } from 'next/navigation';
@@ -21,83 +16,14 @@ interface PageProps {
     params: Promise<{ event_id: string }>;
 }
 
-interface GetEventByIdData {
-    event: EventType;
-    comments: IComment[];
-}
-
-// const GET_EVENT_BY_ID = gql`
-//     #graphql
-//     query GetEventById($id: ID!) {
-//         event(id: $id) {
-//             _id
-//             organizer_id
-//             organizer {
-//                 _id
-//                 name
-//                 email
-//                 image
-//             }
-//             name
-//             location {
-//                 coordinates
-//                 properties {
-//                     address
-//                 }
-//             }
-//             status
-//             description
-//             startDate
-//             endDate
-//             time
-//             categories
-//             types
-//             tags
-//             image
-//         }
-//         comments(event_id: $id) {
-//             _id
-//             author {
-//                 _id
-//                 name
-//                 email
-//             }
-//             content
-//             createdAt
-//             updatedAt
-//             likes
-//             replies {
-//                 _id
-//                 author {
-//                     _id
-//                     name
-//                     email
-//                 }
-//                 content
-//                 createdAt
-//                 updatedAt
-//                 likes
-//             }
-//         }
-//     }
-// `;
-
 const EventPage: NextPage<PageProps> = () => {
     const params = useParams();
-    const { status } = useUserID();
 
     const event_id = params.event_id as string;
 
-    const { data, error, loading, refetch } = useQuery<{ getEventById: EventType }>(
-        GET_EVENTS_BY_ID,
-        {
-            variables: { eventId: event_id },
-        }
-    );
-
-    console.log(data);
-
-    refetch();
+    const { data, error, loading } = useQuery<{ getEventById: EventType }>(GET_EVENTS_BY_ID, {
+        variables: { eventId: event_id },
+    });
 
     if (loading && !error) {
         return <Spinner className={classes.spinner} />;
@@ -109,15 +35,10 @@ const EventPage: NextPage<PageProps> = () => {
 
     return (
         <section className={classes.event}>
-            {status === 'authenticated' && <ButtonBack />}
-
             <Backdrop marginTop={430} marginBottom={274} contentLoading={loading}>
                 {data && <Event event={data.getEventById} />}
 
-                {/* @ts-ignore */}
-                {/* {status === 'authenticated' && data?.comments && (
-                    <CommentsList {...{ comments: data.comments, event_id, refetch }} />
-                )} */}
+                {event_id && <CommentsList event_id={event_id} />}
             </Backdrop>
         </section>
     );

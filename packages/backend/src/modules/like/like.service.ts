@@ -27,8 +27,12 @@ export class LikeService {
         }
     }
 
-    async getLikeByOwnerId(ownerId: MongoSchema.Types.ObjectId) {
+    async getLikesByOwnerId(ownerId: MongoSchema.Types.ObjectId) {
         return this.likeModel.find({ ownerId }).exec();
+    }
+
+    async getLikesCount(ownerId: MongoSchema.Types.ObjectId): Promise<number> {
+        return this.likeModel.countDocuments({ ownerId }).exec();
     }
 
     async isLikedByUser(

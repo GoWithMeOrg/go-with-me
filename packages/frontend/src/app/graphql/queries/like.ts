@@ -6,6 +6,12 @@ export const IS_LIKED_BY_USER = gql`
     }
 `;
 
+export const GET_LIKES_COUNT = gql`
+    query GetLikesCount($ownerId: ID!) {
+        getLikesCount(ownerId: $ownerId)
+    }
+`;
+
 // export const GET_LIKED_EVENTS = gql`
 //     query GetLikedEvents($userId: ID!) {
 //         events: likedEvents(user_id: $userId) {

@@ -6,12 +6,27 @@ import { LikeProps } from '@/components/widgets/Like/interfaces/LikeProps';
 
 import classes from './Like.module.css';
 
-export const Like: FC<LikeProps> = ({ owner_id, ownerType }) => {
-    const { handleLike, isLiked } = useLike({ owner_id, ownerType });
+export const Like: FC<LikeProps> = ({ owner_id, ownerType, count }) => {
+    const { handleLike, isLiked, likesCount } = useLike({ owner_id, ownerType });
+
+    const likeCss = [classes.like, ownerType === 'Event' && classes.likeEvent]
+        .filter(Boolean)
+        .join(' ');
+
+    const likedCss = [classes.liked, ownerType === 'Event' && classes.likedEvent]
+        .filter(Boolean)
+        .join(' ');
+
     return (
-        <Button className={classes.like} onClick={handleLike}>
-            <Heart className={isLiked ? classes.liked : ''} />
-        </Button>
+        <div className={classes.likeContainer}>
+            <Button className={likeCss} resetDefaultStyles onClick={handleLike}>
+                <Heart className={isLiked ? likedCss : ''} />
+            </Button>
+
+            {count && likesCount !== undefined && likesCount > 0 && (
+                <span className={classes.count}>{likesCount}</span>
+            )}
+        </div>
     );
 };
 
