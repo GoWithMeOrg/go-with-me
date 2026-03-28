@@ -12,6 +12,7 @@ export const GET_COMMENTS_BY_OWNER_ID = gql`
             }
             content
             createdAt
+            ownerId
         }
     }
 `;

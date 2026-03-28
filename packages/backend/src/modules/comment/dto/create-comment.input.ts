@@ -21,5 +21,5 @@ export class CreateCommentInput {
     @Field(() => ID, { nullable: true })
     @IsMongoId()
     @IsOptional()
-    parentId?: MongoSchema.Types.ObjectId;
+    parent?: MongoSchema.Types.ObjectId;
 }

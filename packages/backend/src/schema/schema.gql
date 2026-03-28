@@ -49,7 +49,7 @@ input CreateCommentInput {
   content: String!
   ownerId: ID!
   ownerType: OwnerType!
-  parentId: ID
+  parent: ID
 }
 
 input CreateEventInput {
@@ -212,6 +212,7 @@ type Mutation {
   ): Resource!
   rejectCompanionRequest(request_id: ID!): CompanionRequest!
   removeCategories(category_id: ID!): Category!
+  removeComment(commentId: ID!): Boolean!
   removeCompanion(companion_id: ID!, user_id: ID!): Boolean!
 
   """Удалить событие"""
@@ -443,7 +444,7 @@ input UpdateCommentInput {
   content: String
   ownerId: ID
   ownerType: OwnerType
-  parentId: ID
+  parent: ID
 }
 
 input UpdateEventInput {

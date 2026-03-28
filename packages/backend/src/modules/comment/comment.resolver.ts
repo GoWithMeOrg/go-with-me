@@ -37,6 +37,14 @@ export class CommentResolver {
         return this.commentService.updateComment(commentId, updateCommentInput, user._id);
     }
 
+    @Mutation(() => Boolean)
+    async removeComment(
+        @Args('commentId', { type: () => ID }) commentId: MongoSchema.Types.ObjectId,
+        @CurrentUser() user: User
+    ): Promise<boolean> {
+        return this.commentService.removeComment(commentId, user._id);
+    }
+
     @Query(() => [Comment])
     async getCommentsByOwnerId(
         @Args('ownerId', { type: () => ID }) ownerId: MongoSchema.Types.ObjectId

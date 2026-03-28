@@ -26,7 +26,7 @@ export class CommentService {
     }
 
     async createReply(author: MongoSchema.Types.ObjectId, createCommentInput: CreateCommentInput) {
-        const { parentId } = createCommentInput;
+        const { parent: parentId } = createCommentInput;
 
         // Проверяем что parentId передан
         if (!parentId) {
@@ -34,15 +34,15 @@ export class CommentService {
         }
 
         // Проверяем что родительский комментарий существует
-        const parent = await this.commentModel.findById(parentId);
-        if (!parent) {
+        const parentComment = await this.commentModel.findById(parentId);
+        if (!parentComment) {
             throw new NotFoundException('Комментарий не найден');
         }
 
         // Защита от вложенных ответов
-        // if (parent.parentId) {
-        //     throw new BadRequestException('Нельзя отвечать на ответ');
-        // }
+        if (parentComment.parent) {
+            throw new BadRequestException('Нельзя отвечать на ответ');
+        }
 
         const reply = new this.commentModel({
             author,
@@ -83,5 +83,23 @@ export class CommentService {
 
     async getCommentsByOwnerId(ownerId: MongoSchema.Types.ObjectId) {
         return this.commentModel.find({ ownerId }).populate('author').exec();
+    }
+
+    async removeComment(
+        commentId: MongoSchema.Types.ObjectId,
+        userId: MongoSchema.Types.ObjectId
+    ): Promise<boolean> {
+        const comment = await this.commentModel.findById(commentId);
+        if (!comment) {
+            throw new NotFoundException('Комментарий не найден');
+        }
+
+        // Проверка авторства
+        if (comment.author._id.toString() !== userId.toString()) {
+            throw new BadRequestException('Только автор может удалить свой комментарий');
+        }
+
+        const result = await this.commentModel.findOneAndDelete({ _id: commentId });
+        return !!result;
     }
 }
