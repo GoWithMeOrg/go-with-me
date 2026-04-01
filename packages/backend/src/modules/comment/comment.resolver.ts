@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, ID, ResolveField, Parent, Int } from '@nestjs/graphql';
 import { Schema as MongoSchema } from 'mongoose';
 
 import { CommentService } from './comment.service';
@@ -6,11 +6,15 @@ import { Comment } from './entities/comment.entity';
 import { CreateCommentInput } from './dto/create-comment.input';
 import { UpdateCommentInput } from './dto/update-comment.input';
 import { User } from '../user/entities/user.entity';
+import { UserService } from '../user/user.service';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 
 @Resolver(() => Comment)
 export class CommentResolver {
-    constructor(private readonly commentService: CommentService) {}
+    constructor(
+        private readonly commentService: CommentService,
+        private readonly userService: UserService
+    ) {}
 
     @Mutation(() => Comment)
     createComment(
@@ -47,8 +51,46 @@ export class CommentResolver {
 
     @Query(() => [Comment])
     async getCommentsByOwnerId(
-        @Args('ownerId', { type: () => ID }) ownerId: MongoSchema.Types.ObjectId
+        @Args('ownerId', { type: () => ID }) ownerId: MongoSchema.Types.ObjectId,
+        @Args('limit', { type: () => Int }) limit: number,
+        @Args('offset', { type: () => Int }) offset: number
     ): Promise<Comment[]> {
-        return this.commentService.getCommentsByOwnerId(ownerId);
+        return this.commentService.getCommentsByOwnerId(ownerId, limit, offset);
+    }
+
+    @Query(() => [Comment])
+    async getParrentCommentsByOwnerId(
+        @Args('ownerId', { type: () => ID }) ownerId: MongoSchema.Types.ObjectId,
+        @Args('limit', { type: () => Int, nullable: true }) limit?: number,
+        @Args('offset', { type: () => Int, nullable: true }) offset?: number
+    ): Promise<Comment[]> {
+        return this.commentService.getParrentCommentsByOwnerId(ownerId, limit, offset);
+    }
+
+    @Query(() => [Comment])
+    async getChildrenCommentsByParrentId(
+        @Args('parentId', { type: () => ID }) parentId: MongoSchema.Types.ObjectId,
+        @Args('limit', { type: () => Int, nullable: true }) limit?: number,
+        @Args('offset', { type: () => Int, nullable: true }) offset?: number
+    ): Promise<Comment[]> {
+        return this.commentService.getChildrenCommentsByParrentId(parentId, limit, offset);
+    }
+
+    @ResolveField(() => User, { name: 'author' })
+    async getAuthor(@Parent() comment: Comment): Promise<User> {
+        const user = await this.userService.getUserById(comment.author);
+        return user as User;
+    }
+
+    @ResolveField(() => Comment, { nullable: true })
+    async parent(@Parent() comment: Comment): Promise<Comment | null> {
+        if (!comment.parent) {
+            return null;
+        }
+
+        const parentComment = await this.commentService.findById(
+            comment.parent as MongoSchema.Types.ObjectId
+        );
+        return parentComment as Comment;
     }
 }

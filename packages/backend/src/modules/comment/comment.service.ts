@@ -13,16 +13,34 @@ export class CommentService {
         private commentModel: Model<CommentDocument>
     ) {}
 
+    // async createComment(
+    //     author: MongoSchema.Types.ObjectId,
+    //     createCommentInput: CreateCommentInput
+    // ) {
+    //     const createComment = new this.commentModel({
+    //         author,
+    //         ...createCommentInput,
+    //     });
+    //     return await createComment.save();
+    // }
+
     async createComment(
         author: MongoSchema.Types.ObjectId,
         createCommentInput: CreateCommentInput
-    ) {
-        const createComment = new this.commentModel({
+    ): Promise<Comment> {
+        const comment = await this.commentModel.create({
             author,
             ...createCommentInput,
         });
-        const savedComment = await createComment.save();
-        return await savedComment.populate('author');
+
+        //Инкрементируем счётчик родителя если это ответ
+        if (createCommentInput.parent) {
+            await this.commentModel.findByIdAndUpdate(createCommentInput.parent, {
+                $inc: { repliesCount: 1 },
+            });
+        }
+
+        return comment;
     }
 
     async createReply(author: MongoSchema.Types.ObjectId, createCommentInput: CreateCommentInput) {
@@ -40,17 +58,16 @@ export class CommentService {
         }
 
         // Защита от вложенных ответов
-        if (parentComment.parent) {
-            throw new BadRequestException('Нельзя отвечать на ответ');
-        }
+        // if (parentComment.parent) {
+        //     throw new BadRequestException('Нельзя отвечать на ответ');
+        // }
 
-        const reply = new this.commentModel({
-            author,
-            ...createCommentInput,
-        });
+        const [reply] = await Promise.all([
+            this.commentModel.create({ author, ...createCommentInput }),
+            this.commentModel.findByIdAndUpdate(parentId, { $inc: { repliesCount: 1 } }),
+        ]);
 
-        const savedReply = await reply.save();
-        return await savedReply.populate('author');
+        return reply;
     }
 
     async updateComment(
@@ -68,11 +85,13 @@ export class CommentService {
             throw new BadRequestException('Только автор может редактировать свой комментарий');
         }
 
-        const updatedComment = await this.commentModel
-            .findByIdAndUpdate(commentId, updateCommentInput, {
+        const updatedComment = await this.commentModel.findByIdAndUpdate(
+            commentId,
+            updateCommentInput,
+            {
                 new: true,
-            })
-            .populate('author');
+            }
+        );
 
         if (!updatedComment) {
             throw new NotFoundException('Комментарий не найден');
@@ -81,8 +100,51 @@ export class CommentService {
         return updatedComment;
     }
 
-    async getCommentsByOwnerId(ownerId: MongoSchema.Types.ObjectId) {
-        return this.commentModel.find({ ownerId }).populate('author').exec();
+    async getCommentsByOwnerId(
+        ownerId: MongoSchema.Types.ObjectId,
+        limit: number,
+        offset: number
+    ): Promise<Comment[]> {
+        return this.commentModel
+            .find({ ownerId })
+            .populate('parent')
+            .sort({ createdAt: 1 })
+            .skip(offset)
+            .limit(limit)
+            .lean()
+            .exec();
+    }
+
+    async getParrentCommentsByOwnerId(
+        ownerId: MongoSchema.Types.ObjectId,
+        limit?: number,
+        offset?: number
+    ): Promise<Comment[]> {
+        return this.commentModel
+            .find({ ownerId, parent: null })
+            .sort({ createdAt: 1 })
+            .skip(offset || 0)
+            .limit(limit || 0)
+            .lean()
+            .exec();
+    }
+
+    async findById(id: MongoSchema.Types.ObjectId): Promise<Comment | null> {
+        return this.commentModel.findById(id).populate('parent').lean().exec();
+    }
+
+    async getChildrenCommentsByParrentId(
+        parentId: MongoSchema.Types.ObjectId,
+        limit?: number,
+        offset?: number
+    ): Promise<Comment[]> {
+        return this.commentModel
+            .find({ parent: parentId })
+            .sort({ createdAt: 1 })
+            .skip(offset || 0)
+            .limit(limit || 0)
+            .lean()
+            .exec();
     }
 
     async removeComment(
@@ -95,8 +157,15 @@ export class CommentService {
         }
 
         // Проверка авторства
-        if (comment.author._id.toString() !== userId.toString()) {
+        if (comment.author.toString() !== userId.toString()) {
             throw new BadRequestException('Только автор может удалить свой комментарий');
+        }
+
+        // Уменьшаем repliesCount у родителя если это дочерний комментарий
+        if (comment.parent) {
+            await this.commentModel.findByIdAndUpdate(comment.parent, {
+                $inc: { repliesCount: -1 },
+            });
         }
 
         const result = await this.commentModel.findOneAndDelete({ _id: commentId });

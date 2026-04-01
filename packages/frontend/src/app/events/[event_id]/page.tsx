@@ -35,11 +35,11 @@ const EventPage: NextPage<PageProps> = () => {
 
     return (
         <section className={classes.event}>
-            <Backdrop marginTop={430} marginBottom={274} contentLoading={loading}>
-                {data && <Event event={data.getEventById} />}
+            {/* <Backdrop marginTop={430} marginBottom={274} contentLoading={loading}> */}
+            {data && <Event event={data.getEventById} />}
 
-                {event_id && <CommentsList event_id={event_id} />}
-            </Backdrop>
+            {event_id && <CommentsList event_id={event_id} />}
+            {/* </Backdrop> */}
         </section>
     );
 };

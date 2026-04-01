@@ -5,12 +5,14 @@ export const CREATE_COMMENT_MUTATION = gql`
         createComment(createCommentInput: $createCommentInput) {
             _id
             author {
+                _id
                 firstName
-                image
                 lastName
+                image
             }
             content
             createdAt
+            repliesCount
         }
     }
 `;

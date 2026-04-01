@@ -9,13 +9,14 @@ import classes from './CommentForm.module.css';
 
 interface CommentFormProps {
     onSaveComment: (content: string) => Promise<any>;
+    onClose?: () => void;
 }
 
 interface Inputs {
     comment: string;
 }
 
-export const CommentForm: FC<CommentFormProps> = ({ onSaveComment }) => {
+export const CommentForm: FC<CommentFormProps> = ({ onSaveComment, onClose }) => {
     const {
         handleSubmit,
         control,
@@ -33,6 +34,7 @@ export const CommentForm: FC<CommentFormProps> = ({ onSaveComment }) => {
             if (!saveCommentResponse) return;
             console.log('EventPage: ', saveCommentResponse);
             reset();
+            onClose?.();
         } catch (error) {
             console.error('EventPage: ', error);
         }

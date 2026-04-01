@@ -24,6 +24,7 @@ type Comment {
   ownerId: ID!
   ownerType: String!
   parent: Comment
+  repliesCount: Float!
   updatedAt: DateTime!
 }
 
@@ -315,7 +316,8 @@ type Query {
 
   """Получить все активные события с пагинацией и сортировкой"""
   getAllEvents(limit: Int, offset: Int, sort: String): [Event!]!
-  getCommentsByOwnerId(ownerId: ID!): [Comment!]!
+  getChildrenCommentsByParrentId(limit: Int, offset: Int, parentId: ID!): [Comment!]!
+  getCommentsByOwnerId(limit: Int!, offset: Int!, ownerId: ID!): [Comment!]!
   getCompanionRequests(user_id: ID!): [CompanionRequest!]!
 
   """Получить событие по id"""
@@ -326,6 +328,7 @@ type Query {
   getJoinedUsersByOwnerId(ownerId: ID!): [Join!]!
   getLikesByOwnerId(ownerId: ID!): [Like!]!
   getLikesCount(ownerId: ID!): Int!
+  getParrentCommentsByOwnerId(limit: Int, offset: Int, ownerId: ID!): [Comment!]!
 
   """Поиск интересов по id"""
   interestById(interest_id: ID!): Interest!
