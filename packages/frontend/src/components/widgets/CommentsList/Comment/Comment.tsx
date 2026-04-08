@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { Comment as CommentType } from '@/app/graphql/types';
 import ArrowReply from '@/assets/icons/arrowReply.svg';
 import Spinner from '@/assets/icons/spinner.svg';
@@ -12,7 +12,6 @@ import dayjs from 'dayjs';
 
 import { Like } from '../../Like';
 import { CommentForm } from '../CommentForm';
-import { ReplyTo } from '../types';
 import { useCommentReplies } from './hooks/useChildrenComments';
 import { useComment } from './hooks/useComment';
 
@@ -20,108 +19,100 @@ import classes from './Comment.module.css';
 
 interface CommentProps {
     comment: CommentType;
+    depth?: number; // 0 = корневой, 1+ = ответ
 }
 
-export const Comment: FC<CommentProps> = ({ comment }) => {
+export const Comment: FC<CommentProps> = ({ comment, depth = 0 }) => {
     const { user_id } = useUserID();
-    const [replyToState, setReplyToState] = useState<ReplyTo | null>(null);
 
-    const { onDeleteComment, onSaveCommentReply } = useComment({
-        owner_id: comment.ownerId,
-        parent_id: comment._id,
-    });
+    const {
+        onDeleteComment,
+        onSaveCommentReply,
+        replyToState,
+        onClickReplyButton,
+        closeReplyForm,
+    } = useComment({ comment, owner_id: comment.ownerId });
 
     const { replies, loading, loadMore, hasMore, remainingCount } = useCommentReplies(
         comment._id,
         comment.repliesCount
     );
 
-    const onClickReplyButton = () => {
-        const replyTo: ReplyTo = {
-            id: comment._id,
-            userName: `${comment.author.firstName} ${comment.author.lastName}`,
-        };
-
-        // Повторный клик — закрывает форму ответа
-        if (replyToState?.id === comment._id) {
-            setReplyToState(null);
-        } else {
-            setReplyToState(replyTo);
-        }
-    };
+    // Выносим в переменную — рендерим в разных местах в зависимости от depth
+    const repliesSection = comment.repliesCount > 0 && (
+        <ul className={classes.replies}>
+            {replies?.map((reply) => (
+                // Всё глубже 0 получает depth=1 — ответы на ответы не уходят на 3й уровень
+                <Comment key={reply._id} comment={reply} depth={Math.min(depth + 1, 1)} />
+            ))}
+            {loading && (
+                <MessageContainer>
+                    <Spinner />
+                </MessageContainer>
+            )}
+            {loadMore && hasMore && (
+                <button className={classes.loadMoreReplies} onClick={loadMore}>
+                    Show {remainingCount} more replies
+                </button>
+            )}
+        </ul>
+    );
 
     return (
-        <div className={classes.comment} id={`comment-id-${comment._id}`}>
-            <div className={classes.avatarContainer}>
-                <Avatar
-                    className={classes.avatar}
-                    name={`${comment.author.firstName} ${comment.author.lastName}`}
-                    image={comment.author.image as string}
-                    scale={0.75}
-                    id={comment.author._id}
-                />
-            </div>
-            <div className={classes.contentContainer}>
-                <div className={classes.userName}>
-                    <span>{`${comment.author.firstName} ${comment.author.lastName}`}</span>
-                    {comment.parent && (
-                        <a href={`#comment-id-${comment.parent._id}`}>
-                            <Span
-                                className={classes.replyTo}
-                                title={`ответ на ${comment.parent.author?.firstName ?? ''} ${comment.parent.author?.lastName ?? ''}`}
-                            />
-                        </a>
-                    )}
-
-                    <Span title={dayjs(comment.createdAt).format('DD MMMM YYYY HH:mm')} />
-                </div>
-
-                <p className={classes.commentText}>{comment.content}</p>
-
-                <div className={classes.likesContainer}>
-                    <Like owner_id={comment._id} ownerType="Comment" count />
-
-                    <button className={classes.replyButton} onClick={onClickReplyButton}>
-                        <ArrowReply />
-                    </button>
-
-                    {user_id === comment.author._id && (
-                        <button
-                            className={classes.deleteButton}
-                            onClick={() => onDeleteComment(comment._id)}
-                        >
-                            удалить
-                        </button>
-                    )}
-                </div>
-
-                {/* форма ответа появляется под конкретным комментарием */}
-                {replyToState?.id === comment._id && (
-                    <CommentForm
-                        onSaveComment={onSaveCommentReply}
-                        onClose={() => setReplyToState(null)}
+        // Fragment нужен, чтобы depth >= 1 мог вынести repliesSection наружу как сиблинг
+        <>
+            <div className={classes.comment} id={`comment-id-${comment._id}`}>
+                <div className={classes.avatarContainer}>
+                    <Avatar
+                        className={classes.avatar}
+                        name={`${comment.author.firstName} ${comment.author.lastName}`}
+                        image={comment.author.image as string}
+                        scale={0.75}
+                        id={comment.author._id}
                     />
-                )}
-
-                {/* потомки рендерятся рекурсивно — первые 3 показываем сразу */}
-                {comment.repliesCount > 0 && (
-                    <ul className={classes.replies}>
-                        {replies?.map((reply) => (
-                            <Comment key={reply._id} comment={reply} />
-                        ))}
-                        {loading && (
-                            <MessageContainer>
-                                <Spinner />
-                            </MessageContainer>
+                </div>
+                <div className={classes.contentContainer}>
+                    <div className={classes.userName}>
+                        <span>{`${comment.author.firstName} ${comment.author.lastName}`}</span>
+                        {comment.parent && (
+                            <a href={`#comment-id-${comment.parent._id}`}>
+                                <Span
+                                    className={classes.replyTo}
+                                    title={`ответ на ${comment.parent.author?.firstName ?? ''} ${comment.parent.author?.lastName ?? ''}`}
+                                />
+                            </a>
                         )}
-                        {loadMore && hasMore && (
-                            <button className={classes.loadMoreReplies} onClick={loadMore}>
-                                Show {remainingCount} more replies
+                        <Span title={dayjs(comment.createdAt).format('DD MMMM YYYY HH:mm')} />
+                    </div>
+
+                    <p className={classes.commentText}>{comment.content}</p>
+
+                    <div className={classes.likesContainer}>
+                        <Like owner_id={comment._id} ownerType="Comment" count />
+                        <button className={classes.replyButton} onClick={onClickReplyButton}>
+                            <ArrowReply />
+                        </button>
+                        {user_id === comment.author._id && (
+                            <button
+                                className={classes.deleteButton}
+                                onClick={() => onDeleteComment(comment._id)}
+                            >
+                                удалить
                             </button>
                         )}
-                    </ul>
-                )}
+                    </div>
+
+                    {replyToState?.id === comment._id && (
+                        <CommentForm onSaveComment={onSaveCommentReply} onClose={closeReplyForm} />
+                    )}
+
+                    {/* depth === 0: ответы рендерятся ВНУТРИ — получают отступ (уровень 1) */}
+                    {depth === 0 && repliesSection}
+                </div>
             </div>
-        </div>
+
+            {/* depth >= 1: ответы рендерятся СНАРУЖИ как сиблинги в ul родителя — остаются на уровне 1 */}
+            {depth >= 1 && repliesSection}
+        </>
     );
 };

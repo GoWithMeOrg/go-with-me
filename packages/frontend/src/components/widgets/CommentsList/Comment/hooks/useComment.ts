@@ -1,23 +1,21 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import {
     CREATE_COMMENT_MUTATION,
     CREATE_REPLY_MUTATION,
     REMOVE_COMMENT_MUTATION,
 } from '@/app/graphql/mutations/comment';
-import { OwnerType } from '@/app/graphql/types';
+import { OwnerType, type Comment } from '@/app/graphql/types';
 import { useMutation } from '@apollo/client/react';
 
+import { ReplyTo } from '../../types';
+import { withLoading } from '../helpers/withLoading';
 import { useCommentReplies } from './useChildrenComments';
 
-export interface UseCommentProps {
-    owner_id: string;
-    parent_id?: string;
-}
+export const useComment = ({ owner_id, comment }: { owner_id?: string; comment?: Comment }) => {
+    const [loading, setLoading] = useState(false);
+    const [replyToState, setReplyToState] = useState<ReplyTo | null>(null);
 
-export const useComment = ({ owner_id, parent_id }: UseCommentProps) => {
-    const [loading, setLoading] = useState<boolean>(false);
-
-    const { removeReply } = useCommentReplies(parent_id);
+    const { removeReply } = useCommentReplies(comment?._id ?? '');
 
     const [createComment] = useMutation(CREATE_COMMENT_MUTATION, {
         refetchQueries: ['GetParrentCommentsByOwnerId'],
@@ -25,65 +23,78 @@ export const useComment = ({ owner_id, parent_id }: UseCommentProps) => {
     });
 
     const [createCommentReply] = useMutation(CREATE_REPLY_MUTATION, {
-        refetchQueries: parent_id ? ['GetChildrenCommentsByParrentId'] : [],
+        refetchQueries: comment?._id ? ['GetChildrenCommentsByParrentId'] : [],
         awaitRefetchQueries: true,
     });
 
     const [removeComment] = useMutation(REMOVE_COMMENT_MUTATION, {
-        refetchQueries: parent_id
+        refetchQueries: comment?._id
             ? ['GetChildrenCommentsByParrentId', 'GetParrentCommentsByOwnerId']
             : ['GetParrentCommentsByOwnerId'],
         awaitRefetchQueries: true,
     });
 
-    const onSaveComment = async (content: string) => {
-        setLoading(true);
-        const saveCommentResponse = await createComment({
-            variables: {
-                createCommentInput: {
-                    content,
-                    ownerId: owner_id,
-                    ownerType: OwnerType.Event,
-                },
-            },
-        });
-        if (!saveCommentResponse) {
-            setLoading(false);
-            return;
-        }
-        setLoading(false);
-        return saveCommentResponse;
-    };
+    const buildCommentInput = useCallback(
+        (content: string, withParent = false) => ({
+            content,
+            ownerId: owner_id,
+            ownerType: OwnerType.Event,
+            ...(withParent && comment?._id ? { parent: comment._id } : {}),
+        }),
+        [owner_id, comment?._id]
+    );
 
-    const onSaveCommentReply = async (content: string) => {
-        setLoading(true);
-        const saveCommentReply = await createCommentReply({
-            variables: {
-                createCommentInput: {
-                    content,
-                    ownerId: owner_id,
-                    ownerType: OwnerType.Event,
-                    parent: parent_id,
-                },
-            },
-        });
-        if (!saveCommentReply) {
-            setLoading(false);
-            return;
-        }
-        setLoading(false);
-        return saveCommentReply;
-    };
+    const onSaveComment = useCallback(
+        async (content: string) =>
+            withLoading(setLoading, () =>
+                createComment({
+                    variables: { createCommentInput: buildCommentInput(content) },
+                })
+            )(),
+        [createComment, buildCommentInput]
+    );
 
-    const onDeleteComment = async (comment_id: string) => {
-        setLoading(true);
-        try {
-            await removeComment({ variables: { commentId: comment_id } });
-            removeReply?.(comment_id);
-        } finally {
-            setLoading(false);
-        }
-    };
+    const onSaveCommentReply = useCallback(
+        async (content: string) =>
+            withLoading(setLoading, () =>
+                createCommentReply({
+                    variables: { createCommentInput: buildCommentInput(content, true) },
+                })
+            )(),
+        [createCommentReply, buildCommentInput]
+    );
 
-    return { onSaveComment, onSaveCommentReply, onDeleteComment, loading, setLoading };
+    const onDeleteComment = useCallback(
+        async (commentId: string) =>
+            withLoading(setLoading, async () => {
+                await removeComment({ variables: { commentId } });
+                removeReply?.(commentId);
+            })(),
+        [removeComment, removeReply]
+    );
+
+    const onClickReplyButton = useCallback(() => {
+        if (!comment?._id) return;
+
+        setReplyToState((prev) =>
+            prev?.id === comment._id
+                ? null
+                : {
+                      id: comment._id,
+                      userName: `${comment.author.firstName} ${comment.author.lastName}`,
+                  }
+        );
+    }, [comment]);
+
+    const closeReplyForm = useCallback(() => setReplyToState(null), []);
+
+    return {
+        onSaveComment,
+        onSaveCommentReply,
+        onDeleteComment,
+        loading,
+        replyToState,
+        onClickReplyButton,
+        closeReplyForm,
+    };
 };

@@ -1,7 +1,5 @@
 'use client';
 
-import { FC, useState } from 'react';
-import { Comment as CommentType } from '@/app/graphql/types';
 import Spinner from '@/assets/icons/spinner.svg';
 import { Button } from '@/components/shared/Button';
 import { MessageContainer } from '@/components/shared/MessageContainer/MessageContainer';
@@ -11,38 +9,12 @@ import { Comment } from './Comment';
 import { useComment } from './Comment/hooks/useComment';
 import { useParrentComments } from './Comment/hooks/useParrentComments';
 import { CommentForm } from './CommentForm';
-import { ReplyTo } from './types';
 
 import classes from './CommentsList.module.css';
 
-interface CommentsListProps {
-    event_id: string;
-}
-
-export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
-    const [limit, setLimit] = useState<number>(5);
-    const { comments, loading: parrenCoomentsLoading, loadMore } = useParrentComments(event_id, 5);
-
-    const { onSaveComment, onSaveCommentReply, loading, setLoading } = useComment({
-        owner_id: event_id,
-    });
-
-    const renderComment = (
-        comment: CommentType,
-        level: number = 0,
-        visited = new Set<string>()
-    ) => {
-        if (visited.has(comment._id)) return null;
-        visited.add(comment._id);
-
-        return (
-            <li key={comment._id} className={level > 0 ? classes.nestedComment : ''}>
-                <Comment comment={comment} />
-            </li>
-        );
-    };
-
-    // if (error) return <MessageContainer>Error: {error.message}</MessageContainer>;
+export const CommentsList = ({ event_id }: { event_id: string }) => {
+    const { comments, loading: parentCommentsLoading, loadMore } = useParrentComments(event_id, 5);
+    const { onSaveComment, loading } = useComment({ owner_id: event_id });
 
     return (
         <section className={classes.container}>
@@ -51,14 +23,18 @@ export const CommentsList: FC<CommentsListProps> = ({ event_id }) => {
             </Title>
             <CommentForm onSaveComment={onSaveComment} />
             <ul className={classes.commentsList}>
-                {comments?.map((comment) => renderComment(comment))}
+                {comments?.map((comment) => (
+                    <li key={comment._id}>
+                        <Comment comment={comment} />
+                    </li>
+                ))}
             </ul>
-            {loading && (
+            {(parentCommentsLoading || loading) && (
                 <MessageContainer>
                     <Spinner />
                 </MessageContainer>
             )}
-            {(comments?.length ?? 0) >= limit && (
+            {(comments?.length ?? 0) >= 5 && (
                 <Button className={classes.loadButton} disabled={loading} onClick={loadMore}>
                     Больше комментариев
                 </Button>
