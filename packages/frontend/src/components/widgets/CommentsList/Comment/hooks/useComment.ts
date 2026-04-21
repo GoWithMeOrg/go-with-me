@@ -17,10 +17,10 @@ export const useComment = ({ owner_id, comment }: { owner_id?: string; comment?:
 
     const { removeReply } = useCommentReplies(comment?._id ?? '');
 
-    const [createComment] = useMutation(CREATE_COMMENT_MUTATION, {
-        refetchQueries: ['GetParrentCommentsByOwnerId'],
-        awaitRefetchQueries: true,
-    });
+    // const [createComment] = useMutation(CREATE_COMMENT_MUTATION, {
+    //     refetchQueries: ['GetParrentCommentsByOwnerId'],
+    //     awaitRefetchQueries: true,
+    // });
 
     const [createCommentReply] = useMutation(CREATE_REPLY_MUTATION, {
         refetchQueries: comment?._id ? ['GetChildrenCommentsByParrentId'] : [],
@@ -28,9 +28,7 @@ export const useComment = ({ owner_id, comment }: { owner_id?: string; comment?:
     });
 
     const [removeComment] = useMutation(REMOVE_COMMENT_MUTATION, {
-        refetchQueries: comment?._id
-            ? ['GetChildrenCommentsByParrentId', 'GetParrentCommentsByOwnerId']
-            : ['GetParrentCommentsByOwnerId'],
+        refetchQueries: comment?._id ? ['GetChildrenCommentsByParrentId'] : [],
         awaitRefetchQueries: true,
     });
 
@@ -44,15 +42,15 @@ export const useComment = ({ owner_id, comment }: { owner_id?: string; comment?:
         [owner_id, comment?._id]
     );
 
-    const onSaveComment = useCallback(
-        async (content: string) =>
-            withLoading(setLoading, () =>
-                createComment({
-                    variables: { createCommentInput: buildCommentInput(content) },
-                })
-            )(),
-        [createComment, buildCommentInput]
-    );
+    // const onSaveComment = useCallback(
+    //     async (content: string) =>
+    //         withLoading(setLoading, () =>
+    //             createComment({
+    //                 variables: { createCommentInput: buildCommentInput(content) },
+    //             })
+    //         )(),
+    //     [createComment, buildCommentInput]
+    // );
 
     const onSaveCommentReply = useCallback(
         async (content: string) =>
@@ -89,7 +87,7 @@ export const useComment = ({ owner_id, comment }: { owner_id?: string; comment?:
     const closeReplyForm = useCallback(() => setReplyToState(null), []);
 
     return {
-        onSaveComment,
+        //onSaveComment,
         onSaveCommentReply,
         onDeleteComment,
         loading,

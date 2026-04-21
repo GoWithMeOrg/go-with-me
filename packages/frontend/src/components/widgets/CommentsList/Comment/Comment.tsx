@@ -7,12 +7,12 @@ import Spinner from '@/assets/icons/spinner.svg';
 import { Avatar } from '@/components/shared/Avatar';
 import { MessageContainer } from '@/components/shared/MessageContainer/MessageContainer';
 import { Span } from '@/components/shared/Span/Span';
+import { useCommentReplies } from '@/components/widgets/CommentsList/Comment/hooks/useChildrenComments';
+import { CommentForm } from '@/components/widgets/CommentsList/CommentForm';
+import { Like } from '@/components/widgets/Like';
 import { useUserID } from '@/hooks/useUserID';
 import dayjs from 'dayjs';
 
-import { Like } from '../../Like';
-import { CommentForm } from '../CommentForm';
-import { useCommentReplies } from './hooks/useChildrenComments';
 import { useComment } from './hooks/useComment';
 
 import classes from './Comment.module.css';
@@ -20,18 +20,16 @@ import classes from './Comment.module.css';
 interface CommentProps {
     comment: CommentType;
     depth?: number; // 0 = корневой, 1+ = ответ
+    onDelete?: (id: string) => void;
 }
 
-export const Comment: FC<CommentProps> = ({ comment, depth = 0 }) => {
+export const Comment: FC<CommentProps> = ({ comment, depth = 0, onDelete }) => {
     const { user_id } = useUserID();
 
-    const {
-        onDeleteComment,
-        onSaveCommentReply,
-        replyToState,
-        onClickReplyButton,
-        closeReplyForm,
-    } = useComment({ comment, owner_id: comment.ownerId });
+    const { onSaveCommentReply, replyToState, onClickReplyButton, closeReplyForm } = useComment({
+        comment,
+        owner_id: comment.ownerId,
+    });
 
     const { replies, loading, loadMore, hasMore, remainingCount } = useCommentReplies(
         comment._id,
@@ -59,7 +57,7 @@ export const Comment: FC<CommentProps> = ({ comment, depth = 0 }) => {
     );
 
     return (
-        // Fragment нужен, чтобы depth >= 1 мог вынести repliesSection наружу как сиблинг
+        // нужен, чтобы depth >= 1 мог вынести repliesSection наружу как сиблинг
         <>
             <div className={classes.comment} id={`comment-id-${comment._id}`}>
                 <div className={classes.avatarContainer}>
@@ -95,7 +93,7 @@ export const Comment: FC<CommentProps> = ({ comment, depth = 0 }) => {
                         {user_id === comment.author._id && (
                             <button
                                 className={classes.deleteButton}
-                                onClick={() => onDeleteComment(comment._id)}
+                                onClick={() => onDelete?.(comment._id)}
                             >
                                 удалить
                             </button>

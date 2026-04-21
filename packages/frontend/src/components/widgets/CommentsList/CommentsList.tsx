@@ -13,8 +13,14 @@ import { CommentForm } from './CommentForm';
 import classes from './CommentsList.module.css';
 
 export const CommentsList = ({ event_id }: { event_id: string }) => {
-    const { comments, loading: parentCommentsLoading, loadMore } = useParrentComments(event_id, 5);
-    const { onSaveComment, loading } = useComment({ owner_id: event_id });
+    const {
+        comments,
+        loading: parentCommentsLoading,
+        loadMore,
+        hasMore,
+        onSaveComment,
+        onDeleteComment,
+    } = useParrentComments(event_id);
 
     return (
         <section className={classes.container}>
@@ -25,18 +31,22 @@ export const CommentsList = ({ event_id }: { event_id: string }) => {
             <ul className={classes.commentsList}>
                 {comments?.map((comment) => (
                     <li key={comment._id}>
-                        <Comment comment={comment} />
+                        <Comment comment={comment} onDelete={onDeleteComment} />
                     </li>
                 ))}
             </ul>
-            {(parentCommentsLoading || loading) && (
+            {(parentCommentsLoading || parentCommentsLoading) && (
                 <MessageContainer>
                     <Spinner />
                 </MessageContainer>
             )}
-            {(comments?.length ?? 0) >= 5 && (
-                <Button className={classes.loadButton} disabled={loading} onClick={loadMore}>
-                    Больше комментариев
+            {hasMore && (
+                <Button
+                    className={classes.loadButton}
+                    disabled={parentCommentsLoading}
+                    onClick={loadMore}
+                >
+                    LOAD MORE COMMENTS
                 </Button>
             )}
         </section>
