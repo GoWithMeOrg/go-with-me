@@ -30,13 +30,11 @@ export const CommentForm: FC<CommentFormProps> = ({ onSaveComment, onClose }) =>
 
     const onSubmit: SubmitHandler<Inputs> = async ({ comment }) => {
         try {
-            const saveCommentResponse = await onSaveComment(comment);
-            if (!saveCommentResponse) return;
-            console.log('EventPage: ', saveCommentResponse);
+            await onSaveComment(comment);
             reset();
             onClose?.();
         } catch (error) {
-            console.error('EventPage: ', error);
+            console.error('error:', error);
         }
     };
 
@@ -44,7 +42,7 @@ export const CommentForm: FC<CommentFormProps> = ({ onSaveComment, onClose }) =>
         <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
             <label>
                 <Textarea
-                    rows={8}
+                    rows={6}
                     resizeNone={true}
                     error={Boolean(errors.comment)}
                     placeholder="Твой комментарий ..."

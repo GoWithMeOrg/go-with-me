@@ -13,17 +13,17 @@ export const Textarea: FC<TextareaProps> = ({
     className,
     resizeNone,
     error,
-    value,
+    rows = 6,
     ...rest
 }) => {
-    const textareaCssString: string = useMemo(() => {
-        let cssString = '';
-        if (!resetDefaultStyles) cssString += styles.textarea;
-        if (className) cssString += ' ' + className;
-        if (resizeNone) cssString += ' ' + styles.resizeNone;
-        if (error) cssString += ' ' + styles.error;
-        return cssString;
-    }, [resetDefaultStyles, className, resizeNone, error]);
+    const textareaCssString = [
+        !resetDefaultStyles && styles.textarea,
+        className,
+        resizeNone && styles.resizeNone,
+        error && styles.error,
+    ]
+        .filter(Boolean)
+        .join(' ');
 
-    return <textarea className={textareaCssString} {...rest} rows={6} />;
+    return <textarea className={textareaCssString} rows={rows} {...rest} />;
 };
