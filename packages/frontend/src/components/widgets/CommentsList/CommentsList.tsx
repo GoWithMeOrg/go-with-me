@@ -6,7 +6,6 @@ import { MessageContainer } from '@/components/shared/MessageContainer/MessageCo
 import { Title } from '@/components/shared/Title';
 
 import { Comment } from './Comment';
-import { useComment } from './Comment/hooks/useComment';
 import { useParrentComments } from './Comment/hooks/useParrentComments';
 import { CommentForm } from './CommentForm';
 

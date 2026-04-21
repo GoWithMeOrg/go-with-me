@@ -26,6 +26,14 @@ export const CREATE_REPLY_MUTATION = gql`
                 lastName
                 image
             }
+            parent {
+                _id
+                author {
+                    firstName
+                    lastName
+                }
+            }
+            ownerId
             content
         }
     }

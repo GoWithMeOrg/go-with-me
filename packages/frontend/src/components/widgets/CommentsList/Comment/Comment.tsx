@@ -7,13 +7,12 @@ import Spinner from '@/assets/icons/spinner.svg';
 import { Avatar } from '@/components/shared/Avatar';
 import { MessageContainer } from '@/components/shared/MessageContainer/MessageContainer';
 import { Span } from '@/components/shared/Span/Span';
-import { useCommentReplies } from '@/components/widgets/CommentsList/Comment/hooks/useChildrenComments';
 import { CommentForm } from '@/components/widgets/CommentsList/CommentForm';
 import { Like } from '@/components/widgets/Like';
 import { useUserID } from '@/hooks/useUserID';
 import dayjs from 'dayjs';
 
-import { useComment } from './hooks/useComment';
+import { useChildrenComments } from './hooks/useChildrenComments';
 
 import classes from './Comment.module.css';
 
@@ -26,22 +25,29 @@ interface CommentProps {
 export const Comment: FC<CommentProps> = ({ comment, depth = 0, onDelete }) => {
     const { user_id } = useUserID();
 
-    const { onSaveCommentReply, replyToState, onClickReplyButton, closeReplyForm } = useComment({
-        comment,
-        owner_id: comment.ownerId,
-    });
-
-    const { replies, loading, loadMore, hasMore, remainingCount } = useCommentReplies(
-        comment._id,
-        comment.repliesCount
-    );
+    const {
+        replies,
+        loading,
+        onClickReplyButton,
+        loadMore,
+        hasMore,
+        onSaveCommentReply,
+        closeReplyForm,
+        replyToState,
+        onDeleteComment,
+    } = useChildrenComments(comment);
 
     // Выносим в переменную — рендерим в разных местах в зависимости от depth
-    const repliesSection = comment.repliesCount > 0 && (
+    const repliesSection = (comment.repliesCount > 0 || replies.length > 0) && (
         <ul className={classes.replies}>
             {replies?.map((reply) => (
                 // Всё глубже 0 получает depth=1 — ответы на ответы не уходят на 3й уровень
-                <Comment key={reply._id} comment={reply} depth={Math.min(depth + 1, 1)} />
+                <Comment
+                    key={reply._id}
+                    comment={reply}
+                    depth={Math.min(depth + 1, 1)}
+                    onDelete={onDeleteComment}
+                />
             ))}
             {loading && (
                 <MessageContainer>
@@ -50,7 +56,7 @@ export const Comment: FC<CommentProps> = ({ comment, depth = 0, onDelete }) => {
             )}
             {loadMore && hasMore && (
                 <button className={classes.loadMoreReplies} onClick={loadMore}>
-                    Show {remainingCount} more replies
+                    Show more replies
                 </button>
             )}
         </ul>
@@ -76,7 +82,7 @@ export const Comment: FC<CommentProps> = ({ comment, depth = 0, onDelete }) => {
                             <a href={`#comment-id-${comment.parent._id}`}>
                                 <Span
                                     className={classes.replyTo}
-                                    title={`ответ на ${comment.parent.author?.firstName ?? ''} ${comment.parent.author?.lastName ?? ''}`}
+                                    title={`ответил ${comment.parent.author?.firstName ?? ''} ${comment.parent.author?.lastName ?? ''}`}
                                 />
                             </a>
                         )}

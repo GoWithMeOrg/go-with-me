@@ -25,6 +25,7 @@ export const useParrentComments = (ownerId: string) => {
     const [removeComment] = useMutation(REMOVE_COMMENT_MUTATION);
 
     useEffect(() => {
+        console.log('ownerId:', ownerId);
         let cancelled = false;
 
         fetchComments({ variables: { ownerId, limit: INITIAL_LIMIT, offset: 0 } })
@@ -70,7 +71,6 @@ export const useParrentComments = (ownerId: string) => {
                     },
                 });
 
-                console.log(result);
                 const newComment = result.data?.createComment;
 
                 if (newComment) setComments((prev) => [...prev, newComment]);
