@@ -21,6 +21,7 @@ type Comment {
   author: User!
   content: String!
   createdAt: DateTime!
+  deleted: Boolean!
   ownerId: ID!
   ownerType: String!
   parent: Comment

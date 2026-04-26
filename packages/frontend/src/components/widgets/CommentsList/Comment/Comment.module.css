@@ -77,3 +77,13 @@
 .replyTo:hover {
     color: var(--hover-color);
 }
+
+.loadMoreReplies {
+    margin-top: 1rem;
+    color: var(--additional-color);
+    font-size: 14px;
+}
+
+.loadMoreReplies:hover {
+    color: var(--hover-color);
+}

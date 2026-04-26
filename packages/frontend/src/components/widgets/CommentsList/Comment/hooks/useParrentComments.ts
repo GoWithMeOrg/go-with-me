@@ -4,8 +4,6 @@ import { GET_PARRENT_COMMENTS_BY_OWNER_ID } from '@/app/graphql/queries/comment'
 import { Comment as CommentType, OwnerType } from '@/app/graphql/types';
 import { useLazyQuery, useMutation } from '@apollo/client/react';
 
-import { withLoading } from '../helpers/withLoading';
-
 const INITIAL_LIMIT = 3;
 const LOAD_MORE_LIMIT = 5;
 
@@ -13,7 +11,6 @@ export const useParrentComments = (ownerId: string) => {
     const [offset, setOffset] = useState(0);
     const [currentLimit, setCurrentLimit] = useState(INITIAL_LIMIT);
     const [comments, setComments] = useState<CommentType[]>([]);
-    const [loading, setLoading] = useState(false);
 
     const [fetchComments, { loading: fetchLoading }] = useLazyQuery<{
         getParrentCommentsByOwnerId: CommentType[];
@@ -25,7 +22,6 @@ export const useParrentComments = (ownerId: string) => {
     const [removeComment] = useMutation(REMOVE_COMMENT_MUTATION);
 
     useEffect(() => {
-        console.log('ownerId:', ownerId);
         let cancelled = false;
 
         fetchComments({ variables: { ownerId, limit: INITIAL_LIMIT, offset: 0 } })
@@ -59,37 +55,43 @@ export const useParrentComments = (ownerId: string) => {
     };
 
     const onSaveComment = useCallback(
-        async (content: string) =>
-            withLoading(setLoading, async () => {
-                const result = await createComment({
-                    variables: {
-                        createCommentInput: {
-                            content,
-                            ownerId,
-                            ownerType: OwnerType.Event,
-                        },
+        async (content: string) => {
+            const result = await createComment({
+                variables: {
+                    createCommentInput: {
+                        content,
+                        ownerId,
+                        ownerType: OwnerType.Event,
                     },
-                });
+                },
+            });
 
-                const newComment = result.data?.createComment;
+            const newComment = result.data?.createComment;
 
-                if (newComment) setComments((prev) => [...prev, newComment]);
-            })(),
+            if (newComment) setComments((prev) => [...prev, newComment]);
+        },
         [createComment, ownerId]
     );
 
     const onDeleteComment = useCallback(
-        async (commentId: string) =>
-            withLoading(setLoading, async () => {
+        async (commentId: string) => {
+            try {
                 await removeComment({ variables: { commentId } });
-                setComments((prev) => prev.filter((c) => c._id !== commentId));
-            })(),
+            } catch (error) {
+                const isNotFound = error instanceof Error && error.message.includes('не найден');
+                if (!isNotFound) throw error;
+            }
+
+            setComments((prev) =>
+                prev.map((c) => (c._id === commentId ? { ...c, deleted: true, content: '' } : c))
+            );
+        },
         [removeComment]
     );
 
     return {
         comments,
-        loading: loading || fetchLoading,
+        loading: fetchLoading,
         loadMore,
         hasMore,
         onSaveComment,

@@ -33,6 +33,10 @@ export class Comment {
     @Prop({ type: Number, default: 0 })
     repliesCount: number;
 
+    @Field(() => Boolean)
+    @Prop({ default: false })
+    deleted: boolean;
+
     @Field()
     createdAt: Date;
 

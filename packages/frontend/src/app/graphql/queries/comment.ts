@@ -20,6 +20,7 @@ export const GET_COMMENTS_BY_OWNER_ID = gql`
                     lastName
                 }
             }
+            deleted
         }
     }
 `;
@@ -41,6 +42,7 @@ export const GET_PARRENT_COMMENTS_BY_OWNER_ID = gql`
                 _id
             }
             repliesCount
+            deleted
         }
     }
 `;
@@ -66,6 +68,7 @@ export const GET_CHILDREN_COMMENTS_BY_PARRENT_ID = gql`
                 }
             }
             repliesCount
+            deleted
         }
     }
 `;

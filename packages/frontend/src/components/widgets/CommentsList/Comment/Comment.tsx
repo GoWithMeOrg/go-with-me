@@ -4,6 +4,7 @@ import { FC } from 'react';
 import { Comment as CommentType } from '@/app/graphql/types';
 import ArrowReply from '@/assets/icons/arrowReply.svg';
 import Spinner from '@/assets/icons/spinner.svg';
+import Trash from '@/assets/icons/trash.svg';
 import { Avatar } from '@/components/shared/Avatar';
 import { MessageContainer } from '@/components/shared/MessageContainer/MessageContainer';
 import { Span } from '@/components/shared/Span/Span';
@@ -35,6 +36,8 @@ export const Comment: FC<CommentProps> = ({ comment, depth = 0, onDelete }) => {
         closeReplyForm,
         replyToState,
         onDeleteComment,
+        totalCount,
+        loadedReplies,
     } = useChildrenComments(comment);
 
     // Выносим в переменную — рендерим в разных местах в зависимости от depth
@@ -54,13 +57,54 @@ export const Comment: FC<CommentProps> = ({ comment, depth = 0, onDelete }) => {
                     <Spinner />
                 </MessageContainer>
             )}
-            {loadMore && hasMore && (
-                <button className={classes.loadMoreReplies} onClick={loadMore}>
-                    Show more replies
-                </button>
-            )}
         </ul>
     );
+
+    const loadMoreButton = depth === 0 && totalCount > 0 && (!loadedReplies || hasMore) && (
+        <button className={classes.loadMoreReplies} onClick={loadMore}>
+            {!loadedReplies ? `${totalCount} Replies` : 'Show more replies'}
+        </button>
+    );
+
+    if (comment.deleted) {
+        return (
+            <>
+                <div className={classes.comment} id={`comment-id-${comment._id}`}>
+                    <div className={classes.avatarContainer}>
+                        <Avatar
+                            className={classes.avatar}
+                            name={`${comment.author.firstName} ${comment.author.lastName}`}
+                            image={comment.author.image as string}
+                            scale={0.75}
+                            id={comment.author._id}
+                        />
+                    </div>
+                    <div className={classes.contentContainer}>
+                        <div className={classes.userName}>
+                            <span>{`${comment.author.firstName} ${comment.author.lastName}`}</span>
+                            {comment.parent && (
+                                <a href={`#comment-id-${comment.parent._id}`}>
+                                    <Span
+                                        className={classes.replyTo}
+                                        title={`ответил ${comment.parent.author?.firstName ?? ''} ${comment.parent.author?.lastName ?? ''}`}
+                                    />
+                                </a>
+                            )}
+                            <Span title={dayjs(comment.createdAt).format('DD MMMM YYYY HH:mm')} />
+                        </div>
+
+                        <div className={classes.deletedComment}>
+                            <span>Комментарий удалён</span>
+                        </div>
+
+                        {depth === 0 && repliesSection}
+                        {depth === 0 && loadMoreButton}
+                    </div>
+                </div>
+                {depth >= 1 && repliesSection}
+            </>
+        );
+    }
 
     return (
         // нужен, чтобы depth >= 1 мог вынести repliesSection наружу как сиблинг
@@ -101,7 +145,7 @@ export const Comment: FC<CommentProps> = ({ comment, depth = 0, onDelete }) => {
                                 className={classes.deleteButton}
                                 onClick={() => onDelete?.(comment._id)}
                             >
-                                удалить
+                                <Trash />
                             </button>
                         )}
                     </div>
@@ -112,6 +156,7 @@ export const Comment: FC<CommentProps> = ({ comment, depth = 0, onDelete }) => {
 
                     {/* depth === 0: ответы рендерятся ВНУТРИ — получают отступ (уровень 1) */}
                     {depth === 0 && repliesSection}
+                    {depth === 0 && loadMoreButton}
                 </div>
             </div>
 

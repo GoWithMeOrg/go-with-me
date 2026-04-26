@@ -10,6 +10,8 @@ export const CREATE_COMMENT_MUTATION = gql`
                 lastName
                 image
             }
+            ownerId
+            ownerType
             content
             createdAt
             repliesCount
@@ -22,6 +24,7 @@ export const CREATE_REPLY_MUTATION = gql`
         createReply(createCommentInput: $createCommentInput) {
             _id
             author {
+                _id
                 firstName
                 lastName
                 image
@@ -35,6 +38,7 @@ export const CREATE_REPLY_MUTATION = gql`
             }
             ownerId
             content
+            repliesCount
         }
     }
 `;
