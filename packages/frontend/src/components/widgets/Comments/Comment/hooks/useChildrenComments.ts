@@ -2,9 +2,8 @@ import { useCallback, useState } from 'react';
 import { CREATE_REPLY_MUTATION, REMOVE_COMMENT_MUTATION } from '@/app/graphql/mutations/comment';
 import { GET_CHILDREN_COMMENTS_BY_PARRENT_ID } from '@/app/graphql/queries/comment';
 import { Comment as CommentType, OwnerType } from '@/app/graphql/types';
+import { ReplyTo } from '@/components/widgets/Comments/types';
 import { useLazyQuery, useMutation } from '@apollo/client/react';
-
-import { ReplyTo } from '../../types';
 
 const LOAD_MORE_LIMIT = 5;
 
@@ -16,7 +15,7 @@ export const useChildrenComments = (comment: CommentType) => {
 
     const hasMore = replies.length < totalCount;
 
-    const [fetchComments, { loading: fetchLoading }] = useLazyQuery<{
+    const [fetchComments, { loading: fetchLoading, error }] = useLazyQuery<{
         getChildrenCommentsByParrentId: CommentType[];
     }>(GET_CHILDREN_COMMENTS_BY_PARRENT_ID, { fetchPolicy: 'network-only' });
 
@@ -26,14 +25,6 @@ export const useChildrenComments = (comment: CommentType) => {
     const [removeComment, { loading: deleteLoading }] = useMutation(REMOVE_COMMENT_MUTATION);
 
     const loadMore = async () => {
-        console.log(
-            'loadMore called, offset:',
-            replies.length,
-            'totalCount:',
-            totalCount,
-            'hasMore:',
-            hasMore
-        );
         const { data } = await fetchComments({
             variables: { parentId: comment._id, offset: replies.length, limit: LOAD_MORE_LIMIT },
         });

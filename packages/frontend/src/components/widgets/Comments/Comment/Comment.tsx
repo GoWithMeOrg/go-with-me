@@ -8,12 +8,11 @@ import Trash from '@/assets/icons/trash.svg';
 import { Avatar } from '@/components/shared/Avatar';
 import { MessageContainer } from '@/components/shared/MessageContainer/MessageContainer';
 import { Span } from '@/components/shared/Span/Span';
-import { CommentForm } from '@/components/widgets/CommentsList/CommentForm';
+import { useChildrenComments } from '@/components/widgets/Comments/Comment/hooks/useChildrenComments';
+import { CommentForm } from '@/components/widgets/Comments/CommentForm';
 import { Like } from '@/components/widgets/Like';
 import { useUserID } from '@/hooks/useUserID';
 import dayjs from 'dayjs';
-
-import { useChildrenComments } from './hooks/useChildrenComments';
 
 import classes from './Comment.module.css';
 
@@ -137,9 +136,11 @@ export const Comment: FC<CommentProps> = ({ comment, depth = 0, onDelete }) => {
 
                     <div className={classes.likesContainer}>
                         <Like owner_id={comment._id} ownerType="Comment" count />
-                        <button className={classes.replyButton} onClick={onClickReplyButton}>
-                            <ArrowReply />
-                        </button>
+                        {user_id !== comment.author._id && (
+                            <button className={classes.replyButton} onClick={onClickReplyButton}>
+                                <ArrowReply />
+                            </button>
+                        )}
                         {user_id === comment.author._id && (
                             <button
                                 className={classes.deleteButton}

@@ -4,14 +4,13 @@ import Spinner from '@/assets/icons/spinner.svg';
 import { Button } from '@/components/shared/Button';
 import { MessageContainer } from '@/components/shared/MessageContainer/MessageContainer';
 import { Title } from '@/components/shared/Title';
+import { Comment } from '@/components/widgets/Comments/Comment';
+import { useParrentComments } from '@/components/widgets/Comments/Comment/hooks/useParrentComments';
+import { CommentForm } from '@/components/widgets/Comments/CommentForm';
 
-import { Comment } from './Comment';
-import { useParrentComments } from './Comment/hooks/useParrentComments';
-import { CommentForm } from './CommentForm';
+import classes from './Comments.module.css';
 
-import classes from './CommentsList.module.css';
-
-export const CommentsList = ({ event_id }: { event_id: string }) => {
+export const Comments = ({ event_id }: { event_id: string }) => {
     const {
         comments,
         loading: parentCommentsLoading,
@@ -40,11 +39,7 @@ export const CommentsList = ({ event_id }: { event_id: string }) => {
                 </MessageContainer>
             )}
             {hasMore && (
-                <Button
-                    className={classes.loadButton}
-                    disabled={parentCommentsLoading}
-                    onClick={loadMore}
-                >
+                <Button resetDefaultStyles className={classes.buttonText} onClick={loadMore}>
                     LOAD MORE COMMENTS
                 </Button>
             )}

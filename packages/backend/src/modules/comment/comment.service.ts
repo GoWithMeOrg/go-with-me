@@ -35,33 +35,6 @@ export class CommentService {
         return comment;
     }
 
-    // async createReply(author: MongoSchema.Types.ObjectId, createCommentInput: CreateCommentInput) {
-    //     const { parent: parentId } = createCommentInput;
-
-    //     // Проверяем что parentId передан
-    //     if (!parentId) {
-    //         throw new BadRequestException('parentId обязателен для ответа');
-    //     }
-
-    //     // Проверяем что родительский комментарий существует
-    //     const parentComment = await this.commentModel.findById(parentId);
-    //     if (!parentComment) {
-    //         throw new NotFoundException('Комментарий не найден');
-    //     }
-
-    //     // Защита от вложенных ответов
-    //     // if (parentComment.parent) {
-    //     //     throw new BadRequestException('Нельзя отвечать на ответ');
-    //     // }
-
-    //     const [reply] = await Promise.all([
-    //         this.commentModel.create({ author, ...createCommentInput }),
-    //         this.commentModel.findByIdAndUpdate(parentId, { $inc: { repliesCount: 1 } }),
-    //     ]);
-
-    //     return reply;
-    // }
-
     async createReply(author: MongoSchema.Types.ObjectId, createCommentInput: CreateCommentInput) {
         const { parent: parentId } = createCommentInput;
 
@@ -69,14 +42,22 @@ export class CommentService {
             throw new BadRequestException('parentId обязателен для ответа');
         }
 
-        const parentComment = await this.commentModel.findById(parentId);
+        // const parentComment = await this.commentModel.findById(parentId);
+        const parentComment = await this.commentModel
+            .findById(parentId)
+            .select('author parent')
+            .lean();
+
         if (!parentComment) {
-            throw new NotFoundException('Комментарий не найден');
+            throw new BadRequestException('Комментарий не найден');
+        }
+
+        if (parentComment.author.toString() === author.toString()) {
+            throw new BadRequestException('Нельзя отвечать на собственный комментарий');
         }
 
         const reply = await this.commentModel.create({ author, ...createCommentInput });
 
-        // Поднимаемся по цепочке и инкрементируем всех предков
         let currentParentId: MongoSchema.Types.ObjectId | null =
             parentId as MongoSchema.Types.ObjectId;
 
@@ -155,20 +136,6 @@ export class CommentService {
         return this.commentModel.findById(id).populate('parent').lean().exec();
     }
 
-    // async getChildrenCommentsByParrentId(
-    //     parentId: MongoSchema.Types.ObjectId,
-    //     limit?: number,
-    //     offset?: number
-    // ): Promise<Comment[]> {
-    //     return this.commentModel
-    //         .find({ parent: parentId })
-    //         .sort({ createdAt: 1 })
-    //         .skip(offset || 0)
-    //         .limit(limit || 0)
-    //         .lean()
-    //         .exec();
-    // }
-
     async getChildrenCommentsByParrentId(
         parentId: MongoSchema.Types.ObjectId,
         limit?: number,
@@ -195,38 +162,6 @@ export class CommentService {
         // Применяем пагинацию к плоскому списку
         return allDescendants.slice(offset || 0, (offset || 0) + (limit || allDescendants.length));
     }
-
-    // async removeComment(
-    //     commentId: MongoSchema.Types.ObjectId,
-    //     userId: MongoSchema.Types.ObjectId
-    // ): Promise<boolean> {
-    //     const comment = await this.commentModel.findById(commentId);
-    //     if (!comment) {
-    //         throw new NotFoundException('Комментарий не найден');
-    //     }
-
-    //     if (comment.author.toString() !== userId.toString()) {
-    //         throw new BadRequestException('Только автор может удалить свой комментарий');
-    //     }
-
-    //     const result = await this.commentModel.findOneAndDelete({ _id: commentId });
-    //     if (!result) return false;
-
-    //     // Поднимаемся по цепочке и декрементируем всех предков
-    //     let currentParentId: MongoSchema.Types.ObjectId | null =
-    //         (comment.parent as MongoSchema.Types.ObjectId | null) ?? null;
-
-    //     while (currentParentId) {
-    //         await this.commentModel.findByIdAndUpdate(currentParentId, {
-    //             $inc: { repliesCount: -1 },
-    //         });
-
-    //         const parent = await this.commentModel.findById(currentParentId).select('parent');
-    //         currentParentId = (parent?.parent as MongoSchema.Types.ObjectId | null) ?? null;
-    //     }
-
-    //     return true;
-    // }
 
     async removeComment(
         commentId: MongoSchema.Types.ObjectId,
