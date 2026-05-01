@@ -4,7 +4,7 @@ import { GET_EVENTS_BY_ID } from '@/app/graphql/queries/events';
 import { Event as EventType } from '@/app/graphql/types';
 import Spinner from '@/assets/icons/spinner.svg';
 import { Backdrop } from '@/components/widgets/Backdrop';
-import { CommentsList } from '@/components/widgets/Comments';
+import { Comments } from '@/components/widgets/Comments';
 import { Event } from '@/components/widgets/Event';
 import { useQuery } from '@apollo/client/react';
 import type { NextPage } from 'next';
@@ -38,7 +38,7 @@ const EventPage: NextPage<PageProps> = () => {
             {/* <Backdrop marginTop={430} marginBottom={274} contentLoading={loading}> */}
             {data && <Event event={data.getEventById} />}
 
-            {event_id && <CommentsList event_id={event_id} />}
+            {event_id && <Comments event_id={event_id} />}
             {/* </Backdrop> */}
         </section>
     );

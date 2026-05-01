@@ -33,7 +33,7 @@ export const Comments = ({ event_id }: { event_id: string }) => {
                     </li>
                 ))}
             </ul>
-            {(parentCommentsLoading || parentCommentsLoading) && (
+            {parentCommentsLoading && (
                 <MessageContainer>
                     <Spinner />
                 </MessageContainer>

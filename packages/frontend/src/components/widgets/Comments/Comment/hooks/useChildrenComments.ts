@@ -33,7 +33,6 @@ export const useChildrenComments = (comment: CommentType) => {
             setReplies((prev) => [...prev, ...data.getChildrenCommentsByParrentId]);
             setLoadedReplies(true);
         }
-        console.log('loaded:', data?.getChildrenCommentsByParrentId);
     };
 
     const onSaveCommentReply = useCallback(
@@ -50,7 +49,6 @@ export const useChildrenComments = (comment: CommentType) => {
             });
             const newReply = result.data?.createReply;
             if (newReply) setReplies((prev) => [...prev, newReply]);
-            setTotalCount((prev) => prev + 1);
         },
         [createCommentReply, comment._id, comment.ownerId]
     );
