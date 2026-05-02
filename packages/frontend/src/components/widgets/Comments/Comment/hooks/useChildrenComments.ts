@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { CREATE_REPLY_MUTATION, REMOVE_COMMENT_MUTATION } from '@/app/graphql/mutations/comment';
-import { GET_CHILDREN_COMMENTS_BY_PARRENT_ID } from '@/app/graphql/queries/comment';
+import { GET_CHILDREN_COMMENTS_BY_PARENT_ID } from '@/app/graphql/queries/comment';
 import { Comment as CommentType, OwnerType } from '@/app/graphql/types';
 import { ReplyTo } from '@/components/widgets/Comments/types';
 import { useLazyQuery, useMutation } from '@apollo/client/react';
@@ -16,8 +16,8 @@ export const useChildrenComments = (comment: CommentType) => {
     const hasMore = replies.length < totalCount;
 
     const [fetchComments, { loading: fetchLoading, error }] = useLazyQuery<{
-        getChildrenCommentsByParrentId: CommentType[];
-    }>(GET_CHILDREN_COMMENTS_BY_PARRENT_ID, { fetchPolicy: 'network-only' });
+        getChildrenCommentsByParentId: CommentType[];
+    }>(GET_CHILDREN_COMMENTS_BY_PARENT_ID, { fetchPolicy: 'network-only' });
 
     const [createCommentReply, { loading: createLoading }] = useMutation<{
         createReply: CommentType;
@@ -29,8 +29,8 @@ export const useChildrenComments = (comment: CommentType) => {
             variables: { parentId: comment._id, offset: replies.length, limit: LOAD_MORE_LIMIT },
         });
 
-        if (data?.getChildrenCommentsByParrentId) {
-            setReplies((prev) => [...prev, ...data.getChildrenCommentsByParrentId]);
+        if (data?.getChildrenCommentsByParentId) {
+            setReplies((prev) => [...prev, ...data.getChildrenCommentsByParentId]);
             setLoadedReplies(true);
         }
     };

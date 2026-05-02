@@ -59,21 +59,21 @@ export class CommentResolver {
     }
 
     @Query(() => [Comment])
-    async getParrentCommentsByOwnerId(
+    async getParentCommentsByOwnerId(
         @Args('ownerId', { type: () => ID }) ownerId: MongoSchema.Types.ObjectId,
         @Args('limit', { type: () => Int, nullable: true }) limit?: number,
         @Args('offset', { type: () => Int, nullable: true }) offset?: number
     ): Promise<Comment[]> {
-        return this.commentService.getParrentCommentsByOwnerId(ownerId, limit, offset);
+        return this.commentService.getParentCommentsByOwnerId(ownerId, limit, offset);
     }
 
     @Query(() => [Comment])
-    async getChildrenCommentsByParrentId(
+    async getChildrenCommentsByParentId(
         @Args('parentId', { type: () => ID }) parentId: MongoSchema.Types.ObjectId,
         @Args('limit', { type: () => Int, nullable: true }) limit?: number,
         @Args('offset', { type: () => Int, nullable: true }) offset?: number
     ): Promise<Comment[]> {
-        return this.commentService.getChildrenCommentsByParrentId(parentId, limit, offset);
+        return this.commentService.getChildrenCommentsByParentId(parentId, limit, offset);
     }
 
     @ResolveField(() => User, { name: 'author' })

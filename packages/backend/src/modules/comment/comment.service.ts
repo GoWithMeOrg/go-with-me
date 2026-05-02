@@ -42,7 +42,6 @@ export class CommentService {
             throw new BadRequestException('parentId обязателен для ответа');
         }
 
-        // const parentComment = await this.commentModel.findById(parentId);
         const parentComment = await this.commentModel
             .findById(parentId)
             .select('author parent')
@@ -118,7 +117,7 @@ export class CommentService {
             .exec();
     }
 
-    async getParrentCommentsByOwnerId(
+    async getParentCommentsByOwnerId(
         ownerId: MongoSchema.Types.ObjectId,
         limit?: number,
         offset?: number
@@ -136,7 +135,7 @@ export class CommentService {
         return this.commentModel.findById(id).populate('parent').lean().exec();
     }
 
-    async getChildrenCommentsByParrentId(
+    async getChildrenCommentsByParentId(
         parentId: MongoSchema.Types.ObjectId,
         limit?: number,
         offset?: number

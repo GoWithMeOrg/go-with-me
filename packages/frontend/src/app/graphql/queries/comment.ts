@@ -25,9 +25,9 @@ export const GET_COMMENTS_BY_OWNER_ID = gql`
     }
 `;
 
-export const GET_PARRENT_COMMENTS_BY_OWNER_ID = gql`
-    query GetParrentCommentsByOwnerId($limit: Int, $offset: Int, $ownerId: ID!) {
-        getParrentCommentsByOwnerId(limit: $limit, offset: $offset, ownerId: $ownerId) {
+export const GET_PARENT_COMMENTS_BY_OWNER_ID = gql`
+    query GetParentCommentsByOwnerId($limit: Int, $offset: Int, $ownerId: ID!) {
+        getParentCommentsByOwnerId(limit: $limit, offset: $offset, ownerId: $ownerId) {
             _id
             author {
                 _id
@@ -47,9 +47,9 @@ export const GET_PARRENT_COMMENTS_BY_OWNER_ID = gql`
     }
 `;
 
-export const GET_CHILDREN_COMMENTS_BY_PARRENT_ID = gql`
-    query GetChildrenCommentsByParrentId($limit: Int, $offset: Int, $parentId: ID!) {
-        getChildrenCommentsByParrentId(limit: $limit, offset: $offset, parentId: $parentId) {
+export const GET_CHILDREN_COMMENTS_BY_PARENT_ID = gql`
+    query GetChildrenCommentsByParentId($limit: Int, $offset: Int, $parentId: ID!) {
+        getChildrenCommentsByParentId(limit: $limit, offset: $offset, parentId: $parentId) {
             _id
             author {
                 firstName

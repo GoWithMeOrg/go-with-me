@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { CREATE_COMMENT_MUTATION, REMOVE_COMMENT_MUTATION } from '@/app/graphql/mutations/comment';
-import { GET_PARRENT_COMMENTS_BY_OWNER_ID } from '@/app/graphql/queries/comment';
+import { GET_PARENT_COMMENTS_BY_OWNER_ID } from '@/app/graphql/queries/comment';
 import { Comment as CommentType, OwnerType } from '@/app/graphql/types';
 import { useLazyQuery, useMutation } from '@apollo/client/react';
 
@@ -13,8 +13,8 @@ export const useParrentComments = (ownerId: string) => {
     const [comments, setComments] = useState<CommentType[]>([]);
 
     const [fetchComments, { loading: fetchLoading }] = useLazyQuery<{
-        getParrentCommentsByOwnerId: CommentType[];
-    }>(GET_PARRENT_COMMENTS_BY_OWNER_ID, {
+        getParentCommentsByOwnerId: CommentType[];
+    }>(GET_PARENT_COMMENTS_BY_OWNER_ID, {
         fetchPolicy: 'network-only',
     });
 
@@ -27,7 +27,7 @@ export const useParrentComments = (ownerId: string) => {
         fetchComments({ variables: { ownerId, limit: INITIAL_LIMIT, offset: 0 } })
             .then(({ data }) => {
                 if (cancelled) return;
-                setComments(data?.getParrentCommentsByOwnerId ?? []);
+                setComments(data?.getParentCommentsByOwnerId ?? []);
             })
             .catch((error) => {
                 if (error?.name === 'AbortError' || cancelled) return;
@@ -46,8 +46,8 @@ export const useParrentComments = (ownerId: string) => {
             variables: { ownerId, offset: newOffset, limit: LOAD_MORE_LIMIT },
         });
 
-        if (data?.getParrentCommentsByOwnerId) {
-            setComments((prev) => [...prev, ...data.getParrentCommentsByOwnerId]);
+        if (data?.getParentCommentsByOwnerId) {
+            setComments((prev) => [...prev, ...data.getParentCommentsByOwnerId]);
         }
 
         setOffset(newOffset);
