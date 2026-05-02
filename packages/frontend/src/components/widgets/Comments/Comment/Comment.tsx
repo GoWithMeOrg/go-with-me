@@ -8,11 +8,12 @@ import Trash from '@/assets/icons/trash.svg';
 import { Avatar } from '@/components/shared/Avatar';
 import { MessageContainer } from '@/components/shared/MessageContainer/MessageContainer';
 import { Span } from '@/components/shared/Span/Span';
-import { useChildrenComments } from '@/components/widgets/Comments/Comment/hooks/useChildrenComments';
 import { CommentForm } from '@/components/widgets/Comments/CommentForm';
 import { Like } from '@/components/widgets/Like';
 import { useUserID } from '@/hooks/useUserID';
 import dayjs from 'dayjs';
+
+import { useComments } from './hooks/useComments';
 
 import classes from './Comment.module.css';
 
@@ -29,15 +30,16 @@ export const Comment: FC<CommentProps> = ({ comment, depth = 0, onDelete }) => {
         replies,
         loading,
         onClickReplyButton,
-        loadMore,
-        hasMore,
-        onSaveCommentReply,
+        loadMoreReplies,
+        hasMoreReplies,
+        onSaveReply,
         closeReplyForm,
         replyToState,
         onDeleteComment,
+        onDeleteReply,
         totalCount,
         loadedReplies,
-    } = useChildrenComments(comment);
+    } = useComments(comment.ownerId, comment);
 
     // Выносим в переменную — рендерим в разных местах в зависимости от depth
     const repliesSection = (comment.repliesCount > 0 || replies.length > 0) && (
@@ -48,7 +50,7 @@ export const Comment: FC<CommentProps> = ({ comment, depth = 0, onDelete }) => {
                     key={reply._id}
                     comment={reply}
                     depth={Math.min(depth + 1, 1)}
-                    onDelete={onDeleteComment}
+                    onDelete={onDeleteReply}
                 />
             ))}
             {loading && (
@@ -59,8 +61,8 @@ export const Comment: FC<CommentProps> = ({ comment, depth = 0, onDelete }) => {
         </ul>
     );
 
-    const loadMoreButton = depth === 0 && totalCount > 0 && (!loadedReplies || hasMore) && (
-        <button className={classes.loadMoreReplies} onClick={loadMore}>
+    const loadMoreButton = depth === 0 && totalCount > 0 && (!loadedReplies || hasMoreReplies) && (
+        <button className={classes.loadMoreReplies} onClick={loadMoreReplies}>
             {!loadedReplies ? `${totalCount} Replies` : 'Show more replies'}
         </button>
     );
@@ -152,7 +154,7 @@ export const Comment: FC<CommentProps> = ({ comment, depth = 0, onDelete }) => {
                     </div>
 
                     {replyToState?.id === comment._id && (
-                        <CommentForm onSaveComment={onSaveCommentReply} onClose={closeReplyForm} />
+                        <CommentForm onSaveComment={onSaveReply} onClose={closeReplyForm} />
                     )}
 
                     {/* depth === 0: ответы рендерятся ВНУТРИ — получают отступ (уровень 1) */}

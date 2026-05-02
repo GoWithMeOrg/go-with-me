@@ -5,20 +5,15 @@ import { Button } from '@/components/shared/Button';
 import { MessageContainer } from '@/components/shared/MessageContainer/MessageContainer';
 import { Title } from '@/components/shared/Title';
 import { Comment } from '@/components/widgets/Comments/Comment';
-import { useParrentComments } from '@/components/widgets/Comments/Comment/hooks/useParrentComments';
 import { CommentForm } from '@/components/widgets/Comments/CommentForm';
+
+import { useComments } from './Comment/hooks/useComments';
 
 import classes from './Comments.module.css';
 
 export const Comments = ({ event_id }: { event_id: string }) => {
-    const {
-        comments,
-        loading: parentCommentsLoading,
-        loadMore,
-        hasMore,
-        onSaveComment,
-        onDeleteComment,
-    } = useParrentComments(event_id);
+    const { comments, loading, loadMoreComments, hasMoreComments, onSaveComment, onDeleteComment } =
+        useComments(event_id);
 
     return (
         <section className={classes.container}>
@@ -33,13 +28,17 @@ export const Comments = ({ event_id }: { event_id: string }) => {
                     </li>
                 ))}
             </ul>
-            {parentCommentsLoading && (
+            {loading && (
                 <MessageContainer>
                     <Spinner />
                 </MessageContainer>
             )}
-            {hasMore && (
-                <Button resetDefaultStyles className={classes.buttonText} onClick={loadMore}>
+            {hasMoreComments && (
+                <Button
+                    resetDefaultStyles
+                    className={classes.buttonText}
+                    onClick={loadMoreComments}
+                >
                     LOAD MORE COMMENTS
                 </Button>
             )}
