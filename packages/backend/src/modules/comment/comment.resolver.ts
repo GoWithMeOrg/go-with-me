@@ -25,7 +25,7 @@ export class CommentResolver {
     }
 
     @Mutation(() => Comment)
-    async createReply(
+    createReply(
         @Args('createCommentInput') createCommentInput: CreateCommentInput,
         @CurrentUser() user: User
     ): Promise<Comment> {
@@ -33,7 +33,7 @@ export class CommentResolver {
     }
 
     @Mutation(() => Comment)
-    async updateComment(
+    updateComment(
         @Args('commentId', { type: () => ID }) commentId: MongoSchema.Types.ObjectId,
         @Args('updateCommentInput') updateCommentInput: UpdateCommentInput,
         @CurrentUser() user: User
@@ -42,7 +42,7 @@ export class CommentResolver {
     }
 
     @Mutation(() => Boolean)
-    async removeComment(
+    removeComment(
         @Args('commentId', { type: () => ID }) commentId: MongoSchema.Types.ObjectId,
         @CurrentUser() user: User
     ): Promise<boolean> {
@@ -50,7 +50,7 @@ export class CommentResolver {
     }
 
     @Query(() => [Comment])
-    async getCommentsByOwnerId(
+    getCommentsByOwnerId(
         @Args('ownerId', { type: () => ID }) ownerId: MongoSchema.Types.ObjectId,
         @Args('limit', { type: () => Int }) limit: number,
         @Args('offset', { type: () => Int }) offset: number
@@ -59,7 +59,7 @@ export class CommentResolver {
     }
 
     @Query(() => [Comment])
-    async getParentCommentsByOwnerId(
+    getParentCommentsByOwnerId(
         @Args('ownerId', { type: () => ID }) ownerId: MongoSchema.Types.ObjectId,
         @Args('limit', { type: () => Int, nullable: true }) limit?: number,
         @Args('offset', { type: () => Int, nullable: true }) offset?: number
@@ -68,7 +68,7 @@ export class CommentResolver {
     }
 
     @Query(() => [Comment])
-    async getChildrenCommentsByParentId(
+    getChildrenCommentsByParentId(
         @Args('parentId', { type: () => ID }) parentId: MongoSchema.Types.ObjectId,
         @Args('limit', { type: () => Int, nullable: true }) limit?: number,
         @Args('offset', { type: () => Int, nullable: true }) offset?: number
