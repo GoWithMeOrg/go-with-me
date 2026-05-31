@@ -8,7 +8,7 @@
         "start:dev": "nest start --watch",
         "start:debug": "nest start --debug --watch",
         "start:prod": "node dist/main",
-        "dev": "nest build && nest build --watch & node --watch dist/main",
+        "dev": "nest build && (nest build --watch &) && node --watch dist/main",
         "test": "jest",
         "test:watch": "jest --watch",
         "test:cov": "jest --coverage",
