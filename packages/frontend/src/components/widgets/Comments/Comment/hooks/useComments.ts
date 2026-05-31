@@ -1,5 +1,4 @@
-import { StringDecoder } from 'string_decoder';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
     CREATE_COMMENT_MUTATION,
     CREATE_REPLY_MUTATION,
@@ -26,18 +25,23 @@ export const useComments = (ownerId?: string, comment?: CommentType) => {
     const [loadedReplies, setLoadedReplies] = useState(false);
     const [replies, setReplies] = useState<CommentType[]>([]);
     const [replyToState, setReplyToState] = useState<ReplyTo | null>(null);
+    const [error, setError] = useState<string | null>(null);
+    const lastBatchSize = useRef(0);
+    const commentsRef = useRef(comments);
+    const repliesRef = useRef(replies);
 
-    const [fetchComments, { loading: loadingFetchComments, error: errorFetchComments }] =
-        useLazyQuery<{
-            getParentCommentsByOwnerId: CommentType[];
-        }>(GET_PARENT_COMMENTS_BY_OWNER_ID, {
-            fetchPolicy: 'network-only',
-        });
+    commentsRef.current = comments;
+    repliesRef.current = replies;
 
-    const [fetchReplies, { loading: LoadingFetchReplies, error: errorFetchReplies }] =
-        useLazyQuery<{
-            getChildrenCommentsByParentId: CommentType[];
-        }>(GET_CHILDREN_COMMENTS_BY_PARENT_ID, { fetchPolicy: 'network-only' });
+    const [fetchComments, { loading: loadingFetchComments }] = useLazyQuery<{
+        getParentCommentsByOwnerId: CommentType[];
+    }>(GET_PARENT_COMMENTS_BY_OWNER_ID, {
+        fetchPolicy: 'cache-and-network',
+    });
+
+    const [fetchReplies, { loading: loadingFetchReplies }] = useLazyQuery<{
+        getChildrenCommentsByParentId: CommentType[];
+    }>(GET_CHILDREN_COMMENTS_BY_PARENT_ID, { fetchPolicy: 'cache-and-network' });
 
     const [createComment] = useMutation<{ createComment: CommentType }>(CREATE_COMMENT_MUTATION);
     const [removeComment] = useMutation<{ removeComment: boolean }>(REMOVE_COMMENT_MUTATION);
@@ -49,10 +53,13 @@ export const useComments = (ownerId?: string, comment?: CommentType) => {
         fetchComments({ variables: { ownerId, limit: INITIAL_LIMIT, offset: 0 } })
             .then(({ data }) => {
                 if (cancelled) return;
-                setComments(data?.getParentCommentsByOwnerId ?? []);
+                const result = data?.getParentCommentsByOwnerId ?? [];
+                setComments(result);
+                lastBatchSize.current = result.length;
             })
-            .catch((error) => {
-                if (error?.name === 'AbortError' || cancelled) return;
+            .catch((err) => {
+                if (cancelled) return;
+                setError(err?.message ?? 'Failed to load comments');
             });
 
         return () => {
@@ -60,100 +67,172 @@ export const useComments = (ownerId?: string, comment?: CommentType) => {
         };
     }, [ownerId]);
 
-    const hasMoreComments = comments.length === offset + currentLimit;
+    const currentLimitForCheck = offset === 0 ? INITIAL_LIMIT : LOAD_MORE_LIMIT;
+    const hasMoreComments = lastBatchSize.current === currentLimitForCheck;
     const hasMoreReplies = replies.length < totalCount;
 
-    const loadMoreComments = async () => {
+    const loadMoreComments = useCallback(async () => {
         const newOffset = offset + currentLimit;
-        const { data } = await fetchComments({
-            variables: { ownerId, offset: newOffset, limit: LOAD_MORE_LIMIT },
-        });
 
-        if (data?.getParentCommentsByOwnerId) {
-            setComments((prev) => [...prev, ...data.getParentCommentsByOwnerId]);
+        try {
+            const { data } = await fetchComments({
+                variables: { ownerId, offset: newOffset, limit: LOAD_MORE_LIMIT },
+            });
+
+            if (data?.getParentCommentsByOwnerId) {
+                const batch = data.getParentCommentsByOwnerId;
+                setComments((prev) => [...prev, ...batch]);
+                lastBatchSize.current = batch.length;
+            }
+            setOffset(newOffset);
+            setCurrentLimit(LOAD_MORE_LIMIT);
+        } catch (err: any) {
+            setError(err?.message ?? 'Failed to load more comments');
         }
+    }, [offset, currentLimit, fetchComments, ownerId]);
 
-        setOffset(newOffset);
-        setCurrentLimit(LOAD_MORE_LIMIT);
-    };
+    const loadMoreReplies = useCallback(async () => {
+        try {
+            const { data } = await fetchReplies({
+                variables: { parentId: comment?._id, offset: replies.length, limit: LOAD_MORE_LIMIT },
+            });
 
-    const loadMoreReplies = async () => {
-        const { data } = await fetchReplies({
-            variables: { parentId: comment?._id, offset: replies.length, limit: LOAD_MORE_LIMIT },
-        });
-
-        if (data?.getChildrenCommentsByParentId) {
-            setReplies((prev) => [...prev, ...data?.getChildrenCommentsByParentId]);
-            setLoadedReplies(true);
+            if (data?.getChildrenCommentsByParentId) {
+                setReplies((prev) => [...prev, ...data.getChildrenCommentsByParentId]);
+                setLoadedReplies(true);
+            }
+        } catch (err: any) {
+            setError(err?.message ?? 'Failed to load replies');
         }
-    };
+    }, [fetchReplies, comment?._id, replies.length]);
 
     const onSaveComment = useCallback(
         async (content: string) => {
-            const result = await createComment({
-                variables: {
-                    createCommentInput: {
-                        content,
-                        ownerId,
-                        ownerType: OwnerType.Event,
+            const optimistic = {
+                __typename: 'Comment' as const,
+                _id: `temp-${Date.now()}`,
+                author: { __typename: 'User' as const, _id: '', firstName: '', lastName: '', image: null },
+                content,
+                createdAt: new Date().toISOString(),
+                deleted: false,
+                ownerId: ownerId ?? '',
+                ownerType: 'Event',
+                parent: null,
+                repliesCount: 0,
+                updatedAt: new Date().toISOString(),
+            } as unknown as CommentType;
+
+            setComments((prev) => [...prev, optimistic]);
+
+            try {
+                const result = await createComment({
+                    variables: {
+                        createCommentInput: { content, ownerId, ownerType: OwnerType.Event },
                     },
-                },
-            });
-
-            const newComment = result.data?.createComment;
-
-            if (newComment) setComments((prev) => [...prev, newComment]);
+                });
+                const newComment = result.data?.createComment;
+                if (newComment) {
+                    setComments((prev) =>
+                        prev.map((c) => (c._id === optimistic._id ? newComment : c))
+                    );
+                }
+            } catch {
+                setComments((prev) => prev.filter((c) => c._id !== optimistic._id));
+                setError('Failed to save comment');
+            }
         },
         [createComment, ownerId]
     );
 
     const onSaveReply = useCallback(
         async (content: string) => {
-            const result = await createReply({
-                variables: {
-                    createCommentInput: {
-                        content,
-                        ownerId: comment?.ownerId,
-                        ownerType: OwnerType.Event,
-                        parent: comment?._id,
+            const optimistic = {
+                __typename: 'Comment' as const,
+                _id: `temp-${Date.now()}`,
+                author: { __typename: 'User' as const, _id: '', firstName: '', lastName: '', image: null },
+                content,
+                createdAt: new Date().toISOString(),
+                deleted: false,
+                ownerId: comment?.ownerId ?? '',
+                ownerType: 'Event',
+                parent: { __typename: 'Comment' as const, _id: comment?._id ?? '' },
+                repliesCount: 0,
+                updatedAt: new Date().toISOString(),
+            } as unknown as CommentType;
+
+            setReplies((prev) => [...prev, optimistic]);
+            setTotalCount((c) => c + 1);
+
+            try {
+                const result = await createReply({
+                    variables: {
+                        createCommentInput: {
+                            content,
+                            ownerId: comment?.ownerId,
+                            ownerType: OwnerType.Event,
+                            parent: comment?._id,
+                        },
                     },
-                },
-            });
-            const newReply = result.data?.createReply;
-            if (newReply) setReplies((prev) => [...prev, newReply]);
+                });
+                const newReply = result.data?.createReply;
+                if (newReply) {
+                    setReplies((prev) =>
+                        prev.map((r) => (r._id === optimistic._id ? newReply : r))
+                    );
+                }
+            } catch {
+                setReplies((prev) => prev.filter((r) => r._id !== optimistic._id));
+                setTotalCount((c) => Math.max(0, c - 1));
+                setError('Failed to save reply');
+            }
         },
         [createReply, comment?._id, comment?.ownerId]
     );
 
     const onDeleteComment = useCallback(
         async (commentId: string) => {
+            const prev = commentsRef.current.find((c) => c._id === commentId);
+
+            setComments((prevComments) =>
+                prevComments.map((c) => (c._id === commentId ? { ...c, deleted: true, content: '' } : c))
+            );
+
             try {
                 await removeComment({ variables: { commentId } });
             } catch (error) {
                 const isNotFound = error instanceof Error && error.message.includes('не найден');
-                if (!isNotFound) throw error;
+                if (isNotFound) return;
+                if (prev) {
+                    setComments((current) =>
+                        current.map((c) => (c._id === commentId ? prev : c))
+                    );
+                }
+                setError('Failed to delete comment');
             }
-
-            setComments((prev) =>
-                prev.map((c) => (c._id === commentId ? { ...c, deleted: true, content: '' } : c))
-            );
         },
         [removeComment]
     );
 
     const onDeleteReply = useCallback(
         async (commentId: string) => {
+            const prev = repliesRef.current.find((c) => c._id === commentId);
+
+            setReplies((prevReplies) =>
+                prevReplies.map((c) => (c._id === commentId ? { ...c, deleted: true, content: '' } : c))
+            );
+
             try {
                 await removeComment({ variables: { commentId } });
             } catch (error) {
                 const isNotFound = error instanceof Error && error.message.includes('не найден');
-                if (!isNotFound) throw error;
+                if (isNotFound) return;
+                if (prev) {
+                    setReplies((current) =>
+                        current.map((c) => (c._id === commentId ? prev : c))
+                    );
+                }
+                setError('Failed to delete reply');
             }
-
-            // Заменяем на заглушку, totalCount не трогаем
-            setReplies((prev) =>
-                prev.map((c) => (c._id === commentId ? { ...c, deleted: true, content: '' } : c))
-            );
         },
         [removeComment]
     );
@@ -161,21 +240,22 @@ export const useComments = (ownerId?: string, comment?: CommentType) => {
     const onClickReplyButton = useCallback(() => {
         if (!comment) return;
         setReplyToState((prev) =>
-            prev?.id === comment?._id
+            prev?.id === comment._id
                 ? null
-                : {
-                      id: comment._id,
-                      userName: `${comment?.author.firstName} ${comment?.author.lastName}`,
-                  }
+                : { id: comment._id, userName: `${comment.author.firstName} ${comment.author.lastName}` }
         );
     }, [comment?._id, comment?.author.firstName, comment?.author.lastName]);
 
     const closeReplyForm = useCallback(() => setReplyToState(null), []);
 
+    const clearError = useCallback(() => setError(null), []);
+
     return {
         comments,
         replies,
-        loading: loadingFetchComments || LoadingFetchReplies,
+        loading: loadingFetchComments || loadingFetchReplies,
+        error,
+        clearError,
         loadMoreComments,
         loadMoreReplies,
         hasMoreComments,

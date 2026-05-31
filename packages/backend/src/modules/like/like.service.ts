@@ -43,6 +43,27 @@ export class LikeService {
         return !!like;
     }
 
+    async getLikesBatch(
+        ownerIds: MongoSchema.Types.ObjectId[],
+        user_id: MongoSchema.Types.ObjectId
+    ): Promise<{ ownerId: string; count: number; isLiked: boolean }[]> {
+        const [counts, userLikes] = await Promise.all([
+            this.likeModel.aggregate([
+                { $match: { ownerId: { $in: ownerIds } } },
+                { $group: { _id: '$ownerId', count: { $sum: 1 } } },
+            ]),
+            this.likeModel.find({ ownerId: { $in: ownerIds }, user: user_id }).select('ownerId'),
+        ]);
+
+        const countMap = new Map(counts.map((c) => [c._id.toString(), c.count]));
+        const likedSet = new Set(userLikes.map((l) => l.ownerId.toString()));
+
+        return ownerIds.map((id) => {
+            const key = id.toString();
+            return { ownerId: key, count: countMap.get(key) ?? 0, isLiked: likedSet.has(key) };
+        });
+    }
+
     // async deleteLike(like_id: MongoSchema.Types.ObjectId) {
     //     return this.likeModel.findByIdAndDelete(like_id).exec();
     // }

@@ -52,7 +52,7 @@ export const CommentForm: FC<CommentFormProps> = ({ onSaveComment, onClose }) =>
                     name={name}
                 ></Textarea>
             </label>
-            <Button disabled={errors.comment ? true : false}>Комментировать</Button>
+            <Button disabled={!!errors.comment}>Комментировать</Button>
         </form>
     );
 };

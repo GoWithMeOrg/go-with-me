@@ -1,41 +1,67 @@
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useMutation, useQuery } from '@apollo/client/react';
 import { TOGGLE_LIKE_MUTATION } from '@/app/graphql/mutations/like';
 import { GET_LIKES_COUNT, IS_LIKED_BY_USER } from '@/app/graphql/queries/like';
 import { LikeProps } from '@/components/widgets/Like/interfaces/LikeProps';
-import { useMutation, useQuery } from '@apollo/client/react';
 
-const useLike = ({ owner_id, ownerType }: LikeProps) => {
-    const [toggleLike] = useMutation(TOGGLE_LIKE_MUTATION, {
-        refetchQueries: [{ query: GET_LIKES_COUNT, variables: { ownerId: owner_id } }],
-    });
-    const { data: isLikedData, refetch } = useQuery<{ isLikedByUser: boolean }>(IS_LIKED_BY_USER, {
+const useLike = ({ owner_id, ownerType, initialIsLiked, initialLikesCount }: LikeProps) => {
+    const hasInitialData = initialIsLiked !== undefined && initialLikesCount !== undefined;
+
+    const [isLiked, setIsLiked] = useState(false);
+    const [likesCount, setLikesCount] = useState(0);
+    const isReadyRef = useRef(false);
+    const isLikedRef = useRef(false);
+
+    const { data: isLikedData } = useQuery<{ isLikedByUser: boolean }>(IS_LIKED_BY_USER, {
         variables: { ownerId: owner_id },
+        skip: hasInitialData,
     });
 
     const { data: likesCountData } = useQuery<{ getLikesCount: number }>(GET_LIKES_COUNT, {
         variables: { ownerId: owner_id },
+        skip: hasInitialData,
     });
 
-    const likesCount = likesCountData?.getLikesCount;
+    useEffect(() => {
+        if (hasInitialData) {
+            setIsLiked(initialIsLiked);
+            setLikesCount(initialLikesCount);
+            isReadyRef.current = true;
+        } else if (isLikedData && likesCountData !== undefined) {
+            setIsLiked(!!isLikedData.isLikedByUser);
+            setLikesCount(likesCountData.getLikesCount);
+            isReadyRef.current = true;
+        }
+    }, [hasInitialData, initialIsLiked, initialLikesCount, isLikedData, likesCountData]);
 
-    const isLiked = !!isLikedData?.isLikedByUser;
+    isLikedRef.current = isLiked;
 
-    const handleLike = async () => {
+    const [toggleLike] = useMutation(TOGGLE_LIKE_MUTATION, {
+        refetchQueries: hasInitialData
+            ? undefined
+            : [{ query: GET_LIKES_COUNT, variables: { ownerId: owner_id } }],
+    });
+
+    const handleLike = useCallback(async () => {
+        if (!isReadyRef.current) return;
+
+        const prevIsLiked = isLikedRef.current;
+
+        setIsLiked(!prevIsLiked);
+        setLikesCount((c) => c + (prevIsLiked ? -1 : 1));
+
         try {
             await toggleLike({
                 variables: { ownerId: owner_id, ownerType },
-                awaitRefetchQueries: true,
+                awaitRefetchQueries: !hasInitialData,
             });
-        } catch (error) {
-            console.error('Error deleting event: ', error);
+        } catch {
+            setIsLiked(prevIsLiked);
+            setLikesCount((c) => (prevIsLiked ? c + 1 : c - 1));
         }
-        refetch();
-    };
+    }, [toggleLike, owner_id, ownerType, hasInitialData]);
 
-    return {
-        handleLike,
-        isLiked,
-        likesCount,
-    };
+    return { handleLike, isLiked, likesCount };
 };
 
 export default useLike;

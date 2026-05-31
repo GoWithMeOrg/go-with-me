@@ -6,8 +6,8 @@ import { LikeProps } from '@/components/widgets/Like/interfaces/LikeProps';
 
 import classes from './Like.module.css';
 
-export const Like: FC<LikeProps> = ({ owner_id, ownerType, count }) => {
-    const { handleLike, isLiked, likesCount } = useLike({ owner_id, ownerType });
+export const Like: FC<LikeProps> = ({ owner_id, ownerType, count, initialIsLiked, initialLikesCount }) => {
+    const { handleLike, isLiked, likesCount } = useLike({ owner_id, ownerType, initialIsLiked, initialLikesCount });
 
     const likeCss = [classes.like, ownerType === 'Event' && classes.likeEvent]
         .filter(Boolean)

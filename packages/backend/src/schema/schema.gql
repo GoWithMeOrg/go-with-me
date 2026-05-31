@@ -145,6 +145,12 @@ type Like {
   user: ID!
 }
 
+type LikeStatus {
+  count: Int!
+  isLiked: Boolean!
+  ownerId: ID!
+}
+
 type Location {
   _id: String!
   geometry: LocationGeometry!
@@ -327,6 +333,7 @@ type Query {
   """Получить все события организатора"""
   getEventsByOrganizer(organizer_id: ID!): [Event!]!
   getJoinedUsersByOwnerId(ownerId: ID!): [Join!]!
+  getLikesBatch(ownerIds: [ID!]!): [LikeStatus!]!
   getLikesByOwnerId(ownerId: ID!): [Like!]!
   getLikesCount(ownerId: ID!): Int!
   getParentCommentsByOwnerId(limit: Int, offset: Int, ownerId: ID!): [Comment!]!
