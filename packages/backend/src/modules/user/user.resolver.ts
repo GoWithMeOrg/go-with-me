@@ -9,11 +9,11 @@ import { UpdateUserInput } from './dto/update-user.input';
 
 import { User } from './entities/user.entity';
 
-import { SessionAuthGuard } from 'src/common/guards/session-auth.guard';
-import { RolesGuard } from 'src/common/guards/roles.guard';
-import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import { SessionAuthGuard } from '@/common/guards/session-auth.guard';
+import { RolesGuard } from '@/common/guards/roles.guard';
+import { CurrentUser } from '@/common/decorators/current-user.decorator';
 
-import { Roles } from '../../common/decorators/roles.decorator';
+import { Roles } from '@/common/decorators/roles.decorator';
 
 @Resolver(() => User)
 export class UserResolver {

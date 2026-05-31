@@ -6,9 +6,9 @@ import { UseGuards } from '@nestjs/common';
 import { Schema as MongoSchema } from 'mongoose';
 import { User } from '../user/entities/user.entity';
 import { CompanionsResponse } from './entities/companions-response.entity';
-import { SessionAuthGuard } from 'src/common/guards/session-auth.guard';
-import { RolesGuard } from 'src/common/guards/roles.guard';
-import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import { SessionAuthGuard } from '@/common/guards/session-auth.guard';
+import { RolesGuard } from '@/common/guards/roles.guard';
+import { CurrentUser } from '@/common/decorators/current-user.decorator';
 
 @Resolver(() => Companion)
 export class CompanionResolver {

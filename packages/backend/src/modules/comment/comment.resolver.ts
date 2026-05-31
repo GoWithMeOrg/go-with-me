@@ -7,7 +7,7 @@ import { CreateCommentInput } from './dto/create-comment.input';
 import { UpdateCommentInput } from './dto/update-comment.input';
 import { User } from '../user/entities/user.entity';
 import { UserService } from '../user/user.service';
-import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import { CurrentUser } from '@/common/decorators/current-user.decorator';
 
 @Resolver(() => Comment)
 export class CommentResolver {

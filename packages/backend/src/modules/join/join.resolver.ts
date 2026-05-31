@@ -2,7 +2,7 @@ import { Resolver, Mutation, Args, Query, ID } from '@nestjs/graphql';
 import { JoinService } from './join.service';
 import { Join } from './entities/join.entity';
 import { Schema as MongoSchema } from 'mongoose';
-import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import { CurrentUser } from '@/common/decorators/current-user.decorator';
 import { User } from '../user/entities/user.entity';
 
 @Resolver(() => Join)

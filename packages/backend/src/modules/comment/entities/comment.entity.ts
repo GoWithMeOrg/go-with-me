@@ -1,7 +1,7 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
 import { Document, Schema as MongoSchema } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { OwnerType } from 'src/common/enums/owner-type.enum';
+import { OwnerType } from '@/common/enums/owner-type.enum';
 
 @ObjectType()
 @Schema({ timestamps: true })

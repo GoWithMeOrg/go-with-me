@@ -2,7 +2,7 @@ import { ObjectType, Field, ID } from '@nestjs/graphql';
 import { Document, Schema as MongoSchema } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Action } from '../enums/action.enum';
-import { Resource } from 'src/modules/resource/entities/resource.entity';
+import { Resource } from '@/modules/resource/entities/resource.entity';
 
 @ObjectType()
 @Schema({ timestamps: true })

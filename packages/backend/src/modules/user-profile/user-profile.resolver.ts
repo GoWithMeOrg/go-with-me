@@ -5,16 +5,16 @@ import { UserProfile } from './entities/user-profile.entity';
 
 import { UserProfileService } from './user-profile.service';
 
-import { CreateLocationInput } from 'src/modules/location/dto/create-location.input';
-import { CreateCategoryInput } from 'src/modules/category/dto/create-category.input';
-import { CreateInterestInput } from 'src/modules/interest/dto/create-interest.input';
-import { CreateTagInput } from 'src/modules/tag/dto/create-tag.input';
+import { CreateLocationInput } from '@/modules/location/dto/create-location.input';
+import { CreateCategoryInput } from '@/modules/category/dto/create-category.input';
+import { CreateInterestInput } from '@/modules/interest/dto/create-interest.input';
+import { CreateTagInput } from '@/modules/tag/dto/create-tag.input';
 
-import { UpdateUserInput } from 'src/modules/user/dto/update-user.input';
-import { UpdateLocationInput } from 'src/modules/location/dto/update-location.input';
-import { UpdateCategoryInput } from 'src/modules/category/dto/update-category.input';
-import { UpdateInterestInput } from 'src/modules/interest/dto/update-interest.input';
-import { UpdateTagInput } from 'src/modules/tag/dto/update-tag.input';
+import { UpdateUserInput } from '@/modules/user/dto/update-user.input';
+import { UpdateLocationInput } from '@/modules/location/dto/update-location.input';
+import { UpdateCategoryInput } from '@/modules/category/dto/update-category.input';
+import { UpdateInterestInput } from '@/modules/interest/dto/update-interest.input';
+import { UpdateTagInput } from '@/modules/tag/dto/update-tag.input';
 
 @Resolver(() => UserProfile)
 export class UserProfileResolver {

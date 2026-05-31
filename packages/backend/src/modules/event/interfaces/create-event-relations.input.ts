@@ -1,8 +1,8 @@
 import { InputType, Field } from '@nestjs/graphql';
-import { CreateCategoryInput } from '../../category/dto/create-category.input';
-import { CreateInterestInput } from '../../interest/dto/create-interest.input';
-import { CreateLocationInput } from '../../location/dto/create-location.input';
-import { CreateTagInput } from '../../tag/dto/create-tag.input';
+import { CreateCategoryInput } from '@/modules/category/dto/create-category.input';
+import { CreateInterestInput } from '@/modules/interest/dto/create-interest.input';
+import { CreateLocationInput } from '@/modules/location/dto/create-location.input';
+import { CreateTagInput } from '@/modules/tag/dto/create-tag.input';
 
 @InputType()
 export class EventRelationsInput {

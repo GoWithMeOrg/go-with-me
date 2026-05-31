@@ -13,7 +13,7 @@ import { CreateLocationInput } from '../location/dto/create-location.input';
 import { CreateCategoryInput } from '../category/dto/create-category.input';
 import { CreateInterestInput } from '../interest/dto/create-interest.input';
 import { CreateTagInput } from '../tag/dto/create-tag.input';
-import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import { CurrentUser } from '@/common/decorators/current-user.decorator';
 import { EventRelationsInput } from './interfaces/create-event-relations.input';
 
 @Resolver(() => Event)

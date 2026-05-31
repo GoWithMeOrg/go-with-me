@@ -2,10 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { Schema as MongoSchema } from 'mongoose';
 
 import { Event } from '../entities/event.entity';
-import { LocationService } from '../../location/location.service';
-import { CategoryService } from '../../category/category.service';
-import { InterestService } from '../../interest/interest.service';
-import { TagService } from '../../tag/tag.service';
+import { LocationService } from '@/modules/location/location.service';
+import { CategoryService } from '@/modules/category/category.service';
+import { InterestService } from '@/modules/interest/interest.service';
+import { TagService } from '@/modules/tag/tag.service';
 import { EventRelationsInput } from '../interfaces/create-event-relations.input';
 
 @Injectable()

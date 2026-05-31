@@ -4,12 +4,12 @@ import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Schema as MongoSchema } from 'mongoose';
 
-import { AuthService } from '../../auth.service';
-import { RoleService } from '../../../modules/role/role.service';
+import { AuthService } from '@/auth/auth.service';
+import { RoleService } from '@/modules/role/role.service';
 
-import { UserService } from 'src/modules/user/user.service';
+import { UserService } from '@/modules/user/user.service';
 
-import { AuthUserPayload } from 'src/auth/dto/auth-user.payload';
+import { AuthUserPayload } from '@/auth/dto/auth-user.payload';
 
 import { GoogleProfile } from '../interfaces/profile.interface';
 

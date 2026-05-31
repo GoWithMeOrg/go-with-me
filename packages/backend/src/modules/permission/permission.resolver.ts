@@ -3,9 +3,9 @@ import { Schema as MongoSchema } from 'mongoose';
 import { PermissionService } from './permission.service';
 import { Permission } from './entities/permission.entity';
 import { NotFoundException, UseGuards } from '@nestjs/common';
-import { SessionAuthGuard } from 'src/common/guards/session-auth.guard';
-import { RolesGuard } from 'src/common/guards/roles.guard';
-import { Roles } from 'src/common/decorators/roles.decorator';
+import { SessionAuthGuard } from '@/common/guards/session-auth.guard';
+import { RolesGuard } from '@/common/guards/roles.guard';
+import { Roles } from '@/common/decorators/roles.decorator';
 
 @Resolver(() => Permission)
 @UseGuards(SessionAuthGuard, RolesGuard)

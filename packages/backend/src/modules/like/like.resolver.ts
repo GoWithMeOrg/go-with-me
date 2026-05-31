@@ -2,7 +2,7 @@ import { Resolver, Mutation, Args, Query, ID, Int } from '@nestjs/graphql';
 import { LikeService } from './like.service';
 import { Like } from './entities/like.entity';
 import { Schema as MongoSchema } from 'mongoose';
-import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import { CurrentUser } from '@/common/decorators/current-user.decorator';
 import { User } from '../user/entities/user.entity';
 
 @Resolver(() => Like)

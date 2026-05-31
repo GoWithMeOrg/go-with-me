@@ -3,7 +3,7 @@ import { StorageService } from './storage.service';
 import { PresignedUrlResponse } from './dto/presigned-url.response';
 import { UploadFileInput } from './dto/upload-file.input';
 import type { StorageFolder } from './types/storage-folder';
-import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import { CurrentUser } from '@/common/decorators/current-user.decorator';
 import { User } from '../user/entities/user.entity';
 
 @Resolver()

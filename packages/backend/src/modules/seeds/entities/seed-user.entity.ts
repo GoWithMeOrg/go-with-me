@@ -1,9 +1,9 @@
 import { ObjectType, Field } from '@nestjs/graphql';
-import { Location } from 'src/modules/location/entities/location.entity';
-import { Category } from 'src/modules/category/entities/category.entity';
-import { Interest } from 'src/modules/interest/entities/interest.entity';
-import { Tag } from 'src/modules/tag/entities/tag.entity';
-import { User } from 'src/modules/user/entities/user.entity';
+import { Location } from '@/modules/location/entities/location.entity';
+import { Category } from '@/modules/category/entities/category.entity';
+import { Interest } from '@/modules/interest/entities/interest.entity';
+import { Tag } from '@/modules/tag/entities/tag.entity';
+import { User } from '@/modules/user/entities/user.entity';
 
 @ObjectType()
 export class SeedUserResult {

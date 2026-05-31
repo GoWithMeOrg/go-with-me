@@ -1,10 +1,10 @@
 import { forwardRef, Module } from '@nestjs/common';
 
-import { UserModule } from 'src/modules/user/user.module';
-import { LocationModule } from 'src/modules/location/location.module';
-import { CategoryModule } from 'src/modules/category/category.module';
-import { InterestModule } from 'src/modules/interest/interest.module';
-import { TagModule } from 'src/modules/tag/tag.module';
+import { UserModule } from '@/modules/user/user.module';
+import { LocationModule } from '@/modules/location/location.module';
+import { CategoryModule } from '@/modules/category/category.module';
+import { InterestModule } from '@/modules/interest/interest.module';
+import { TagModule } from '@/modules/tag/tag.module';
 
 import { UserProfileResolver } from './user-profile.resolver';
 

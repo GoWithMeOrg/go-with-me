@@ -2,13 +2,13 @@ import { Resolver, Mutation, Args, ID, Subscription, Query } from '@nestjs/graph
 import { CompanionRequestService } from './companion-request.service';
 import { CompanionRequest } from './entities/companion-request.entity';
 import { UseGuards, Inject } from '@nestjs/common';
-import { SessionAuthGuard } from 'src/common/guards/session-auth.guard';
-import { RolesGuard } from 'src/common/guards/roles.guard';
+import { SessionAuthGuard } from '@/common/guards/session-auth.guard';
+import { RolesGuard } from '@/common/guards/roles.guard';
 import { Schema as MongoSchema } from 'mongoose';
 import { PubSub } from 'graphql-subscriptions';
-import { PUB_SUB } from 'src/common/constants/pub-sub.constants';
-import { GqlAuthGuard } from 'src/common/guards/gql-auth.guard';
-import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import { PUB_SUB } from '@/common/constants/pub-sub.constants';
+import { GqlAuthGuard } from '@/common/guards/gql-auth.guard';
+import { CurrentUser } from '@/common/decorators/current-user.decorator';
 import { User } from '../user/entities/user.entity';
 
 @Resolver(() => CompanionRequest)

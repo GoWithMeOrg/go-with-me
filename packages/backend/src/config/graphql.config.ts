@@ -8,9 +8,9 @@ import * as signature from 'cookie-signature';
 import { Context } from 'graphql-ws';
 import { Model } from 'mongoose';
 
-import { SubscriptionContext } from 'src/common/interfaces/subscription-context.interface';
-import { UserDocument } from 'src/modules/user/entities/user.entity';
-import { isDev } from 'src/utils/is-dev.utils';
+import { SubscriptionContext } from '@/common/interfaces/subscription-context.interface';
+import { UserDocument } from '@/modules/user/entities/user.entity';
+import { isDev } from '@/utils/is-dev.utils';
 import { getMongoStore } from './mongo-store.config';
 
 export async function getGraphQLConfig(
