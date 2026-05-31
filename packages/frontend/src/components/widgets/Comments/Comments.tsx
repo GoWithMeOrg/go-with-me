@@ -10,22 +10,19 @@ import { Title } from '@/components/shared/Title';
 import { Comment } from '@/components/widgets/Comments/Comment';
 import { CommentForm } from '@/components/widgets/Comments/CommentForm';
 
-import { useComments } from './Comment/hooks/useComments';
+import { useCommentList } from './Comment/hooks/useCommentList';
 import { LikesProvider } from './LikesContext';
 import { LikeState } from './types';
 
 import classes from './Comments.module.css';
 
 export const Comments = ({ event_id }: { event_id: string }) => {
-    const { comments, loading, error, clearError, loadMoreComments, hasMoreComments, onSaveComment, onDeleteComment } =
-        useComments(event_id);
+    const { comments, loading, error, clearError, hasMoreComments, loadMore, onSave, onDelete } =
+        useCommentList(event_id);
 
     const allCommentIds = useMemo(() => {
         const ids = new Set<string>();
-        const collect = (items: typeof comments) => {
-            for (const c of items) ids.add(c._id);
-        };
-        collect(comments);
+        for (const c of comments) ids.add(c._id);
         return ids.size > 0 ? Array.from(ids) : null;
     }, [comments]);
 
@@ -51,7 +48,7 @@ export const Comments = ({ event_id }: { event_id: string }) => {
             <Title tag="h3" className={classes.title}>
                 Комментарии
             </Title>
-            <CommentForm onSaveComment={onSaveComment} />
+            <CommentForm onSaveComment={onSave} />
             {error && (
                 <div className={classes.error} onClick={clearError}>
                     {error}
@@ -61,7 +58,7 @@ export const Comments = ({ event_id }: { event_id: string }) => {
                 <ul className={classes.commentsList}>
                     {comments?.map((comment) => (
                         <li key={comment._id}>
-                            <Comment comment={comment} onDelete={onDeleteComment} />
+                            <Comment comment={comment} onDelete={onDelete} />
                         </li>
                     ))}
                 </ul>
@@ -72,11 +69,7 @@ export const Comments = ({ event_id }: { event_id: string }) => {
                 </MessageContainer>
             )}
             {hasMoreComments && !loading && (
-                <Button
-                    resetDefaultStyles
-                    className={classes.buttonText}
-                    onClick={loadMoreComments}
-                >
+                <Button resetDefaultStyles className={classes.buttonText} onClick={loadMore}>
                     LOAD MORE COMMENTS
                 </Button>
             )}

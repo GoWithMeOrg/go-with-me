@@ -62,18 +62,22 @@ export class CommentResolver {
     getParentCommentsByOwnerId(
         @Args('ownerId', { type: () => ID }) ownerId: MongoSchema.Types.ObjectId,
         @Args('limit', { type: () => Int, nullable: true }) limit?: number,
-        @Args('offset', { type: () => Int, nullable: true }) offset?: number
+        @Args('offset', { type: () => Int, nullable: true }) offset?: number,
+        @Args('sort', { type: () => String, nullable: true }) sort?: string
     ): Promise<Comment[]> {
-        return this.commentService.getParentCommentsByOwnerId(ownerId, limit, offset);
+        const sortDirection = sort === 'newest' ? -1 : 1;
+        return this.commentService.getParentCommentsByOwnerId(ownerId, limit, offset, sortDirection);
     }
 
     @Query(() => [Comment])
     getChildrenCommentsByParentId(
         @Args('parentId', { type: () => ID }) parentId: MongoSchema.Types.ObjectId,
         @Args('limit', { type: () => Int, nullable: true }) limit?: number,
-        @Args('offset', { type: () => Int, nullable: true }) offset?: number
+        @Args('offset', { type: () => Int, nullable: true }) offset?: number,
+        @Args('sort', { type: () => String, nullable: true }) sort?: string
     ): Promise<Comment[]> {
-        return this.commentService.getChildrenCommentsByParentId(parentId, limit, offset);
+        const sortDirection = sort === 'newest' ? -1 : 1;
+        return this.commentService.getChildrenCommentsByParentId(parentId, limit, offset, sortDirection);
     }
 
     @ResolveField(() => User, { name: 'author' })

@@ -144,11 +144,12 @@ export class CommentService {
     async getParentCommentsByOwnerId(
         ownerId: MongoSchema.Types.ObjectId,
         limit = 20,
-        offset = 0
+        offset = 0,
+        sort: 1 | -1 = 1
     ): Promise<Comment[]> {
         return this.commentModel
             .find({ ownerId, parent: null })
-            .sort({ createdAt: 1 })
+            .sort({ createdAt: sort })
             .skip(offset)
             .limit(limit)
             .lean()
@@ -162,7 +163,8 @@ export class CommentService {
     async getChildrenCommentsByParentId(
         parentId: MongoSchema.Types.ObjectId,
         limit = 50,
-        offset = 0
+        offset = 0,
+        sort: 1 | -1 = 1
     ): Promise<Comment[]> {
         const allDescendants: Comment[] = [];
         const queue: { id: MongoSchema.Types.ObjectId; depth: number }[] = [
@@ -176,7 +178,7 @@ export class CommentService {
 
             const children = await this.commentModel
                 .find({ parent: currentParentId })
-                .sort({ createdAt: 1 })
+                .sort({ createdAt: sort })
                 .lean()
                 .exec();
 
@@ -185,6 +187,12 @@ export class CommentService {
                 queue.push({ id: child._id as MongoSchema.Types.ObjectId, depth: depth + 1 });
             }
         }
+
+        allDescendants.sort((a, b) => {
+            const dateA = new Date(a.createdAt).getTime();
+            const dateB = new Date(b.createdAt).getTime();
+            return sort === -1 ? dateB - dateA : dateA - dateB;
+        });
 
         return allDescendants.slice(offset, offset + limit);
     }

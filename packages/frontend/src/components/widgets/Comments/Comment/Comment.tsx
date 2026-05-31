@@ -1,20 +1,15 @@
 'use client';
 
-import { memo } from 'react';
+import { memo, useCallback, useState } from 'react';
 import { Comment as CommentType } from '@/app/graphql/types';
-import ArrowReply from '@/assets/icons/arrowReply.svg';
-import Spinner from '@/assets/icons/spinner.svg';
-import Trash from '@/assets/icons/trash.svg';
 import { Avatar } from '@/components/shared/Avatar';
-import { MessageContainer } from '@/components/shared/MessageContainer/MessageContainer';
-import { Span } from '@/components/shared/Span/Span';
-import { CommentForm } from '@/components/widgets/Comments/CommentForm';
-import { Like } from '@/components/widgets/Like';
 import { useUserID } from '@/hooks/useUserID';
-import dayjs from 'dayjs';
 
 import { useLikesContext } from '../LikesContext';
-import { useComments } from './hooks/useComments';
+import { CommentContent } from './CommentContent';
+import { CommentHeader } from './CommentHeader';
+import { CommentReplies } from './CommentReplies';
+import { useCommentReplies } from './hooks/useCommentReplies';
 
 import classes from './Comment.module.css';
 
@@ -22,6 +17,11 @@ interface CommentProps {
     comment: CommentType;
     depth?: number;
     onDelete?: (id: string) => void;
+}
+
+interface ReplyToState {
+    id: string;
+    authorName: string;
 }
 
 const CommentInner = ({ comment, depth = 0, onDelete }: CommentProps) => {
@@ -32,91 +32,25 @@ const CommentInner = ({ comment, depth = 0, onDelete }: CommentProps) => {
     const {
         replies,
         loading,
-        onClickReplyButton,
-        loadMoreReplies,
+        loadMore,
         hasMoreReplies,
-        onSaveReply,
-        closeReplyForm,
-        replyToState,
-        onDeleteComment,
-        onDeleteReply,
+        onSave,
+        onDelete: onDeleteReply,
         totalCount,
         loadedReplies,
-    } = useComments(comment.ownerId, comment);
+    } = useCommentReplies(comment);
 
-    const repliesSection = (comment.repliesCount > 0 || replies.length > 0) && (
-        <ul className={classes.replies}>
-            {replies?.map((reply) => (
-                <Comment
-                    key={reply._id}
-                    comment={reply}
-                    depth={Math.min(depth + 1, 1)}
-                    onDelete={onDeleteReply}
-                />
-            ))}
-            {loading && (
-                <MessageContainer>
-                    <Spinner />
-                </MessageContainer>
-            )}
-        </ul>
-    );
+    const [replyToState, setReplyToState] = useState<ReplyToState | null>(null);
 
-    const loadMoreButton = depth === 0 && totalCount > 0 && (!loadedReplies || hasMoreReplies) && (
-        <button className={classes.loadMoreReplies} onClick={loadMoreReplies}>
-            {!loadedReplies ? `${totalCount} Replies` : 'Show more replies'}
-        </button>
-    );
+    const onClickReplyButton = useCallback(() => {
+        setReplyToState((prev) =>
+            prev?.id === comment._id
+                ? null
+                : { id: comment._id, authorName: `${comment.author.firstName} ${comment.author.lastName}` }
+        );
+    }, [comment._id, comment.author.firstName, comment.author.lastName]);
 
-    const header = (
-        <div className={classes.userName}>
-            <span>{`${comment.author.firstName} ${comment.author.lastName}`}</span>
-            {comment.parent && (
-                <a href={`#comment-id-${comment.parent._id}`}>
-                    <Span
-                        className={classes.replyTo}
-                        title={`ответил ${comment.parent.author?.firstName ?? ''} ${comment.parent.author?.lastName ?? ''}`}
-                    />
-                </a>
-            )}
-            <Span title={dayjs(comment.createdAt).format('DD MMMM YYYY HH:mm')} />
-        </div>
-    );
-
-    const body = comment.deleted ? (
-        <div className={classes.deletedComment}>
-            <span>Комментарий удалён</span>
-        </div>
-    ) : (
-        <>
-            <p className={classes.commentText}>{comment.content}</p>
-            <div className={classes.likesContainer}>
-                <Like
-                    owner_id={comment._id}
-                    ownerType="Comment"
-                    count
-                    initialIsLiked={likeData?.isLiked}
-                    initialLikesCount={likeData?.count}
-                />
-                {user_id !== comment.author._id && (
-                    <button className={classes.replyButton} onClick={onClickReplyButton}>
-                        <ArrowReply />
-                    </button>
-                )}
-                {user_id === comment.author._id && (
-                    <button
-                        className={classes.deleteButton}
-                        onClick={() => onDelete?.(comment._id)}
-                    >
-                        <Trash />
-                    </button>
-                )}
-            </div>
-            {replyToState?.id === comment._id && (
-                <CommentForm onSaveComment={onSaveReply} onClose={closeReplyForm} />
-            )}
-        </>
-    );
+    const closeReplyForm = useCallback(() => setReplyToState(null), []);
 
     return (
         <>
@@ -131,13 +65,44 @@ const CommentInner = ({ comment, depth = 0, onDelete }: CommentProps) => {
                     />
                 </div>
                 <div className={classes.contentContainer}>
-                    {header}
-                    {body}
-                    {depth === 0 && repliesSection}
-                    {depth === 0 && loadMoreButton}
+                    <CommentHeader comment={comment} />
+                    <CommentContent
+                        comment={comment}
+                        userId={user_id as string}
+                        initialIsLiked={likeData?.isLiked}
+                        initialLikesCount={likeData?.count}
+                        showReplyForm={replyToState?.id === comment._id}
+                        onReply={onClickReplyButton}
+                        onDelete={() => onDelete?.(comment._id)}
+                        onSaveReply={onSave}
+                        onCloseReplyForm={closeReplyForm}
+                    />
+                    {depth === 0 && (
+                        <CommentReplies
+                            replies={replies}
+                            loading={loading}
+                            depth={depth}
+                            totalCount={totalCount}
+                            loadedReplies={loadedReplies}
+                            hasMoreReplies={hasMoreReplies}
+                            onLoadMore={loadMore}
+                            onDeleteReply={onDeleteReply}
+                        />
+                    )}
                 </div>
             </div>
-            {depth >= 1 && repliesSection}
+            {depth >= 1 && (
+                <CommentReplies
+                    replies={replies}
+                    loading={loading}
+                    depth={depth}
+                    totalCount={totalCount}
+                    loadedReplies={loadedReplies}
+                    hasMoreReplies={hasMoreReplies}
+                    onLoadMore={loadMore}
+                    onDeleteReply={onDeleteReply}
+                />
+            )}
         </>
     );
 };

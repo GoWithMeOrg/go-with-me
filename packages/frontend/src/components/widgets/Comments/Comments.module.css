@@ -10,10 +10,6 @@
     color: var(--main-color);
 }
 
-.replies {
-    margin-left: 6rem;
-}
-
 .error {
     padding: 1rem;
     margin-bottom: 1rem;

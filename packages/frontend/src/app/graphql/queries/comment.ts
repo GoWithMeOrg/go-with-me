@@ -26,8 +26,8 @@ export const GET_COMMENTS_BY_OWNER_ID = gql`
 `;
 
 export const GET_PARENT_COMMENTS_BY_OWNER_ID = gql`
-    query GetParentCommentsByOwnerId($limit: Int, $offset: Int, $ownerId: ID!) {
-        getParentCommentsByOwnerId(limit: $limit, offset: $offset, ownerId: $ownerId) {
+    query GetParentCommentsByOwnerId($limit: Int, $offset: Int, $ownerId: ID!, $sort: String) {
+        getParentCommentsByOwnerId(limit: $limit, offset: $offset, ownerId: $ownerId, sort: $sort) {
             _id
             author {
                 _id
@@ -48,8 +48,8 @@ export const GET_PARENT_COMMENTS_BY_OWNER_ID = gql`
 `;
 
 export const GET_CHILDREN_COMMENTS_BY_PARENT_ID = gql`
-    query GetChildrenCommentsByParentId($limit: Int, $offset: Int, $parentId: ID!) {
-        getChildrenCommentsByParentId(limit: $limit, offset: $offset, parentId: $parentId) {
+    query GetChildrenCommentsByParentId($limit: Int, $offset: Int, $parentId: ID!, $sort: String) {
+        getChildrenCommentsByParentId(limit: $limit, offset: $offset, parentId: $parentId, sort: $sort) {
             _id
             author {
                 firstName
