@@ -6,7 +6,7 @@ services:
     container_name: gwm-backend
     working_dir: /workspace
     command: >
-      sh -c "pnpm install && pnpm --filter @go-with-me/backend start:dev"
+      sh -c "pnpm install && pnpm --filter @go-with-me/backend build && pnpm --filter @go-with-me/backend start:dev"
     env_file:
       - .env.local
     environment:
