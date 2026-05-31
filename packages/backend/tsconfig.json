@@ -22,6 +22,7 @@
         "strictNullChecks": true,
         "forceConsistentCasingInFileNames": true,
         "noImplicitAny": false,
+        "strictPropertyInitialization": false,
         "strictBindCallApply": false,
         "noFallthroughCasesInSwitch": false,
         "typeRoots": ["./node_modules/@types", "./src/types"],
