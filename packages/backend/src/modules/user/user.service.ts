@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { DeleteResult, Model, Schema as MongoSchema } from 'mongoose';
+import { DeleteResult, Model, Types } from 'mongoose';
 
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
@@ -8,7 +8,7 @@ import { UpdateUserInput } from './dto/update-user.input';
 import { User, UserDocument } from './entities/user.entity';
 import { Role, RoleDocument } from '../role/entities/role.entity';
 import { Companion, CompanionDocument } from '../companion/entities/companion.entity';
-import { CompanionRequest } from '../companion-request/entities/companion-request.entity';
+import { CompanionRequest, CompanionRequestDocument } from '../companion-request/entities/companion-request.entity';
 
 @Injectable()
 export class UserService {
@@ -20,7 +20,7 @@ export class UserService {
         private companionModel: Model<CompanionDocument>,
 
         @InjectModel(CompanionRequest.name)
-        private companionRequestModel: Model<CompanionRequest>,
+        private companionRequestModel: Model<CompanionRequestDocument>,
 
         @InjectModel(Role.name)
         private roleModel: Model<RoleDocument>
@@ -30,21 +30,21 @@ export class UserService {
         return this.userModel.find();
     }
 
-    getUserById(id: MongoSchema.Types.ObjectId): Promise<User | null> {
+    getUserById(id: Types.ObjectId): Promise<User | null> {
         return this.userModel
             .findById(id)
             .populate({ path: 'roles', populate: { path: 'permissions' } })
             .exec();
     }
 
-    getPublicProfile(id: MongoSchema.Types.ObjectId) {
+    getPublicProfile(id: Types.ObjectId) {
         return this.userModel.findById(id).select('firstName lastName image description');
     }
 
     async findByEmailOrName(
         query?: string,
-        user_id?: MongoSchema.Types.ObjectId
-    ): Promise<User[] | null> {
+        user_id?: Types.ObjectId
+    ): Promise<User[]> {
         // Фильтруем результат по имени или email
         const filters: any = {};
 
@@ -80,7 +80,7 @@ export class UserService {
                         { sender: user_id, status: 'PENDING' },
                         { receiver: user_id, status: 'PENDING' },
                     ],
-                })
+                } as any)
                 .exec();
 
             const requestedIds = activeRequests.map((r) =>
@@ -109,13 +109,13 @@ export class UserService {
         return createUser.save();
     }
 
-    updateUser(id: MongoSchema.Types.ObjectId, updateUserInput: UpdateUserInput) {
+    updateUser(id: Types.ObjectId, updateUserInput: UpdateUserInput) {
         return this.userModel.findByIdAndUpdate(id, updateUserInput, {
             new: true,
         });
     }
 
-    updateUserRoles(id: MongoSchema.Types.ObjectId, roleIds: MongoSchema.Types.ObjectId[]) {
+    updateUserRoles(id: Types.ObjectId, roleIds: Types.ObjectId[]) {
         return this.userModel.findByIdAndUpdate(
             id,
             { $push: { roles: { $each: roleIds } } },
@@ -125,7 +125,7 @@ export class UserService {
 
     // user.service.ts или auth.service.ts
 
-    async addRoleByName(userId: MongoSchema.Types.ObjectId, roleName: string): Promise<User> {
+    async addRoleByName(userId: Types.ObjectId, roleName: string): Promise<User> {
         // 1. Ищем роль в базе данных по названию
         const role = await this.roleModel.findOne({ role: roleName }).exec();
 
@@ -150,7 +150,7 @@ export class UserService {
         return updatedUser;
     }
 
-    async removeRoleByName(userId: MongoSchema.Types.ObjectId, roleName: string): Promise<User> {
+    async removeRoleByName(userId: Types.ObjectId, roleName: string): Promise<User> {
         // 1. Находим документ роли, чтобы получить её _id
         const role = await this.roleModel.findOne({ role: roleName }).exec();
 
@@ -175,7 +175,7 @@ export class UserService {
         return updatedUser;
     }
 
-    removeUser(id: MongoSchema.Types.ObjectId): Promise<DeleteResult> {
+    removeUser(id: Types.ObjectId): Promise<DeleteResult> {
         return this.userModel.deleteOne({ _id: id }).exec();
     }
 }

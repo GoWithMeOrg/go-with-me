@@ -3,7 +3,7 @@ import { LocationService } from './location.service';
 import { CreateLocationInput } from './dto/create-location.input';
 import { UpdateLocationInput } from './dto/update-location.input';
 import { Location } from './entities/location.entity';
-import { Schema as MongoSchema } from 'mongoose';
+import { Types } from 'mongoose';
 
 @Resolver(() => Location)
 export class LocationResolver {
@@ -14,7 +14,7 @@ export class LocationResolver {
         description: 'Поиск места по id',
     })
     getLocationById(
-        @Args('id', { type: () => ID }) location_location_id: MongoSchema.Types.ObjectId
+        @Args('id', { type: () => ID }) location_location_id: Types.ObjectId
     ): Promise<Location | null> {
         return this.locationService.getLocationById(location_location_id);
     }
@@ -24,7 +24,7 @@ export class LocationResolver {
         description: 'Поиск места по ownerId',
     })
     getLocationByOwner(
-        @Args('ownerId', { type: () => ID }) ownerId: MongoSchema.Types.ObjectId
+        @Args('ownerId', { type: () => ID }) ownerId: Types.ObjectId
     ): Promise<Location | null> {
         return this.locationService.getLocationByOwner(ownerId);
     }
@@ -46,7 +46,7 @@ export class LocationResolver {
     })
     updateLocation(
         @Args('updateLocationInput') updateLocationInput: UpdateLocationInput,
-        @Args('location_id', { type: () => ID }) location_id: MongoSchema.Types.ObjectId
+        @Args('location_id', { type: () => ID }) location_id: Types.ObjectId
     ): Promise<Location | null> {
         return this.locationService.updateLocation(location_id, updateLocationInput);
     }
@@ -56,7 +56,7 @@ export class LocationResolver {
         description: 'Удалить локацию',
     })
     async removeLocation(
-        @Args('id', { type: () => ID }) location_id: MongoSchema.Types.ObjectId
+        @Args('id', { type: () => ID }) location_id: Types.ObjectId
     ): Promise<boolean> {
         const result = await this.locationService.removeLocation(location_id);
         return result.deletedCount > 0;

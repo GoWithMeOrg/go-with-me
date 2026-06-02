@@ -1,13 +1,13 @@
 import { InputType, Field, ID } from '@nestjs/graphql';
-import { Schema as MongoSchema } from 'mongoose';
+import { Types } from 'mongoose';
 
 @InputType()
 export class ToggleJoinInput {
     @Field(() => ID)
-    user: MongoSchema.Types.ObjectId;
+    user: Types.ObjectId;
 
     @Field(() => ID)
-    ownerId: MongoSchema.Types.ObjectId;
+    ownerId: Types.ObjectId;
 
     @Field(() => String)
     ownerType: 'Event' | 'Trip';

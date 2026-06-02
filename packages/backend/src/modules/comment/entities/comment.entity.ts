@@ -1,5 +1,5 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { Document, Schema as MongoSchema } from 'mongoose';
+import { Document, Schema as MongoSchema, Types } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { OwnerType } from '@/common/enums/owner-type.enum';
 
@@ -7,11 +7,11 @@ import { OwnerType } from '@/common/enums/owner-type.enum';
 @Schema({ timestamps: true })
 export class Comment {
     @Field(() => ID)
-    _id: MongoSchema.Types.ObjectId;
+    _id: Types.ObjectId;
 
     @Field(() => ID)
-    @Prop({ type: MongoSchema.Types.ObjectId, required: true })
-    author: MongoSchema.Types.ObjectId;
+    @Prop({ type: Types.ObjectId, required: true })
+    author: Types.ObjectId;
 
     @Field(() => String)
     @Prop({ type: String, required: true })
@@ -19,15 +19,15 @@ export class Comment {
 
     @Field(() => ID)
     @Prop({ type: MongoSchema.Types.ObjectId, required: true })
-    ownerId: MongoSchema.Types.ObjectId;
+    ownerId: Types.ObjectId;
 
     @Field(() => String)
     @Prop({ type: String, enum: OwnerType, required: true })
     ownerType: OwnerType;
 
     @Field(() => Comment, { nullable: true })
-    @Prop({ type: MongoSchema.Types.ObjectId, ref: 'Comment', default: null })
-    parent?: MongoSchema.Types.ObjectId | Comment;
+    @Prop({ type: Types.ObjectId, ref: 'Comment', default: null })
+    parent?: Types.ObjectId;
 
     @Field(() => Number)
     @Prop({ type: Number, default: 0 })

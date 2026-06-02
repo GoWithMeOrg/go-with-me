@@ -1,9 +1,10 @@
 import { ObjectType, Field, ID, Int } from '@nestjs/graphql';
+import { Types } from 'mongoose';
 
 @ObjectType()
 export class LikeStatus {
     @Field(() => ID)
-    ownerId: string;
+    ownerId: Types.ObjectId;
 
     @Field(() => Int)
     count: number;

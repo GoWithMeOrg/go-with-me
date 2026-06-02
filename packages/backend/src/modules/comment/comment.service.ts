@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { Model, Schema as MongoSchema } from 'mongoose';
+import { Model, Schema as MongoSchema, Types } from 'mongoose';
 
 import { CreateCommentInput } from './dto/create-comment.input';
 import { UpdateCommentInput } from './dto/update-comment.input';
@@ -13,7 +13,7 @@ export class CommentService {
     constructor(@InjectModel(Comment.name) private commentModel: Model<CommentDocument>) {}
 
     async createComment(
-        author: MongoSchema.Types.ObjectId,
+        author: Types.ObjectId,
         createCommentInput: CreateCommentInput
     ): Promise<Comment> {
         if (createCommentInput.parent) {
@@ -34,7 +34,7 @@ export class CommentService {
     }
 
     async createReply(
-        author: MongoSchema.Types.ObjectId,
+        author: Types.ObjectId,
         createCommentInput: CreateCommentInput
     ): Promise<Comment> {
         const { parent: parentId } = createCommentInput;
@@ -64,9 +64,9 @@ export class CommentService {
     }
 
     private async incrementAncestorsRepliesCount(
-        parentId: MongoSchema.Types.ObjectId | null | undefined
+        parentId: Types.ObjectId | null | undefined
     ): Promise<void> {
-        let currentParentId: MongoSchema.Types.ObjectId | null = parentId ?? null;
+        let currentParentId: Types.ObjectId | null = parentId ?? null;
 
         while (currentParentId) {
             await this.commentModel.findByIdAndUpdate(currentParentId, {
@@ -77,14 +77,14 @@ export class CommentService {
                 .findById(currentParentId)
                 .select('parent')
                 .lean();
-            currentParentId = (parent?.parent as MongoSchema.Types.ObjectId | null) ?? null;
+            currentParentId = (parent?.parent as Types.ObjectId | null) ?? null;
         }
     }
 
     private async decrementAncestorsRepliesCount(
-        parentId: MongoSchema.Types.ObjectId
+        parentId: Types.ObjectId
     ): Promise<void> {
-        let currentParentId: MongoSchema.Types.ObjectId | null = parentId;
+        let currentParentId: Types.ObjectId | null = parentId;
 
         while (currentParentId) {
             await this.commentModel.findByIdAndUpdate(currentParentId, {
@@ -95,14 +95,14 @@ export class CommentService {
                 .findById(currentParentId)
                 .select('parent')
                 .lean();
-            currentParentId = (parent?.parent as MongoSchema.Types.ObjectId | null) ?? null;
+            currentParentId = (parent?.parent as Types.ObjectId | null) ?? null;
         }
     }
 
     async updateComment(
-        commentId: MongoSchema.Types.ObjectId,
+        commentId: Types.ObjectId,
         updateCommentInput: UpdateCommentInput,
-        userId: MongoSchema.Types.ObjectId
+        userId: Types.ObjectId
     ): Promise<Comment> {
         const comment = await this.commentModel.findById(commentId);
         if (!comment) {
@@ -127,7 +127,7 @@ export class CommentService {
     }
 
     async getCommentsByOwnerId(
-        ownerId: MongoSchema.Types.ObjectId,
+        ownerId: Types.ObjectId,
         limit: number,
         offset: number
     ): Promise<Comment[]> {
@@ -142,7 +142,7 @@ export class CommentService {
     }
 
     async getParentCommentsByOwnerId(
-        ownerId: MongoSchema.Types.ObjectId,
+        ownerId: Types.ObjectId,
         limit = 20,
         offset = 0,
         sort: 1 | -1 = 1
@@ -156,18 +156,18 @@ export class CommentService {
             .exec();
     }
 
-    async findById(id: MongoSchema.Types.ObjectId): Promise<Comment | null> {
+    async findById(id: Types.ObjectId): Promise<Comment | null> {
         return this.commentModel.findById(id).populate('parent').lean<Comment>().exec();
     }
 
     async getChildrenCommentsByParentId(
-        parentId: MongoSchema.Types.ObjectId,
+        parentId: Types.ObjectId,
         limit = 50,
         offset = 0,
         sort: 1 | -1 = 1
     ): Promise<Comment[]> {
         const allDescendants: Comment[] = [];
-        const queue: { id: MongoSchema.Types.ObjectId; depth: number }[] = [
+        const queue: { id: Types.ObjectId; depth: number }[] = [
             { id: parentId, depth: 0 },
         ];
 
@@ -184,7 +184,7 @@ export class CommentService {
 
             for (const child of children) {
                 allDescendants.push(child);
-                queue.push({ id: child._id as MongoSchema.Types.ObjectId, depth: depth + 1 });
+                queue.push({ id: child._id as Types.ObjectId, depth: depth + 1 });
             }
         }
 
@@ -198,8 +198,8 @@ export class CommentService {
     }
 
     async removeComment(
-        commentId: MongoSchema.Types.ObjectId,
-        userId: MongoSchema.Types.ObjectId
+        commentId: Types.ObjectId,
+        userId: Types.ObjectId
     ): Promise<boolean> {
         const comment = await this.commentModel.findById(commentId);
         if (!comment) {
@@ -212,7 +212,7 @@ export class CommentService {
 
         if (comment.parent) {
             await this.decrementAncestorsRepliesCount(
-                comment.parent as MongoSchema.Types.ObjectId
+                comment.parent
             );
         }
 

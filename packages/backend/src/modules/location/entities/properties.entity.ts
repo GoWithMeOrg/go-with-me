@@ -1,6 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Schema as MongoSchema } from 'mongoose';
+import { Schema as MongoSchema, Types } from 'mongoose';
 
 @ObjectType()
 @Schema()
@@ -11,7 +11,7 @@ export class LocationProperties {
 
     @Field(() => String)
     @Prop({ type: MongoSchema.Types.ObjectId, required: true })
-    ownerId: string;
+    ownerId: Types.ObjectId;
 
     @Field(() => String)
     @Prop({ type: String, enum: ['User', 'Event'], required: true })

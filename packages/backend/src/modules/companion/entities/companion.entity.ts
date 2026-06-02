@@ -1,20 +1,20 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Schema as MongoSchema } from 'mongoose';
+import { Document, Types } from 'mongoose';
 
 @ObjectType()
 @Schema({ timestamps: true })
 export class Companion {
     @Field(() => ID)
-    _id: MongoSchema.Types.ObjectId;
+    _id: Types.ObjectId;
 
     @Field(() => [ID])
-    @Prop({ type: [{ type: MongoSchema.Types.ObjectId, ref: 'User' }] })
-    companions: MongoSchema.Types.ObjectId[];
+    @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }] })
+    companions: Types.ObjectId[];
 
     @Field(() => ID)
-    @Prop({ type: MongoSchema.Types.ObjectId, required: true })
-    ownerId: MongoSchema.Types.ObjectId;
+    @Prop({ type: Types.ObjectId, required: true })
+    ownerId: Types.ObjectId;
 
     @Field(() => String)
     @Prop({ type: String, enum: ['User'], required: true })

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Schema as MongoSchema } from 'mongoose';
+import { Types } from 'mongoose';
 
 import { UserService } from '../user/user.service';
 import { LocationService } from '../location/location.service';
@@ -90,7 +90,7 @@ export class SeedsService {
 
     async seedEvents(
         createEventInput: CreateEventInput,
-        organizer: MongoSchema.Types.ObjectId,
+        organizer: Types.ObjectId,
         relations?: EventRelationsInput
     ): Promise<Event> {
         const createdEvent = await this.eventService.createEvent(organizer, createEventInput);

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateLocationInput } from './dto/create-location.input';
 import { UpdateLocationInput } from './dto/update-location.input';
-import { DeleteResult, Model, Schema as MongoSchema } from 'mongoose';
+import { DeleteResult, Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Location, LocationDocument } from './entities/location.entity';
 
@@ -18,12 +18,12 @@ export class LocationService {
     ) {}
 
     // --- получить локацию по ID ---
-    async getLocationById(id: MongoSchema.Types.ObjectId): Promise<Location | null> {
+    async getLocationById(id: Types.ObjectId): Promise<Location | null> {
         return await this.locationModel.findById(id).exec();
     }
 
     // --- получить локацию по владельцу ---
-    async getLocationByOwner(ownerId: MongoSchema.Types.ObjectId): Promise<Location | null> {
+    async getLocationByOwner(ownerId: Types.ObjectId): Promise<Location | null> {
         return await this.locationModel.findOne({ 'properties.ownerId': ownerId }).exec();
     }
 
@@ -45,7 +45,7 @@ export class LocationService {
     }
 
     async updateLocation(
-        id: MongoSchema.Types.ObjectId,
+        id: Types.ObjectId,
         input: UpdateLocationInput
     ): Promise<Location | null> {
         const update: any = {};
@@ -65,7 +65,7 @@ export class LocationService {
         return this.locationModel.findByIdAndUpdate(id, { $set: update }, { new: true });
     }
     // --- удалить локацию ---
-    removeLocation(id: MongoSchema.Types.ObjectId): Promise<DeleteResult> {
+    removeLocation(id: Types.ObjectId): Promise<DeleteResult> {
         return this.locationModel.deleteOne({ _id: id }).exec();
     }
 }

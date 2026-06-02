@@ -1,5 +1,5 @@
 import { InputType, Field, ID } from '@nestjs/graphql';
-import { Schema as MongoSchema } from 'mongoose';
+import { Schema as MongoSchema, Types } from 'mongoose';
 import { IsString, IsNotEmpty, IsMongoId, IsEnum, IsOptional } from 'class-validator';
 import { OwnerType } from '@/common/enums/owner-type.enum';
 
@@ -12,7 +12,7 @@ export class CreateCommentInput {
 
     @Field(() => ID)
     @IsMongoId()
-    ownerId: MongoSchema.Types.ObjectId;
+    ownerId: Types.ObjectId;
 
     @Field(() => OwnerType)
     @IsEnum(OwnerType)
@@ -21,5 +21,5 @@ export class CreateCommentInput {
     @Field(() => ID, { nullable: true })
     @IsMongoId()
     @IsOptional()
-    parent?: MongoSchema.Types.ObjectId;
+    parent?: Types.ObjectId;
 }

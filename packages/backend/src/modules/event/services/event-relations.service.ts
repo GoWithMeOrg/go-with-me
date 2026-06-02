@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Schema as MongoSchema } from 'mongoose';
+import { Types } from 'mongoose';
 
 import { Event } from '../entities/event.entity';
 import { LocationService } from '@/modules/location/location.service';
@@ -18,7 +18,7 @@ export class EventRelationsService {
     ) {}
 
     async createRelations(
-        event: Event & { _id: MongoSchema.Types.ObjectId },
+        event: Event & { _id: Types.ObjectId },
         input: EventRelationsInput
     ): Promise<void> {
         const eventId = event._id;
@@ -67,7 +67,7 @@ export class EventRelationsService {
     }
 
     async updateRelations(
-        event: Event & { _id: MongoSchema.Types.ObjectId },
+        event: Event & { _id: Types.ObjectId },
         input: EventRelationsInput
     ): Promise<void> {
         const eventId = event._id;
@@ -121,7 +121,7 @@ export class EventRelationsService {
         }
     }
 
-    async deleteRelations(eventId: MongoSchema.Types.ObjectId): Promise<void> {
+    async deleteRelations(eventId: Types.ObjectId): Promise<void> {
         const existingLocation = await this.locationService.getLocationByOwner(eventId);
         if (existingLocation?._id) {
             await this.locationService.removeLocation(existingLocation._id);

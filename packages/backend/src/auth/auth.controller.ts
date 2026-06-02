@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import type { Response } from 'express';
-import { Schema as MongooSchema } from 'mongoose';
+import { Types } from 'mongoose';
 
 import type { ReqWithPassport } from '@/common/types/graphql-context';
 
@@ -76,7 +76,7 @@ export class AuthController {
     // Публичный профиль - доступен всем авторизованным пользователям
     @Get('profile/:user_id/public')
     @UseGuards(SessionAuthGuard)
-    async getPublicProfile(@Param('id') id: MongooSchema.Types.ObjectId) {
+    async getPublicProfile(@Param('id') id: Types.ObjectId) {
         return this.userService.getPublicProfile(id);
     }
 
@@ -84,7 +84,7 @@ export class AuthController {
     @UseGuards(SessionAuthGuard, RolesGuard)
     @Roles('user', 'admin')
     async getProfileById(
-        @Param('id') id: MongooSchema.Types.ObjectId,
+        @Param('id') id: Types.ObjectId,
         @Req() req: ReqWithPassport
     ) {
         const currentUser = req.user as User;

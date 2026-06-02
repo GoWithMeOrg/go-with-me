@@ -1,5 +1,5 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { Document, Schema as MongoSchema } from 'mongoose';
+import { Document, Schema as MongoSchema, Types } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Location } from '@/modules/location/entities/location.entity';
 import { Category } from '@/modules/category/entities/category.entity';
@@ -13,11 +13,11 @@ import { Comment } from '@/modules/comment/entities/comment.entity';
 @Schema({ timestamps: true })
 export class Event {
     @Field(() => ID)
-    _id: MongoSchema.Types.ObjectId;
+    _id: Types.ObjectId;
 
     @Field(() => ID)
-    @Prop({ type: MongoSchema.Types.ObjectId, ref: 'User', required: true })
-    organizer: MongoSchema.Types.ObjectId;
+    @Prop({ type: Types.ObjectId, ref: 'User', required: true })
+    organizer: Types.ObjectId;
 
     @Field(() => String)
     @Prop({ type: String, required: true })

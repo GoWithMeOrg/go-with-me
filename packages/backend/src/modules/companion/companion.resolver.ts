@@ -3,7 +3,7 @@ import { CompanionService } from './companion.service';
 import { Companion } from './entities/companion.entity';
 import { UseGuards } from '@nestjs/common';
 
-import { Schema as MongoSchema } from 'mongoose';
+import { Types } from 'mongoose';
 import { User } from '../user/entities/user.entity';
 import { CompanionsResponse } from './entities/companions-response.entity';
 import { SessionAuthGuard } from '@/common/guards/session-auth.guard';
@@ -20,7 +20,7 @@ export class CompanionResolver {
     })
     getCompanionsByOwner(
         @Args('ownerId', { type: () => ID })
-        ownerId: MongoSchema.Types.ObjectId,
+        ownerId: Types.ObjectId,
         @Args('limit', { type: () => Int, nullable: true })
         limit?: number,
         @Args('offset', { type: () => Int, nullable: true })
@@ -45,8 +45,8 @@ export class CompanionResolver {
     @Mutation(() => Boolean)
     @UseGuards(SessionAuthGuard, RolesGuard)
     removeCompanion(
-        @Args('user_id', { type: () => ID }) userId: MongoSchema.Types.ObjectId,
-        @Args('companion_id', { type: () => ID }) companionId: MongoSchema.Types.ObjectId
+        @Args('user_id', { type: () => ID }) userId: Types.ObjectId,
+        @Args('companion_id', { type: () => ID }) companionId: Types.ObjectId
     ): Promise<boolean> {
         return this.companionService.removeCompanion(userId, companionId);
     }

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DeleteResult, Model, Schema as MongoSchema } from 'mongoose';
+import { DeleteResult, Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Category, CategoryDocument } from './entities/category.entity';
 import { CreateCategoryInput } from './dto/create-category.input';
@@ -13,12 +13,12 @@ export class CategoryService {
     ) {}
 
     // --- получить категории по ID ---
-    async getCategoriesById(category_id: MongoSchema.Types.ObjectId): Promise<Category | null> {
+    async getCategoriesById(category_id: Types.ObjectId): Promise<Category | null> {
         return await this.categoryModel.findById(category_id).exec();
     }
 
     // --- получить интересы по владельцу ---
-    async getCategoriesByOwner(ownerId: MongoSchema.Types.ObjectId): Promise<Category | null> {
+    async getCategoriesByOwner(ownerId: Types.ObjectId): Promise<Category | null> {
         return await this.categoryModel.findOne({ ownerId }).exec();
     }
 
@@ -28,7 +28,7 @@ export class CategoryService {
     }
 
     async updateCategories(
-        category_id: MongoSchema.Types.ObjectId,
+        category_id: Types.ObjectId,
         updateCategoryInput: UpdateCategoryInput
     ): Promise<Category | null> {
         return await this.categoryModel.findByIdAndUpdate(category_id, updateCategoryInput, {
@@ -36,7 +36,7 @@ export class CategoryService {
         });
     }
 
-    async removeCategories(category_id: MongoSchema.Types.ObjectId): Promise<DeleteResult> {
+    async removeCategories(category_id: Types.ObjectId): Promise<DeleteResult> {
         return await this.categoryModel.deleteOne({ _id: category_id }).exec();
     }
 }

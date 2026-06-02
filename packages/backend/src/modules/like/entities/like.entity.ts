@@ -1,20 +1,20 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { Document, Schema as MongoSchema } from 'mongoose';
+import { Document, Schema as MongoSchema, Types } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 @ObjectType()
 @Schema({ timestamps: true })
 export class Like {
     @Field(() => ID)
-    _id: MongoSchema.Types.ObjectId;
+    _id: Types.ObjectId;
 
     @Field(() => ID)
     @Prop({ type: MongoSchema.Types.ObjectId, required: true })
-    user: MongoSchema.Types.ObjectId;
+    user: Types.ObjectId;
 
     @Field(() => ID)
     @Prop({ type: MongoSchema.Types.ObjectId, required: true })
-    ownerId: MongoSchema.Types.ObjectId;
+    ownerId: Types.ObjectId;
 
     @Field(() => String)
     @Prop({ type: String, enum: ['Event', 'Comment', 'Trip'], required: true })

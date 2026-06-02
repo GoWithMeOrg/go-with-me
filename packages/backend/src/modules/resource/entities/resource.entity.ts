@@ -1,5 +1,5 @@
-import { ObjectType, Field, ID, HideField } from '@nestjs/graphql';
-import { Document, Schema as MongoSchema } from 'mongoose';
+import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { Document, Types } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 @ObjectType()
@@ -8,7 +8,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 })
 export class Resource {
     @Field(() => ID)
-    _id: MongoSchema.Types.ObjectId;
+    _id: Types.ObjectId;
 
     @Field(() => String)
     @Prop({ required: true, unique: true, uppercase: true })

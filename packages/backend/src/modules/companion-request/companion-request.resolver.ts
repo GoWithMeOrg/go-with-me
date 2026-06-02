@@ -4,7 +4,7 @@ import { CompanionRequest } from './entities/companion-request.entity';
 import { UseGuards, Inject } from '@nestjs/common';
 import { SessionAuthGuard } from '@/common/guards/session-auth.guard';
 import { RolesGuard } from '@/common/guards/roles.guard';
-import { Schema as MongoSchema } from 'mongoose';
+import { Types } from 'mongoose';
 import { PubSub } from 'graphql-subscriptions';
 import { PUB_SUB } from '@/common/constants/pub-sub.constants';
 import { GqlAuthGuard } from '@/common/guards/gql-auth.guard';
@@ -21,7 +21,7 @@ export class CompanionRequestResolver {
     @Query(() => [CompanionRequest])
     @UseGuards(SessionAuthGuard, RolesGuard)
     async getCompanionRequests(
-        @Args('user_id', { type: () => ID }) user_id: MongoSchema.Types.ObjectId
+        @Args('user_id', { type: () => ID }) user_id: Types.ObjectId
     ): Promise<CompanionRequest[]> {
         return this.companionRequestService.getCompanionRequests(user_id);
     }
@@ -30,9 +30,9 @@ export class CompanionRequestResolver {
     @UseGuards(GqlAuthGuard, RolesGuard)
     async sendRequestCompanion(
         @CurrentUser() user: User,
-        @Args('receiver', { type: () => ID }) receiver: MongoSchema.Types.ObjectId,
+        @Args('receiver', { type: () => ID }) receiver: Types.ObjectId,
         // временно для тестов. Нужно будет удалить строку с отправителем.
-        @Args('sender', { type: () => ID }) sender: MongoSchema.Types.ObjectId
+        @Args('sender', { type: () => ID }) sender: Types.ObjectId
     ) {
         // Используем senderId, если передан, иначе текущий пользователь
         const request = await this.companionRequestService.sendRequestCompanion(sender, receiver);
@@ -65,7 +65,7 @@ export class CompanionRequestResolver {
     @UseGuards(SessionAuthGuard, RolesGuard)
     async acceptCompanionRequest(
         @CurrentUser() user: User,
-        @Args('request_id', { type: () => ID }) request_id: MongoSchema.Types.ObjectId
+        @Args('request_id', { type: () => ID }) request_id: Types.ObjectId
     ): Promise<CompanionRequest | null> {
         return this.companionRequestService.acceptCompanionRequest(request_id);
     }
@@ -75,7 +75,7 @@ export class CompanionRequestResolver {
     @UseGuards(SessionAuthGuard, RolesGuard)
     async rejectCompanionRequest(
         @CurrentUser() user: User,
-        @Args('request_id', { type: () => ID }) request_id: MongoSchema.Types.ObjectId
+        @Args('request_id', { type: () => ID }) request_id: Types.ObjectId
     ): Promise<CompanionRequest | null> {
         return this.companionRequestService.rejectCompanionRequest(request_id);
     }

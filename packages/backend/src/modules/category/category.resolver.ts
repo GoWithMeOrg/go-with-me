@@ -1,7 +1,7 @@
 import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
 import { CategoryService } from './category.service';
 
-import { Schema as MongoSchema } from 'mongoose';
+import { Types } from 'mongoose';
 import { Category } from './entities/category.entity';
 import { CreateCategoryInput } from './dto/create-category.input';
 import { UpdateCategoryInput } from './dto/update-category.input';
@@ -15,7 +15,7 @@ export class CategoryResolver {
         description: 'Поиск категорий по id',
     })
     getCategoriesById(
-        @Args('category_id', { type: () => ID }) category_id: MongoSchema.Types.ObjectId
+        @Args('category_id', { type: () => ID }) category_id: Types.ObjectId
     ): Promise<Category | null> {
         return this.categoriesService.getCategoriesById(category_id);
     }
@@ -26,7 +26,7 @@ export class CategoryResolver {
     })
     getCategoriesByOwner(
         @Args('ownerId', { type: () => ID })
-        ownerId: MongoSchema.Types.ObjectId
+        ownerId: Types.ObjectId
     ): Promise<Category | null> {
         return this.categoriesService.getCategoriesByOwner(ownerId);
     }
@@ -38,7 +38,7 @@ export class CategoryResolver {
 
     @Mutation(() => Category)
     updateCategories(
-        @Args('category_id', { type: () => ID }) category_id: MongoSchema.Types.ObjectId,
+        @Args('category_id', { type: () => ID }) category_id: Types.ObjectId,
         @Args('updateCategoriesInput') updateCategoriesInput: UpdateCategoryInput
     ) {
         return this.categoriesService.updateCategories(category_id, updateCategoriesInput);
@@ -46,7 +46,7 @@ export class CategoryResolver {
 
     @Mutation(() => Category)
     async removeCategories(
-        @Args('category_id', { type: () => ID }) category_id: MongoSchema.Types.ObjectId
+        @Args('category_id', { type: () => ID }) category_id: Types.ObjectId
     ): Promise<boolean> {
         const result = await this.categoriesService.removeCategories(category_id);
         return result.deletedCount > 0;

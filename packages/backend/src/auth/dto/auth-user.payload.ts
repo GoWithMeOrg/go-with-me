@@ -1,4 +1,4 @@
-import { Schema as MongoSchema } from 'mongoose';
+import { Schema as MongoSchema, Types } from 'mongoose';
 
 // информация о пользователе, которая сохраняется в сессии / передаётся в passport
 export type AuthUserPayload = {
@@ -6,5 +6,5 @@ export type AuthUserPayload = {
     email?: string;
     firstName?: string;
     lastName?: string;
-    roles?: MongoSchema.Types.ObjectId[];
+    roles?: Types.ObjectId[];
 };

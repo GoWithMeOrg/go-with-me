@@ -1,5 +1,5 @@
 import { Resolver, Query, Mutation, Args, ID, ResolveField, Parent, Int } from '@nestjs/graphql';
-import { Schema as MongoSchema } from 'mongoose';
+import { Types } from 'mongoose';
 
 import { User } from '../user/entities/user.entity';
 import { Event } from './entities/event.entity';
@@ -27,7 +27,7 @@ export class EventResolver {
         name: 'getEventById',
         description: 'Получить событие по id',
     })
-    getEventById(@Args('event_id', { type: () => ID }) event_id: MongoSchema.Types.ObjectId) {
+    getEventById(@Args('event_id', { type: () => ID }) event_id: Types.ObjectId) {
         return this.eventService.getEventById(event_id);
     }
 
@@ -36,7 +36,7 @@ export class EventResolver {
         description: 'Получить все события организатора',
     })
     getEventsByOrganizer(
-        @Args('organizer_id', { type: () => ID }) organizer_id: MongoSchema.Types.ObjectId
+        @Args('organizer_id', { type: () => ID }) organizer_id: Types.ObjectId
     ) {
         return this.eventService.getEventsByOrganizer(organizer_id);
     }
@@ -79,7 +79,7 @@ export class EventResolver {
         description: 'Обновить данные события',
     })
     updateEvent(
-        @Args('event_id', { type: () => ID }) event_id: MongoSchema.Types.ObjectId,
+        @Args('event_id', { type: () => ID }) event_id: Types.ObjectId,
         @Args('updateEventInput') updateEventInput: UpdateEventInput,
         @Args('createLocationInput', { nullable: true }) createLocationInput: CreateLocationInput,
         @Args('createCategoryInput', { nullable: true }) createCategoryInput: CreateCategoryInput,
@@ -100,7 +100,7 @@ export class EventResolver {
         description: 'Удалить событие',
     })
     async removeEvent(
-        @Args('event_id', { type: () => ID }) event_id: MongoSchema.Types.ObjectId
+        @Args('event_id', { type: () => ID }) event_id: Types.ObjectId
     ): Promise<boolean> {
         return this.eventService.removeEvent(event_id);
     }

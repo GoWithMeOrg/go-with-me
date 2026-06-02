@@ -1,5 +1,5 @@
 import { InputType, Field, ID } from '@nestjs/graphql';
-import { Schema as MongoSchema } from 'mongoose';
+import { Types } from 'mongoose';
 
 import { CreateEventInput } from '@/modules/event/dto/create-event.input';
 import { EventRelationsInput } from '@/modules/event/interfaces/create-event-relations.input';
@@ -13,5 +13,5 @@ export class SeedEventsInput {
     relations?: EventRelationsInput;
 
     @Field(() => ID)
-    organizer: MongoSchema.Types.ObjectId;
+    organizer: Types.ObjectId;
 }

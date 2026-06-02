@@ -2,13 +2,13 @@ import { gql } from '@apollo/client';
 
 export const GET_USERS = gql`
     query Users {
-        users {
-            _id
-            firstName
-            lastName
-            image
-        }
-    }
+		users {
+			_id
+			firstName
+			lastName
+			image
+		}
+	}
 `;
 
 export const FIND_BY_EMAIL_OR_NAME = gql`

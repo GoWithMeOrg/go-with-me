@@ -8,15 +8,15 @@ import { User } from '@/modules/user/entities/user.entity';
 @Schema({ timestamps: true })
 export class CompanionRequest {
     @Field(() => ID)
-    _id: MongoSchema.Types.ObjectId;
+    _id: Types.ObjectId;
 
     @Field(() => User)
     @Prop({ type: MongoSchema.Types.ObjectId, required: true, ref: 'User' })
-    sender: User;
+    sender: Types.ObjectId;
 
     @Field(() => User)
     @Prop({ type: MongoSchema.Types.ObjectId, required: true, ref: 'User' })
-    receiver: User;
+    receiver: Types.ObjectId;
 
     @Field(() => String)
     @Prop({

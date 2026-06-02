@@ -1,5 +1,5 @@
 import { Resolver, Query, Args, ID, Mutation } from '@nestjs/graphql';
-import { Schema as MongoSchema } from 'mongoose';
+import { Types } from 'mongoose';
 
 import { UserProfile } from './entities/user-profile.entity';
 
@@ -24,21 +24,21 @@ export class UserProfileResolver {
         name: 'userProfile',
         description: 'Составной профиль пользователя',
     })
-    async userProfile(@Args('userId', { type: () => ID }) userId: MongoSchema.Types.ObjectId) {
+    async userProfile(@Args('userId', { type: () => ID }) userId: Types.ObjectId) {
         return this.profileService.buildProfile(userId);
     }
 
     @Mutation(() => UserProfile, { name: 'updateUserProfile' })
     async updateUserProfile(
-        @Args('userId', { type: () => ID }) userId: MongoSchema.Types.ObjectId,
+        @Args('userId', { type: () => ID }) userId: Types.ObjectId,
         @Args('locationId', { type: () => ID, nullable: true })
-        locationId: MongoSchema.Types.ObjectId,
+        locationId: Types.ObjectId,
         @Args('categoryId', { type: () => ID, nullable: true })
-        categoryId: MongoSchema.Types.ObjectId,
+        categoryId: Types.ObjectId,
         @Args('interestId', { type: () => ID, nullable: true })
-        interestId: MongoSchema.Types.ObjectId,
+        interestId: Types.ObjectId,
         @Args('tagId', { type: () => ID, nullable: true })
-        tagId: MongoSchema.Types.ObjectId,
+        tagId: Types.ObjectId,
 
         @Args('createLocationInput', { nullable: true }) createLocationInput: CreateLocationInput,
         @Args('createCategoryInput', { nullable: true })

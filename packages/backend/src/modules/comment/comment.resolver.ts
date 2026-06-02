@@ -1,5 +1,5 @@
 import { Resolver, Query, Mutation, Args, ID, ResolveField, Parent, Int } from '@nestjs/graphql';
-import { Schema as MongoSchema } from 'mongoose';
+import { Schema as MongoSchema, Types } from 'mongoose';
 
 import { CommentService } from './comment.service';
 import { Comment } from './entities/comment.entity';
@@ -34,7 +34,7 @@ export class CommentResolver {
 
     @Mutation(() => Comment)
     updateComment(
-        @Args('commentId', { type: () => ID }) commentId: MongoSchema.Types.ObjectId,
+        @Args('commentId', { type: () => ID }) commentId: Types.ObjectId,
         @Args('updateCommentInput') updateCommentInput: UpdateCommentInput,
         @CurrentUser() user: User
     ): Promise<Comment> {
@@ -43,7 +43,7 @@ export class CommentResolver {
 
     @Mutation(() => Boolean)
     removeComment(
-        @Args('commentId', { type: () => ID }) commentId: MongoSchema.Types.ObjectId,
+        @Args('commentId', { type: () => ID }) commentId: Types.ObjectId,
         @CurrentUser() user: User
     ): Promise<boolean> {
         return this.commentService.removeComment(commentId, user._id);
@@ -51,7 +51,7 @@ export class CommentResolver {
 
     @Query(() => [Comment])
     getCommentsByOwnerId(
-        @Args('ownerId', { type: () => ID }) ownerId: MongoSchema.Types.ObjectId,
+        @Args('ownerId', { type: () => ID }) ownerId: Types.ObjectId,
         @Args('limit', { type: () => Int }) limit: number,
         @Args('offset', { type: () => Int }) offset: number
     ): Promise<Comment[]> {
@@ -60,7 +60,7 @@ export class CommentResolver {
 
     @Query(() => [Comment])
     getParentCommentsByOwnerId(
-        @Args('ownerId', { type: () => ID }) ownerId: MongoSchema.Types.ObjectId,
+        @Args('ownerId', { type: () => ID }) ownerId: Types.ObjectId,
         @Args('limit', { type: () => Int, nullable: true }) limit?: number,
         @Args('offset', { type: () => Int, nullable: true }) offset?: number,
         @Args('sort', { type: () => String, nullable: true }) sort?: string
@@ -71,7 +71,7 @@ export class CommentResolver {
 
     @Query(() => [Comment])
     getChildrenCommentsByParentId(
-        @Args('parentId', { type: () => ID }) parentId: MongoSchema.Types.ObjectId,
+        @Args('parentId', { type: () => ID }) parentId: Types.ObjectId,
         @Args('limit', { type: () => Int, nullable: true }) limit?: number,
         @Args('offset', { type: () => Int, nullable: true }) offset?: number,
         @Args('sort', { type: () => String, nullable: true }) sort?: string
@@ -93,7 +93,7 @@ export class CommentResolver {
         }
 
         const parentComment = await this.commentService.findById(
-            comment.parent as MongoSchema.Types.ObjectId
+            comment.parent as Types.ObjectId
         );
         return parentComment as Comment;
     }

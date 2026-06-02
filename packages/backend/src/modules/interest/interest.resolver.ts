@@ -3,7 +3,7 @@ import { InterestService } from './interest.service';
 import { Interest } from './entities/interest.entity';
 import { CreateInterestInput } from './dto/create-interest.input';
 import { UpdateInterestInput } from './dto/update-interest.input';
-import { Schema as MongoSchema } from 'mongoose';
+import { Schema as MongoSchema, Types } from 'mongoose';
 
 @Resolver(() => Interest)
 export class InterestResolver {
@@ -14,7 +14,7 @@ export class InterestResolver {
         description: 'Поиск интересов по id',
     })
     getInterestById(
-        @Args('interest_id', { type: () => ID }) interest_id: MongoSchema.Types.ObjectId
+        @Args('interest_id', { type: () => ID }) interest_id: Types.ObjectId
     ): Promise<Interest | null> {
         return this.interestService.getInterestById(interest_id);
     }
@@ -25,7 +25,7 @@ export class InterestResolver {
     })
     getInterestByOwner(
         @Args('ownerId', { type: () => ID })
-        ownerId: MongoSchema.Types.ObjectId
+        ownerId: Types.ObjectId
     ): Promise<Interest | null> {
         return this.interestService.getInterestByOwner(ownerId);
     }
@@ -38,14 +38,14 @@ export class InterestResolver {
     @Mutation(() => Interest)
     updateInterest(
         @Args('updateInterestInput') updateInterestInput: UpdateInterestInput,
-        @Args('interest_id', { type: () => ID }) interest_id: MongoSchema.Types.ObjectId
+        @Args('interest_id', { type: () => ID }) interest_id: Types.ObjectId
     ) {
         return this.interestService.updateInterest(interest_id, updateInterestInput);
     }
 
     @Mutation(() => Interest)
     async removeInterest(
-        @Args('interest_id', { type: () => ID }) interest_id: MongoSchema.Types.ObjectId
+        @Args('interest_id', { type: () => ID }) interest_id: Types.ObjectId
     ): Promise<boolean> {
         const result = await this.interestService.removeInterest(interest_id);
         return result.deletedCount > 0;

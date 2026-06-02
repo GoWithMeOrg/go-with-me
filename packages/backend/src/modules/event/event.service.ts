@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Schema as MongoSchema } from 'mongoose';
+import { Types } from 'mongoose';
 import { Event } from './entities/event.entity';
 import { CreateEventInput } from './dto/create-event.input';
 import { EventRelationsInput } from './interfaces/create-event-relations.input';
@@ -18,7 +18,7 @@ export class EventService {
     ) {}
 
     async createEvent(
-        organizer: MongoSchema.Types.ObjectId,
+        organizer: Types.ObjectId,
         createEventInput: CreateEventInput,
         relations?: EventRelationsInput
     ): Promise<Event> {
@@ -40,7 +40,7 @@ export class EventService {
         return this.enrichEvent.enrichEventsWithRelations(events);
     }
 
-    async getEventById(event_id: MongoSchema.Types.ObjectId): Promise<EventWithRelations> {
+    async getEventById(event_id: Types.ObjectId): Promise<EventWithRelations> {
         const event = await this.crudService.findById(event_id);
 
         if (!event) {
@@ -51,14 +51,14 @@ export class EventService {
     }
 
     async getEventsByOrganizer(
-        organizer_id: MongoSchema.Types.ObjectId
+        organizer_id: Types.ObjectId
     ): Promise<EventWithRelations[]> {
         const events = await this.crudService.findByOrganizer(organizer_id);
         return this.enrichEvent.enrichEventsWithRelations(events);
     }
 
     async updateEvent(
-        event_id: MongoSchema.Types.ObjectId,
+        event_id: Types.ObjectId,
         updateEventInput: Partial<CreateEventInput>,
         relations?: EventRelationsInput
     ): Promise<Event | null> {
@@ -71,7 +71,7 @@ export class EventService {
         return event;
     }
 
-    async removeEvent(event_id: MongoSchema.Types.ObjectId): Promise<boolean> {
+    async removeEvent(event_id: Types.ObjectId): Promise<boolean> {
         await this.relationsService.deleteRelations(event_id);
         const result = await this.crudService.delete(event_id);
         return result.deletedCount > 0;
