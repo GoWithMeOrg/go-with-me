@@ -1,11 +1,11 @@
 import { Field, InputType, ID } from '@nestjs/graphql';
-import { Schema as MongoSchema } from 'mongoose';
+import { Schema as MongoSchema, Types } from 'mongoose';
 import { Privacy } from '../enum/privacy.enum';
 
 @InputType()
 export class CreateEventInput {
     @Field(() => ID, { nullable: true })
-    organizer: MongoSchema.Types.ObjectId;
+    organizer: Types.ObjectId;
 
     @Field(() => String)
     name: string;

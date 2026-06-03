@@ -1,5 +1,5 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
-import { DeleteResult, Model, Schema as MongoSchema } from 'mongoose';
+import { DeleteResult, Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { CreateRoleInput } from './dto/create-role.input';
@@ -33,11 +33,11 @@ export class RoleService {
         return this.roleModel.findOne({ name: roleName }).populate(this.deepPopulate).exec();
     }
 
-    async getRoleById(id: MongoSchema.Types.ObjectId): Promise<Role | null> {
+    async getRoleById(id: Types.ObjectId): Promise<Role | null> {
         return this.roleModel.findById(id).populate(this.deepPopulate).exec();
     }
 
-    async getRoleByUserId(userId: MongoSchema.Types.ObjectId): Promise<User | null> {
+    async getRoleByUserId(userId: Types.ObjectId): Promise<User | null> {
         return this.userModel.findById(userId).populate('roles').exec();
     }
 
@@ -64,8 +64,8 @@ export class RoleService {
     }
 
     async addPermission(
-        roleId: MongoSchema.Types.ObjectId,
-        permissionId: MongoSchema.Types.ObjectId[]
+        roleId: Types.ObjectId,
+        permissionId: Types.ObjectId[]
     ): Promise<Role> {
         const role = await this.roleModel
             .findByIdAndUpdate(roleId, { $addToSet: { permissions: permissionId } }, { new: true })
@@ -79,8 +79,8 @@ export class RoleService {
     }
 
     async removePermission(
-        roleId: MongoSchema.Types.ObjectId,
-        permissionId: MongoSchema.Types.ObjectId
+        roleId: Types.ObjectId,
+        permissionId: Types.ObjectId
     ): Promise<Role> {
         const role = await this.roleModel
             .findByIdAndUpdate(roleId, { $pull: { permissions: permissionId } }, { new: true })
@@ -94,7 +94,7 @@ export class RoleService {
     }
 
     async updateRole(
-        id: MongoSchema.Types.ObjectId,
+        id: Types.ObjectId,
         updateRoleInput: UpdateRoleInput
     ): Promise<Role | null> {
         const existingRole = await this.roleModel.findById(id).exec();
@@ -116,7 +116,7 @@ export class RoleService {
         return updatedRole.populate(this.deepPopulate);
     }
 
-    async removeRole(id: MongoSchema.Types.ObjectId): Promise<DeleteResult> {
+    async removeRole(id: Types.ObjectId): Promise<DeleteResult> {
         return await this.roleModel.deleteOne({ _id: id }).exec();
     }
 }

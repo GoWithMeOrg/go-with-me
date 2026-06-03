@@ -1,5 +1,4 @@
 import { FC, HTMLAttributes } from 'react';
-import type { IUser } from '@/app/types/User';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
@@ -35,7 +34,7 @@ export const Avatar: FC<AvatarProps> = ({ image, name, scale = 1, className, id 
                 {image ? (
                     <Image
                         className={classes.image}
-                        alt={name as string}
+                        alt="avatar"
                         src={image as string}
                         fill
                         sizes={`calc(${scale} * 3.5rem)`}

@@ -2,14 +2,14 @@ import { ConfigService } from '@nestjs/config';
 import { Strategy as GoogleStrategy, VerifyCallback } from 'passport-google-oauth20';
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { Schema as MongoSchema } from 'mongoose';
+import { Types } from 'mongoose';
 
-import { AuthService } from '../../auth.service';
-import { RoleService } from '../../../modules/role/role.service';
+import { AuthService } from '@/auth/auth.service';
+import { RoleService } from '@/modules/role/role.service';
 
-import { UserService } from 'src/modules/user/user.service';
+import { UserService } from '@/modules/user/user.service';
 
-import { AuthUserPayload } from 'src/auth/dto/auth-user.payload';
+import { AuthUserPayload } from '@/auth/dto/auth-user.payload';
 
 import { GoogleProfile } from '../interfaces/profile.interface';
 
@@ -49,7 +49,7 @@ export class GoogleAuthStrategy extends PassportStrategy(GoogleStrategy, 'google
             // сохраняем или обновляем пользователя через AuthService
             const user = await this.authService.validateUser(userData);
 
-            let userRoles: MongoSchema.Types.ObjectId[] = [];
+            let userRoles: Types.ObjectId[] = [];
 
             if (!user.roles || user.roles.length === 0) {
                 const userRole = await this.roleService.getRoleByName('user');

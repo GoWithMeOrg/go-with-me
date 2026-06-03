@@ -1,6 +1,6 @@
 import { SetMetadata } from '@nestjs/common';
 
-import { Action } from '../../modules/permission/enums/action.enum';
+import { Action } from '@/modules/permission/enums/action.enum';
 
 export type RequiredPermission = [Action, string]; // [Действие, Ресурс]
 

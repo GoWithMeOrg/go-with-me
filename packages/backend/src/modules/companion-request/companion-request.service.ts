@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Companion, CompanionDocument } from '../companion/entities/companion.entity';
 import { CompanionRequest, CompanionRequestDocument } from './entities/companion-request.entity';
 import { CompanionRequestStatus } from './enums/companion-request.enum';
-import { Model, Schema as MongoSchema } from 'mongoose';
+import { Model, Schema as MongoSchema, Types } from 'mongoose';
 
 @Injectable()
 export class CompanionRequestService {
@@ -15,7 +15,7 @@ export class CompanionRequestService {
 
     // Получить все заявки по id пользователя
     async getCompanionRequests(
-        user_id: MongoSchema.Types.ObjectId
+        user_id: Types.ObjectId
     ): Promise<CompanionRequestDocument[]> {
         return await this.companionRequestModel
             .find({
@@ -28,8 +28,8 @@ export class CompanionRequestService {
 
     // Отправить заявку в компаньоны
     async sendRequestCompanion(
-        sender_id: MongoSchema.Types.ObjectId,
-        receiver_id: MongoSchema.Types.ObjectId
+        sender_id: Types.ObjectId,
+        receiver_id: Types.ObjectId
     ): Promise<CompanionRequestDocument> {
         if (sender_id === receiver_id) {
             throw new Error('Нельзя отправить запрос самому себе');
@@ -114,7 +114,7 @@ export class CompanionRequestService {
 
     // Принять заявку в компаньоны
     async acceptCompanionRequest(
-        request_id: MongoSchema.Types.ObjectId
+        request_id: Types.ObjectId
     ): Promise<CompanionRequest | null> {
         const request = await this.companionRequestModel.findById(request_id).exec();
 
@@ -145,7 +145,7 @@ export class CompanionRequestService {
     }
 
     // Отклонить заявку в компаньоны
-    async rejectCompanionRequest(request_id: MongoSchema.Types.ObjectId) {
+    async rejectCompanionRequest(request_id: Types.ObjectId) {
         const request = await this.companionRequestModel.findById(request_id).exec();
 
         if (!request) {

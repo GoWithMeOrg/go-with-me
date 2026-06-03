@@ -1,6 +1,6 @@
-import { ObjectType, Field, Float } from '@nestjs/graphql';
-import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose';
-import { Document, Schema as MongoSchema } from 'mongoose';
+import { ObjectType, Field } from '@nestjs/graphql';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document, Types } from 'mongoose';
 import { LocationGeometry, LocationGeometrySchema } from './geometry.entity';
 import { LocationProperties, LocationPropertiesSchema } from './properties.entity';
 
@@ -8,7 +8,7 @@ import { LocationProperties, LocationPropertiesSchema } from './properties.entit
 @Schema()
 export class Location {
     @Field(() => String)
-    _id: MongoSchema.Types.ObjectId;
+    _id: Types.ObjectId;
 
     @Field(() => String)
     @Prop({ required: true, enum: ['Feature'], default: 'Feature' })

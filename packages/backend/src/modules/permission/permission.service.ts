@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types, Schema as MongoSchema } from 'mongoose';
+import { Model, Types } from 'mongoose';
 
 import { Permission, PermissionDocument } from './entities/permission.entity';
 import { Resource } from '../resource/entities/resource.entity';
@@ -13,7 +13,7 @@ export class PermissionService {
         @InjectModel(Resource.name) private resourceModel: Model<Resource>
     ) {}
 
-    async createResourcePermissions(resourceId: MongoSchema.Types.ObjectId) {
+    async createResourcePermissions(resourceId: Types.ObjectId) {
         // 1. Проверяем, существует ли ресурс вообще
         const resource = await this.resourceModel.findById(resourceId);
         if (!resource) {
@@ -52,7 +52,7 @@ export class PermissionService {
         return this.permissionModel.find({ resource: resourceId }).exec();
     }
 
-    async togglePermissionStatus(id: MongoSchema.Types.ObjectId) {
+    async togglePermissionStatus(id: Types.ObjectId) {
         const permission = await this.permissionModel.findById(id).exec();
 
         if (!permission) {
@@ -70,7 +70,7 @@ export class PermissionService {
     }
 
     async getPermissionsByResourceId(
-        resourceId: MongoSchema.Types.ObjectId
+        resourceId: Types.ObjectId
     ): Promise<Permission[]> {
         return this.permissionModel.find({ resource: resourceId }).exec();
     }

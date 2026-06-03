@@ -1,22 +1,22 @@
 import { Injectable } from '@nestjs/common';
-import { Schema as MongoSchema } from 'mongoose';
+import { Types } from 'mongoose';
 
-import { UserService } from 'src/modules/user/user.service';
-import { LocationService } from 'src/modules/location/location.service';
-import { CategoryService } from 'src/modules/category/category.service';
-import { InterestService } from 'src/modules/interest/interest.service';
-import { TagService } from 'src/modules/tag/tag.service';
+import { UserService } from '@/modules/user/user.service';
+import { LocationService } from '@/modules/location/location.service';
+import { CategoryService } from '@/modules/category/category.service';
+import { InterestService } from '@/modules/interest/interest.service';
+import { TagService } from '@/modules/tag/tag.service';
 
-import { UpdateUserInput } from 'src/modules/user/dto/update-user.input';
-import { UpdateLocationInput } from 'src/modules/location/dto/update-location.input';
-import { UpdateCategoryInput } from 'src/modules/category/dto/update-category.input';
-import { UpdateInterestInput } from 'src/modules/interest/dto/update-interest.input';
-import { UpdateTagInput } from 'src/modules/tag/dto/update-tag.input';
+import { UpdateUserInput } from '@/modules/user/dto/update-user.input';
+import { UpdateLocationInput } from '@/modules/location/dto/update-location.input';
+import { UpdateCategoryInput } from '@/modules/category/dto/update-category.input';
+import { UpdateInterestInput } from '@/modules/interest/dto/update-interest.input';
+import { UpdateTagInput } from '@/modules/tag/dto/update-tag.input';
 
-import { CreateLocationInput } from 'src/modules/location/dto/create-location.input';
-import { CreateCategoryInput } from 'src/modules/category/dto/create-category.input';
-import { CreateInterestInput } from 'src/modules/interest/dto/create-interest.input';
-import { CreateTagInput } from 'src/modules/tag/dto/create-tag.input';
+import { CreateLocationInput } from '@/modules/location/dto/create-location.input';
+import { CreateCategoryInput } from '@/modules/category/dto/create-category.input';
+import { CreateInterestInput } from '@/modules/interest/dto/create-interest.input';
+import { CreateTagInput } from '@/modules/tag/dto/create-tag.input';
 
 @Injectable()
 export class UserProfileService {
@@ -29,11 +29,11 @@ export class UserProfileService {
     ) {}
 
     async updateProfile(
-        userId: MongoSchema.Types.ObjectId,
-        locationId?: MongoSchema.Types.ObjectId,
-        categoryId?: MongoSchema.Types.ObjectId,
-        interestId?: MongoSchema.Types.ObjectId,
-        tagId?: MongoSchema.Types.ObjectId,
+        userId: Types.ObjectId,
+        locationId?: Types.ObjectId,
+        categoryId?: Types.ObjectId,
+        interestId?: Types.ObjectId,
+        tagId?: Types.ObjectId,
 
         createLocationInput?: CreateLocationInput,
         createCategoryInput?: CreateCategoryInput,
@@ -88,7 +88,7 @@ export class UserProfileService {
         return this.buildProfile(userId);
     }
 
-    async buildProfile(userId: MongoSchema.Types.ObjectId) {
+    async buildProfile(userId: Types.ObjectId) {
         const [user, location, category, interest, tag] = await Promise.all([
             this.userService.getUserById(userId),
             this.locationService.getLocationByOwner(userId),

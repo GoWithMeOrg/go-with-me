@@ -4,8 +4,8 @@ import { CompanionRequestResolver } from './companion-request.resolver';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Companion, CompanionSchema } from '../companion/entities/companion.entity';
 import { CompanionRequest, CompanionRequestSchema } from './entities/companion-request.entity';
-import { PUB_SUB } from 'src/common/constants/pub-sub.constants';
-import { pubSub } from 'src/common/pubsub/pubsub';
+import { PUB_SUB } from '@/common/constants/pub-sub.constants';
+import { pubSub } from '@/common/pubsub/pubsub';
 
 @Module({
     imports: [

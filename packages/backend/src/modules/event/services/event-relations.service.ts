@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { Schema as MongoSchema } from 'mongoose';
+import { Types } from 'mongoose';
 
 import { Event } from '../entities/event.entity';
-import { LocationService } from '../../location/location.service';
-import { CategoryService } from '../../category/category.service';
-import { InterestService } from '../../interest/interest.service';
-import { TagService } from '../../tag/tag.service';
+import { LocationService } from '@/modules/location/location.service';
+import { CategoryService } from '@/modules/category/category.service';
+import { InterestService } from '@/modules/interest/interest.service';
+import { TagService } from '@/modules/tag/tag.service';
 import { EventRelationsInput } from '../interfaces/create-event-relations.input';
 
 @Injectable()
@@ -18,7 +18,7 @@ export class EventRelationsService {
     ) {}
 
     async createRelations(
-        event: Event & { _id: MongoSchema.Types.ObjectId },
+        event: Event & { _id: Types.ObjectId },
         input: EventRelationsInput
     ): Promise<void> {
         const eventId = event._id;
@@ -67,7 +67,7 @@ export class EventRelationsService {
     }
 
     async updateRelations(
-        event: Event & { _id: MongoSchema.Types.ObjectId },
+        event: Event & { _id: Types.ObjectId },
         input: EventRelationsInput
     ): Promise<void> {
         const eventId = event._id;
@@ -121,7 +121,7 @@ export class EventRelationsService {
         }
     }
 
-    async deleteRelations(eventId: MongoSchema.Types.ObjectId): Promise<void> {
+    async deleteRelations(eventId: Types.ObjectId): Promise<void> {
         const existingLocation = await this.locationService.getLocationByOwner(eventId);
         if (existingLocation?._id) {
             await this.locationService.removeLocation(existingLocation._id);

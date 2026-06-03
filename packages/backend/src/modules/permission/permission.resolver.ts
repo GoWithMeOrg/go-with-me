@@ -1,11 +1,11 @@
 import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
-import { Schema as MongoSchema } from 'mongoose';
+import { Schema as MongoSchema, Types } from 'mongoose';
 import { PermissionService } from './permission.service';
 import { Permission } from './entities/permission.entity';
 import { NotFoundException, UseGuards } from '@nestjs/common';
-import { SessionAuthGuard } from 'src/common/guards/session-auth.guard';
-import { RolesGuard } from 'src/common/guards/roles.guard';
-import { Roles } from 'src/common/decorators/roles.decorator';
+import { SessionAuthGuard } from '@/common/guards/session-auth.guard';
+import { RolesGuard } from '@/common/guards/roles.guard';
+import { Roles } from '@/common/decorators/roles.decorator';
 
 @Resolver(() => Permission)
 @UseGuards(SessionAuthGuard, RolesGuard)
@@ -45,7 +45,7 @@ export class PermissionResolver {
         // Используем String в Args для совместимости с ID типом GraphQL
         @Args('id', { type: () => ID }) id: string
     ): Promise<Permission | null> {
-        return this.permissionService.getPermissionById(new MongoSchema.Types.ObjectId(id) as any);
+        return this.permissionService.getPermissionById(new Types.ObjectId(id) as any);
     }
 
     @Mutation(() => [Permission], {
@@ -54,7 +54,7 @@ export class PermissionResolver {
             'Creates missing CRUD permissions for a specific resource based on Action enum',
     })
     async createResourcePermissions(
-        @Args('resourceId', { type: () => ID }) resourceId: MongoSchema.Types.ObjectId
+        @Args('resourceId', { type: () => ID }) resourceId: Types.ObjectId
     ) {
         // Вызываем сервис, который мы написали на предыдущем шаге
         return this.permissionService.createResourcePermissions(resourceId);
@@ -64,7 +64,7 @@ export class PermissionResolver {
         name: 'togglePermissionStatus',
         description: 'Переключает статус активности права (включает/выключает)',
     })
-    async togglePermissionStatus(@Args('id', { type: () => ID }) id: MongoSchema.Types.ObjectId) {
+    async togglePermissionStatus(@Args('id', { type: () => ID }) id: Types.ObjectId) {
         return this.permissionService.togglePermissionStatus(id);
     }
 }

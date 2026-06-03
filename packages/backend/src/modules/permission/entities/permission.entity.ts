@@ -1,14 +1,14 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { Document, Schema as MongoSchema } from 'mongoose';
+import { Document, Types, Schema as MongoSchema } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Action } from '../enums/action.enum';
-import { Resource } from 'src/modules/resource/entities/resource.entity';
+import { Resource } from '@/modules/resource/entities/resource.entity';
 
 @ObjectType()
 @Schema({ timestamps: true })
 export class Permission {
     @Field(() => ID)
-    _id: MongoSchema.Types.ObjectId;
+    _id: Types.ObjectId;
 
     @Field(() => String)
     @Prop({ required: true, unique: true })
@@ -20,7 +20,7 @@ export class Permission {
 
     @Field(() => Resource)
     @Prop({ type: MongoSchema.Types.ObjectId, ref: 'Resource', required: true })
-    resource: Resource;
+    resource: Types.ObjectId;
 
     @Field(() => String, { nullable: true })
     @Prop({ default: '' })

@@ -75,7 +75,7 @@ const Companions: FC = () => {
         dataKey: 'findByEmailOrName',
     });
 
-    console.log(searchDataUsers);
+    console.log(companions);
 
     return (
         <div className={classes.searchCompanions}>

@@ -1,6 +1,6 @@
 import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
-import { Schema as MongoSchema } from 'mongoose';
+import { Schema as MongoSchema, Types } from 'mongoose';
 
 import { UserService } from './user.service';
 
@@ -9,11 +9,11 @@ import { UpdateUserInput } from './dto/update-user.input';
 
 import { User } from './entities/user.entity';
 
-import { SessionAuthGuard } from 'src/common/guards/session-auth.guard';
-import { RolesGuard } from 'src/common/guards/roles.guard';
-import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import { SessionAuthGuard } from '@/common/guards/session-auth.guard';
+import { RolesGuard } from '@/common/guards/roles.guard';
+import { CurrentUser } from '@/common/decorators/current-user.decorator';
 
-import { Roles } from '../../common/decorators/roles.decorator';
+import { Roles } from '@/common/decorators/roles.decorator';
 
 @Resolver(() => User)
 export class UserResolver {
@@ -23,7 +23,7 @@ export class UserResolver {
         name: 'user',
         description: 'Поиск пользователя по id',
     })
-    async getUserById(@Args('id', { type: () => ID }) id: MongoSchema.Types.ObjectId) {
+    async getUserById(@Args('id', { type: () => ID }) id: Types.ObjectId) {
         return await this.userService.getUserById(id);
     }
 
@@ -60,7 +60,7 @@ export class UserResolver {
         description: 'Обновить данные пользователя',
     })
     updateUser(
-        @Args('updateUserId', { type: () => ID }) id: MongoSchema.Types.ObjectId,
+        @Args('updateUserId', { type: () => ID }) id: Types.ObjectId,
         @Args('user', { type: () => UpdateUserInput }) updateUserInput: UpdateUserInput
     ) {
         return this.userService.updateUser(id, updateUserInput);
@@ -71,7 +71,7 @@ export class UserResolver {
         description: 'Удалить пользователя',
     })
     async removeUser(
-        @Args('id', { type: () => ID }) id: MongoSchema.Types.ObjectId
+        @Args('id', { type: () => ID }) id: Types.ObjectId
     ): Promise<boolean> {
         const result = await this.userService.removeUser(id);
         return result.deletedCount > 0;
@@ -84,7 +84,7 @@ export class UserResolver {
     @UseGuards(SessionAuthGuard, RolesGuard)
     @Roles('admin') // Только администратор может назначать роли
     async addUserRole(
-        @Args('userId', { type: () => ID }) userId: MongoSchema.Types.ObjectId,
+        @Args('userId', { type: () => ID }) userId: Types.ObjectId,
         @Args('roleName') roleName: string
     ): Promise<User> {
         return this.userService.addRoleByName(userId, roleName);
@@ -97,7 +97,7 @@ export class UserResolver {
     @UseGuards(SessionAuthGuard, RolesGuard)
     @Roles('admin')
     async removeRoleByName(
-        @Args('userId', { type: () => ID }) userId: MongoSchema.Types.ObjectId,
+        @Args('userId', { type: () => ID }) userId: Types.ObjectId,
         @Args('roleName') roleName: string
     ): Promise<User> {
         return this.userService.removeRoleByName(userId, roleName);

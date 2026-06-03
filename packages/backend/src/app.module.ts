@@ -32,6 +32,7 @@ import { CompanionRequestModule } from './modules/companion-request/companion-re
 import { EventModule } from './modules/event/event.module';
 import { LikeModule } from './modules/like/like.module';
 import { JoinModule } from './modules/join/join.module';
+import { CommentModule } from './modules/comment/comment.module';
 
 @Module({
     imports: [
@@ -98,6 +99,8 @@ import { JoinModule } from './modules/join/join.module';
         LikeModule,
 
         JoinModule,
+
+        CommentModule,
     ],
 
     controllers: [],

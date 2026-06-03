@@ -1,5 +1,5 @@
 import { Field, InputType, ID } from '@nestjs/graphql';
-import { Schema as MongoSchema } from 'mongoose';
+import { Types } from 'mongoose';
 
 @InputType()
 export class CreateTagInput {
@@ -7,7 +7,7 @@ export class CreateTagInput {
     tags: string[];
 
     @Field(() => ID, { nullable: true })
-    ownerId: MongoSchema.Types.ObjectId;
+    ownerId: Types.ObjectId;
 
     @Field(() => String, { nullable: true })
     ownerType: 'User' | 'Event';

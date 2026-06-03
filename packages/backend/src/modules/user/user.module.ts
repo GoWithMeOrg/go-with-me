@@ -3,7 +3,7 @@ import { MongooseModule, getModelToken } from '@nestjs/mongoose';
 import { UserService } from './user.service';
 import { UserResolver } from './user.resolver';
 import { UserSchema, UserDocument } from './entities/user.entity';
-import { LocationModule } from 'src/modules/location/location.module';
+import { LocationModule } from '@/modules/location/location.module';
 import { RoleSchema } from '../role/entities/role.entity';
 import { CompanionModule } from '../companion/companion.module';
 import { CompanionRequestModule } from '../companion-request/companion-request.module';

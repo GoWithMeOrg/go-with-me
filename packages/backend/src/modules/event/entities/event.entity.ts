@@ -1,22 +1,23 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { Document, Schema as MongoSchema } from 'mongoose';
+import { Document, Schema as MongoSchema, Types } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Location } from '../../location/entities/location.entity';
-import { Category } from 'src/modules/category/entities/category.entity';
-import { Interest } from 'src/modules/interest/entities/interest.entity';
-import { Tag } from 'src/modules/tag/entities/tag.entity';
+import { Location } from '@/modules/location/entities/location.entity';
+import { Category } from '@/modules/category/entities/category.entity';
+import { Interest } from '@/modules/interest/entities/interest.entity';
+import { Tag } from '@/modules/tag/entities/tag.entity';
 import { Privacy } from '../enum/privacy.enum';
-import { Like } from 'src/modules/like/entities/like.entity';
+import { Like } from '@/modules/like/entities/like.entity';
+import { Comment } from '@/modules/comment/entities/comment.entity';
 
 @ObjectType()
 @Schema({ timestamps: true })
 export class Event {
     @Field(() => ID)
-    _id: MongoSchema.Types.ObjectId;
+    _id: Types.ObjectId;
 
     @Field(() => ID)
-    @Prop({ type: MongoSchema.Types.ObjectId, ref: 'User', required: true })
-    organizer: MongoSchema.Types.ObjectId;
+    @Prop({ type: Types.ObjectId, ref: 'User', required: true })
+    organizer: Types.ObjectId;
 
     @Field(() => String)
     @Prop({ type: String, required: true })

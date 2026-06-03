@@ -1,14 +1,14 @@
 import { NotFoundException, UseGuards } from '@nestjs/common';
 import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
-import { Schema as MongoSchema } from 'mongoose';
+import { Schema as MongoSchema, Types } from 'mongoose';
 
 import { Role } from './entities/role.entity';
 import { RoleService } from './role.service';
 import { CreateRoleInput } from './dto/create-role.input';
 import { UpdateRoleInput } from './dto/update-role.input';
-import { SessionAuthGuard } from 'src/common/guards/session-auth.guard';
-import { RolesGuard } from 'src/common/guards/roles.guard';
-import { Roles } from 'src/common/decorators/roles.decorator';
+import { SessionAuthGuard } from '@/common/guards/session-auth.guard';
+import { RolesGuard } from '@/common/guards/roles.guard';
+import { Roles } from '@/common/decorators/roles.decorator';
 import { User } from '../user/entities/user.entity';
 
 @Resolver(() => Role)
@@ -43,7 +43,7 @@ export class RoleResolver {
         nullable: true,
     })
     async getRoleById(
-        @Args('id', { type: () => ID }) id: MongoSchema.Types.ObjectId
+        @Args('id', { type: () => ID }) id: Types.ObjectId
     ): Promise<Role | null> {
         return this.roleService.getRoleById(id);
     }
@@ -54,7 +54,7 @@ export class RoleResolver {
         nullable: true,
     })
     async getRoleByUserId(
-        @Args('userId', { type: () => ID }) userId: MongoSchema.Types.ObjectId
+        @Args('userId', { type: () => ID }) userId: Types.ObjectId
     ): Promise<User | null> {
         return this.roleService.getRoleByUserId(userId);
     }
@@ -73,16 +73,16 @@ export class RoleResolver {
 
     @Mutation(() => Role)
     async addPermissionToRole(
-        @Args('roleId', { type: () => ID }) roleId: MongoSchema.Types.ObjectId,
-        @Args('permissionId', { type: () => [ID] }) permissionId: MongoSchema.Types.ObjectId[]
+        @Args('roleId', { type: () => ID }) roleId: Types.ObjectId,
+        @Args('permissionId', { type: () => [ID] }) permissionId: Types.ObjectId[]
     ) {
         return this.roleService.addPermission(roleId, permissionId);
     }
 
     @Mutation(() => Role)
     async removePermissionFromRole(
-        @Args('roleId', { type: () => ID }) roleId: MongoSchema.Types.ObjectId,
-        @Args('permissionId', { type: () => ID }) permissionId: MongoSchema.Types.ObjectId
+        @Args('roleId', { type: () => ID }) roleId: Types.ObjectId,
+        @Args('permissionId', { type: () => ID }) permissionId: Types.ObjectId
     ) {
         return this.roleService.removePermission(roleId, permissionId);
     }
@@ -93,7 +93,7 @@ export class RoleResolver {
         description: 'Удаление роли',
     })
     async removeRole(
-        @Args('id', { type: () => ID }) id: MongoSchema.Types.ObjectId
+        @Args('id', { type: () => ID }) id: Types.ObjectId
     ): Promise<boolean> {
         const result = await this.roleService.removeRole(id);
         return result.deletedCount > 0;

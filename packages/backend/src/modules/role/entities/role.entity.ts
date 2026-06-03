@@ -1,20 +1,20 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { Document, Schema as MongoSchema } from 'mongoose';
+import { Document, Schema as MongoSchema, Types } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Permission } from 'src/modules/permission/entities/permission.entity';
+import { Permission } from '@/modules/permission/entities/permission.entity';
 
 @ObjectType()
 @Schema({ timestamps: true })
 export class Role {
     @Field(() => ID)
-    _id: MongoSchema.Types.ObjectId;
+    _id: Types.ObjectId;
 
     @Field(() => String)
     @Prop({ required: true, unique: true })
     name: string;
 
     @Field(() => [Permission])
-    @Prop({ type: [{ type: MongoSchema.Types.ObjectId, ref: 'Permission' }] })
+    @Prop({ type: [{ type: Types.ObjectId, ref: 'Permission' }] })
     permissions: Permission[];
 
     @Field(() => String, { nullable: true })

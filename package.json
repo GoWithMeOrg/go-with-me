@@ -1,15 +1,14 @@
 {
     "name": "go-with-me",
-    "version": "0.0.0",
     "private": true,
     "workspaces": [
         "packages/*"
     ],
     "scripts": {
         "build": "pnpm --filter \"*\" build",
-        "frontend:dev": "pnpm --filter frontend dev",
         "backend:dev": "pnpm --filter backend nest start --watch",
-        "frontend:lint": "pnpm -r exec eslint packages/frontend --fix",
+        "frontend:dev": "pnpm --filter frontend dev",
+		"frontend:lint": "pnpm -r exec eslint packages/frontend --fix",
         "backend:lint": "pnpm -r exec eslint packages/backend --fix",
         "frontend:format": "prettier packages/frontend -w",
         "backend:format": "prettier packages/backend -w",
@@ -17,24 +16,8 @@
         "codegen": "graphql-codegen --config codegen.ts"
     },
     "devDependencies": {
-        "@eslint/eslintrc": "^3.3.5",
-        "@graphql-codegen/cli": "^6.2.1",
-        "@graphql-codegen/client-preset": "^5.2.4",
-        "@graphql-codegen/near-operation-file-preset": "^4.0.0",
-        "@graphql-codegen/typescript": "^5.0.9",
-        "@graphql-codegen/typescript-operations": "^5.0.9",
-        "@graphql-codegen/typescript-react-apollo": "^4.4.1",
-        "@ianvs/prettier-plugin-sort-imports": "^4.7.1",
-        "@next/eslint-plugin-next": "^16.2.1",
-        "@typescript-eslint/eslint-plugin": "^8.57.2",
-        "@typescript-eslint/parser": "^8.57.2",
-        "eslint": "^9.39.4",
-        "eslint-config-next": "16.1.0",
-        "eslint-config-prettier": "^10.1.8",
-        "prettier": "^3.8.1",
-        "typescript": "5.4.5"
-    },
-    "dependencies": {
-        "class-validator": "~0.14.4"
+        "typescript": "5.9.3",
+        "class-validator": "0.15.1",
+        "class-transformer": "0.5.1"
     }
 }

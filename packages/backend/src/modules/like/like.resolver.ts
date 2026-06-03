@@ -1,8 +1,9 @@
-import { Resolver, Mutation, Args, Query, ID } from '@nestjs/graphql';
+import { Resolver, Mutation, Args, Query, ID, Int } from '@nestjs/graphql';
 import { LikeService } from './like.service';
 import { Like } from './entities/like.entity';
-import { Schema as MongoSchema } from 'mongoose';
-import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import { LikeStatus } from './entities/like-status.entity';
+import { Types  } from 'mongoose';
+import { CurrentUser } from '@/common/decorators/current-user.decorator';
 import { User } from '../user/entities/user.entity';
 
 @Resolver(() => Like)
@@ -12,7 +13,7 @@ export class LikeResolver {
     @Mutation(() => Boolean)
     async toggleLike(
         @CurrentUser() user: User,
-        @Args('ownerId', { type: () => ID }) ownerId: MongoSchema.Types.ObjectId,
+        @Args('ownerId', { type: () => ID }) ownerId: Types.ObjectId,
         @Args('ownerType') ownerType: 'Event' | 'Comment' | 'Trip'
     ): Promise<boolean> {
         return this.likeService.toggleLike(user._id, ownerId, ownerType);
@@ -20,21 +21,36 @@ export class LikeResolver {
 
     @Query(() => [Like])
     async getLikesByOwnerId(
-        @Args('ownerId', { type: () => ID }) ownerId: MongoSchema.Types.ObjectId
+        @Args('ownerId', { type: () => ID }) ownerId: Types.ObjectId
     ) {
-        return this.likeService.getLikeByOwnerId(ownerId);
+        return this.likeService.getLikesByOwnerId(ownerId);
+    }
+
+    @Query(() => Int)
+    async getLikesCount(
+        @Args('ownerId', { type: () => ID }) ownerId: Types.ObjectId
+    ): Promise<number> {
+        return this.likeService.getLikesCount(ownerId);
     }
 
     @Query(() => Boolean, { nullable: true })
     async isLikedByUser(
         @CurrentUser() user: User,
-        @Args('owner_id', { type: () => ID }) owner_id: MongoSchema.Types.ObjectId
+        @Args('owner_id', { type: () => ID }) owner_id: Types.ObjectId
     ) {
         return this.likeService.isLikedByUser(owner_id, user._id);
     }
 
+    @Query(() => [LikeStatus])
+    async getLikesBatch(
+        @CurrentUser() user: User,
+        @Args('ownerIds', { type: () => [ID] }) ownerIds: Types.ObjectId[]
+    ) {
+        return this.likeService.getLikesBatch(ownerIds, user._id);
+    }
+
     // @Mutation(() => Like, { nullable: true })
-    // async deleteLike(@Args('like_id') like_id: MongoSchema.Types.ObjectId) {
+    // async deleteLike(@Args('like_id') like_id:  Types.ObjectId) {
     //     return this.likeService.deleteLike(like_id);
     // }
 }

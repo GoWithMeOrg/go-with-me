@@ -1,15 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Schema as MongoSchema } from 'mongoose';
+import { Model, Types } from 'mongoose';
 
 import { Companion, CompanionDocument } from './entities/companion.entity';
-import { User } from '../user/entities/user.entity';
+import { User, UserDocument } from '../user/entities/user.entity';
 import { CompanionRequest } from '../companion-request/entities/companion-request.entity';
 import { CompanionRequestStatus } from '../companion-request/enums/companion-request.enum';
 
 @Injectable()
 export class CompanionService {
     constructor(
+		@InjectModel(User.name)
+        private userModel: Model<UserDocument>,
         @InjectModel(Companion.name)
         private companionModel: Model<CompanionDocument>,
         @InjectModel(CompanionRequest.name)
@@ -17,30 +19,35 @@ export class CompanionService {
     ) {}
 
     async getCompanionsByOwner(
-        ownerId: MongoSchema.Types.ObjectId,
-        limit?: number,
-        offset?: number
-    ): Promise<{ companions: User[]; totalCompanions: number }> {
-        const [companionsDoc, totalDoc] = await Promise.all([
-            this.companionModel.findOne({ ownerId }).populate<{ companions: User[] }>({
-                path: 'companions',
-                options: {
-                    ...(limit ? { limit } : {}),
-                    ...(offset ? { skip: offset } : {}),
-                },
-            }),
-            this.companionModel.findOne({ ownerId }),
-        ]);
+		ownerId: Types.ObjectId,
+		limit?: number,
+		offset?: number
+	): Promise<{ companions: User[]; totalCompanions: number }> {
+		
+		const ownerObjectId = new Types.ObjectId(ownerId.toString());
 
-        const companions = companionsDoc?.companions || [];
-        const totalCompanions = totalDoc?.companions?.length ?? 0;
+		const companionDoc = await this.companionModel
+			.findOne({ ownerId: ownerObjectId })
+			.lean();
 
-        return { companions, totalCompanions };
-    }
+		if (!companionDoc) {
+			return { companions: [], totalCompanions: 0 };
+		}
+
+		const allIds = companionDoc.companions;
+
+		const companions = await this.userModel
+			.find({ _id: { $in: allIds } })
+			.skip(offset ?? 0)
+			.limit(limit ?? 0)
+			.lean();
+
+		return { companions, totalCompanions: allIds.length };
+	}
 
     async removeCompanion(
-        userId: MongoSchema.Types.ObjectId,
-        companionId: MongoSchema.Types.ObjectId
+        userId: Types.ObjectId,
+        companionId: Types.ObjectId
     ): Promise<boolean> {
         try {
             // находим активную заявку со статусом "accepted"
@@ -86,7 +93,7 @@ export class CompanionService {
     }
 
     async findCompanion(
-        ownerId: MongoSchema.Types.ObjectId,
+        ownerId: Types.ObjectId,
         query?: string
     ): Promise<User[]> {
         const getCompanions = await this.companionModel

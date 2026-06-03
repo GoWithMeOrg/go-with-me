@@ -5,7 +5,7 @@ import { Document, Types } from 'mongoose';
 export class Session {
     // идентификатор сессии из express-session (sid)
     @Prop({ required: true })
-    _id: string;
+    _id: Types.ObjectId;
 
     // ссылка на id пользователя (если присутствует)
     @Prop({ type: Types.ObjectId, ref: 'User', index: true, sparse: true })

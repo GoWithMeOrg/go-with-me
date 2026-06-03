@@ -1,0 +1,15 @@
+.container {
+    width: 50rem;
+}
+
+.messageContainer {
+    padding: 1rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.messageContainer > svg {
+    width: 3rem;
+    height: 3rem;
+}

@@ -1,12 +1,12 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { Document, Schema as MongoSchema } from 'mongoose';
+import { Document, Schema as MongoSchema, Types } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 @ObjectType()
 @Schema({ timestamps: true })
 export class Interest {
     @Field(() => ID)
-    _id: MongoSchema.Types.ObjectId;
+    _id: Types.ObjectId;
 
     @Field(() => [String])
     @Prop({ type: [String] })
@@ -14,7 +14,7 @@ export class Interest {
 
     @Field(() => ID, { nullable: true })
     @Prop({ type: MongoSchema.Types.ObjectId, required: false })
-    ownerId: string;
+    ownerId: Types.ObjectId;
 
     @Field(() => String, { nullable: true })
     @Prop({ type: String, enum: ['User', 'Event'], required: false })
