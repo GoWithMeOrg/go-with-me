@@ -248,7 +248,7 @@ type Mutation {
 
   """Генерация тестовых данных (доступно только в DEV режиме)"""
   seedUsers(inputs: SeedUserInput!): SeedUserResult!
-  sendRequestCompanion(receiver: ID!, sender: ID!): CompanionRequest!
+  sendRequestCompanion(receiver: ID!): CompanionRequest!
   toggleJoin(ownerId: ID!, ownerType: String!): Boolean!
   toggleLike(ownerId: ID!, ownerType: String!): Boolean!
 

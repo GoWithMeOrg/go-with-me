@@ -4,7 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 
 import { AuthService } from './auth.service';
 
-import { AuthController } from './auth.controller';
+import { AuthController, AdminController } from './auth.controller';
 
 import { UserModule } from '@/modules/user/user.module';
 import { SessionModule } from '@/modules/session/session.module';
@@ -18,7 +18,6 @@ import { AuthResolver } from './auth.resolver';
 
 import { GoogleOAuthGuard } from './GoogleAuth/guard/google-oauth.guard';
 import { SessionAuthGuard } from '@/common/guards/session-auth.guard';
-import { RolesGuard } from '@/common/guards/roles.guard';
 
 @Module({
     imports: [
@@ -35,8 +34,7 @@ import { RolesGuard } from '@/common/guards/roles.guard';
         AuthResolver,
         GoogleOAuthGuard,
         SessionAuthGuard,
-        RolesGuard,
     ], // регистрируем провайдеры: сервис, стратегия, сериалайзер, резолвер и guards
-    controllers: [AuthController], // регистрируем контроллер
+    controllers: [AuthController, AdminController],
 })
 export class AuthModule {}

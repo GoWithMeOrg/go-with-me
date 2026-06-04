@@ -31,7 +31,7 @@ export class CompanionRequestService {
         sender_id: Types.ObjectId,
         receiver_id: Types.ObjectId
     ): Promise<CompanionRequestDocument> {
-        if (sender_id === receiver_id) {
+        if (sender_id.toString() === receiver_id.toString()) {
             throw new Error('Нельзя отправить запрос самому себе');
         }
 
@@ -41,7 +41,7 @@ export class CompanionRequestService {
                 ownerId: sender_id,
             })
             .exec();
-        if (existingCompanions?.companions.some((id) => id === receiver_id)) {
+        if (existingCompanions?.companions.some((id) => id.toString() === receiver_id.toString())) {
             throw new Error('Пользователь уже у вас в друзьях');
         }
 
