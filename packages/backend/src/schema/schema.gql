@@ -219,7 +219,7 @@ type Mutation {
     slug: String!
   ): Resource!
   rejectCompanionRequest(request_id: ID!): CompanionRequest!
-  removeCategories(category_id: ID!): Category!
+  removeCategories(category_id: ID!): Boolean!
   removeComment(commentId: ID!): Boolean!
   removeCompanion(companion_id: ID!, user_id: ID!): Boolean!
 

@@ -37,6 +37,6 @@ export class CategoryService {
     }
 
     async removeCategories(category_id: Types.ObjectId): Promise<DeleteResult> {
-        return await this.categoryModel.deleteOne({ _id: category_id }).exec();
+        return this.categoryModel.deleteOne({ _id: category_id }).exec();
     }
 }
