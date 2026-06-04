@@ -11,6 +11,7 @@ const useLike = ({ owner_id, ownerType, initialIsLiked, initialLikesCount }: Lik
     const [likesCount, setLikesCount] = useState(0);
     const isReadyRef = useRef(false);
     const isLikedRef = useRef(false);
+    const hasToggledRef = useRef(false);
 
     const { data: isLikedData } = useQuery<{ isLikedByUser: boolean }>(IS_LIKED_BY_USER, {
         variables: { ownerId: owner_id },
@@ -23,6 +24,8 @@ const useLike = ({ owner_id, ownerType, initialIsLiked, initialLikesCount }: Lik
     });
 
     useEffect(() => {
+        if (hasToggledRef.current) return;
+
         if (hasInitialData) {
             setIsLiked(initialIsLiked);
             setLikesCount(initialLikesCount);
@@ -49,6 +52,7 @@ const useLike = ({ owner_id, ownerType, initialIsLiked, initialLikesCount }: Lik
 
         setIsLiked(!prevIsLiked);
         setLikesCount((c) => c + (prevIsLiked ? -1 : 1));
+        hasToggledRef.current = true;
 
         try {
             await toggleLike({

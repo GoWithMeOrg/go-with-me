@@ -15,8 +15,8 @@ export const useCommentList = (ownerId: string) => {
     const [offset, setOffset] = useState(0);
     const [currentLimit, setCurrentLimit] = useState(INITIAL_LIMIT);
     const [comments, setComments] = useState<CommentType[]>([]);
+    const [hasMoreComments, setHasMoreComments] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const lastBatchSize = useRef(0);
     const commentsRef = useRef(comments);
     commentsRef.current = comments;
 
@@ -35,7 +35,11 @@ export const useCommentList = (ownerId: string) => {
                 if (cancelled) return;
                 const result = data?.getParentCommentsByOwnerId ?? [];
                 setComments(result);
-                lastBatchSize.current = result.length;
+                if (result.length < INITIAL_LIMIT) {
+                    setHasMoreComments(false);
+                } else {
+                    setHasMoreComments(true);
+                }
             })
             .catch((err) => {
                 if (cancelled) return;
@@ -46,9 +50,6 @@ export const useCommentList = (ownerId: string) => {
             cancelled = true;
         };
     }, [ownerId]);
-
-    const currentLimitForCheck = offset === 0 ? INITIAL_LIMIT : LOAD_MORE_LIMIT;
-    const hasMoreComments = lastBatchSize.current === currentLimitForCheck;
 
     const loadMore = useCallback(async () => {
         const newOffset = offset + currentLimit;
@@ -61,7 +62,9 @@ export const useCommentList = (ownerId: string) => {
             if (data?.getParentCommentsByOwnerId) {
                 const batch = data.getParentCommentsByOwnerId;
                 setComments((prev) => [...prev, ...batch]);
-                lastBatchSize.current = batch.length;
+                if (batch.length < LOAD_MORE_LIMIT) {
+                    setHasMoreComments(false);
+                }
             }
             setOffset(newOffset);
             setCurrentLimit(LOAD_MORE_LIMIT);
