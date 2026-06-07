@@ -312,7 +312,7 @@ type Query {
   """Поиск категорий по ownerId"""
   categoriesByOwnerId(ownerId: ID!): Category!
 
-  """Поиск интересов по ownerId"""
+  """Поиск компаньонов по ownerId"""
   companionsByOwnerId(limit: Int, offset: Int, ownerId: ID!): CompanionsResponse!
 
   """Найти пользователей по email или имени"""

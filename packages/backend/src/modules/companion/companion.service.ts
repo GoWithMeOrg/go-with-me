@@ -49,41 +49,38 @@ export class CompanionService {
         userId: Types.ObjectId,
         companionId: Types.ObjectId
     ): Promise<boolean> {
+		const userObjectId = new Types.ObjectId(userId.toString());
+		const companionObjectId = new Types.ObjectId(companionId.toString());
+
         try {
-            // находим активную заявку со статусом "accepted"
+            await this.companionModel.updateOne(
+                { ownerId: userObjectId },
+                { $pull: { companions: companionObjectId } }
+            );
+
+            await this.companionModel.updateOne(
+                { ownerId: companionObjectId },
+                { $pull: { companions: userObjectId } }
+            );
+
             const existingCompanion = await this.companionRequestModel.findOne({
                 $or: [
                     {
-                        sender: userId,
-                        receiver: companionId,
+                        sender: userObjectId,
+                        receiver: companionObjectId,
                         status: CompanionRequestStatus.ACCEPTED,
                     },
                     {
-                        sender: companionId,
-                        receiver: userId,
+                        sender: companionObjectId,
+                        receiver: userObjectId,
                         status: CompanionRequestStatus.ACCEPTED,
                     },
                 ],
             });
 
-            if (!existingCompanion) {
-                return false;
+            if (existingCompanion) {
+                await this.companionRequestModel.findByIdAndDelete(existingCompanion._id);
             }
-
-            // обновляем список друзей у пользователя (удаляем companionId)
-            await this.companionModel.updateOne(
-                { ownerId: userId },
-                { $pull: { companions: companionId } }
-            );
-
-            // обновляем список друзей у компаньона (удаляем userId)
-            await this.companionModel.updateOne(
-                { ownerId: companionId },
-                { $pull: { companions: userId } }
-            );
-
-            // удаляем заявку о дружбе
-            await this.companionRequestModel.findByIdAndDelete(existingCompanion._id);
 
             return true;
         } catch (error) {

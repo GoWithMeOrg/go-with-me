@@ -1,11 +1,10 @@
+/** Internal type. DO NOT USE DIRECTLY. */
+type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+/** Internal type. DO NOT USE DIRECTLY. */
+export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
-export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string; output: string; }
@@ -14,7 +13,7 @@ export type Scalars = {
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
   /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
-  DateTime: { input: any; output: any; }
+  DateTime: { input: unknown; output: unknown; }
 };
 
 export enum Action {
@@ -163,6 +162,13 @@ export type Like = {
   user: Scalars['ID']['output'];
 };
 
+export type LikeStatus = {
+  __typename: 'LikeStatus';
+  count: Scalars['Int']['output'];
+  isLiked: Scalars['Boolean']['output'];
+  ownerId: Scalars['ID']['output'];
+};
+
 export type Location = {
   __typename: 'Location';
   _id: Scalars['String']['output'];
@@ -220,7 +226,7 @@ export type Mutation = {
   getPresignedUrl: PresignedUrlResponse;
   registerResource: Resource;
   rejectCompanionRequest: CompanionRequest;
-  removeCategories: Category;
+  removeCategories: Scalars['Boolean']['output'];
   removeComment: Scalars['Boolean']['output'];
   removeCompanion: Scalars['Boolean']['output'];
   /** Удалить событие */
@@ -423,7 +429,6 @@ export type MutationSeedUsersArgs = {
 
 export type MutationSendRequestCompanionArgs = {
   receiver: Scalars['ID']['input'];
-  sender: Scalars['ID']['input'];
 };
 
 
@@ -551,7 +556,7 @@ export type Query = {
   categoriesById: Category;
   /** Поиск категорий по ownerId */
   categoriesByOwnerId: Category;
-  /** Поиск интересов по ownerId */
+  /** Поиск компаньонов по ownerId */
   companionsByOwnerId: CompanionsResponse;
   /** Найти пользователей по email или имени */
   findByEmailOrName: Array<User>;
@@ -559,7 +564,7 @@ export type Query = {
   findCompanion: Array<User>;
   /** Получить все активные события с пагинацией и сортировкой */
   getAllEvents: Array<Event>;
-  getChildrenCommentsByParrentId: Array<Comment>;
+  getChildrenCommentsByParentId: Array<Comment>;
   getCommentsByOwnerId: Array<Comment>;
   getCompanionRequests: Array<CompanionRequest>;
   /** Получить событие по id */
@@ -567,9 +572,10 @@ export type Query = {
   /** Получить все события организатора */
   getEventsByOrganizer: Array<Event>;
   getJoinedUsersByOwnerId: Array<Join>;
+  getLikesBatch: Array<LikeStatus>;
   getLikesByOwnerId: Array<Like>;
   getLikesCount: Scalars['Int']['output'];
-  getParrentCommentsByOwnerId: Array<Comment>;
+  getParentCommentsByOwnerId: Array<Comment>;
   /** Поиск интересов по id */
   interestById: Interest;
   /** Поиск интересов по ownerId */
@@ -648,10 +654,11 @@ export type QueryGetAllEventsArgs = {
 };
 
 
-export type QueryGetChildrenCommentsByParrentIdArgs = {
+export type QueryGetChildrenCommentsByParentIdArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
   parentId: Scalars['ID']['input'];
+  sort?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -682,6 +689,11 @@ export type QueryGetJoinedUsersByOwnerIdArgs = {
 };
 
 
+export type QueryGetLikesBatchArgs = {
+  ownerIds: Array<Scalars['ID']['input']>;
+};
+
+
 export type QueryGetLikesByOwnerIdArgs = {
   ownerId: Scalars['ID']['input'];
 };
@@ -692,10 +704,11 @@ export type QueryGetLikesCountArgs = {
 };
 
 
-export type QueryGetParrentCommentsByOwnerIdArgs = {
+export type QueryGetParentCommentsByOwnerIdArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
   ownerId: Scalars['ID']['input'];
+  sort?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -920,52 +933,211 @@ export type UserProfile = {
   user: User;
 };
 
+export type Action =
+  | 'CREATE'
+  | 'DELETE'
+  | 'EDIT'
+  | 'READ';
+
+export type CreateCategoryInput = {
+  categories: Array<string>;
+  ownerId?: string | number | null | undefined;
+  ownerType?: string | null | undefined;
+};
+
+export type CreateCommentInput = {
+  content: string;
+  ownerId: string | number;
+  ownerType: OwnerType;
+  parent?: string | number | null | undefined;
+};
+
+export type CreateEventInput = {
+  description?: string | null | undefined;
+  endDate: unknown;
+  image?: string | null | undefined;
+  name: string;
+  organizer?: string | number | null | undefined;
+  privacy: Privacy;
+  startDate: unknown;
+  time?: string | null | undefined;
+};
+
+export type CreateInterestInput = {
+  interests: Array<string>;
+  ownerId?: string | number | null | undefined;
+  ownerType?: string | null | undefined;
+};
+
+export type CreateLocationInput = {
+  geometry: LocationGeometryInput;
+  properties: LocationPropertiesInput;
+};
+
+export type CreateRoleInput = {
+  description?: string | null | undefined;
+  name: string;
+  permissionIds?: Array<string | null | undefined> | null | undefined;
+};
+
+export type CreateTagInput = {
+  ownerId?: string | number | null | undefined;
+  ownerType?: string | null | undefined;
+  tags?: Array<string> | null | undefined;
+};
+
+export type CreateUserInput = {
+  email: string;
+  firstName: string;
+  image: string;
+  lastName: string;
+  roles?: Array<string> | null | undefined;
+};
+
+export type EventRelationsInput = {
+  category?: CreateCategoryInput | null | undefined;
+  interest?: CreateInterestInput | null | undefined;
+  location?: CreateLocationInput | null | undefined;
+  tag?: CreateTagInput | null | undefined;
+};
+
+export type LocationGeometryInput = {
+  coordinates: Array<number>;
+};
+
+export type LocationPropertiesInput = {
+  address?: string | null | undefined;
+  ownerId?: string | number | null | undefined;
+  ownerType?: string | null | undefined;
+};
+
+export type OwnerType =
+  | 'COMMENT'
+  | 'EVENT'
+  | 'TRIP'
+  | 'USER';
+
+export type Privacy =
+  | 'PRIVATE'
+  | 'PUBLIC';
+
+export type SeedEventsInput = {
+  event: CreateEventInput;
+  organizer: string | number;
+  relations?: EventRelationsInput | null | undefined;
+};
+
+export type SeedUserInput = {
+  category?: CreateCategoryInput | null | undefined;
+  interest?: CreateInterestInput | null | undefined;
+  location?: CreateLocationInput | null | undefined;
+  tag?: CreateTagInput | null | undefined;
+  user?: CreateUserInput | null | undefined;
+};
+
+export type UpdateCategoryInput = {
+  categories?: Array<string> | null | undefined;
+  ownerId?: string | number | null | undefined;
+  ownerType?: string | null | undefined;
+};
+
+export type UpdateEventInput = {
+  description?: string | null | undefined;
+  endDate?: unknown;
+  image?: string | null | undefined;
+  name?: string | null | undefined;
+  organizer?: string | number | null | undefined;
+  privacy?: Privacy | null | undefined;
+  startDate?: unknown;
+  time?: string | null | undefined;
+};
+
+export type UpdateInterestInput = {
+  interests?: Array<string> | null | undefined;
+  ownerId?: string | number | null | undefined;
+  ownerType?: string | null | undefined;
+};
+
+export type UpdateLocationInput = {
+  geometry?: LocationGeometryInput | null | undefined;
+  properties?: LocationPropertiesInput | null | undefined;
+};
+
+export type UpdateRoleInput = {
+  _id: string;
+  description?: string | null | undefined;
+  name?: string | null | undefined;
+  permissionIds?: Array<string> | null | undefined;
+};
+
+export type UpdateTagInput = {
+  ownerId?: string | number | null | undefined;
+  ownerType?: string | null | undefined;
+  tags?: Array<string> | null | undefined;
+};
+
+export type UpdateUserInput = {
+  _id: string | number;
+  description?: string | null | undefined;
+  email?: string | null | undefined;
+  firstName?: string | null | undefined;
+  image?: string | null | undefined;
+  lastName?: string | null | undefined;
+  roles?: Array<string> | null | undefined;
+};
+
+export type UploadFileInput = {
+  /** Оригинальное имя файла */
+  fileName: string;
+  /** MIME-тип файла */
+  fileType: string;
+};
+
 export type CreateCommentMutationVariables = Exact<{
   createCommentInput: CreateCommentInput;
 }>;
 
 
-export type CreateCommentMutation = { __typename: 'Mutation', createComment: { __typename: 'Comment', _id: string, ownerId: string, ownerType: string, content: string, createdAt: any, repliesCount: number, author: { __typename: 'User', _id: string, firstName: string, lastName: string, image?: string | null } } };
+export type CreateCommentMutation = { __typename: 'Mutation', createComment: { __typename: 'Comment', _id: string, ownerId: string, ownerType: string, content: string, createdAt: unknown, repliesCount: number, author: { __typename: 'User', _id: string, firstName: string, lastName: string, image: string | null } } };
 
 export type CreateReplyMutationVariables = Exact<{
   createCommentInput: CreateCommentInput;
 }>;
 
 
-export type CreateReplyMutation = { __typename: 'Mutation', createReply: { __typename: 'Comment', _id: string, ownerId: string, content: string, repliesCount: number, author: { __typename: 'User', _id: string, firstName: string, lastName: string, image?: string | null }, parent?: { __typename: 'Comment', _id: string, author: { __typename: 'User', firstName: string, lastName: string } } | null } };
+export type CreateReplyMutation = { __typename: 'Mutation', createReply: { __typename: 'Comment', _id: string, ownerId: string, content: string, repliesCount: number, author: { __typename: 'User', _id: string, firstName: string, lastName: string, image: string | null }, parent: { __typename: 'Comment', _id: string, author: { __typename: 'User', firstName: string, lastName: string } } | null } };
 
 export type RemoveCommentMutationVariables = Exact<{
-  commentId: Scalars['ID']['input'];
+  commentId: string | number;
 }>;
 
 
 export type RemoveCommentMutation = { __typename: 'Mutation', removeComment: boolean };
 
 export type SendRequestCompanionMutationVariables = Exact<{
-  receiver: Scalars['ID']['input'];
-  sender: Scalars['ID']['input'];
+  receiver: string | number;
 }>;
 
 
 export type SendRequestCompanionMutation = { __typename: 'Mutation', sendRequestCompanion: { __typename: 'CompanionRequest', _id: string, status: string } };
 
 export type AcceptCompanionRequestMutationVariables = Exact<{
-  requestId: Scalars['ID']['input'];
+  requestId: string | number;
 }>;
 
 
 export type AcceptCompanionRequestMutation = { __typename: 'Mutation', acceptCompanionRequest: { __typename: 'CompanionRequest', status: string, _id: string } };
 
 export type RejectCompanionRequestMutationVariables = Exact<{
-  requestId: Scalars['ID']['input'];
+  requestId: string | number;
 }>;
 
 
 export type RejectCompanionRequestMutation = { __typename: 'Mutation', rejectCompanionRequest: { __typename: 'CompanionRequest', _id: string, status: string } };
 
 export type RemoveCompanionMutationVariables = Exact<{
-  userId: Scalars['ID']['input'];
-  companionId: Scalars['ID']['input'];
+  userId: string | number;
+  companionId: string | number;
 }>;
 
 
@@ -973,43 +1145,43 @@ export type RemoveCompanionMutation = { __typename: 'Mutation', removeCompanion:
 
 export type CreateEventMutationVariables = Exact<{
   createEventInput: CreateEventInput;
-  createCategoryInput?: InputMaybe<CreateCategoryInput>;
-  createInterestInput?: InputMaybe<CreateInterestInput>;
-  createLocationInput?: InputMaybe<CreateLocationInput>;
-  createTagInput?: InputMaybe<CreateTagInput>;
+  createCategoryInput?: CreateCategoryInput | null | undefined;
+  createInterestInput?: CreateInterestInput | null | undefined;
+  createLocationInput?: CreateLocationInput | null | undefined;
+  createTagInput?: CreateTagInput | null | undefined;
 }>;
 
 
 export type CreateEventMutation = { __typename: 'Mutation', createEvent: { __typename: 'Event', _id: string } };
 
 export type UpdateEventMutationVariables = Exact<{
-  updateEventId: Scalars['ID']['input'];
+  updateEventId: string | number;
   updateEventInput: UpdateEventInput;
-  createCategoryInput?: InputMaybe<CreateCategoryInput>;
-  createInterestInput?: InputMaybe<CreateInterestInput>;
-  createLocationInput?: InputMaybe<CreateLocationInput>;
-  createTagInput?: InputMaybe<CreateTagInput>;
+  createCategoryInput?: CreateCategoryInput | null | undefined;
+  createInterestInput?: CreateInterestInput | null | undefined;
+  createLocationInput?: CreateLocationInput | null | undefined;
+  createTagInput?: CreateTagInput | null | undefined;
 }>;
 
 
 export type UpdateEventMutation = { __typename: 'Mutation', updateEvent: { __typename: 'Event', _id: string } };
 
 export type RemoveEventMutationVariables = Exact<{
-  eventId: Scalars['ID']['input'];
+  eventId: string | number;
 }>;
 
 
 export type RemoveEventMutation = { __typename: 'Mutation', removeEvent: boolean };
 
 export type CreateResourcePermissionsMutationVariables = Exact<{
-  resourceId: Scalars['ID']['input'];
+  resourceId: string | number;
 }>;
 
 
 export type CreateResourcePermissionsMutation = { __typename: 'Mutation', createResourcePermissions: Array<{ __typename: 'Permission', _id: string, action: Action, isActive: boolean, name: string }> };
 
 export type TogglePermissionStatusMutationVariables = Exact<{
-  togglePermissionStatusId: Scalars['ID']['input'];
+  togglePermissionStatusId: string | number;
 }>;
 
 
@@ -1027,30 +1199,30 @@ export type UpdateRoleMutationVariables = Exact<{
 }>;
 
 
-export type UpdateRoleMutation = { __typename: 'Mutation', updateRole: { __typename: 'Role', _id: string, description?: string | null, name: string, permissions: Array<{ __typename: 'Permission', _id: string, action: Action, description?: string | null, name: string, resource: { __typename: 'Resource', _id: string, name: string, slug: string } }> } };
+export type UpdateRoleMutation = { __typename: 'Mutation', updateRole: { __typename: 'Role', _id: string, description: string | null, name: string, permissions: Array<{ __typename: 'Permission', _id: string, action: Action, description: string | null, name: string, resource: { __typename: 'Resource', _id: string, name: string, slug: string } }> } };
 
 export type RemoveRoleMutationVariables = Exact<{
-  removeRoleId: Scalars['ID']['input'];
+  removeRoleId: string | number;
 }>;
 
 
 export type RemoveRoleMutation = { __typename: 'Mutation', removeRole: boolean };
 
 export type AddPermissionToRoleMutationVariables = Exact<{
-  permissionId: Array<Scalars['ID']['input']> | Scalars['ID']['input'];
-  roleId: Scalars['ID']['input'];
+  permissionId: Array<string | number> | string | number;
+  roleId: string | number;
 }>;
 
 
-export type AddPermissionToRoleMutation = { __typename: 'Mutation', addPermissionToRole: { __typename: 'Role', _id: string, description?: string | null, name: string, permissions: Array<{ __typename: 'Permission', _id: string }> } };
+export type AddPermissionToRoleMutation = { __typename: 'Mutation', addPermissionToRole: { __typename: 'Role', _id: string, description: string | null, name: string, permissions: Array<{ __typename: 'Permission', _id: string }> } };
 
 export type RemovePermissionFromRoleMutationVariables = Exact<{
-  permissionId: Scalars['ID']['input'];
-  roleId: Scalars['ID']['input'];
+  permissionId: string | number;
+  roleId: string | number;
 }>;
 
 
-export type RemovePermissionFromRoleMutation = { __typename: 'Mutation', removePermissionFromRole: { __typename: 'Role', name: string, _id: string, description?: string | null, permissions: Array<{ __typename: 'Permission', name: string, _id: string }> } };
+export type RemovePermissionFromRoleMutation = { __typename: 'Mutation', removePermissionFromRole: { __typename: 'Role', name: string, _id: string, description: string | null, permissions: Array<{ __typename: 'Permission', name: string, _id: string }> } };
 
 export type SeedEventsMutationVariables = Exact<{
   inputs: SeedEventsInput;
@@ -1064,69 +1236,69 @@ export type SeedUsersMutationVariables = Exact<{
 }>;
 
 
-export type SeedUsersMutation = { __typename: 'Mutation', seedUsers: { __typename: 'SeedUserResult', category?: { __typename: 'Category', _id: string, categories: Array<string>, ownerId?: string | null, ownerType?: string | null } | null, interest?: { __typename: 'Interest', _id: string, interests: Array<string>, ownerId?: string | null, ownerType?: string | null } | null, location?: { __typename: 'Location', _id: string, type: string, geometry: { __typename: 'LocationGeometry', coordinates: Array<number> }, properties: { __typename: 'LocationProperties', address?: string | null, ownerId: string, ownerType: string } } | null, tag?: { __typename: 'Tag', _id: string, ownerId?: string | null, ownerType?: string | null, tags: Array<string> } | null, user?: { __typename: 'User', _id: string, description?: string | null, email: string, firstName: string, image?: string | null, lastName: string } | null } };
+export type SeedUsersMutation = { __typename: 'Mutation', seedUsers: { __typename: 'SeedUserResult', category: { __typename: 'Category', _id: string, categories: Array<string>, ownerId: string | null, ownerType: string | null } | null, interest: { __typename: 'Interest', _id: string, interests: Array<string>, ownerId: string | null, ownerType: string | null } | null, location: { __typename: 'Location', _id: string, type: string, geometry: { __typename: 'LocationGeometry', coordinates: Array<number> }, properties: { __typename: 'LocationProperties', address: string | null, ownerId: string, ownerType: string } } | null, tag: { __typename: 'Tag', _id: string, ownerId: string | null, ownerType: string | null, tags: Array<string> } | null, user: { __typename: 'User', _id: string, description: string | null, email: string, firstName: string, image: string | null, lastName: string } | null } };
 
 export type MutationMutationVariables = Exact<{
-  userId: Scalars['ID']['input'];
-  categoryId?: InputMaybe<Scalars['ID']['input']>;
-  createCategoryInput?: InputMaybe<CreateCategoryInput>;
-  updateUserInput?: InputMaybe<UpdateUserInput>;
-  createInterestInput?: InputMaybe<CreateInterestInput>;
-  createLocationInput?: InputMaybe<CreateLocationInput>;
-  interestId?: InputMaybe<Scalars['ID']['input']>;
-  locationId?: InputMaybe<Scalars['ID']['input']>;
-  updateCategoryInput?: InputMaybe<UpdateCategoryInput>;
-  updateInterestInput?: InputMaybe<UpdateInterestInput>;
-  updateLocationInput?: InputMaybe<UpdateLocationInput>;
-  createTagInput?: InputMaybe<CreateTagInput>;
-  tagId?: InputMaybe<Scalars['ID']['input']>;
-  updateTagInput?: InputMaybe<UpdateTagInput>;
+  userId: string | number;
+  categoryId?: string | number | null | undefined;
+  createCategoryInput?: CreateCategoryInput | null | undefined;
+  updateUserInput?: UpdateUserInput | null | undefined;
+  createInterestInput?: CreateInterestInput | null | undefined;
+  createLocationInput?: CreateLocationInput | null | undefined;
+  interestId?: string | number | null | undefined;
+  locationId?: string | number | null | undefined;
+  updateCategoryInput?: UpdateCategoryInput | null | undefined;
+  updateInterestInput?: UpdateInterestInput | null | undefined;
+  updateLocationInput?: UpdateLocationInput | null | undefined;
+  createTagInput?: CreateTagInput | null | undefined;
+  tagId?: string | number | null | undefined;
+  updateTagInput?: UpdateTagInput | null | undefined;
 }>;
 
 
-export type MutationMutation = { __typename: 'Mutation', updateUserProfile: { __typename: 'UserProfile', category?: { __typename: 'Category', _id: string, categories: Array<string>, ownerId?: string | null, ownerType?: string | null } | null, interest?: { __typename: 'Interest', _id: string, interests: Array<string>, ownerId?: string | null, ownerType?: string | null } | null, location?: { __typename: 'Location', _id: string, type: string, geometry: { __typename: 'LocationGeometry', coordinates: Array<number>, type: string }, properties: { __typename: 'LocationProperties', address?: string | null, ownerId: string, ownerType: string } } | null, user: { __typename: 'User', description?: string | null, email: string, firstName: string, image?: string | null, lastName: string }, tag?: { __typename: 'Tag', _id: string, ownerId?: string | null, ownerType?: string | null, tags: Array<string> } | null } };
+export type MutationMutation = { __typename: 'Mutation', updateUserProfile: { __typename: 'UserProfile', category: { __typename: 'Category', _id: string, categories: Array<string>, ownerId: string | null, ownerType: string | null } | null, interest: { __typename: 'Interest', _id: string, interests: Array<string>, ownerId: string | null, ownerType: string | null } | null, location: { __typename: 'Location', _id: string, type: string, geometry: { __typename: 'LocationGeometry', coordinates: Array<number>, type: string }, properties: { __typename: 'LocationProperties', address: string | null, ownerId: string, ownerType: string } } | null, user: { __typename: 'User', description: string | null, email: string, firstName: string, image: string | null, lastName: string }, tag: { __typename: 'Tag', _id: string, ownerId: string | null, ownerType: string | null, tags: Array<string> } | null } };
 
 export type GetPresignedUrlMutationVariables = Exact<{
   input: UploadFileInput;
-  folder: Scalars['String']['input'];
+  folder: string;
 }>;
 
 
 export type GetPresignedUrlMutation = { __typename: 'Mutation', getPresignedUrl: { __typename: 'PresignedUrlResponse', presignedUrl: string, publicUrl: string } };
 
 export type DeleteFileMutationVariables = Exact<{
-  fileKey: Scalars['String']['input'];
+  fileKey: string;
 }>;
 
 
 export type DeleteFileMutation = { __typename: 'Mutation', deleteFile: boolean };
 
 export type UpdateUserMutationVariables = Exact<{
-  updateUserId: Scalars['ID']['input'];
+  updateUserId: string | number;
   user: UpdateUserInput;
 }>;
 
 
-export type UpdateUserMutation = { __typename: 'Mutation', updateUser: { __typename: 'User', _id: string, firstName: string, lastName: string, email: string, description?: string | null, image?: string | null, roles?: Array<{ __typename: 'Role', _id: string, name: string, description?: string | null }> | null } };
+export type UpdateUserMutation = { __typename: 'Mutation', updateUser: { __typename: 'User', _id: string, firstName: string, lastName: string, email: string, description: string | null, image: string | null, roles: Array<{ __typename: 'Role', _id: string, name: string, description: string | null }> | null } };
 
 export type AddUserRoleMutationVariables = Exact<{
-  userId: Scalars['ID']['input'];
-  roleName: Scalars['String']['input'];
+  userId: string | number;
+  roleName: string;
 }>;
 
 
-export type AddUserRoleMutation = { __typename: 'Mutation', addUserRole: { __typename: 'User', _id: string, firstName: string, lastName: string, email: string, roles?: Array<{ __typename: 'Role', _id: string, name: string, description?: string | null }> | null } };
+export type AddUserRoleMutation = { __typename: 'Mutation', addUserRole: { __typename: 'User', _id: string, firstName: string, lastName: string, email: string, roles: Array<{ __typename: 'Role', _id: string, name: string, description: string | null }> | null } };
 
 export type RemoveUserRoleMutationVariables = Exact<{
-  userId: Scalars['ID']['input'];
-  roleName: Scalars['String']['input'];
+  userId: string | number;
+  roleName: string;
 }>;
 
 
-export type RemoveUserRoleMutation = { __typename: 'Mutation', removeUserRole: { __typename: 'User', _id: string, firstName: string, lastName: string, email: string, roles?: Array<{ __typename: 'Role', _id: string, name: string, description?: string | null }> | null } };
+export type RemoveUserRoleMutation = { __typename: 'Mutation', removeUserRole: { __typename: 'User', _id: string, firstName: string, lastName: string, email: string, roles: Array<{ __typename: 'Role', _id: string, name: string, description: string | null }> | null } };
 
 export type RemoveUserMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: string | number;
 }>;
 
 
@@ -1137,200 +1309,209 @@ export type CreateUserMutationVariables = Exact<{
 }>;
 
 
-export type CreateUserMutation = { __typename: 'Mutation', createUser: { __typename: 'User', _id: string, firstName: string, lastName: string, email: string, image?: string | null } };
+export type CreateUserMutation = { __typename: 'Mutation', createUser: { __typename: 'User', _id: string, firstName: string, lastName: string, email: string, image: string | null } };
 
 export type GetCommentsByOwnerIdQueryVariables = Exact<{
-  ownerId: Scalars['ID']['input'];
-  offset: Scalars['Int']['input'];
-  limit: Scalars['Int']['input'];
+  ownerId: string | number;
+  offset: number;
+  limit: number;
 }>;
 
 
-export type GetCommentsByOwnerIdQuery = { __typename: 'Query', getCommentsByOwnerId: Array<{ __typename: 'Comment', _id: string, content: string, createdAt: any, ownerId: string, deleted: boolean, author: { __typename: 'User', _id: string, image?: string | null, firstName: string, lastName: string }, parent?: { __typename: 'Comment', _id: string, author: { __typename: 'User', firstName: string, lastName: string } } | null }> };
+export type GetCommentsByOwnerIdQuery = { __typename: 'Query', getCommentsByOwnerId: Array<{ __typename: 'Comment', _id: string, content: string, createdAt: unknown, ownerId: string, deleted: boolean, author: { __typename: 'User', _id: string, image: string | null, firstName: string, lastName: string }, parent: { __typename: 'Comment', _id: string, author: { __typename: 'User', firstName: string, lastName: string } } | null }> };
 
-export type GetParrentCommentsByOwnerIdQueryVariables = Exact<{
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  ownerId: Scalars['ID']['input'];
+export type GetParentCommentsByOwnerIdQueryVariables = Exact<{
+  limit?: number | null | undefined;
+  offset?: number | null | undefined;
+  ownerId: string | number;
+  sort?: string | null | undefined;
 }>;
 
 
-export type GetParrentCommentsByOwnerIdQuery = { __typename: 'Query', getParrentCommentsByOwnerId: Array<{ __typename: 'Comment', _id: string, content: string, createdAt: any, ownerId: string, repliesCount: number, deleted: boolean, author: { __typename: 'User', _id: string, firstName: string, lastName: string, image?: string | null }, parent?: { __typename: 'Comment', _id: string } | null }> };
+export type GetParentCommentsByOwnerIdQuery = { __typename: 'Query', getParentCommentsByOwnerId: Array<{ __typename: 'Comment', _id: string, content: string, createdAt: unknown, ownerId: string, repliesCount: number, deleted: boolean, author: { __typename: 'User', _id: string, firstName: string, lastName: string, image: string | null }, parent: { __typename: 'Comment', _id: string } | null }> };
 
-export type GetChildrenCommentsByParrentIdQueryVariables = Exact<{
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  parentId: Scalars['ID']['input'];
+export type GetChildrenCommentsByParentIdQueryVariables = Exact<{
+  limit?: number | null | undefined;
+  offset?: number | null | undefined;
+  parentId: string | number;
+  sort?: string | null | undefined;
 }>;
 
 
-export type GetChildrenCommentsByParrentIdQuery = { __typename: 'Query', getChildrenCommentsByParrentId: Array<{ __typename: 'Comment', _id: string, content: string, createdAt: any, ownerId: string, repliesCount: number, deleted: boolean, author: { __typename: 'User', firstName: string, lastName: string, image?: string | null, _id: string }, parent?: { __typename: 'Comment', _id: string, author: { __typename: 'User', firstName: string, lastName: string } } | null }> };
+export type GetChildrenCommentsByParentIdQuery = { __typename: 'Query', getChildrenCommentsByParentId: Array<{ __typename: 'Comment', _id: string, content: string, createdAt: unknown, ownerId: string, repliesCount: number, deleted: boolean, author: { __typename: 'User', firstName: string, lastName: string, image: string | null, _id: string }, parent: { __typename: 'Comment', _id: string, author: { __typename: 'User', firstName: string, lastName: string } } | null }> };
 
 export type GetCompanionRequestsQueryVariables = Exact<{
-  userId: Scalars['ID']['input'];
+  userId: string | number;
 }>;
 
 
-export type GetCompanionRequestsQuery = { __typename: 'Query', getCompanionRequests: Array<{ __typename: 'CompanionRequest', _id: string, status: string, receiver: { __typename: 'User', _id: string, firstName: string, lastName: string, image?: string | null }, sender: { __typename: 'User', _id: string, firstName: string, lastName: string, image?: string | null } }> };
+export type GetCompanionRequestsQuery = { __typename: 'Query', getCompanionRequests: Array<{ __typename: 'CompanionRequest', _id: string, status: string, receiver: { __typename: 'User', _id: string, firstName: string, lastName: string, image: string | null }, sender: { __typename: 'User', _id: string, firstName: string, lastName: string, image: string | null } }> };
 
 export type CompanionsByOwnerIdQueryVariables = Exact<{
-  ownerId: Scalars['ID']['input'];
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
+  ownerId: string | number;
+  offset?: number | null | undefined;
+  limit?: number | null | undefined;
 }>;
 
 
-export type CompanionsByOwnerIdQuery = { __typename: 'Query', companionsByOwnerId: { __typename: 'CompanionsResponse', totalCompanions: number, companions: Array<{ __typename: 'User', _id: string, firstName: string, lastName: string, image?: string | null }> } };
+export type CompanionsByOwnerIdQuery = { __typename: 'Query', companionsByOwnerId: { __typename: 'CompanionsResponse', totalCompanions: number, companions: Array<{ __typename: 'User', _id: string, firstName: string, lastName: string, image: string | null }> } };
 
 export type FindCompanionQueryVariables = Exact<{
-  query?: InputMaybe<Scalars['String']['input']>;
+  query?: string | null | undefined;
 }>;
 
 
-export type FindCompanionQuery = { __typename: 'Query', findCompanion: Array<{ __typename: 'User', _id: string, firstName: string, lastName: string, image?: string | null }> };
+export type FindCompanionQuery = { __typename: 'Query', findCompanion: Array<{ __typename: 'User', _id: string, firstName: string, lastName: string, image: string | null }> };
 
 export type GetAllEventsQueryVariables = Exact<{
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  sort?: InputMaybe<Scalars['String']['input']>;
+  limit?: number | null | undefined;
+  offset?: number | null | undefined;
+  sort?: string | null | undefined;
 }>;
 
 
-export type GetAllEventsQuery = { __typename: 'Query', getAllEvents: Array<{ __typename: 'Event', _id: string, description?: string | null, endDate?: any | null, image?: string | null, name: string, privacy: Privacy, startDate: any, time?: string | null, category?: { __typename: 'Category', categories: Array<string> } | null, interest?: { __typename: 'Interest', interests: Array<string> } | null, location?: { __typename: 'Location', geometry: { __typename: 'LocationGeometry', coordinates: Array<number> }, properties: { __typename: 'LocationProperties', address?: string | null } } | null, organizer: { __typename: 'User', _id: string, firstName: string, lastName: string, image?: string | null }, tag?: { __typename: 'Tag', tags: Array<string> } | null }> };
+export type GetAllEventsQuery = { __typename: 'Query', getAllEvents: Array<{ __typename: 'Event', _id: string, description: string | null, endDate: unknown, image: string | null, name: string, privacy: Privacy, startDate: unknown, time: string | null, category: { __typename: 'Category', categories: Array<string> } | null, interest: { __typename: 'Interest', interests: Array<string> } | null, location: { __typename: 'Location', geometry: { __typename: 'LocationGeometry', coordinates: Array<number> }, properties: { __typename: 'LocationProperties', address: string | null } } | null, organizer: { __typename: 'User', _id: string, firstName: string, lastName: string, image: string | null }, tag: { __typename: 'Tag', tags: Array<string> } | null }> };
 
 export type GetEventsByOrganizerQueryVariables = Exact<{
-  organizerId: Scalars['ID']['input'];
+  organizerId: string | number;
 }>;
 
 
-export type GetEventsByOrganizerQuery = { __typename: 'Query', getEventsByOrganizer: Array<{ __typename: 'Event', _id: string, description?: string | null, endDate?: any | null, image?: string | null, name: string, privacy: Privacy, startDate: any, time?: string | null, category?: { __typename: 'Category', categories: Array<string> } | null, interest?: { __typename: 'Interest', interests: Array<string> } | null, location?: { __typename: 'Location', geometry: { __typename: 'LocationGeometry', coordinates: Array<number> }, properties: { __typename: 'LocationProperties', address?: string | null } } | null, organizer: { __typename: 'User', _id: string, firstName: string, image?: string | null, lastName: string }, tag?: { __typename: 'Tag', tags: Array<string> } | null }> };
+export type GetEventsByOrganizerQuery = { __typename: 'Query', getEventsByOrganizer: Array<{ __typename: 'Event', _id: string, description: string | null, endDate: unknown, image: string | null, name: string, privacy: Privacy, startDate: unknown, time: string | null, category: { __typename: 'Category', categories: Array<string> } | null, interest: { __typename: 'Interest', interests: Array<string> } | null, location: { __typename: 'Location', geometry: { __typename: 'LocationGeometry', coordinates: Array<number> }, properties: { __typename: 'LocationProperties', address: string | null } } | null, organizer: { __typename: 'User', _id: string, firstName: string, image: string | null, lastName: string }, tag: { __typename: 'Tag', tags: Array<string> } | null }> };
 
 export type GetEventByIdQueryVariables = Exact<{
-  eventId: Scalars['ID']['input'];
+  eventId: string | number;
 }>;
 
 
-export type GetEventByIdQuery = { __typename: 'Query', getEventById: { __typename: 'Event', _id: string, description?: string | null, endDate?: any | null, image?: string | null, name: string, privacy: Privacy, startDate: any, time?: string | null, category?: { __typename: 'Category', categories: Array<string> } | null, interest?: { __typename: 'Interest', interests: Array<string> } | null, location?: { __typename: 'Location', geometry: { __typename: 'LocationGeometry', coordinates: Array<number> }, properties: { __typename: 'LocationProperties', address?: string | null } } | null, tag?: { __typename: 'Tag', tags: Array<string> } | null, organizer: { __typename: 'User', _id: string, firstName: string, lastName: string, image?: string | null } } };
+export type GetEventByIdQuery = { __typename: 'Query', getEventById: { __typename: 'Event', _id: string, description: string | null, endDate: unknown, image: string | null, name: string, privacy: Privacy, startDate: unknown, time: string | null, category: { __typename: 'Category', categories: Array<string> } | null, interest: { __typename: 'Interest', interests: Array<string> } | null, location: { __typename: 'Location', geometry: { __typename: 'LocationGeometry', coordinates: Array<number> }, properties: { __typename: 'LocationProperties', address: string | null } } | null, tag: { __typename: 'Tag', tags: Array<string> } | null, organizer: { __typename: 'User', _id: string, firstName: string, lastName: string, image: string | null } } };
 
 export type IsJoinedByUserQueryVariables = Exact<{
-  ownerId: Scalars['ID']['input'];
+  ownerId: string | number;
 }>;
 
 
-export type IsJoinedByUserQuery = { __typename: 'Query', isJoinedByUser?: boolean | null };
+export type IsJoinedByUserQuery = { __typename: 'Query', isJoinedByUser: boolean | null };
 
 export type GetJoinedUsersByOwnerIdQueryVariables = Exact<{
-  ownerId: Scalars['ID']['input'];
+  ownerId: string | number;
 }>;
 
 
 export type GetJoinedUsersByOwnerIdQuery = { __typename: 'Query', getJoinedUsersByOwnerId: Array<{ __typename: 'Join', _id: string, ownerId: string, ownerType: string, user: string }> };
 
 export type IsLikedByUserQueryVariables = Exact<{
-  ownerId: Scalars['ID']['input'];
+  ownerId: string | number;
 }>;
 
 
-export type IsLikedByUserQuery = { __typename: 'Query', isLikedByUser?: boolean | null };
+export type IsLikedByUserQuery = { __typename: 'Query', isLikedByUser: boolean | null };
 
 export type GetLikesCountQueryVariables = Exact<{
-  ownerId: Scalars['ID']['input'];
+  ownerId: string | number;
 }>;
 
 
 export type GetLikesCountQuery = { __typename: 'Query', getLikesCount: number };
 
-export type LocationByIdQueryVariables = Exact<{
-  locationById: Scalars['ID']['input'];
+export type GetLikesBatchQueryVariables = Exact<{
+  ownerIds: Array<string | number> | string | number;
 }>;
 
 
-export type LocationByIdQuery = { __typename: 'Query', locationById: { __typename: 'Location', _id: string, type: string, geometry: { __typename: 'LocationGeometry', coordinates: Array<number>, type: string }, properties: { __typename: 'LocationProperties', address?: string | null, ownerId: string, ownerType: string } } };
+export type GetLikesBatchQuery = { __typename: 'Query', getLikesBatch: Array<{ __typename: 'LikeStatus', ownerId: string, count: number, isLiked: boolean }> };
+
+export type LocationByIdQueryVariables = Exact<{
+  locationById: string | number;
+}>;
+
+
+export type LocationByIdQuery = { __typename: 'Query', locationById: { __typename: 'Location', _id: string, type: string, geometry: { __typename: 'LocationGeometry', coordinates: Array<number>, type: string }, properties: { __typename: 'LocationProperties', address: string | null, ownerId: string, ownerType: string } } };
 
 export type LocationByOwnerIdQueryVariables = Exact<{
-  ownerId: Scalars['ID']['input'];
+  ownerId: string | number;
 }>;
 
 
-export type LocationByOwnerIdQuery = { __typename: 'Query', locationByOwnerId: { __typename: 'Location', _id: string, type: string, geometry: { __typename: 'LocationGeometry', coordinates: Array<number>, type: string }, properties: { __typename: 'LocationProperties', address?: string | null, ownerId: string, ownerType: string } } };
+export type LocationByOwnerIdQuery = { __typename: 'Query', locationByOwnerId: { __typename: 'Location', _id: string, type: string, geometry: { __typename: 'LocationGeometry', coordinates: Array<number>, type: string }, properties: { __typename: 'LocationProperties', address: string | null, ownerId: string, ownerType: string } } };
 
 export type PermissionsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type PermissionsQuery = { __typename: 'Query', permissions: Array<{ __typename: 'Permission', _id: string, action: Action, description?: string | null, isActive: boolean, name: string, resource: { __typename: 'Resource', name: string } }> };
+export type PermissionsQuery = { __typename: 'Query', permissions: Array<{ __typename: 'Permission', _id: string, action: Action, description: string | null, isActive: boolean, name: string, resource: { __typename: 'Resource', name: string } }> };
 
 export type ResourcesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ResourcesQuery = { __typename: 'Query', resources: Array<{ __typename: 'Resource', _id: string, name: string, permissions: Array<{ __typename: 'Permission', _id: string, action: Action, description?: string | null, isActive: boolean, name: string }> }> };
+export type ResourcesQuery = { __typename: 'Query', resources: Array<{ __typename: 'Resource', _id: string, name: string, permissions: Array<{ __typename: 'Permission', _id: string, action: Action, description: string | null, isActive: boolean, name: string }> }> };
 
 export type GetRolesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetRolesQuery = { __typename: 'Query', roles: Array<{ __typename: 'Role', _id: string, description?: string | null, name: string, permissions: Array<{ __typename: 'Permission', _id: string, action: Action, description?: string | null, name: string, resource: { __typename: 'Resource', _id: string, name: string, slug: string } }> }> };
+export type GetRolesQuery = { __typename: 'Query', roles: Array<{ __typename: 'Role', _id: string, description: string | null, name: string, permissions: Array<{ __typename: 'Permission', _id: string, action: Action, description: string | null, name: string, resource: { __typename: 'Resource', _id: string, name: string, slug: string } }> }> };
 
 export type RoleByUserIdQueryVariables = Exact<{
-  userId: Scalars['ID']['input'];
+  userId: string | number;
 }>;
 
 
-export type RoleByUserIdQuery = { __typename: 'Query', roleByUserId?: { __typename: 'User', roles?: Array<{ __typename: 'Role', name: string }> | null } | null };
+export type RoleByUserIdQuery = { __typename: 'Query', roleByUserId: { __typename: 'User', roles: Array<{ __typename: 'Role', name: string }> | null } | null };
 
 export type RoleByNameQueryVariables = Exact<{
-  name: Scalars['String']['input'];
+  name: string;
 }>;
 
 
 export type RoleByNameQuery = { __typename: 'Query', roleByName: { __typename: 'Role', _id: string, name: string } };
 
 export type SearchResourcesQueryVariables = Exact<{
-  query?: InputMaybe<Scalars['String']['input']>;
+  query?: string | null | undefined;
 }>;
 
 
-export type SearchResourcesQuery = { __typename: 'Query', searchResources: Array<{ __typename: 'Resource', _id: string, name: string, slug: string, permissions: Array<{ __typename: 'Permission', _id: string, action: Action, name: string, description?: string | null, isActive: boolean }> }> };
+export type SearchResourcesQuery = { __typename: 'Query', searchResources: Array<{ __typename: 'Resource', _id: string, name: string, slug: string, permissions: Array<{ __typename: 'Permission', _id: string, action: Action, name: string, description: string | null, isActive: boolean }> }> };
 
 export type GetSessionQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetSessionQuery = { __typename: 'Query', session?: { __typename: 'User', _id: string, firstName: string, lastName: string, email: string } | null };
+export type GetSessionQuery = { __typename: 'Query', session: { __typename: 'User', _id: string, firstName: string, lastName: string, email: string } | null };
 
 export type GetUserByIdQueryVariables = Exact<{
-  userId: Scalars['ID']['input'];
+  userId: string | number;
 }>;
 
 
-export type GetUserByIdQuery = { __typename: 'Query', user: { __typename: 'User', _id: string, description?: string | null, email: string, firstName: string, image?: string | null, lastName: string, roles?: Array<{ __typename: 'Role', _id: string, description?: string | null, name: string, permissions: Array<{ __typename: 'Permission', _id: string, action: Action, description?: string | null, name: string, resource: { __typename: 'Resource', _id: string, name: string, slug: string } }> }> | null } };
+export type GetUserByIdQuery = { __typename: 'Query', user: { __typename: 'User', _id: string, description: string | null, email: string, firstName: string, image: string | null, lastName: string, roles: Array<{ __typename: 'Role', _id: string, description: string | null, name: string, permissions: Array<{ __typename: 'Permission', _id: string, action: Action, description: string | null, name: string, resource: { __typename: 'Resource', _id: string, name: string, slug: string } }> }> | null } };
 
 export type UserProfileQueryVariables = Exact<{
-  userId: Scalars['ID']['input'];
+  userId: string | number;
 }>;
 
 
-export type UserProfileQuery = { __typename: 'Query', userProfile: { __typename: 'UserProfile', tag?: { __typename: 'Tag', tags: Array<string>, _id: string } | null, category?: { __typename: 'Category', _id: string, categories: Array<string> } | null, interest?: { __typename: 'Interest', _id: string, interests: Array<string> } | null, location?: { __typename: 'Location', _id: string, geometry: { __typename: 'LocationGeometry', coordinates: Array<number> }, properties: { __typename: 'LocationProperties', address?: string | null } } | null, user: { __typename: 'User', _id: string, description?: string | null, email: string, firstName: string, image?: string | null, lastName: string } } };
+export type UserProfileQuery = { __typename: 'Query', userProfile: { __typename: 'UserProfile', tag: { __typename: 'Tag', tags: Array<string>, _id: string } | null, category: { __typename: 'Category', _id: string, categories: Array<string> } | null, interest: { __typename: 'Interest', _id: string, interests: Array<string> } | null, location: { __typename: 'Location', _id: string, geometry: { __typename: 'LocationGeometry', coordinates: Array<number> }, properties: { __typename: 'LocationProperties', address: string | null } } | null, user: { __typename: 'User', _id: string, description: string | null, email: string, firstName: string, image: string | null, lastName: string } } };
 
 export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type UsersQuery = { __typename: 'Query', users: Array<{ __typename: 'User', _id: string, firstName: string, lastName: string, image?: string | null }> };
+export type UsersQuery = { __typename: 'Query', users: Array<{ __typename: 'User', _id: string, firstName: string, lastName: string, image: string | null }> };
 
 export type FindByEmailOrNameQueryVariables = Exact<{
-  query?: InputMaybe<Scalars['String']['input']>;
+  query?: string | null | undefined;
 }>;
 
 
-export type FindByEmailOrNameQuery = { __typename: 'Query', findByEmailOrName: Array<{ __typename: 'User', _id: string, firstName: string, lastName: string, email: string, image?: string | null }> };
+export type FindByEmailOrNameQuery = { __typename: 'Query', findByEmailOrName: Array<{ __typename: 'User', _id: string, firstName: string, lastName: string, email: string, image: string | null }> };
 
 export type SubscriptionSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type SubscriptionSubscription = { __typename: 'Subscription', sendRequestCompanion: { __typename: 'CompanionRequest', _id: string, status: string, receiver: { __typename: 'User', _id: string, firstName: string, lastName: string, image?: string | null }, sender: { __typename: 'User', _id: string, firstName: string, lastName: string, image?: string | null } } };
+export type SubscriptionSubscription = { __typename: 'Subscription', sendRequestCompanion: { __typename: 'CompanionRequest', _id: string, status: string, receiver: { __typename: 'User', _id: string, firstName: string, lastName: string, image: string | null }, sender: { __typename: 'User', _id: string, firstName: string, lastName: string, image: string | null } } };
 
 
 export const CreateCommentDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateComment"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"createCommentInput"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateCommentInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createComment"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"createCommentInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"createCommentInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"author"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"image"}}]}},{"kind":"Field","name":{"kind":"Name","value":"ownerId"}},{"kind":"Field","name":{"kind":"Name","value":"ownerType"}},{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"repliesCount"}}]}}]}}]} as unknown as DocumentNode<CreateCommentMutation, CreateCommentMutationVariables>;
 export const CreateReplyDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateReply"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"createCommentInput"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateCommentInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createReply"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"createCommentInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"createCommentInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"author"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"image"}}]}},{"kind":"Field","name":{"kind":"Name","value":"parent"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"author"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"ownerId"}},{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"repliesCount"}}]}}]}}]} as unknown as DocumentNode<CreateReplyMutation, CreateReplyMutationVariables>;
 export const RemoveCommentDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"RemoveComment"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"commentId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"removeComment"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"commentId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"commentId"}}}]}]}}]} as unknown as DocumentNode<RemoveCommentMutation, RemoveCommentMutationVariables>;
-export const SendRequestCompanionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SendRequestCompanion"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"receiver"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"sender"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sendRequestCompanion"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"receiver"},"value":{"kind":"Variable","name":{"kind":"Name","value":"receiver"}}},{"kind":"Argument","name":{"kind":"Name","value":"sender"},"value":{"kind":"Variable","name":{"kind":"Name","value":"sender"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"status"}}]}}]}}]} as unknown as DocumentNode<SendRequestCompanionMutation, SendRequestCompanionMutationVariables>;
+export const SendRequestCompanionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SendRequestCompanion"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"receiver"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sendRequestCompanion"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"receiver"},"value":{"kind":"Variable","name":{"kind":"Name","value":"receiver"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"status"}}]}}]}}]} as unknown as DocumentNode<SendRequestCompanionMutation, SendRequestCompanionMutationVariables>;
 export const AcceptCompanionRequestDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"AcceptCompanionRequest"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"requestId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"acceptCompanionRequest"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request_id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"requestId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"_id"}}]}}]}}]} as unknown as DocumentNode<AcceptCompanionRequestMutation, AcceptCompanionRequestMutationVariables>;
 export const RejectCompanionRequestDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"RejectCompanionRequest"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"requestId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"rejectCompanionRequest"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request_id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"requestId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"status"}}]}}]}}]} as unknown as DocumentNode<RejectCompanionRequestMutation, RejectCompanionRequestMutationVariables>;
 export const RemoveCompanionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"RemoveCompanion"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"companionId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"removeCompanion"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"user_id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}},{"kind":"Argument","name":{"kind":"Name","value":"companion_id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"companionId"}}}]}]}}]} as unknown as DocumentNode<RemoveCompanionMutation, RemoveCompanionMutationVariables>;
@@ -1355,8 +1536,8 @@ export const RemoveUserRoleDocument = {"kind":"Document","definitions":[{"kind":
 export const RemoveUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"RemoveUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"removeUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}]}}]} as unknown as DocumentNode<RemoveUserMutation, RemoveUserMutationVariables>;
 export const CreateUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"createUserInput"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateUserInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"createUserInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"createUserInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"image"}}]}}]}}]} as unknown as DocumentNode<CreateUserMutation, CreateUserMutationVariables>;
 export const GetCommentsByOwnerIdDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetCommentsByOwnerId"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"ownerId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"offset"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"limit"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getCommentsByOwnerId"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"ownerId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"ownerId"}}},{"kind":"Argument","name":{"kind":"Name","value":"offset"},"value":{"kind":"Variable","name":{"kind":"Name","value":"offset"}}},{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"Variable","name":{"kind":"Name","value":"limit"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"author"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"image"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}}]}},{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"ownerId"}},{"kind":"Field","name":{"kind":"Name","value":"parent"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"author"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"deleted"}}]}}]}}]} as unknown as DocumentNode<GetCommentsByOwnerIdQuery, GetCommentsByOwnerIdQueryVariables>;
-export const GetParrentCommentsByOwnerIdDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetParrentCommentsByOwnerId"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"limit"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"offset"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"ownerId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getParrentCommentsByOwnerId"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"Variable","name":{"kind":"Name","value":"limit"}}},{"kind":"Argument","name":{"kind":"Name","value":"offset"},"value":{"kind":"Variable","name":{"kind":"Name","value":"offset"}}},{"kind":"Argument","name":{"kind":"Name","value":"ownerId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"ownerId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"author"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"image"}}]}},{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"ownerId"}},{"kind":"Field","name":{"kind":"Name","value":"parent"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"repliesCount"}},{"kind":"Field","name":{"kind":"Name","value":"deleted"}}]}}]}}]} as unknown as DocumentNode<GetParrentCommentsByOwnerIdQuery, GetParrentCommentsByOwnerIdQueryVariables>;
-export const GetChildrenCommentsByParrentIdDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetChildrenCommentsByParrentId"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"limit"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"offset"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"parentId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getChildrenCommentsByParrentId"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"Variable","name":{"kind":"Name","value":"limit"}}},{"kind":"Argument","name":{"kind":"Name","value":"offset"},"value":{"kind":"Variable","name":{"kind":"Name","value":"offset"}}},{"kind":"Argument","name":{"kind":"Name","value":"parentId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"parentId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"author"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"image"}},{"kind":"Field","name":{"kind":"Name","value":"_id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"ownerId"}},{"kind":"Field","name":{"kind":"Name","value":"parent"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"author"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"repliesCount"}},{"kind":"Field","name":{"kind":"Name","value":"deleted"}}]}}]}}]} as unknown as DocumentNode<GetChildrenCommentsByParrentIdQuery, GetChildrenCommentsByParrentIdQueryVariables>;
+export const GetParentCommentsByOwnerIdDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetParentCommentsByOwnerId"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"limit"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"offset"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"ownerId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"sort"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getParentCommentsByOwnerId"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"Variable","name":{"kind":"Name","value":"limit"}}},{"kind":"Argument","name":{"kind":"Name","value":"offset"},"value":{"kind":"Variable","name":{"kind":"Name","value":"offset"}}},{"kind":"Argument","name":{"kind":"Name","value":"ownerId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"ownerId"}}},{"kind":"Argument","name":{"kind":"Name","value":"sort"},"value":{"kind":"Variable","name":{"kind":"Name","value":"sort"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"author"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"image"}}]}},{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"ownerId"}},{"kind":"Field","name":{"kind":"Name","value":"parent"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"repliesCount"}},{"kind":"Field","name":{"kind":"Name","value":"deleted"}}]}}]}}]} as unknown as DocumentNode<GetParentCommentsByOwnerIdQuery, GetParentCommentsByOwnerIdQueryVariables>;
+export const GetChildrenCommentsByParentIdDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetChildrenCommentsByParentId"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"limit"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"offset"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"parentId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"sort"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getChildrenCommentsByParentId"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"Variable","name":{"kind":"Name","value":"limit"}}},{"kind":"Argument","name":{"kind":"Name","value":"offset"},"value":{"kind":"Variable","name":{"kind":"Name","value":"offset"}}},{"kind":"Argument","name":{"kind":"Name","value":"parentId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"parentId"}}},{"kind":"Argument","name":{"kind":"Name","value":"sort"},"value":{"kind":"Variable","name":{"kind":"Name","value":"sort"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"author"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"image"}},{"kind":"Field","name":{"kind":"Name","value":"_id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"ownerId"}},{"kind":"Field","name":{"kind":"Name","value":"parent"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"author"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"repliesCount"}},{"kind":"Field","name":{"kind":"Name","value":"deleted"}}]}}]}}]} as unknown as DocumentNode<GetChildrenCommentsByParentIdQuery, GetChildrenCommentsByParentIdQueryVariables>;
 export const GetCompanionRequestsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetCompanionRequests"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getCompanionRequests"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"user_id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"receiver"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"image"}}]}},{"kind":"Field","name":{"kind":"Name","value":"sender"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"image"}}]}},{"kind":"Field","name":{"kind":"Name","value":"status"}}]}}]}}]} as unknown as DocumentNode<GetCompanionRequestsQuery, GetCompanionRequestsQueryVariables>;
 export const CompanionsByOwnerIdDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"CompanionsByOwnerId"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"ownerId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"offset"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"limit"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"companionsByOwnerId"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"ownerId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"ownerId"}}},{"kind":"Argument","name":{"kind":"Name","value":"offset"},"value":{"kind":"Variable","name":{"kind":"Name","value":"offset"}}},{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"Variable","name":{"kind":"Name","value":"limit"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"companions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"image"}}]}},{"kind":"Field","name":{"kind":"Name","value":"totalCompanions"}}]}}]}}]} as unknown as DocumentNode<CompanionsByOwnerIdQuery, CompanionsByOwnerIdQueryVariables>;
 export const FindCompanionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"FindCompanion"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"query"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"findCompanion"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"query"},"value":{"kind":"Variable","name":{"kind":"Name","value":"query"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"image"}}]}}]}}]} as unknown as DocumentNode<FindCompanionQuery, FindCompanionQueryVariables>;
@@ -1367,6 +1548,7 @@ export const IsJoinedByUserDocument = {"kind":"Document","definitions":[{"kind":
 export const GetJoinedUsersByOwnerIdDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getJoinedUsersByOwnerId"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"ownerId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getJoinedUsersByOwnerId"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"ownerId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"ownerId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"ownerId"}},{"kind":"Field","name":{"kind":"Name","value":"ownerType"}},{"kind":"Field","name":{"kind":"Name","value":"user"}}]}}]}}]} as unknown as DocumentNode<GetJoinedUsersByOwnerIdQuery, GetJoinedUsersByOwnerIdQueryVariables>;
 export const IsLikedByUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"IsLikedByUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"ownerId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"isLikedByUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"owner_id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"ownerId"}}}]}]}}]} as unknown as DocumentNode<IsLikedByUserQuery, IsLikedByUserQueryVariables>;
 export const GetLikesCountDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetLikesCount"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"ownerId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getLikesCount"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"ownerId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"ownerId"}}}]}]}}]} as unknown as DocumentNode<GetLikesCountQuery, GetLikesCountQueryVariables>;
+export const GetLikesBatchDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetLikesBatch"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"ownerIds"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getLikesBatch"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"ownerIds"},"value":{"kind":"Variable","name":{"kind":"Name","value":"ownerIds"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ownerId"}},{"kind":"Field","name":{"kind":"Name","value":"count"}},{"kind":"Field","name":{"kind":"Name","value":"isLiked"}}]}}]}}]} as unknown as DocumentNode<GetLikesBatchQuery, GetLikesBatchQueryVariables>;
 export const LocationByIdDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"LocationById"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"locationById"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"locationById"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"locationById"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"geometry"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"coordinates"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}},{"kind":"Field","name":{"kind":"Name","value":"properties"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"address"}},{"kind":"Field","name":{"kind":"Name","value":"ownerId"}},{"kind":"Field","name":{"kind":"Name","value":"ownerType"}}]}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]} as unknown as DocumentNode<LocationByIdQuery, LocationByIdQueryVariables>;
 export const LocationByOwnerIdDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"LocationByOwnerId"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"ownerId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"locationByOwnerId"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"ownerId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"ownerId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"geometry"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"coordinates"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}},{"kind":"Field","name":{"kind":"Name","value":"properties"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"address"}},{"kind":"Field","name":{"kind":"Name","value":"ownerId"}},{"kind":"Field","name":{"kind":"Name","value":"ownerType"}}]}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]} as unknown as DocumentNode<LocationByOwnerIdQuery, LocationByOwnerIdQueryVariables>;
 export const PermissionsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Permissions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"permissions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"_id"}},{"kind":"Field","name":{"kind":"Name","value":"action"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"isActive"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"resource"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]} as unknown as DocumentNode<PermissionsQuery, PermissionsQueryVariables>;
