@@ -3,15 +3,17 @@ import gql from 'graphql-tag';
 export const GET_INVATIONS = gql`
     query GetInvitation($user_id: ID!) {
         getInvitation(user_id: $user_id) {
-            id
-            createdAt
+            _id
             invitation {
+                _id
                 event {
                     _id
                     name
                     location {
                         type
-                        coordinates
+                        geometry {
+                            coordinates
+                        }
                         properties {
                             address
                         }
@@ -20,28 +22,19 @@ export const GET_INVATIONS = gql`
                     time
                     startDate
                     organizer {
-                        name
+                        firstName
                         _id
                     }
                 }
-                id
                 sender {
                     _id
-                    name
+                    firstName
                 }
             }
             status
             user {
                 _id
             }
-        }
-    }
-`;
-
-export const GET_INVATIONS_WITH_STATUS = gql`
-    query GetInvitationsWithStatus($userId: ID!) {
-        getInvitation(userId: $userId) {
-            myStatus
         }
     }
 `;
@@ -54,10 +47,11 @@ export const GET_DECLINED_EVENTS = gql`
             description
             startDate
             time
-            createdAt
             location {
                 type
-                coordinates
+                geometry {
+                    coordinates
+                }
                 properties {
                     address
                 }
@@ -68,7 +62,7 @@ export const GET_DECLINED_EVENTS = gql`
 `;
 
 export const GET_COMPANION_INVITATION_EVENTS = gql`
-    query CompanionInvitationEvent($organizerId: String!) {
+    query CompanionInvitationEvent($organizerId: ID!) {
         companionInvitationEvent(organizer_id: $organizerId) {
             _id
             name

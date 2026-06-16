@@ -131,6 +131,20 @@ type Interest {
   ownerType: String
 }
 
+type Invitation {
+  _id: ID!
+  event: Event!
+  sender: User!
+}
+
+type Invited {
+  _id: ID!
+  invitation: Invitation
+  respondedAt: DateTime
+  status: String!
+  user: User!
+}
+
 type Join {
   _id: ID!
   ownerId: ID!
@@ -181,6 +195,7 @@ input LocationPropertiesInput {
 
 type Mutation {
   acceptCompanionRequest(request_id: ID!): CompanionRequest!
+  acceptInvitation(invitationId: ID!, userId: ID!): Invited!
   addPermissionToRole(permissionId: [ID!]!, roleId: ID!): Role!
 
   """добавать роль пользователю"""
@@ -205,6 +220,7 @@ type Mutation {
 
   """Создать пользователя"""
   createUser(createUserInput: CreateUserInput!): User!
+  declineInvitation(invitationId: ID!, userId: ID!): Invited!
 
   """Удалить файл из хранилища по его ключу"""
   deleteFile(fileKey: String!): Boolean!
@@ -248,6 +264,7 @@ type Mutation {
 
   """Генерация тестовых данных (доступно только в DEV режиме)"""
   seedUsers(inputs: SeedUserInput!): SeedUserResult!
+  sendInvitation(input: SendInvitationInput!): Invitation!
   sendRequestCompanion(receiver: ID!): CompanionRequest!
   toggleJoin(ownerId: ID!, ownerType: String!): Boolean!
   toggleLike(ownerId: ID!, ownerType: String!): Boolean!
@@ -311,6 +328,7 @@ type Query {
 
   """Поиск категорий по ownerId"""
   categoriesByOwnerId(ownerId: ID!): Category!
+  companionInvitationEvent(event_id: ID, organizer_id: ID!): [Event!]!
 
   """Поиск компаньонов по ownerId"""
   companionsByOwnerId(limit: Int, offset: Int, ownerId: ID!): CompanionsResponse!
@@ -326,12 +344,14 @@ type Query {
   getChildrenCommentsByParentId(limit: Int, offset: Int, parentId: ID!, sort: String): [Comment!]!
   getCommentsByOwnerId(limit: Int!, offset: Int!, ownerId: ID!): [Comment!]!
   getCompanionRequests(user_id: ID!): [CompanionRequest!]!
+  getDeclinedEvents(userId: ID!): [Event!]!
 
   """Получить событие по id"""
   getEventById(event_id: ID!): Event!
 
   """Получить все события организатора"""
   getEventsByOrganizer(organizer_id: ID!): [Event!]!
+  getInvitation(user_id: ID!): [Invited!]!
   getJoinedUsersByOwnerId(ownerId: ID!): [Join!]!
   getLikesBatch(ownerIds: [ID!]!): [LikeStatus!]!
   getLikesByOwnerId(ownerId: ID!): [Like!]!
@@ -432,6 +452,12 @@ type SeedUserResult {
   location: Location
   tag: Tag
   user: User
+}
+
+input SendInvitationInput {
+  eventId: ID!
+  receiverIds: [ID!]!
+  senderId: ID!
 }
 
 type Subscription {

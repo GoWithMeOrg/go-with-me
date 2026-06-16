@@ -9,8 +9,6 @@ const config: CodegenConfig = {
         'packages/frontend/src/app/graphql/mutations/*.{ts,tsx}',
         'packages/frontend/src/app/graphql/subscriptions/*.{ts,tsx}',
 
-        '!packages/frontend/src/app/graphql/mutations/invations.ts',
-        '!packages/frontend/src/app/graphql/queries/invations.ts',
     ],
 
     ignoreNoDocuments: true,

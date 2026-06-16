@@ -97,9 +97,11 @@ export const useDialogModal = ({ receiver_ids, resetCards }: CompanionsDialogMod
         try {
             await SendInvitation({
                 variables: {
-                    eventId: state.selectedEvent?._id,
-                    senderId: user_id,
-                    receiverIds: receivers,
+                    input: {
+                        eventId: state.selectedEvent?._id,
+                        senderId: user_id,
+                        receiverIds: receivers,
+                    },
                 },
             });
         } catch (error) {

@@ -33,6 +33,7 @@ import { EventModule } from './modules/event/event.module';
 import { LikeModule } from './modules/like/like.module';
 import { JoinModule } from './modules/join/join.module';
 import { CommentModule } from './modules/comment/comment.module';
+import { InvitationModule } from './modules/invitation/invitation.module';
 
 @Module({
     imports: [
@@ -101,6 +102,8 @@ import { CommentModule } from './modules/comment/comment.module';
         JoinModule,
 
         CommentModule,
+
+        InvitationModule,
     ],
 
     controllers: [],

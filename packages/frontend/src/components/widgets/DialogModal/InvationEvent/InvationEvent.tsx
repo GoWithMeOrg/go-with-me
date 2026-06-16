@@ -22,7 +22,7 @@ export const InvationEvent: FC<InvationEventProps> = ({
 }) => {
   return (
     <>
-      {data?.map((event: any) => (
+      {data?.map((event: any) => ( 
         <li key={event._id}>
           <button className={classes.itemContent} onClick={() => handleSelectEvent(event)}>
             {selectedEvent === event ? <Checkbox /> : <Plus className={classes.plus} />}

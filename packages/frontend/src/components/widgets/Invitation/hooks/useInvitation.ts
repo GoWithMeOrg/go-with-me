@@ -3,7 +3,6 @@ import {
     DECLINE_INVITATION_MUTATION,
 } from '@/app/graphql/mutations/invations';
 import { GET_DECLINED_EVENTS } from '@/app/graphql/queries/invations';
-import { GET_JOINED_EVENTS } from '@/app/graphql/queries/join';
 import { IUseInvitation } from '@/components/widgets/Invitation/types/Invitation';
 import { useNotifications } from '@/components/widgets/Notifications/hooks';
 import { useMutation } from '@apollo/client/react';
@@ -14,14 +13,12 @@ export const useInvitation = ({ invitation_id, receiver_id }: IUseInvitation) =>
     const [AcceptInvation] = useMutation(ACCEPT_INVITATION_MUTATION, {
         refetchQueries: [
             { query: GET_DECLINED_EVENTS, variables: { userId: receiver_id } },
-            { query: GET_JOINED_EVENTS, variables: { userId: receiver_id } },
         ],
     });
 
     const [DeclineInvitation] = useMutation(DECLINE_INVITATION_MUTATION, {
         refetchQueries: [
             { query: GET_DECLINED_EVENTS, variables: { userId: receiver_id } },
-            { query: GET_JOINED_EVENTS, variables: { userId: receiver_id } },
         ],
     });
 

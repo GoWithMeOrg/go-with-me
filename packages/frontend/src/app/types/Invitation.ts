@@ -4,9 +4,9 @@ export enum ConditionEvent {
 }
 
 export enum InvitationResponseStatus {
-  INVITED = 'Invited',
-  ACCEPTED = 'Accepted',
-  DECLINED = 'Declined',
+  INVITED = 'INVITED',
+  ACCEPTED = 'ACCEPTED',
+  DECLINED = 'DECLINED',
 }
 
 export interface Invited {

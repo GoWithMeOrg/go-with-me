@@ -17,6 +17,8 @@ export const useInvitationEvents = () => {
     //@ts-ignore
     const events = dataEvents?.companionInvitationEvent;
 
+	console.log(events)
+
     return {
         loadingEvents,
         errorEvents,
