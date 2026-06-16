@@ -44,7 +44,7 @@ export class CategoryResolver {
         return this.categoriesService.updateCategories(category_id, updateCategoriesInput);
     }
 
-    @Mutation(() => Category)
+    @Mutation(() => Boolean)
     async removeCategories(
         @Args('category_id', { type: () => ID }) category_id: Types.ObjectId
     ): Promise<boolean> {

@@ -81,10 +81,6 @@
     color: var(--hover-color);
 }
 
-.replies {
-    margin-left: 6rem;
-}
-
 .loadMoreReplies {
     margin-top: 1rem;
     color: var(--additional-color);

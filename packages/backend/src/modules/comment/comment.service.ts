@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { Model, Schema as MongoSchema, Types } from 'mongoose';
+import { Model, Types } from 'mongoose';
 
 import { CreateCommentInput } from './dto/create-comment.input';
 import { UpdateCommentInput } from './dto/update-comment.input';
@@ -7,6 +7,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Comment, CommentDocument } from './entities/comment.entity';
 
 const MAX_REPLY_DEPTH = 10;
+const MAX_ANCESTOR_CHAIN = 100;
 
 @Injectable()
 export class CommentService {
@@ -56,6 +57,11 @@ export class CommentService {
             throw new BadRequestException('Нельзя отвечать на собственный комментарий');
         }
 
+        const depth = await this.getCommentDepth(parentId);
+        if (depth >= MAX_REPLY_DEPTH) {
+            throw new BadRequestException('Достигнут максимальный уровень вложенности');
+        }
+
         const reply = await this.commentModel.create({ author, ...createCommentInput });
 
         await this.incrementAncestorsRepliesCount(parentId);
@@ -67,8 +73,9 @@ export class CommentService {
         parentId: Types.ObjectId | null | undefined
     ): Promise<void> {
         let currentParentId: Types.ObjectId | null = parentId ?? null;
+        let steps = 0;
 
-        while (currentParentId) {
+        while (currentParentId && steps < MAX_ANCESTOR_CHAIN) {
             await this.commentModel.findByIdAndUpdate(currentParentId, {
                 $inc: { repliesCount: 1 },
             });
@@ -78,6 +85,7 @@ export class CommentService {
                 .select('parent')
                 .lean();
             currentParentId = (parent?.parent as Types.ObjectId | null) ?? null;
+            steps++;
         }
     }
 
@@ -85,8 +93,9 @@ export class CommentService {
         parentId: Types.ObjectId
     ): Promise<void> {
         let currentParentId: Types.ObjectId | null = parentId;
+        let steps = 0;
 
-        while (currentParentId) {
+        while (currentParentId && steps < MAX_ANCESTOR_CHAIN) {
             await this.commentModel.findByIdAndUpdate(currentParentId, {
                 $inc: { repliesCount: -1 },
             });
@@ -96,6 +105,7 @@ export class CommentService {
                 .select('parent')
                 .lean();
             currentParentId = (parent?.parent as Types.ObjectId | null) ?? null;
+            steps++;
         }
     }
 
@@ -156,6 +166,22 @@ export class CommentService {
             .exec();
     }
 
+    private async getCommentDepth(commentId: Types.ObjectId): Promise<number> {
+        let depth = 0;
+        let currentId: Types.ObjectId | null = commentId;
+
+        while (currentId && depth < MAX_ANCESTOR_CHAIN) {
+            const parent = await this.commentModel
+                .findById(currentId)
+                .select('parent')
+                .lean();
+            currentId = (parent?.parent as Types.ObjectId | null) ?? null;
+            if (currentId) depth++;
+        }
+
+        return depth;
+    }
+
     async findById(id: Types.ObjectId): Promise<Comment | null> {
         return this.commentModel.findById(id).populate('parent').lean<Comment>().exec();
     }
@@ -208,6 +234,10 @@ export class CommentService {
 
         if (comment.author.toString() !== userId.toString()) {
             throw new BadRequestException('Только автор может удалить свой комментарий');
+        }
+
+        if (comment.deleted) {
+            return false;
         }
 
         if (comment.parent) {

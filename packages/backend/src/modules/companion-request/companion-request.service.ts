@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Companion, CompanionDocument } from '../companion/entities/companion.entity';
 import { CompanionRequest, CompanionRequestDocument } from './entities/companion-request.entity';
 import { CompanionRequestStatus } from './enums/companion-request.enum';
-import { Model, Schema as MongoSchema, Types } from 'mongoose';
+import { Model, Types } from 'mongoose';
 
 @Injectable()
 export class CompanionRequestService {
@@ -31,7 +31,7 @@ export class CompanionRequestService {
         sender_id: Types.ObjectId,
         receiver_id: Types.ObjectId
     ): Promise<CompanionRequestDocument> {
-        if (sender_id === receiver_id) {
+        if (sender_id.toString() === receiver_id.toString()) {
             throw new Error('Нельзя отправить запрос самому себе');
         }
 
@@ -41,7 +41,7 @@ export class CompanionRequestService {
                 ownerId: sender_id,
             })
             .exec();
-        if (existingCompanions?.companions.some((id) => id === receiver_id)) {
+        if (existingCompanions?.companions.some((id) => id.toString() === receiver_id.toString())) {
             throw new Error('Пользователь уже у вас в друзьях');
         }
 
@@ -78,39 +78,6 @@ export class CompanionRequestService {
         await saved.populate(['sender', 'receiver']);
         return saved;
     }
-
-    // async acceptCompanionRequest: { requestId }: { requestId: string }) => {
-    // 	const request = await CompanionRequest.findById(requestId);
-    // 	if (!request) {
-    // 		throw new Error("Заявка не найдена");
-    // 	}
-
-    // 	if (request.status !== "pending") {
-    // 		throw new Error("Заявка уже обработана");
-    // 	}
-
-    // 	request.status = CompanionRequestStatus.ACCEPTED;
-    // 	request.updatedAt = new Date();
-
-    // 	const senderId = new mongoose.Types.ObjectId(request.sender);
-    // 	const receiverId = new mongoose.Types.ObjectId(request.receiver);
-
-    // 	// Обновляем список друзей отправителя
-    // 	await CompanionsModel.updateOne(
-    // 		{ user_id: senderId },
-    // 		{ $addToSet: { companions: receiverId } },
-    // 		{ upsert: true },
-    // 	);
-
-    // 	// Обновляем список друзей получателя
-    // 	await CompanionsModel.updateOne(
-    // 		{ user_id: receiverId },
-    // 		{ $addToSet: { companions: senderId } },
-    // 		{ upsert: true },
-    // 	);
-
-    // 	return await request.save();
-    // }
 
     // Принять заявку в компаньоны
     async acceptCompanionRequest(

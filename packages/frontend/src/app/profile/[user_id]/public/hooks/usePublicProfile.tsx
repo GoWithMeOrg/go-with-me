@@ -33,7 +33,7 @@ export const usePublicProfile = () => {
     const companionRequest = async () => {
         try {
             await CompanionRequest({
-                variables: { senderId: user_id, receiverId: params.user_id },
+                variables: { receiver: params.user_id },
             });
         } catch (error) {
             console.error('Error deleting event: ', error);

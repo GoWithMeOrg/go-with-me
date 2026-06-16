@@ -30,16 +30,13 @@ export class CompanionRequestResolver {
     @UseGuards(GqlAuthGuard, RolesGuard)
     async sendRequestCompanion(
         @CurrentUser() user: User,
-        @Args('receiver', { type: () => ID }) receiver: Types.ObjectId,
-        // временно для тестов. Нужно будет удалить строку с отправителем.
-        @Args('sender', { type: () => ID }) sender: Types.ObjectId
+        @Args('receiver', { type: () => ID }) receiver: Types.ObjectId
     ) {
-        // Используем senderId, если передан, иначе текущий пользователь
-        const request = await this.companionRequestService.sendRequestCompanion(sender, receiver);
+        const request = await this.companionRequestService.sendRequestCompanion(user._id, receiver);
 
         await this.pubSub.publish('sendRequestCompanion', {
             sendRequestCompanion: request,
-            currentUserId: user._id.toString(), // событие для получателя
+            currentUserId: receiver.toString(),
         });
 
         return request;

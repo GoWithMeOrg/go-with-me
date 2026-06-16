@@ -2,8 +2,8 @@ import { Resolver, Query, Mutation, Args, Int, ID } from '@nestjs/graphql';
 import { CompanionService } from './companion.service';
 import { Companion } from './entities/companion.entity';
 import { UseGuards } from '@nestjs/common';
-
 import { Types } from 'mongoose';
+
 import { User } from '../user/entities/user.entity';
 import { CompanionsResponse } from './entities/companions-response.entity';
 import { SessionAuthGuard } from '@/common/guards/session-auth.guard';
@@ -16,7 +16,7 @@ export class CompanionResolver {
 
     @Query(() => CompanionsResponse, {
         name: 'companionsByOwnerId',
-        description: 'Поиск интересов по ownerId',
+        description: 'Поиск компаньонов по ownerId',
     })
     getCompanionsByOwner(
         @Args('ownerId', { type: () => ID })

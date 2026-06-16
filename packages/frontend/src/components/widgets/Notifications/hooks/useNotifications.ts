@@ -5,8 +5,8 @@ import { COMPANION_REQUEST_SUBSCRIPTION } from '@/app/graphql/subscriptions/comp
 import {
     GetCompanionRequestsQuery,
     GetCompanionRequestsQueryVariables,
-    Subscription,
-} from '@/app/graphql/types';
+} from '@/app/graphql/operations';
+import { Subscription } from '@/app/graphql/types';
 import { useSessionGQL } from '@/app/providers/session/hooks/useSesssionGQL';
 import { useQuery } from '@apollo/client/react';
 

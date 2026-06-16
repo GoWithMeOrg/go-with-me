@@ -5,3 +5,6 @@ node_modules/
 mongo-backup/
 *.tsbuildinfo
 .kilo
+.agents/
+skills-lock.json
+AGENTS.md

@@ -52,7 +52,7 @@ export const useCompanionSearch = () => {
     const companionRequest = async (id: string) => {
         try {
             await CompanionRequest({
-                variables: { sender: user_id, receiver: id },
+                variables: { receiver: id },
             });
         } catch (error) {
             console.error('Error sending companion request: ', error);
@@ -61,13 +61,15 @@ export const useCompanionSearch = () => {
 
     const removeCompanion = async (id: string) => {
         try {
-            await RemoveCompanion({
+            const result = await RemoveCompanion({
                 variables: { userId: user_id, companionId: id },
             });
+            if (result.data?.removeCompanion) {
+                await refetchCompanions();
+            }
         } catch (error) {
             console.error('Error deleting companion: ', error);
         }
-        refetchCompanions();
     };
 
     // Показать всех компаньонов (лимит)

@@ -8,7 +8,7 @@
         "build": "pnpm --filter \"*\" build",
         "backend:dev": "pnpm --filter backend nest start --watch",
         "frontend:dev": "pnpm --filter frontend dev",
-		"frontend:lint": "pnpm -r exec eslint packages/frontend --fix",
+        "frontend:lint": "pnpm -r exec eslint packages/frontend --fix",
         "backend:lint": "pnpm -r exec eslint packages/backend --fix",
         "frontend:format": "prettier packages/frontend -w",
         "backend:format": "prettier packages/backend -w",
@@ -16,8 +16,13 @@
         "codegen": "graphql-codegen --config codegen.ts"
     },
     "devDependencies": {
-        "typescript": "5.9.3",
+        "@graphql-codegen/cli": "^7.1.2",
+        "@graphql-codegen/import-types-preset": "^4.0.1",
+        "@graphql-codegen/typed-document-node": "^7.0.3",
+        "@graphql-codegen/typescript": "^6.0.2",
+        "@graphql-codegen/typescript-operations": "^6.0.3",
+        "class-transformer": "0.5.1",
         "class-validator": "0.15.1",
-        "class-transformer": "0.5.1"
+        "typescript": "5.9.3"
     }
 }

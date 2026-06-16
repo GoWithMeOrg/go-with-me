@@ -1,5 +1,5 @@
 import { Resolver, Query, Mutation, Args, ID, ResolveField, Parent, Int } from '@nestjs/graphql';
-import { Schema as MongoSchema, Types } from 'mongoose';
+import { Types } from 'mongoose';
 
 import { CommentService } from './comment.service';
 import { Comment } from './entities/comment.entity';

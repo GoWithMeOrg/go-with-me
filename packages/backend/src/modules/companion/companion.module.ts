@@ -13,7 +13,7 @@ import { User, UserSchema } from '../user/entities/user.entity';
 @Module({
     imports: [
         MongooseModule.forFeature([
-			{ name: User.name, schema: UserSchema },
+	        { name: User.name, schema: UserSchema },
             { name: Companion.name, schema: CompanionSchema },
             { name: CompanionRequest.name, schema: CompanionRequestSchema },
         ]),

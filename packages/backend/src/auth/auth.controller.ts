@@ -76,7 +76,7 @@ export class AuthController {
     // Публичный профиль - доступен всем авторизованным пользователям
     @Get('profile/:user_id/public')
     @UseGuards(SessionAuthGuard)
-    async getPublicProfile(@Param('id') id: Types.ObjectId) {
+    async getPublicProfile(@Param('user_id') id: Types.ObjectId) {
         return this.userService.getPublicProfile(id);
     }
 
@@ -84,7 +84,7 @@ export class AuthController {
     @UseGuards(SessionAuthGuard, RolesGuard)
     @Roles('user', 'admin')
     async getProfileById(
-        @Param('id') id: Types.ObjectId,
+        @Param('user_id') id: Types.ObjectId,
         @Req() req: ReqWithPassport
     ) {
         const currentUser = req.user as User;

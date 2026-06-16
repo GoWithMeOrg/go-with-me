@@ -219,7 +219,7 @@ type Mutation {
     slug: String!
   ): Resource!
   rejectCompanionRequest(request_id: ID!): CompanionRequest!
-  removeCategories(category_id: ID!): Category!
+  removeCategories(category_id: ID!): Boolean!
   removeComment(commentId: ID!): Boolean!
   removeCompanion(companion_id: ID!, user_id: ID!): Boolean!
 
@@ -248,7 +248,7 @@ type Mutation {
 
   """Генерация тестовых данных (доступно только в DEV режиме)"""
   seedUsers(inputs: SeedUserInput!): SeedUserResult!
-  sendRequestCompanion(receiver: ID!, sender: ID!): CompanionRequest!
+  sendRequestCompanion(receiver: ID!): CompanionRequest!
   toggleJoin(ownerId: ID!, ownerType: String!): Boolean!
   toggleLike(ownerId: ID!, ownerType: String!): Boolean!
 
@@ -312,7 +312,7 @@ type Query {
   """Поиск категорий по ownerId"""
   categoriesByOwnerId(ownerId: ID!): Category!
 
-  """Поиск интересов по ownerId"""
+  """Поиск компаньонов по ownerId"""
   companionsByOwnerId(limit: Int, offset: Int, ownerId: ID!): CompanionsResponse!
 
   """Найти пользователей по email или имени"""
