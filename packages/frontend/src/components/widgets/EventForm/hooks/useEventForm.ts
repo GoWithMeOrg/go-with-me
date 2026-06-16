@@ -5,7 +5,7 @@ import {
     CreateEventMutationVariables,
     UpdateEventMutation,
     UpdateEventMutationVariables,
-} from '@/app/graphql/types';
+} from '@/app/graphql/operations';
 import { useMutation } from '@apollo/client/react';
 import { useRouter } from 'next/navigation';
 

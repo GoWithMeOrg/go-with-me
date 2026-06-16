@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { SEED_USERS } from '@/app/graphql/mutations/seedUsers';
 import { GET_ROLES_BY_NAME } from '@/app/graphql/queries/role';
-import { RoleByNameQuery, RoleByNameQueryVariables } from '@/app/graphql/types';
+import { RoleByNameQuery, RoleByNameQueryVariables } from '@/app/graphql/operations';
 import { categoriesList, interestsList } from '@/components/shared/Dropdown/dropdownLists';
 import { useMutation, useQuery } from '@apollo/client/react';
 import { faker } from '@faker-js/faker';

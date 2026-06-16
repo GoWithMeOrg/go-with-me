@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { DELETE_FILE_MUTATION, GET_PRESIGNED_URL } from '@/app/graphql/mutations/upload';
-import { GetPresignedUrlMutation } from '@/app/graphql/types';
+import { GetPresignedUrlMutation } from '@/app/graphql/operations';
 import { validImageTypes } from '@/constants/constants';
 import { useMutation } from '@apollo/client/react';
 

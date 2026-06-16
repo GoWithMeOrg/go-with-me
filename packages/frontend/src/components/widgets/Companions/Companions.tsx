@@ -3,7 +3,8 @@
 import { FC } from 'react';
 import { GET_FIND_COMPANION } from '@/app/graphql/queries/companions';
 import { FIND_BY_EMAIL_OR_NAME } from '@/app/graphql/queries/users';
-import { FindByEmailOrNameQuery, FindByEmailOrNameQueryVariables, User } from '@/app/graphql/types';
+import { FindByEmailOrNameQuery, FindByEmailOrNameQueryVariables } from '@/app/graphql/operations';
+import { User } from '@/app/graphql/types';
 import { Button } from '@/components/shared/Button';
 import { FilteredList } from '@/components/shared/FilteredList';
 import { Popup } from '@/components/shared/Popup';
