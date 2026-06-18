@@ -1,11 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, ForbiddenException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Event } from '@/modules/event/entities/event.entity';
+import { Privacy } from '@/modules/event/enum/privacy.enum';
 import { Invitation, InvitationDocument } from './entities/invitation.entity';
 import { Invited, InvitedDocument } from './entities/invited.entity';
 import { InvitationResponseStatus } from './enums/invitation-response.enum';
 import { SendInvitationInput } from './dto/send-invitation.input';
+import { Companion, CompanionDocument } from '@/modules/companion/entities/companion.entity';
 
 @Injectable()
 export class InvitationService {
@@ -13,6 +15,7 @@ export class InvitationService {
         @InjectModel(Invitation.name) private invitationModel: Model<InvitationDocument>,
         @InjectModel(Invited.name) private invitedModel: Model<InvitedDocument>,
         @InjectModel(Event.name) private eventModel: Model<Event>,
+        @InjectModel(Companion.name) private companionModel: Model<CompanionDocument>,
     ) {}
 
     async getInvitation(userId: Types.ObjectId): Promise<InvitedDocument[]> {
@@ -78,6 +81,48 @@ export class InvitationService {
     async sendInvitation(input: SendInvitationInput): Promise<InvitationDocument> {
         const eventObjectId = new Types.ObjectId(input.eventId);
         const senderObjectId = new Types.ObjectId(input.senderId);
+
+        const event = await this.eventModel.findById(eventObjectId);
+        if (!event) {
+            throw new NotFoundException('Event not found');
+        }
+
+        if (event.privacy !== Privacy.PUBLIC) {
+            throw new ForbiddenException('Can only invite companions to public events');
+        }
+
+        const isOrganizer = event.organizer.toString() === senderObjectId.toString();
+        if (!isOrganizer) {
+            const eventInvitations = await this.invitationModel.find({ event: eventObjectId });
+            const eventInvitationIds = eventInvitations.map((inv) => inv._id);
+
+            const senderAccepted = await this.invitedModel.findOne({
+                user: senderObjectId,
+                invitation: { $in: eventInvitationIds },
+                status: InvitationResponseStatus.ACCEPTED,
+            });
+
+            if (!senderAccepted) {
+                throw new ForbiddenException(
+                    'Only the event organizer or accepted guests can send invitations',
+                );
+            }
+        }
+
+        const companionDoc = await this.companionModel.findOne({ ownerId: senderObjectId });
+        if (!companionDoc) {
+            throw new ForbiddenException('You have no companions to invite');
+        }
+
+        const companionIdStrings = companionDoc.companions.map((id) => id.toString());
+        const invalidReceivers = input.receiverIds.filter(
+            (id) => !companionIdStrings.includes(id),
+        );
+        if (invalidReceivers.length > 0) {
+            throw new ForbiddenException(
+                `Some users are not your companions: ${invalidReceivers.join(', ')}`,
+            );
+        }
 
         let invitation = await this.invitationModel.findOneAndUpdate(
             { event: eventObjectId, sender: senderObjectId },
