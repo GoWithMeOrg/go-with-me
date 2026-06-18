@@ -11,31 +11,28 @@ export const Notifications: FC = () => {
 
     interface IInvitation {
         _id: string;
-        invitation: {
+        event: {
             _id: string;
-            event: {
-                _id: string;
-                image: string;
-                name: string;
-                location: {
-                    geometry: {
-                        coordinates: [number, number];
-                    };
+            image: string;
+            name: string;
+            location: {
+                geometry: {
+                    coordinates: [number, number];
                 };
-                startDate: string;
-                time: string;
-                organizer: {
-                    _id: string;
-                    firstName: string;
-                };
-            };
-            sender: {
+            } | null;
+            startDate: string;
+            time: string;
+            organizer: {
                 _id: string;
                 firstName: string;
             };
         };
+        sender: {
+            _id: string;
+            firstName: string;
+        };
         status: string;
-        user: {
+        receiver: {
             _id: string;
         };
     }
@@ -45,19 +42,19 @@ export const Notifications: FC = () => {
             {invations?.map((invitation: IInvitation) => (
                 <Invitation
                     key={invitation._id}
-                    invitation_id={invitation.invitation._id}
-                    receiver_id={invitation.user._id}
+                    invitation_id={invitation._id}
+                    receiver_id={invitation.receiver._id}
                     status={invitation.status}
-                    event_id={invitation.invitation.event._id}
-                    image={invitation.invitation.event.image}
-                    eventName={invitation.invitation.event?.name}
-                    coordinates={invitation.invitation.event.location.geometry.coordinates}
-                    startDate={invitation.invitation.event.startDate}
-                    time={invitation.invitation.event.time}
-                    organizerName={invitation.invitation.event.organizer.firstName}
-                    senderName={invitation.invitation.sender.firstName}
-                    organizer_id={invitation.invitation.event.organizer._id}
-                    sender_id={invitation.invitation.sender._id}
+                    event_id={invitation.event._id}
+                    image={invitation.event.image}
+                    eventName={invitation.event?.name}
+                    coordinates={invitation.event.location?.geometry.coordinates ?? [0, 0]}
+                    startDate={invitation.event.startDate}
+                    time={invitation.event.time}
+                    organizerName={invitation.event.organizer.firstName}
+                    senderName={invitation.sender.firstName}
+                    organizer_id={invitation.event.organizer._id}
+                    sender_id={invitation.sender._id}
                 />
             ))}
 

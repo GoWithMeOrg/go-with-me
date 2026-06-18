@@ -1,7 +1,6 @@
 import { Resolver, Mutation, Args, ID, Query } from '@nestjs/graphql';
 import { InvitationService } from './invitation.service';
 import { Invitation } from './entities/invitation.entity';
-import { Invited } from './entities/invited.entity';
 import { SendInvitationInput } from './dto/send-invitation.input';
 import { Types } from 'mongoose';
 import { Event } from '@/modules/event/entities/event.entity';
@@ -10,19 +9,20 @@ import { Event } from '@/modules/event/entities/event.entity';
 export class InvitationResolver {
     constructor(private readonly invitationService: InvitationService) {}
 
-    @Query(() => [Invited])
+    @Query(() => [Invitation])
     async getInvitation(
         @Args('user_id', { type: () => ID }) userId: Types.ObjectId,
-    ): Promise<Invited[]> {
+    ): Promise<Invitation[]> {
         return this.invitationService.getInvitation(userId);
     }
 
     @Query(() => [Event])
     async companionInvitationEvent(
         @Args('organizer_id', { type: () => ID }) organizerId: Types.ObjectId,
-        @Args('event_id', { type: () => ID, nullable: true }) _eventId?: Types.ObjectId,
+        @Args('companion_id', { type: () => ID, nullable: true })
+        companionId?: Types.ObjectId,
     ): Promise<Event[]> {
-        return this.invitationService.getCompanionInvitationEvent(organizerId);
+        return this.invitationService.getCompanionInvitationEvent(organizerId, companionId);
     }
 
     @Query(() => [Event])
@@ -39,19 +39,19 @@ export class InvitationResolver {
         return this.invitationService.sendInvitation(input);
     }
 
-    @Mutation(() => Invited)
+    @Mutation(() => Invitation)
     async acceptInvitation(
         @Args('invitationId', { type: () => ID }) invitationId: Types.ObjectId,
         @Args('userId', { type: () => ID }) userId: Types.ObjectId,
-    ): Promise<Invited> {
+    ): Promise<Invitation> {
         return this.invitationService.acceptInvitation(invitationId, userId);
     }
 
-    @Mutation(() => Invited)
+    @Mutation(() => Invitation)
     async declineInvitation(
         @Args('invitationId', { type: () => ID }) invitationId: Types.ObjectId,
         @Args('userId', { type: () => ID }) userId: Types.ObjectId,
-    ): Promise<Invited> {
+    ): Promise<Invitation> {
         return this.invitationService.declineInvitation(invitationId, userId);
     }
 }

@@ -4,35 +4,32 @@ export const GET_INVATIONS = gql`
     query GetInvitation($user_id: ID!) {
         getInvitation(user_id: $user_id) {
             _id
-            invitation {
+            event {
                 _id
-                event {
-                    _id
-                    name
-                    location {
-                        type
-                        geometry {
-                            coordinates
-                        }
-                        properties {
-                            address
-                        }
+                name
+                location {
+                    type
+                    geometry {
+                        coordinates
                     }
-                    image
-                    time
-                    startDate
-                    organizer {
-                        firstName
-                        _id
+                    properties {
+                        address
                     }
                 }
-                sender {
-                    _id
+                image
+                time
+                startDate
+                organizer {
                     firstName
+                    _id
                 }
             }
+            sender {
+                _id
+                firstName
+            }
             status
-            user {
+            receiver {
                 _id
             }
         }
@@ -62,8 +59,8 @@ export const GET_DECLINED_EVENTS = gql`
 `;
 
 export const GET_COMPANION_INVITATION_EVENTS = gql`
-    query CompanionInvitationEvent($organizerId: ID!) {
-        companionInvitationEvent(organizer_id: $organizerId) {
+    query CompanionInvitationEvent($organizerId: ID!, $companionId: ID) {
+        companionInvitationEvent(organizer_id: $organizerId, companion_id: $companionId) {
             _id
             name
             startDate

@@ -145,16 +145,10 @@ export type Invitation = {
   __typename?: 'Invitation';
   _id: Scalars['ID']['output'];
   event: Event;
-  sender: User;
-};
-
-export type Invited = {
-  __typename?: 'Invited';
-  _id: Scalars['ID']['output'];
-  invitation?: Maybe<Invitation>;
+  receiver: User;
   respondedAt?: Maybe<Scalars['DateTime']['output']>;
+  sender: User;
   status: Scalars['String']['output'];
-  user: User;
 };
 
 export type Join = {
@@ -214,7 +208,7 @@ export type LocationPropertiesInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   acceptCompanionRequest: CompanionRequest;
-  acceptInvitation: Invited;
+  acceptInvitation: Invitation;
   addPermissionToRole: Role;
   /** добавать роль пользователю */
   addUserRole: User;
@@ -232,7 +226,7 @@ export type Mutation = {
   createTag: Tag;
   /** Создать пользователя */
   createUser: User;
-  declineInvitation: Invited;
+  declineInvitation: Invitation;
   /** Удалить файл из хранилища по его ключу */
   deleteFile: Scalars['Boolean']['output'];
   /** Получить пресайнд-ссылку для прямой загрузки файла в MinIO/S3 */
@@ -604,7 +598,7 @@ export type Query = {
   getEventById: Event;
   /** Получить все события организатора */
   getEventsByOrganizer: Array<Event>;
-  getInvitation: Array<Invited>;
+  getInvitation: Array<Invitation>;
   getJoinedUsersByOwnerId: Array<Join>;
   getLikesBatch: Array<LikeStatus>;
   getLikesByOwnerId: Array<Like>;
@@ -665,7 +659,7 @@ export type QueryCategoriesByOwnerIdArgs = {
 
 
 export type QueryCompanionInvitationEventArgs = {
-  event_id?: InputMaybe<Scalars['ID']['input']>;
+  companion_id?: InputMaybe<Scalars['ID']['input']>;
   organizer_id: Scalars['ID']['input'];
 };
 

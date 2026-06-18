@@ -1,5 +1,4 @@
 import { useDialogModal } from '@/components/widgets/DialogModal/hooks/useDialogModal';
-import { useInvitationEvents } from '@/components/widgets/DialogModal/hooks/useInvitationEvents';
 import { DialogModal } from '@/components/widgets/DialogModal/types/DialogModal';
 
 import { useCompanionSearch } from './useCompanionSearch';
@@ -9,7 +8,6 @@ export const useCompanions = () => {
     // Хуки декомпозиции
     const companionSearchHook = useCompanionSearch();
     const selectionHook = useCompanionSelection();
-    const invitationEventsHook = useInvitationEvents();
     const popupsHook = useDialogModal({
         receiver_ids: selectionHook.receiverIds,
         resetCards: selectionHook.selectCompanions,
@@ -84,7 +82,7 @@ export const useCompanions = () => {
         openPopupInvitationCompanions: popupsHook.openPopupInvitationCompanions,
 
         // События организатора
-        events: invitationEventsHook.events,
+        events: popupsHook.events,
         // Прочее
         defaulShowCompanions: companionSearchHook.defaulShowCompanions,
         limit: companionSearchHook.limit,

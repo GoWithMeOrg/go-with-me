@@ -1,29 +1,26 @@
 export interface IInvitation {
-  id: string;
+  _id: string;
   createdAt: Date;
-  invitation: {
-    id: string;
-    event: {
-      _id: string;
-      image: string;
-      name: string;
-      location: {
-        coordinates: [number, number];
-      };
-      startDate: string;
-      time: string;
-      organizer: {
-        _id: string;
-        name: string;
-      };
-    };
-    sender: {
+  event: {
+    _id: string;
+    image: string;
+    name: string;
+    location: {
+      coordinates: [number, number];
+    } | null;
+    startDate: string;
+    time: string;
+    organizer: {
       _id: string;
       name: string;
     };
   };
+  sender: {
+    _id: string;
+    name: string;
+  };
   status: string;
-  user: {
+  receiver: {
     _id: string;
   };
 }

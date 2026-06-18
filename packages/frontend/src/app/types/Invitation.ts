@@ -9,17 +9,13 @@ export enum InvitationResponseStatus {
   DECLINED = 'DECLINED',
 }
 
-export interface Invited {
-  user: string;
-  invitation: string;
-  status: InvitationResponseStatus;
-  respondedAt?: Date;
-}
-
 export interface Invitation {
-  id: string;
+  _id: string;
   event: string;
   sender: string;
+  receiver: string;
+  status: InvitationResponseStatus;
+  respondedAt?: Date;
   createdAt?: Date;
   updatedAt?: Date;
 }

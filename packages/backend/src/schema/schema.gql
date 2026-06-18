@@ -134,15 +134,10 @@ type Interest {
 type Invitation {
   _id: ID!
   event: Event!
-  sender: User!
-}
-
-type Invited {
-  _id: ID!
-  invitation: Invitation
+  receiver: User!
   respondedAt: DateTime
+  sender: User!
   status: String!
-  user: User!
 }
 
 type Join {
@@ -195,7 +190,7 @@ input LocationPropertiesInput {
 
 type Mutation {
   acceptCompanionRequest(request_id: ID!): CompanionRequest!
-  acceptInvitation(invitationId: ID!, userId: ID!): Invited!
+  acceptInvitation(invitationId: ID!, userId: ID!): Invitation!
   addPermissionToRole(permissionId: [ID!]!, roleId: ID!): Role!
 
   """добавать роль пользователю"""
@@ -220,7 +215,7 @@ type Mutation {
 
   """Создать пользователя"""
   createUser(createUserInput: CreateUserInput!): User!
-  declineInvitation(invitationId: ID!, userId: ID!): Invited!
+  declineInvitation(invitationId: ID!, userId: ID!): Invitation!
 
   """Удалить файл из хранилища по его ключу"""
   deleteFile(fileKey: String!): Boolean!
@@ -328,7 +323,7 @@ type Query {
 
   """Поиск категорий по ownerId"""
   categoriesByOwnerId(ownerId: ID!): Category!
-  companionInvitationEvent(event_id: ID, organizer_id: ID!): [Event!]!
+  companionInvitationEvent(companion_id: ID, organizer_id: ID!): [Event!]!
 
   """Поиск компаньонов по ownerId"""
   companionsByOwnerId(limit: Int, offset: Int, ownerId: ID!): CompanionsResponse!
@@ -351,7 +346,7 @@ type Query {
 
   """Получить все события организатора"""
   getEventsByOrganizer(organizer_id: ID!): [Event!]!
-  getInvitation(user_id: ID!): [Invited!]!
+  getInvitation(user_id: ID!): [Invitation!]!
   getJoinedUsersByOwnerId(ownerId: ID!): [Join!]!
   getLikesBatch(ownerIds: [ID!]!): [LikeStatus!]!
   getLikesByOwnerId(ownerId: ID!): [Like!]!
