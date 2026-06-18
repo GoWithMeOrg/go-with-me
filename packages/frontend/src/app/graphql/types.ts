@@ -659,7 +659,7 @@ export type QueryCategoriesByOwnerIdArgs = {
 
 
 export type QueryCompanionInvitationEventArgs = {
-  companion_id?: InputMaybe<Scalars['ID']['input']>;
+  companion_id: Scalars['ID']['input'];
   organizer_id: Scalars['ID']['input'];
 };
 

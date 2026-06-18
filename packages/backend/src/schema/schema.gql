@@ -323,7 +323,7 @@ type Query {
 
   """Поиск категорий по ownerId"""
   categoriesByOwnerId(ownerId: ID!): Category!
-  companionInvitationEvent(companion_id: ID, organizer_id: ID!): [Event!]!
+  companionInvitationEvent(companion_id: ID!, organizer_id: ID!): [Event!]!
 
   """Поиск компаньонов по ownerId"""
   companionsByOwnerId(limit: Int, offset: Int, ownerId: ID!): CompanionsResponse!

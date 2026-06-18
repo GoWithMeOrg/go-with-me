@@ -59,8 +59,18 @@ export const GET_DECLINED_EVENTS = gql`
 `;
 
 export const GET_COMPANION_INVITATION_EVENTS = gql`
-    query CompanionInvitationEvent($organizerId: ID!, $companionId: ID) {
+    query CompanionInvitationEvent($organizerId: ID!, $companionId: ID!) {
         companionInvitationEvent(organizer_id: $organizerId, companion_id: $companionId) {
+            _id
+            name
+            startDate
+        }
+    }
+`;
+
+export const GET_ORGANIZER_EVENTS_FOR_INVITE = gql`
+    query GetOrganizerEventsForInvite($organizerId: ID!) {
+        events: getEventsByOrganizer(organizer_id: $organizerId) {
             _id
             name
             startDate

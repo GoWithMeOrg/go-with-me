@@ -19,10 +19,9 @@ export class InvitationResolver {
     @Query(() => [Event])
     async companionInvitationEvent(
         @Args('organizer_id', { type: () => ID }) organizerId: Types.ObjectId,
-        @Args('companion_id', { type: () => ID, nullable: true })
-        companionId?: Types.ObjectId,
+		@Args('companion_id', { type: () => ID }) companionId: Types.ObjectId,
     ): Promise<Event[]> {
-        return this.invitationService.getCompanionInvitationEvent(organizerId, companionId);
+        return this.invitationService.getCompanionInvitationEvent(new Types.ObjectId(organizerId), companionId);
     }
 
     @Query(() => [Event])
