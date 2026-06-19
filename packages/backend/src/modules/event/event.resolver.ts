@@ -36,9 +36,9 @@ export class EventResolver {
         description: 'Получить все события организатора',
     })
     getEventsByOrganizer(
-        @Args('organizer_id', { type: () => ID }) organizer_id: Types.ObjectId
+        @Args('organizer_id', { type: () => ID }) organizer_id: string
     ) {
-        return this.eventService.getEventsByOrganizer(organizer_id);
+        return this.eventService.getEventsByOrganizer(new Types.ObjectId(organizer_id));
     }
 
     @Query(() => [Event], {

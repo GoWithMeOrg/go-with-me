@@ -15,6 +15,11 @@ export interface InvationEventProps {
   handleSelectEvent: (id: string) => void;
 }
 
+function truncateName(name: string, maxWords = 3) {
+  const words = name.split(' ');
+  return words.length > maxWords ? words.slice(0, maxWords).join(' ') + '...' : name;
+}
+
 export const InvationEvent: FC<InvationEventProps> = ({
   data,
   selectedEvent,
@@ -22,14 +27,14 @@ export const InvationEvent: FC<InvationEventProps> = ({
 }) => {
   return (
     <>
-      {data?.map((event: any) => (
+      {data?.map((event: any) => ( 
         <li key={event._id}>
           <button className={classes.itemContent} onClick={() => handleSelectEvent(event)}>
             {selectedEvent === event ? <Checkbox /> : <Plus className={classes.plus} />}
 
             <span className={classes.date}>{dayjs(event.startDate).format('DD.MM.YYYY')}</span>
             {' | '}
-            {event.name}
+            <span className={classes.eventName}>{truncateName(event.name)}</span>
           </button>
         </li>
       ))}

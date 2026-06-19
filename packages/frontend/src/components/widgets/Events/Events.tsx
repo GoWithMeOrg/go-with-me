@@ -73,20 +73,20 @@ export function Events({ onTabClick }: EventsProps) {
             All notifications
           </Button>
           <Invitation
-            key={viewInvitedEvent.invitation.id}
-            invitation_id={viewInvitedEvent.invitation.id}
-            receiver_id={viewInvitedEvent.user._id}
+            key={viewInvitedEvent._id}
+            invitation_id={viewInvitedEvent._id}
+            receiver_id={viewInvitedEvent.receiver._id}
             status={viewInvitedEvent.status}
-            event_id={viewInvitedEvent.invitation.event._id}
-            image={viewInvitedEvent.invitation.event.image}
-            eventName={viewInvitedEvent.invitation.event?.name}
-            coordinates={viewInvitedEvent.invitation.event.location.coordinates}
-            startDate={viewInvitedEvent.invitation.event.startDate}
-            time={viewInvitedEvent.invitation.event.time}
-            organizerName={viewInvitedEvent.invitation.event.organizer.name}
-            senderName={viewInvitedEvent.invitation.sender.name}
-            organizer_id={viewInvitedEvent.invitation.event.organizer._id}
-            sender_id={viewInvitedEvent.invitation.sender._id}
+            event_id={viewInvitedEvent.event._id}
+            image={viewInvitedEvent.event.image}
+            eventName={viewInvitedEvent.event?.name}
+            coordinates={viewInvitedEvent.event.location?.coordinates ?? [0, 0]}
+            startDate={viewInvitedEvent.event.startDate}
+            time={viewInvitedEvent.event.time}
+            organizerName={viewInvitedEvent.event.organizer.name}
+            senderName={viewInvitedEvent.sender.name}
+            organizer_id={viewInvitedEvent.event.organizer._id}
+            sender_id={viewInvitedEvent.sender._id}
           />
         </div>
       )}

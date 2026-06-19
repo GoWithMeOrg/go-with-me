@@ -1,5 +1,6 @@
 import { Resolver, Mutation, Args } from '@nestjs/graphql';
 import { ForbiddenException } from '@nestjs/common';
+import { Types } from 'mongoose';
 
 import { SeedsService } from './seeds.service';
 import { SeedUserResult } from './entities/seed-user.entity';
@@ -32,6 +33,7 @@ export class SeedsResolver {
             throw new ForbiddenException('Seeding is not allowed in production');
         }
 
-        return this.seedsService.seedEvents(inputs.event, inputs.organizer, inputs.relations);
+        const organizer = new Types.ObjectId(inputs.organizer);
+        return this.seedsService.seedEvents(inputs.event, organizer, inputs.relations);
     }
 }

@@ -39,14 +39,17 @@ export const Slide: FC<SlideProps> = ({
 }) => {
   return (
     <div className={classes.slide} ref={slideRef}>
-      <Image
-        src={image}
-        alt={name}
-        width={580}
-        height={408}
-        priority
-        style={{ objectFit: 'cover' }}
-      />
+      {image && (
+        <Image
+          src={image}
+          alt={name}
+          width={580}
+          height={408}
+          priority
+          style={{ objectFit: 'cover' }}
+        />
+      )}
+      {!image && <div className={classes.imagePlaceholder} />}
       <Link href={`/events/${id}`}>
         <div className={classes.contentWrapper}>
           <div className={classes.contentBackground}></div>

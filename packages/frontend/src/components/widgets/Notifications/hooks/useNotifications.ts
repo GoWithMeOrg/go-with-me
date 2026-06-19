@@ -60,7 +60,9 @@ export const useNotifications = () => {
 
     const requests = data?.getCompanionRequests?.filter((req) => req?.status === 'PENDING') || [];
 
-    const hasNewNotifications = requests.length > 0;
+    const invationsList = invations?.getInvitation;
 
-    return { requests, hasNewNotifications };
+    const hasNewNotifications = requests.length > 0 || (invationsList?.length ?? 0) > 0;
+
+    return { requests, hasNewNotifications, invations: invationsList, refetchDataInvations };
 };

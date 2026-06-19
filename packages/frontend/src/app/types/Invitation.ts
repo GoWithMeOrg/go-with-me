@@ -4,22 +4,18 @@ export enum ConditionEvent {
 }
 
 export enum InvitationResponseStatus {
-  INVITED = 'Invited',
-  ACCEPTED = 'Accepted',
-  DECLINED = 'Declined',
-}
-
-export interface Invited {
-  user: string;
-  invitation: string;
-  status: InvitationResponseStatus;
-  respondedAt?: Date;
+  INVITED = 'INVITED',
+  ACCEPTED = 'ACCEPTED',
+  DECLINED = 'DECLINED',
 }
 
 export interface Invitation {
-  id: string;
+  _id: string;
   event: string;
   sender: string;
+  receiver: string;
+  status: InvitationResponseStatus;
+  respondedAt?: Date;
   createdAt?: Date;
   updatedAt?: Date;
 }

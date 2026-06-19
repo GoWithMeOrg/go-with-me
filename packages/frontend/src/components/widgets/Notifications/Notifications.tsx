@@ -7,58 +7,56 @@ import { useNotifications } from './hooks';
 import classes from './Notifications.module.css';
 
 export const Notifications: FC = () => {
-    const { requests } = useNotifications();
+    const { requests, invations } = useNotifications();
 
     interface IInvitation {
-        id: string;
-        createdAt: Date;
-        invitation: {
-            id: string;
-            event: {
-                _id: string;
-                image: string;
-                name: string;
-                location: {
+        _id: string;
+        event: {
+            _id: string;
+            image: string;
+            name: string;
+            location: {
+                geometry: {
                     coordinates: [number, number];
                 };
-                startDate: string;
-                time: string;
-                organizer: {
-                    _id: string;
-                    name: string;
-                };
-            };
-            sender: {
+            } | null;
+            startDate: string;
+            time: string;
+            organizer: {
                 _id: string;
-                name: string;
+                firstName: string;
             };
         };
+        sender: {
+            _id: string;
+            firstName: string;
+        };
         status: string;
-        user: {
+        receiver: {
             _id: string;
         };
     }
 
     return (
         <div className={classes.notificationsList}>
-            {/* {dataInvations?.map((invitation: IInvitation) => (
+            {invations?.map((invitation: IInvitation) => (
                 <Invitation
-                    key={invitation.invitation.id}
-                    invitation_id={invitation.invitation.id}
-                    receiver_id={invitation.user._id}
+                    key={invitation._id}
+                    invitation_id={invitation._id}
+                    receiver_id={invitation.receiver._id}
                     status={invitation.status}
-                    event_id={invitation.invitation.event._id}
-                    image={invitation.invitation.event.image}
-                    eventName={invitation.invitation.event?.name}
-                    coordinates={invitation.invitation.event.location.coordinates}
-                    startDate={invitation.invitation.event.startDate}
-                    time={invitation.invitation.event.time}
-                    organizerName={invitation.invitation.event.organizer.name}
-                    senderName={invitation.invitation.sender.name}
-                    organizer_id={invitation.invitation.event.organizer._id}
-                    sender_id={invitation.invitation.sender._id}
+                    event_id={invitation.event._id}
+                    image={invitation.event.image}
+                    eventName={invitation.event?.name}
+                    coordinates={invitation.event.location?.geometry.coordinates ?? [0, 0]}
+                    startDate={invitation.event.startDate}
+                    time={invitation.event.time}
+                    organizerName={invitation.event.organizer.firstName}
+                    senderName={invitation.sender.firstName}
+                    organizer_id={invitation.event.organizer._id}
+                    sender_id={invitation.sender._id}
                 />
-            ))} */}
+            ))}
 
             {requests?.map((request) => (
                 <CompanionRequest

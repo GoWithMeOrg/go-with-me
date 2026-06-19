@@ -3,45 +3,35 @@ import gql from 'graphql-tag';
 export const GET_INVATIONS = gql`
     query GetInvitation($user_id: ID!) {
         getInvitation(user_id: $user_id) {
-            id
-            createdAt
-            invitation {
-                event {
-                    _id
-                    name
-                    location {
-                        type
+            _id
+            event {
+                _id
+                name
+                location {
+                    type
+                    geometry {
                         coordinates
-                        properties {
-                            address
-                        }
                     }
-                    image
-                    time
-                    startDate
-                    organizer {
-                        name
-                        _id
+                    properties {
+                        address
                     }
                 }
-                id
-                sender {
+                image
+                time
+                startDate
+                organizer {
+                    firstName
                     _id
-                    name
                 }
+            }
+            sender {
+                _id
+                firstName
             }
             status
-            user {
+            receiver {
                 _id
             }
-        }
-    }
-`;
-
-export const GET_INVATIONS_WITH_STATUS = gql`
-    query GetInvitationsWithStatus($userId: ID!) {
-        getInvitation(userId: $userId) {
-            myStatus
         }
     }
 `;
@@ -54,10 +44,11 @@ export const GET_DECLINED_EVENTS = gql`
             description
             startDate
             time
-            createdAt
             location {
                 type
-                coordinates
+                geometry {
+                    coordinates
+                }
                 properties {
                     address
                 }
@@ -68,8 +59,18 @@ export const GET_DECLINED_EVENTS = gql`
 `;
 
 export const GET_COMPANION_INVITATION_EVENTS = gql`
-    query CompanionInvitationEvent($organizerId: String!) {
-        companionInvitationEvent(organizer_id: $organizerId) {
+    query CompanionInvitationEvent($organizerId: ID!, $companionId: ID!) {
+        companionInvitationEvent(organizer_id: $organizerId, companion_id: $companionId) {
+            _id
+            name
+            startDate
+        }
+    }
+`;
+
+export const GET_ORGANIZER_EVENTS_FOR_INVITE = gql`
+    query GetOrganizerEventsForInvite($organizerId: ID!) {
+        events: getEventsByOrganizer(organizer_id: $organizerId) {
             _id
             name
             startDate

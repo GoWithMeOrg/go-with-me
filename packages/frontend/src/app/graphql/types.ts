@@ -141,6 +141,16 @@ export type Interest = {
   ownerType?: Maybe<Scalars['String']['output']>;
 };
 
+export type Invitation = {
+  __typename?: 'Invitation';
+  _id: Scalars['ID']['output'];
+  event: Event;
+  receiver: User;
+  respondedAt?: Maybe<Scalars['DateTime']['output']>;
+  sender: User;
+  status: Scalars['String']['output'];
+};
+
 export type Join = {
   __typename?: 'Join';
   _id: Scalars['ID']['output'];
@@ -198,6 +208,7 @@ export type LocationPropertiesInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   acceptCompanionRequest: CompanionRequest;
+  acceptInvitation: Invitation;
   addPermissionToRole: Role;
   /** добавать роль пользователю */
   addUserRole: User;
@@ -215,6 +226,7 @@ export type Mutation = {
   createTag: Tag;
   /** Создать пользователя */
   createUser: User;
+  declineInvitation: Invitation;
   /** Удалить файл из хранилища по его ключу */
   deleteFile: Scalars['Boolean']['output'];
   /** Получить пресайнд-ссылку для прямой загрузки файла в MinIO/S3 */
@@ -241,6 +253,7 @@ export type Mutation = {
   seedEvents: Event;
   /** Генерация тестовых данных (доступно только в DEV режиме) */
   seedUsers: SeedUserResult;
+  sendInvitation: Invitation;
   sendRequestCompanion: CompanionRequest;
   toggleJoin: Scalars['Boolean']['output'];
   toggleLike: Scalars['Boolean']['output'];
@@ -263,6 +276,12 @@ export type Mutation = {
 
 export type MutationAcceptCompanionRequestArgs = {
   request_id: Scalars['ID']['input'];
+};
+
+
+export type MutationAcceptInvitationArgs = {
+  invitationId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
 };
 
 
@@ -329,6 +348,12 @@ export type MutationCreateTagArgs = {
 
 export type MutationCreateUserArgs = {
   createUserInput: CreateUserInput;
+};
+
+
+export type MutationDeclineInvitationArgs = {
+  invitationId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
 };
 
 
@@ -419,6 +444,11 @@ export type MutationSeedEventsArgs = {
 
 export type MutationSeedUsersArgs = {
   inputs: SeedUserInput;
+};
+
+
+export type MutationSendInvitationArgs = {
+  input: SendInvitationInput;
 };
 
 
@@ -551,6 +581,7 @@ export type Query = {
   categoriesById: Category;
   /** Поиск категорий по ownerId */
   categoriesByOwnerId: Category;
+  companionInvitationEvent: Array<Event>;
   /** Поиск компаньонов по ownerId */
   companionsByOwnerId: CompanionsResponse;
   /** Найти пользователей по email или имени */
@@ -562,10 +593,12 @@ export type Query = {
   getChildrenCommentsByParentId: Array<Comment>;
   getCommentsByOwnerId: Array<Comment>;
   getCompanionRequests: Array<CompanionRequest>;
+  getDeclinedEvents: Array<Event>;
   /** Получить событие по id */
   getEventById: Event;
   /** Получить все события организатора */
   getEventsByOrganizer: Array<Event>;
+  getInvitation: Array<Invitation>;
   getJoinedUsersByOwnerId: Array<Join>;
   getLikesBatch: Array<LikeStatus>;
   getLikesByOwnerId: Array<Like>;
@@ -625,6 +658,12 @@ export type QueryCategoriesByOwnerIdArgs = {
 };
 
 
+export type QueryCompanionInvitationEventArgs = {
+  companion_id: Scalars['ID']['input'];
+  organizer_id: Scalars['ID']['input'];
+};
+
+
 export type QueryCompanionsByOwnerIdArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
@@ -669,6 +708,11 @@ export type QueryGetCompanionRequestsArgs = {
 };
 
 
+export type QueryGetDeclinedEventsArgs = {
+  userId: Scalars['ID']['input'];
+};
+
+
 export type QueryGetEventByIdArgs = {
   event_id: Scalars['ID']['input'];
 };
@@ -676,6 +720,11 @@ export type QueryGetEventByIdArgs = {
 
 export type QueryGetEventsByOrganizerArgs = {
   organizer_id: Scalars['ID']['input'];
+};
+
+
+export type QueryGetInvitationArgs = {
+  user_id: Scalars['ID']['input'];
 };
 
 
@@ -828,6 +877,12 @@ export type SeedUserResult = {
   location?: Maybe<Location>;
   tag?: Maybe<Tag>;
   user?: Maybe<User>;
+};
+
+export type SendInvitationInput = {
+  eventId: Scalars['ID']['input'];
+  receiverIds: Array<Scalars['ID']['input']>;
+  senderId: Scalars['ID']['input'];
 };
 
 export type Subscription = {

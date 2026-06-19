@@ -35,7 +35,8 @@ export const useDialogModal = ({ receiver_ids, resetCards }: CompanionsDialogMod
 
     const [SendInvitation] = useMutation(SEND_INVITATION_MUTATION);
 
-    const invitationEventsHook = useInvitationEvents();
+    const companionId = state.invitationCompanion?.id ?? null;
+    const invitationEventsHook = useInvitationEvents(companionId);
 
     const openPopup = (popupId: string) => {
         dispatch({ type: DialogModal.ACTIVE_POPUP, payload: popupId });
@@ -97,21 +98,23 @@ export const useDialogModal = ({ receiver_ids, resetCards }: CompanionsDialogMod
         try {
             await SendInvitation({
                 variables: {
-                    eventId: state.selectedEvent?._id,
-                    senderId: user_id,
-                    receiverIds: receivers,
+                    input: {
+                        eventId: state.selectedEvent?._id,
+                        senderId: user_id,
+                        receiverIds: receivers,
+                    },
                 },
             });
+
+            if (receiver_ids.length > 0 && resetCards) {
+                resetCards();
+                dispatch({ type: DialogModal.INVITATION_SELECTED_COMPANIONS, payload: false });
+            }
+            dispatch({ type: DialogModal.ACTIVE_POPUP, payload: null });
+            dispatch({ type: DialogModal.SUCCESS_MODAL_OPEN, payload: true });
         } catch (error) {
             console.error('Error send invitation: ', error);
         }
-
-        if (receiver_ids.length > 0 && resetCards) {
-            resetCards();
-            dispatch({ type: DialogModal.INVITATION_SELECTED_COMPANIONS, payload: false });
-        }
-        dispatch({ type: DialogModal.ACTIVE_POPUP, payload: null });
-        dispatch({ type: DialogModal.SUCCESS_MODAL_OPEN, payload: true });
     };
 
     return {
