@@ -50,4 +50,39 @@ export class CompanionResolver {
     ): Promise<boolean> {
         return this.companionService.removeCompanion(userId, companionId);
     }
+
+    @Mutation(() => Boolean, {
+        name: 'markCompanion',
+        description: 'Пометить компаньона в избранный список',
+    })
+    @UseGuards(SessionAuthGuard, RolesGuard)
+    markCompanion(
+        @CurrentUser() user: User,
+        @Args('companion_id', { type: () => ID }) companionId: Types.ObjectId,
+    ): Promise<boolean> {
+        return this.companionService.markCompanion(user._id, companionId);
+    }
+
+    @Mutation(() => Boolean, {
+        name: 'unmarkCompanion',
+        description: 'Убрать компаньона из избранного списка',
+    })
+    @UseGuards(SessionAuthGuard, RolesGuard)
+    unmarkCompanion(
+        @CurrentUser() user: User,
+        @Args('companion_id', { type: () => ID }) companionId: Types.ObjectId,
+    ): Promise<boolean> {
+        return this.companionService.unmarkCompanion(user._id, companionId);
+    }
+
+    @Query(() => [ID], {
+        name: 'markedCompanions',
+        description: 'Получить список ID избранных компаньонов',
+    })
+    @UseGuards(SessionAuthGuard, RolesGuard)
+    getMarkedCompanions(
+        @CurrentUser() user: User,
+    ): Promise<Types.ObjectId[]> {
+        return this.companionService.getMarkedCompanions(user._id);
+    }
 }

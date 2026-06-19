@@ -222,6 +222,9 @@ type Mutation {
 
   """Получить пресайнд-ссылку для прямой загрузки файла в MinIO/S3"""
   getPresignedUrl(folder: String! = "events", input: UploadFileInput!): PresignedUrlResponse!
+
+  """Пометить компаньона в избранный список"""
+  markCompanion(companion_id: ID!): Boolean!
   registerResource(
     """Отображаемое имя (например: Мероприятия)"""
     name: String!
@@ -266,6 +269,9 @@ type Mutation {
 
   """Переключает статус активности права (включает/выключает)"""
   togglePermissionStatus(id: ID!): Permission!
+
+  """Убрать компаньона из избранного списка"""
+  unmarkCompanion(companion_id: ID!): Boolean!
   updateCategories(category_id: ID!, updateCategoriesInput: UpdateCategoryInput!): Category!
   updateComment(commentId: ID!, updateCommentInput: UpdateCommentInput!): Comment!
 
@@ -275,6 +281,9 @@ type Mutation {
 
   """Обновить локацию"""
   updateLocation(location_id: ID!, updateLocationInput: UpdateLocationInput!): Location!
+
+  """Обновить настройки приватности"""
+  updatePrivacySetting(input: UpdatePrivacySettingInput!): PrivacySetting!
   updateRole(updateRoleInput: UpdateRoleInput!): Role!
   updateTag(tag_id: ID!, updateTagInput: UpdateTagInput!): Tag!
 
@@ -313,6 +322,19 @@ type PresignedUrlResponse {
 enum Privacy {
   PRIVATE
   PUBLIC
+}
+
+type PrivacySetting {
+  _id: ID!
+  ownerId: ID!
+  whoCanInviteToEvents: PrivacyVisibility!
+  whoCanSeeEvents: PrivacyVisibility!
+}
+
+enum PrivacyVisibility {
+  COMPANIONS
+  EVERYONE
+  MARKED_COMPANIONS
 }
 
 type Query {
@@ -366,7 +388,13 @@ type Query {
 
   """Поиск места по ownerId"""
   locationByOwnerId(ownerId: ID!): Location!
+
+  """Получить список ID избранных компаньонов"""
+  markedCompanions: [ID!]!
   moderatorRoute: String!
+
+  """Получить настройки приватности текущего пользователя"""
+  myPrivacySetting: PrivacySetting!
 
   """Поиск права по id"""
   permissionById(id: ID!): Permission
@@ -499,6 +527,11 @@ input UpdateInterestInput {
 input UpdateLocationInput {
   geometry: LocationGeometryInput
   properties: LocationPropertiesInput
+}
+
+input UpdatePrivacySettingInput {
+  whoCanInviteToEvents: PrivacyVisibility
+  whoCanSeeEvents: PrivacyVisibility
 }
 
 input UpdateRoleInput {

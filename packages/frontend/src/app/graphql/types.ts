@@ -231,6 +231,8 @@ export type Mutation = {
   deleteFile: Scalars['Boolean']['output'];
   /** Получить пресайнд-ссылку для прямой загрузки файла в MinIO/S3 */
   getPresignedUrl: PresignedUrlResponse;
+  /** Пометить компаньона в избранный список */
+  markCompanion: Scalars['Boolean']['output'];
   registerResource: Resource;
   rejectCompanionRequest: CompanionRequest;
   removeCategories: Scalars['Boolean']['output'];
@@ -259,6 +261,8 @@ export type Mutation = {
   toggleLike: Scalars['Boolean']['output'];
   /** Переключает статус активности права (включает/выключает) */
   togglePermissionStatus: Permission;
+  /** Убрать компаньона из избранного списка */
+  unmarkCompanion: Scalars['Boolean']['output'];
   updateCategories: Category;
   updateComment: Comment;
   /** Обновить данные события */
@@ -266,6 +270,8 @@ export type Mutation = {
   updateInterest: Interest;
   /** Обновить локацию */
   updateLocation: Location;
+  /** Обновить настройки приватности */
+  updatePrivacySetting: PrivacySetting;
   updateRole: Role;
   updateTag: Tag;
   /** Обновить данные пользователя */
@@ -365,6 +371,11 @@ export type MutationDeleteFileArgs = {
 export type MutationGetPresignedUrlArgs = {
   folder?: Scalars['String']['input'];
   input: UploadFileInput;
+};
+
+
+export type MutationMarkCompanionArgs = {
+  companion_id: Scalars['ID']['input'];
 };
 
 
@@ -474,6 +485,11 @@ export type MutationTogglePermissionStatusArgs = {
 };
 
 
+export type MutationUnmarkCompanionArgs = {
+  companion_id: Scalars['ID']['input'];
+};
+
+
 export type MutationUpdateCategoriesArgs = {
   category_id: Scalars['ID']['input'];
   updateCategoriesInput: UpdateCategoryInput;
@@ -505,6 +521,11 @@ export type MutationUpdateInterestArgs = {
 export type MutationUpdateLocationArgs = {
   location_id: Scalars['ID']['input'];
   updateLocationInput: UpdateLocationInput;
+};
+
+
+export type MutationUpdatePrivacySettingArgs = {
+  input: UpdatePrivacySettingInput;
 };
 
 
@@ -574,6 +595,20 @@ export enum Privacy {
   Public = 'PUBLIC'
 }
 
+export type PrivacySetting = {
+  __typename?: 'PrivacySetting';
+  _id: Scalars['ID']['output'];
+  ownerId: Scalars['ID']['output'];
+  whoCanInviteToEvents: PrivacyVisibility;
+  whoCanSeeEvents: PrivacyVisibility;
+};
+
+export enum PrivacyVisibility {
+  Companions = 'COMPANIONS',
+  Everyone = 'EVERYONE',
+  MarkedCompanions = 'MARKED_COMPANIONS'
+}
+
 export type Query = {
   __typename?: 'Query';
   adminRoute: Scalars['String']['output'];
@@ -614,7 +649,11 @@ export type Query = {
   locationById: Location;
   /** Поиск места по ownerId */
   locationByOwnerId: Location;
+  /** Получить список ID избранных компаньонов */
+  markedCompanions: Array<Scalars['ID']['output']>;
   moderatorRoute: Scalars['String']['output'];
+  /** Получить настройки приватности текущего пользователя */
+  myPrivacySetting: PrivacySetting;
   /** Поиск права по id */
   permissionById?: Maybe<Permission>;
   /** Поиск права по названию */
@@ -931,6 +970,11 @@ export type UpdateInterestInput = {
 export type UpdateLocationInput = {
   geometry?: InputMaybe<LocationGeometryInput>;
   properties?: InputMaybe<LocationPropertiesInput>;
+};
+
+export type UpdatePrivacySettingInput = {
+  whoCanInviteToEvents?: InputMaybe<PrivacyVisibility>;
+  whoCanSeeEvents?: InputMaybe<PrivacyVisibility>;
 };
 
 export type UpdateRoleInput = {

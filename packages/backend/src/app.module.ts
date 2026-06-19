@@ -34,6 +34,7 @@ import { LikeModule } from './modules/like/like.module';
 import { JoinModule } from './modules/join/join.module';
 import { CommentModule } from './modules/comment/comment.module';
 import { InvitationModule } from './modules/invitation/invitation.module';
+import { PrivacySettingModule } from './modules/privacy-setting/privacy-setting.module';
 
 @Module({
     imports: [
@@ -104,6 +105,8 @@ import { InvitationModule } from './modules/invitation/invitation.module';
         CommentModule,
 
         InvitationModule,
+
+        PrivacySettingModule,
     ],
 
     controllers: [],
