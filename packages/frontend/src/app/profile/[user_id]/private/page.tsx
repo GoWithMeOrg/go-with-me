@@ -4,6 +4,7 @@ import { ButtonBack } from '@/components/shared/ButtonBack';
 import { ButtonLink } from '@/components/shared/ButtonLink';
 import { Title } from '@/components/shared/Title';
 import { Companions } from '@/components/widgets/Companions';
+import { Confidentiality } from '@/components/widgets/Confidentiality/Confidentiality';
 import { Events } from '@/components/widgets/Events';
 import { Navbar } from '@/components/widgets/Navbar';
 import { NavbarTabs } from '@/components/widgets/Navbar/models';
@@ -41,6 +42,7 @@ const Profile: NextPage = () => {
                     {activeTab === NavbarTabs.PERSONAL && <ProfileForm />}
                     {activeTab === NavbarTabs.NOTIFICATIONS && <Notifications />}
                     {activeTab === NavbarTabs.COMPANIONS && <Companions />}
+                    {activeTab === NavbarTabs.CONFIDENTIALITY && <Confidentiality />}
                     {/* {activeTab === NavbarTabs.EVENTS && <Events onTabClick={handleTabClick} />} */}
                 </div>
             </div>

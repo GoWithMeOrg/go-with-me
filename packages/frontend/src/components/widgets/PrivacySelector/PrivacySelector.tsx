@@ -4,19 +4,19 @@ import { PrivacySelectorProps } from './interfaces/PrivacySelectorProps';
 
 import classes from './PrivacySelector.module.css';
 
-const PRIVACY_OPTIONS = [
+const DEFAULT_OPTIONS = [
     { key: 'Public', label: 'Public' },
     { key: 'Private', label: 'Private' },
 ] as const;
 
-export const PrivacySelector: FC<PrivacySelectorProps> = ({ options, onChange, selected }) => {
+export const PrivacySelector: FC<PrivacySelectorProps> = ({ options, onChange, selected, privacyOptions }) => {
+    const items = privacyOptions ?? DEFAULT_OPTIONS;
+
     return (
         <div className={classes.confidentiality}>
-            <span className={classes.confidentialityTitle}>Privacy</span>
-
             <div className={classes.confidentialityWrapper}>
-                {PRIVACY_OPTIONS.map(({ key, label }) => {
-                    const value = options?.[key];
+                {items.map(({ key, label }) => {
+                    const value = options?.[key] ?? key;
                     const isChecked = selected === value;
 
                     return (
