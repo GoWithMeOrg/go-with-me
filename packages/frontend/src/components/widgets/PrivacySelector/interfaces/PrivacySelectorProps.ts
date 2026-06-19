@@ -8,4 +8,6 @@ export interface PrivacySelectorProps {
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     selected: string;
     privacyOptions?: readonly PrivacyOption[];
+    name?: string;
+    wrapperClassName?: string;
 }

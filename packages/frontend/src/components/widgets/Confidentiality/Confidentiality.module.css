@@ -24,3 +24,8 @@
     font-size: 1.125rem;
     margin-top: 0.5rem;
 }
+
+.vertical {
+    flex-direction: column;
+    gap: 0;
+}
