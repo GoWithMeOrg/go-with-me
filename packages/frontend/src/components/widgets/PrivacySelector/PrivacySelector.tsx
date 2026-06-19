@@ -9,12 +9,21 @@ const DEFAULT_OPTIONS = [
     { key: 'Private', label: 'Private' },
 ] as const;
 
-export const PrivacySelector: FC<PrivacySelectorProps> = ({ options, onChange, selected, privacyOptions, name, wrapperClassName }) => {
+export const PrivacySelector: FC<PrivacySelectorProps> = ({
+    options,
+    onChange,
+    selected,
+    privacyOptions,
+    name,
+    wrapperClassName,
+}) => {
     const items = privacyOptions ?? DEFAULT_OPTIONS;
 
     return (
         <div className={classes.confidentiality}>
-            <div className={`${classes.confidentialityWrapper}${wrapperClassName ? ' ' + wrapperClassName : ''}`}>
+            <div
+                className={`${classes.confidentialityWrapper}${wrapperClassName ? ' ' + wrapperClassName : ''}`}
+            >
                 {items.map(({ key, label }) => {
                     const value = options?.[key] ?? key;
                     const isChecked = selected === value;
