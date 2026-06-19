@@ -1,39 +1,33 @@
 'use client';
 
 import { useState } from 'react';
+import { UPDATE_PRIVACY_SETTING } from '@/app/graphql/mutations/privacySetting';
+import { GET_COMPANIONS_BY_OWNER_ID } from '@/app/graphql/queries/companions';
+import { GET_MY_PRIVACY_SETTING } from '@/app/graphql/queries/privacySetting';
 import { useMutation, useQuery } from '@apollo/client/react';
 
-import { GET_MY_PRIVACY_SETTING } from '@/app/graphql/queries/privacySetting';
-import { UPDATE_PRIVACY_SETTING } from '@/app/graphql/mutations/privacySetting';
-import type { PrivacySetting } from '@/app/graphql/types';
-
 export const useConfidentiality = () => {
-    const { data, loading } = useQuery<{ myPrivacySetting: PrivacySetting }>(
-        GET_MY_PRIVACY_SETTING,
-    );
+    const { data, loading } = useQuery(GET_MY_PRIVACY_SETTING);
+
+    const { data: companionsData } = useQuery(GET_COMPANIONS_BY_OWNER_ID, {
+        variables: { limit: 200, offset: 0 },
+    });
 
     const [whoCanSeeEvents, setWhoCanSeeEvents] = useState<string | null>(null);
     const [whoCanInviteToEvents, setWhoCanInviteToEvents] = useState<string | null>(null);
 
-    const [updatePrivacySetting, { loading: saving }] = useMutation(
-        UPDATE_PRIVACY_SETTING,
-        {
-            refetchQueries: [{ query: GET_MY_PRIVACY_SETTING }],
-        },
-    );
+    const [updatePrivacySetting, { loading: saving }] = useMutation(UPDATE_PRIVACY_SETTING, {
+        refetchQueries: [{ query: GET_MY_PRIVACY_SETTING }],
+    });
 
-    const currentSee =
-        whoCanSeeEvents ??
-        data?.myPrivacySetting?.whoCanSeeEvents ??
-        'EVERYONE';
+    const currentSee = whoCanSeeEvents ?? data?.myPrivacySetting?.whoCanSeeEvents ?? 'EVERYONE';
     const currentInvite =
-        whoCanInviteToEvents ??
-        data?.myPrivacySetting?.whoCanInviteToEvents ??
-        'EVERYONE';
+        whoCanInviteToEvents ?? data?.myPrivacySetting?.whoCanInviteToEvents ?? 'EVERYONE';
+
+    const companions = companionsData?.companionsByOwnerId?.companions ?? [];
 
     const isDirty =
-        (whoCanSeeEvents !== null &&
-            whoCanSeeEvents !== data?.myPrivacySetting?.whoCanSeeEvents) ||
+        (whoCanSeeEvents !== null && whoCanSeeEvents !== data?.myPrivacySetting?.whoCanSeeEvents) ||
         (whoCanInviteToEvents !== null &&
             whoCanInviteToEvents !== data?.myPrivacySetting?.whoCanInviteToEvents);
 
@@ -65,8 +59,11 @@ export const useConfidentiality = () => {
         currentSee,
         currentInvite,
         isDirty,
+        whoCanSeeEvents,
         setWhoCanSeeEvents,
+        whoCanInviteToEvents,
         setWhoCanInviteToEvents,
         handleSave,
+        companions,
     };
 };

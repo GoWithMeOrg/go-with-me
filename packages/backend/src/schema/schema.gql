@@ -348,7 +348,7 @@ type Query {
   companionInvitationEvent(companion_id: ID!, organizer_id: ID!): [Event!]!
 
   """Поиск компаньонов по ownerId"""
-  companionsByOwnerId(limit: Int, offset: Int, ownerId: ID!): CompanionsResponse!
+  companionsByOwnerId(limit: Int, offset: Int): CompanionsResponse!
 
   """Найти пользователей по email или имени"""
   findByEmailOrName(query: String): [User!]!

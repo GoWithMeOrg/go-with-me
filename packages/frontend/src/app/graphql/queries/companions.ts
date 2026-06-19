@@ -1,8 +1,13 @@
+import { TypedDocumentNode } from '@graphql-typed-document-node/core';
 import gql from 'graphql-tag';
 
-export const GET_COMPANIONS_BY_OWNER_ID = gql`
-    query CompanionsByOwnerId($ownerId: ID!, $offset: Int, $limit: Int) {
-        companionsByOwnerId(ownerId: $ownerId, offset: $offset, limit: $limit) {
+import { CompanionsResponse } from '../types';
+
+export const GET_COMPANIONS_BY_OWNER_ID: TypedDocumentNode<{
+    companionsByOwnerId: CompanionsResponse;
+}> = gql`
+    query CompanionsByOwnerId($offset: Int, $limit: Int) {
+        companionsByOwnerId(offset: $offset, limit: $limit) {
             companions {
                 _id
                 firstName

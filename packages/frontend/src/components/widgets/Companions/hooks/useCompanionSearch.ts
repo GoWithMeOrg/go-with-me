@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { SEND_REQUEST_COMPANION_MUTATION } from '@/app/graphql/mutations/companionRequest';
 import { REMOVE_COMPANION_MUTATION } from '@/app/graphql/mutations/companions';
 import { GET_COMPANIONS_BY_OWNER_ID, GET_FIND_COMPANION } from '@/app/graphql/queries/companions';
-import { CompanionsResponse, QueryCompanionsByOwnerIdArgs, User } from '@/app/graphql/types';
+import { User } from '@/app/graphql/types';
 import { useUserID } from '@/hooks/useUserID';
 import { useMutation, useQuery } from '@apollo/client/react';
 
@@ -25,19 +25,14 @@ export const useCompanionSearch = () => {
         dataKey: 'findCompanion',
     });
 
-    console.log(searchDataCompanion);
-
     const {
         loading: loadingCompanions,
         error: errorCompanions,
         data: dataCompanions,
         refetch: refetchCompanions,
-    } = useQuery<{ companionsByOwnerId: CompanionsResponse }, QueryCompanionsByOwnerIdArgs>(
-        GET_COMPANIONS_BY_OWNER_ID,
-        {
-            variables: { ownerId: user_id as string, limit, offset: 0 },
-        }
-    );
+    } = useQuery(GET_COMPANIONS_BY_OWNER_ID, {
+        variables: { limit: 0, offset: 0 },
+    });
 
     const [CompanionRequest] = useMutation(SEND_REQUEST_COMPANION_MUTATION);
     const [RemoveCompanion] = useMutation(REMOVE_COMPANION_MUTATION);
@@ -45,9 +40,9 @@ export const useCompanionSearch = () => {
     const companions =
         searchValueCompanion && searchDataCompanion?.length > 0
             ? searchDataCompanion
-            : dataCompanions?.companionsByOwnerId?.companions;
+            : dataCompanions?.companionsByOwnerId.companions;
 
-    const totalCompanions = dataCompanions?.companionsByOwnerId?.totalCompanions;
+    const totalCompanions = dataCompanions?.companionsByOwnerId.totalCompanions;
 
     const companionRequest = async (id: string) => {
         try {

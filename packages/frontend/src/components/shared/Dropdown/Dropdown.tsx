@@ -14,6 +14,8 @@ interface DropdownProps extends React.PropsWithChildren {
     onSelectedCategories?: (categories: string[]) => void;
     list: string[];
     filter: boolean;
+    itemImages?: Record<string, string>;
+    selectedLabel?: (count: number) => string;
 }
 
 export const Dropdown: FC<DropdownProps> = ({
@@ -22,6 +24,8 @@ export const Dropdown: FC<DropdownProps> = ({
     categoriesData,
     onSelectedCategories,
     filter,
+    itemImages,
+    selectedLabel,
 }) => {
     const {
         isOpen,
@@ -41,7 +45,9 @@ export const Dropdown: FC<DropdownProps> = ({
             <Button className={classes.dropdownButton} onClick={handleDropdown} type="button">
                 {selectedCategories.length === 0
                     ? label
-                    : selectedCategories.length + ' categories'}
+                    : selectedLabel
+                      ? selectedLabel(selectedCategories.length)
+                      : selectedCategories.length + ' categories'}
                 <ArrowMenu style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)' }} />
             </Button>
             {isOpen && (
@@ -54,7 +60,16 @@ export const Dropdown: FC<DropdownProps> = ({
                                 onMouseEnter={() => showIcon(index, true)}
                                 onMouseLeave={() => showIcon(index, false)}
                             >
-                                <p className={dropdownItemTextCss}>{category}</p>
+                                <div className={classes.dropdownItemContent}>
+                                    {itemImages?.[category] && (
+                                        <img
+                                            src={itemImages[category]}
+                                            alt=""
+                                            className={classes.dropdownItemAvatar}
+                                        />
+                                    )}
+                                    <p className={dropdownItemTextCss}>{category}</p>
+                                </div>
 
                                 <div>
                                     {selectedCategories.includes(category) ? (

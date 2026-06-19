@@ -1,6 +1,7 @@
 'use client';
 
 import { FC } from 'react';
+import { PrivacyVisibility } from '@/app/graphql/types';
 import { Button } from '@/components/shared/Button';
 import { Dropdown } from '@/components/shared/Dropdown';
 import { Span } from '@/components/shared/Span';
@@ -18,12 +19,24 @@ export const Confidentiality: FC = () => {
         currentSee,
         currentInvite,
         isDirty,
+        whoCanSeeEvents,
         setWhoCanSeeEvents,
+        whoCanInviteToEvents,
         setWhoCanInviteToEvents,
         handleSave,
+        companions,
     } = useConfidentiality();
 
     if (loading) return null;
+
+    const companionList = companions.map(
+        (c) => `${c.firstName} ${c.lastName}`,
+    );
+    const companionImages: Record<string, string> = {};
+    for (const c of companions) {
+        const name = `${c.firstName} ${c.lastName}`;
+        if (c.image) companionImages[name] = c.image;
+    }
 
     return (
         <div className={classes.confidentiality}>
@@ -37,7 +50,17 @@ export const Confidentiality: FC = () => {
                     selected={currentSee}
                     onChange={(e) => setWhoCanSeeEvents(e.target.value)}
                 />
-                <Dropdown categoriesData={[]} list={[]} filter={false} />
+
+                {whoCanSeeEvents === PrivacyVisibility.MarkedCompanions && (
+                    <Dropdown
+                        label="No list selected"
+                        selectedLabel={(count) => `${count} companion${count > 1 ? 's' : ''}`}
+                        categoriesData={[]}
+                        list={companionList}
+                        itemImages={companionImages}
+                        filter={false}
+                    />
+                )}
             </div>
 
             <div className={classes.section}>
@@ -51,6 +74,17 @@ export const Confidentiality: FC = () => {
                     selected={currentInvite}
                     onChange={(e) => setWhoCanInviteToEvents(e.target.value)}
                 />
+
+                {whoCanInviteToEvents === PrivacyVisibility.MarkedCompanions && (
+                    <Dropdown
+                        label="No list selected"
+                        selectedLabel={(count) => `${count} companion${count > 1 ? 's' : ''}`}
+                        categoriesData={[]}
+                        list={companionList}
+                        itemImages={companionImages}
+                        filter={false}
+                    />
+                )}
             </div>
 
             {isDirty && (
