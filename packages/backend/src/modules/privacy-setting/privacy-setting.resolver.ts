@@ -38,6 +38,16 @@ export class PrivacySettingResolver {
         );
     }
 
+    @Query(() => [PrivacySetting], {
+        name: 'privacySettingsForUsers',
+        description: 'Получить настройки приватности для нескольких пользователей',
+    })
+    privacySettingsForUsers(
+        @Args('user_ids', { type: () => [ID] }) userIds: Types.ObjectId[],
+    ): Promise<PrivacySetting[]> {
+        return this.privacySettingService.getByOwnerIds(userIds);
+    }
+
     @Mutation(() => PrivacySetting, {
         name: 'updatePrivacySetting',
         description: 'Обновить настройки приватности',

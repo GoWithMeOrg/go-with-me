@@ -77,6 +77,36 @@ export class PrivacySettingService {
         });
     }
 
+    async getByOwnerIds(
+        ownerIds: Types.ObjectId[],
+    ): Promise<PrivacySettingDocument[]> {
+        const objectIds = ownerIds.map(
+            (id) => new Types.ObjectId(id.toString()),
+        );
+
+        const settings = await this.privacySettingModel
+            .find({ ownerId: { $in: objectIds } })
+            .exec();
+
+        const foundIds = new Set(
+            settings.map((s) => s.ownerId.toString()),
+        );
+
+        for (const id of objectIds) {
+            if (!foundIds.has(id.toString())) {
+                settings.push(
+                    await this.privacySettingModel.create({
+                        ownerId: id,
+                        whoCanSeeEvents: PrivacyVisibility.EVERYONE,
+                        whoCanInviteToEvents: PrivacyVisibility.EVERYONE,
+                    }),
+                );
+            }
+        }
+
+        return settings;
+    }
+
     async addMarkedForWhoCanSeeEvents(
         ownerId: Types.ObjectId,
         companionIds: Types.ObjectId[],

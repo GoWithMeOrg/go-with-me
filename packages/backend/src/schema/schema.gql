@@ -415,6 +415,9 @@ type Query {
 
   """Получить настройки приватности пользователя по ID"""
   privacySettingByUserId(user_id: ID!): PrivacySetting!
+
+  """Получить настройки приватности для нескольких пользователей"""
+  privacySettingsForUsers(user_ids: [ID!]!): [PrivacySetting!]!
   resourceBySlug(slug: String!): Resource
 
   """Список всех зарегистрированных ресурсов"""

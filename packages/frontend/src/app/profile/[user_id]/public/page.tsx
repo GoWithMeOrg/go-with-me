@@ -148,7 +148,7 @@ const PublicProfile: NextPage = () => {
                                         </>
                                     ) : (
                                         <>
-                                            <Button>Chat</Button>
+                                            {/* <Button>Chat</Button> */}
 
                                             {canInvite && (
                                                 <Button
