@@ -28,6 +28,8 @@ export const Confidentiality: FC = () => {
         companionImages,
         selectedSeeNames,
         selectedInviteNames,
+        dropKeySee,
+        dropKeyInvite,
         handleSeeSelection,
         handleInviteSelection,
     } = useConfidentiality();
@@ -47,8 +49,9 @@ export const Confidentiality: FC = () => {
                     onChange={(e) => setWhoCanSeeEvents(e.target.value)}
                 />
 
-                {whoCanSeeEvents === PrivacyVisibility.MarkedCompanions && (
+                {currentSee === PrivacyVisibility.MarkedCompanions && (
                     <Dropdown
+                        key={'see-drop-' + dropKeySee}
                         label="No list selected"
                         selectedLabel={(count) => `${count} companion${count > 1 ? 's' : ''}`}
                         categoriesData={selectedSeeNames}
@@ -72,8 +75,9 @@ export const Confidentiality: FC = () => {
                     onChange={(e) => setWhoCanInviteToEvents(e.target.value)}
                 />
 
-                {whoCanInviteToEvents === PrivacyVisibility.MarkedCompanions && (
+                {currentInvite === PrivacyVisibility.MarkedCompanions && (
                     <Dropdown
+                        key={'invite-drop-' + dropKeyInvite}
                         label="No list selected"
                         selectedLabel={(count) => `${count} companion${count > 1 ? 's' : ''}`}
                         categoriesData={selectedInviteNames}

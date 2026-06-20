@@ -21,6 +21,8 @@ export const useConfidentiality = () => {
 
     const [selectedSeeNames, setSelectedSeeNames] = useState<string[]>([]);
     const [selectedInviteNames, setSelectedInviteNames] = useState<string[]>([]);
+    const [dropKeySee, setDropKeySee] = useState(0);
+    const [dropKeyInvite, setDropKeyInvite] = useState(0);
 
     const [updatePrivacySetting, { loading: saving }] = useMutation(UPDATE_PRIVACY_SETTING, {
         refetchQueries: [{ query: GET_MY_PRIVACY_SETTING }],
@@ -123,6 +125,8 @@ export const useConfidentiality = () => {
         await updatePrivacySetting({ variables: { input: vars } });
         setWhoCanSeeEvents(null);
         setWhoCanInviteToEvents(null);
+        setDropKeySee((k) => k + 1);
+        setDropKeyInvite((k) => k + 1);
     };
 
     return {
@@ -141,6 +145,8 @@ export const useConfidentiality = () => {
         companionIdByFullName,
         selectedSeeNames,
         selectedInviteNames,
+        dropKeySee,
+        dropKeyInvite,
         handleSeeSelection,
         handleInviteSelection,
     };
