@@ -25,8 +25,8 @@ export const useInvitationEvents = (companionId: string | null) => {
     });
 
     const events = hasCompanion
-        ? (dataEvents as any)?.companionInvitationEvent
-        : (dataEvents as any)?.events;
+        ? (dataEvents as any)?.companionInvitationEvent ?? []
+        : (dataEvents as any)?.events ?? [];
 
     return {
         loadingEvents,

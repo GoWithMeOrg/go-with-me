@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useEffect, useCallback } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { UPDATE_PRIVACY_SETTING } from '@/app/graphql/mutations/privacySetting';
 import { GET_COMPANIONS_BY_OWNER_ID } from '@/app/graphql/queries/companions';
 import { GET_MY_PRIVACY_SETTING } from '@/app/graphql/queries/privacySetting';
@@ -19,8 +19,8 @@ export const useConfidentiality = () => {
     const [whoCanSeeEvents, setWhoCanSeeEvents] = useState<string | null>(null);
     const [whoCanInviteToEvents, setWhoCanInviteToEvents] = useState<string | null>(null);
 
-    const [selectedSeeNames, setSelectedSeeNames] = useState<string[]>([]);
-    const [selectedInviteNames, setSelectedInviteNames] = useState<string[]>([]);
+    const [dirtySeeNames, setDirtySeeNames] = useState<string[] | null>(null);
+    const [dirtyInviteNames, setDirtyInviteNames] = useState<string[] | null>(null);
     const [dropKeySee, setDropKeySee] = useState(0);
     const [dropKeyInvite, setDropKeyInvite] = useState(0);
 
@@ -49,7 +49,7 @@ export const useConfidentiality = () => {
         companionIdByFullName[`${c.firstName} ${c.lastName}`] = c._id;
     }
 
-    const markedById = useMemo(() => {
+    const markedSet = useMemo(() => {
         const m = data?.myPrivacySetting;
         return {
             see: new Set(m?.markedForWhoCanSeeEvents ?? []),
@@ -58,35 +58,34 @@ export const useConfidentiality = () => {
     }, [data]);
 
     const initialSeeNames = useMemo(
-        () => companionList.filter((_, i) => markedById.see.has(companions[i]._id)),
-        [companionList, markedById.see, companions],
+        () => companionList.filter((_, i) => markedSet.see.has(companions[i]._id)),
+        [companionList, markedSet.see, companions],
     );
     const initialInviteNames = useMemo(
-        () => companionList.filter((_, i) => markedById.invite.has(companions[i]._id)),
-        [companionList, markedById.invite, companions],
+        () => companionList.filter((_, i) => markedSet.invite.has(companions[i]._id)),
+        [companionList, markedSet.invite, companions],
     );
 
-    useEffect(() => {
-        if (!loading) {
-            setSelectedSeeNames(initialSeeNames);
-            setSelectedInviteNames(initialInviteNames);
-        }
-    }, [loading, initialSeeNames, initialInviteNames]);
+    // Use server data when no local changes, otherwise use dirty state
+    const selectedSeeNames = dirtySeeNames ?? initialSeeNames;
+    const selectedInviteNames = dirtyInviteNames ?? initialInviteNames;
 
     const handleSeeSelection = useCallback((names: string[]) => {
-        setSelectedSeeNames(names);
+        setDirtySeeNames(names);
     }, []);
 
     const handleInviteSelection = useCallback((names: string[]) => {
-        setSelectedInviteNames(names);
+        setDirtyInviteNames(names);
     }, []);
 
     const isSeeDirty = whoCanSeeEvents !== null && whoCanSeeEvents !== data?.myPrivacySetting?.whoCanSeeEvents;
     const isInviteDirty = whoCanInviteToEvents !== null && whoCanInviteToEvents !== data?.myPrivacySetting?.whoCanInviteToEvents;
-    const isSeeListDirty =
-        JSON.stringify([...selectedSeeNames].sort()) !== JSON.stringify([...initialSeeNames].sort());
-    const isInviteListDirty =
-        JSON.stringify([...selectedInviteNames].sort()) !== JSON.stringify([...initialInviteNames].sort());
+
+    const areListsEqual = (a: string[], b: string[]) =>
+        a.length === b.length && a.every((v) => b.includes(v));
+
+    const isSeeListDirty = dirtySeeNames !== null && !areListsEqual(initialSeeNames, dirtySeeNames);
+    const isInviteListDirty = dirtyInviteNames !== null && !areListsEqual(initialInviteNames, dirtyInviteNames);
 
     const isDirty =
         isSeeDirty ||
@@ -96,8 +95,6 @@ export const useConfidentiality = () => {
 
     const handleSave = async () => {
         const vars: Record<string, unknown> = {};
-        const prevSee = data?.myPrivacySetting?.whoCanSeeEvents;
-        const prevInvite = data?.myPrivacySetting?.whoCanInviteToEvents;
 
         if (isSeeDirty) {
             vars.whoCanSeeEvents = whoCanSeeEvents;
@@ -125,6 +122,8 @@ export const useConfidentiality = () => {
         await updatePrivacySetting({ variables: { input: vars } });
         setWhoCanSeeEvents(null);
         setWhoCanInviteToEvents(null);
+        setDirtySeeNames(null);
+        setDirtyInviteNames(null);
         setDropKeySee((k) => k + 1);
         setDropKeyInvite((k) => k + 1);
     };

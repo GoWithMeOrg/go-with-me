@@ -83,6 +83,24 @@ export class CompanionService {
         }
     }
 
+    async isUserCompanion(
+        ownerId: Types.ObjectId,
+        companionId: Types.ObjectId,
+    ): Promise<boolean> {
+        const ownerObjectId = new Types.ObjectId(ownerId.toString());
+        const companionObjectId = new Types.ObjectId(companionId.toString());
+
+        const companionDoc = await this.companionModel
+            .findOne({ ownerId: ownerObjectId })
+            .lean();
+
+        if (!companionDoc) return false;
+
+        return companionDoc.companions.some(
+            (id) => id.toString() === companionObjectId.toString(),
+        );
+    }
+
     async findCompanion(ownerId: Types.ObjectId, query?: string): Promise<User[]> {
         const getCompanions = await this.companionModel
             .findOne({ ownerId })

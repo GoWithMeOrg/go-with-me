@@ -7,6 +7,8 @@ import { Invitation, InvitationDocument } from './entities/invitation.entity';
 import { InvitationResponseStatus } from './enums/invitation-response.enum';
 import { SendInvitationInput } from './dto/send-invitation.input';
 import { Companion, CompanionDocument } from '@/modules/companion/entities/companion.entity';
+import { PrivacySettingService } from '@/modules/privacy-setting/privacy-setting.service';
+import { PrivacyVisibility } from '@/modules/privacy-setting/enums/privacy-visibility.enum';
 
 @Injectable()
 export class InvitationService {
@@ -14,6 +16,7 @@ export class InvitationService {
         @InjectModel(Invitation.name) private invitationModel: Model<InvitationDocument>,
         @InjectModel(Event.name) private eventModel: Model<Event>,
         @InjectModel(Companion.name) private companionModel: Model<CompanionDocument>,
+        private readonly privacySettingService: PrivacySettingService,
     ) {}
 
     async getInvitation(userId: Types.ObjectId): Promise<InvitationDocument[]> {
@@ -141,6 +144,38 @@ export class InvitationService {
         }
 
         const receiverObjectIds = input.receiverIds.map((id) => new Types.ObjectId(id));
+
+        // Check each receiver's privacy settings for invitation restrictions
+        const receiverPrivacyDocs = await Promise.all(
+            receiverObjectIds.map((id) => this.privacySettingService.getByOwnerId(id)),
+        );
+
+        for (let i = 0; i < receiverObjectIds.length; i++) {
+            const rcvPrivacy = receiverPrivacyDocs[i];
+
+            if (rcvPrivacy.whoCanInviteToEvents === PrivacyVisibility.COMPANIONS) {
+                const rcvCompanionDoc = await this.companionModel.findOne({
+                    ownerId: receiverObjectIds[i],
+                });
+                const isSenderCompanion = rcvCompanionDoc?.companions.some(
+                    (cid) => cid.toString() === senderObjectId.toString(),
+                );
+                if (!isSenderCompanion) {
+                    throw new ForbiddenException(
+                        `User ${input.receiverIds[i]} only accepts invitations from their companions`,
+                    );
+                }
+            } else if (rcvPrivacy.whoCanInviteToEvents === PrivacyVisibility.MARKED_COMPANIONS) {
+                const isSenderMarked = rcvPrivacy.markedForWhoCanInviteToEvents.some(
+                    (mid) => mid.toString() === senderObjectId.toString(),
+                );
+                if (!isSenderMarked) {
+                    throw new ForbiddenException(
+                        `You are not in the allowed invitation list of user ${input.receiverIds[i]}`,
+                    );
+                }
+            }
+        }
 
         const bulkOps = receiverObjectIds.map((receiverId) => ({
             updateOne: {

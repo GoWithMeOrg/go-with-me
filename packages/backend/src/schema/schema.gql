@@ -391,6 +391,9 @@ type Query {
   isJoinedByUser(owner_id: ID!): Boolean
   isLikedByUser(owner_id: ID!): Boolean
 
+  """Проверить, является ли пользователь компаньоном"""
+  isUserCompanion(companion_id: ID!, user_id: ID!): Boolean!
+
   """Поиск места по id"""
   locationById(id: ID!): Location!
 
@@ -409,6 +412,9 @@ type Query {
 
   """Получить все права"""
   permissions: [Permission!]!
+
+  """Получить настройки приватности пользователя по ID"""
+  privacySettingByUserId(user_id: ID!): PrivacySetting!
   resourceBySlug(slug: String!): Resource
 
   """Список всех зарегистрированных ресурсов"""

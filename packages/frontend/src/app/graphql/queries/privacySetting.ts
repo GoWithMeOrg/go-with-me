@@ -12,3 +12,17 @@ export const GET_MY_PRIVACY_SETTING: TypedDocumentNode<{ myPrivacySetting: Priva
         }
     }
 `;
+
+export const GET_PRIVACY_SETTING_BY_USER_ID: TypedDocumentNode<{
+    privacySettingByUserId: PrivacySetting;
+}> = gql`
+    query PrivacySettingByUserId($userId: ID!) {
+        privacySettingByUserId(user_id: $userId) {
+            _id
+            whoCanSeeEvents
+            whoCanInviteToEvents
+            markedForWhoCanSeeEvents
+            markedForWhoCanInviteToEvents
+        }
+    }
+`;

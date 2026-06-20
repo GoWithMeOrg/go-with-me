@@ -41,6 +41,18 @@ export class CompanionResolver {
         return this.companionService.findCompanion(user._id, query);
     }
 
+    @Query(() => Boolean, {
+        name: 'isUserCompanion',
+        description: 'Проверить, является ли пользователь компаньоном',
+    })
+    @UseGuards(SessionAuthGuard)
+    isUserCompanion(
+        @Args('user_id', { type: () => ID }) userId: Types.ObjectId,
+        @Args('companion_id', { type: () => ID }) companionId: Types.ObjectId,
+    ): Promise<boolean> {
+        return this.companionService.isUserCompanion(userId, companionId);
+    }
+
     @Mutation(() => Boolean)
     @UseGuards(SessionAuthGuard, RolesGuard)
     removeCompanion(

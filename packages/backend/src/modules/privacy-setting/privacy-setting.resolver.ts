@@ -26,6 +26,18 @@ export class PrivacySettingResolver {
         return this.privacySettingService.getByOwnerId(user._id);
     }
 
+    @Query(() => PrivacySetting, {
+        name: 'privacySettingByUserId',
+        description: 'Получить настройки приватности пользователя по ID',
+    })
+    privacySettingByUserId(
+        @Args('user_id', { type: () => ID }) userId: Types.ObjectId,
+    ): Promise<PrivacySetting> {
+        return this.privacySettingService.getByOwnerId(
+            new Types.ObjectId(userId.toString()),
+        );
+    }
+
     @Mutation(() => PrivacySetting, {
         name: 'updatePrivacySetting',
         description: 'Обновить настройки приватности',
