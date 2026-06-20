@@ -6,6 +6,8 @@ export const UPDATE_PRIVACY_SETTING = gql`
             _id
             whoCanSeeEvents
             whoCanInviteToEvents
+            markedForWhoCanSeeEvents
+            markedForWhoCanInviteToEvents
         }
     }
 `;

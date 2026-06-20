@@ -12,10 +12,6 @@ export class Companion {
     @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }] })
     companions: Types.ObjectId[];
 
-    @Field(() => [ID])
-    @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }] })
-    markedCompanions: Types.ObjectId[];
-
     @Field(() => ID)
     @Prop({ type: Types.ObjectId, required: true })
     ownerId: Types.ObjectId;

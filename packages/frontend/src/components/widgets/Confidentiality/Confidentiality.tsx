@@ -24,19 +24,15 @@ export const Confidentiality: FC = () => {
         whoCanInviteToEvents,
         setWhoCanInviteToEvents,
         handleSave,
-        companions,
+        companionList,
+        companionImages,
+        selectedSeeNames,
+        selectedInviteNames,
+        handleSeeSelection,
+        handleInviteSelection,
     } = useConfidentiality();
 
     if (loading) return null;
-
-    const companionList = companions.map(
-        (c) => `${c.firstName} ${c.lastName}`,
-    );
-    const companionImages: Record<string, string> = {};
-    for (const c of companions) {
-        const name = `${c.firstName} ${c.lastName}`;
-        if (c.image) companionImages[name] = c.image;
-    }
 
     return (
         <div className={classes.confidentiality}>
@@ -55,7 +51,8 @@ export const Confidentiality: FC = () => {
                     <Dropdown
                         label="No list selected"
                         selectedLabel={(count) => `${count} companion${count > 1 ? 's' : ''}`}
-                        categoriesData={[]}
+                        categoriesData={selectedSeeNames}
+                        onSelectedCategories={handleSeeSelection}
                         list={companionList}
                         itemImages={companionImages}
                         filter={false}
@@ -79,7 +76,8 @@ export const Confidentiality: FC = () => {
                     <Dropdown
                         label="No list selected"
                         selectedLabel={(count) => `${count} companion${count > 1 ? 's' : ''}`}
-                        categoriesData={[]}
+                        categoriesData={selectedInviteNames}
+                        onSelectedCategories={handleInviteSelection}
                         list={companionList}
                         itemImages={companionImages}
                         filter={false}

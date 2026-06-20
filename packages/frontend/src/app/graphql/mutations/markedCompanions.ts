@@ -1,13 +1,37 @@
 import { gql } from '@apollo/client';
 
-export const MARK_COMPANION = gql`
-    mutation MarkCompanion($companionIds: [ID!]!) {
-        markCompanion(companion_ids: $companionIds)
+export const ADD_MARKED_FOR_WHO_CAN_SEE_EVENTS = gql`
+    mutation AddMarkedForWhoCanSeeEvents($companionIds: [ID!]!) {
+        addMarkedForWhoCanSeeEvents(companion_ids: $companionIds) {
+            _id
+            markedForWhoCanSeeEvents
+        }
     }
 `;
 
-export const UNMARK_COMPANION = gql`
-    mutation UnmarkCompanion($companionId: ID!) {
-        unmarkCompanion(companion_id: $companionId)
+export const REMOVE_MARKED_FOR_WHO_CAN_SEE_EVENTS = gql`
+    mutation RemoveMarkedForWhoCanSeeEvents($companionId: ID!) {
+        removeMarkedForWhoCanSeeEvents(companion_id: $companionId) {
+            _id
+            markedForWhoCanSeeEvents
+        }
+    }
+`;
+
+export const ADD_MARKED_FOR_WHO_CAN_INVITE_TO_EVENTS = gql`
+    mutation AddMarkedForWhoCanInviteToEvents($companionIds: [ID!]!) {
+        addMarkedForWhoCanInviteToEvents(companion_ids: $companionIds) {
+            _id
+            markedForWhoCanInviteToEvents
+        }
+    }
+`;
+
+export const REMOVE_MARKED_FOR_WHO_CAN_INVITE_TO_EVENTS = gql`
+    mutation RemoveMarkedForWhoCanInviteToEvents($companionId: ID!) {
+        removeMarkedForWhoCanInviteToEvents(companion_id: $companionId) {
+            _id
+            markedForWhoCanInviteToEvents
+        }
     }
 `;

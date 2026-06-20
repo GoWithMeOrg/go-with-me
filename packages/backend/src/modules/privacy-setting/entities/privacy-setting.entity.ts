@@ -21,6 +21,14 @@ export class PrivacySetting {
     @Field(() => PrivacyVisibility)
     @Prop({ type: String, enum: PrivacyVisibility, default: PrivacyVisibility.EVERYONE })
     whoCanInviteToEvents: PrivacyVisibility;
+
+    @Field(() => [ID])
+    @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }], default: [] })
+    markedForWhoCanSeeEvents: Types.ObjectId[];
+
+    @Field(() => [ID])
+    @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }], default: [] })
+    markedForWhoCanInviteToEvents: Types.ObjectId[];
 }
 
 export type PrivacySettingDocument = PrivacySetting & Document;

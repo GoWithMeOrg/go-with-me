@@ -209,6 +209,10 @@ export type Mutation = {
   __typename?: 'Mutation';
   acceptCompanionRequest: CompanionRequest;
   acceptInvitation: Invitation;
+  /** Добавить компаньонов в список отмеченных для whoCanSeeEvents */
+  addMarkedForWhoCanInviteToEvents: PrivacySetting;
+  /** Добавить компаньонов в список отмеченных для whoCanSeeEvents */
+  addMarkedForWhoCanSeeEvents: PrivacySetting;
   addPermissionToRole: Role;
   /** добавать роль пользователю */
   addUserRole: User;
@@ -231,8 +235,6 @@ export type Mutation = {
   deleteFile: Scalars['Boolean']['output'];
   /** Получить пресайнд-ссылку для прямой загрузки файла в MinIO/S3 */
   getPresignedUrl: PresignedUrlResponse;
-  /** Пометить компаньона в избранный список */
-  markCompanion: Scalars['Boolean']['output'];
   registerResource: Resource;
   rejectCompanionRequest: CompanionRequest;
   removeCategories: Scalars['Boolean']['output'];
@@ -243,6 +245,10 @@ export type Mutation = {
   removeInterest: Interest;
   /** Удалить локацию */
   removeLocation: Scalars['Boolean']['output'];
+  /** Убрать компаньона из списка отмеченных для whoCanSeeEvents */
+  removeMarkedForWhoCanInviteToEvents: PrivacySetting;
+  /** Убрать компаньона из списка отмеченных для whoCanSeeEvents */
+  removeMarkedForWhoCanSeeEvents: PrivacySetting;
   removePermissionFromRole: Role;
   /** Удаление роли */
   removeRole: Scalars['Boolean']['output'];
@@ -261,8 +267,6 @@ export type Mutation = {
   toggleLike: Scalars['Boolean']['output'];
   /** Переключает статус активности права (включает/выключает) */
   togglePermissionStatus: Permission;
-  /** Убрать компаньона из избранного списка */
-  unmarkCompanion: Scalars['Boolean']['output'];
   updateCategories: Category;
   updateComment: Comment;
   /** Обновить данные события */
@@ -288,6 +292,16 @@ export type MutationAcceptCompanionRequestArgs = {
 export type MutationAcceptInvitationArgs = {
   invitationId: Scalars['ID']['input'];
   userId: Scalars['ID']['input'];
+};
+
+
+export type MutationAddMarkedForWhoCanInviteToEventsArgs = {
+  companion_ids: Array<Scalars['ID']['input']>;
+};
+
+
+export type MutationAddMarkedForWhoCanSeeEventsArgs = {
+  companion_ids: Array<Scalars['ID']['input']>;
 };
 
 
@@ -374,11 +388,6 @@ export type MutationGetPresignedUrlArgs = {
 };
 
 
-export type MutationMarkCompanionArgs = {
-  companion_id: Scalars['ID']['input'];
-};
-
-
 export type MutationRegisterResourceArgs = {
   name: Scalars['String']['input'];
   slug: Scalars['String']['input'];
@@ -418,6 +427,16 @@ export type MutationRemoveInterestArgs = {
 
 export type MutationRemoveLocationArgs = {
   id: Scalars['ID']['input'];
+};
+
+
+export type MutationRemoveMarkedForWhoCanInviteToEventsArgs = {
+  companion_id: Scalars['ID']['input'];
+};
+
+
+export type MutationRemoveMarkedForWhoCanSeeEventsArgs = {
+  companion_id: Scalars['ID']['input'];
 };
 
 
@@ -482,11 +501,6 @@ export type MutationToggleLikeArgs = {
 
 export type MutationTogglePermissionStatusArgs = {
   id: Scalars['ID']['input'];
-};
-
-
-export type MutationUnmarkCompanionArgs = {
-  companion_id: Scalars['ID']['input'];
 };
 
 
@@ -598,6 +612,8 @@ export enum Privacy {
 export type PrivacySetting = {
   __typename?: 'PrivacySetting';
   _id: Scalars['ID']['output'];
+  markedForWhoCanInviteToEvents: Array<Scalars['ID']['output']>;
+  markedForWhoCanSeeEvents: Array<Scalars['ID']['output']>;
   ownerId: Scalars['ID']['output'];
   whoCanInviteToEvents: PrivacyVisibility;
   whoCanSeeEvents: PrivacyVisibility;
@@ -649,8 +665,6 @@ export type Query = {
   locationById: Location;
   /** Поиск места по ownerId */
   locationByOwnerId: Location;
-  /** Получить список ID избранных компаньонов */
-  markedCompanions: Array<Scalars['ID']['output']>;
   moderatorRoute: Scalars['String']['output'];
   /** Получить настройки приватности текущего пользователя */
   myPrivacySetting: PrivacySetting;
@@ -706,7 +720,6 @@ export type QueryCompanionInvitationEventArgs = {
 export type QueryCompanionsByOwnerIdArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  ownerId: Scalars['ID']['input'];
 };
 
 
@@ -973,6 +986,8 @@ export type UpdateLocationInput = {
 };
 
 export type UpdatePrivacySettingInput = {
+  markedForWhoCanInviteToEvents?: InputMaybe<Array<Scalars['ID']['input']>>;
+  markedForWhoCanSeeEvents?: InputMaybe<Array<Scalars['ID']['input']>>;
   whoCanInviteToEvents?: InputMaybe<PrivacyVisibility>;
   whoCanSeeEvents?: InputMaybe<PrivacyVisibility>;
 };

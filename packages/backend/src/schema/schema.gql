@@ -191,6 +191,12 @@ input LocationPropertiesInput {
 type Mutation {
   acceptCompanionRequest(request_id: ID!): CompanionRequest!
   acceptInvitation(invitationId: ID!, userId: ID!): Invitation!
+
+  """Добавить компаньонов в список отмеченных для whoCanInviteToEvents"""
+  addMarkedForWhoCanInviteToEvents(companion_ids: [ID!]!): PrivacySetting!
+
+  """Добавить компаньонов в список отмеченных для whoCanSeeEvents"""
+  addMarkedForWhoCanSeeEvents(companion_ids: [ID!]!): PrivacySetting!
   addPermissionToRole(permissionId: [ID!]!, roleId: ID!): Role!
 
   """добавать роль пользователю"""
@@ -222,9 +228,6 @@ type Mutation {
 
   """Получить пресайнд-ссылку для прямой загрузки файла в MinIO/S3"""
   getPresignedUrl(folder: String! = "events", input: UploadFileInput!): PresignedUrlResponse!
-
-  """Пометить компаньонов в избранный список"""
-  markCompanion(companion_ids: [ID!]!): Boolean!
   registerResource(
     """Отображаемое имя (например: Мероприятия)"""
     name: String!
@@ -243,6 +246,12 @@ type Mutation {
 
   """Удалить локацию"""
   removeLocation(id: ID!): Boolean!
+
+  """Убрать компаньона из списка отмеченных для whoCanInviteToEvents"""
+  removeMarkedForWhoCanInviteToEvents(companion_id: ID!): PrivacySetting!
+
+  """Убрать компаньона из списка отмеченных для whoCanSeeEvents"""
+  removeMarkedForWhoCanSeeEvents(companion_id: ID!): PrivacySetting!
   removePermissionFromRole(permissionId: ID!, roleId: ID!): Role!
 
   """Удаление роли"""
@@ -269,9 +278,6 @@ type Mutation {
 
   """Переключает статус активности права (включает/выключает)"""
   togglePermissionStatus(id: ID!): Permission!
-
-  """Убрать компаньона из избранного списка"""
-  unmarkCompanion(companion_id: ID!): Boolean!
   updateCategories(category_id: ID!, updateCategoriesInput: UpdateCategoryInput!): Category!
   updateComment(commentId: ID!, updateCommentInput: UpdateCommentInput!): Comment!
 
@@ -326,6 +332,8 @@ enum Privacy {
 
 type PrivacySetting {
   _id: ID!
+  markedForWhoCanInviteToEvents: [ID!]!
+  markedForWhoCanSeeEvents: [ID!]!
   ownerId: ID!
   whoCanInviteToEvents: PrivacyVisibility!
   whoCanSeeEvents: PrivacyVisibility!
@@ -388,9 +396,6 @@ type Query {
 
   """Поиск места по ownerId"""
   locationByOwnerId(ownerId: ID!): Location!
-
-  """Получить список ID избранных компаньонов"""
-  markedCompanions: [ID!]!
   moderatorRoute: String!
 
   """Получить настройки приватности текущего пользователя"""
@@ -530,6 +535,8 @@ input UpdateLocationInput {
 }
 
 input UpdatePrivacySettingInput {
+  markedForWhoCanInviteToEvents: [ID!]
+  markedForWhoCanSeeEvents: [ID!]
   whoCanInviteToEvents: PrivacyVisibility
   whoCanSeeEvents: PrivacyVisibility
 }

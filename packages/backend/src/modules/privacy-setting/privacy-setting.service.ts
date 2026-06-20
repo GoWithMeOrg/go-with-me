@@ -9,6 +9,9 @@ import {
 import { UpdatePrivacySettingInput } from './dto/update-privacy-setting.input';
 import { PrivacyVisibility } from './enums/privacy-visibility.enum';
 
+const isMarkedCompanions = (v: string | undefined | null) =>
+    v === PrivacyVisibility.MARKED_COMPANIONS;
+
 @Injectable()
 export class PrivacySettingService {
     constructor(
@@ -47,6 +50,19 @@ export class PrivacySettingService {
                 input.whoCanSeeEvents ?? existing.whoCanSeeEvents;
             existing.whoCanInviteToEvents =
                 input.whoCanInviteToEvents ?? existing.whoCanInviteToEvents;
+
+            if (input.markedForWhoCanSeeEvents !== undefined) {
+                existing.markedForWhoCanSeeEvents = input.markedForWhoCanSeeEvents ?? [];
+            } else if (input.whoCanSeeEvents !== undefined && !isMarkedCompanions(existing.whoCanSeeEvents)) {
+                existing.markedForWhoCanSeeEvents = [];
+            }
+
+            if (input.markedForWhoCanInviteToEvents !== undefined) {
+                existing.markedForWhoCanInviteToEvents = input.markedForWhoCanInviteToEvents ?? [];
+            } else if (input.whoCanInviteToEvents !== undefined && !isMarkedCompanions(existing.whoCanInviteToEvents)) {
+                existing.markedForWhoCanInviteToEvents = [];
+            }
+
             return existing.save();
         }
 
@@ -56,6 +72,58 @@ export class PrivacySettingService {
                 input.whoCanSeeEvents ?? PrivacyVisibility.EVERYONE,
             whoCanInviteToEvents:
                 input.whoCanInviteToEvents ?? PrivacyVisibility.EVERYONE,
+            markedForWhoCanSeeEvents: input.markedForWhoCanSeeEvents ?? [],
+            markedForWhoCanInviteToEvents: input.markedForWhoCanInviteToEvents ?? [],
         });
+    }
+
+    async addMarkedForWhoCanSeeEvents(
+        ownerId: Types.ObjectId,
+        companionIds: Types.ObjectId[],
+    ): Promise<PrivacySettingDocument> {
+        return this.privacySettingModel.findOneAndUpdate(
+            { ownerId },
+            {
+                $addToSet: { markedForWhoCanSeeEvents: { $each: companionIds } },
+            },
+            { new: true, upsert: true, setDefaultsOnInsert: true },
+        ).exec();
+    }
+
+    async removeMarkedForWhoCanSeeEvents(
+        ownerId: Types.ObjectId,
+        companionId: Types.ObjectId,
+    ): Promise<PrivacySettingDocument> {
+        const doc = await this.privacySettingModel.findOneAndUpdate(
+            { ownerId },
+            { $pull: { markedForWhoCanSeeEvents: companionId } },
+            { new: true },
+        ).exec();
+        return doc ?? (await this.getByOwnerId(ownerId));
+    }
+
+    async addMarkedForWhoCanInviteToEvents(
+        ownerId: Types.ObjectId,
+        companionIds: Types.ObjectId[],
+    ): Promise<PrivacySettingDocument> {
+        return this.privacySettingModel.findOneAndUpdate(
+            { ownerId },
+            {
+                $addToSet: { markedForWhoCanInviteToEvents: { $each: companionIds } },
+            },
+            { new: true, upsert: true, setDefaultsOnInsert: true },
+        ).exec();
+    }
+
+    async removeMarkedForWhoCanInviteToEvents(
+        ownerId: Types.ObjectId,
+        companionId: Types.ObjectId,
+    ): Promise<PrivacySettingDocument> {
+        const doc = await this.privacySettingModel.findOneAndUpdate(
+            { ownerId },
+            { $pull: { markedForWhoCanInviteToEvents: companionId } },
+            { new: true },
+        ).exec();
+        return doc ?? (await this.getByOwnerId(ownerId));
     }
 }

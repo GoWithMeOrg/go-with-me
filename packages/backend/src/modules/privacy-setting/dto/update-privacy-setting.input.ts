@@ -1,4 +1,6 @@
-import { InputType, Field } from '@nestjs/graphql';
+import { InputType, Field, ID } from '@nestjs/graphql';
+
+import { Types } from 'mongoose';
 
 import { PrivacyVisibility } from '../enums/privacy-visibility.enum';
 
@@ -9,4 +11,10 @@ export class UpdatePrivacySettingInput {
 
     @Field(() => PrivacyVisibility, { nullable: true })
     whoCanInviteToEvents?: PrivacyVisibility;
+
+    @Field(() => [ID], { nullable: true })
+    markedForWhoCanSeeEvents?: Types.ObjectId[];
+
+    @Field(() => [ID], { nullable: true })
+    markedForWhoCanInviteToEvents?: Types.ObjectId[];
 }

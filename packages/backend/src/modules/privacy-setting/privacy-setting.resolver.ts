@@ -1,5 +1,6 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
+import { Types } from 'mongoose';
 
 import { PrivacySetting } from './entities/privacy-setting.entity';
 import { PrivacySettingService } from './privacy-setting.service';
@@ -34,5 +35,49 @@ export class PrivacySettingResolver {
         @Args('input') input: UpdatePrivacySettingInput,
     ): Promise<PrivacySetting> {
         return this.privacySettingService.update(user._id, input);
+    }
+
+    @Mutation(() => PrivacySetting, {
+        name: 'addMarkedForWhoCanSeeEvents',
+        description: 'Добавить компаньонов в список отмеченных для whoCanSeeEvents',
+    })
+    addMarkedForWhoCanSeeEvents(
+        @CurrentUser() user: User,
+        @Args('companion_ids', { type: () => [ID] }) companionIds: Types.ObjectId[],
+    ): Promise<PrivacySetting> {
+        return this.privacySettingService.addMarkedForWhoCanSeeEvents(user._id, companionIds);
+    }
+
+    @Mutation(() => PrivacySetting, {
+        name: 'removeMarkedForWhoCanSeeEvents',
+        description: 'Убрать компаньона из списка отмеченных для whoCanSeeEvents',
+    })
+    removeMarkedForWhoCanSeeEvents(
+        @CurrentUser() user: User,
+        @Args('companion_id', { type: () => ID }) companionId: Types.ObjectId,
+    ): Promise<PrivacySetting> {
+        return this.privacySettingService.removeMarkedForWhoCanSeeEvents(user._id, companionId);
+    }
+
+    @Mutation(() => PrivacySetting, {
+        name: 'addMarkedForWhoCanInviteToEvents',
+        description: 'Добавить компаньонов в список отмеченных для whoCanInviteToEvents',
+    })
+    addMarkedForWhoCanInviteToEvents(
+        @CurrentUser() user: User,
+        @Args('companion_ids', { type: () => [ID] }) companionIds: Types.ObjectId[],
+    ): Promise<PrivacySetting> {
+        return this.privacySettingService.addMarkedForWhoCanInviteToEvents(user._id, companionIds);
+    }
+
+    @Mutation(() => PrivacySetting, {
+        name: 'removeMarkedForWhoCanInviteToEvents',
+        description: 'Убрать компаньона из списка отмеченных для whoCanInviteToEvents',
+    })
+    removeMarkedForWhoCanInviteToEvents(
+        @CurrentUser() user: User,
+        @Args('companion_id', { type: () => ID }) companionId: Types.ObjectId,
+    ): Promise<PrivacySetting> {
+        return this.privacySettingService.removeMarkedForWhoCanInviteToEvents(user._id, companionId);
     }
 }

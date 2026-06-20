@@ -117,24 +117,4 @@ export class CompanionService {
         return filteredCompanions;
     }
 
-    async markCompanion(ownerId: Types.ObjectId, companionIds: Types.ObjectId[]): Promise<boolean> {
-        const result = await this.companionModel.updateOne(
-            { ownerId },
-            { $addToSet: { markedCompanions: { $each: companionIds } } }
-        );
-        return result.modifiedCount > 0 || result.matchedCount > 0;
-    }
-
-    async unmarkCompanion(ownerId: Types.ObjectId, companionId: Types.ObjectId): Promise<boolean> {
-        const result = await this.companionModel.updateOne(
-            { ownerId },
-            { $pull: { markedCompanions: companionId } }
-        );
-        return result.modifiedCount > 0 || result.matchedCount > 0;
-    }
-
-    async getMarkedCompanions(ownerId: Types.ObjectId): Promise<Types.ObjectId[]> {
-        const doc = await this.companionModel.findOne({ ownerId }).lean();
-        return doc?.markedCompanions ?? [];
-    }
 }

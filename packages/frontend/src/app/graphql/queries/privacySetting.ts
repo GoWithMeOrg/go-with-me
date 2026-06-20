@@ -7,6 +7,8 @@ export const GET_MY_PRIVACY_SETTING: TypedDocumentNode<{ myPrivacySetting: Priva
             _id
             whoCanSeeEvents
             whoCanInviteToEvents
+            markedForWhoCanSeeEvents
+            markedForWhoCanInviteToEvents
         }
     }
 `;
