@@ -1,7 +1,7 @@
 FROM node:24-alpine
 
 # Устанавливаем pnpm глобально в образ
-RUN npm config set registry https://registry.npmmirror.com
+# RUN npm config set registry https://registry.npmmirror.com
 RUN npm install -g pnpm@11.5.0
 
 # Настраиваем переменные для корректной работы путей pnpm

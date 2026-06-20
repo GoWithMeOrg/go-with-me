@@ -52,14 +52,14 @@ export class CompanionResolver {
 
     @Mutation(() => Boolean, {
         name: 'markCompanion',
-        description: 'Пометить компаньона в избранный список',
+        description: 'Пометить компаньонов в избранный список',
     })
     @UseGuards(SessionAuthGuard, RolesGuard)
     markCompanion(
         @CurrentUser() user: User,
-        @Args('companion_id', { type: () => ID }) companionId: Types.ObjectId
+        @Args('companion_ids', { type: () => [ID] }) companionIds: Types.ObjectId[]
     ): Promise<boolean> {
-        return this.companionService.markCompanion(user._id, companionId);
+        return this.companionService.markCompanion(user._id, companionIds);
     }
 
     @Mutation(() => Boolean, {

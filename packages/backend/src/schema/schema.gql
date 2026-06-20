@@ -223,8 +223,8 @@ type Mutation {
   """Получить пресайнд-ссылку для прямой загрузки файла в MinIO/S3"""
   getPresignedUrl(folder: String! = "events", input: UploadFileInput!): PresignedUrlResponse!
 
-  """Пометить компаньона в избранный список"""
-  markCompanion(companion_id: ID!): Boolean!
+  """Пометить компаньонов в избранный список"""
+  markCompanion(companion_ids: [ID!]!): Boolean!
   registerResource(
     """Отображаемое имя (например: Мероприятия)"""
     name: String!
