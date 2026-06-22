@@ -42,6 +42,16 @@ export class EventResolver {
     }
 
     @Query(() => [Event], {
+        name: 'getPopularEvents',
+        description: 'Получить популярные события по количеству присоединившихся',
+    })
+    getPopularEvents(
+        @Args('limit', { type: () => Int, nullable: true }) limit?: number,
+    ) {
+        return this.eventService.getPopularEvents(limit);
+    }
+
+    @Query(() => [Event], {
         name: 'getAllEvents',
         description: 'Получить все активные события с пагинацией и сортировкой',
     })

@@ -383,6 +383,9 @@ type Query {
   getLikesCount(ownerId: ID!): Int!
   getParentCommentsByOwnerId(limit: Int, offset: Int, ownerId: ID!, sort: String): [Comment!]!
 
+  """Получить популярные события по количеству присоединившихся"""
+  getPopularEvents(limit: Int): [Event!]!
+
   """Поиск интересов по id"""
   interestById(interest_id: ID!): Interest!
 

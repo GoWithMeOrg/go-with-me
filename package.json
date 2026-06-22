@@ -13,6 +13,8 @@
         "frontend:format": "prettier packages/frontend -w",
         "backend:format": "prettier packages/backend -w",
         "import:mongo": "./scripts/import-mongo-data.sh",
+        "seed:joins": "pnpm --filter backend seed:joins",
+        "seed:likes": "pnpm --filter backend seed:likes",
         "codegen": "graphql-codegen --config codegen.ts"
     },
     "devDependencies": {

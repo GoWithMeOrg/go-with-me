@@ -38,4 +38,21 @@ export class JoinService {
         const join = await this.joinModel.findOne({ ownerId: owner_id, user: user_id }).exec();
         return !!join;
     }
+
+    async getJoinCounts(
+        ownerIds?: Types.ObjectId[],
+    ): Promise<{ ownerId: Types.ObjectId; count: number }[]> {
+        const match: Record<string, unknown> = { ownerType: 'Event' };
+        if (ownerIds && ownerIds.length > 0) {
+            match.ownerId = { $in: ownerIds };
+        }
+
+        const result = await this.joinModel.aggregate([
+            { $match: match },
+            { $group: { _id: '$ownerId', count: { $sum: 1 } } },
+            { $project: { _id: 0, ownerId: '$_id', count: 1 } },
+        ]);
+
+        return result as { ownerId: Types.ObjectId; count: number }[];
+    }
 }

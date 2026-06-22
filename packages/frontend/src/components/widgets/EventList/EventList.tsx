@@ -1,7 +1,7 @@
 'use client';
 
 import { FC } from 'react';
-import type { IEvent } from '@/app/types/Event';
+import { Event } from '@/app/graphql/types';
 import { Backdrop } from '@/components/widgets/Backdrop';
 import { CardEvent } from '@/components/widgets/CardEvent';
 
@@ -10,8 +10,8 @@ import { EventListProps } from './types/EventList';
 
 import classes from './EventList.module.css';
 
-export const EventList: FC<EventListProps> = ({ sizeCard, limit, sort }) => {
-    const { loading, error, events, refetch } = useEventList({ limit, sort });
+export const EventList: FC<EventListProps> = ({ sizeCard }) => {
+    const { loading, error, events, refetch } = useEventList();
 
     // refetch();
 
@@ -23,16 +23,16 @@ export const EventList: FC<EventListProps> = ({ sizeCard, limit, sort }) => {
         <Backdrop marginTop={84} marginBottom={440} contentLoading={loading}>
             <ul className={classes.list}>
                 {events.map(
-                    ({ _id, description, name, startDate, time, location, image }: IEvent) => (
+                    ({ _id, description, name, startDate, time, location, image }: Event) => (
                         <li key={_id}>
                             <CardEvent
                                 id={_id}
                                 name={name}
-                                description={description}
-                                coord={[location.coordinates[0], location.coordinates[1]]}
-                                startDate={startDate}
-                                time={time}
-                                image={image}
+                                description={description as string}
+                                coord={location?.geometry.coordinates}
+                                startDate={startDate as string}
+                                time={time as string}
+                                image={image as string}
                                 size={sizeCard}
                             />
                         </li>

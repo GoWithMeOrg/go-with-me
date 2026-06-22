@@ -20,7 +20,7 @@ interface CardEventProps {
   id: string;
   name: string;
   description: string;
-  coord: [number, number];
+  coord?: [number, number];
   startDate: string | Date | undefined;
   time: string | undefined;
   image?: string;

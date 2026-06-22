@@ -1,3 +1,5 @@
+import { Event } from '@/app/graphql/types';
+import { TypedDocumentNode } from '@graphql-typed-document-node/core';
 import gql from 'graphql-tag';
 
 export const GET_EVENTS = gql`
@@ -14,6 +16,45 @@ export const GET_EVENTS = gql`
                 interests
             }
             location {
+                geometry {
+                    coordinates
+                }
+                properties {
+                    address
+                }
+            }
+            name
+            organizer {
+                _id
+                firstName
+                lastName
+                image
+            }
+            privacy
+            startDate
+            tag {
+                tags
+            }
+            time
+        }
+    }
+`;
+
+export const GET_EVENTS_BY_ID = gql`
+    query GetEventById($eventId: ID!) {
+        getEventById(event_id: $eventId) {
+            _id
+            category {
+                categories
+            }
+            description
+            endDate
+            image
+            interest {
+                interests
+            }
+            location {
+                _id
                 geometry {
                     coordinates
                 }
@@ -76,19 +117,14 @@ export const GET_EVENTS_BY_ORGANIZER = gql`
     }
 `;
 
-export const GET_EVENTS_BY_ID = gql`
-    query GetEventById($eventId: ID!) {
-        getEventById(event_id: $eventId) {
+export const GET_POPULAR_EVENTS: TypedDocumentNode<{
+    getPopularEvents: Event[];
+}> = gql`
+    query GetPopularEvents {
+        getPopularEvents {
             _id
-            category {
-                categories
-            }
             description
-            endDate
-            image
-            interest {
-                interests
-            }
+            startDate
             location {
                 geometry {
                     coordinates
@@ -98,18 +134,12 @@ export const GET_EVENTS_BY_ID = gql`
                 }
             }
             name
-            privacy
-            startDate
-            tag {
-                tags
-            }
-            time
             organizer {
                 _id
                 firstName
                 lastName
-                image
             }
+            time
         }
     }
 `;

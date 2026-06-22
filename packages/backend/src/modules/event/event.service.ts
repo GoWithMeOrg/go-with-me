@@ -57,6 +57,11 @@ export class EventService {
         return this.enrichEvent.enrichEventsWithRelations(events);
     }
 
+    async getPopularEvents(limit = 12): Promise<EventWithRelations[]> {
+        const events = await this.queryService.findPopular(limit);
+        return this.enrichEvent.enrichEventsWithRelations(events);
+    }
+
     async updateEvent(
         event_id: Types.ObjectId,
         updateEventInput: Partial<CreateEventInput>,

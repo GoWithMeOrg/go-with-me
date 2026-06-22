@@ -103,7 +103,7 @@ export const EventFilters = () => {
                                         id={_id}
                                         name={name}
                                         description={description}
-                                        coord={[location.coordinates[0], location.coordinates[1]]}
+                                        coord={location?.coordinates ? [location.coordinates[0], location.coordinates[1]] : undefined}
                                         startDate={startDate}
                                         time={time}
                                         image={image}

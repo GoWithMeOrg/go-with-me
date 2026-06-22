@@ -8,6 +8,7 @@ import { UserModule } from '../user/user.module';
 import { CategoryModule } from '../category/category.module';
 import { InterestModule } from '../interest/interest.module';
 import { TagModule } from '../tag/tag.module';
+import { JoinModule } from '../join/join.module';
 import { EnrichEventHelper } from './helpers/enrich-event.helper';
 import { EventCrudService } from './services/event-crud.service';
 import { EventQueryService } from './services/event-query.service';
@@ -21,6 +22,7 @@ import { EventRelationsService } from './services/event-relations.service';
         CategoryModule,
         InterestModule,
         TagModule,
+        JoinModule,
     ],
     providers: [
         EventResolver,
