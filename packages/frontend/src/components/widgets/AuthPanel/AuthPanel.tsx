@@ -16,14 +16,14 @@ export const AuthPanel = () => {
 
     const popupMode: 'auth' = 'auth';
 
-    const { showPopup, setShowPopup, handleShowPopup, handleHidePopup } = usePopup({ popupMode });
+    const { showPopup, setShowPopup, handleHidePopup } = usePopup({ popupMode });
 
     return (
         <div className={classes.component}>
             {status === 'unauthenticated' && (
                 <>
                     <Button size="big" onClick={() => signIn('google')}>
-                        Войти
+                        Sign in
                     </Button>
                     <Popup showPopup={showPopup} setShowPopup={setShowPopup} popupMode={'auth'}>
                         <AuthModal onClose={handleHidePopup} onSignIn={() => signIn('google')} />
@@ -47,7 +47,7 @@ export const AuthPanel = () => {
                                     confirm('Вы уверены, что хотите выйти?') && logout();
                                 }}
                             >
-                                Выйти
+                                Sign out
                             </Button>
                         </div>
                     </div>

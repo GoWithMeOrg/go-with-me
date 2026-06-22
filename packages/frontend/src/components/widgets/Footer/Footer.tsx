@@ -27,7 +27,7 @@ export const Footer = () => {
                             className={classes.footerLink}
                             resetDefaultStyles={true}
                         >
-                            Войти
+                            Sign in
                         </Button>
                         <LogoFooter />
                     </div>
