@@ -209,6 +209,10 @@ export type Mutation = {
   __typename?: 'Mutation';
   acceptCompanionRequest: CompanionRequest;
   acceptInvitation: Invitation;
+  /** Добавить компаньонов в список отмеченных для whoCanSeeEvents */
+  addMarkedForWhoCanInviteToEvents: PrivacySetting;
+  /** Добавить компаньонов в список отмеченных для whoCanSeeEvents */
+  addMarkedForWhoCanSeeEvents: PrivacySetting;
   addPermissionToRole: Role;
   /** добавать роль пользователю */
   addUserRole: User;
@@ -241,6 +245,10 @@ export type Mutation = {
   removeInterest: Interest;
   /** Удалить локацию */
   removeLocation: Scalars['Boolean']['output'];
+  /** Убрать компаньона из списка отмеченных для whoCanSeeEvents */
+  removeMarkedForWhoCanInviteToEvents: PrivacySetting;
+  /** Убрать компаньона из списка отмеченных для whoCanSeeEvents */
+  removeMarkedForWhoCanSeeEvents: PrivacySetting;
   removePermissionFromRole: Role;
   /** Удаление роли */
   removeRole: Scalars['Boolean']['output'];
@@ -266,6 +274,8 @@ export type Mutation = {
   updateInterest: Interest;
   /** Обновить локацию */
   updateLocation: Location;
+  /** Обновить настройки приватности */
+  updatePrivacySetting: PrivacySetting;
   updateRole: Role;
   updateTag: Tag;
   /** Обновить данные пользователя */
@@ -282,6 +292,16 @@ export type MutationAcceptCompanionRequestArgs = {
 export type MutationAcceptInvitationArgs = {
   invitationId: Scalars['ID']['input'];
   userId: Scalars['ID']['input'];
+};
+
+
+export type MutationAddMarkedForWhoCanInviteToEventsArgs = {
+  companion_ids: Array<Scalars['ID']['input']>;
+};
+
+
+export type MutationAddMarkedForWhoCanSeeEventsArgs = {
+  companion_ids: Array<Scalars['ID']['input']>;
 };
 
 
@@ -410,6 +430,16 @@ export type MutationRemoveLocationArgs = {
 };
 
 
+export type MutationRemoveMarkedForWhoCanInviteToEventsArgs = {
+  companion_id: Scalars['ID']['input'];
+};
+
+
+export type MutationRemoveMarkedForWhoCanSeeEventsArgs = {
+  companion_id: Scalars['ID']['input'];
+};
+
+
 export type MutationRemovePermissionFromRoleArgs = {
   permissionId: Scalars['ID']['input'];
   roleId: Scalars['ID']['input'];
@@ -508,6 +538,11 @@ export type MutationUpdateLocationArgs = {
 };
 
 
+export type MutationUpdatePrivacySettingArgs = {
+  input: UpdatePrivacySettingInput;
+};
+
+
 export type MutationUpdateRoleArgs = {
   updateRoleInput: UpdateRoleInput;
 };
@@ -574,6 +609,22 @@ export enum Privacy {
   Public = 'PUBLIC'
 }
 
+export type PrivacySetting = {
+  __typename?: 'PrivacySetting';
+  _id: Scalars['ID']['output'];
+  markedForWhoCanInviteToEvents: Array<Scalars['ID']['output']>;
+  markedForWhoCanSeeEvents: Array<Scalars['ID']['output']>;
+  ownerId: Scalars['ID']['output'];
+  whoCanInviteToEvents: PrivacyVisibility;
+  whoCanSeeEvents: PrivacyVisibility;
+};
+
+export enum PrivacyVisibility {
+  Companions = 'COMPANIONS',
+  Everyone = 'EVERYONE',
+  MarkedCompanions = 'MARKED_COMPANIONS'
+}
+
 export type Query = {
   __typename?: 'Query';
   adminRoute: Scalars['String']['output'];
@@ -615,6 +666,8 @@ export type Query = {
   /** Поиск места по ownerId */
   locationByOwnerId: Location;
   moderatorRoute: Scalars['String']['output'];
+  /** Получить настройки приватности текущего пользователя */
+  myPrivacySetting: PrivacySetting;
   /** Поиск права по id */
   permissionById?: Maybe<Permission>;
   /** Поиск права по названию */
@@ -667,7 +720,6 @@ export type QueryCompanionInvitationEventArgs = {
 export type QueryCompanionsByOwnerIdArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  ownerId: Scalars['ID']['input'];
 };
 
 
@@ -931,6 +983,13 @@ export type UpdateInterestInput = {
 export type UpdateLocationInput = {
   geometry?: InputMaybe<LocationGeometryInput>;
   properties?: InputMaybe<LocationPropertiesInput>;
+};
+
+export type UpdatePrivacySettingInput = {
+  markedForWhoCanInviteToEvents?: InputMaybe<Array<Scalars['ID']['input']>>;
+  markedForWhoCanSeeEvents?: InputMaybe<Array<Scalars['ID']['input']>>;
+  whoCanInviteToEvents?: InputMaybe<PrivacyVisibility>;
+  whoCanSeeEvents?: InputMaybe<PrivacyVisibility>;
 };
 
 export type UpdateRoleInput = {

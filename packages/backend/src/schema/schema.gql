@@ -191,6 +191,12 @@ input LocationPropertiesInput {
 type Mutation {
   acceptCompanionRequest(request_id: ID!): CompanionRequest!
   acceptInvitation(invitationId: ID!, userId: ID!): Invitation!
+
+  """Добавить компаньонов в список отмеченных для whoCanInviteToEvents"""
+  addMarkedForWhoCanInviteToEvents(companion_ids: [ID!]!): PrivacySetting!
+
+  """Добавить компаньонов в список отмеченных для whoCanSeeEvents"""
+  addMarkedForWhoCanSeeEvents(companion_ids: [ID!]!): PrivacySetting!
   addPermissionToRole(permissionId: [ID!]!, roleId: ID!): Role!
 
   """добавать роль пользователю"""
@@ -240,6 +246,12 @@ type Mutation {
 
   """Удалить локацию"""
   removeLocation(id: ID!): Boolean!
+
+  """Убрать компаньона из списка отмеченных для whoCanInviteToEvents"""
+  removeMarkedForWhoCanInviteToEvents(companion_id: ID!): PrivacySetting!
+
+  """Убрать компаньона из списка отмеченных для whoCanSeeEvents"""
+  removeMarkedForWhoCanSeeEvents(companion_id: ID!): PrivacySetting!
   removePermissionFromRole(permissionId: ID!, roleId: ID!): Role!
 
   """Удаление роли"""
@@ -275,6 +287,9 @@ type Mutation {
 
   """Обновить локацию"""
   updateLocation(location_id: ID!, updateLocationInput: UpdateLocationInput!): Location!
+
+  """Обновить настройки приватности"""
+  updatePrivacySetting(input: UpdatePrivacySettingInput!): PrivacySetting!
   updateRole(updateRoleInput: UpdateRoleInput!): Role!
   updateTag(tag_id: ID!, updateTagInput: UpdateTagInput!): Tag!
 
@@ -315,6 +330,21 @@ enum Privacy {
   PUBLIC
 }
 
+type PrivacySetting {
+  _id: ID!
+  markedForWhoCanInviteToEvents: [ID!]!
+  markedForWhoCanSeeEvents: [ID!]!
+  ownerId: ID!
+  whoCanInviteToEvents: PrivacyVisibility!
+  whoCanSeeEvents: PrivacyVisibility!
+}
+
+enum PrivacyVisibility {
+  COMPANIONS
+  EVERYONE
+  MARKED_COMPANIONS
+}
+
 type Query {
   adminRoute: String!
 
@@ -326,7 +356,7 @@ type Query {
   companionInvitationEvent(companion_id: ID!, organizer_id: ID!): [Event!]!
 
   """Поиск компаньонов по ownerId"""
-  companionsByOwnerId(limit: Int, offset: Int, ownerId: ID!): CompanionsResponse!
+  companionsByOwnerId(limit: Int, offset: Int): CompanionsResponse!
 
   """Найти пользователей по email или имени"""
   findByEmailOrName(query: String): [User!]!
@@ -361,12 +391,18 @@ type Query {
   isJoinedByUser(owner_id: ID!): Boolean
   isLikedByUser(owner_id: ID!): Boolean
 
+  """Проверить, является ли пользователь компаньоном"""
+  isUserCompanion(companion_id: ID!, user_id: ID!): Boolean!
+
   """Поиск места по id"""
   locationById(id: ID!): Location!
 
   """Поиск места по ownerId"""
   locationByOwnerId(ownerId: ID!): Location!
   moderatorRoute: String!
+
+  """Получить настройки приватности текущего пользователя"""
+  myPrivacySetting: PrivacySetting!
 
   """Поиск права по id"""
   permissionById(id: ID!): Permission
@@ -376,6 +412,12 @@ type Query {
 
   """Получить все права"""
   permissions: [Permission!]!
+
+  """Получить настройки приватности пользователя по ID"""
+  privacySettingByUserId(user_id: ID!): PrivacySetting!
+
+  """Получить настройки приватности для нескольких пользователей"""
+  privacySettingsForUsers(user_ids: [ID!]!): [PrivacySetting!]!
   resourceBySlug(slug: String!): Resource
 
   """Список всех зарегистрированных ресурсов"""
@@ -499,6 +541,13 @@ input UpdateInterestInput {
 input UpdateLocationInput {
   geometry: LocationGeometryInput
   properties: LocationPropertiesInput
+}
+
+input UpdatePrivacySettingInput {
+  markedForWhoCanInviteToEvents: [ID!]
+  markedForWhoCanSeeEvents: [ID!]
+  whoCanInviteToEvents: PrivacyVisibility
+  whoCanSeeEvents: PrivacyVisibility
 }
 
 input UpdateRoleInput {

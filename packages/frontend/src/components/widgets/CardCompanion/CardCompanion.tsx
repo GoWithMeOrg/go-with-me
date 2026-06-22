@@ -17,6 +17,7 @@ export interface CardCompanionProps {
   onChange: (checked: boolean) => void;
   select: boolean;
   checked?: boolean;
+  canInvite?: boolean;
 }
 
 export const CardCompanion: FC<CardCompanionProps> = ({
@@ -28,6 +29,7 @@ export const CardCompanion: FC<CardCompanionProps> = ({
   checked,
   onClickPopupDelete,
   onClickPopupInvitation,
+  canInvite = true,
 }) => {
   const cardCompanionCss = [classes.card, checked && classes.cardBorder].filter(Boolean).join(' ');
 
@@ -48,7 +50,7 @@ export const CardCompanion: FC<CardCompanionProps> = ({
         </div>
 
         <div className={classes.icons}>
-          <Email onClick={onClickPopupInvitation} />
+          {canInvite && <Email onClick={onClickPopupInvitation} />}
 
           {/* <Message /> */}
 

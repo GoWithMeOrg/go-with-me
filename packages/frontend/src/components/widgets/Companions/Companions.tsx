@@ -25,6 +25,7 @@ import classes from './Companions.module.css';
 const Companions: FC = () => {
     const {
         sendRequestCompanion,
+        companionCanInvite,
         companions,
 
         showAllCompanions,
@@ -153,6 +154,7 @@ const Companions: FC = () => {
                                 onChange={(isChecked) => handleCheckboxChange(card._id, isChecked)}
                                 select={select}
                                 checked={checkedCompanions[card._id] ?? false}
+                                canInvite={companionCanInvite[card._id] ?? true}
                                 onClickPopupInvitation={() =>
                                     openPopupInvitationCompanion(
                                         card._id,

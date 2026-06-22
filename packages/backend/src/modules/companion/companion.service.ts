@@ -10,7 +10,7 @@ import { CompanionRequestStatus } from '../companion-request/enums/companion-req
 @Injectable()
 export class CompanionService {
     constructor(
-		@InjectModel(User.name)
+        @InjectModel(User.name)
         private userModel: Model<UserDocument>,
         @InjectModel(Companion.name)
         private companionModel: Model<CompanionDocument>,
@@ -19,38 +19,32 @@ export class CompanionService {
     ) {}
 
     async getCompanionsByOwner(
-		ownerId: Types.ObjectId,
-		limit?: number,
-		offset?: number
-	): Promise<{ companions: User[]; totalCompanions: number }> {
-		
-		const ownerObjectId = new Types.ObjectId(ownerId.toString());
+        ownerId: Types.ObjectId,
+        limit?: number,
+        offset?: number
+    ): Promise<{ companions: User[]; totalCompanions: number }> {
+        const ownerObjectId = new Types.ObjectId(ownerId.toString());
 
-		const companionDoc = await this.companionModel
-			.findOne({ ownerId: ownerObjectId })
-			.lean();
+        const companionDoc = await this.companionModel.findOne({ ownerId: ownerObjectId }).lean();
 
-		if (!companionDoc) {
-			return { companions: [], totalCompanions: 0 };
-		}
+        if (!companionDoc) {
+            return { companions: [], totalCompanions: 0 };
+        }
 
-		const allIds = companionDoc.companions;
+        const allIds = companionDoc.companions;
 
-		const companions = await this.userModel
-			.find({ _id: { $in: allIds } })
-			.skip(offset ?? 0)
-			.limit(limit ?? 0)
-			.lean();
+        const companions = await this.userModel
+            .find({ _id: { $in: allIds } })
+            .skip(offset ?? 0)
+            .limit(limit ?? 0)
+            .lean();
 
-		return { companions, totalCompanions: allIds.length };
-	}
+        return { companions, totalCompanions: allIds.length };
+    }
 
-    async removeCompanion(
-        userId: Types.ObjectId,
-        companionId: Types.ObjectId
-    ): Promise<boolean> {
-		const userObjectId = new Types.ObjectId(userId.toString());
-		const companionObjectId = new Types.ObjectId(companionId.toString());
+    async removeCompanion(userId: Types.ObjectId, companionId: Types.ObjectId): Promise<boolean> {
+        const userObjectId = new Types.ObjectId(userId.toString());
+        const companionObjectId = new Types.ObjectId(companionId.toString());
 
         try {
             await this.companionModel.updateOne(
@@ -89,10 +83,25 @@ export class CompanionService {
         }
     }
 
-    async findCompanion(
+    async isUserCompanion(
         ownerId: Types.ObjectId,
-        query?: string
-    ): Promise<User[]> {
+        companionId: Types.ObjectId,
+    ): Promise<boolean> {
+        const ownerObjectId = new Types.ObjectId(ownerId.toString());
+        const companionObjectId = new Types.ObjectId(companionId.toString());
+
+        const companionDoc = await this.companionModel
+            .findOne({ ownerId: ownerObjectId })
+            .lean();
+
+        if (!companionDoc) return false;
+
+        return companionDoc.companions.some(
+            (id) => id.toString() === companionObjectId.toString(),
+        );
+    }
+
+    async findCompanion(ownerId: Types.ObjectId, query?: string): Promise<User[]> {
         const getCompanions = await this.companionModel
             .findOne({ ownerId })
             .populate<{ companions: User[] }>({
@@ -125,4 +134,5 @@ export class CompanionService {
 
         return filteredCompanions;
     }
+
 }

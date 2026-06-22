@@ -65,6 +65,19 @@
     background: var(--white-color);
 }
 
+.dropdownItemContent {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+}
+
+.dropdownItemAvatar {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
 .dropdownItemText {
     display: flex;
     justify-content: flex-start;

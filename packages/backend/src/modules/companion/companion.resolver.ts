@@ -19,14 +19,13 @@ export class CompanionResolver {
         description: 'Поиск компаньонов по ownerId',
     })
     getCompanionsByOwner(
-        @Args('ownerId', { type: () => ID })
-        ownerId: Types.ObjectId,
+        @CurrentUser() user: User,
         @Args('limit', { type: () => Int, nullable: true })
         limit?: number,
         @Args('offset', { type: () => Int, nullable: true })
         offset?: number
     ): Promise<{ companions: User[]; totalCompanions: number }> {
-        return this.companionService.getCompanionsByOwner(ownerId, limit, offset);
+        return this.companionService.getCompanionsByOwner(user._id, limit, offset);
     }
 
     @Query(() => [User], {
@@ -42,6 +41,18 @@ export class CompanionResolver {
         return this.companionService.findCompanion(user._id, query);
     }
 
+    @Query(() => Boolean, {
+        name: 'isUserCompanion',
+        description: 'Проверить, является ли пользователь компаньоном',
+    })
+    @UseGuards(SessionAuthGuard)
+    isUserCompanion(
+        @Args('user_id', { type: () => ID }) userId: Types.ObjectId,
+        @Args('companion_id', { type: () => ID }) companionId: Types.ObjectId,
+    ): Promise<boolean> {
+        return this.companionService.isUserCompanion(userId, companionId);
+    }
+
     @Mutation(() => Boolean)
     @UseGuards(SessionAuthGuard, RolesGuard)
     removeCompanion(
@@ -50,4 +61,5 @@ export class CompanionResolver {
     ): Promise<boolean> {
         return this.companionService.removeCompanion(userId, companionId);
     }
+
 }
