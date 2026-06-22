@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { GET_PRIVACY_SETTINGS_FOR_USERS } from '@/app/graphql/queries/privacySetting';
-import { PrivacySetting } from '@/app/graphql/types';
+import { PrivacySetting, PrivacyVisibility } from '@/app/graphql/types';
 import { useDialogModal } from '@/components/widgets/DialogModal/hooks/useDialogModal';
 import { DialogModal } from '@/components/widgets/DialogModal/types/DialogModal';
 import { useQuery } from '@apollo/client/react';
@@ -19,10 +19,7 @@ export const useCompanions = () => {
 
     const companions = companionSearchHook.companions;
 
-    const companionIds = useMemo(
-        () => companions?.map((c) => c._id) ?? [],
-        [companions],
-    );
+    const companionIds = useMemo(() => companions?.map((c) => c._id) ?? [], [companions]);
 
     const { data: privacyData } = useQuery(GET_PRIVACY_SETTINGS_FOR_USERS, {
         variables: { userIds: companionIds },
@@ -30,23 +27,22 @@ export const useCompanions = () => {
     });
 
     const companionCanInvite = useMemo(() => {
-        const settings: PrivacySetting[] = (
-            privacyData as { privacySettingsForUsers: PrivacySetting[] } | undefined
-        )?.privacySettingsForUsers ?? [];
+        const settings: PrivacySetting[] =
+            (privacyData as { privacySettingsForUsers: PrivacySetting[] } | undefined)
+                ?.privacySettingsForUsers ?? [];
 
         const map: Record<string, boolean> = {};
 
         for (const s of settings) {
             const ownerId = s.ownerId;
-            if (s.whoCanInviteToEvents === 'EVERYONE') {
+            if (s.whoCanInviteToEvents === PrivacyVisibility.Everyone) {
                 map[ownerId] = true;
-            } else if (s.whoCanInviteToEvents === 'COMPANIONS') {
+            } else if (s.whoCanInviteToEvents === PrivacyVisibility.Companions) {
                 map[ownerId] = true;
-            } else if (s.whoCanInviteToEvents === 'MARKED_COMPANIONS') {
+            } else if (s.whoCanInviteToEvents === PrivacyVisibility.MarkedCompanions) {
                 map[ownerId] =
-                    s.markedForWhoCanInviteToEvents?.includes(
-                        companionSearchHook.user_id ?? '',
-                    ) ?? false;
+                    s.markedForWhoCanInviteToEvents?.includes(companionSearchHook.user_id ?? '') ??
+                    false;
             } else {
                 map[ownerId] = false;
             }
