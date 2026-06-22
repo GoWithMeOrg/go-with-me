@@ -35,7 +35,7 @@ const Generator: NextPage = () => {
                         onChange={changeNumberEvents}
                         value={numberEvents ?? ''}
                         min="1"
-                        max="10"
+                        max="1000"
                     />
                 </Label>
 

@@ -29,32 +29,11 @@ const GET_SESSION = gql`
 `;
 
 const EventListPage: NextPage = () => {
-    // const { data, loading: session, error } = useQuery(GET_SESSION);
-    // console.log(data);
-    // const { status } = useSession();
-    // const { filterEventsImage, loading } = useEventList({});
     const { data, loading, error } = useQuery(GET_SESSION);
 
-    // Лог для проверки результата запроса
-    // console.log('Session Data:', data);
-
-    // Если есть ошибка или сессия не найдена, обработайте это правильно
-    if (error) {
-        console.error('GraphQL Error:', error);
-        return <div>Ошибка загрузки сессии.</div>;
-    }
-
-    // const { status } = useSession();
-    const { filterEventsImage, loading: eventLoading } = useEventList({});
+    const { filterEventsImage, loading: eventLoading } = useEventList();
 
     if (eventLoading || loading) return <Spinner className={classes.spinner} />;
-
-    //@ts-ignore
-    const session = data?.session;
-    if (!session) {
-        console.warn('Сессия не найдена');
-        return <div>Нет доступной сессии.</div>;
-    }
 
     if (loading) return <Spinner className={classes.spinner} />;
 
@@ -114,7 +93,7 @@ const EventListPage: NextPage = () => {
                             slide.location?.geometry.coordinates[0] as number,
                             slide.location?.geometry.coordinates[1] as number,
                         ]}
-                        startDate={slide.startDate}
+                        startDate={slide.startDate as string}
                         time={slide.time as string}
                         image={slide.image as string}
                         size={SizeCard.ML}

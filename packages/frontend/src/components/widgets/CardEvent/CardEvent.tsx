@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import Clock from '@/assets/icons/clock.svg';
 import Marker from '@/assets/icons/marker.svg';
 import { Geocoding } from '@/components/widgets/GoogleMap/Geocoding';
@@ -39,6 +39,7 @@ export const CardEvent = ({
   size,
   slideRef,
 }: CardEventProps) => {
+  const [imgError, setImgError] = useState(false);
   const imageSizes = {
     medium: { width: 440, height: 290 },
     'medium-large': { width: 380, height: 250 },
@@ -64,13 +65,14 @@ export const CardEvent = ({
 
   return (
     <div id={id} className={cardCssString} ref={slideRef}>
-      {(image && size && (
+      {(image && !imgError && size ? (
         <Link href={`/events/${id}`}>
           <Image
             src={image}
             alt="img"
             width={imageSizes[size].width}
             height={imageSizes[size].height}
+            onError={() => setImgError(true)}
             style={{
               objectFit: 'cover',
               objectPosition: 'center',
@@ -78,16 +80,15 @@ export const CardEvent = ({
             }}
           />
         </Link>
-      )) ||
-        (!image && (
-          <div
-            style={{
-              background: '#a4a7bc',
-              height: `${imageSizes[size].height}px`,
-              borderRadius: '0.25rem',
-            }}
-          />
-        ))}
+      ) : (
+        <div
+          style={{
+            background: '#a4a7bc',
+            height: `${imageSizes[size].height}px`,
+            borderRadius: '0.25rem',
+          }}
+        />
+      ))}
 
       <div className={classes.details}>
         <div>

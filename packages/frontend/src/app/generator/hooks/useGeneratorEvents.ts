@@ -16,12 +16,12 @@ export const useGeneratorEvents = () => {
 
     const { generateLocation } = useGeneratorLocation();
 
-    const { data: usersData } = useQuery<{ users: User[] }>(GET_USERS);
+    const { data: usersData } = useQuery(GET_USERS);
 
     const changeNumberEvents = (e: React.ChangeEvent<HTMLInputElement>) => {
         const numberValue = parseInt(e.target.value, 10);
         if (isNaN(numberValue)) return setNumberEvents(0);
-        setNumberEvents(Math.min(10, Math.max(1, numberValue)));
+        setNumberEvents(Math.min(1000, Math.max(1, numberValue)));
     };
 
     const handleGenerateEvents = async () => {
@@ -52,7 +52,8 @@ export const useGeneratorEvents = () => {
                                 endDate: endDate.toISOString(),
                                 time,
                                 privacy: faker.helpers.arrayElement(['PUBLIC', 'PRIVATE']),
-                                image: faker.image.url(),
+                                // image: faker.image.url(),
+                                image: `https://loremflickr.com/800/600/${faker.helpers.arrayElement(['nature', 'city', 'architecture', 'travel', 'music', 'concert', 'food', 'people', 'business', 'technology', 'sport', 'fashion', 'art', 'nightlife', 'festival', 'conference', 'wedding', 'party', 'landscape', 'street', 'studio', 'office', 'restaurant', 'museum', 'theater', 'dance', 'celebration', 'market', 'park', 'garden', 'beach', 'mountain', 'lake', 'river', 'forest', 'sunset', 'winter', 'summer', 'spring', 'autumn', 'night', 'morning', 'space', 'science', 'industry', 'construction', 'transport', 'vintage', 'modern', 'abstract', 'texture', 'pattern', 'background'])}?lock=${faker.number.int()}`,
                             },
                             organizer,
                             relations: {

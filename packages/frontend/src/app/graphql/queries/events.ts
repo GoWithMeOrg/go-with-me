@@ -124,6 +124,7 @@ export const GET_POPULAR_EVENTS: TypedDocumentNode<{
         getPopularEvents {
             _id
             description
+            image
             startDate
             location {
                 geometry {

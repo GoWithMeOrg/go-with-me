@@ -1,14 +1,16 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
 
-export const GET_USERS = gql`
+import { User } from '../types';
+
+export const GET_USERS: TypedDocumentNode<{ users: User[] }> = gql`
     query Users {
-		users {
-			_id
-			firstName
-			lastName
-			image
-		}
-	}
+        users {
+            _id
+            firstName
+            lastName
+            image
+        }
+    }
 `;
 
 export const FIND_BY_EMAIL_OR_NAME = gql`

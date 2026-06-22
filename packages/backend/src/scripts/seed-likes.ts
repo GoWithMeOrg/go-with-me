@@ -45,8 +45,7 @@ async function main() {
         return;
     }
 
-    let created = 0;
-    let skipped = 0;
+    const likes: { user: Types.ObjectId; ownerId: Types.ObjectId; ownerType: 'Event' }[] = [];
 
     for (const event of events) {
         const count = Math.floor(Math.random() * users.length) + 1;
@@ -54,26 +53,16 @@ async function main() {
         const selected = shuffled.slice(0, count);
 
         for (const user of selected) {
-            const exists = await LikeModel.findOne({
-                user: user._id,
-                ownerId: event._id,
-            } as any);
-
-            if (exists) {
-                skipped++;
-                continue;
-            }
-
-            await LikeModel.create({
+            likes.push({
                 user: user._id,
                 ownerId: event._id,
                 ownerType: 'Event',
             });
-            created++;
         }
     }
 
-    console.log(`Created ${created} likes, skipped ${skipped} duplicates`);
+    const result = await LikeModel.insertMany(likes, { ordered: false });
+    console.log(`Created ${result.length} likes`);
     await mongoose.disconnect();
 }
 
