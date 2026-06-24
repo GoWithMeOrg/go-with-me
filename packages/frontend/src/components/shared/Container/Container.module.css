@@ -1,6 +1,6 @@
 .container {
     display: grid;
-    grid-template-columns: repeat(12, 1fr);
+    grid-template-columns: repeat(1, 1fr);
     column-gap: 20px;
 
     width: 100%;
@@ -41,7 +41,7 @@
 
 @media (min-width: 1280px) {
     .container {
-        padding: 0 clamp(100px, calc(-140px + 18.75vw), 130px);
+        padding: 0 clamp(50px, calc(-190px + 18.75vw), 130px);
     }
 }
 

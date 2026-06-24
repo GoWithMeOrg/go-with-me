@@ -26,11 +26,11 @@ export default function HomePage() {
     }, [status, router]);
 
     return (
-        <div className={classes.homePage}>
-            {status === 'unauthenticated' && (
-                <>
-                    <Promo />
-                    <section className={classes.popularEvents}>
+        // <div className={classes.homePage}>
+        // {status === 'unauthenticated' && (
+        <>
+            <Promo />
+            {/* <section className={classes.popularEvents}>
                         <div className={classes.popularEventsHeader}>
                             <Title title={'Popular Event List'} tag={'h2'} />
                         </div>
@@ -40,9 +40,9 @@ export default function HomePage() {
                         <MoreLink link={'/events'} text={'more events'} />
                     </section>
                     <HowITWorks />
-                    <CreateAndInvite mode={Mode.BOTH} status={status} />
-                </>
-            )}
-        </div>
+                    <CreateAndInvite mode={Mode.BOTH} status={status} /> */}
+        </>
+        // )}
+        // </div>
     );
 }

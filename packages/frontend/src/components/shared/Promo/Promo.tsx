@@ -1,6 +1,7 @@
 import React from 'react';
 import ArrowCircle from '@/assets/icons/arrowCircle.svg';
 import PromoIcon from '@/assets/icons/promoIcon.svg';
+import PromoIconAdaptiv from '@/assets/promoIconAdaptiv.svg';
 import { Button } from '@/components/shared/Button';
 import { usePopup } from '@/components/shared/Popup/hooks';
 import { Title } from '@/components/shared/Title';
@@ -15,8 +16,14 @@ export const Promo = () => {
 
     return (
         <section className={classes.promo}>
-            <div className={classes.promoDescription}>
+            <div className={classes.promoTitleWrap}>
                 <Title title={'CREATE YOUR OWN ROUTE WITH US'} tag={'h1'} />
+            </div>
+
+            <PromoIcon className={classes.promoIcon} />
+            <PromoIconAdaptiv className={classes.promoIconAdaptiv} />
+
+            <div className={classes.promoContent}>
                 <p className={classes.promoText}>
                     Craft your trips and events effortlessly. Whether you&#39;re planning
                     a&nbsp;weekend getaway with&nbsp;friends, organizing a&nbsp;cultural
@@ -33,16 +40,14 @@ export const Promo = () => {
                         onClick={handleShowPopup}
                     >
                         Join
-                        <ArrowCircle style={{ marginLeft: '0.75rem' }} />
+                        <ArrowCircle className={classes.promoArrow} />
                     </Button>
                 </div>
 
-                <Popup showPopup={showPopup} setShowPopup={setShowPopup} popupMode={'auth'}>
+                {/* <Popup showPopup={showPopup} setShowPopup={setShowPopup} popupMode={'auth'}>
                     <AuthModal onClose={handleHidePopup} />
-                </Popup>
+                </Popup> */}
             </div>
-
-            <PromoIcon style={{ marginBottom: '10px' }} />
         </section>
     );
 };
