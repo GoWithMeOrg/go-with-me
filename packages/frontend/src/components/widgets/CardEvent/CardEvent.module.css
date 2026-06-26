@@ -1,76 +1,157 @@
 .card {
-  white-space: normal;
-  color: var(--main-color);
+    white-space: normal;
+    color: var(--main-color);
+}
+
+.imageLink {
+    display: block;
+    width: 100%;
+    line-height: 0;
+    border-radius: 0.25rem;
+    overflow: hidden;
+}
+
+.image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    object-position: center;
+}
+
+.imagePlaceholder {
+    width: 100%;
+    height: 14rem;
+    background: var(--additional-color, #a4a7bc);
+    border-radius: 0.25rem;
 }
 
 .details {
-  display: flex;
-  flex-direction: column;
-  gap: 0.88rem;
-  margin-top: 1.3rem;
-  font-size: 0.88rem;
-  font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    gap: 0.88rem;
+    margin-top: 1.3rem;
+    font-size: 0.88rem;
+    font-weight: 500;
 }
 
 .details div {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
+}
+
+.icon {
+    margin-right: 0.75rem;
+    color: #575b75;
+    flex-shrink: 0;
 }
 
 .descriptionWrapper {
-  display: flex;
-  flex-direction: column;
-  margin-top: 1.56rem;
+    display: flex;
+    flex-direction: column;
+    margin-top: 1.56rem;
+}
+
+.titleLink {
+    text-decoration: none;
 }
 
 .title {
-  font-size: 1.13rem;
-  line-height: 1.38rem;
-  color: var(--main-color);
-  cursor: pointer;
+    font-size: 1.13rem;
+    line-height: 1.38rem;
+    color: var(--main-color);
+    cursor: pointer;
 }
 
 .title:hover {
-  color: var(--hover-color);
+    color: var(--hover-color);
 }
 
 .description {
-  margin-top: 0.63rem;
-  color: var(--text-color);
-  font-size: 0.88rem;
-  font-weight: 400;
-  line-height: 1.38rem;
-  text-align: left;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    margin-top: 0.63rem;
+    color: var(--text-color);
+    font-size: 0.88rem;
+    font-weight: 400;
+    line-height: 1.38rem;
+    text-align: left;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .medium {
-  width: 27.75rem;
-  height: 27.88rem;
-  /* margin-bottom: 4.5rem; */
+    width: 27.75rem;
+    height: 27.88rem;
 }
 
 .mediumLarge {
-  width: 23.75rem;
-  height: 27.88rem;
-  /* margin-bottom: 4.5rem; */
+    width: 23.75rem;
+    height: 27.88rem;
 }
 
 .large {
-  width: 22.13rem;
-  height: 26.81rem;
+    width: 22.13rem;
+    height: 26.81rem;
 }
 
 .smallLarge {
-  width: 20.25rem;
-  height: 25.56rem;
+    width: 20.25rem;
+    height: 25.56rem;
 }
 
 .small {
-  width: 19.5rem;
-  height: 25rem;
+    width: 19.5rem;
+    height: 25rem;
+}
+
+@media (max-width: 64rem) {
+    .medium,
+    .mediumLarge,
+    .large,
+    .smallLarge,
+    .small {
+        width: 100%;
+        max-width: 27.75rem;
+        height: auto;
+        min-height: 26rem;
+    }
+}
+
+@media (max-width: 48rem) {
+    .medium,
+    .mediumLarge,
+    .large,
+    .smallLarge,
+    .small {
+        width: 100%;
+        max-width: 27.75rem;
+        height: auto;
+        min-height: 24rem;
+    }
+
+    .imagePlaceholder {
+        height: 12rem;
+    }
+
+    .details {
+        gap: 0.5rem;
+        margin-top: 0.75rem;
+        font-size: 0.75rem;
+    }
+
+    .descriptionWrapper {
+        margin-top: 0.75rem;
+    }
+
+    .title {
+        font-size: 1rem;
+        line-height: 1.25rem;
+    }
+
+    .description {
+        font-size: 0.8rem;
+        line-height: 1.2rem;
+        -webkit-line-clamp: 2;
+    }
 }

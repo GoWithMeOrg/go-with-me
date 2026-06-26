@@ -31,7 +31,7 @@ const GET_SESSION = gql`
 const EventListPage: NextPage = () => {
     const { data, loading, error } = useQuery(GET_SESSION);
 
-    const { filterEventsImage, loading: eventLoading } = useEventList();
+    const { filterEventsImage, events, loading: eventLoading } = useEventList();
 
     if (eventLoading || loading) return <Spinner className={classes.spinner} />;
 
@@ -60,7 +60,7 @@ const EventListPage: NextPage = () => {
                 ))}
             </Carousel>
 
-            <EventFilters />
+            <EventFilters events={events} loading={eventLoading} />
 
             <Carousel title={'События твоих друзей'} hideButton marginBottom="4.25rem">
                 {filterEventsImage.map((slide: Event) => (

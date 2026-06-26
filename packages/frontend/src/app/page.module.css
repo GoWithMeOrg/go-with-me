@@ -5,6 +5,7 @@
 
 .popularEvents {
   margin-bottom: 6.3rem;
+  grid-column: 1 / -1;
 }
 
 .popularEventsHeader {

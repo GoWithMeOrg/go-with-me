@@ -30,17 +30,17 @@ export default function HomePage() {
         // {status === 'unauthenticated' && (
         <>
             <Promo />
-            {/* <section className={classes.popularEvents}>
-                        <div className={classes.popularEventsHeader}>
-                            <Title title={'Popular Event List'} tag={'h2'} />
-                        </div>
+            <section className={classes.popularEvents}>
+                {/* <div className={classes.popularEventsHeader}>
+                    <Title title={'Popular Event List'} tag={'h2'} />
+                </div> */}
 
-                        <EventList sizeCard={SizeCard.ML} limit={9} offset={9} sort={'startDate'} />
+                <EventList sizeCard={SizeCard.ML} limit={9} offset={9} sort={'startDate'} />
 
-                        <MoreLink link={'/events'} text={'more events'} />
-                    </section>
-                    <HowITWorks />
-                    <CreateAndInvite mode={Mode.BOTH} status={status} /> */}
+                {/* <MoreLink link={'/events'} text={'more events'} /> */}
+            </section>
+            {/* <HowITWorks />
+            <CreateAndInvite mode={Mode.BOTH} status={status} /> */}
         </>
         // )}
         // </div>

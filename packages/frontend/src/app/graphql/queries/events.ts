@@ -117,11 +117,12 @@ export const GET_EVENTS_BY_ORGANIZER = gql`
     }
 `;
 
-export const GET_POPULAR_EVENTS: TypedDocumentNode<{
-    getPopularEvents: Event[];
-}> = gql`
-    query GetPopularEvents {
-        getPopularEvents {
+export const GET_POPULAR_EVENTS: TypedDocumentNode<
+    { getPopularEvents: Event[] },
+    { limit?: number }
+> = gql`
+    query GetPopularEvents($limit: Int) {
+        getPopularEvents(limit: $limit) {
             _id
             description
             image

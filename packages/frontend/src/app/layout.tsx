@@ -29,9 +29,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     <SessionProviderGQL>
                         <APIProviderGoogleMaps>
                             <Suspense>
-                                <Header />
+                                {/* <Header /> */}
                                 <Container>{children}</Container>
-                                <Footer />
+                                {/* <Footer /> */}
                             </Suspense>
                         </APIProviderGoogleMaps>
                     </SessionProviderGQL>

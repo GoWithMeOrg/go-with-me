@@ -10,12 +10,21 @@ import { EventListProps } from './types/EventList';
 
 import classes from './EventList.module.css';
 
-export const EventList: FC<EventListProps> = ({ sizeCard }) => {
-    const { loading, error, events, refetch } = useEventList();
+const SKELETON_COUNT = 3;
 
-    // refetch();
+export const EventList: FC<EventListProps> = ({ sizeCard, limit, offset, sort }) => {
+    const { loading, error, events } = useEventList({ limit, offset, sort });
 
-    if (loading) return <p>Loading...</p>;
+    if (loading) {
+        return (
+            <div className={classes.skeleton}>
+                {Array.from({ length: SKELETON_COUNT }, (_, i) => (
+                    <div key={i} className={classes.skeletonCard} />
+                ))}
+            </div>
+        );
+    }
+
     if (error) return <p>Error : {error.message}</p>;
     if (!events) return;
 
