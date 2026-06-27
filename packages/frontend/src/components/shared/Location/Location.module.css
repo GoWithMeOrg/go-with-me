@@ -1,0 +1,18 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    margin: 1.38rem 0 0.25rem 0;
+}
+
+.icon {
+    margin-right: 0.75rem;
+    color: var(--text-color);
+    flex-shrink: 0;
+}
+
+.location {
+    font-size: 0.88rem;
+    line-height: 1.63rem;
+    color: var(--main-color);
+    font-weight: 500;
+}

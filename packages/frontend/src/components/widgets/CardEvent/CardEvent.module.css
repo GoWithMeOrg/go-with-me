@@ -3,28 +3,6 @@
     color: var(--main-color);
 }
 
-.imageLink {
-    display: block;
-    width: 100%;
-    line-height: 0;
-    border-radius: 0.25rem;
-    overflow: hidden;
-}
-
-.image {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    object-position: center;
-}
-
-.imagePlaceholder {
-    width: 100%;
-    height: 14rem;
-    background: var(--additional-color, #a4a7bc);
-    border-radius: 0.25rem;
-}
-
 .details {
     display: flex;
     flex-direction: column;
@@ -32,17 +10,6 @@
     margin-top: 1.3rem;
     font-size: 0.88rem;
     font-weight: 500;
-}
-
-.details div {
-    display: flex;
-    align-items: center;
-}
-
-.icon {
-    margin-right: 0.75rem;
-    color: #575b75;
-    flex-shrink: 0;
 }
 
 .descriptionWrapper {

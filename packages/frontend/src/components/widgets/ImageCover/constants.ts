@@ -1,6 +1,6 @@
-import { SizeCard } from './types';
+import { SizeCard } from '../CardEvent/types';
 
-import classes from './CardEvent.module.css';
+import classes from '../CardEvent/CardEvent.module.css';
 
 export const IMAGE_SIZES = {
     medium: { width: 440, height: 290 },

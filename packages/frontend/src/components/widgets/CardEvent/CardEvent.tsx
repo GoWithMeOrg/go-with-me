@@ -1,14 +1,15 @@
 import { useMemo } from 'react';
+import { DateTime } from '@/components/shared/DateTime/DateTime';
+import { Location } from '@/components/shared/Location/Location';
+import Link from 'next/link';
 
-import { CardEventDescription } from './components/CardEventDescription';
-import { CardEventImage } from './components/CardEventImage';
-import { CardEventMeta } from './components/CardEventMeta';
-import { SIZE_CLASS_MAP } from './constants';
-import { CardEventProps } from './types';
+import { SIZE_CLASS_MAP } from '../ImageCover/constants';
+import { ImageCover } from '../ImageCover/ImageCover';
+import { CardEventProps, SizeCard } from './types';
 
 import classes from './CardEvent.module.css';
 
-export { SizeCard } from './types';
+export { SizeCard };
 
 export const CardEvent = ({
     id,
@@ -29,11 +30,21 @@ export const CardEvent = ({
 
     return (
         <div id={id} className={cardCssString} ref={slideRef}>
-            <CardEventImage id={id} image={image} name={name} size={size} priority={priority} />
+            <ImageCover id={id} image={image} name={name} size={size} priority={priority} />
 
-            <CardEventMeta coord={coord} startDate={startDate} time={time} />
+            <div>
+                <Location coord={coord} />
 
-            <CardEventDescription id={id} name={name} description={description} />
+                <DateTime startDate={startDate} time={time} />
+            </div>
+
+            <div className={classes.descriptionWrapper}>
+                <Link href={`/events/${id}`} className={classes.titleLink}>
+                    <h3 className={classes.title}>{name}</h3>
+                </Link>
+
+                <p className={classes.description}>{description}</p>
+            </div>
         </div>
     );
 };
