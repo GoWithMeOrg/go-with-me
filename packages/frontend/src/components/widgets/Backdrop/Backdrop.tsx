@@ -19,7 +19,7 @@ export const Backdrop: React.FC<BackdropProps> = ({
 
   return (
     <div className={classes.backdrop}>
-      {!contentLoading && (
+      {!contentLoading && style && (
         <div
           style={{
             position: 'absolute',

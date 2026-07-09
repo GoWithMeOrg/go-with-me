@@ -29,7 +29,7 @@ interface useBackdropProps {
 }
 export const useBackdrop = ({ children, marginTop, marginBottom }: useBackdropProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [style, setStyle] = useState({ top: '0px', height: '0px' });
+  const [style, setStyle] = useState<{ top: string; height: string } | undefined>(undefined);
   const scale = useViewportScale();
 
   useEffect(() => {
