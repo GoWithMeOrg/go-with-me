@@ -30,13 +30,11 @@ export default function HomePage() {
         <>
             <Promo />
             <section className={classes.popularEvents}>
-                {/* <div className={classes.popularEventsHeader}>
-                    <Title title={'Popular Event List'} tag={'h2'} />
-                </div> */}
+                <Title title={'Popular Events'} tag={'h2'} />
 
                 <EventList limit={9} offset={9} sort={'startDate'} />
 
-                {/* <MoreLink link={'/events'} text={'more events'} /> */}
+                <MoreLink link={'/events'} text={'more events'} />
             </section>
             {/* <HowITWorks />
             <CreateAndInvite mode={Mode.BOTH} status={status} /> */}

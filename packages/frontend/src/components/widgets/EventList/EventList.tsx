@@ -29,24 +29,26 @@ export const EventList: FC<EventListProps> = ({ limit, offset, sort }) => {
     if (!events) return;
 
     return (
-        <Backdrop marginTop={84} marginBottom={440} contentLoading={loading}>
-            <ul className={classes.list}>
-                {events.map(
-                    ({ _id, description, name, startDate, time, location, image }: Event) => (
-                        <li key={_id}>
-                            <CardEvent
-                                id={_id}
-                                name={name}
-                                description={description as string}
-                                coord={location?.geometry.coordinates}
-                                startDate={startDate as string}
-                                time={time as string}
-                                image={image as string}
-                            />
-                        </li>
-                    )
-                )}
-            </ul>
-        </Backdrop>
+        <>
+            <Backdrop marginTop={84} marginBottom={440} contentLoading={loading}>
+                <ul className={classes.list}>
+                    {events.map(
+                        ({ _id, description, name, startDate, time, location, image }: Event) => (
+                            <li key={_id}>
+                                <CardEvent
+                                    id={_id}
+                                    name={name}
+                                    description={description as string}
+                                    coord={location?.geometry.coordinates}
+                                    startDate={startDate as string}
+                                    time={time as string}
+                                    image={image as string}
+                                />
+                            </li>
+                        )
+                    )}
+                </ul>
+            </Backdrop>
+        </>
     );
 };

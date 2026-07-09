@@ -6,7 +6,6 @@ import { Carousel } from '@/components/shared/Carousel';
 import { Slide } from '@/components/shared/Slide';
 import { Title } from '@/components/shared/Title';
 import { CardEvent } from '@/components/widgets/CardEvent';
-import { SizeCard } from '@/components/widgets/CardEvent/CardEvent';
 import { CreateAndInvite } from '@/components/widgets/CreateAndInvite';
 import { Mode } from '@/components/widgets/CreateAndInvite/CreateAndInvite';
 import { EventFilters } from '@/components/widgets/EventFilters';
@@ -96,7 +95,6 @@ const EventListPage: NextPage = () => {
                         startDate={slide.startDate as string}
                         time={slide.time as string}
                         image={slide.image as string}
-                        size={SizeCard.ML}
                     />
                 ))}
             </Carousel>

@@ -1,50 +1,33 @@
+import { Event } from '@/app/graphql/types';
 import ArrowCircle from '@/assets/icons/arrowCircle.svg';
 import Link from 'next/link';
 
-import CardEvent, { SizeCard } from '../CardEvent/CardEvent';
+import CardEvent from '../CardEvent/CardEvent';
 
 import classes from './CardEventMap.module.css';
 
-interface IEvent {
-  _id: string;
-  name: string;
-  description: string;
-  startDate?: Date | string;
-  time?: string;
-  createdAt: Date | string;
-  location: {
-    type: 'Point';
-    coordinates: [number, number];
-    properties: {
-      address: string;
-    };
-  };
-  image?: string;
-}
-
 interface CardEventMapProp {
-  selectedEvent: IEvent;
+    selectedEvent: Event;
 }
 
 export function CardEventMap({ selectedEvent }: CardEventMapProp) {
-  const { _id, description, image, location, name, startDate, time } = selectedEvent;
+    const { _id, description, image, location, name, startDate, time } = selectedEvent;
 
-  return (
-    <div className={classes.wrapperCard}>
-      <CardEvent
-        id={_id}
-        coord={[location.coordinates[0], location.coordinates[1]]}
-        name={name}
-        description={description}
-        image={image}
-        time={time}
-        startDate={startDate}
-        size={SizeCard.ML}
-      />
-      <Link href={`/events/${_id}`} className={classes.linkEvent}>
-        <span className={classes.linkText}>To event</span>
-        <ArrowCircle />
-      </Link>
-    </div>
-  );
+    return (
+        <div className={classes.wrapperCard}>
+            <CardEvent
+                id={_id}
+                coord={location?.geometry.coordinates}
+                name={name}
+                description={description as string}
+                image={image as string}
+                time={time as string}
+                startDate={startDate as string}
+            />
+            <Link href={`/events/${_id}`} className={classes.linkEvent}>
+                <span className={classes.linkText}>To event</span>
+                <ArrowCircle />
+            </Link>
+        </div>
+    );
 }

@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Event } from '@/app/graphql/types';
 import { categoriesList, interestsList } from '@/components/shared/Dropdown/dropdownLists';
 import { FilteredList } from '@/components/shared/FilteredList';
 import { Title } from '@/components/shared/Title';
 import { Backdrop } from '@/components/widgets/Backdrop';
-import CardEvent, { SizeCard } from '@/components/widgets/CardEvent/CardEvent';
+import CardEvent from '@/components/widgets/CardEvent/CardEvent';
 import { CreateTag } from '@/components/widgets/CreateTag';
 import { Date } from '@/components/widgets/Date';
 import { NavbarEvents } from '@/components/widgets/EventFilters/NavbarEvents';
@@ -83,7 +83,8 @@ export const EventFilters = ({ events, loading }: EventFiltersProps) => {
                 <Backdrop marginTop={84} marginBottom={420} contentLoading={loading}>
                     <FilteredList className={classes.filteredList}>
                         {(!(filteredData as any)?.eventFilters && !events) ||
-                        ((filteredData as any)?.eventFilters?.length === 0 && events?.length === 0) ? (
+                        ((filteredData as any)?.eventFilters?.length === 0 &&
+                            events?.length === 0) ? (
                             <div className={classes.noEventsMessage}>
                                 По вашему запросу ничего не найдено
                             </div>
@@ -105,7 +106,6 @@ export const EventFilters = ({ events, loading }: EventFiltersProps) => {
                                     startDate={event.startDate}
                                     time={event.time ?? undefined}
                                     image={event.image ?? undefined}
-                                    size={SizeCard.ML}
                                 />
                             ))
                         )}
@@ -114,9 +114,7 @@ export const EventFilters = ({ events, loading }: EventFiltersProps) => {
             )}
             {activeTab === 'map' && (
                 <GoogleMap
-                    events={
-                        ((filteredData as any)?.eventFilters || events) as any
-                    }
+                    events={((filteredData as any)?.eventFilters || events) as any}
                     selectedLocation={selectedLocation}
                 />
             )}
