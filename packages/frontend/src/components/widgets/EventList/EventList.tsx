@@ -3,7 +3,7 @@
 import { FC } from 'react';
 import { Event } from '@/app/graphql/types';
 import { Backdrop } from '@/components/widgets/Backdrop';
-import { CardEvent } from '@/components/widgets/CardEvent';
+import { CardEvent, CardEventSkeleton } from '@/components/widgets/CardEvent';
 
 import { useEventList } from './hooks';
 import { EventListProps } from './types/EventList';
@@ -12,14 +12,14 @@ import classes from './EventList.module.css';
 
 const SKELETON_COUNT = 3;
 
-export const EventList: FC<EventListProps> = ({ sizeCard, limit, offset, sort }) => {
+export const EventList: FC<EventListProps> = ({ limit, offset, sort }) => {
     const { loading, error, events } = useEventList({ limit, offset, sort });
 
     if (loading) {
         return (
             <div className={classes.skeleton}>
                 {Array.from({ length: SKELETON_COUNT }, (_, i) => (
-                    <div key={i} className={classes.skeletonCard} />
+                    <CardEventSkeleton key={i} />
                 ))}
             </div>
         );
@@ -42,7 +42,6 @@ export const EventList: FC<EventListProps> = ({ sizeCard, limit, offset, sort })
                                 startDate={startDate as string}
                                 time={time as string}
                                 image={image as string}
-                                size={sizeCard}
                             />
                         </li>
                     )

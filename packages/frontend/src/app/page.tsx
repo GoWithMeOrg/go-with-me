@@ -6,7 +6,6 @@ import { HowITWorks } from '@/components/shared/HowITWorks';
 import { MoreLink } from '@/components/shared/MoreLink';
 import { Promo } from '@/components/shared/Promo';
 import { Title } from '@/components/shared/Title';
-import { SizeCard } from '@/components/widgets/CardEvent/CardEvent';
 import { CreateAndInvite } from '@/components/widgets/CreateAndInvite';
 import { Mode } from '@/components/widgets/CreateAndInvite/CreateAndInvite';
 import { EventList } from '@/components/widgets/EventList';
@@ -35,7 +34,7 @@ export default function HomePage() {
                     <Title title={'Popular Event List'} tag={'h2'} />
                 </div> */}
 
-                <EventList sizeCard={SizeCard.ML} limit={9} offset={9} sort={'startDate'} />
+                <EventList limit={9} offset={9} sort={'startDate'} />
 
                 {/* <MoreLink link={'/events'} text={'more events'} /> */}
             </section>

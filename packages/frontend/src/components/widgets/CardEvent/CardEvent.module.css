@@ -1,65 +1,25 @@
 .card {
     white-space: normal;
     color: var(--main-color);
+    width: auto;
+    grid-column: span 12;
 }
 
 .details {
     display: flex;
     flex-direction: column;
     gap: 0.88rem;
-    margin-top: 1.3rem;
-    font-size: 0.88rem;
-    font-weight: 500;
 }
 
-.medium {
-    width: 27.75rem;
-    height: 27.88rem;
-}
-
-.mediumLarge {
-    width: 23.75rem;
-    height: 27.88rem;
-}
-
-.large {
-    width: 22.13rem;
-    height: 26.81rem;
-}
-
-.smallLarge {
-    width: 20.25rem;
-    height: 25.56rem;
-}
-
-.small {
-    width: 19.5rem;
-    height: 25rem;
-}
-
-@media (max-width: 64rem) {
-    .medium,
-    .mediumLarge,
-    .large,
-    .smallLarge,
-    .small {
-        width: 100%;
-        max-width: 27.75rem;
-        height: auto;
-        min-height: 26rem;
+@media (min-width: 48rem) {
+    .card {
+        grid-column: span 6;
     }
 }
 
-@media (max-width: 48rem) {
-    .medium,
-    .mediumLarge,
-    .large,
-    .smallLarge,
-    .small {
-        width: 100%;
-        max-width: 27.75rem;
-        height: auto;
-        min-height: 24rem;
+@media (min-width: 64rem) {
+    .card {
+        grid-column: span 4;
     }
 
     .details {

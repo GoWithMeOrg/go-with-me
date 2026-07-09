@@ -1,14 +1,11 @@
 import { CardDescription } from '@/components/shared/CardDescription/CardDescription';
 import { DateTime } from '@/components/shared/DateTime/DateTime';
 import { Location } from '@/components/shared/Location/Location';
-import { SIZE_CLASS_MAP } from '@/components/widgets/ImageCover/constants';
 import { ImageCover } from '@/components/widgets/ImageCover/ImageCover';
 
-import { CardEventProps, SizeCard } from './types';
+import { CardEventProps } from './types';
 
 import classes from './CardEvent.module.css';
-
-export { SizeCard };
 
 export const CardEvent = ({
     id,
@@ -18,15 +15,12 @@ export const CardEvent = ({
     startDate,
     time,
     image,
-    size,
     slideRef,
     priority,
 }: CardEventProps) => {
-    const cardCss = [classes.card, SIZE_CLASS_MAP[size]].filter(Boolean).join(' ');
-
     return (
-        <div id={id} className={cardCss} ref={slideRef}>
-            <ImageCover id={id} image={image} name={name} size={size} priority={priority} />
+        <div id={id} className={classes.card} ref={slideRef}>
+            <ImageCover id={id} image={image} name={name} priority={priority} />
 
             <div>
                 <Location coord={coord} />
