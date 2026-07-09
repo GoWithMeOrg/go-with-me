@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC } from 'react';
 import ArrowCircle from '@/assets/icons/arrowCircle.svg';
 import Link from 'next/link';
 
@@ -11,15 +11,14 @@ export interface MoreLinkProps {
 }
 
 export const MoreLink: FC<MoreLinkProps> = ({ link, text, size, ...rest }) => {
-    const moreLinkCssString = useMemo(
-        () => [classes.moreText, size === 'big' && classes.moreTextBig].filter(Boolean).join(' '),
-        [size]
-    );
+    const moreLinkCss = [classes.moreText, size === 'big' && classes.moreTextBig]
+        .filter(Boolean)
+        .join(' ');
 
     return (
         <Link href={link} className={classes.moreLink} {...rest}>
-            <span className={moreLinkCssString}>{text}</span>
-            <ArrowCircle />
+            <span className={moreLinkCss}>{text}</span>
+            <ArrowCircle className={classes.moreArrow} />
         </Link>
     );
 };
