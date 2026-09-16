@@ -1,36 +1,72 @@
 .cardWork {
-  border: 0.13rem solid var(--main-color);
-  border-radius: 1.25rem;
-  width: 35.62rem;
-  height: 35.62rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 3.81rem 5.59rem 4.88rem 6.22rem;
+    border: 0.13rem solid var(--main-color);
+    border-radius: 1.25rem;
+    width: auto;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    padding: 2.5rem;
+    height: 35.63rem;
 }
 
 .cardWorkWrapper {
-  display: flex;
-  flex-direction: column;
-  width: 23.75rem;
-  height: 27.2rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+    gap: 1rem;
+    width: 100%;
 }
 
 .cardWorkTitle {
-  margin-bottom: 1.56rem;
+    margin: 0 0 0.56rem 0;
 }
 
 .cardWorkDescription {
-  color: var(--text-color);
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.63rem;
-  text-align: left;
+    color: var(--text-color);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.63rem;
+    text-align: left;
+    margin: 0;
 }
 
 .cardWorkPicture {
-  display: flex;
-  justify-content: center;
-  height: 100%;
-  align-items: flex-end;
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.cardWorkPicture {
+    display: flex;
+    justify-content: center;
+}
+
+@media (min-width: 22.5rem) {
+    .cardWorkWrapper {
+        min-height: 22rem;
+    }
+}
+
+@media (min-width: 30rem) {
+    .cardWork {
+        padding: 3rem 4rem;
+    }
+
+    .cardWorkWrapper {
+        min-height: 25rem;
+    }
+}
+
+@media (min-width: 48rem) {
+    .cardWork {
+        padding: 3.81rem 5.59rem 4.88rem 6.22rem;
+    }
+
+    /* .cardWorkWrapper {
+        min-height: 27.2rem;
+    } */
+
+    .cardWorkTitle {
+        margin-bottom: 1.56rem;
+    }
 }
