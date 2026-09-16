@@ -1,4 +1,3 @@
-import React from 'react';
 import CreateEvent from '@/assets/icons/createEvent.svg';
 import CreatePrivateEvent from '@/assets/icons/createPrivateEvent.svg';
 import ExploreEvents from '@/assets/icons/exploreEvents.svg';
@@ -8,6 +7,8 @@ import { CardWork } from '@/components/widgets/CardWork';
 import Link from 'next/link';
 
 import classes from './HowITWorks.module.css';
+
+const NBSP = '\u00A0';
 
 export const HowITWorks = () => {
     return (
@@ -19,59 +20,38 @@ export const HowITWorks = () => {
                 </Link>
             </div>
 
-            <div className={classes.cardsWorkList}>
-                <CardWork
-                    title={'Create your own trips and events'}
-                    description={
-                        <p>
-                            Organizers can easily create public events that are&nbsp;open
-                            to&nbsp;everyone. From concerts to&nbsp;community gatherings, share your
-                            event with&nbsp;the&nbsp;world. Engage attendees with&nbsp;interactive
-                            features like event discussions and&nbsp;photo sharing.
-                        </p>
-                    }
-                    picture={<CreateEvent />}
-                />
-                <CardWork
-                    title="Invite family, friends, colleagues and anyone else to join"
-                    description={
-                        <p>
-                            Organizers can create private events for&nbsp;close friends, family,
-                            or&nbsp;select invitees. Whether it&#39;s&nbsp;a&nbsp;birthday
-                            celebration or&nbsp;a&nbsp;private gathering, keep your event exclusive.
-                            Control access to&nbsp;your event with&nbsp; customizable invitation
-                            options and&nbsp;guest list management.
-                        </p>
-                    }
-                    picture={<CreatePrivateEvent />}
-                />
-                <CardWork
-                    title="Accept invitations and find interesting events"
-                    description={
-                        <p>
-                            Clients can plan their next adventure effortlessly. From weekend
-                            getaways to&nbsp; international expeditions, explore destinations,
-                            create itineraries, and&nbsp;invite friends to&nbsp;join. Seamlessly
-                            collaborate with&nbsp;travel companions by&nbsp;sharing trip details
-                            and&nbsp;coordinating activities.
-                        </p>
-                    }
-                    picture={<PlanAdventure />}
-                />
-                <CardWork
-                    title="Plan your exciting life"
-                    description={
-                        <p>
-                            Clients can discover exciting events near their location. Whether
-                            it&#39;s concerts, workshops, or&nbsp;community events, browse, RSVP,
-                            and&nbsp;join the&nbsp;fun. Stay informed about upcoming events
-                            with&nbsp;personalized recommendations and&nbsp;notifications based
-                            on&nbsp;your interests.
-                        </p>
-                    }
-                    picture={<ExploreEvents />}
-                />
-            </div>
+            <ul className={classes.cardsWorkList}>
+                <li>
+                    <CardWork
+                        title={'Create your own trips and events'}
+                        description={`Organizers can easily create public events that are${NBSP}open to${NBSP}everyone. From concerts to${NBSP}community gatherings, share your event with${NBSP}the${NBSP}world. Engage attendees with${NBSP}interactive features like event discussions and${NBSP}photo sharing.`}
+                        picture={<CreateEvent />}
+                    />
+                </li>
+
+                <li>
+                    <CardWork
+                        title="Create private events for exclusive gatherings"
+                        description={`Organizers can easily create private events that are${NBSP}exclusive to${NBSP}selected participants. Invite friends, family, or colleagues to${NBSP}private getaways,${NBSP}workshops, or${NBSP}intimate celebrations. Manage attendance with${NBSP}invitation links and${NBSP}secure access controls.`}
+                        picture={<CreatePrivateEvent />}
+                    />
+                </li>
+
+                <li>
+                    <CardWork
+                        title="Accept invitations and find interesting events"
+                        description={`Clients can plan their next adventure effortlessly. From weekend getaways to${NBSP}international expeditions, explore destinations, create itineraries, and${NBSP}invite friends to${NBSP}join. Seamlessly collaborate with${NBSP}travel companions by${NBSP}sharing trip details and${NBSP}coordinating activities.`}
+                        picture={<PlanAdventure />}
+                    />
+                </li>
+                <li>
+                    <CardWork
+                        title="Plan your exciting life"
+                        description={`Clients can discover exciting events near their location. Whether it's concerts, workshops, or${NBSP}community events, browse, RSVP, and${NBSP}join the${NBSP}fun. Stay informed about upcoming events with${NBSP}personalized recommendations and${NBSP}notifications based on${NBSP}your interests.`}
+                        picture={<ExploreEvents />}
+                    />
+                </li>
+            </ul>
         </section>
     );
 };

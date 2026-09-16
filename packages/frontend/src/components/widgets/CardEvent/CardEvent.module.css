@@ -2,7 +2,6 @@
     white-space: normal;
     color: var(--main-color);
     width: auto;
-    grid-column: span 12;
 }
 
 .details {

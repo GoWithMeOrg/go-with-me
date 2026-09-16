@@ -1,31 +1,44 @@
 .cardsWorkWrapper {
-  margin-bottom: 2.5rem;
+    margin-bottom: 2.5rem;
+    grid-column: 1 / -1;
 }
 
 .cardsWorkList {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 2.5rem;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
+}
+
+@media (min-width: 22.5rem) {
+    .cardsWorkList {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+@media (min-width: 64rem) {
+    .cardsWorkList {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 .cardsWorkTitleWrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: 4.37rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 4.37rem;
 }
 
 .cardsWorkLink {
-  color: var(--additional-color);
-  font-size: 1rem;
-  font-weight: 700;
-  line-height: 1.19rem;
-  text-align: center;
-  text-transform: uppercase;
-  margin-right: 1.25rem;
+    color: var(--additional-color);
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.19rem;
+    text-align: center;
+    text-transform: uppercase;
+    margin-right: 1.25rem;
 }
 
 .cardsWorkLink:hover {
-  color: var(--main-color);
+    color: var(--main-color);
 }
