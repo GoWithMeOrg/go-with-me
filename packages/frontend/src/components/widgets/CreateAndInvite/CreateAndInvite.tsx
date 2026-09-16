@@ -40,17 +40,6 @@ export const CreateAndInvite: FC<CreateAndInviteProps> = ({ mode, status }) => {
             <div className={classes.wrapper}>
                 <Title title={'Create and Invite'} className={classes.title} tag={'h2'} />
 
-                {status === 'unauthenticated' && (
-                    <div className={classes.buttons}>
-                        <Button size="big" onClick={handleShowPopup}>
-                            Create event
-                        </Button>
-                        {/* <Button size="big" onClick={handleShowPopup}>
-                            Create trip
-                        </Button> */}
-                    </div>
-                )}
-
                 <Popup popupMode={popupMode} showPopup={showPopup} setShowPopup={setShowPopup}>
                     <AuthModal onClose={handleHidePopup} />
                 </Popup>
@@ -79,11 +68,22 @@ export const CreateAndInvite: FC<CreateAndInviteProps> = ({ mode, status }) => {
                         )))}
             </div>
             <div className={classes.description}>
-                {/* <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Ut enim ad minim!
-                </p> */}
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim!
+                </p>
             </div>
+
+            {status === 'unauthenticated' && (
+                <div className={classes.buttons}>
+                    <Button size="big" onClick={handleShowPopup}>
+                        Create event
+                    </Button>
+                    {/* <Button size="big" onClick={handleShowPopup}>
+                            Create trip
+                        </Button> */}
+                </div>
+            )}
         </section>
     );
 };

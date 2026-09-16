@@ -37,7 +37,7 @@ export default function HomePage() {
                 <MoreLink link={'/events'} text={'more events'} />
             </section>
             <HowITWorks />
-            {/* <CreateAndInvite mode={Mode.BOTH} status={status} /> */}
+            <CreateAndInvite mode={Mode.BOTH} status={status} />
         </>
         // )}
         // </div>
