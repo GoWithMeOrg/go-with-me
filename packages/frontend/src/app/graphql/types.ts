@@ -209,7 +209,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   acceptCompanionRequest: CompanionRequest;
   acceptInvitation: Invitation;
-  /** Добавить компаньонов в список отмеченных для whoCanSeeEvents */
+  /** Добавить компаньонов в список отмеченных для whoCanInviteToEvents */
   addMarkedForWhoCanInviteToEvents: PrivacySetting;
   /** Добавить компаньонов в список отмеченных для whoCanSeeEvents */
   addMarkedForWhoCanSeeEvents: PrivacySetting;
@@ -245,7 +245,7 @@ export type Mutation = {
   removeInterest: Interest;
   /** Удалить локацию */
   removeLocation: Scalars['Boolean']['output'];
-  /** Убрать компаньона из списка отмеченных для whoCanSeeEvents */
+  /** Убрать компаньона из списка отмеченных для whoCanInviteToEvents */
   removeMarkedForWhoCanInviteToEvents: PrivacySetting;
   /** Убрать компаньона из списка отмеченных для whoCanSeeEvents */
   removeMarkedForWhoCanSeeEvents: PrivacySetting;
@@ -661,6 +661,8 @@ export type Query = {
   interestByOwnerId: Interest;
   isJoinedByUser?: Maybe<Scalars['Boolean']['output']>;
   isLikedByUser?: Maybe<Scalars['Boolean']['output']>;
+  /** Проверить, является ли пользователь компаньоном */
+  isUserCompanion: Scalars['Boolean']['output'];
   /** Поиск места по id */
   locationById: Location;
   /** Поиск места по ownerId */
@@ -674,6 +676,10 @@ export type Query = {
   permissionByName: Permission;
   /** Получить все права */
   permissions: Array<Permission>;
+  /** Получить настройки приватности пользователя по ID */
+  privacySettingByUserId: PrivacySetting;
+  /** Получить настройки приватности для нескольких пользователей */
+  privacySettingsForUsers: Array<PrivacySetting>;
   resourceBySlug?: Maybe<Resource>;
   /** Список всех зарегистрированных ресурсов */
   resources: Array<Resource>;
@@ -828,6 +834,12 @@ export type QueryIsLikedByUserArgs = {
 };
 
 
+export type QueryIsUserCompanionArgs = {
+  companion_id: Scalars['ID']['input'];
+  user_id: Scalars['ID']['input'];
+};
+
+
 export type QueryLocationByIdArgs = {
   id: Scalars['ID']['input'];
 };
@@ -845,6 +857,16 @@ export type QueryPermissionByIdArgs = {
 
 export type QueryPermissionByNameArgs = {
   name: Scalars['String']['input'];
+};
+
+
+export type QueryPrivacySettingByUserIdArgs = {
+  user_id: Scalars['ID']['input'];
+};
+
+
+export type QueryPrivacySettingsForUsersArgs = {
+  user_ids: Array<Scalars['ID']['input']>;
 };
 
 

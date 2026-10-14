@@ -3,7 +3,7 @@ export interface Session {
     firstName: string;
     lastName: string;
     email: string;
-    roles: string[];
+    image?: string;
 }
 
 export type UpdateSession = (updateData?: Partial<Session>) => void;

@@ -37,6 +37,11 @@ export class RoleService {
         return this.roleModel.findById(id).populate(this.deepPopulate).exec();
     }
 
+    async getRoleByDisplayName(displayName: string): Promise<Role | null> {
+        // Search for role where name contains the display name as a substring
+        return this.roleModel.findOne({ name: { $regex: new RegExp(`^${displayName}$`, 'i') } }).populate(this.deepPopulate).exec();
+    }
+
     async getRoleByUserId(userId: Types.ObjectId): Promise<User | null> {
         return this.userModel.findById(userId).populate('roles').exec();
     }
