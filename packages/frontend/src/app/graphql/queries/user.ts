@@ -11,19 +11,7 @@ export const GET_USER_BY_ID = gql`
             lastName
             roles {
                 _id
-                description
                 name
-                permissions {
-                    _id
-                    action
-                    description
-                    name
-                    resource {
-                        _id
-                        name
-                        slug
-                    }
-                }
             }
         }
     }

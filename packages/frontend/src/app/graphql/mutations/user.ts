@@ -12,7 +12,6 @@ export const UPDATE_USER = gql`
             roles {
                 _id
                 name
-                description
             }
         }
     }
@@ -28,7 +27,6 @@ export const ADD_USER_ROLE = gql`
             roles {
                 _id
                 name
-                description
             }
         }
     }
@@ -44,7 +42,6 @@ export const REMOVE_USER_ROLE = gql`
             roles {
                 _id
                 name
-                description
             }
         }
     }
