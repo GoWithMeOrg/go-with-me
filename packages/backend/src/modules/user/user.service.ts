@@ -127,7 +127,7 @@ export class UserService {
 
     async addRoleByName(userId: Types.ObjectId, roleName: string): Promise<User> {
         // 1. Ищем роль в базе данных по названию
-        const role = await this.roleModel.findOne({ role: roleName }).exec();
+        const role = await this.roleModel.findOne({ name: roleName }).exec();
 
         if (!role) {
             throw new NotFoundException(`Роль "${roleName}" не существует в системе`);
@@ -152,7 +152,7 @@ export class UserService {
 
     async removeRoleByName(userId: Types.ObjectId, roleName: string): Promise<User> {
         // 1. Находим документ роли, чтобы получить её _id
-        const role = await this.roleModel.findOne({ role: roleName }).exec();
+        const role = await this.roleModel.findOne({ name: roleName }).exec();
 
         if (!role) {
             throw new NotFoundException(`Роль с названием "${roleName}" не найдена`);
