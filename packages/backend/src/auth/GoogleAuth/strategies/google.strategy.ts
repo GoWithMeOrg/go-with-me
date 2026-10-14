@@ -56,6 +56,8 @@ export class GoogleAuthStrategy extends PassportStrategy(GoogleStrategy, 'google
                 if (userRole && userRole._id) {
                     await this.userService.updateUserRoles(user._id, [userRole._id]);
                     userRoles.push(userRole._id);
+                } else {
+                    console.error('Failed to assign default user role: userRole or userRole._id is missing');
                 }
             }
 

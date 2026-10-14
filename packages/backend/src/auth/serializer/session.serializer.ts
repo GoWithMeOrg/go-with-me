@@ -14,27 +14,24 @@ export class SessionSerializer {
 
     async deserializeUser(id: string, done: Function) {
         try {
-            const user = await this.userModel
-                .findById(id)
-                .populate({
-                    path: 'roles',
-                    populate: {
-                        path: 'permissions',
-                        populate: { path: 'resource' },
-                    },
-                })
-                .lean();
+            const user = await this.userModel.findById(id).lean();
 
+            if (!user) {
+                done(null, null);
+                return;
+            }
+
+            // Не передаём роли в сессии для минимизации утечки данных
             const userSession = {
-                _id: user?._id,
-                email: user?.email,
-                firstName: user?.firstName,
-                lastName: user?.lastName,
-                roles: user?.roles,
+                _id: user._id,
+                email: user.email,
+                firstName: user.firstName,
+                lastName: user.lastName,
             };
 
             done(null, userSession);
         } catch (err) {
+            console.error('Error deserializing user:', err);
             done(err, null);
         }
     }

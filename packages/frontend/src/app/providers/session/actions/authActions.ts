@@ -17,7 +17,8 @@ export function signIn(provider: AuthProvider, redirectUrl?: string) {
         console.error(
             `URL для провайдера "${provider}" не найден. Проверьте переменные окружения.`
         );
-        return;
+        // Фолбек URL для разработки, если переменная не подгрузилась
+        authUrl = `http://localhost:4000/auth/${provider}/login`;
     }
 
     console.log(`Провайдер "${provider}", URL:`, authUrl);

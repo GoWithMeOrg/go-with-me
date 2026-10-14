@@ -35,38 +35,39 @@ export class AuthController {
 
     @Get('google/login')
     @UseGuards(GoogleOAuthGuard)
-    googleAuth() {}
+    googleAuth() {
+        console.log('Google OAuth login initiated');
+    }
 
     @Get('google/callback')
     @UseGuards(GoogleOAuthGuard)
     async googleAuthRedirect(@Req() req: ReqWithPassport, @Res() res: Response) {
-        // req.user уже есть после авторизации через Google
-        // console.log('google callback req.user =', req.user);
         const user = req.user;
 
+        if (!user) {
+            console.error('No authenticated user after Google OAuth callback');
+            return res.redirect(`${this.configService.getOrThrow('ALLOWED_ORIGIN')}/error`);
+        }
+
         return new Promise((resolve) => {
-            req.logIn(user ?? {}, (err?: Error | null) => {
+            req.logIn(user, (err?: Error | null) => {
                 if (err) {
-                    // Ошибка при логине — направляем пользователя на страницу ошибки
-                    // console.error('req.logIn error', err);
-                    // res.redirect('http://localhost:3000/error');
-                    return resolve(null);
+                    console.error('req.logIn error', err);
+                    return res.redirect(`${this.configService.getOrThrow('ALLOWED_ORIGIN')}/error`);
                 }
 
-                // сохраняем сессию перед редиректом (если стор предоставляет save) `http://localhost:3000/events`
+                // сохраняем сессию перед редиректом (если стор предоставляет save)
                 if (req.session && typeof req.session.save === 'function') {
                     req.session.save((saveErr?: Error | null) => {
                         if (saveErr) console.error('session save error', saveErr);
-                        // console.log('session saved, session.passport =', req.session?.passport);
-                        res.redirect(
-                            `${this.configService.getOrThrow('ALLOWED_ORIGIN') + '/events'}`
-                        );
+                        const origin = this.configService.getOrThrow('ALLOWED_ORIGIN');
+                        res.redirect(`${origin}/events`);
                         return resolve(null);
                     });
                 } else {
                     // если save не доступен — просто редиректим
-                    // console.log('session.save not available, skipping save');
-                    res.redirect(this.configService.getOrThrow('ALLOWED_ORIGIN'));
+                    const origin = this.configService.getOrThrow('ALLOWED_ORIGIN');
+                    res.redirect(origin);
                     return resolve(null);
                 }
             });
@@ -87,7 +88,11 @@ export class AuthController {
         @Param('user_id') id: Types.ObjectId,
         @Req() req: ReqWithPassport
     ) {
-        const currentUser = req.user as User;
+        const currentUser = req.user as User | null;
+
+        if (!currentUser) {
+            throw new ForbiddenException('No authenticated user');
+        }
 
         // Извлекаем текстовые имена ролей для проверки
         const userRoleNames = currentUser.roles.map((role: Role) => role.name);
@@ -106,8 +111,14 @@ export class AuthController {
 
     @Get('logout')
     logout(@Req() req: ReqWithPassport, @Res() res: Response) {
-        // 1. Берем URL фронтенда. Добавляем запасной вариант (fallback), чтобы не было undefined
+        // 1. Берем URL фронтенда
         const frontendUrl = this.configService.get('ALLOWED_ORIGIN');
+        
+        // Проверка на наличие ALLOWED_ORIGIN
+        if (!frontendUrl) {
+            console.error('ALLOWED_ORIGIN not configured, redirecting to /');
+            return res.redirect('/');
+        }
 
         req.logout((err) => {
             if (err) {
@@ -121,7 +132,7 @@ export class AuthController {
                     }
 
                     // 2. Очищаем куку сессии явно, чтобы браузер её забыл
-                    res.clearCookie('connect.sid'); // Убедитесь, что имя куки совпадает с вашим (по умолчанию connect.sid)
+                    res.clearCookie('connect.sid');
 
                     // 3. Выполняем редирект на чистый URL фронтенда
                     return res.redirect(frontendUrl);
@@ -136,10 +147,11 @@ export class AuthController {
     @Get('sessions')
     @UseGuards(SessionAuthGuard)
     async listSessions(@Req() req: ReqWithPassport) {
-        const currentUser = req.user as User | undefined | null;
+        const currentUser = req.user as User | null;
+        if (!currentUser) throw new ForbiddenException('Not authenticated');
         // предпочитаем _id (ObjectId), передаём в сервис как строку (сервис принимает ObjectId|string)
-        const userId = currentUser?._id ?? null;
-        if (!userId) return [];
+        const userId = currentUser._id ?? null;
+        if (!userId) throw new ForbiddenException('User ID not found');
         return this.sessionService.listSessionsForUser(String(userId));
     }
 
@@ -147,11 +159,12 @@ export class AuthController {
     @Delete('sessions/:sid')
     @UseGuards(SessionAuthGuard)
     async deleteSession(@Param('sid') sid: string, @Req() req: ReqWithPassport) {
-        const currentUser = req.user as User | undefined | null;
-        const userId = currentUser?._id ?? null;
-        if (!userId) throw new ForbiddenException('Not authenticated');
-        const ok = await this.sessionService.deleteSessionById(sid, String(userId));
-        return { ok };
+        const currentUser = req.user as User | null;
+        if (!currentUser) throw new ForbiddenException('Not authenticated');
+        const userId = currentUser._id ?? null;
+        if (!userId) throw new ForbiddenException('User ID not found');
+        const result = await this.sessionService.deleteSessionById(sid, String(userId));
+        return result;
     }
 }
 

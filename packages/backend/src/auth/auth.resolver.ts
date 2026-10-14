@@ -15,7 +15,11 @@ export class AuthResolver {
     @Query(() => User, { nullable: true })
     @UseGuards(SessionAuthGuard)
     async session(@Context() context: GqlContext): Promise<Partial<User> | null> {
-        return context.req.user || null;
+        const user = context.req.user;
+        if (user) {
+            console.log('Session query executed, user:', user);
+        }
+        return user || null;
     }
 
     // резолвер с требованием роли ADMIN
