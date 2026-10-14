@@ -6,5 +6,6 @@ export type AuthUserPayload = {
     email?: string;
     firstName?: string;
     lastName?: string;
+    image?: string;
     roles?: Types.ObjectId[];
 };

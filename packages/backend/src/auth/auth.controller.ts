@@ -49,28 +49,24 @@ export class AuthController {
             return res.redirect(`${this.configService.getOrThrow('ALLOWED_ORIGIN')}/error`);
         }
 
-        return new Promise((resolve) => {
-            req.logIn(user, (err?: Error | null) => {
-                if (err) {
-                    console.error('req.logIn error', err);
-                    return res.redirect(`${this.configService.getOrThrow('ALLOWED_ORIGIN')}/error`);
-                }
+        const origin = this.configService.getOrThrow('ALLOWED_ORIGIN');
 
-                // сохраняем сессию перед редиректом (если стор предоставляет save)
-                if (req.session && typeof req.session.save === 'function') {
-                    req.session.save((saveErr?: Error | null) => {
-                        if (saveErr) console.error('session save error', saveErr);
-                        const origin = this.configService.getOrThrow('ALLOWED_ORIGIN');
-                        res.redirect(`${origin}/events`);
-                        return resolve(null);
-                    });
-                } else {
-                    // если save не доступен — просто редиректим
-                    const origin = this.configService.getOrThrow('ALLOWED_ORIGIN');
-                    res.redirect(origin);
-                    return resolve(null);
-                }
-            });
+        req.logIn(user, (err?: Error | null) => {
+            if (err) {
+                console.error('req.logIn error:', err);
+                return res.redirect(`${origin}/error`);
+            }
+
+            // сохраняем сессию перед редиректом (если store предоставляет save)
+            if (req.session?.save) {
+                req.session.save((saveErr?: Error | null) => {
+                    if (saveErr) {
+                        console.error('session save error:', saveErr);
+                    }
+                });
+            }
+
+            res.redirect(`${origin}/events`);
         });
     }
 
