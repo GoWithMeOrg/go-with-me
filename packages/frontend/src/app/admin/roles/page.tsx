@@ -12,9 +12,9 @@ const RoleManagementPage = () => {
         return <Spinner />;
     }
 
-    if (!hasAdminRole) {
-        return null; // Редирект происходит в хуке
-    }
+    // if (!hasAdminRole) {
+    //     return null; // Редирект происходит в хуке
+    // }
 
     return (
         <div style={{ gridColumn: '2 / span 10' }}>

@@ -27,7 +27,7 @@ const useRoleManagement = () => {
 
     const { data: dataResources } = useQuery(GET_RESOURCES);
 
-    const { data: dataRoles } = useQuery<{ roles: Role[] }>(GET_ROLES);
+    const { data: dataRoles } = useQuery(GET_ROLES);
 
     const [loadPermissions, { data: dataPermissions }] = useLazyQuery<{
         permissions: Permission[];
