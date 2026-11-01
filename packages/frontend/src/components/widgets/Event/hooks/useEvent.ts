@@ -18,7 +18,7 @@ const useEvent = ({ event }: EventProps) => {
     const router = useRouter();
 
     const [removeEvent] = useMutation(REMOVE_EVENT_MUTATION);
-    const { deleteFile } = useUploadFile({ folder: 'users/events' });
+    const { deleteFile } = useUploadFile({});
 
     const [organizer, setOrganizer] = useState(true);
     const [copied, setCopied] = useState(false);

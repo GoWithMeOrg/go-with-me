@@ -1,0 +1,10 @@
+.component {
+  /*
+    стили для компонента
+    */
+}
+
+.eventName {
+  display: flex;
+  justify-content: space-between;
+}

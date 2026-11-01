@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Event } from '@/app/graphql/types';
+import { IEvent } from '@/app/types/Event';
 import { categoriesList, interestsList } from '@/components/shared/Dropdown/dropdownLists';
 import { FilteredList } from '@/components/shared/FilteredList';
 import { Title } from '@/components/shared/Title';
@@ -97,21 +97,16 @@ export const EventFilters = () => {
                                     location,
                                     time,
                                     image,
-                                }: Event) => (
+                                }: IEvent) => (
                                     <CardEvent
                                         key={_id}
                                         id={_id}
                                         name={name}
-                                        description={description as string}
-                                        coord={
-                                            [
-                                                location?.geometry.coordinates[0],
-                                                location?.geometry.coordinates[1],
-                                            ] as [number, number]
-                                        }
+                                        description={description}
+                                        coord={[location.coordinates[0], location.coordinates[1]]}
                                         startDate={startDate}
-                                        time={time as string}
-                                        image={image as string}
+                                        time={time}
+                                        image={image}
                                         size={SizeCard.ML}
                                     />
                                 )
@@ -124,8 +119,8 @@ export const EventFilters = () => {
                 <GoogleMap
                     //@ts-ignore
                     events={
-                        (filteredData as { eventFilters: Event[] })?.eventFilters ||
-                        (events as Event[]) ||
+                        (filteredData as { eventFilters: IEvent[] })?.eventFilters ||
+                        (events as IEvent[]) ||
                         []
                     }
                     selectedLocation={selectedLocation}

@@ -2,14 +2,6 @@ import { useState } from 'react';
 import { SEND_REQUEST_COMPANION_MUTATION } from '@/app/graphql/mutations/companionRequest';
 import { REMOVE_COMPANION_MUTATION } from '@/app/graphql/mutations/companions';
 import { GET_COMPANIONS_BY_OWNER_ID, GET_FIND_COMPANION } from '@/app/graphql/queries/companions';
-import {
-    CompanionsByOwnerIdQuery,
-    CompanionsByOwnerIdQueryVariables,
-    RemoveCompanionMutation,
-    RemoveCompanionMutationVariables,
-    SendRequestCompanionMutation,
-    SendRequestCompanionMutationVariables,
-} from '@/app/graphql/operations';
 import { User } from '@/app/graphql/types';
 import { useUserID } from '@/hooks/useUserID';
 import { useMutation, useQuery } from '@apollo/client/react';
@@ -38,20 +30,12 @@ export const useCompanionSearch = () => {
         error: errorCompanions,
         data: dataCompanions,
         refetch: refetchCompanions,
-    } = useQuery<CompanionsByOwnerIdQuery, CompanionsByOwnerIdQueryVariables>(
-        GET_COMPANIONS_BY_OWNER_ID,
-        {
-            variables: { limit: 0, offset: 0 },
-        }
-    );
+    } = useQuery(GET_COMPANIONS_BY_OWNER_ID, {
+        variables: { limit: 0, offset: 0 },
+    });
 
-    const [CompanionRequest] = useMutation<
-        SendRequestCompanionMutation,
-        SendRequestCompanionMutationVariables
-    >(SEND_REQUEST_COMPANION_MUTATION);
-    const [RemoveCompanion] = useMutation<RemoveCompanionMutation, RemoveCompanionMutationVariables>(
-        REMOVE_COMPANION_MUTATION
-    );
+    const [CompanionRequest] = useMutation(SEND_REQUEST_COMPANION_MUTATION);
+    const [RemoveCompanion] = useMutation(REMOVE_COMPANION_MUTATION);
 
     const companions =
         searchValueCompanion && searchDataCompanion?.length > 0
@@ -73,7 +57,7 @@ export const useCompanionSearch = () => {
     const removeCompanion = async (id: string) => {
         try {
             const result = await RemoveCompanion({
-                variables: { userId: user_id as string, companionId: id },
+                variables: { userId: user_id, companionId: id },
             });
             if (result.data?.removeCompanion) {
                 await refetchCompanions();
