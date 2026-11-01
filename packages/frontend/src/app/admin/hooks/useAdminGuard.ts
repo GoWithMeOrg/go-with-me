@@ -2,7 +2,6 @@
 
 import { useEffect } from 'react';
 import { GET_ROLES_BY_USER_ID } from '@/app/graphql/queries/role';
-import { RoleByUserIdQuery, RoleByUserIdQueryVariables } from '@/app/graphql/operations';
 import { useSessionGQL } from '@/app/providers/session/hooks/useSesssionGQL';
 import { useQuery } from '@apollo/client/react';
 import { useRouter } from 'next/navigation';
@@ -11,16 +10,13 @@ export function useAdminGuard() {
     const { data, status } = useSessionGQL();
     const router = useRouter();
 
-    const { data: dataRoles, loading: rolesLoading } = useQuery<
-        RoleByUserIdQuery,
-        RoleByUserIdQueryVariables
-    >(GET_ROLES_BY_USER_ID, {
-        variables: { userId: data?._id as string },
+    const { data: dataRoles, loading: rolesLoading } = useQuery(GET_ROLES_BY_USER_ID, {
+        variables: { userId: data?._id },
         skip: !data?._id,
         fetchPolicy: 'network-only',
     });
 
-    const hasAdminRole = (dataRoles?.roleByUserId?.roles ?? []).some((role) =>
+    const hasAdminRole = dataRoles?.roleByUserId?.roles.some((role: any) =>
         typeof role === 'string' ? role === 'admin' : role?.name === 'admin'
     );
 
