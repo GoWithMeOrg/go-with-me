@@ -18,7 +18,7 @@ export interface SlideProps {
   name: string;
   image: string;
   coord: [number, number];
-  startDate: Date;
+  startDate: string | Date;
   time: string;
   avatar: string;
   showAvatar: boolean;

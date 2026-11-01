@@ -15,11 +15,11 @@ import { EventFormData, UseEventFormProps } from '../interfaces/eventForm';
 const buildEventInput = (data: EventFormData) => ({
     name: data.name,
     privacy: data.privacy,
-    description: data.description,
-    startDate: data.startDate,
-    endDate: data.endDate,
-    time: data.time,
-    image: data.image,
+    description: data.description ?? undefined,
+    startDate: data.startDate as string,
+    endDate: data.endDate as string,
+    time: data.time ?? undefined,
+    image: data.image ?? undefined,
 });
 
 // Формирует дополнительные поля (location, category, interest, tag) для мутаций

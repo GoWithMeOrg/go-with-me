@@ -24,12 +24,12 @@ export type CreateCommentInput = {
 
 export type CreateEventInput = {
   description?: string | null | undefined;
-  endDate: unknown;
+  endDate: string;
   image?: string | null | undefined;
   name: string;
   organizer?: string | number | null | undefined;
   privacy: Privacy;
-  startDate: unknown;
+  startDate: string;
   time?: string | null | undefined;
 };
 
@@ -124,12 +124,12 @@ export type UpdateCategoryInput = {
 
 export type UpdateEventInput = {
   description?: string | null | undefined;
-  endDate?: unknown;
+  endDate?: string | null | undefined;
   image?: string | null | undefined;
   name?: string | null | undefined;
   organizer?: string | number | null | undefined;
   privacy?: Privacy | null | undefined;
-  startDate?: unknown;
+  startDate?: string | null | undefined;
   time?: string | null | undefined;
 };
 
@@ -186,7 +186,7 @@ export type CreateCommentMutationVariables = Exact<{
 }>;
 
 
-export type CreateCommentMutation = { __typename: 'Mutation', createComment: { __typename: 'Comment', _id: string, ownerId: string, ownerType: string, content: string, createdAt: unknown, repliesCount: number, author: { __typename: 'User', _id: string, firstName: string, lastName: string, image: string | null } } };
+export type CreateCommentMutation = { __typename: 'Mutation', createComment: { __typename: 'Comment', _id: string, ownerId: string, ownerType: string, content: string, createdAt: string, repliesCount: number, author: { __typename: 'User', _id: string, firstName: string, lastName: string, image: string | null } } };
 
 export type CreateReplyMutationVariables = Exact<{
   createCommentInput: CreateCommentInput;
@@ -480,7 +480,7 @@ export type GetCommentsByOwnerIdQueryVariables = Exact<{
 }>;
 
 
-export type GetCommentsByOwnerIdQuery = { __typename: 'Query', getCommentsByOwnerId: Array<{ __typename: 'Comment', _id: string, content: string, createdAt: unknown, ownerId: string, deleted: boolean, author: { __typename: 'User', _id: string, image: string | null, firstName: string, lastName: string }, parent: { __typename: 'Comment', _id: string, author: { __typename: 'User', firstName: string, lastName: string } } | null }> };
+export type GetCommentsByOwnerIdQuery = { __typename: 'Query', getCommentsByOwnerId: Array<{ __typename: 'Comment', _id: string, content: string, createdAt: string, ownerId: string, deleted: boolean, author: { __typename: 'User', _id: string, image: string | null, firstName: string, lastName: string }, parent: { __typename: 'Comment', _id: string, author: { __typename: 'User', firstName: string, lastName: string } } | null }> };
 
 export type GetParentCommentsByOwnerIdQueryVariables = Exact<{
   limit?: number | null | undefined;
@@ -490,7 +490,7 @@ export type GetParentCommentsByOwnerIdQueryVariables = Exact<{
 }>;
 
 
-export type GetParentCommentsByOwnerIdQuery = { __typename: 'Query', getParentCommentsByOwnerId: Array<{ __typename: 'Comment', _id: string, content: string, createdAt: unknown, ownerId: string, repliesCount: number, deleted: boolean, author: { __typename: 'User', _id: string, firstName: string, lastName: string, image: string | null }, parent: { __typename: 'Comment', _id: string } | null }> };
+export type GetParentCommentsByOwnerIdQuery = { __typename: 'Query', getParentCommentsByOwnerId: Array<{ __typename: 'Comment', _id: string, content: string, createdAt: string, ownerId: string, repliesCount: number, deleted: boolean, author: { __typename: 'User', _id: string, firstName: string, lastName: string, image: string | null }, parent: { __typename: 'Comment', _id: string } | null }> };
 
 export type GetChildrenCommentsByParentIdQueryVariables = Exact<{
   limit?: number | null | undefined;
@@ -500,7 +500,7 @@ export type GetChildrenCommentsByParentIdQueryVariables = Exact<{
 }>;
 
 
-export type GetChildrenCommentsByParentIdQuery = { __typename: 'Query', getChildrenCommentsByParentId: Array<{ __typename: 'Comment', _id: string, content: string, createdAt: unknown, ownerId: string, repliesCount: number, deleted: boolean, author: { __typename: 'User', firstName: string, lastName: string, image: string | null, _id: string }, parent: { __typename: 'Comment', _id: string, author: { __typename: 'User', firstName: string, lastName: string } } | null }> };
+export type GetChildrenCommentsByParentIdQuery = { __typename: 'Query', getChildrenCommentsByParentId: Array<{ __typename: 'Comment', _id: string, content: string, createdAt: string, ownerId: string, repliesCount: number, deleted: boolean, author: { __typename: 'User', firstName: string, lastName: string, image: string | null, _id: string }, parent: { __typename: 'Comment', _id: string, author: { __typename: 'User', firstName: string, lastName: string } } | null }> };
 
 export type GetCompanionRequestsQueryVariables = Exact<{
   userId: string | number;
@@ -539,35 +539,35 @@ export type GetAllEventsQueryVariables = Exact<{
 }>;
 
 
-export type GetAllEventsQuery = { __typename: 'Query', getAllEvents: Array<{ __typename: 'Event', _id: string, description: string | null, endDate: unknown, image: string | null, name: string, privacy: Privacy, startDate: unknown, time: string | null, category: { __typename: 'Category', categories: Array<string> } | null, interest: { __typename: 'Interest', interests: Array<string> } | null, location: { __typename: 'Location', geometry: { __typename: 'LocationGeometry', coordinates: Array<number> }, properties: { __typename: 'LocationProperties', address: string | null } } | null, organizer: { __typename: 'User', _id: string, firstName: string, lastName: string, image: string | null }, tag: { __typename: 'Tag', tags: Array<string> } | null }> };
+export type GetAllEventsQuery = { __typename: 'Query', getAllEvents: Array<{ __typename: 'Event', _id: string, description: string | null, endDate: string | null, image: string | null, name: string, privacy: Privacy, startDate: string, time: string | null, category: { __typename: 'Category', categories: Array<string> } | null, interest: { __typename: 'Interest', interests: Array<string> } | null, location: { __typename: 'Location', geometry: { __typename: 'LocationGeometry', coordinates: Array<number> }, properties: { __typename: 'LocationProperties', address: string | null } } | null, organizer: { __typename: 'User', _id: string, firstName: string, lastName: string, image: string | null }, tag: { __typename: 'Tag', tags: Array<string> } | null }> };
 
 export type GetEventsByOrganizerQueryVariables = Exact<{
   organizerId: string | number;
 }>;
 
 
-export type GetEventsByOrganizerQuery = { __typename: 'Query', getEventsByOrganizer: Array<{ __typename: 'Event', _id: string, description: string | null, endDate: unknown, image: string | null, name: string, privacy: Privacy, startDate: unknown, time: string | null, category: { __typename: 'Category', categories: Array<string> } | null, interest: { __typename: 'Interest', interests: Array<string> } | null, location: { __typename: 'Location', geometry: { __typename: 'LocationGeometry', coordinates: Array<number> }, properties: { __typename: 'LocationProperties', address: string | null } } | null, organizer: { __typename: 'User', _id: string, firstName: string, image: string | null, lastName: string }, tag: { __typename: 'Tag', tags: Array<string> } | null }> };
+export type GetEventsByOrganizerQuery = { __typename: 'Query', getEventsByOrganizer: Array<{ __typename: 'Event', _id: string, description: string | null, endDate: string | null, image: string | null, name: string, privacy: Privacy, startDate: string, time: string | null, category: { __typename: 'Category', categories: Array<string> } | null, interest: { __typename: 'Interest', interests: Array<string> } | null, location: { __typename: 'Location', geometry: { __typename: 'LocationGeometry', coordinates: Array<number> }, properties: { __typename: 'LocationProperties', address: string | null } } | null, organizer: { __typename: 'User', _id: string, firstName: string, image: string | null, lastName: string }, tag: { __typename: 'Tag', tags: Array<string> } | null }> };
 
 export type GetEventByIdQueryVariables = Exact<{
   eventId: string | number;
 }>;
 
 
-export type GetEventByIdQuery = { __typename: 'Query', getEventById: { __typename: 'Event', _id: string, description: string | null, endDate: unknown, image: string | null, name: string, privacy: Privacy, startDate: unknown, time: string | null, category: { __typename: 'Category', categories: Array<string> } | null, interest: { __typename: 'Interest', interests: Array<string> } | null, location: { __typename: 'Location', geometry: { __typename: 'LocationGeometry', coordinates: Array<number> }, properties: { __typename: 'LocationProperties', address: string | null } } | null, tag: { __typename: 'Tag', tags: Array<string> } | null, organizer: { __typename: 'User', _id: string, firstName: string, lastName: string, image: string | null } } };
+export type GetEventByIdQuery = { __typename: 'Query', getEventById: { __typename: 'Event', _id: string, description: string | null, endDate: string | null, image: string | null, name: string, privacy: Privacy, startDate: string, time: string | null, category: { __typename: 'Category', categories: Array<string> } | null, interest: { __typename: 'Interest', interests: Array<string> } | null, location: { __typename: 'Location', geometry: { __typename: 'LocationGeometry', coordinates: Array<number> }, properties: { __typename: 'LocationProperties', address: string | null } } | null, tag: { __typename: 'Tag', tags: Array<string> } | null, organizer: { __typename: 'User', _id: string, firstName: string, lastName: string, image: string | null } } };
 
 export type GetInvitationQueryVariables = Exact<{
   user_id: string | number;
 }>;
 
 
-export type GetInvitationQuery = { __typename: 'Query', getInvitation: Array<{ __typename: 'Invitation', _id: string, status: string, event: { __typename: 'Event', _id: string, name: string, image: string | null, time: string | null, startDate: unknown, location: { __typename: 'Location', type: string, geometry: { __typename: 'LocationGeometry', coordinates: Array<number> }, properties: { __typename: 'LocationProperties', address: string | null } } | null, organizer: { __typename: 'User', firstName: string, _id: string } }, sender: { __typename: 'User', _id: string, firstName: string }, receiver: { __typename: 'User', _id: string } }> };
+export type GetInvitationQuery = { __typename: 'Query', getInvitation: Array<{ __typename: 'Invitation', _id: string, status: string, event: { __typename: 'Event', _id: string, name: string, image: string | null, time: string | null, startDate: string, location: { __typename: 'Location', type: string, geometry: { __typename: 'LocationGeometry', coordinates: Array<number> }, properties: { __typename: 'LocationProperties', address: string | null } } | null, organizer: { __typename: 'User', firstName: string, _id: string } }, sender: { __typename: 'User', _id: string, firstName: string }, receiver: { __typename: 'User', _id: string } }> };
 
 export type GetDeclinedEventsQueryVariables = Exact<{
   userId: string | number;
 }>;
 
 
-export type GetDeclinedEventsQuery = { __typename: 'Query', events: Array<{ __typename: 'Event', _id: string, name: string, description: string | null, startDate: unknown, time: string | null, image: string | null, location: { __typename: 'Location', type: string, geometry: { __typename: 'LocationGeometry', coordinates: Array<number> }, properties: { __typename: 'LocationProperties', address: string | null } } | null }> };
+export type GetDeclinedEventsQuery = { __typename: 'Query', events: Array<{ __typename: 'Event', _id: string, name: string, description: string | null, startDate: string, time: string | null, image: string | null, location: { __typename: 'Location', type: string, geometry: { __typename: 'LocationGeometry', coordinates: Array<number> }, properties: { __typename: 'LocationProperties', address: string | null } } | null }> };
 
 export type CompanionInvitationEventQueryVariables = Exact<{
   organizerId: string | number;
@@ -575,14 +575,14 @@ export type CompanionInvitationEventQueryVariables = Exact<{
 }>;
 
 
-export type CompanionInvitationEventQuery = { __typename: 'Query', companionInvitationEvent: Array<{ __typename: 'Event', _id: string, name: string, startDate: unknown }> };
+export type CompanionInvitationEventQuery = { __typename: 'Query', companionInvitationEvent: Array<{ __typename: 'Event', _id: string, name: string, startDate: string }> };
 
 export type GetOrganizerEventsForInviteQueryVariables = Exact<{
   organizerId: string | number;
 }>;
 
 
-export type GetOrganizerEventsForInviteQuery = { __typename: 'Query', events: Array<{ __typename: 'Event', _id: string, name: string, startDate: unknown }> };
+export type GetOrganizerEventsForInviteQuery = { __typename: 'Query', events: Array<{ __typename: 'Event', _id: string, name: string, startDate: string }> };
 
 export type IsJoinedByUserQueryVariables = Exact<{
   ownerId: string | number;

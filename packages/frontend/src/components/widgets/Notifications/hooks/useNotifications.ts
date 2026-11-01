@@ -5,6 +5,8 @@ import { COMPANION_REQUEST_SUBSCRIPTION } from '@/app/graphql/subscriptions/comp
 import {
     GetCompanionRequestsQuery,
     GetCompanionRequestsQueryVariables,
+    GetInvitationQuery,
+    GetInvitationQueryVariables,
 } from '@/app/graphql/operations';
 import { Subscription } from '@/app/graphql/types';
 import { useSessionGQL } from '@/app/providers/session/hooks/useSesssionGQL';
@@ -22,9 +24,12 @@ export const useNotifications = () => {
         skip: !user_id,
     });
 
-    const { data: invations, refetch: refetchDataInvations } = useQuery(GET_INVATIONS, {
+    const { data: invations, refetch: refetchDataInvations } = useQuery<
+        GetInvitationQuery,
+        GetInvitationQueryVariables
+    >(GET_INVATIONS, {
         variables: {
-            user_id: user_id,
+            user_id: user_id as string,
         },
         // pollInterval: 5000,
     });
