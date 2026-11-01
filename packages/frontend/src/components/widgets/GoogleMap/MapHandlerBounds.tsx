@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useQuery } from '@apollo/client/react';
+import { PlaceType } from '@/components/widgets/MapComponents/types/types';
 import { useMap } from '@vis.gl/react-google-maps';
 import gql from 'graphql-tag';
 
 interface Props {
-  place: google.maps.places.PlaceResult | null;
+  place: PlaceType;
 }
 
 type Bounds = {
@@ -49,9 +50,9 @@ export const MapHandlerBounds = ({ place }: Props) => {
   useEffect(() => {
     if (!map || !place) return;
 
-    if (place.geometry?.viewport) {
-      map.fitBounds(place.geometry.viewport);
-      const viewport = normalizeViewport(place?.geometry?.viewport);
+    if (place.viewport) {
+      map.fitBounds(place.viewport);
+      const viewport = normalizeViewport(place.viewport);
       setBounds(viewport);
       if (
         viewport.north !== undefined &&

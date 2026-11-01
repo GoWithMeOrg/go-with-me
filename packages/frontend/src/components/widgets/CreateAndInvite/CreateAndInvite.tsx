@@ -13,7 +13,6 @@ import classes from './CreateAndInvite.module.css';
 
 export enum Mode {
   EVENT,
-  TRIP,
   BOTH,
 }
 
@@ -27,10 +26,7 @@ export const CreateAndInvite: FC<CreateAndInviteProps> = ({ mode, status }) => {
   const { handleShowPopup, handleHidePopup, showPopup, setShowPopup } = usePopup({ popupMode });
 
   const linkCssString = useMemo(
-    () =>
-      [classes.link, mode === Mode.EVENT && classes.one, mode === Mode.TRIP && classes.one]
-        .filter(Boolean)
-        .join(' '),
+    () => [classes.link, mode === Mode.EVENT && classes.one].filter(Boolean).join(' '),
     [mode]
   );
 
@@ -61,20 +57,11 @@ export const CreateAndInvite: FC<CreateAndInviteProps> = ({ mode, status }) => {
               <Link className={classes.link} href="/events/new">
                 Создать событие
               </Link>
-
-              <Link className={classes.link} href="/trips/new">
-                Создать поездку
-              </Link>
             </div>
           )) ||
             (mode === Mode.EVENT && (
               <Link className={linkCssString} href="/events/new">
                 Создать событие
-              </Link>
-            )) ||
-            (mode === Mode.TRIP && (
-              <Link className={linkCssString} href="/trips/new">
-                Создать поездку
               </Link>
             )))}
       </div>

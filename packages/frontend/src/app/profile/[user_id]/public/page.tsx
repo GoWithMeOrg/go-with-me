@@ -1,6 +1,6 @@
 'use client';
 
-import { IEvent } from '@/app/types/Event';
+import { Event } from '@/app/graphql/types';
 import Envelope from '@/assets/icons/envelope.svg';
 import Marker from '@/assets/icons/marker.svg';
 import { Avatar } from '@/components/shared/Avatar';
@@ -295,20 +295,22 @@ const PublicProfile: NextPage = () => {
                         ?.length ?? 0) > 0 && (
                         <Carousel title="Organized events" hideButton marginBottom="3.88rem">
                             {(
-                                eventsData as { allOrganizerEvents: IEvent[] }
-                            )?.allOrganizerEvents.map((slide: IEvent) => (
+                                eventsData as { allOrganizerEvents: Event[] }
+                            )?.allOrganizerEvents.map((slide: Event) => (
                                 <CardEvent
                                     key={slide._id}
                                     id={slide._id}
                                     name={slide.name}
-                                    description={slide.description}
-                                    coord={[
-                                        slide.location.coordinates[0],
-                                        slide.location.coordinates[1],
-                                    ]}
+                                    description={slide.description as string}
+                                    coord={
+                                        [
+                                            slide.location?.geometry.coordinates[0],
+                                            slide.location?.geometry.coordinates[1],
+                                        ] as [number, number]
+                                    }
                                     startDate={slide.startDate}
-                                    time={slide.time}
-                                    image={slide.image}
+                                    time={slide.time as string}
+                                    image={slide.image as string}
                                     size={SizeCard.ML}
                                 />
                             ))}
@@ -319,20 +321,22 @@ const PublicProfile: NextPage = () => {
                         ?.length ?? 0) > 0 && (
                         <Carousel title="Upcoming events" hideButton marginBottom="3.88rem">
                             {(
-                                eventsData as { allOrganizerEvents: IEvent[] }
-                            )?.allOrganizerEvents.map((slide: IEvent) => (
+                                eventsData as { allOrganizerEvents: Event[] }
+                            )?.allOrganizerEvents.map((slide: Event) => (
                                 <CardEvent
                                     key={slide._id}
                                     id={slide._id}
                                     name={slide.name}
-                                    description={slide.description}
-                                    coord={[
-                                        slide.location.coordinates[0],
-                                        slide.location.coordinates[1],
-                                    ]}
+                                    description={slide.description as string}
+                                    coord={
+                                        [
+                                            slide.location?.geometry.coordinates[0],
+                                            slide.location?.geometry.coordinates[1],
+                                        ] as [number, number]
+                                    }
                                     startDate={slide.startDate}
-                                    time={slide.time}
-                                    image={slide.image}
+                                    time={slide.time as string}
+                                    image={slide.image as string}
                                     size={SizeCard.ML}
                                 />
                             ))}
