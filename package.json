@@ -16,13 +16,12 @@
         "codegen": "graphql-codegen --config codegen.ts"
     },
     "devDependencies": {
-        "@graphql-codegen/cli": "^7.1.2",
-        "@graphql-codegen/import-types-preset": "^4.0.1",
-        "@graphql-codegen/typed-document-node": "^7.0.3",
-        "@graphql-codegen/typescript": "^6.0.2",
-        "@graphql-codegen/typescript-operations": "^6.0.3",
+        "@graphql-codegen/cli": "^7.4.6",
+        "@graphql-codegen/typed-document-node": "^7.2.0",
+        "@graphql-codegen/typescript": "^6.1.2",
+        "@graphql-codegen/typescript-operations": "^6.2.0",
         "@ianvs/prettier-plugin-sort-imports": "^4.7.1",
-        "@playwright/test": "^1.61.0",
+        "@playwright/test": "^1.64.1",
         "class-transformer": "0.5.1",
         "class-validator": "0.15.1",
         "typescript": "5.9.3"

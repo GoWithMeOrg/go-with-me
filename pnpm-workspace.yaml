@@ -1,9 +1,18 @@
 packages:
   - packages/*
 
+overrides:
+  # GHSA-q7qp-rjg7-q26m — DoS via pending async fileFilter
+  multer: ^2.5.0
+  # GHSA-7mx3-vvmw-hjmv, GHSA-c4qx-w738-7hr3 — prototype pollution
+  '@graphql-tools/utils': ^12.0.2
+  # GHSA-g84c-rxfj-3j2c — path traversal via non-slash-terminated publicPath
+  webpack-dev-middleware: ^7.4.5
+
 allowBuilds:
   '@apollo/protobufjs': true
   '@nestjs/core': true
+  '@parcel/watcher': true
   core-js-pure: true
   esbuild: true
   protobufjs: true
@@ -13,6 +22,7 @@ allowBuilds:
 onlyBuiltDependencies:
   - '@apollo/protobufjs'
   - '@nestjs/core'
+  - '@parcel/watcher'
   - core-js-pure
   - esbuild
   - protobufjs
