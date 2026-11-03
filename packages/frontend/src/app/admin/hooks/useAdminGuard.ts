@@ -11,16 +11,14 @@ export function useAdminGuard() {
     const router = useRouter();
 
     const { data: dataRoles, loading: rolesLoading } = useQuery(GET_ROLES_BY_USER_ID, {
-        variables: { userId: data?._id },
+        variables: { userId: data?._id as string },
         skip: !data?._id,
         fetchPolicy: 'network-only',
     });
 
-    const hasAdminRole = dataRoles?.roleByUserId?.roles.some((role: any) =>
+    const hasAdminRole = (dataRoles?.roleByUserId?.roles ?? []).some((role) =>
         typeof role === 'string' ? role === 'admin' : role?.name === 'admin'
     );
-
-    console.log(dataRoles);
 
     useEffect(() => {
         // 1. Ждем, пока загрузится сессия
