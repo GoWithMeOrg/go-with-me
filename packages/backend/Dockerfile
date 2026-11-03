@@ -3,7 +3,7 @@
 # --------------------------
 FROM node:24-alpine AS base
 
-RUN npm install -g pnpm@11.5.0
+RUN npm install -g pnpm@12.16.1
 
 WORKDIR /workspace
 
