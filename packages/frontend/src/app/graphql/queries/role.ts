@@ -1,4 +1,6 @@
-import { gql } from '@apollo/client';
+import { gql, TypedDocumentNode } from '@apollo/client';
+
+import { RoleByUserIdQuery, RoleByUserIdQueryVariables } from '../operations';
 
 export const GET_ROLES = gql`
     query GetRoles {
@@ -21,7 +23,10 @@ export const GET_ROLES = gql`
     }
 `;
 
-export const GET_ROLES_BY_USER_ID = gql`
+export const GET_ROLES_BY_USER_ID: TypedDocumentNode<
+    RoleByUserIdQuery,
+    RoleByUserIdQueryVariables
+> = gql`
     query RoleByUserId($userId: ID!) {
         roleByUserId(userId: $userId) {
             roles {
