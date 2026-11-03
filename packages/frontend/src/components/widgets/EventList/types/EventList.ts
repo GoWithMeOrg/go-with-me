@@ -1,4 +1,4 @@
-import { IEvent } from '@/app/types/Event';
+import { Event } from '@/app/graphql/types';
 import { SizeCard } from '@/components/widgets/CardEvent/CardEvent';
 
 export interface EventListProps {
@@ -15,5 +15,5 @@ export interface useEventListProps {
 }
 
 export interface GetEventsData {
-    events: IEvent[];
+    events: Event[];
 }

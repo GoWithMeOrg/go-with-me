@@ -20,5 +20,5 @@ export const useEventList = ({ limit, offset, sort }: useEventListProps) => {
         (event: Event) => event.image !== undefined && event.image !== ''
     );
 
-    return { loading, error, data, refetch, filterEventsImage };
+    return { loading, error, data, refetch, events, filterEventsImage };
 };

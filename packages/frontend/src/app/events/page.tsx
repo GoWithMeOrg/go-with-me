@@ -69,7 +69,7 @@ const EventListPage: NextPage = () => {
                         userId={slide.organizer._id as string}
                         name={slide.name}
                         image={slide.image as string}
-                        startDate={slide.startDate as Date}
+                        startDate={slide.startDate}
                         time={slide.time as string}
                         coord={[
                             slide.location?.geometry.coordinates[0] as number,
@@ -91,7 +91,7 @@ const EventListPage: NextPage = () => {
                         userId={slide.organizer._id as string}
                         name={slide.name}
                         image={slide.image as string}
-                        startDate={slide.startDate as Date}
+                        startDate={slide.startDate}
                         time={slide.time as string}
                         coord={[
                             slide.location?.geometry.coordinates[0] as number,

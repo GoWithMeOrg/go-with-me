@@ -10,10 +10,10 @@ import {
 } from '@vis.gl/react-google-maps';
 
 import { CardEventMap } from '../CardEventMap/CardEventMap';
+import { PlaceType } from '../MapComponents/types/types';
 import { CustomMapControl } from './CustomMapControl';
 import { MapController } from './MapController';
 import { MapHandlerBounds } from './MapHandlerBounds';
-import { optionsFullAdress } from './OptionsAutocomplete';
 import { IEvent } from './types/Type';
 
 interface Props {
@@ -25,7 +25,7 @@ export const GoogleMap: React.FC<Props> = ({ events = [], selectedLocation }) =>
     const apiIsLoaded = useApiIsLoaded();
     const ctx = useContext(APIProviderContext);
     const map = useMap();
-    const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
+    const [selectedPlace, setSelectedPlace] = useState<PlaceType>(null);
     const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
 
     const handleMarkerClick = useCallback((event: IEvent, offsetLat: number, offsetLng: number) => {
@@ -66,7 +66,7 @@ export const GoogleMap: React.FC<Props> = ({ events = [], selectedLocation }) =>
                 </Map>
 
                 <CustomMapControl controlPosition={ControlPosition.TOP}>
-                    <Autocomplete onPlaceSelect={setSelectedPlace} options={optionsFullAdress} />
+                    <Autocomplete onPlaceSelect={setSelectedPlace} />
                 </CustomMapControl>
                 <MapHandlerBounds place={selectedPlace} />
             </div>

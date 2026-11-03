@@ -18,6 +18,9 @@ const config: CodegenConfig = {
             plugins: ['typescript'],
             config: {
                 avoidOptionals: false,
+                scalars: {
+                    DateTime: 'string',
+                },
             },
         },
         'packages/frontend/src/app/graphql/operations.ts': {
@@ -25,6 +28,9 @@ const config: CodegenConfig = {
             config: {
                 avoidOptionals: false,
                 nonOptionalTypename: true,
+                scalars: {
+                    DateTime: 'string',
+                },
             },
         },
     },
