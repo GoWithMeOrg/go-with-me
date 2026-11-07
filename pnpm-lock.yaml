@@ -448,9 +448,6 @@ importers:
       graphql-ws:
         specifier: ^6.4.1
         version: 6.4.1(graphql@16.15.0)(ws@8.22.1)
-      luxon:
-        specifier: ^3.7.2
-        version: 3.7.2
       next:
         specifier: ^16.4.5
         version: 16.4.5(@babel/core@7.29.7(supports-color@8.1.1))(@playwright/test@1.64.1)(@types/node@24.19.2)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
@@ -488,9 +485,6 @@ importers:
       '@types/google.maps':
         specifier: ^3.66.10
         version: 3.66.10
-      '@types/luxon':
-        specifier: ^3.7.6
-        version: 3.7.6
       '@types/node':
         specifier: ^24.19.2
         version: 24.19.2
@@ -3713,9 +3707,6 @@ packages:
   '@types/long@4.0.2':
     resolution: {integrity: sha512-MqTGEo5bj5t157U6fA/BiDynNkn0YknVdh48CMPkTSpFTVmvao5UQmm7uEF6xBEo7qIMAlY/JSleYaE6VOdpaA==}
 
-  '@types/luxon@3.7.6':
-    resolution: {integrity: sha512-6KSjliQAXK8ZLgFQO4B7iE4Rpf/B3rItzCFuXezBY/XIAGxOdLd7vRNK9/StRPwiS/yJsVbB7HKpW46B8tcEuQ==}
-
   '@types/mdx@2.0.14':
     resolution: {integrity: sha512-T48PeuJtvLosNTPVhfnIp3i/n3a4g4Bad7YCq5k64D4u7NwDrAotikQ+5+sjtUvBmxCMlbo3dVL+C2dP0rWHzg==}
 
@@ -6424,10 +6415,6 @@ packages:
   lru-cache@6.0.0:
     resolution: {integrity: sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==}
     engines: {node: '>=10'}
-
-  luxon@3.7.2:
-    resolution: {integrity: sha512-vtEhXh/gNjI9Yg1u4jX/0YVPMvxzHuGgCm6tC5kZyb08yjGWGnqAjGJvcXbqQR2P3MyMEFnRbpcdFS6PBcLqew==}
-    engines: {node: '>=12'}
 
   lz-string@1.5.0:
     resolution: {integrity: sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ==}
@@ -12263,8 +12250,6 @@ snapshots:
 
   '@types/long@4.0.2': {}
 
-  '@types/luxon@3.7.6': {}
-
   '@types/mdx@2.0.14': {}
 
   '@types/methods@1.1.4': {}
@@ -15543,8 +15528,6 @@ snapshots:
   lru-cache@6.0.0:
     dependencies:
       yallist: 4.0.0
-
-  luxon@3.7.2: {}
 
   lz-string@1.5.0: {}
 
