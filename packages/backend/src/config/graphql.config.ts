@@ -73,8 +73,8 @@ export async function getGraphQLConfig(
                     }
                 },
 
-                onDisconnect: (context: SubscriptionContext) => {
-                    const { extra } = context;
+                onDisconnect: (context: Context) => {
+                    const { extra } = context as SubscriptionContext;
                     console.log('[WS DISCONNECT]', extra?.user?.email);
                 },
             },

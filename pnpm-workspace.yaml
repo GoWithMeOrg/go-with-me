@@ -4,10 +4,14 @@ packages:
 overrides:
   # GHSA-q7qp-rjg7-q26m — DoS via pending async fileFilter
   multer: ^2.5.0
-  # GHSA-7mx3-vvmw-hjmv, GHSA-c4qx-w738-7hr3 — prototype pollution
-  '@graphql-tools/utils': ^12.0.2
   # GHSA-g84c-rxfj-3j2c — path traversal via non-slash-terminated publicPath
   webpack-dev-middleware: ^7.4.5
+  # GHSA-7mx3-vvmw-hjmv, GHSA-c4qx-w738-7hr3 — prototype pollution.
+  # Применяем точечно: @graphql-codegen 8 требует @graphql-tools/utils ^13,
+  # поэтому глобальный override на 12.x ломает кодогенерацию.
+  '@nestjs/graphql>@graphql-tools/utils': ^12.1.0
+  '@graphql-tools/schema>@graphql-tools/utils': ^12.1.0
+  '@graphql-tools/merge>@graphql-tools/utils': ^12.1.0
 
 allowBuilds:
   '@apollo/protobufjs': true
@@ -28,3 +32,16 @@ onlyBuiltDependencies:
   - protobufjs
   - sharp
   - unrs-resolver
+
+minimumReleaseAgeExclude:
+  - '@graphql-codegen/add@8.0.0'
+  - '@graphql-codegen/cli@8.0.0'
+  - '@graphql-codegen/client-preset@7.0.0'
+  - '@graphql-codegen/core@7.0.0'
+  - '@graphql-codegen/gql-tag-operations@7.0.0'
+  - '@graphql-codegen/plugin-helpers@8.0.0'
+  - '@graphql-codegen/schema-ast@7.0.0'
+  - '@graphql-codegen/typed-document-node@8.0.0'
+  - '@graphql-codegen/typescript-operations@7.0.0'
+  - '@graphql-codegen/typescript@7.0.0'
+  - '@graphql-codegen/visitor-plugin-common@8.0.0'
