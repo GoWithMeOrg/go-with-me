@@ -3,3 +3,6 @@ dist
 build
 .next
 coverage
+
+# Генерируется NestJS при старте (autoSchemaFile) с отступом в 2 пробела
+packages/backend/src/schema/schema.gql
