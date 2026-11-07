@@ -11,6 +11,12 @@ export enum DialogModal {
     RESET_ALL_POPUPS = 'RESET_ALL_POPUPS',
 }
 
+export type InvitationEvent = {
+    _id: string;
+    name: string;
+    startDate: string;
+};
+
 export type InitialState = {
     activePopup: string | null;
     addedUser: {
@@ -27,11 +33,7 @@ export type InitialState = {
         name: string;
     } | null;
     deleteSelectedCompanions: boolean;
-    selectedEvent: {
-        _id: string;
-        name: string;
-        startDate: string;
-    } | null;
+    selectedEvent: InvitationEvent | null;
 
     disableButton: boolean;
     successModalOpen: boolean;

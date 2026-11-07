@@ -3,7 +3,7 @@ import { InterestService } from './interest.service';
 import { Interest } from './entities/interest.entity';
 import { CreateInterestInput } from './dto/create-interest.input';
 import { UpdateInterestInput } from './dto/update-interest.input';
-import { Schema as MongoSchema, Types } from 'mongoose';
+import { Types } from 'mongoose';
 
 @Resolver(() => Interest)
 export class InterestResolver {

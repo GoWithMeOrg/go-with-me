@@ -1,16 +1,15 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { Label } from '@/components/shared/Label';
-import { optionsCities } from '@/components/widgets/GoogleMap/OptionsAutocomplete';
 import { Autocomplete } from '@/components/widgets/MapComponents/Autocomplete/Autocomplete';
+import type { PlaceType } from '@/components/widgets/MapComponents/types/types';
 
 import classes from './FilteredEventsLocation.module.css';
 
 export interface FilteredEventsLocationProps {
-    options: google.maps.places.AutocompleteOptions;
-    onChange: (...event: any[]) => void;
+    onChange: (place: PlaceType) => void;
 }
 
-export const FilteredEventsLocation: FC<FilteredEventsLocationProps> = ({ options, onChange }) => {
+export const FilteredEventsLocation: FC<FilteredEventsLocationProps> = ({ onChange }) => {
     return (
         <div className={classes.location}>
             <Label label={'Место'} />

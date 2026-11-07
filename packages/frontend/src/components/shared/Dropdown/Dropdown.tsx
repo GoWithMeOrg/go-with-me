@@ -3,6 +3,7 @@ import ArrowMenu from '@/assets/icons/arrowMenu.svg';
 import Minus from '@/assets/icons/minus.svg';
 import Plus from '@/assets/icons/plus.svg';
 import { Button } from '@/components/shared/Button';
+import Image from 'next/image';
 
 import { useDropdown } from './hooks';
 
@@ -62,9 +63,11 @@ export const Dropdown: FC<DropdownProps> = ({
                             >
                                 <div className={classes.dropdownItemContent}>
                                     {itemImages?.[category] && (
-                                        <img
+                                        <Image
                                             src={itemImages[category]}
                                             alt=""
+                                            width={32}
+                                            height={32}
                                             className={classes.dropdownItemAvatar}
                                         />
                                     )}

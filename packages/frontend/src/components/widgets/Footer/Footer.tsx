@@ -12,8 +12,8 @@ import Link from 'next/link';
 import classes from './Footer.module.css';
 
 export const Footer = () => {
-    const { data: session, status } = useSessionGQL();
-    const popupMode: 'auth' = 'auth';
+    const { status } = useSessionGQL();
+    const popupMode = 'auth' as const;
 
     const { showPopup, setShowPopup, handleShowPopup, handleHidePopup } = usePopup({ popupMode });
 

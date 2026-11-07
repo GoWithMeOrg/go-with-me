@@ -15,7 +15,7 @@ import { useRouter } from 'next/navigation';
 import classes from './page.module.css';
 
 export default function HomePage() {
-    const { data: session, status } = useSessionGQL();
+    const { status } = useSessionGQL();
 
     const router = useRouter();
 

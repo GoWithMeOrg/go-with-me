@@ -13,7 +13,7 @@ interface CommentContentProps {
     showReplyForm: boolean;
     onReply: () => void;
     onDelete: () => void;
-    onSaveReply: (content: string) => Promise<any>;
+    onSaveReply: (content: string) => Promise<unknown>;
     onCloseReplyForm: () => void;
 }
 

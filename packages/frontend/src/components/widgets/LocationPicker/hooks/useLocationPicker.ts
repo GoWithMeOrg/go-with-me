@@ -5,7 +5,7 @@ import { APIProviderContext, useApiIsLoaded, useMapsLibrary } from '@vis.gl/reac
 
 const PLACE_FIELDS: string[] = ['location', 'formattedAddress', 'addressComponents', 'displayName'];
 
-const popupMode: 'map' = 'map';
+const popupMode = 'map' as const;
 
 export const useLocationPicker = ({ locationData, onChange }: UseLocationPickerProps) => {
     const apiIsLoaded = useApiIsLoaded();

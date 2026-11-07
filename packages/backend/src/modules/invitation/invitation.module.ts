@@ -6,7 +6,6 @@ import { Invitation, InvitationSchema } from './entities/invitation.entity';
 import { EventSchema } from '@/modules/event/entities/event.entity';
 import { Companion, CompanionSchema } from '@/modules/companion/entities/companion.entity';
 import { PrivacySettingModule } from '@/modules/privacy-setting/privacy-setting.module';
-import { PrivacySettingService } from '@/modules/privacy-setting/privacy-setting.service';
 
 @Module({
     imports: [

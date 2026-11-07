@@ -1,6 +1,6 @@
 import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
-import { Schema as MongoSchema, Types } from 'mongoose';
+import { Types } from 'mongoose';
 
 import { UserService } from './user.service';
 
@@ -70,9 +70,7 @@ export class UserResolver {
         name: 'removeUser',
         description: 'Удалить пользователя',
     })
-    async removeUser(
-        @Args('id', { type: () => ID }) id: Types.ObjectId
-    ): Promise<boolean> {
+    async removeUser(@Args('id', { type: () => ID }) id: Types.ObjectId): Promise<boolean> {
         const result = await this.userService.removeUser(id);
         return result.deletedCount > 0;
     }

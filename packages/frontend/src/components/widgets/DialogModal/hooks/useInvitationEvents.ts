@@ -1,3 +1,9 @@
+import type {
+    CompanionInvitationEventQuery,
+    CompanionInvitationEventQueryVariables,
+    GetOrganizerEventsForInviteQuery,
+    GetOrganizerEventsForInviteQueryVariables,
+} from '@/app/graphql/operations';
 import {
     GET_COMPANION_INVITATION_EVENTS,
     GET_ORGANIZER_EVENTS_FOR_INVITE,
@@ -19,14 +25,16 @@ export const useInvitationEvents = (companionId: string | null) => {
         loading: loadingEvents,
         error: errorEvents,
         data: dataEvents,
-    } = useQuery(query, {
-        variables,
+    } = useQuery<CompanionInvitationEventQuery | GetOrganizerEventsForInviteQuery>(query, {
+        variables: variables as
+            CompanionInvitationEventQueryVariables | GetOrganizerEventsForInviteQueryVariables,
         skip: !user_id,
     });
 
     const events = hasCompanion
-        ? (dataEvents as any)?.companionInvitationEvent ?? []
-        : (dataEvents as any)?.events ?? [];
+        ? ((dataEvents as CompanionInvitationEventQuery | undefined)?.companionInvitationEvent ??
+          [])
+        : ((dataEvents as GetOrganizerEventsForInviteQuery | undefined)?.events ?? []);
 
     return {
         loadingEvents,

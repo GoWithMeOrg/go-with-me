@@ -177,8 +177,8 @@ export const RoleManagement = () => {
                                                                         // Проверяем, есть ли это право у текущей роли
                                                                         const isAssigned =
                                                                             role.permissions?.some(
-                                                                                (p: any) =>
-                                                                                    (p._id || p) ===
+                                                                                (p) =>
+                                                                                    p._id ===
                                                                                     perm._id
                                                                             );
 

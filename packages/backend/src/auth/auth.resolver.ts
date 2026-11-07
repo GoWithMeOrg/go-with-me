@@ -26,7 +26,7 @@ export class AuthResolver {
     @Query(() => String)
     @UseGuards(SessionAuthGuard, RolesGuard)
     @Roles('admin')
-    async adminRoute(@Context() context: GqlContext): Promise<string> {
+    async adminRoute(): Promise<string> {
         return 'Доступ только для администраторов';
     }
 
@@ -34,7 +34,7 @@ export class AuthResolver {
     @Query(() => String)
     @UseGuards(SessionAuthGuard, RolesGuard)
     @Roles('admin', 'moderator')
-    async moderatorRoute(@Context() context: GqlContext): Promise<string> {
+    async moderatorRoute(): Promise<string> {
         return 'Доступ для администраторов и модераторов';
     }
 }

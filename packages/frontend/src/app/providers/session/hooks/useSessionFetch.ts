@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { GET_SESSION } from '@/app/graphql/queries/session';
 import type { AuthStatus, Session } from '@/app/providers/session/types/session.types';
 import { useQuery } from '@apollo/client/react';
@@ -8,32 +8,17 @@ import { useQuery } from '@apollo/client/react';
 export function useSessionFetch() {
     const { data, loading, error } = useQuery(GET_SESSION);
 
-    const [sessionData, setSessionData] = useState<Session | null>(null);
-    const [status, setStatus] = useState<AuthStatus>('loading');
+    // Локально обновлённая сессия (например, после редактирования профиля)
+    const [updatedSession, setUpdatedSession] = useState<Session | null>(null);
 
-    useEffect(() => {
-        if (loading) {
-            setStatus('loading');
-            return;
-        }
+    const querySession = (data as { session?: Session | null } | undefined)?.session ?? null;
+    const sessionData = updatedSession ?? querySession;
 
-        if (error) {
-            setStatus('unauthenticated');
-            setSessionData(null);
-            return;
-        }
+    const status: AuthStatus = loading
+        ? 'loading'
+        : error || !querySession
+          ? 'unauthenticated'
+          : 'authenticated';
 
-        //@ts-ignore
-        const session = data?.session as Session | undefined;
-
-        if (session) {
-            setSessionData(session);
-            setStatus('authenticated');
-        } else {
-            setSessionData(null);
-            setStatus('unauthenticated');
-        }
-    }, [loading, error, data]);
-
-    return { sessionData, status, setSessionData };
+    return { sessionData, status, setSessionData: setUpdatedSession };
 }

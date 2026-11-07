@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
-import { GET_COMPANION_REQUESTS } from '@/app/graphql/queries/companionRequest';
-import { GET_INVATIONS } from '@/app/graphql/queries/invations';
-import { COMPANION_REQUEST_SUBSCRIPTION } from '@/app/graphql/subscriptions/companionRequest';
 import {
     GetCompanionRequestsQuery,
     GetCompanionRequestsQueryVariables,
     GetInvitationQuery,
     GetInvitationQueryVariables,
+    SubscriptionSubscription,
 } from '@/app/graphql/operations';
-import { Subscription } from '@/app/graphql/types';
+import { GET_COMPANION_REQUESTS } from '@/app/graphql/queries/companionRequest';
+import { GET_INVATIONS } from '@/app/graphql/queries/invations';
+import { COMPANION_REQUEST_SUBSCRIPTION } from '@/app/graphql/subscriptions/companionRequest';
 import { useSessionGQL } from '@/app/providers/session/hooks/useSesssionGQL';
 import { useQuery } from '@apollo/client/react';
 
@@ -16,7 +16,7 @@ export const useNotifications = () => {
     const { data: session } = useSessionGQL();
     const user_id = session?._id;
 
-    const { data, subscribeToMore, ...result } = useQuery<
+    const { data, subscribeToMore } = useQuery<
         GetCompanionRequestsQuery,
         GetCompanionRequestsQueryVariables
     >(GET_COMPANION_REQUESTS, {
@@ -37,10 +37,11 @@ export const useNotifications = () => {
     useEffect(() => {
         if (!user_id) return;
 
-        const unsubscribe = subscribeToMore<Subscription>({
+        const unsubscribe = subscribeToMore<SubscriptionSubscription>({
             document: COMPANION_REQUEST_SUBSCRIPTION,
-            //@ts-ignore
-            updateQuery: (prev, { subscriptionData }) => {
+            updateQuery: (prevRaw, { subscriptionData }) => {
+                const prev = prevRaw as GetCompanionRequestsQuery;
+
                 if (!subscriptionData.data) return prev;
 
                 console.log('subscriptionData', subscriptionData);
@@ -55,6 +56,7 @@ export const useNotifications = () => {
                 if (prevList.some((item) => item?._id === payload._id)) return prev;
 
                 return {
+                    ...prev,
                     getCompanionRequests: [payload, ...prevList],
                 };
             },

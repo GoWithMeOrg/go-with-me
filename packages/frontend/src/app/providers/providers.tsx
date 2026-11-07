@@ -14,9 +14,9 @@ type Props = {
     children?: React.ReactNode;
 };
 
-const errorLink = new ErrorLink(({ error, operation }) => {
+const errorLink = new ErrorLink(({ error }) => {
     if (CombinedGraphQLErrors.is(error)) {
-        error.errors.forEach(({ message, locations, path, extensions }) => {
+        error.errors.forEach(({ extensions }) => {
             if (extensions?.code === 'UNAUTHORIZED') {
                 const currentUrl = window.location.href.replace(/\/$/, '');
                 const targetUrl = process.env.NEXT_PUBLIC_BASE_URL as string;

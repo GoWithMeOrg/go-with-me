@@ -1,13 +1,11 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { Document, Schema as MongoSchema, Types } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Location } from '@/modules/location/entities/location.entity';
 import { Category } from '@/modules/category/entities/category.entity';
 import { Interest } from '@/modules/interest/entities/interest.entity';
 import { Tag } from '@/modules/tag/entities/tag.entity';
 import { Privacy } from '../enum/privacy.enum';
-import { Like } from '@/modules/like/entities/like.entity';
-import { Comment } from '@/modules/comment/entities/comment.entity';
 
 @ObjectType()
 @Schema({ timestamps: true })

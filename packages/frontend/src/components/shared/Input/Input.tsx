@@ -1,4 +1,4 @@
-import { FC, FormEvent, InputHTMLAttributes } from 'react';
+import { FC, InputHTMLAttributes } from 'react';
 
 import classes from './Input.module.css';
 

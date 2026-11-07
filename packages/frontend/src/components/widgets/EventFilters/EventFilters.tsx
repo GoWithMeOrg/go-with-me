@@ -10,7 +10,6 @@ import { Date } from '@/components/widgets/Date';
 import { NavbarEvents } from '@/components/widgets/EventFilters/NavbarEvents';
 import { useEventList } from '@/components/widgets/EventList/hooks';
 import { FilteredEventsLocation } from '@/components/widgets/FilteredEventsLocation';
-import { optionsCities } from '@/components/widgets/GoogleMap/OptionsAutocomplete';
 import { SelectItems } from '@/components/widgets/SelectItems';
 
 import { GoogleMap } from '../GoogleMap';
@@ -54,7 +53,7 @@ export const EventFilters = () => {
             <div className={classes.filters}>
                 <Date title={'Дата'} onChange={handleDateChange} />
 
-                <FilteredEventsLocation onChange={setSelectedLocation} options={optionsCities} />
+                <FilteredEventsLocation onChange={setSelectedLocation} />
 
                 <SelectItems
                     categoryList={categoriesList}
@@ -79,15 +78,12 @@ export const EventFilters = () => {
             {activeTab === 'list' && (
                 <Backdrop marginTop={84} marginBottom={420} contentLoading={loading}>
                     <FilteredList className={classes.filteredList}>
-                        {/* @ts-ignore */}
                         {(!filteredData?.eventFilters && !events) ||
-                        //@ts-ignore
                         (filteredData?.eventFilters?.length === 0 && events?.length === 0) ? (
                             <div className={classes.noEventsMessage}>
                                 По вашему запросу ничего не найдено
                             </div>
                         ) : (
-                            //@ts-ignore
                             (filteredData?.eventFilters || events).map(
                                 ({
                                     _id,
@@ -122,12 +118,7 @@ export const EventFilters = () => {
             )}
             {activeTab === 'map' && (
                 <GoogleMap
-                    //@ts-ignore
-                    events={
-                        (filteredData as { eventFilters: Event[] })?.eventFilters ||
-                        (events as Event[]) ||
-                        []
-                    }
+                    events={filteredData?.eventFilters || events || []}
                     selectedLocation={selectedLocation}
                 />
             )}

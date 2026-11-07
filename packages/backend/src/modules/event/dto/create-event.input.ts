@@ -1,5 +1,5 @@
 import { Field, InputType, ID } from '@nestjs/graphql';
-import { Schema as MongoSchema, Types } from 'mongoose';
+import { Types } from 'mongoose';
 import { Privacy } from '../enum/privacy.enum';
 
 @InputType()

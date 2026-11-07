@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { SEED_USERS } from '@/app/graphql/mutations/seedUsers';
-import { GET_ROLES_BY_NAME } from '@/app/graphql/queries/role';
 import { RoleByNameQuery, RoleByNameQueryVariables } from '@/app/graphql/operations';
+import { GET_ROLES_BY_NAME } from '@/app/graphql/queries/role';
 import { categoriesList, interestsList } from '@/components/shared/Dropdown/dropdownLists';
 import { useMutation, useQuery } from '@apollo/client/react';
 import { faker } from '@faker-js/faker';
@@ -42,7 +42,7 @@ export const useGeneratorUser = () => {
                 const interests = faker.helpers.arrayElements(interestsList, { min: 1, max: 5 });
                 const tags = faker.helpers.arrayElements(tagsList, { min: 1, max: 5 });
 
-                const result = await seedUsers({
+                await seedUsers({
                     variables: {
                         inputs: {
                             user: {
@@ -79,7 +79,7 @@ export const useGeneratorUser = () => {
 
             setGeneratedUsers('Пользователи успешно сгенерированы');
             // console.log('Пользователи успешно сгенерированы');
-        } catch (error) {
+        } catch {
             setGeneratedUsers('Ошибка при генерации пользователей');
             // console.error('Ошибка при генерации пользователей:', error);
         }

@@ -46,7 +46,7 @@ export class UserProfileService {
         updateInterestInput?: UpdateInterestInput,
         updateTagInput?: UpdateTagInput
     ) {
-        const tasks: Promise<any>[] = [];
+        const tasks: Promise<unknown>[] = [];
 
         // ---- Обновляем пользователя ----
         if (updateUserInput) {

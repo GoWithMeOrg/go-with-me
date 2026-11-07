@@ -1,7 +1,7 @@
 import { StorageFolder } from '../types/storage-folder';
 
 export interface UploadFileProps {
-    onChange?: (...event: any[]) => void;
+    onChange?: (publicUrl: string) => void;
     onUploadedFile?: (
         submit: () => Promise<void>,
         deleteFile: (url: string) => Promise<void>

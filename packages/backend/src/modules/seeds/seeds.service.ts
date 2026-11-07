@@ -51,7 +51,7 @@ export class SeedsService {
         const userId = createdUser._id;
 
         // Объект для хранения промисов, чтобы запустить их параллельно
-        const tasks: Record<string, Promise<any>> = {};
+        const tasks: Record<string, Promise<unknown>> = {};
 
         if (location && userId) {
             location.properties.ownerId = userId;
@@ -82,7 +82,7 @@ export class SeedsService {
         const keys = Object.keys(tasks);
 
         keys.forEach((key, index) => {
-            (finalResult as any)[key] = results[index];
+            (finalResult as Record<string, unknown>)[key] = results[index];
         });
 
         return finalResult as SeedUserResult;

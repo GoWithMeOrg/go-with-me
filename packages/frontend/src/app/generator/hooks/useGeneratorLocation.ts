@@ -23,13 +23,13 @@ export const useGeneratorLocation = () => {
             }
         } else {
             randomCityData = {
-                lng: selectedLocation?.geometry?.location?.lng() as number,
-                lat: selectedLocation?.geometry?.location?.lat() as number,
-                address: selectedLocation?.formatted_address as string,
+                lng: selectedLocation?.location?.lng() as number,
+                lat: selectedLocation?.location?.lat() as number,
+                address: selectedLocation?.formattedAddress as string,
             };
         }
 
-        let location = {
+        const location = {
             geometry: {
                 coordinates: [randomCityData.lng, randomCityData.lat],
             },

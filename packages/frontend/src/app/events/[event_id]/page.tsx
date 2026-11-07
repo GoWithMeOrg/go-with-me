@@ -3,7 +3,6 @@
 import { GET_EVENTS_BY_ID } from '@/app/graphql/queries/events';
 import { Event as EventType } from '@/app/graphql/types';
 import Spinner from '@/assets/icons/spinner.svg';
-import { Backdrop } from '@/components/widgets/Backdrop';
 import { Comments } from '@/components/widgets/Comments';
 import { Event } from '@/components/widgets/Event';
 import { useQuery } from '@apollo/client/react';

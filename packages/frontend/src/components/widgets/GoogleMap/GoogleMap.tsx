@@ -18,7 +18,7 @@ import { IEvent } from './types/Type';
 
 interface Props {
     events?: IEvent[];
-    selectedLocation?: google.maps.places.PlaceResult | null;
+    selectedLocation?: PlaceType;
 }
 
 export const GoogleMap: React.FC<Props> = ({ events = [], selectedLocation }) => {
@@ -28,14 +28,13 @@ export const GoogleMap: React.FC<Props> = ({ events = [], selectedLocation }) =>
     const [selectedPlace, setSelectedPlace] = useState<PlaceType>(null);
     const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
 
-    const handleMarkerClick = useCallback((event: IEvent, offsetLat: number, offsetLng: number) => {
+    const handleMarkerClick = useCallback((event: IEvent) => {
         setSelectedEventId(event._id);
     }, []);
 
     useEffect(() => {
-        if (map && selectedLocation?.geometry?.viewport) {
-            const bounds = selectedLocation.geometry.viewport;
-            map.fitBounds(bounds);
+        if (map && selectedLocation?.viewport) {
+            map.fitBounds(selectedLocation.viewport);
         }
     }, [map, selectedLocation]);
 

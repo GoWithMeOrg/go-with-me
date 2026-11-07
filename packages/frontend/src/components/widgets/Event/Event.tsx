@@ -226,10 +226,9 @@ const Event: FC<EventProps> = ({ event }) => {
                         </div>
 
                         <div className={classes.organizerName}>
-                            {/* @ts-ignore */}
-                            <span
-                                className={classes.name}
-                            >{`${event?.organizer?.firstName} ${event?.organizer?.lastName}`}</span>
+                            <span className={classes.name}>
+                                {`${event?.organizer?.firstName} ${event?.organizer?.lastName}`}
+                            </span>
                             <span className={classes.organizer}>Организатор</span>
                             {/* <div className={classes.linkChat}>
                                 <Link href={`/profile`} className={classes.link}>

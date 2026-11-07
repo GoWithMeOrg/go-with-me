@@ -62,7 +62,7 @@ export class EventRelationsService {
         // одно сохранение вместо четырёх
         if (Object.keys(updates).length > 0) {
             Object.assign(event, updates);
-            await (event as any).save();
+            await (event as unknown as { save: () => Promise<unknown> }).save();
         }
     }
 
@@ -117,7 +117,7 @@ export class EventRelationsService {
         // одно сохранение вместо четырёх
         if (Object.keys(updates).length > 0) {
             Object.assign(event, updates);
-            await (event as any).save();
+            await (event as unknown as { save: () => Promise<unknown> }).save();
         }
     }
 

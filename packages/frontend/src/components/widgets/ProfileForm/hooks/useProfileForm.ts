@@ -3,12 +3,13 @@ import { UPDATE_USER_PROFILE } from '@/app/graphql/mutations/updateUserProfile';
 import { GET_USER_PROFILE_BY_ID } from '@/app/graphql/queries/userProfile';
 import { UserProfile } from '@/app/graphql/types';
 import { useSessionGQL } from '@/app/providers/session/hooks/useSesssionGQL';
+import type { PlaceType } from '@/components/widgets/MapComponents/types/types';
 import { useMutation, useQuery } from '@apollo/client/react';
 
 import { UseProfileFormProps } from '../interfaces/UseProfileFormProps';
 
 export const useProfileForm = ({ submitFileRef, deleteFileRef }: UseProfileFormProps) => {
-    const { control, handleSubmit, watch } = useForm<UserProfile>();
+    const { control, handleSubmit, getValues } = useForm<UserProfile>();
     const { data: session } = useSessionGQL();
     const user_id = session?._id;
 
@@ -28,17 +29,18 @@ export const useProfileForm = ({ submitFileRef, deleteFileRef }: UseProfileFormP
 
     const [updateUserProfile] = useMutation(UPDATE_USER_PROFILE);
 
-    const place = watch('location');
+    // Autocomplete кладёт в поле google.maps.places.Place, а тип формы — GraphQL Location
+    const getPlace = () => getValues('location') as unknown as PlaceType | undefined;
 
-    function mapGooglePlaceToLocationInput(place: any) {
-        if (!place?.geometry?.location) return null;
+    function mapGooglePlaceToLocationInput(place: PlaceType | undefined) {
+        if (!place?.location) return null;
 
         return {
             geometry: {
-                coordinates: [place.geometry.location.lng(), place.geometry.location.lat()],
+                coordinates: [place.location.lng(), place.location.lat()],
             },
             properties: {
-                address: place.formatted_address,
+                address: place.formattedAddress ?? '',
             },
         };
     }
@@ -49,7 +51,7 @@ export const useProfileForm = ({ submitFileRef, deleteFileRef }: UseProfileFormP
     const isNewTag = !userProfile?.userProfile.tag?._id;
 
     const handleEditProfile = async (userProfileEdited: UserProfile) => {
-        const transformedLocation = mapGooglePlaceToLocationInput(place);
+        const transformedLocation = mapGooglePlaceToLocationInput(getPlace());
 
         await updateUserProfile({
             variables: {

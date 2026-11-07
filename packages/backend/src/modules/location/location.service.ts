@@ -44,11 +44,8 @@ export class LocationService {
         return location.save();
     }
 
-    async updateLocation(
-        id: Types.ObjectId,
-        input: UpdateLocationInput
-    ): Promise<Location | null> {
-        const update: any = {};
+    async updateLocation(id: Types.ObjectId, input: UpdateLocationInput): Promise<Location | null> {
+        const update: Record<string, unknown> = {};
 
         // geometry update
         if (input.geometry?.coordinates) {

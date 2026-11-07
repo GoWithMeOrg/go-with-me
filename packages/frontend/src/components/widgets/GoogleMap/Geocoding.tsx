@@ -9,10 +9,7 @@ interface Props {
 export const Geocoding = ({ coordinates }: Props) => {
     const apiIsLoaded = useApiIsLoaded();
     const [lng, lat] = coordinates ?? [0, 0];
-    const [addressComponents, setAddressComponents] = useState<any[]>([]);
     const [city, setCity] = useState<string>('');
-    const [street, setStreet] = useState<string>('');
-    const [houseNumber, setHouseNumber] = useState<string>('');
     const geocoding = useMapsLibrary('geocoding');
 
     useEffect(() => {
@@ -21,8 +18,6 @@ export const Geocoding = ({ coordinates }: Props) => {
         if (typeof lat !== 'number' || typeof lng !== 'number' || isNaN(lat) || isNaN(lng)) return;
 
         const geocoder = new google.maps.Geocoder();
-
-        const location: google.maps.LatLngLiteral = { lat, lng };
 
         geocoder.geocode(
             { location: { lng: coordinates[0], lat: coordinates[1] } },

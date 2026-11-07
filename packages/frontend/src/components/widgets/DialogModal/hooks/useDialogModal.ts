@@ -8,6 +8,7 @@ import {
 import {
     CompanionsDialogModalProps,
     DialogModal,
+    InvitationEvent,
 } from '@/components/widgets/DialogModal/types/DialogModal';
 import { useUserID } from '@/hooks/useUserID';
 import { useMutation } from '@apollo/client/react';
@@ -85,7 +86,7 @@ export const useDialogModal = ({ receiver_ids, resetCards }: CompanionsDialogMod
     };
 
     // Выбрать событие
-    const handleSelectEvent = (event: any) => {
+    const handleSelectEvent = (event: InvitationEvent) => {
         dispatch({
             type: DialogModal.SELECTED_EVENT,
             payload: event,

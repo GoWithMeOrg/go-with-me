@@ -39,7 +39,10 @@ export class SessionService {
             if (session.user) return String(session.user);
             try {
                 // сесионная информация может содержать passport.user в виде строки/числа
-                return String((session as any).session?.passport?.user ?? null);
+                const passportUser = (
+                    session.session as { passport?: { user?: unknown } } | undefined
+                )?.passport?.user;
+                return String(passportUser ?? null);
             } catch {
                 return null;
             }

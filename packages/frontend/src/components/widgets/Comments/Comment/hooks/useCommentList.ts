@@ -1,11 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import {
-    CREATE_COMMENT_MUTATION,
-    REMOVE_COMMENT_MUTATION,
-} from '@/app/graphql/mutations/comment';
+import { useCallback, useEffect, useState } from 'react';
+import { CREATE_COMMENT_MUTATION, REMOVE_COMMENT_MUTATION } from '@/app/graphql/mutations/comment';
 import { GET_PARENT_COMMENTS_BY_OWNER_ID } from '@/app/graphql/queries/comment';
 import { Comment as CommentType, OwnerType } from '@/app/graphql/types';
 import { useLazyQuery, useMutation } from '@apollo/client/react';
+
 import { buildOptimisticComment } from './commentUtils';
 
 const INITIAL_LIMIT = 3;
@@ -17,8 +15,6 @@ export const useCommentList = (ownerId: string) => {
     const [comments, setComments] = useState<CommentType[]>([]);
     const [hasMoreComments, setHasMoreComments] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const commentsRef = useRef(comments);
-    commentsRef.current = comments;
 
     const [fetchComments, { loading }] = useLazyQuery<{
         getParentCommentsByOwnerId: CommentType[];
@@ -49,7 +45,7 @@ export const useCommentList = (ownerId: string) => {
         return () => {
             cancelled = true;
         };
-    }, [ownerId]);
+    }, [ownerId, fetchComments]);
 
     const loadMore = useCallback(async () => {
         const newOffset = offset + currentLimit;
@@ -68,8 +64,8 @@ export const useCommentList = (ownerId: string) => {
             }
             setOffset(newOffset);
             setCurrentLimit(LOAD_MORE_LIMIT);
-        } catch (err: any) {
-            setError(err?.message ?? 'Failed to load more comments');
+        } catch (err) {
+            setError(err instanceof Error ? err.message : 'Failed to load more comments');
         }
     }, [offset, currentLimit, fetchComments, ownerId]);
 
@@ -101,10 +97,12 @@ export const useCommentList = (ownerId: string) => {
 
     const onDelete = useCallback(
         async (commentId: string) => {
-            const prev = commentsRef.current.find((c) => c._id === commentId);
+            const prev = comments.find((c) => c._id === commentId);
 
             setComments((prevComments) =>
-                prevComments.map((c) => (c._id === commentId ? { ...c, deleted: true, content: '' } : c))
+                prevComments.map((c) =>
+                    c._id === commentId ? { ...c, deleted: true, content: '' } : c
+                )
             );
 
             try {
@@ -113,14 +111,12 @@ export const useCommentList = (ownerId: string) => {
                 const isNotFound = error instanceof Error && error.message.includes('не найден');
                 if (isNotFound) return;
                 if (prev) {
-                    setComments((current) =>
-                        current.map((c) => (c._id === commentId ? prev : c))
-                    );
+                    setComments((current) => current.map((c) => (c._id === commentId ? prev : c)));
                 }
                 setError('Failed to delete comment');
             }
         },
-        [removeComment]
+        [removeComment, comments]
     );
 
     const clearError = useCallback(() => setError(null), []);

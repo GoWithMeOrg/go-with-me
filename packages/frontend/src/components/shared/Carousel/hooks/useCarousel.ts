@@ -1,57 +1,53 @@
 import { useEffect, useRef, useState } from 'react';
 
 export interface ICarousel {
-  children: React.ReactNode[];
-  title?: string;
-  hideButton?: boolean;
-  marginBottom: string;
+    children: React.ReactNode[];
+    title?: string;
+    hideButton?: boolean;
+    marginBottom: string;
 }
 export const useCarousel = ({ children }: ICarousel) => {
-  const [width, setWidth] = useState<number | null>(null);
-  const [hideSlider, setHideSlider] = useState<boolean>(false);
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const [length, setLength] = useState<number>(children?.length);
+    const [hideSlider, setHideSlider] = useState<boolean>(false);
+    const [currentIndex, setCurrentIndex] = useState<number>(0);
+    const [slideWidth, setSlideWidth] = useState<number>(0);
 
-  const slideRef = useRef<HTMLDivElement>(null);
-  const slideWidth = slideRef.current?.offsetWidth || 0;
+    const slideRef = useRef<HTMLDivElement>(null);
 
-  const hideSliderHandler = () => {
-    setHideSlider(true);
-  };
+    const length = children?.length ?? 0;
+    const width = 1190;
 
-  const showSliderHandler = () => {
-    setHideSlider(false);
-  };
-
-  const next = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % length);
-  };
-
-  useEffect(() => {
-    setLength(children?.length);
-  }, [children]);
-
-  useEffect(() => {
-    const updateWidth = () => {
-      const containerGrid = 1190;
-      setWidth(containerGrid);
+    const hideSliderHandler = () => {
+        setHideSlider(true);
     };
 
-    updateWidth();
-    window.addEventListener('resize', updateWidth);
+    const showSliderHandler = () => {
+        setHideSlider(false);
+    };
 
-    return () => window.removeEventListener('resize', updateWidth);
-  }, []);
+    const next = () => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % length);
+    };
 
-  return {
-    width,
-    length,
-    hideSlider,
-    currentIndex,
-    next,
-    hideSliderHandler,
-    showSliderHandler,
-    slideRef,
-    slideWidth,
-  };
+    useEffect(() => {
+        const updateSlideWidth = () => {
+            setSlideWidth(slideRef.current?.offsetWidth ?? 0);
+        };
+
+        updateSlideWidth();
+        window.addEventListener('resize', updateSlideWidth);
+
+        return () => window.removeEventListener('resize', updateSlideWidth);
+    }, []);
+
+    return {
+        width,
+        length,
+        hideSlider,
+        currentIndex,
+        next,
+        hideSliderHandler,
+        showSliderHandler,
+        slideRef,
+        slideWidth,
+    };
 };

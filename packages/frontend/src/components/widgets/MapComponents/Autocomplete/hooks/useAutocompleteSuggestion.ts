@@ -2,18 +2,27 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { UseAutocompleteSuggestionsReturn } from '@/components/widgets/MapComponents/Autocomplete/types/UseAutocompleteSuggestionsReturn.type';
 import { useMapsLibrary } from '@vis.gl/react-google-maps';
 
+type SuggestionsResult = {
+    input: string;
+    suggestions: google.maps.places.AutocompleteSuggestion[];
+};
+
+// Стабильная ссылка: новый объект в дефолтном параметре ломал бы зависимости эффекта
+const DEFAULT_REQUEST_OPTIONS: Partial<google.maps.places.AutocompleteRequest> = {};
+
 export function useAutocompleteSuggestions(
     inputString: string,
     isUserTyping: boolean,
-    requestOptions: Partial<google.maps.places.AutocompleteRequest> = {}
+    requestOptions: Partial<google.maps.places.AutocompleteRequest> = DEFAULT_REQUEST_OPTIONS
 ): UseAutocompleteSuggestionsReturn {
     const places = useMapsLibrary('places');
 
     const sessionTokenRef = useRef<google.maps.places.AutocompleteSessionToken | null>(null);
     const isPlaceSelectedRef = useRef(false);
 
-    const [suggestions, setSuggestions] = useState<google.maps.places.AutocompleteSuggestion[]>([]);
-    const [isLoading, setIsLoading] = useState(false);
+    // Результат запроса вместе со строкой, для которой он получен —
+    // так загрузка вычисляется без setState внутри эффекта.
+    const [result, setResult] = useState<SuggestionsResult>({ input: '', suggestions: [] });
 
     useEffect(() => {
         if (!places) return;
@@ -30,13 +39,9 @@ export function useAutocompleteSuggestions(
             sessionTokenRef.current = new AutocompleteSessionToken();
         }
 
-        if (inputString === '') {
-            setSuggestions((prev) => (prev.length > 0 ? [] : prev));
-            return;
-        }
+        if (inputString === '') return;
 
         let cancelled = false;
-        setIsLoading(true);
 
         AutocompleteSuggestion.fetchAutocompleteSuggestions({
             ...requestOptions,
@@ -44,13 +49,10 @@ export function useAutocompleteSuggestions(
             sessionToken: sessionTokenRef.current,
         })
             .then((res) => {
-                if (!cancelled) {
-                    setSuggestions(res.suggestions);
-                    setIsLoading(false);
-                }
+                if (!cancelled) setResult({ input: inputString, suggestions: res.suggestions });
             })
             .catch(() => {
-                if (!cancelled) setIsLoading(false);
+                if (!cancelled) setResult({ input: inputString, suggestions: [] });
             });
 
         return () => {
@@ -60,9 +62,12 @@ export function useAutocompleteSuggestions(
 
     const resetSession = useCallback(() => {
         sessionTokenRef.current = null;
-        setSuggestions([]);
+        setResult({ input: inputString, suggestions: [] });
         isPlaceSelectedRef.current = true;
-    }, []);
+    }, [inputString]);
+
+    const suggestions = result.input === inputString ? result.suggestions : [];
+    const isLoading = places !== undefined && inputString !== '' && result.input !== inputString;
 
     return { suggestions, isLoading, resetSession };
 }

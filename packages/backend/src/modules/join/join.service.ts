@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Join, JoinDocument } from './entities/join.entity';
-import { Model, Schema as MongoSchema, Types } from 'mongoose';
+import { Model, Types } from 'mongoose';
 
 @Injectable()
 export class JoinService {
@@ -31,10 +31,7 @@ export class JoinService {
         return this.joinModel.find({ ownerId }).exec();
     }
 
-    async isJoinedByUser(
-        owner_id: Types.ObjectId,
-        user_id: Types.ObjectId
-    ): Promise<boolean> {
+    async isJoinedByUser(owner_id: Types.ObjectId, user_id: Types.ObjectId): Promise<boolean> {
         const join = await this.joinModel.findOne({ ownerId: owner_id, user: user_id }).exec();
         return !!join;
     }

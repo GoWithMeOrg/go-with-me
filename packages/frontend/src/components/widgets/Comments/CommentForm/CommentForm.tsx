@@ -8,7 +8,7 @@ import { Textarea } from '@/components/shared/Textarea';
 import classes from './CommentForm.module.css';
 
 interface CommentFormProps {
-    onSaveComment: (content: string) => Promise<any>;
+    onSaveComment: (content: string) => Promise<unknown>;
     onClose?: () => void;
 }
 

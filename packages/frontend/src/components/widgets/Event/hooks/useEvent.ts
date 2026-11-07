@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { REMOVE_EVENT_MUTATION } from '@/app/graphql/mutations/event';
 import { Event as EventType } from '@/app/graphql/types';
 import { useUploadFile } from '@/components/widgets/UploadFile/hooks';
@@ -20,9 +20,9 @@ const useEvent = ({ event }: EventProps) => {
     const [removeEvent] = useMutation(REMOVE_EVENT_MUTATION);
     const { deleteFile } = useUploadFile({ folder: 'users/events' });
 
-    const [organizer, setOrganizer] = useState(true);
+    const organizer = user_id === event?.organizer._id;
     const [copied, setCopied] = useState(false);
-    const [markerPosition, setMarkerPosition] = useState(
+    const [markerPosition] = useState(
         event?.location !== undefined
             ? {
                   lng: event?.location?.geometry?.coordinates[0] as number,
@@ -47,10 +47,6 @@ const useEvent = ({ event }: EventProps) => {
             console.error('Ошибка копирования: ', err);
         }
     };
-
-    useEffect(() => {
-        setOrganizer(user_id === event?.organizer._id);
-    }, [event?.organizer._id, user_id]);
 
     const handleRemoveEvent = async (eventId: string) => {
         try {
@@ -78,7 +74,6 @@ const useEvent = ({ event }: EventProps) => {
 
     return {
         organizer,
-        setOrganizer,
         markerPosition,
         handleRemoveEvent,
         coord,

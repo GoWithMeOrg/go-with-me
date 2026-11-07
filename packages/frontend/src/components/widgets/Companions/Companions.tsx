@@ -3,7 +3,6 @@
 import { FC } from 'react';
 import { GET_FIND_COMPANION } from '@/app/graphql/queries/companions';
 import { FIND_BY_EMAIL_OR_NAME } from '@/app/graphql/queries/users';
-import { FindByEmailOrNameQuery, FindByEmailOrNameQueryVariables } from '@/app/graphql/operations';
 import { User } from '@/app/graphql/types';
 import { Button } from '@/components/shared/Button';
 import { FilteredList } from '@/components/shared/FilteredList';
@@ -207,15 +206,15 @@ const Companions: FC = () => {
 
             <Popup showPopup={showPopup} popupCss={popupCss} refPopup={refPopup}>
                 {/* Отправить заявку в компанионы */}
-                {state.addedUser?.id === state.activePopup && (
+                {state.addedUser && state.addedUser.id === state.activePopup && (
                     <DialogModal
-                        name={state.addedUser?.name}
+                        name={state.addedUser.name}
                         mode={DialogMode.ADD}
                         closePopup={closePopup}
                     >
                         <Button
                             className={classes.yesButton}
-                            onClick={() => sendRequestCompanion(state.addedUser?.id)}
+                            onClick={() => sendRequestCompanion(state.addedUser!.id)}
                         >
                             Yes
                         </Button>
@@ -226,15 +225,15 @@ const Companions: FC = () => {
                 )}
 
                 {/* Удалить из компанионов */}
-                {state.deleteCompanion?.id === state.activePopup && (
+                {state.deleteCompanion && state.deleteCompanion.id === state.activePopup && (
                     <DialogModal
-                        name={state.deleteCompanion?.name}
+                        name={state.deleteCompanion.name}
                         mode={DialogMode.DEL}
                         closePopup={closePopup}
                     >
                         <Button
                             className={classes.yesButton}
-                            onClick={() => deleteCompanion(state.deleteCompanion?.id)}
+                            onClick={() => deleteCompanion(state.deleteCompanion!.id)}
                         >
                             Yes
                         </Button>

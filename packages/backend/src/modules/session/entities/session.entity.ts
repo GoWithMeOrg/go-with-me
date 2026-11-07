@@ -13,7 +13,7 @@ export class Session {
 
     // необработанные данные сессии, хранимые стором (необязательно)
     @Prop({ type: Object })
-    session?: Record<string, any>;
+    session?: Record<string, unknown>;
 
     // метаданные, полезные для админки/аналитики
     @Prop()

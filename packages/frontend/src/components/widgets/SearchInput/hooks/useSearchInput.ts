@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useMemo, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLazyQuery } from '@apollo/client/react';
 
 import { SearchProps, SearchVariables } from '../interfaces/interfaces';
@@ -7,11 +7,11 @@ export const useSearchInput = <
     TData,
     TVariables extends SearchVariables = SearchVariables,
     // Вычисляем тип элемента массива автоматически на основе ключа
-    TItem = TData[keyof TData] extends (infer U)[] ? U : any,
+    TItem = TData[keyof TData] extends (infer U)[] ? U : unknown,
 >({
     searchQuery,
     dataKey,
-}: SearchProps<TData, TItem>) => {
+}: SearchProps<TData>) => {
     const [searchValue, setSearchValue] = useState('');
 
     // Типизируем lazy query: TData — это объект ответа, TVariables — входные параметры
@@ -24,31 +24,30 @@ export const useSearchInput = <
         // Теперь TS понимает, что data[dataKey] — это массив TItem
         return (data?.[dataKey] as unknown as TItem[]) || [];
     }, [data, dataKey]);
-    const debouncedLoad = useMemo(() => {
-        let timeoutId: ReturnType<typeof setTimeout>;
 
-        const fn = (inputValue: string) => {
-            if (inputValue.trim().length >= 2) {
+    const timeoutIdRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+
+    const cancelDebouncedLoad = useCallback(() => {
+        clearTimeout(timeoutIdRef.current);
+    }, []);
+
+    const debouncedLoad = useCallback(
+        (query: string) => {
+            clearTimeout(timeoutIdRef.current);
+            timeoutIdRef.current = setTimeout(() => {
+                if (query.trim().length < 2) return;
+
                 load({
                     variables: {
-                        query: inputValue,
+                        query,
                     } as TVariables,
                 });
-            }
-        };
+            }, 500);
+        },
+        [load]
+    );
 
-        const debounced = (query: string) => {
-            clearTimeout(timeoutId);
-            timeoutId = setTimeout(() => fn(query), 500);
-        };
-
-        debounced.cancel = () => clearTimeout(timeoutId);
-        return debounced;
-    }, [load]);
-
-    useEffect(() => {
-        return () => debouncedLoad.cancel();
-    }, [debouncedLoad]);
+    useEffect(() => cancelDebouncedLoad, [cancelDebouncedLoad]);
 
     const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
         const inputValue = e.target.value;
@@ -58,7 +57,7 @@ export const useSearchInput = <
 
     const clearSearch = () => {
         setSearchValue('');
-        debouncedLoad.cancel();
+        cancelDebouncedLoad();
     };
 
     // Возвращаем данные только если введено 2+ символа

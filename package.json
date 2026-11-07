@@ -1,6 +1,7 @@
 {
     "name": "go-with-me",
     "private": true,
+    "packageManager": "pnpm@12.16.1",
     "workspaces": [
         "packages/*"
     ],
@@ -8,14 +9,15 @@
         "build": "pnpm --filter \"*\" build",
         "backend:dev": "pnpm --filter backend nest start --watch",
         "frontend:dev": "pnpm --filter frontend dev",
-        "frontend:lint": "pnpm -r exec eslint packages/frontend --fix",
-        "backend:lint": "pnpm -r exec eslint packages/backend --fix",
+        "frontend:lint": "eslint packages/frontend --fix",
+        "backend:lint": "eslint packages/backend --fix",
         "frontend:format": "prettier packages/frontend -w",
         "backend:format": "prettier packages/backend -w",
         "import:mongo": "./scripts/import-mongo-data.sh",
         "codegen": "graphql-codegen --config codegen.ts"
     },
     "devDependencies": {
+        "@eslint/js": "^9.39.5",
         "@graphql-codegen/cli": "^7.4.6",
         "@graphql-codegen/typed-document-node": "^7.2.0",
         "@graphql-codegen/typescript": "^6.1.2",
@@ -24,6 +26,13 @@
         "@playwright/test": "^1.64.1",
         "class-transformer": "0.5.1",
         "class-validator": "0.15.1",
-        "typescript": "5.9.3"
+        "eslint": "^9.39.5",
+        "eslint-config-next": "16.1.0",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint-plugin-storybook": "^10.6.5",
+        "globals": "^17.14.0",
+        "prettier": "^3.9.10",
+        "typescript": "5.9.3",
+        "typescript-eslint": "^8.72.1"
     }
 }

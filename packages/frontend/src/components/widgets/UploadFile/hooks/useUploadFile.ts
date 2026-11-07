@@ -50,7 +50,7 @@ export const useUploadFile = ({ onChange, folder, onUploadedFile }: UploadFilePr
     };
 
     const deleteFile = async (fileUrl: string) => {
-        const key = new URL(fileUrl).pathname.replace(/^\/[^\/]+\//, '');
+        const key = new URL(fileUrl).pathname.replace(/^\/[^/]+\//, '');
 
         try {
             await deleteFileMutation({ variables: { fileKey: key } });

@@ -1,4 +1,4 @@
-import { Field, InputType, PartialType, ID } from '@nestjs/graphql';
+import { InputType, PartialType } from '@nestjs/graphql';
 import { CreateEventInput } from './create-event.input';
 
 @InputType()

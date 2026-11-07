@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Schema as MongoSchema, Types } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Event } from '../entities/event.entity';
 import { CreateEventInput } from '../dto/create-event.input';
 

@@ -40,7 +40,7 @@ export const MapController = ({ onMarkerClick, selectedEventId, events }: MapCon
     return (
         <>
             {events.map((event, i) => {
-                const [lng, lat] = event.location.coordinates;
+                const [lng, lat] = event.location?.geometry.coordinates ?? [0, 0];
                 const offsetLat = lat + i * 0.0001;
                 const offsetLng = lng + i * 0.0001;
                 const position = { lat: offsetLat, lng: offsetLng };

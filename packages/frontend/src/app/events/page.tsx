@@ -34,29 +34,20 @@ const EventListPage: NextPage = () => {
     // const { status } = useSession();
     // const { filterEventsImage, loading } = useEventList({});
     const { data, loading, error } = useQuery(GET_SESSION);
+    const { filterEventsImage, loading: eventLoading } = useEventList({});
 
-    // Лог для проверки результата запроса
-    // console.log('Session Data:', data);
-
-    // Если есть ошибка или сессия не найдена, обработайте это правильно
     if (error) {
         console.error('GraphQL Error:', error);
         return <div>Ошибка загрузки сессии.</div>;
     }
 
-    // const { status } = useSession();
-    const { filterEventsImage, loading: eventLoading } = useEventList({});
-
     if (eventLoading || loading) return <Spinner className={classes.spinner} />;
 
-    //@ts-ignore
-    const session = data?.session;
+    const session = (data as { session?: { _id: string } } | undefined)?.session;
     if (!session) {
         console.warn('Сессия не найдена');
         return <div>Нет доступной сессии.</div>;
     }
-
-    if (loading) return <Spinner className={classes.spinner} />;
 
     return (
         <div className={classes.eventListPage}>

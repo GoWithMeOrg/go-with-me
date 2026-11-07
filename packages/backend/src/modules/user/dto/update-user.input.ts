@@ -1,5 +1,4 @@
 import { Field, ID, InputType, PartialType } from '@nestjs/graphql';
-import { Schema as MongoSchema } from 'mongoose';
 
 import { CreateUserInput } from './create-user.input';
 

@@ -32,7 +32,7 @@ export const useAutocomplete = ({ value, onPlaceSelect }: useAutocompleteProps) 
 
         setInputValue(value ?? '');
         resetSession();
-    }, [value]);
+    }, [value, resetSession]);
 
     const handleInput = useCallback((event: FormEvent<HTMLInputElement>) => {
         setIsUserTyping(true);

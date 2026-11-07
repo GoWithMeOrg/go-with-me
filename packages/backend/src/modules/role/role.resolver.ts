@@ -1,6 +1,6 @@
 import { NotFoundException, UseGuards } from '@nestjs/common';
 import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
-import { Schema as MongoSchema, Types } from 'mongoose';
+import { Types } from 'mongoose';
 
 import { Role } from './entities/role.entity';
 import { RoleService } from './role.service';
@@ -42,9 +42,7 @@ export class RoleResolver {
         description: 'Поиск роли по id',
         nullable: true,
     })
-    async getRoleById(
-        @Args('id', { type: () => ID }) id: Types.ObjectId
-    ): Promise<Role | null> {
+    async getRoleById(@Args('id', { type: () => ID }) id: Types.ObjectId): Promise<Role | null> {
         return this.roleService.getRoleById(id);
     }
 
@@ -92,9 +90,7 @@ export class RoleResolver {
         name: 'removeRole',
         description: 'Удаление роли',
     })
-    async removeRole(
-        @Args('id', { type: () => ID }) id: Types.ObjectId
-    ): Promise<boolean> {
+    async removeRole(@Args('id', { type: () => ID }) id: Types.ObjectId): Promise<boolean> {
         const result = await this.roleService.removeRole(id);
         return result.deletedCount > 0;
     }

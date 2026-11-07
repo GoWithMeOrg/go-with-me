@@ -1,4 +1,4 @@
-import { FC, TextareaHTMLAttributes, useMemo } from 'react';
+import { FC, TextareaHTMLAttributes } from 'react';
 
 import styles from './Textarea.module.css';
 

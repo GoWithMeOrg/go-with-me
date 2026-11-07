@@ -1,11 +1,9 @@
-import { useCallback, useRef, useState } from 'react';
-import {
-    CREATE_REPLY_MUTATION,
-    REMOVE_COMMENT_MUTATION,
-} from '@/app/graphql/mutations/comment';
+import { useCallback, useState } from 'react';
+import { CREATE_REPLY_MUTATION, REMOVE_COMMENT_MUTATION } from '@/app/graphql/mutations/comment';
 import { GET_CHILDREN_COMMENTS_BY_PARENT_ID } from '@/app/graphql/queries/comment';
 import { Comment as CommentType, OwnerType } from '@/app/graphql/types';
 import { useLazyQuery, useMutation } from '@apollo/client/react';
+
 import { buildOptimisticComment } from './commentUtils';
 
 const LOAD_MORE_LIMIT = 5;
@@ -15,8 +13,6 @@ export const useCommentReplies = (comment: CommentType) => {
     const [loadedReplies, setLoadedReplies] = useState(false);
     const [replies, setReplies] = useState<CommentType[]>([]);
     const [error, setError] = useState<string | null>(null);
-    const repliesRef = useRef(replies);
-    repliesRef.current = replies;
 
     const [fetchReplies, { loading }] = useLazyQuery<{
         getChildrenCommentsByParentId: CommentType[];
@@ -30,15 +26,20 @@ export const useCommentReplies = (comment: CommentType) => {
     const loadMore = useCallback(async () => {
         try {
             const { data } = await fetchReplies({
-                variables: { sort: 'newest', parentId: comment._id, offset: replies.length, limit: LOAD_MORE_LIMIT },
+                variables: {
+                    sort: 'newest',
+                    parentId: comment._id,
+                    offset: replies.length,
+                    limit: LOAD_MORE_LIMIT,
+                },
             });
 
             if (data?.getChildrenCommentsByParentId) {
                 setReplies((prev) => [...prev, ...data.getChildrenCommentsByParentId]);
                 setLoadedReplies(true);
             }
-        } catch (err: any) {
-            setError(err?.message ?? 'Failed to load replies');
+        } catch (err) {
+            setError(err instanceof Error ? err.message : 'Failed to load replies');
         }
     }, [fetchReplies, comment._id, replies.length]);
 
@@ -75,10 +76,12 @@ export const useCommentReplies = (comment: CommentType) => {
 
     const onDelete = useCallback(
         async (commentId: string) => {
-            const prev = repliesRef.current.find((c) => c._id === commentId);
+            const prev = replies.find((c) => c._id === commentId);
 
             setReplies((prevReplies) =>
-                prevReplies.map((c) => (c._id === commentId ? { ...c, deleted: true, content: '' } : c))
+                prevReplies.map((c) =>
+                    c._id === commentId ? { ...c, deleted: true, content: '' } : c
+                )
             );
 
             try {
@@ -87,14 +90,12 @@ export const useCommentReplies = (comment: CommentType) => {
                 const isNotFound = error instanceof Error && error.message.includes('не найден');
                 if (isNotFound) return;
                 if (prev) {
-                    setReplies((current) =>
-                        current.map((c) => (c._id === commentId ? prev : c))
-                    );
+                    setReplies((current) => current.map((c) => (c._id === commentId ? prev : c)));
                 }
                 setError('Failed to delete reply');
             }
         },
-        [removeComment]
+        [removeComment, replies]
     );
 
     const clearError = useCallback(() => setError(null), []);

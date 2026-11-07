@@ -1,4 +1,4 @@
-import { Schema as MongoSchema, Types } from 'mongoose';
+import { Types } from 'mongoose';
 
 // информация о пользователе, которая сохраняется в сессии / передаётся в passport
 export type AuthUserPayload = {

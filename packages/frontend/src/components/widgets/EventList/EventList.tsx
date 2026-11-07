@@ -11,7 +11,7 @@ import { EventListProps } from './types/EventList';
 import classes from './EventList.module.css';
 
 export const EventList: FC<EventListProps> = ({ sizeCard, limit, sort }) => {
-    const { loading, error, events, refetch } = useEventList({ limit, sort });
+    const { loading, error, events } = useEventList({ limit, sort });
 
     // refetch();
 
@@ -22,25 +22,27 @@ export const EventList: FC<EventListProps> = ({ sizeCard, limit, sort }) => {
     return (
         <Backdrop marginTop={84} marginBottom={440} contentLoading={loading}>
             <ul className={classes.list}>
-                {events.map(({ _id, description, name, startDate, time, location, image }: Event) => (
-                    <li key={_id}>
-                        <CardEvent
-                            id={_id}
-                            name={name}
-                            description={description as string}
-                            coord={
-                                [
-                                    location?.geometry.coordinates[0],
-                                    location?.geometry.coordinates[1],
-                                ] as [number, number]
-                            }
-                            startDate={startDate}
-                            time={time as string}
-                            image={image as string}
-                            size={sizeCard}
-                        />
-                    </li>
-                ))}
+                {events.map(
+                    ({ _id, description, name, startDate, time, location, image }: Event) => (
+                        <li key={_id}>
+                            <CardEvent
+                                id={_id}
+                                name={name}
+                                description={description as string}
+                                coord={
+                                    [
+                                        location?.geometry.coordinates[0],
+                                        location?.geometry.coordinates[1],
+                                    ] as [number, number]
+                                }
+                                startDate={startDate}
+                                time={time as string}
+                                image={image as string}
+                                size={sizeCard}
+                            />
+                        </li>
+                    )
+                )}
             </ul>
         </Backdrop>
     );

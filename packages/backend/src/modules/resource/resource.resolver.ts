@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, ResolveField, Parent, HideField } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, ResolveField, Parent } from '@nestjs/graphql';
 import { ResourceService } from './resource.service';
 import { Resource } from './entities/resource.entity';
 import { UseGuards } from '@nestjs/common';

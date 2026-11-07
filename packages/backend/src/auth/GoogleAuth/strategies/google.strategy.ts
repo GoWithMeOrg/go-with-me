@@ -36,7 +36,7 @@ export class GoogleAuthStrategy extends PassportStrategy(GoogleStrategy, 'google
         done: VerifyCallback
     ): Promise<void> {
         const { name, emails, photos } = profile;
-        
+
         // Валидируем данные из Google - проверяем, что обязательные поля присутствуют
         if (!name || !name.givenName || !name.familyName) {
             console.error('Invalid Google profile: missing name fields');
@@ -68,7 +68,7 @@ export class GoogleAuthStrategy extends PassportStrategy(GoogleStrategy, 'google
                 return done(null, undefined);
             }
 
-            let userRoles: Types.ObjectId[] = [];
+            const userRoles: Types.ObjectId[] = [];
 
             if (!user.roles || user.roles.length === 0) {
                 const userRole = await this.roleService.getRoleByName('user');

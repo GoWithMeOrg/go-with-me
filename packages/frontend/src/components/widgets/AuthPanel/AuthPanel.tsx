@@ -14,9 +14,9 @@ import classes from './AuthPanel.module.css';
 export const AuthPanel = () => {
     const { data: session, status } = useSessionGQL();
 
-    const popupMode: 'auth' = 'auth';
+    const popupMode = 'auth' as const;
 
-    const { showPopup, setShowPopup, handleShowPopup, handleHidePopup } = usePopup({ popupMode });
+    const { showPopup, setShowPopup, handleHidePopup } = usePopup({ popupMode });
 
     return (
         <div className={classes.component}>
@@ -44,7 +44,7 @@ export const AuthPanel = () => {
                             <Button
                                 size="big"
                                 onClick={() => {
-                                    confirm('Вы уверены, что хотите выйти?') && logout();
+                                    if (confirm('Вы уверены, что хотите выйти?')) logout();
                                 }}
                             >
                                 Выйти

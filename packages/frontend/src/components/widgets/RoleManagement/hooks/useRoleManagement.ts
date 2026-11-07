@@ -13,7 +13,6 @@ import { useLazyQuery, useMutation, useQuery } from '@apollo/client/react';
 const useRoleManagement = () => {
     // Удаление роли??? Подумать о деактивации роли isActive??
     const [expandedRole, setExpandedRole] = useState<string[]>([]);
-    const [expandedPermission, setExpandedPermission] = useState<string[]>([]);
 
     const [isCreatePanelOpen, setIsCreatePanelOpen] = useState(false);
     const [newRoleName, setNewRoleName] = useState('');
@@ -58,7 +57,7 @@ const useRoleManagement = () => {
                 },
             });
             return true;
-        } catch (e) {
+        } catch {
             return false;
         }
     };
@@ -158,7 +157,6 @@ const useRoleManagement = () => {
         handleTogglePermission,
         addPermission,
         dataPermissions,
-        expandedPermission,
 
         isCreatePanelOpen,
         setIsCreatePanelOpen,

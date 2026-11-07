@@ -1,8 +1,8 @@
 import { forwardRef, Module } from '@nestjs/common';
-import { MongooseModule, getModelToken } from '@nestjs/mongoose';
+import { MongooseModule } from '@nestjs/mongoose';
 import { UserService } from './user.service';
 import { UserResolver } from './user.resolver';
-import { UserSchema, UserDocument } from './entities/user.entity';
+import { UserSchema } from './entities/user.entity';
 import { LocationModule } from '@/modules/location/location.module';
 import { RoleSchema } from '../role/entities/role.entity';
 import { CompanionModule } from '../companion/companion.module';

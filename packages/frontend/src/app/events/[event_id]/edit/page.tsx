@@ -20,7 +20,7 @@ const EventEditPage: NextPage<PageProps> = () => {
     const params = useParams();
     const event_id = params.event_id;
 
-    const { loading, error, data, refetch } = useQuery<{ getEventById: Event }>(GET_EVENTS_BY_ID, {
+    const { loading, error, data } = useQuery<{ getEventById: Event }>(GET_EVENTS_BY_ID, {
         variables: { eventId: event_id },
     });
 

@@ -1,4 +1,7 @@
 import { join } from 'path';
+import { SubscriptionContext } from '@/common/interfaces/subscription-context.interface';
+import { UserDocument } from '@/modules/user/entities/user.entity';
+import { isDev } from '@/utils/is-dev.utils';
 import { ApolloServerPluginLandingPageDisabled } from '@apollo/server/plugin/disabled';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
@@ -8,10 +11,11 @@ import * as signature from 'cookie-signature';
 import { Context } from 'graphql-ws';
 import { Model } from 'mongoose';
 
-import { SubscriptionContext } from '@/common/interfaces/subscription-context.interface';
-import { UserDocument } from '@/modules/user/entities/user.entity';
-import { isDev } from '@/utils/is-dev.utils';
 import { getMongoStore } from './mongo-store.config';
+
+type AuthSession = import('express-session').SessionData & {
+    passport?: { user?: unknown };
+};
 
 export async function getGraphQLConfig(
     configService: ConfigService,
@@ -50,8 +54,10 @@ export async function getGraphQLConfig(
 
                         const store = getMongoStore(configService);
 
-                        const session = await new Promise<any>((resolve, reject) => {
-                            store.get(sid, (err, sess) => (err ? reject(err) : resolve(sess)));
+                        const session = await new Promise<AuthSession | null>((resolve, reject) => {
+                            store.get(sid, (err, sess) =>
+                                err ? reject(err) : resolve(sess ?? null)
+                            );
                         });
 
                         if (!session?.passport?.user) return;
