@@ -53,7 +53,10 @@ export async function logout() {
         window.location.href = logoutUrl;
     } else {
         console.error('Logout URL не найден');
-        // Фолбек, если переменная не подгрузилась
+        // Фолбек, если переменная не подгрузилась.
+        // Нужна полная перезагрузка, а не router.push: после логаута
+        // кеш Apollo должен быть сброшен целиком.
+        // eslint-disable-next-line @next/next/no-location-assign-relative-destination -- осознанный hard reload после логаута
         window.location.href = '/';
     }
 }
