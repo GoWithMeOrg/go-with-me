@@ -7,34 +7,34 @@ import { MongooseModule, getModelToken } from '@nestjs/mongoose';
 import { LoggerModule } from 'nestjs-pino';
 import { S3Module } from 'nestjs-s3';
 
-import { getGraphQLConfig } from './config/graphql.config';
-import { getMongooseConfig } from './config/mongoose.config';
-import { getLoggerConfig } from './config/logger.config';
-import { getS3ModuleConfig } from './config/s3module.config';
+import { getGraphQLConfig } from './config/graphql.config.js';
+import { getMongooseConfig } from './config/mongoose.config.js';
+import { getLoggerConfig } from './config/logger.config.js';
+import { getS3ModuleConfig } from './config/s3module.config.js';
 
-import { AuthModule } from './auth/auth.module';
-import { UserModule } from './modules/user/user.module';
+import { AuthModule } from './auth/auth.module.js';
+import { UserModule } from './modules/user/user.module.js';
 
-import { UserProfileModule } from './modules/user-profile/user-profile.module';
-import { LocationModule } from './modules/location/location.module';
-import { CategoryModule } from './modules/category/category.module';
-import { InterestModule } from './modules/interest/interest.module';
-import { TagModule } from './modules/tag/tag.module';
-import { StorageModule } from './modules/storage/storage.module';
-import { RoleModule } from './modules/role/role.module';
-import { PermissionModule } from './modules/permission/permission.module';
-import { ResourceModule } from './modules/resource/resource.module';
+import { UserProfileModule } from './modules/user-profile/user-profile.module.js';
+import { LocationModule } from './modules/location/location.module.js';
+import { CategoryModule } from './modules/category/category.module.js';
+import { InterestModule } from './modules/interest/interest.module.js';
+import { TagModule } from './modules/tag/tag.module.js';
+import { StorageModule } from './modules/storage/storage.module.js';
+import { RoleModule } from './modules/role/role.module.js';
+import { PermissionModule } from './modules/permission/permission.module.js';
+import { ResourceModule } from './modules/resource/resource.module.js';
 
-import { RolesGuard } from './common/guards/roles.guard';
-import { SeedsModule } from './modules/seeds/seeds.module';
-import { CompanionModule } from './modules/companion/companion.module';
-import { CompanionRequestModule } from './modules/companion-request/companion-request.module';
-import { EventModule } from './modules/event/event.module';
-import { LikeModule } from './modules/like/like.module';
-import { JoinModule } from './modules/join/join.module';
-import { CommentModule } from './modules/comment/comment.module';
-import { InvitationModule } from './modules/invitation/invitation.module';
-import { PrivacySettingModule } from './modules/privacy-setting/privacy-setting.module';
+import { RolesGuard } from './common/guards/roles.guard.js';
+import { SeedsModule } from './modules/seeds/seeds.module.js';
+import { CompanionModule } from './modules/companion/companion.module.js';
+import { CompanionRequestModule } from './modules/companion-request/companion-request.module.js';
+import { EventModule } from './modules/event/event.module.js';
+import { LikeModule } from './modules/like/like.module.js';
+import { JoinModule } from './modules/join/join.module.js';
+import { CommentModule } from './modules/comment/comment.module.js';
+import { InvitationModule } from './modules/invitation/invitation.module.js';
+import { PrivacySettingModule } from './modules/privacy-setting/privacy-setting.module.js';
 
 @Module({
     imports: [

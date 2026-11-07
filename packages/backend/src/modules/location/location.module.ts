@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { LocationService } from './location.service';
-import { LocationResolver } from './location.resolver';
+import { LocationService } from './location.service.js';
+import { LocationResolver } from './location.resolver.js';
 import { MongooseModule } from '@nestjs/mongoose';
-import { LocationSchema } from './entities/location.entity';
+import { LocationSchema } from './entities/location.entity.js';
 
 @Module({
     imports: [MongooseModule.forFeature([{ name: 'Location', schema: LocationSchema }])],

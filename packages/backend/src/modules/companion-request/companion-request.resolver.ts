@@ -1,15 +1,15 @@
 import { Resolver, Mutation, Args, ID, Subscription, Query } from '@nestjs/graphql';
-import { CompanionRequestService } from './companion-request.service';
-import { CompanionRequest } from './entities/companion-request.entity';
+import { CompanionRequestService } from './companion-request.service.js';
+import { CompanionRequest } from './entities/companion-request.entity.js';
 import { UseGuards, Inject } from '@nestjs/common';
-import { SessionAuthGuard } from '@/common/guards/session-auth.guard';
-import { RolesGuard } from '@/common/guards/roles.guard';
+import { SessionAuthGuard } from '@/common/guards/session-auth.guard.js';
+import { RolesGuard } from '@/common/guards/roles.guard.js';
 import { Types } from 'mongoose';
 import { PubSub } from 'graphql-subscriptions';
-import { PUB_SUB } from '@/common/constants/pub-sub.constants';
-import { GqlAuthGuard } from '@/common/guards/gql-auth.guard';
-import { CurrentUser } from '@/common/decorators/current-user.decorator';
-import { User } from '../user/entities/user.entity';
+import { PUB_SUB } from '@/common/constants/pub-sub.constants.js';
+import { GqlAuthGuard } from '@/common/guards/gql-auth.guard.js';
+import { CurrentUser } from '@/common/decorators/current-user.decorator.js';
+import { User } from '../user/entities/user.entity.js';
 
 @Resolver(() => CompanionRequest)
 export class CompanionRequestResolver {

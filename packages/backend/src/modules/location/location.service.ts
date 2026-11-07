@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CreateLocationInput } from './dto/create-location.input';
-import { UpdateLocationInput } from './dto/update-location.input';
+import { CreateLocationInput } from './dto/create-location.input.js';
+import { UpdateLocationInput } from './dto/update-location.input.js';
 import { DeleteResult, Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { Location, LocationDocument } from './entities/location.entity';
+import { Location, LocationDocument } from './entities/location.entity.js';
 
 export interface OwnerFilter {
     ownerId: string; // всегда string, безопасно для GraphQL

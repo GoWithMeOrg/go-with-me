@@ -1,11 +1,11 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
 import { Document, Types } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Location } from '@/modules/location/entities/location.entity';
-import { Category } from '@/modules/category/entities/category.entity';
-import { Interest } from '@/modules/interest/entities/interest.entity';
-import { Tag } from '@/modules/tag/entities/tag.entity';
-import { Privacy } from '../enum/privacy.enum';
+import { Location } from '@/modules/location/entities/location.entity.js';
+import { Category } from '@/modules/category/entities/category.entity.js';
+import { Interest } from '@/modules/interest/entities/interest.entity.js';
+import { Tag } from '@/modules/tag/entities/tag.entity.js';
+import { Privacy } from '../enum/privacy.enum.js';
 
 @ObjectType()
 @Schema({ timestamps: true })
@@ -13,7 +13,6 @@ export class Event {
     @Field(() => ID)
     _id: Types.ObjectId;
 
-    @Field(() => ID)
     @Prop({ type: Types.ObjectId, ref: 'User', required: true })
     organizer: Types.ObjectId;
 

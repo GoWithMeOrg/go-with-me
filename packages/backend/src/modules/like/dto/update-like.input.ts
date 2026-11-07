@@ -1,6 +1,6 @@
 import { InputType, Field, ID } from '@nestjs/graphql';
 import { PartialType } from '@nestjs/graphql';
-import { ToggleLikeInput } from './toggle-like.input';
+import { ToggleLikeInput } from './toggle-like.input.js';
 import { Types } from 'mongoose';
 
 @InputType()

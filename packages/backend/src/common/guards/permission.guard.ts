@@ -4,7 +4,7 @@ import { GqlExecutionContext } from '@nestjs/graphql';
 import {
     PERMISSION_CHECK_KEY,
     RequiredPermission,
-} from '../decorators/check-permissions.decorator';
+} from '../decorators/check-permissions.decorator.js';
 
 @Injectable()
 export class PermissionGuard implements CanActivate {

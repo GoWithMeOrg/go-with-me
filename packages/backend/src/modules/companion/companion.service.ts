@@ -2,10 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 
-import { Companion, CompanionDocument } from './entities/companion.entity';
-import { User, UserDocument } from '../user/entities/user.entity';
-import { CompanionRequest } from '../companion-request/entities/companion-request.entity';
-import { CompanionRequestStatus } from '../companion-request/enums/companion-request.enum';
+import { Companion, CompanionDocument } from './entities/companion.entity.js';
+import { User, UserDocument } from '../user/entities/user.entity.js';
+import { CompanionRequest } from '../companion-request/entities/companion-request.entity.js';
+import { CompanionRequestStatus } from '../companion-request/enums/companion-request.enum.js';
 
 @Injectable()
 export class CompanionService {

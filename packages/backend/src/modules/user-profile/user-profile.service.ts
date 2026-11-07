@@ -1,22 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import { Types } from 'mongoose';
 
-import { UserService } from '@/modules/user/user.service';
-import { LocationService } from '@/modules/location/location.service';
-import { CategoryService } from '@/modules/category/category.service';
-import { InterestService } from '@/modules/interest/interest.service';
-import { TagService } from '@/modules/tag/tag.service';
+import { UserService } from '@/modules/user/user.service.js';
+import { LocationService } from '@/modules/location/location.service.js';
+import { CategoryService } from '@/modules/category/category.service.js';
+import { InterestService } from '@/modules/interest/interest.service.js';
+import { TagService } from '@/modules/tag/tag.service.js';
 
-import { UpdateUserInput } from '@/modules/user/dto/update-user.input';
-import { UpdateLocationInput } from '@/modules/location/dto/update-location.input';
-import { UpdateCategoryInput } from '@/modules/category/dto/update-category.input';
-import { UpdateInterestInput } from '@/modules/interest/dto/update-interest.input';
-import { UpdateTagInput } from '@/modules/tag/dto/update-tag.input';
+import { UpdateUserInput } from '@/modules/user/dto/update-user.input.js';
+import { UpdateLocationInput } from '@/modules/location/dto/update-location.input.js';
+import { UpdateCategoryInput } from '@/modules/category/dto/update-category.input.js';
+import { UpdateInterestInput } from '@/modules/interest/dto/update-interest.input.js';
+import { UpdateTagInput } from '@/modules/tag/dto/update-tag.input.js';
 
-import { CreateLocationInput } from '@/modules/location/dto/create-location.input';
-import { CreateCategoryInput } from '@/modules/category/dto/create-category.input';
-import { CreateInterestInput } from '@/modules/interest/dto/create-interest.input';
-import { CreateTagInput } from '@/modules/tag/dto/create-tag.input';
+import { CreateLocationInput } from '@/modules/location/dto/create-location.input.js';
+import { CreateCategoryInput } from '@/modules/category/dto/create-category.input.js';
+import { CreateInterestInput } from '@/modules/interest/dto/create-interest.input.js';
+import { CreateTagInput } from '@/modules/tag/dto/create-tag.input.js';
 
 @Injectable()
 export class UserProfileService {

@@ -1,20 +1,20 @@
 import { Resolver, Query, Mutation, Args, ID, ResolveField, Parent, Int } from '@nestjs/graphql';
 import { Types } from 'mongoose';
 
-import { User } from '../user/entities/user.entity';
-import { Event } from './entities/event.entity';
+import { User } from '../user/entities/user.entity.js';
+import { Event } from './entities/event.entity.js';
 
-import { UserService } from '../user/user.service';
-import { EventService } from './event.service';
+import { UserService } from '../user/user.service.js';
+import { EventService } from './event.service.js';
 
-import { CreateEventInput } from './dto/create-event.input';
-import { UpdateEventInput } from './dto/update-event.input';
-import { CreateLocationInput } from '../location/dto/create-location.input';
-import { CreateCategoryInput } from '../category/dto/create-category.input';
-import { CreateInterestInput } from '../interest/dto/create-interest.input';
-import { CreateTagInput } from '../tag/dto/create-tag.input';
-import { CurrentUser } from '@/common/decorators/current-user.decorator';
-import { EventRelationsInput } from './interfaces/create-event-relations.input';
+import { CreateEventInput } from './dto/create-event.input.js';
+import { UpdateEventInput } from './dto/update-event.input.js';
+import { CreateLocationInput } from '../location/dto/create-location.input.js';
+import { CreateCategoryInput } from '../category/dto/create-category.input.js';
+import { CreateInterestInput } from '../interest/dto/create-interest.input.js';
+import { CreateTagInput } from '../tag/dto/create-tag.input.js';
+import { CurrentUser } from '@/common/decorators/current-user.decorator.js';
+import { EventRelationsInput } from './interfaces/create-event-relations.input.js';
 
 @Resolver(() => Event)
 export class EventResolver {

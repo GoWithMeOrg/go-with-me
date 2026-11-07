@@ -1,8 +1,8 @@
 import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
-import { LocationService } from './location.service';
-import { CreateLocationInput } from './dto/create-location.input';
-import { UpdateLocationInput } from './dto/update-location.input';
-import { Location } from './entities/location.entity';
+import { LocationService } from './location.service.js';
+import { CreateLocationInput } from './dto/create-location.input.js';
+import { UpdateLocationInput } from './dto/update-location.input.js';
+import { Location } from './entities/location.entity.js';
 import { Types } from 'mongoose';
 
 @Resolver(() => Location)

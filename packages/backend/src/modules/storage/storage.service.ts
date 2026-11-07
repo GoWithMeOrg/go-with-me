@@ -4,8 +4,8 @@ import { S3Client, PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { customAlphabet } from 'nanoid';
 import { InjectS3 } from 'nestjs-s3';
-import { PresignedUrlResponse } from './dto/presigned-url.response';
-import { StorageFolder } from './types/storage-folder';
+import { PresignedUrlResponse } from './dto/presigned-url.response.js';
+import { StorageFolder } from './types/storage-folder.js';
 import { Types } from 'mongoose';
 
 @Injectable()

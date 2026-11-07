@@ -1,12 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Types } from 'mongoose';
-import { Event } from './entities/event.entity';
-import { CreateEventInput } from './dto/create-event.input';
-import { EventRelationsInput } from './interfaces/create-event-relations.input';
-import { EnrichEventHelper, EventWithRelations } from './helpers/enrich-event.helper';
-import { EventCrudService } from './services/event-crud.service';
-import { EventQueryService } from './services/event-query.service';
-import { EventRelationsService } from './services/event-relations.service';
+import { Event } from './entities/event.entity.js';
+import { CreateEventInput } from './dto/create-event.input.js';
+import { EventRelationsInput } from './interfaces/create-event-relations.input.js';
+import { EnrichEventHelper, EventWithRelations } from './helpers/enrich-event.helper.js';
+import { EventCrudService } from './services/event-crud.service.js';
+import { EventQueryService } from './services/event-query.service.js';
+import { EventRelationsService } from './services/event-relations.service.js';
 
 @Injectable()
 export class EventService {

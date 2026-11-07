@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import { PermissionService } from './permission.service';
-import { PermissionResolver } from './permission.resolver';
-import { PermissionSchema } from './entities/permission.entity';
-import { ResourceSchema } from '../resource/entities/resource.entity';
-import { RoleSchema } from '../role/entities/role.entity';
+import { PermissionService } from './permission.service.js';
+import { PermissionResolver } from './permission.resolver.js';
+import { PermissionSchema } from './entities/permission.entity.js';
+import { ResourceSchema } from '../resource/entities/resource.entity.js';
+import { RoleSchema } from '../role/entities/role.entity.js';
 
 @Module({
     imports: [

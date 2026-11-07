@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { CompanionRequestService } from './companion-request.service';
-import { CompanionRequestResolver } from './companion-request.resolver';
+import { CompanionRequestService } from './companion-request.service.js';
+import { CompanionRequestResolver } from './companion-request.resolver.js';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Companion, CompanionSchema } from '../companion/entities/companion.entity';
-import { CompanionRequest, CompanionRequestSchema } from './entities/companion-request.entity';
-import { PUB_SUB } from '@/common/constants/pub-sub.constants';
-import { pubSub } from '@/common/pubsub/pubsub';
+import { Companion, CompanionSchema } from '../companion/entities/companion.entity.js';
+import { CompanionRequest, CompanionRequestSchema } from './entities/companion-request.entity.js';
+import { PUB_SUB } from '@/common/constants/pub-sub.constants.js';
+import { pubSub } from '@/common/pubsub/pubsub.js';
 
 @Module({
     imports: [

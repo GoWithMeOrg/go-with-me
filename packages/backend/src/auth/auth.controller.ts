@@ -12,18 +12,18 @@ import { ConfigService } from '@nestjs/config';
 import type { Response } from 'express';
 import { Types } from 'mongoose';
 
-import type { ReqWithPassport } from '@/common/types/graphql-context';
+import type { ReqWithPassport } from '@/common/types/graphql-context.js';
 
-import { UserService } from '@/modules/user/user.service';
-import { User } from '@/modules/user/entities/user.entity';
+import { UserService } from '@/modules/user/user.service.js';
+import { User } from '@/modules/user/entities/user.entity.js';
 
-import { GoogleOAuthGuard } from './GoogleAuth/guard/google-oauth.guard';
-import { SessionAuthGuard } from '@/common/guards/session-auth.guard';
-import { RolesGuard } from '@/common/guards/roles.guard';
+import { GoogleOAuthGuard } from './GoogleAuth/guard/google-oauth.guard.js';
+import { SessionAuthGuard } from '@/common/guards/session-auth.guard.js';
+import { RolesGuard } from '@/common/guards/roles.guard.js';
 
-import { Roles } from '@/common/decorators/roles.decorator';
-import { SessionService } from '@/modules/session/session.service';
-import { Role } from '@/modules/role/entities/role.entity';
+import { Roles } from '@/common/decorators/roles.decorator.js';
+import { SessionService } from '@/modules/session/session.service.js';
+import { Role } from '@/modules/role/entities/role.entity.js';
 
 @Controller('auth')
 export class AuthController {

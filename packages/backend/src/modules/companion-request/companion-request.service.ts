@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Companion, CompanionDocument } from '../companion/entities/companion.entity';
-import { CompanionRequest, CompanionRequestDocument } from './entities/companion-request.entity';
-import { CompanionRequestStatus } from './enums/companion-request.enum';
+import { Companion, CompanionDocument } from '../companion/entities/companion.entity.js';
+import { CompanionRequest, CompanionRequestDocument } from './entities/companion-request.entity.js';
+import { CompanionRequestStatus } from './enums/companion-request.enum.js';
 import { Model, Types } from 'mongoose';
 
 @Injectable()

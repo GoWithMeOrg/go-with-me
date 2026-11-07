@@ -1,5 +1,5 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
-import { User } from '@/modules/user/entities/user.entity';
+import { User } from '@/modules/user/entities/user.entity.js';
 
 @ObjectType()
 export class CompanionsResponse {

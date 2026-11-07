@@ -1,12 +1,12 @@
 import { Resolver, Query, Mutation, Args, ResolveField, Parent } from '@nestjs/graphql';
-import { ResourceService } from './resource.service';
-import { Resource } from './entities/resource.entity';
+import { ResourceService } from './resource.service.js';
+import { Resource } from './entities/resource.entity.js';
 import { UseGuards } from '@nestjs/common';
-import { Roles } from '@/common/decorators/roles.decorator';
-import { SessionAuthGuard } from '@/common/guards/session-auth.guard';
-import { RolesGuard } from '@/common/guards/roles.guard';
-import { Permission } from '../permission/entities/permission.entity';
-import { PermissionService } from '../permission/permission.service';
+import { Roles } from '@/common/decorators/roles.decorator.js';
+import { SessionAuthGuard } from '@/common/guards/session-auth.guard.js';
+import { RolesGuard } from '@/common/guards/roles.guard.js';
+import { Permission } from '../permission/entities/permission.entity.js';
+import { PermissionService } from '../permission/permission.service.js';
 
 @Resolver(() => Resource)
 export class ResourceResolver {

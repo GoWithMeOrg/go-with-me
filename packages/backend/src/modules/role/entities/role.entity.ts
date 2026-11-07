@@ -1,7 +1,7 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
 import { Document, Types } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Permission } from '@/modules/permission/entities/permission.entity';
+import { Permission } from '@/modules/permission/entities/permission.entity.js';
 
 @ObjectType()
 @Schema({ timestamps: true })

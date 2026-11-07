@@ -1,23 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { Types } from 'mongoose';
 
-import { UserService } from '../user/user.service';
-import { LocationService } from '../location/location.service';
-import { CategoryService } from '../category/category.service';
-import { InterestService } from '../interest/interest.service';
-import { TagService } from '../tag/tag.service';
+import { UserService } from '../user/user.service.js';
+import { LocationService } from '../location/location.service.js';
+import { CategoryService } from '../category/category.service.js';
+import { InterestService } from '../interest/interest.service.js';
+import { TagService } from '../tag/tag.service.js';
 
-import { CreateLocationInput } from '../location/dto/create-location.input';
-import { CreateCategoryInput } from '../category/dto/create-category.input';
-import { CreateInterestInput } from '../interest/dto/create-interest.input';
-import { CreateTagInput } from '../tag/dto/create-tag.input';
-import { CreateUserInput } from '../user/dto/create-user.input';
-import { SeedUserResult } from './entities/seed-user.entity';
-import { Event } from '../event/entities/event.entity';
-import { EventService } from '../event/event.service';
-import { CreateEventInput } from '../event/dto/create-event.input';
-import { EventRelationsInput } from '../event/interfaces/create-event-relations.input';
-import { EventRelationsService } from '../event/services/event-relations.service';
+import { CreateLocationInput } from '../location/dto/create-location.input.js';
+import { CreateCategoryInput } from '../category/dto/create-category.input.js';
+import { CreateInterestInput } from '../interest/dto/create-interest.input.js';
+import { CreateTagInput } from '../tag/dto/create-tag.input.js';
+import { CreateUserInput } from '../user/dto/create-user.input.js';
+import { SeedUserResult } from './entities/seed-user.entity.js';
+import { Event } from '../event/entities/event.entity.js';
+import { EventService } from '../event/event.service.js';
+import { CreateEventInput } from '../event/dto/create-event.input.js';
+import { EventRelationsInput } from '../event/interfaces/create-event-relations.input.js';
+import { EventRelationsService } from '../event/services/event-relations.service.js';
 
 @Injectable()
 export class SeedsService {

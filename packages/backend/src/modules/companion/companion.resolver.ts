@@ -1,14 +1,14 @@
 import { Resolver, Query, Mutation, Args, Int, ID } from '@nestjs/graphql';
-import { CompanionService } from './companion.service';
-import { Companion } from './entities/companion.entity';
+import { CompanionService } from './companion.service.js';
+import { Companion } from './entities/companion.entity.js';
 import { UseGuards } from '@nestjs/common';
 import { Types } from 'mongoose';
 
-import { User } from '../user/entities/user.entity';
-import { CompanionsResponse } from './entities/companions-response.entity';
-import { SessionAuthGuard } from '@/common/guards/session-auth.guard';
-import { RolesGuard } from '@/common/guards/roles.guard';
-import { CurrentUser } from '@/common/decorators/current-user.decorator';
+import { User } from '../user/entities/user.entity.js';
+import { CompanionsResponse } from './entities/companions-response.entity.js';
+import { SessionAuthGuard } from '@/common/guards/session-auth.guard.js';
+import { RolesGuard } from '@/common/guards/roles.guard.js';
+import { CurrentUser } from '@/common/decorators/current-user.decorator.js';
 
 @Resolver(() => Companion)
 export class CompanionResolver {

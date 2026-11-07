@@ -1,17 +1,17 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { EventService } from './event.service';
-import { EventResolver } from './event.resolver';
-import { EventSchema } from './entities/event.entity';
-import { LocationModule } from '../location/location.module';
-import { UserModule } from '../user/user.module';
-import { CategoryModule } from '../category/category.module';
-import { InterestModule } from '../interest/interest.module';
-import { TagModule } from '../tag/tag.module';
-import { EnrichEventHelper } from './helpers/enrich-event.helper';
-import { EventCrudService } from './services/event-crud.service';
-import { EventQueryService } from './services/event-query.service';
-import { EventRelationsService } from './services/event-relations.service';
+import { EventService } from './event.service.js';
+import { EventResolver } from './event.resolver.js';
+import { EventSchema } from './entities/event.entity.js';
+import { LocationModule } from '../location/location.module.js';
+import { UserModule } from '../user/user.module.js';
+import { CategoryModule } from '../category/category.module.js';
+import { InterestModule } from '../interest/interest.module.js';
+import { TagModule } from '../tag/tag.module.js';
+import { EnrichEventHelper } from './helpers/enrich-event.helper.js';
+import { EventCrudService } from './services/event-crud.service.js';
+import { EventQueryService } from './services/event-query.service.js';
+import { EventRelationsService } from './services/event-relations.service.js';
 
 @Module({
     imports: [

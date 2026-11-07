@@ -1,6 +1,6 @@
 import { ConfigService } from '@nestjs/config';
 
-import { isDev } from '@/utils/is-dev.utils';
+import { isDev } from '@/utils/is-dev.utils.js';
 
 export async function getLoggerConfig(configService: ConfigService) {
     return {

@@ -2,22 +2,22 @@ import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { ConfigModule } from '@nestjs/config';
 
-import { AuthService } from './auth.service';
+import { AuthService } from './auth.service.js';
 
-import { AuthController, AdminController } from './auth.controller';
+import { AuthController, AdminController } from './auth.controller.js';
 
-import { UserModule } from '@/modules/user/user.module';
-import { SessionModule } from '@/modules/session/session.module';
-import { RoleModule } from '@/modules/role/role.module';
+import { UserModule } from '@/modules/user/user.module.js';
+import { SessionModule } from '@/modules/session/session.module.js';
+import { RoleModule } from '@/modules/role/role.module.js';
 
-import { GoogleAuthStrategy } from './GoogleAuth/strategies/google.strategy';
+import { GoogleAuthStrategy } from './GoogleAuth/strategies/google.strategy.js';
 
-import { SessionSerializer } from './serializer/session.serializer';
+import { SessionSerializer } from './serializer/session.serializer.js';
 
-import { AuthResolver } from './auth.resolver';
+import { AuthResolver } from './auth.resolver.js';
 
-import { GoogleOAuthGuard } from './GoogleAuth/guard/google-oauth.guard';
-import { SessionAuthGuard } from '@/common/guards/session-auth.guard';
+import { GoogleOAuthGuard } from './GoogleAuth/guard/google-oauth.guard.js';
+import { SessionAuthGuard } from '@/common/guards/session-auth.guard.js';
 
 @Module({
     imports: [

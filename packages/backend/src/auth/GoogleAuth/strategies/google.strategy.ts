@@ -4,14 +4,14 @@ import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Types } from 'mongoose';
 
-import { AuthService } from '@/auth/auth.service';
-import { RoleService } from '@/modules/role/role.service';
+import { AuthService } from '@/auth/auth.service.js';
+import { RoleService } from '@/modules/role/role.service.js';
 
-import { UserService } from '@/modules/user/user.service';
+import { UserService } from '@/modules/user/user.service.js';
 
-import { AuthUserPayload } from '@/auth/dto/auth-user.payload';
+import { AuthUserPayload } from '@/auth/dto/auth-user.payload.js';
 
-import { GoogleProfile } from '../interfaces/profile.interface';
+import { GoogleProfile } from '../interfaces/profile.interface.js';
 
 @Injectable()
 export class GoogleAuthStrategy extends PassportStrategy(GoogleStrategy, 'google') {

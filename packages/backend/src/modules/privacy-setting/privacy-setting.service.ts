@@ -5,9 +5,9 @@ import { Model, Types } from 'mongoose';
 import {
     PrivacySetting,
     PrivacySettingDocument,
-} from './entities/privacy-setting.entity';
-import { UpdatePrivacySettingInput } from './dto/update-privacy-setting.input';
-import { PrivacyVisibility } from './enums/privacy-visibility.enum';
+} from './entities/privacy-setting.entity.js';
+import { UpdatePrivacySettingInput } from './dto/update-privacy-setting.input.js';
+import { PrivacyVisibility } from './enums/privacy-visibility.enum.js';
 
 const isMarkedCompanions = (v: string | undefined | null) =>
     v === PrivacyVisibility.MARKED_COMPANIONS;

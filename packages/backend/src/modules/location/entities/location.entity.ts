@@ -1,8 +1,8 @@
 import { ObjectType, Field } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
-import { LocationGeometry, LocationGeometrySchema } from './geometry.entity';
-import { LocationProperties, LocationPropertiesSchema } from './properties.entity';
+import { LocationGeometry, LocationGeometrySchema } from './geometry.entity.js';
+import { LocationProperties, LocationPropertiesSchema } from './properties.entity.js';
 
 @ObjectType()
 @Schema()

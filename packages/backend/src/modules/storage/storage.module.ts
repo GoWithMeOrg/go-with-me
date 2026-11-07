@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { StorageService } from './storage.service';
-import { StorageResolver } from './storage.resolver';
+import { StorageService } from './storage.service.js';
+import { StorageResolver } from './storage.resolver.js';
 
 @Module({
     providers: [StorageResolver, StorageService],

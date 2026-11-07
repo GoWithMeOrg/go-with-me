@@ -2,7 +2,7 @@ import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/commo
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 
-import { SessionDocument } from './entities/session.entity';
+import { SessionDocument } from './entities/session.entity.js';
 
 @Injectable()
 export class SessionService {

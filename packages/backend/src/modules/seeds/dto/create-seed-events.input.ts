@@ -1,8 +1,8 @@
 import { InputType, Field, ID } from '@nestjs/graphql';
 import { Types } from 'mongoose';
 
-import { CreateEventInput } from '@/modules/event/dto/create-event.input';
-import { EventRelationsInput } from '@/modules/event/interfaces/create-event-relations.input';
+import { CreateEventInput } from '@/modules/event/dto/create-event.input.js';
+import { EventRelationsInput } from '@/modules/event/interfaces/create-event-relations.input.js';
 
 @InputType()
 export class SeedEventsInput {

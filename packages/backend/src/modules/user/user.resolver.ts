@@ -2,18 +2,18 @@ import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { Types } from 'mongoose';
 
-import { UserService } from './user.service';
+import { UserService } from './user.service.js';
 
-import { CreateUserInput } from './dto/create-user.input';
-import { UpdateUserInput } from './dto/update-user.input';
+import { CreateUserInput } from './dto/create-user.input.js';
+import { UpdateUserInput } from './dto/update-user.input.js';
 
-import { User } from './entities/user.entity';
+import { User } from './entities/user.entity.js';
 
-import { SessionAuthGuard } from '@/common/guards/session-auth.guard';
-import { RolesGuard } from '@/common/guards/roles.guard';
-import { CurrentUser } from '@/common/decorators/current-user.decorator';
+import { SessionAuthGuard } from '@/common/guards/session-auth.guard.js';
+import { RolesGuard } from '@/common/guards/roles.guard.js';
+import { CurrentUser } from '@/common/decorators/current-user.decorator.js';
 
-import { Roles } from '@/common/decorators/roles.decorator';
+import { Roles } from '@/common/decorators/roles.decorator.js';
 
 @Resolver(() => User)
 export class UserResolver {

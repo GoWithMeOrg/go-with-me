@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { Types } from 'mongoose';
 
-import { Event } from '../entities/event.entity';
-import { LocationService } from '@/modules/location/location.service';
-import { CategoryService } from '@/modules/category/category.service';
-import { InterestService } from '@/modules/interest/interest.service';
-import { TagService } from '@/modules/tag/tag.service';
-import { EventRelationsInput } from '../interfaces/create-event-relations.input';
+import { Event } from '../entities/event.entity.js';
+import { LocationService } from '@/modules/location/location.service.js';
+import { CategoryService } from '@/modules/category/category.service.js';
+import { InterestService } from '@/modules/interest/interest.service.js';
+import { TagService } from '@/modules/tag/tag.service.js';
+import { EventRelationsInput } from '../interfaces/create-event-relations.input.js';
 
 @Injectable()
 export class EventRelationsService {

@@ -1,6 +1,6 @@
 import { InputType, Field } from '@nestjs/graphql';
-// import { Resource } from '../enums/resource.enum';
-import { Action } from '../enums/action.enum';
+// import { Resource } from '../enums/resource.enum.js';
+import { Action } from '../enums/action.enum.js';
 
 @InputType()
 export class CreatePermissionInput {

@@ -1,13 +1,13 @@
 import { Resolver, Query, Mutation, Args, ID, ResolveField, Parent, Int } from '@nestjs/graphql';
 import { Types } from 'mongoose';
 
-import { CommentService } from './comment.service';
-import { Comment } from './entities/comment.entity';
-import { CreateCommentInput } from './dto/create-comment.input';
-import { UpdateCommentInput } from './dto/update-comment.input';
-import { User } from '../user/entities/user.entity';
-import { UserService } from '../user/user.service';
-import { CurrentUser } from '@/common/decorators/current-user.decorator';
+import { CommentService } from './comment.service.js';
+import { Comment } from './entities/comment.entity.js';
+import { CreateCommentInput } from './dto/create-comment.input.js';
+import { UpdateCommentInput } from './dto/update-comment.input.js';
+import { User } from '../user/entities/user.entity.js';
+import { UserService } from '../user/user.service.js';
+import { CurrentUser } from '@/common/decorators/current-user.decorator.js';
 
 @Resolver(() => Comment)
 export class CommentResolver {
