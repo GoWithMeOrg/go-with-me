@@ -1,29 +1,25 @@
+import { GoogleOAuthGuard } from '@/auth/GoogleAuth/guard/google-oauth.guard.js';
+import { Roles } from '@/common/decorators/roles.decorator.js';
+import { RolesGuard } from '@/common/guards/roles.guard.js';
+import { SessionAuthGuard } from '@/common/guards/session-auth.guard.js';
+import type { ReqWithPassport } from '@/common/types/graphql-context.js';
+import { Role } from '@/modules/role/entities/role.entity.js';
+import { SessionService } from '@/modules/session/session.service.js';
+import { User } from '@/modules/user/entities/user.entity.js';
+import { UserService } from '@/modules/user/user.service.js';
 import {
     Controller,
+    Delete,
     ForbiddenException,
     Get,
     Param,
     Req,
     Res,
     UseGuards,
-    Delete,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import type { Response } from 'express';
 import { Types } from 'mongoose';
-
-import type { ReqWithPassport } from '@/common/types/graphql-context.js';
-
-import { UserService } from '@/modules/user/user.service.js';
-import { User } from '@/modules/user/entities/user.entity.js';
-
-import { GoogleOAuthGuard } from '@/auth/GoogleAuth/guard/google-oauth.guard.js';
-import { SessionAuthGuard } from '@/common/guards/session-auth.guard.js';
-import { RolesGuard } from '@/common/guards/roles.guard.js';
-
-import { Roles } from '@/common/decorators/roles.decorator.js';
-import { SessionService } from '@/modules/session/session.service.js';
-import { Role } from '@/modules/role/entities/role.entity.js';
 
 @Controller('auth')
 export class AuthController {
@@ -80,10 +76,7 @@ export class AuthController {
     @Get('profile/:user_id/private')
     @UseGuards(SessionAuthGuard, RolesGuard)
     @Roles('user', 'admin')
-    async getProfileById(
-        @Param('user_id') id: Types.ObjectId,
-        @Req() req: ReqWithPassport
-    ) {
+    async getProfileById(@Param('user_id') id: Types.ObjectId, @Req() req: ReqWithPassport) {
         const currentUser = req.user as User | null;
 
         if (!currentUser) {
@@ -109,7 +102,7 @@ export class AuthController {
     logout(@Req() req: ReqWithPassport, @Res() res: Response) {
         // 1. Берем URL фронтенда
         const frontendUrl = this.configService.get('ALLOWED_ORIGIN');
-        
+
         // Проверка на наличие ALLOWED_ORIGIN
         if (!frontendUrl) {
             console.error('ALLOWED_ORIGIN not configured, redirecting to /');

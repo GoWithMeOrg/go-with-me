@@ -1,5 +1,5 @@
-import { ObjectType, Field } from '@nestjs/graphql';
 import { Event } from '@/modules/event/entities/event.entity.js';
+import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class SeedEventResult {

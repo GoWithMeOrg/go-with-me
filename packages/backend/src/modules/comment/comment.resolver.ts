@@ -1,13 +1,12 @@
-import { Resolver, Query, Mutation, Args, ID, ResolveField, Parent, Int } from '@nestjs/graphql';
-import { Types } from 'mongoose';
-
+import { CurrentUser } from '@/common/decorators/current-user.decorator.js';
 import { CommentService } from '@/modules/comment/comment.service.js';
-import { Comment } from '@/modules/comment/entities/comment.entity.js';
 import { CreateCommentInput } from '@/modules/comment/dto/create-comment.input.js';
 import { UpdateCommentInput } from '@/modules/comment/dto/update-comment.input.js';
+import { Comment } from '@/modules/comment/entities/comment.entity.js';
 import { User } from '@/modules/user/entities/user.entity.js';
 import { UserService } from '@/modules/user/user.service.js';
-import { CurrentUser } from '@/common/decorators/current-user.decorator.js';
+import { Args, ID, Int, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Types } from 'mongoose';
 
 @Resolver(() => Comment)
 export class CommentResolver {
@@ -66,7 +65,12 @@ export class CommentResolver {
         @Args('sort', { type: () => String, nullable: true }) sort?: string
     ): Promise<Comment[]> {
         const sortDirection = sort === 'newest' ? -1 : 1;
-        return this.commentService.getParentCommentsByOwnerId(ownerId, limit, offset, sortDirection);
+        return this.commentService.getParentCommentsByOwnerId(
+            ownerId,
+            limit,
+            offset,
+            sortDirection
+        );
     }
 
     @Query(() => [Comment])
@@ -77,7 +81,12 @@ export class CommentResolver {
         @Args('sort', { type: () => String, nullable: true }) sort?: string
     ): Promise<Comment[]> {
         const sortDirection = sort === 'newest' ? -1 : 1;
-        return this.commentService.getChildrenCommentsByParentId(parentId, limit, offset, sortDirection);
+        return this.commentService.getChildrenCommentsByParentId(
+            parentId,
+            limit,
+            offset,
+            sortDirection
+        );
     }
 
     @ResolveField(() => User, { name: 'author' })
@@ -92,9 +101,7 @@ export class CommentResolver {
             return null;
         }
 
-        const parentComment = await this.commentService.findById(
-            comment.parent as Types.ObjectId
-        );
+        const parentComment = await this.commentService.findById(comment.parent as Types.ObjectId);
         return parentComment as Comment;
     }
 }

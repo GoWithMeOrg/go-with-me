@@ -1,8 +1,8 @@
-import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
-import { InterestService } from '@/modules/interest/interest.service.js';
-import { Interest } from '@/modules/interest/entities/interest.entity.js';
 import { CreateInterestInput } from '@/modules/interest/dto/create-interest.input.js';
 import { UpdateInterestInput } from '@/modules/interest/dto/update-interest.input.js';
+import { Interest } from '@/modules/interest/entities/interest.entity.js';
+import { InterestService } from '@/modules/interest/interest.service.js';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Types } from 'mongoose';
 
 @Resolver(() => Interest)

@@ -1,14 +1,13 @@
-import { Resolver, Query, Mutation, Args, Int, ID } from '@nestjs/graphql';
+import { CurrentUser } from '@/common/decorators/current-user.decorator.js';
+import { RolesGuard } from '@/common/guards/roles.guard.js';
+import { SessionAuthGuard } from '@/common/guards/session-auth.guard.js';
 import { CompanionService } from '@/modules/companion/companion.service.js';
 import { Companion } from '@/modules/companion/entities/companion.entity.js';
-import { UseGuards } from '@nestjs/common';
-import { Types } from 'mongoose';
-
-import { User } from '@/modules/user/entities/user.entity.js';
 import { CompanionsResponse } from '@/modules/companion/entities/companions-response.entity.js';
-import { SessionAuthGuard } from '@/common/guards/session-auth.guard.js';
-import { RolesGuard } from '@/common/guards/roles.guard.js';
-import { CurrentUser } from '@/common/decorators/current-user.decorator.js';
+import { User } from '@/modules/user/entities/user.entity.js';
+import { UseGuards } from '@nestjs/common';
+import { Args, ID, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Types } from 'mongoose';
 
 @Resolver(() => Companion)
 export class CompanionResolver {
@@ -48,7 +47,7 @@ export class CompanionResolver {
     @UseGuards(SessionAuthGuard)
     isUserCompanion(
         @Args('user_id', { type: () => ID }) userId: Types.ObjectId,
-        @Args('companion_id', { type: () => ID }) companionId: Types.ObjectId,
+        @Args('companion_id', { type: () => ID }) companionId: Types.ObjectId
     ): Promise<boolean> {
         return this.companionService.isUserCompanion(userId, companionId);
     }
@@ -61,5 +60,4 @@ export class CompanionResolver {
     ): Promise<boolean> {
         return this.companionService.removeCompanion(userId, companionId);
     }
-
 }

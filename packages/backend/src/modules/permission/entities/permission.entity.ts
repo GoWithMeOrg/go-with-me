@@ -1,8 +1,8 @@
-import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { Document, Types, Schema as MongoSchema } from 'mongoose';
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Action } from '@/modules/permission/enums/action.enum.js';
 import { Resource } from '@/modules/resource/entities/resource.entity.js';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document, Schema as MongoSchema, Types } from 'mongoose';
 
 @ObjectType()
 @Schema({ timestamps: true })

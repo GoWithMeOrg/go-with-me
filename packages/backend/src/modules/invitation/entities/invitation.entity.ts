@@ -1,9 +1,9 @@
-import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { Document, Schema as MongoSchema, Types } from 'mongoose';
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { User } from '@/modules/user/entities/user.entity.js';
 import { Event } from '@/modules/event/entities/event.entity.js';
 import { InvitationResponseStatus } from '@/modules/invitation/enums/invitation-response.enum.js';
+import { User } from '@/modules/user/entities/user.entity.js';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document, Schema as MongoSchema, Types } from 'mongoose';
 
 @ObjectType()
 @Schema({ timestamps: true })

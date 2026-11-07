@@ -1,11 +1,10 @@
+import { CompanionRequest } from '@/modules/companion-request/entities/companion-request.entity.js';
+import { CompanionRequestStatus } from '@/modules/companion-request/enums/companion-request.enum.js';
+import { Companion, CompanionDocument } from '@/modules/companion/entities/companion.entity.js';
+import { User, UserDocument } from '@/modules/user/entities/user.entity.js';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-
-import { Companion, CompanionDocument } from '@/modules/companion/entities/companion.entity.js';
-import { User, UserDocument } from '@/modules/user/entities/user.entity.js';
-import { CompanionRequest } from '@/modules/companion-request/entities/companion-request.entity.js';
-import { CompanionRequestStatus } from '@/modules/companion-request/enums/companion-request.enum.js';
 
 @Injectable()
 export class CompanionService {
@@ -83,22 +82,15 @@ export class CompanionService {
         }
     }
 
-    async isUserCompanion(
-        ownerId: Types.ObjectId,
-        companionId: Types.ObjectId,
-    ): Promise<boolean> {
+    async isUserCompanion(ownerId: Types.ObjectId, companionId: Types.ObjectId): Promise<boolean> {
         const ownerObjectId = new Types.ObjectId(ownerId.toString());
         const companionObjectId = new Types.ObjectId(companionId.toString());
 
-        const companionDoc = await this.companionModel
-            .findOne({ ownerId: ownerObjectId })
-            .lean();
+        const companionDoc = await this.companionModel.findOne({ ownerId: ownerObjectId }).lean();
 
         if (!companionDoc) return false;
 
-        return companionDoc.companions.some(
-            (id) => id.toString() === companionObjectId.toString(),
-        );
+        return companionDoc.companions.some((id) => id.toString() === companionObjectId.toString());
     }
 
     async findCompanion(ownerId: Types.ObjectId, query?: string): Promise<User[]> {
@@ -134,5 +126,4 @@ export class CompanionService {
 
         return filteredCompanions;
     }
-
 }

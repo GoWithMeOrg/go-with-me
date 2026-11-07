@@ -1,7 +1,7 @@
-import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@nestjs/common';
-import { GqlExecutionContext } from '@nestjs/graphql';
-import { ModuleRef } from '@nestjs/core';
 import { ENTITY_TYPE_KEY } from '@/common/decorators/owner.decorator.js';
+import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from '@nestjs/common';
+import { ModuleRef } from '@nestjs/core';
+import { GqlExecutionContext } from '@nestjs/graphql';
 
 @Injectable()
 export class OwnershipGuard implements CanActivate {

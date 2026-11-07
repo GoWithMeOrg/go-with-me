@@ -1,6 +1,6 @@
+import { Join, JoinDocument } from '@/modules/join/entities/join.entity.js';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Join, JoinDocument } from '@/modules/join/entities/join.entity.js';
 import { Model, Types } from 'mongoose';
 
 @Injectable()

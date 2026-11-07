@@ -1,13 +1,13 @@
-import { Injectable } from '@nestjs/common';
 import { CategoryService } from '@/modules/category/category.service.js';
 import { Category } from '@/modules/category/entities/category.entity.js';
+import { Event } from '@/modules/event/entities/event.entity.js';
 import { Interest } from '@/modules/interest/entities/interest.entity.js';
 import { InterestService } from '@/modules/interest/interest.service.js';
 import { Location } from '@/modules/location/entities/location.entity.js';
 import { LocationService } from '@/modules/location/location.service.js';
 import { Tag } from '@/modules/tag/entities/tag.entity.js';
 import { TagService } from '@/modules/tag/tag.service.js';
-import { Event } from '@/modules/event/entities/event.entity.js';
+import { Injectable } from '@nestjs/common';
 
 export type EventWithRelations = Omit<Event, 'location' | 'category' | 'interest' | 'tag'> & {
     location?: Location | null;

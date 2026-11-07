@@ -1,7 +1,7 @@
+import { Event } from '@/modules/event/entities/event.entity.js';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Event } from '@/modules/event/entities/event.entity.js';
 
 @Injectable()
 export class EventQueryService {

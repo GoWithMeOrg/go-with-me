@@ -1,8 +1,8 @@
-import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { Document, Types } from 'mongoose';
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-
 import { Role } from '@/modules/role/entities/role.entity.js';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document, Types } from 'mongoose';
+
 @ObjectType()
 @Schema({ timestamps: true })
 export class User {

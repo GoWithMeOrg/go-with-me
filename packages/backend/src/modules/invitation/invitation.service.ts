@@ -1,14 +1,14 @@
-import { Injectable, ForbiddenException, NotFoundException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import { Companion, CompanionDocument } from '@/modules/companion/entities/companion.entity.js';
 import { Event } from '@/modules/event/entities/event.entity.js';
 import { Privacy } from '@/modules/event/enum/privacy.enum.js';
+import { SendInvitationInput } from '@/modules/invitation/dto/send-invitation.input.js';
 import { Invitation, InvitationDocument } from '@/modules/invitation/entities/invitation.entity.js';
 import { InvitationResponseStatus } from '@/modules/invitation/enums/invitation-response.enum.js';
-import { SendInvitationInput } from '@/modules/invitation/dto/send-invitation.input.js';
-import { Companion, CompanionDocument } from '@/modules/companion/entities/companion.entity.js';
-import { PrivacySettingService } from '@/modules/privacy-setting/privacy-setting.service.js';
 import { PrivacyVisibility } from '@/modules/privacy-setting/enums/privacy-visibility.enum.js';
+import { PrivacySettingService } from '@/modules/privacy-setting/privacy-setting.service.js';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model, Types } from 'mongoose';
 
 @Injectable()
 export class InvitationService {
@@ -16,7 +16,7 @@ export class InvitationService {
         @InjectModel(Invitation.name) private invitationModel: Model<InvitationDocument>,
         @InjectModel(Event.name) private eventModel: Model<Event>,
         @InjectModel(Companion.name) private companionModel: Model<CompanionDocument>,
-        private readonly privacySettingService: PrivacySettingService,
+        private readonly privacySettingService: PrivacySettingService
     ) {}
 
     async getInvitation(userId: Types.ObjectId): Promise<InvitationDocument[]> {
@@ -35,7 +35,7 @@ export class InvitationService {
 
     async getCompanionInvitationEvent(
         organizerId: Types.ObjectId,
-        companionId?: Types.ObjectId,
+        companionId?: Types.ObjectId
     ): Promise<Event[]> {
         const currentDate = new Date();
 
@@ -71,12 +71,10 @@ export class InvitationService {
 
             if (existingInvitations.length > 0) {
                 const excludedEventIds = new Set(
-                    existingInvitations.map((inv) => inv.event.toString()),
+                    existingInvitations.map((inv) => inv.event.toString())
                 );
 
-                return candidateEvents.filter(
-                    (e) => !excludedEventIds.has(e._id.toString()),
-                );
+                return candidateEvents.filter((e) => !excludedEventIds.has(e._id.toString()));
             }
         }
 
@@ -111,7 +109,7 @@ export class InvitationService {
         if (!isOrganizer) {
             if (event.privacy !== Privacy.PUBLIC) {
                 throw new ForbiddenException(
-                    'Only the organizer can send invitations to private events',
+                    'Only the organizer can send invitations to private events'
                 );
             }
 
@@ -123,7 +121,7 @@ export class InvitationService {
 
             if (!senderAccepted) {
                 throw new ForbiddenException(
-                    'Only the event organizer or accepted guests can send invitations',
+                    'Only the event organizer or accepted guests can send invitations'
                 );
             }
         }
@@ -134,12 +132,10 @@ export class InvitationService {
         }
 
         const companionIdStrings = companionDoc.companions.map((id) => id.toString());
-        const invalidReceivers = input.receiverIds.filter(
-            (id) => !companionIdStrings.includes(id),
-        );
+        const invalidReceivers = input.receiverIds.filter((id) => !companionIdStrings.includes(id));
         if (invalidReceivers.length > 0) {
             throw new ForbiddenException(
-                `Some users are not your companions: ${invalidReceivers.join(', ')}`,
+                `Some users are not your companions: ${invalidReceivers.join(', ')}`
             );
         }
 
@@ -147,7 +143,7 @@ export class InvitationService {
 
         // Check each receiver's privacy settings for invitation restrictions
         const receiverPrivacyDocs = await Promise.all(
-            receiverObjectIds.map((id) => this.privacySettingService.getByOwnerId(id)),
+            receiverObjectIds.map((id) => this.privacySettingService.getByOwnerId(id))
         );
 
         for (let i = 0; i < receiverObjectIds.length; i++) {
@@ -158,20 +154,20 @@ export class InvitationService {
                     ownerId: receiverObjectIds[i],
                 });
                 const isSenderCompanion = rcvCompanionDoc?.companions.some(
-                    (cid) => cid.toString() === senderObjectId.toString(),
+                    (cid) => cid.toString() === senderObjectId.toString()
                 );
                 if (!isSenderCompanion) {
                     throw new ForbiddenException(
-                        `User ${input.receiverIds[i]} only accepts invitations from their companions`,
+                        `User ${input.receiverIds[i]} only accepts invitations from their companions`
                     );
                 }
             } else if (rcvPrivacy.whoCanInviteToEvents === PrivacyVisibility.MARKED_COMPANIONS) {
                 const isSenderMarked = rcvPrivacy.markedForWhoCanInviteToEvents.some(
-                    (mid) => mid.toString() === senderObjectId.toString(),
+                    (mid) => mid.toString() === senderObjectId.toString()
                 );
                 if (!isSenderMarked) {
                     throw new ForbiddenException(
-                        `You are not in the allowed invitation list of user ${input.receiverIds[i]}`,
+                        `You are not in the allowed invitation list of user ${input.receiverIds[i]}`
                     );
                 }
             }
@@ -195,7 +191,11 @@ export class InvitationService {
         await this.invitationModel.bulkWrite(bulkOps);
 
         const created = await this.invitationModel
-            .findOne({ event: eventObjectId, sender: senderObjectId, receiver: receiverObjectIds[0] })
+            .findOne({
+                event: eventObjectId,
+                sender: senderObjectId,
+                receiver: receiverObjectIds[0],
+            })
             .populate('sender')
             .populate('event');
 
@@ -208,7 +208,7 @@ export class InvitationService {
 
     async acceptInvitation(
         invitationId: Types.ObjectId,
-        userId: Types.ObjectId,
+        userId: Types.ObjectId
     ): Promise<InvitationDocument> {
         const invitation = await this.invitationModel.findOne({
             _id: invitationId,
@@ -228,7 +228,7 @@ export class InvitationService {
 
     async declineInvitation(
         invitationId: Types.ObjectId,
-        userId: Types.ObjectId,
+        userId: Types.ObjectId
     ): Promise<InvitationDocument> {
         const invitation = await this.invitationModel.findOne({
             _id: invitationId,

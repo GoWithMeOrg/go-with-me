@@ -1,8 +1,7 @@
-import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { PrivacyVisibility } from '@/modules/privacy-setting/enums/privacy-visibility.enum.js';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
-
-import { PrivacyVisibility } from '@/modules/privacy-setting/enums/privacy-visibility.enum.js';
 
 @ObjectType()
 @Schema({ timestamps: true })

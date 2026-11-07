@@ -1,11 +1,11 @@
-import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
-import { Types } from 'mongoose';
-import { PermissionService } from '@/modules/permission/permission.service.js';
-import { Permission } from '@/modules/permission/entities/permission.entity.js';
-import { NotFoundException, UseGuards } from '@nestjs/common';
-import { SessionAuthGuard } from '@/common/guards/session-auth.guard.js';
-import { RolesGuard } from '@/common/guards/roles.guard.js';
 import { Roles } from '@/common/decorators/roles.decorator.js';
+import { RolesGuard } from '@/common/guards/roles.guard.js';
+import { SessionAuthGuard } from '@/common/guards/session-auth.guard.js';
+import { Permission } from '@/modules/permission/entities/permission.entity.js';
+import { PermissionService } from '@/modules/permission/permission.service.js';
+import { NotFoundException, UseGuards } from '@nestjs/common';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Types } from 'mongoose';
 
 @Resolver(() => Permission)
 @UseGuards(SessionAuthGuard, RolesGuard)

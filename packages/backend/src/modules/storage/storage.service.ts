@@ -1,12 +1,12 @@
-import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { S3Client, PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
-import { customAlphabet } from 'nanoid';
-import { InjectS3 } from 'nestjs-s3';
 import { PresignedUrlResponse } from '@/modules/storage/dto/presigned-url.response.js';
 import { StorageFolder } from '@/modules/storage/types/storage-folder.js';
+import { DeleteObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { Types } from 'mongoose';
+import { customAlphabet } from 'nanoid';
+import { InjectS3 } from 'nestjs-s3';
 
 @Injectable()
 export class StorageService {

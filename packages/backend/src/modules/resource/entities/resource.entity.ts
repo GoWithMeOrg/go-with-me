@@ -1,6 +1,6 @@
-import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { Document, Types } from 'mongoose';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document, Types } from 'mongoose';
 
 @ObjectType()
 @Schema({

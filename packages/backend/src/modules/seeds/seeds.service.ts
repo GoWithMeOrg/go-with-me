@@ -1,23 +1,21 @@
-import { Injectable } from '@nestjs/common';
-import { Types } from 'mongoose';
-
-import { UserService } from '@/modules/user/user.service.js';
-import { LocationService } from '@/modules/location/location.service.js';
 import { CategoryService } from '@/modules/category/category.service.js';
-import { InterestService } from '@/modules/interest/interest.service.js';
-import { TagService } from '@/modules/tag/tag.service.js';
-
-import { CreateLocationInput } from '@/modules/location/dto/create-location.input.js';
 import { CreateCategoryInput } from '@/modules/category/dto/create-category.input.js';
-import { CreateInterestInput } from '@/modules/interest/dto/create-interest.input.js';
-import { CreateTagInput } from '@/modules/tag/dto/create-tag.input.js';
-import { CreateUserInput } from '@/modules/user/dto/create-user.input.js';
-import { SeedUserResult } from '@/modules/seeds/entities/seed-user.entity.js';
+import { CreateEventInput } from '@/modules/event/dto/create-event.input.js';
 import { Event } from '@/modules/event/entities/event.entity.js';
 import { EventService } from '@/modules/event/event.service.js';
-import { CreateEventInput } from '@/modules/event/dto/create-event.input.js';
 import { EventRelationsInput } from '@/modules/event/interfaces/create-event-relations.input.js';
 import { EventRelationsService } from '@/modules/event/services/event-relations.service.js';
+import { CreateInterestInput } from '@/modules/interest/dto/create-interest.input.js';
+import { InterestService } from '@/modules/interest/interest.service.js';
+import { CreateLocationInput } from '@/modules/location/dto/create-location.input.js';
+import { LocationService } from '@/modules/location/location.service.js';
+import { SeedUserResult } from '@/modules/seeds/entities/seed-user.entity.js';
+import { CreateTagInput } from '@/modules/tag/dto/create-tag.input.js';
+import { TagService } from '@/modules/tag/tag.service.js';
+import { CreateUserInput } from '@/modules/user/dto/create-user.input.js';
+import { UserService } from '@/modules/user/user.service.js';
+import { Injectable } from '@nestjs/common';
+import { Types } from 'mongoose';
 
 @Injectable()
 export class SeedsService {

@@ -1,6 +1,6 @@
+import { Like, LikeDocument } from '@/modules/like/entities/like.entity.js';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Like, LikeDocument } from '@/modules/like/entities/like.entity.js';
 import { Model, Types } from 'mongoose';
 
 @Injectable()
@@ -35,10 +35,7 @@ export class LikeService {
         return this.likeModel.countDocuments({ ownerId }).exec();
     }
 
-    async isLikedByUser(
-        owner_id: Types.ObjectId,
-        user_id: Types.ObjectId
-    ): Promise<boolean> {
+    async isLikedByUser(owner_id: Types.ObjectId, user_id: Types.ObjectId): Promise<boolean> {
         const like = await this.likeModel.findOne({ ownerId: owner_id, user: user_id }).exec();
         return !!like;
     }

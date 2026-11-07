@@ -1,10 +1,9 @@
-import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
-import { TagService } from '@/modules/tag/tag.service.js';
-
-import { Types } from 'mongoose';
-import { Tag } from '@/modules/tag/entities/tag.entity.js';
 import { CreateTagInput } from '@/modules/tag/dto/create-tag.input.js';
 import { UpdateTagInput } from '@/modules/tag/dto/update-tag.input.js';
+import { Tag } from '@/modules/tag/entities/tag.entity.js';
+import { TagService } from '@/modules/tag/tag.service.js';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Types } from 'mongoose';
 
 @Resolver(() => Tag)
 export class TagResolver {
@@ -14,9 +13,7 @@ export class TagResolver {
         name: 'tagById',
         description: 'Поиск категорий по id',
     })
-    getTagById(
-        @Args('tag_id', { type: () => ID }) tag_id: Types.ObjectId
-    ): Promise<Tag | null> {
+    getTagById(@Args('tag_id', { type: () => ID }) tag_id: Types.ObjectId): Promise<Tag | null> {
         return this.tagService.getTagById(tag_id);
     }
 
@@ -45,9 +42,7 @@ export class TagResolver {
     }
 
     @Mutation(() => Tag)
-    async removeTag(
-        @Args('tag_id', { type: () => ID }) tag_id: Types.ObjectId
-    ): Promise<boolean> {
+    async removeTag(@Args('tag_id', { type: () => ID }) tag_id: Types.ObjectId): Promise<boolean> {
         const result = await this.tagService.removeTag(tag_id);
         return result.deletedCount > 0;
     }

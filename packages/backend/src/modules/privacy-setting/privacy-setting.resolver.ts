@@ -1,28 +1,23 @@
-import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
-import { UseGuards } from '@nestjs/common';
-import { Types } from 'mongoose';
-
+import { CurrentUser } from '@/common/decorators/current-user.decorator.js';
+import { SessionAuthGuard } from '@/common/guards/session-auth.guard.js';
+import { UpdatePrivacySettingInput } from '@/modules/privacy-setting/dto/update-privacy-setting.input.js';
 import { PrivacySetting } from '@/modules/privacy-setting/entities/privacy-setting.entity.js';
 import { PrivacySettingService } from '@/modules/privacy-setting/privacy-setting.service.js';
-import { UpdatePrivacySettingInput } from '@/modules/privacy-setting/dto/update-privacy-setting.input.js';
-import { SessionAuthGuard } from '@/common/guards/session-auth.guard.js';
-import { CurrentUser } from '@/common/decorators/current-user.decorator.js';
 import { User } from '@/modules/user/entities/user.entity.js';
+import { UseGuards } from '@nestjs/common';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Types } from 'mongoose';
 
 @Resolver(() => PrivacySetting)
 @UseGuards(SessionAuthGuard)
 export class PrivacySettingResolver {
-    constructor(
-        private readonly privacySettingService: PrivacySettingService,
-    ) {}
+    constructor(private readonly privacySettingService: PrivacySettingService) {}
 
     @Query(() => PrivacySetting, {
         name: 'myPrivacySetting',
         description: 'Получить настройки приватности текущего пользователя',
     })
-    getMyPrivacySetting(
-        @CurrentUser() user: User,
-    ): Promise<PrivacySetting> {
+    getMyPrivacySetting(@CurrentUser() user: User): Promise<PrivacySetting> {
         return this.privacySettingService.getByOwnerId(user._id);
     }
 
@@ -31,11 +26,9 @@ export class PrivacySettingResolver {
         description: 'Получить настройки приватности пользователя по ID',
     })
     privacySettingByUserId(
-        @Args('user_id', { type: () => ID }) userId: Types.ObjectId,
+        @Args('user_id', { type: () => ID }) userId: Types.ObjectId
     ): Promise<PrivacySetting> {
-        return this.privacySettingService.getByOwnerId(
-            new Types.ObjectId(userId.toString()),
-        );
+        return this.privacySettingService.getByOwnerId(new Types.ObjectId(userId.toString()));
     }
 
     @Query(() => [PrivacySetting], {
@@ -43,7 +36,7 @@ export class PrivacySettingResolver {
         description: 'Получить настройки приватности для нескольких пользователей',
     })
     privacySettingsForUsers(
-        @Args('user_ids', { type: () => [ID] }) userIds: Types.ObjectId[],
+        @Args('user_ids', { type: () => [ID] }) userIds: Types.ObjectId[]
     ): Promise<PrivacySetting[]> {
         return this.privacySettingService.getByOwnerIds(userIds);
     }
@@ -54,7 +47,7 @@ export class PrivacySettingResolver {
     })
     updatePrivacySetting(
         @CurrentUser() user: User,
-        @Args('input') input: UpdatePrivacySettingInput,
+        @Args('input') input: UpdatePrivacySettingInput
     ): Promise<PrivacySetting> {
         return this.privacySettingService.update(user._id, input);
     }
@@ -65,7 +58,7 @@ export class PrivacySettingResolver {
     })
     addMarkedForWhoCanSeeEvents(
         @CurrentUser() user: User,
-        @Args('companion_ids', { type: () => [ID] }) companionIds: Types.ObjectId[],
+        @Args('companion_ids', { type: () => [ID] }) companionIds: Types.ObjectId[]
     ): Promise<PrivacySetting> {
         return this.privacySettingService.addMarkedForWhoCanSeeEvents(user._id, companionIds);
     }
@@ -76,7 +69,7 @@ export class PrivacySettingResolver {
     })
     removeMarkedForWhoCanSeeEvents(
         @CurrentUser() user: User,
-        @Args('companion_id', { type: () => ID }) companionId: Types.ObjectId,
+        @Args('companion_id', { type: () => ID }) companionId: Types.ObjectId
     ): Promise<PrivacySetting> {
         return this.privacySettingService.removeMarkedForWhoCanSeeEvents(user._id, companionId);
     }
@@ -87,7 +80,7 @@ export class PrivacySettingResolver {
     })
     addMarkedForWhoCanInviteToEvents(
         @CurrentUser() user: User,
-        @Args('companion_ids', { type: () => [ID] }) companionIds: Types.ObjectId[],
+        @Args('companion_ids', { type: () => [ID] }) companionIds: Types.ObjectId[]
     ): Promise<PrivacySetting> {
         return this.privacySettingService.addMarkedForWhoCanInviteToEvents(user._id, companionIds);
     }
@@ -98,8 +91,11 @@ export class PrivacySettingResolver {
     })
     removeMarkedForWhoCanInviteToEvents(
         @CurrentUser() user: User,
-        @Args('companion_id', { type: () => ID }) companionId: Types.ObjectId,
+        @Args('companion_id', { type: () => ID }) companionId: Types.ObjectId
     ): Promise<PrivacySetting> {
-        return this.privacySettingService.removeMarkedForWhoCanInviteToEvents(user._id, companionId);
+        return this.privacySettingService.removeMarkedForWhoCanInviteToEvents(
+            user._id,
+            companionId
+        );
     }
 }

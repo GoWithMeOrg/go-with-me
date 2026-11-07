@@ -1,10 +1,9 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { Model, Types } from 'mongoose';
-
 import { CreateCommentInput } from '@/modules/comment/dto/create-comment.input.js';
 import { UpdateCommentInput } from '@/modules/comment/dto/update-comment.input.js';
-import { InjectModel } from '@nestjs/mongoose';
 import { Comment, CommentDocument } from '@/modules/comment/entities/comment.entity.js';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model, Types } from 'mongoose';
 
 const MAX_REPLY_DEPTH = 10;
 const MAX_ANCESTOR_CHAIN = 100;
@@ -89,9 +88,7 @@ export class CommentService {
         }
     }
 
-    private async decrementAncestorsRepliesCount(
-        parentId: Types.ObjectId
-    ): Promise<void> {
+    private async decrementAncestorsRepliesCount(parentId: Types.ObjectId): Promise<void> {
         let currentParentId: Types.ObjectId | null = parentId;
         let steps = 0;
 
@@ -171,10 +168,7 @@ export class CommentService {
         let currentId: Types.ObjectId | null = commentId;
 
         while (currentId && depth < MAX_ANCESTOR_CHAIN) {
-            const parent = await this.commentModel
-                .findById(currentId)
-                .select('parent')
-                .lean();
+            const parent = await this.commentModel.findById(currentId).select('parent').lean();
             currentId = (parent?.parent as Types.ObjectId | null) ?? null;
             if (currentId) depth++;
         }
@@ -193,9 +187,7 @@ export class CommentService {
         sort: 1 | -1 = 1
     ): Promise<Comment[]> {
         const allDescendants: Comment[] = [];
-        const queue: { id: Types.ObjectId; depth: number }[] = [
-            { id: parentId, depth: 0 },
-        ];
+        const queue: { id: Types.ObjectId; depth: number }[] = [{ id: parentId, depth: 0 }];
 
         while (queue.length > 0) {
             const { id: currentParentId, depth } = queue.shift()!;
@@ -223,10 +215,7 @@ export class CommentService {
         return allDescendants.slice(offset, offset + limit);
     }
 
-    async removeComment(
-        commentId: Types.ObjectId,
-        userId: Types.ObjectId
-    ): Promise<boolean> {
+    async removeComment(commentId: Types.ObjectId, userId: Types.ObjectId): Promise<boolean> {
         const comment = await this.commentModel.findById(commentId);
         if (!comment) {
             throw new NotFoundException('Комментарий не найден');
@@ -241,9 +230,7 @@ export class CommentService {
         }
 
         if (comment.parent) {
-            await this.decrementAncestorsRepliesCount(
-                comment.parent
-            );
+            await this.decrementAncestorsRepliesCount(comment.parent);
         }
 
         const result = await this.commentModel.findByIdAndUpdate(

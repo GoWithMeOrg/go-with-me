@@ -1,4 +1,4 @@
-import { ObjectType, Field } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType() // Этот декоратор говорит GraphQL, что это тип данных в схеме
 export class PresignedUrlResponse {

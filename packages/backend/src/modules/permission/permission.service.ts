@@ -1,10 +1,9 @@
+import { Permission, PermissionDocument } from '@/modules/permission/entities/permission.entity.js';
+import { Action } from '@/modules/permission/enums/action.enum.js';
+import { Resource } from '@/modules/resource/entities/resource.entity.js';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-
-import { Permission, PermissionDocument } from '@/modules/permission/entities/permission.entity.js';
-import { Resource } from '@/modules/resource/entities/resource.entity.js';
-import { Action } from '@/modules/permission/enums/action.enum.js';
 
 @Injectable()
 export class PermissionService {
@@ -69,9 +68,7 @@ export class PermissionService {
         return this.permissionModel.find().populate('resource').exec();
     }
 
-    async getPermissionsByResourceId(
-        resourceId: Types.ObjectId
-    ): Promise<Permission[]> {
+    async getPermissionsByResourceId(resourceId: Types.ObjectId): Promise<Permission[]> {
         return this.permissionModel.find({ resource: resourceId }).exec();
     }
 

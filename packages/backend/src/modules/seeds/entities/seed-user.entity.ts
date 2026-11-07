@@ -1,9 +1,9 @@
-import { ObjectType, Field } from '@nestjs/graphql';
-import { Location } from '@/modules/location/entities/location.entity.js';
 import { Category } from '@/modules/category/entities/category.entity.js';
 import { Interest } from '@/modules/interest/entities/interest.entity.js';
+import { Location } from '@/modules/location/entities/location.entity.js';
 import { Tag } from '@/modules/tag/entities/tag.entity.js';
 import { User } from '@/modules/user/entities/user.entity.js';
+import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class SeedUserResult {

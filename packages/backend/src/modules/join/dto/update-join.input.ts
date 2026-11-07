@@ -1,6 +1,5 @@
-import { InputType, Field, ID } from '@nestjs/graphql';
-import { PartialType } from '@nestjs/graphql';
 import { ToggleJoinInput } from '@/modules/join/dto/toggle-join.input.js';
+import { Field, ID, InputType, PartialType } from '@nestjs/graphql';
 import { Types } from 'mongoose';
 
 @InputType()

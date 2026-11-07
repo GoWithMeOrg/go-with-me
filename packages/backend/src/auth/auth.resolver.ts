@@ -1,14 +1,10 @@
-import { Resolver, Query, Context } from '@nestjs/graphql';
-import { UseGuards } from '@nestjs/common';
-
-import { SessionAuthGuard } from '@/common/guards/session-auth.guard.js';
-import { RolesGuard } from '@/common/guards/roles.guard.js';
-
-import { User } from '@/modules/user/entities/user.entity.js';
-
 import { Roles } from '@/common/decorators/roles.decorator.js';
-
+import { RolesGuard } from '@/common/guards/roles.guard.js';
+import { SessionAuthGuard } from '@/common/guards/session-auth.guard.js';
 import type { GqlContext } from '@/common/types/graphql-context.js';
+import { User } from '@/modules/user/entities/user.entity.js';
+import { UseGuards } from '@nestjs/common';
+import { Context, Query, Resolver } from '@nestjs/graphql';
 
 @Resolver(() => User)
 export class AuthResolver {

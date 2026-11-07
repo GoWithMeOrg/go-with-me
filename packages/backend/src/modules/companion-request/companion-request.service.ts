@@ -1,8 +1,11 @@
+import {
+    CompanionRequest,
+    CompanionRequestDocument,
+} from '@/modules/companion-request/entities/companion-request.entity.js';
+import { CompanionRequestStatus } from '@/modules/companion-request/enums/companion-request.enum.js';
+import { Companion, CompanionDocument } from '@/modules/companion/entities/companion.entity.js';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Companion, CompanionDocument } from '@/modules/companion/entities/companion.entity.js';
-import { CompanionRequest, CompanionRequestDocument } from '@/modules/companion-request/entities/companion-request.entity.js';
-import { CompanionRequestStatus } from '@/modules/companion-request/enums/companion-request.enum.js';
 import { Model, Types } from 'mongoose';
 
 @Injectable()
@@ -14,9 +17,7 @@ export class CompanionRequestService {
     ) {}
 
     // Получить все заявки по id пользователя
-    async getCompanionRequests(
-        user_id: Types.ObjectId
-    ): Promise<CompanionRequestDocument[]> {
+    async getCompanionRequests(user_id: Types.ObjectId): Promise<CompanionRequestDocument[]> {
         return await this.companionRequestModel
             .find({
                 $or: [{ receiver: user_id, status: CompanionRequestStatus.PENDING }],
@@ -80,9 +81,7 @@ export class CompanionRequestService {
     }
 
     // Принять заявку в компаньоны
-    async acceptCompanionRequest(
-        request_id: Types.ObjectId
-    ): Promise<CompanionRequest | null> {
+    async acceptCompanionRequest(request_id: Types.ObjectId): Promise<CompanionRequest | null> {
         const request = await this.companionRequestModel.findById(request_id).exec();
 
         if (!request) {

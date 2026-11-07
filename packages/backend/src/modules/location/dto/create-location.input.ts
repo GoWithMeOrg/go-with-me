@@ -1,5 +1,6 @@
-import { Field, Float, InputType, ID } from '@nestjs/graphql';
+import { Field, Float, ID, InputType } from '@nestjs/graphql';
 import { Types } from 'mongoose';
+
 @InputType()
 export class LocationGeometryInput {
     @Field(() => [Float])

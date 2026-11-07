@@ -1,10 +1,10 @@
-import { Resolver, Mutation, Args } from '@nestjs/graphql';
-import { StorageService } from '@/modules/storage/storage.service.js';
+import { CurrentUser } from '@/common/decorators/current-user.decorator.js';
 import { PresignedUrlResponse } from '@/modules/storage/dto/presigned-url.response.js';
 import { UploadFileInput } from '@/modules/storage/dto/upload-file.input.js';
+import { StorageService } from '@/modules/storage/storage.service.js';
 import type { StorageFolder } from '@/modules/storage/types/storage-folder.js';
-import { CurrentUser } from '@/common/decorators/current-user.decorator.js';
 import { User } from '@/modules/user/entities/user.entity.js';
+import { Args, Mutation, Resolver } from '@nestjs/graphql';
 
 @Resolver()
 export class StorageResolver {

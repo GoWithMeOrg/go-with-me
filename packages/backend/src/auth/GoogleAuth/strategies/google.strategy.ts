@@ -1,17 +1,13 @@
-import { ConfigService } from '@nestjs/config';
-import { Strategy as GoogleStrategy, VerifyCallback } from 'passport-google-oauth20';
+import { AuthService } from '@/auth/auth.service.js';
+import { AuthUserPayload } from '@/auth/dto/auth-user.payload.js';
+import { GoogleProfile } from '@/auth/GoogleAuth/interfaces/profile.interface.js';
+import { RoleService } from '@/modules/role/role.service.js';
+import { UserService } from '@/modules/user/user.service.js';
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Types } from 'mongoose';
-
-import { AuthService } from '@/auth/auth.service.js';
-import { RoleService } from '@/modules/role/role.service.js';
-
-import { UserService } from '@/modules/user/user.service.js';
-
-import { AuthUserPayload } from '@/auth/dto/auth-user.payload.js';
-
-import { GoogleProfile } from '@/auth/GoogleAuth/interfaces/profile.interface.js';
+import { Strategy as GoogleStrategy, VerifyCallback } from 'passport-google-oauth20';
 
 @Injectable()
 export class GoogleAuthStrategy extends PassportStrategy(GoogleStrategy, 'google') {
