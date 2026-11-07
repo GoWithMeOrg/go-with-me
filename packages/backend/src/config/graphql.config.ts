@@ -40,7 +40,7 @@ export async function getGraphQLConfig(
                     try {
                         const req = extra.request;
                         const cookieHeader = req?.headers?.cookie || '';
-                        const cookies = cookie.parse(cookieHeader);
+                        const cookies = cookie.parseCookie(cookieHeader);
                         const rawSid = cookies['connect.sid'];
 
                         if (!rawSid) return;
