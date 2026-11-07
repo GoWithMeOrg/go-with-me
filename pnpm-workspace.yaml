@@ -23,16 +23,6 @@ allowBuilds:
   sharp: true
   unrs-resolver: true
 
-onlyBuiltDependencies:
-  - '@apollo/protobufjs'
-  - '@nestjs/core'
-  - '@parcel/watcher'
-  - core-js-pure
-  - esbuild
-  - protobufjs
-  - sharp
-  - unrs-resolver
-
 minimumReleaseAgeExclude:
   - '@graphql-codegen/add@8.0.0'
   - '@graphql-codegen/cli@8.0.0'
