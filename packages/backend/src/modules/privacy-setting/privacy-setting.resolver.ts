@@ -2,9 +2,9 @@ import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { Types } from 'mongoose';
 
-import { PrivacySetting } from './entities/privacy-setting.entity.js';
-import { PrivacySettingService } from './privacy-setting.service.js';
-import { UpdatePrivacySettingInput } from './dto/update-privacy-setting.input.js';
+import { PrivacySetting } from '@/modules/privacy-setting/entities/privacy-setting.entity.js';
+import { PrivacySettingService } from '@/modules/privacy-setting/privacy-setting.service.js';
+import { UpdatePrivacySettingInput } from '@/modules/privacy-setting/dto/update-privacy-setting.input.js';
 import { SessionAuthGuard } from '@/common/guards/session-auth.guard.js';
 import { CurrentUser } from '@/common/decorators/current-user.decorator.js';
 import { User } from '@/modules/user/entities/user.entity.js';

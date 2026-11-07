@@ -1,7 +1,7 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Model, type Connection } from 'mongoose';
-import { Resource, ResourceDocument } from './entities/resource.entity.js';
+import { Resource, ResourceDocument } from '@/modules/resource/entities/resource.entity.js';
 
 @Injectable()
 export class ResourceService implements OnModuleInit {

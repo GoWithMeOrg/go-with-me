@@ -2,12 +2,12 @@ import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { Types } from 'mongoose';
 
-import { UserService } from './user.service.js';
+import { UserService } from '@/modules/user/user.service.js';
 
-import { CreateUserInput } from './dto/create-user.input.js';
-import { UpdateUserInput } from './dto/update-user.input.js';
+import { CreateUserInput } from '@/modules/user/dto/create-user.input.js';
+import { UpdateUserInput } from '@/modules/user/dto/update-user.input.js';
 
-import { User } from './entities/user.entity.js';
+import { User } from '@/modules/user/entities/user.entity.js';
 
 import { SessionAuthGuard } from '@/common/guards/session-auth.guard.js';
 import { RolesGuard } from '@/common/guards/roles.guard.js';

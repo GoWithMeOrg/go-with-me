@@ -1,10 +1,10 @@
 import { Resolver, Mutation, Args, Query, ID, Int } from '@nestjs/graphql';
-import { LikeService } from './like.service.js';
-import { Like } from './entities/like.entity.js';
-import { LikeStatus } from './entities/like-status.entity.js';
+import { LikeService } from '@/modules/like/like.service.js';
+import { Like } from '@/modules/like/entities/like.entity.js';
+import { LikeStatus } from '@/modules/like/entities/like-status.entity.js';
 import { Types  } from 'mongoose';
 import { CurrentUser } from '@/common/decorators/current-user.decorator.js';
-import { User } from '../user/entities/user.entity.js';
+import { User } from '@/modules/user/entities/user.entity.js';
 
 @Resolver(() => Like)
 export class LikeResolver {

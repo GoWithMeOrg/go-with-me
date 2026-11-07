@@ -17,7 +17,7 @@ import type { ReqWithPassport } from '@/common/types/graphql-context.js';
 import { UserService } from '@/modules/user/user.service.js';
 import { User } from '@/modules/user/entities/user.entity.js';
 
-import { GoogleOAuthGuard } from './GoogleAuth/guard/google-oauth.guard.js';
+import { GoogleOAuthGuard } from '@/auth/GoogleAuth/guard/google-oauth.guard.js';
 import { SessionAuthGuard } from '@/common/guards/session-auth.guard.js';
 import { RolesGuard } from '@/common/guards/roles.guard.js';
 

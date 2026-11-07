@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import { Companion, CompanionSchema } from './entities/companion.entity.js';
-import { CompanionService } from './companion.service.js';
-import { CompanionResolver } from './companion.resolver.js';
+import { Companion, CompanionSchema } from '@/modules/companion/entities/companion.entity.js';
+import { CompanionService } from '@/modules/companion/companion.service.js';
+import { CompanionResolver } from '@/modules/companion/companion.resolver.js';
 import {
     CompanionRequest,
     CompanionRequestSchema,
-} from '../companion-request/entities/companion-request.entity.js';
-import { User, UserSchema } from '../user/entities/user.entity.js';
+} from '@/modules/companion-request/entities/companion-request.entity.js';
+import { User, UserSchema } from '@/modules/user/entities/user.entity.js';
 
 @Module({
     imports: [

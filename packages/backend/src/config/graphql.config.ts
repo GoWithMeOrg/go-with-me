@@ -11,7 +11,7 @@ import * as signature from 'cookie-signature';
 import { Context } from 'graphql-ws';
 import { Model } from 'mongoose';
 
-import { getMongoStore } from './mongo-store.config.js';
+import { getMongoStore } from '@/config/mongo-store.config.js';
 
 type AuthSession = import('express-session').SessionData & {
     passport?: { user?: unknown };

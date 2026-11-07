@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { CreateInterestInput } from './dto/create-interest.input.js';
-import { UpdateInterestInput } from './dto/update-interest.input.js';
+import { CreateInterestInput } from '@/modules/interest/dto/create-interest.input.js';
+import { UpdateInterestInput } from '@/modules/interest/dto/update-interest.input.js';
 import { DeleteResult, Model, Types } from 'mongoose';
-import { Interest, InterestDocument } from './entities/interest.entity.js';
+import { Interest, InterestDocument } from '@/modules/interest/entities/interest.entity.js';
 import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()

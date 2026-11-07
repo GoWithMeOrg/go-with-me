@@ -2,9 +2,9 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 
-import { Permission, PermissionDocument } from './entities/permission.entity.js';
-import { Resource } from '../resource/entities/resource.entity.js';
-import { Action } from './enums/action.enum.js';
+import { Permission, PermissionDocument } from '@/modules/permission/entities/permission.entity.js';
+import { Resource } from '@/modules/resource/entities/resource.entity.js';
+import { Action } from '@/modules/permission/enums/action.enum.js';
 
 @Injectable()
 export class PermissionService {

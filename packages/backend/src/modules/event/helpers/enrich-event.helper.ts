@@ -7,7 +7,7 @@ import { Location } from '@/modules/location/entities/location.entity.js';
 import { LocationService } from '@/modules/location/location.service.js';
 import { Tag } from '@/modules/tag/entities/tag.entity.js';
 import { TagService } from '@/modules/tag/tag.service.js';
-import { Event } from '../entities/event.entity.js';
+import { Event } from '@/modules/event/entities/event.entity.js';
 
 export type EventWithRelations = Omit<Event, 'location' | 'category' | 'interest' | 'tag'> & {
     location?: Location | null;

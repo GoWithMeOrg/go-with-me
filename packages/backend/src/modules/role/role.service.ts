@@ -2,11 +2,11 @@ import { ConflictException, Injectable, NotFoundException } from '@nestjs/common
 import { DeleteResult, Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 
-import { CreateRoleInput } from './dto/create-role.input.js';
-import { UpdateRoleInput } from './dto/update-role.input.js';
+import { CreateRoleInput } from '@/modules/role/dto/create-role.input.js';
+import { UpdateRoleInput } from '@/modules/role/dto/update-role.input.js';
 
-import { Role, RoleDocument } from './entities/role.entity.js';
-import { User, UserDocument } from '../user/entities/user.entity.js';
+import { Role, RoleDocument } from '@/modules/role/entities/role.entity.js';
+import { User, UserDocument } from '@/modules/user/entities/user.entity.js';
 
 @Injectable()
 export class RoleService {

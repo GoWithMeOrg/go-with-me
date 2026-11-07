@@ -1,10 +1,10 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Model, Types } from 'mongoose';
 
-import { CreateCommentInput } from './dto/create-comment.input.js';
-import { UpdateCommentInput } from './dto/update-comment.input.js';
+import { CreateCommentInput } from '@/modules/comment/dto/create-comment.input.js';
+import { UpdateCommentInput } from '@/modules/comment/dto/update-comment.input.js';
 import { InjectModel } from '@nestjs/mongoose';
-import { Comment, CommentDocument } from './entities/comment.entity.js';
+import { Comment, CommentDocument } from '@/modules/comment/entities/comment.entity.js';
 
 const MAX_REPLY_DEPTH = 10;
 const MAX_ANCESTOR_CHAIN = 100;

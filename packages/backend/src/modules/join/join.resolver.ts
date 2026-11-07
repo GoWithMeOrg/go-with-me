@@ -1,9 +1,9 @@
 import { Resolver, Mutation, Args, Query, ID } from '@nestjs/graphql';
-import { JoinService } from './join.service.js';
-import { Join } from './entities/join.entity.js';
+import { JoinService } from '@/modules/join/join.service.js';
+import { Join } from '@/modules/join/entities/join.entity.js';
 import { Types } from 'mongoose';
 import { CurrentUser } from '@/common/decorators/current-user.decorator.js';
-import { User } from '../user/entities/user.entity.js';
+import { User } from '@/modules/user/entities/user.entity.js';
 
 @Resolver(() => Join)
 export class JoinResolver {

@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { InvitationService } from './invitation.service.js';
-import { InvitationResolver } from './invitation.resolver.js';
-import { Invitation, InvitationSchema } from './entities/invitation.entity.js';
+import { InvitationService } from '@/modules/invitation/invitation.service.js';
+import { InvitationResolver } from '@/modules/invitation/invitation.resolver.js';
+import { Invitation, InvitationSchema } from '@/modules/invitation/entities/invitation.entity.js';
 import { EventSchema } from '@/modules/event/entities/event.entity.js';
 import { Companion, CompanionSchema } from '@/modules/companion/entities/companion.entity.js';
 import { PrivacySettingModule } from '@/modules/privacy-setting/privacy-setting.module.js';

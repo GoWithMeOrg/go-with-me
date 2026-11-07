@@ -6,9 +6,9 @@ import { CategoryModule } from '@/modules/category/category.module.js';
 import { InterestModule } from '@/modules/interest/interest.module.js';
 import { TagModule } from '@/modules/tag/tag.module.js';
 
-import { UserProfileResolver } from './user-profile.resolver.js';
+import { UserProfileResolver } from '@/modules/user-profile/user-profile.resolver.js';
 
-import { UserProfileService } from './user-profile.service.js';
+import { UserProfileService } from '@/modules/user-profile/user-profile.service.js';
 
 @Module({
     imports: [

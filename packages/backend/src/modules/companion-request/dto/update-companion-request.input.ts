@@ -1,4 +1,4 @@
-import { CreateCompanionRequestInput } from './create-companion-request.input.js';
+import { CreateCompanionRequestInput } from '@/modules/companion-request/dto/create-companion-request.input.js';
 import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
 
 @InputType()

@@ -3,7 +3,7 @@ import { Document, Schema as MongoSchema, Types } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { User } from '@/modules/user/entities/user.entity.js';
 import { Event } from '@/modules/event/entities/event.entity.js';
-import { InvitationResponseStatus } from '../enums/invitation-response.enum.js';
+import { InvitationResponseStatus } from '@/modules/invitation/enums/invitation-response.enum.js';
 
 @ObjectType()
 @Schema({ timestamps: true })

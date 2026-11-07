@@ -5,10 +5,10 @@ import session from 'express-session';
 import { Logger } from 'nestjs-pino';
 import passport from 'passport';
 
-import { AppModule } from './app.module.js';
-import { SessionSerializer } from './auth/serializer/session.serializer.js';
-import { getMongoStore } from './config/mongo-store.config.js';
-import { isDev } from './utils/is-dev.utils.js';
+import { AppModule } from '@/app.module.js';
+import { SessionSerializer } from '@/auth/serializer/session.serializer.js';
+import { getMongoStore } from '@/config/mongo-store.config.js';
+import { isDev } from '@/utils/is-dev.utils.js';
 
 async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule, {

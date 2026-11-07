@@ -1,9 +1,9 @@
 import { Resolver, Query, Args, ID, Mutation } from '@nestjs/graphql';
 import { Types } from 'mongoose';
 
-import { UserProfile } from './entities/user-profile.entity.js';
+import { UserProfile } from '@/modules/user-profile/entities/user-profile.entity.js';
 
-import { UserProfileService } from './user-profile.service.js';
+import { UserProfileService } from '@/modules/user-profile/user-profile.service.js';
 
 import { CreateLocationInput } from '@/modules/location/dto/create-location.input.js';
 import { CreateCategoryInput } from '@/modules/category/dto/create-category.input.js';

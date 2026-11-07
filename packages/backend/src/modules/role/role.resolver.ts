@@ -2,14 +2,14 @@ import { NotFoundException, UseGuards } from '@nestjs/common';
 import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
 import { Types } from 'mongoose';
 
-import { Role } from './entities/role.entity.js';
-import { RoleService } from './role.service.js';
-import { CreateRoleInput } from './dto/create-role.input.js';
-import { UpdateRoleInput } from './dto/update-role.input.js';
+import { Role } from '@/modules/role/entities/role.entity.js';
+import { RoleService } from '@/modules/role/role.service.js';
+import { CreateRoleInput } from '@/modules/role/dto/create-role.input.js';
+import { UpdateRoleInput } from '@/modules/role/dto/update-role.input.js';
 import { SessionAuthGuard } from '@/common/guards/session-auth.guard.js';
 import { RolesGuard } from '@/common/guards/roles.guard.js';
 import { Roles } from '@/common/decorators/roles.decorator.js';
-import { User } from '../user/entities/user.entity.js';
+import { User } from '@/modules/user/entities/user.entity.js';
 
 @Resolver(() => Role)
 @UseGuards(SessionAuthGuard, RolesGuard)

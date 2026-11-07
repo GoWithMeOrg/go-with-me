@@ -1,23 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { Types } from 'mongoose';
 
-import { UserService } from '../user/user.service.js';
-import { LocationService } from '../location/location.service.js';
-import { CategoryService } from '../category/category.service.js';
-import { InterestService } from '../interest/interest.service.js';
-import { TagService } from '../tag/tag.service.js';
+import { UserService } from '@/modules/user/user.service.js';
+import { LocationService } from '@/modules/location/location.service.js';
+import { CategoryService } from '@/modules/category/category.service.js';
+import { InterestService } from '@/modules/interest/interest.service.js';
+import { TagService } from '@/modules/tag/tag.service.js';
 
-import { CreateLocationInput } from '../location/dto/create-location.input.js';
-import { CreateCategoryInput } from '../category/dto/create-category.input.js';
-import { CreateInterestInput } from '../interest/dto/create-interest.input.js';
-import { CreateTagInput } from '../tag/dto/create-tag.input.js';
-import { CreateUserInput } from '../user/dto/create-user.input.js';
-import { SeedUserResult } from './entities/seed-user.entity.js';
-import { Event } from '../event/entities/event.entity.js';
-import { EventService } from '../event/event.service.js';
-import { CreateEventInput } from '../event/dto/create-event.input.js';
-import { EventRelationsInput } from '../event/interfaces/create-event-relations.input.js';
-import { EventRelationsService } from '../event/services/event-relations.service.js';
+import { CreateLocationInput } from '@/modules/location/dto/create-location.input.js';
+import { CreateCategoryInput } from '@/modules/category/dto/create-category.input.js';
+import { CreateInterestInput } from '@/modules/interest/dto/create-interest.input.js';
+import { CreateTagInput } from '@/modules/tag/dto/create-tag.input.js';
+import { CreateUserInput } from '@/modules/user/dto/create-user.input.js';
+import { SeedUserResult } from '@/modules/seeds/entities/seed-user.entity.js';
+import { Event } from '@/modules/event/entities/event.entity.js';
+import { EventService } from '@/modules/event/event.service.js';
+import { CreateEventInput } from '@/modules/event/dto/create-event.input.js';
+import { EventRelationsInput } from '@/modules/event/interfaces/create-event-relations.input.js';
+import { EventRelationsService } from '@/modules/event/services/event-relations.service.js';
 
 @Injectable()
 export class SeedsService {

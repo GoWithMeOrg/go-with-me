@@ -1,12 +1,12 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UserService } from './user.service.js';
-import { UserResolver } from './user.resolver.js';
-import { UserSchema } from './entities/user.entity.js';
+import { UserService } from '@/modules/user/user.service.js';
+import { UserResolver } from '@/modules/user/user.resolver.js';
+import { UserSchema } from '@/modules/user/entities/user.entity.js';
 import { LocationModule } from '@/modules/location/location.module.js';
-import { RoleSchema } from '../role/entities/role.entity.js';
-import { CompanionModule } from '../companion/companion.module.js';
-import { CompanionRequestModule } from '../companion-request/companion-request.module.js';
+import { RoleSchema } from '@/modules/role/entities/role.entity.js';
+import { CompanionModule } from '@/modules/companion/companion.module.js';
+import { CompanionRequestModule } from '@/modules/companion-request/companion-request.module.js';
 
 @Module({
     imports: [

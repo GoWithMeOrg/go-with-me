@@ -2,17 +2,17 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { DeleteResult, Model, QueryFilter, Types } from 'mongoose';
 
-import { CreateUserInput } from './dto/create-user.input.js';
-import { UpdateUserInput } from './dto/update-user.input.js';
+import { CreateUserInput } from '@/modules/user/dto/create-user.input.js';
+import { UpdateUserInput } from '@/modules/user/dto/update-user.input.js';
 
-import { User, UserDocument } from './entities/user.entity.js';
-import { Role, RoleDocument } from '../role/entities/role.entity.js';
-import { Companion, CompanionDocument } from '../companion/entities/companion.entity.js';
+import { User, UserDocument } from '@/modules/user/entities/user.entity.js';
+import { Role, RoleDocument } from '@/modules/role/entities/role.entity.js';
+import { Companion, CompanionDocument } from '@/modules/companion/entities/companion.entity.js';
 import {
     CompanionRequest,
     CompanionRequestDocument,
-} from '../companion-request/entities/companion-request.entity.js';
-import { CompanionRequestStatus } from '../companion-request/enums/companion-request.enum.js';
+} from '@/modules/companion-request/entities/companion-request.entity.js';
+import { CompanionRequestStatus } from '@/modules/companion-request/enums/companion-request.enum.js';
 
 @Injectable()
 export class UserService {

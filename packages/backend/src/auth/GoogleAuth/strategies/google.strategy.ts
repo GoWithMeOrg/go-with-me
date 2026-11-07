@@ -11,7 +11,7 @@ import { UserService } from '@/modules/user/user.service.js';
 
 import { AuthUserPayload } from '@/auth/dto/auth-user.payload.js';
 
-import { GoogleProfile } from '../interfaces/profile.interface.js';
+import { GoogleProfile } from '@/auth/GoogleAuth/interfaces/profile.interface.js';
 
 @Injectable()
 export class GoogleAuthStrategy extends PassportStrategy(GoogleStrategy, 'google') {

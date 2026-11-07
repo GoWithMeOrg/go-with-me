@@ -5,7 +5,7 @@ import { Location } from '@/modules/location/entities/location.entity.js';
 import { Category } from '@/modules/category/entities/category.entity.js';
 import { Interest } from '@/modules/interest/entities/interest.entity.js';
 import { Tag } from '@/modules/tag/entities/tag.entity.js';
-import { Privacy } from '../enum/privacy.enum.js';
+import { Privacy } from '@/modules/event/enum/privacy.enum.js';
 
 @ObjectType()
 @Schema({ timestamps: true })

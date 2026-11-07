@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import { CommentSchema } from './entities/comment.entity.js';
-import { CommentService } from './comment.service.js';
-import { CommentResolver } from './comment.resolver.js';
+import { CommentSchema } from '@/modules/comment/entities/comment.entity.js';
+import { CommentService } from '@/modules/comment/comment.service.js';
+import { CommentResolver } from '@/modules/comment/comment.resolver.js';
 import { UserModule } from '@/modules/user/user.module.js';
 
 @Module({

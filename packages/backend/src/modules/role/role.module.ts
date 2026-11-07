@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import { RoleService } from './role.service.js';
-import { RoleResolver } from './role.resolver.js';
-import { RoleSchema } from './entities/role.entity.js';
-import { UserSchema } from '../user/entities/user.entity.js';
+import { RoleService } from '@/modules/role/role.service.js';
+import { RoleResolver } from '@/modules/role/role.resolver.js';
+import { RoleSchema } from '@/modules/role/entities/role.entity.js';
+import { UserSchema } from '@/modules/user/entities/user.entity.js';
 
 @Module({
     imports: [

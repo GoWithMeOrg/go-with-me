@@ -1,7 +1,7 @@
 import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
 import { Types } from 'mongoose';
-import { PermissionService } from './permission.service.js';
-import { Permission } from './entities/permission.entity.js';
+import { PermissionService } from '@/modules/permission/permission.service.js';
+import { Permission } from '@/modules/permission/entities/permission.entity.js';
 import { NotFoundException, UseGuards } from '@nestjs/common';
 import { SessionAuthGuard } from '@/common/guards/session-auth.guard.js';
 import { RolesGuard } from '@/common/guards/roles.guard.js';

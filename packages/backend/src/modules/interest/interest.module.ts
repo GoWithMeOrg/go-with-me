@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { InterestService } from './interest.service.js';
-import { InterestResolver } from './interest.resolver.js';
-import { InterestSchema } from './entities/interest.entity.js';
+import { InterestService } from '@/modules/interest/interest.service.js';
+import { InterestResolver } from '@/modules/interest/interest.resolver.js';
+import { InterestSchema } from '@/modules/interest/entities/interest.entity.js';
 import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
