@@ -252,7 +252,7 @@ export type Mutation = {
   removePermissionFromRole: Role;
   /** Удаление роли */
   removeRole: Scalars['Boolean']['output'];
-  removeTag: Tag;
+  removeTag: Scalars['Boolean']['output'];
   /** Удалить пользователя */
   removeUser: Scalars['Boolean']['output'];
   /** добавать роль пользователю */

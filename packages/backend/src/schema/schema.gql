@@ -256,7 +256,7 @@ type Mutation {
 
   """Удаление роли"""
   removeRole(id: ID!): Boolean!
-  removeTag(tag_id: ID!): Tag!
+  removeTag(tag_id: ID!): Boolean!
 
   """Удалить пользователя"""
   removeUser(id: ID!): Boolean!

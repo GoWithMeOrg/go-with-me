@@ -41,7 +41,7 @@ export class TagResolver {
         return this.tagService.updateTag(tag_id, updateTagInput);
     }
 
-    @Mutation(() => Tag)
+    @Mutation(() => Boolean)
     async removeTag(@Args('tag_id', { type: () => ID }) tag_id: Types.ObjectId): Promise<boolean> {
         const result = await this.tagService.removeTag(tag_id);
         return result.deletedCount > 0;
