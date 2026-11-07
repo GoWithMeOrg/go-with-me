@@ -11,7 +11,7 @@
     "scripts": {
         "build": "pnpm --filter \"*\" build",
         "backend:dev": "pnpm --filter backend nest start --watch",
-        "frontend:dev": "pnpm --filter frontend dev",
+        "frontend:dev": "pnpm -C packages/frontend dev",
         "frontend:lint": "eslint packages/frontend --fix",
         "backend:lint": "eslint packages/backend --fix",
         "frontend:format": "prettier packages/frontend -w",
