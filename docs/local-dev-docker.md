@@ -64,7 +64,7 @@ Visit **https://tribeplans.dev** in your browser. The first visit will prompt yo
 
 - The backend now reads `CORS_ORIGIN`, `SESSION_COOKIE_*`, and `PORT` from the environment (see `packages/backend/src/main.ts`).
 - `SESSION_COOKIE_SECURE` defaults to `true` in docker so cookies work over HTTPS.
-- Both Node containers run `pnpm install` on startup to ensure workspace dependencies are present. The `node_modules` and pnpm store directories are persisted via named volumes for faster restarts.
+- Both Node containers run `pnpm install` on startup to ensure workspace dependencies are present. `node_modules` is persisted via a named volume for faster restarts; the pnpm store lives inside it (`node_modules/.pnpm-store`).
 
 ---
 
@@ -110,5 +110,5 @@ Podman’s `compose` subcommand understands the existing `docker-compose.yml`. T
 ## Notes
 
 - Podman automatically builds images rootless; no extra configuration is required for the provided Dockerfile targets.
-- Volume mounts defined in `docker-compose.yml` map into the Podman machine. If you need to clean the pnpm store, run `podman volume rm gwm_frontend_node_modules gwm_backend_node_modules gwm_pnpm_store`.
+- Volume mounts defined in `docker-compose.yml` map into the Podman machine. If you need to clean the pnpm store, run `podman volume rm gwm_frontend_node_modules gwm_backend_node_modules`.
 - Certificates, hosts file configuration, and environment variable management are identical to the Docker workflow above.

@@ -20,7 +20,6 @@ services:
     volumes:
       - ./:/workspace
       - backend_node_modules:/workspace/node_modules
-      - backend_pnpm_store:/home/node/.local/share/pnpm
     depends_on:
       - mongo
     ports:
@@ -43,7 +42,6 @@ services:
     volumes:
       - ./:/workspace
       - frontend_node_modules:/workspace/node_modules
-      - frontend_pnpm_store:/home/node/.local/share/pnpm
     depends_on:
       - backend
     ports:
@@ -75,7 +73,5 @@ services:
 
 volumes:
   backend_node_modules:
-  backend_pnpm_store:
   frontend_node_modules:
-  frontend_pnpm_store:
   mongo_data:
