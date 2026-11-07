@@ -4,8 +4,20 @@ FROM node:26-alpine
 # RUN npm config set registry https://registry.npmmirror.com
 RUN npm install -g pnpm@12.16.1
 
-# Настраиваем переменные для корректной работы путей pnpm
-ENV PNPM_HOME="/root/.local/share/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
+# Работаем от пользователя node (uid/gid 1000) — он уже есть в образе и совпадает
+# с пользователем хоста. Иначе контейнер работает от root и создаёт артефакты
+# сборки (dist, .next) в bind-mount с владельцем root, после чего их нельзя
+# удалить с хоста.
+ENV PNPM_HOME="/home/node/.local/share/pnpm"
+ENV PATH="${PNPM_HOME}:/home/node/.local/bin:${PATH}"
+ENV HOME="/home/node"
+
+RUN mkdir -p /workspace/node_modules \
+             /workspace/packages/backend \
+             /workspace/packages/frontend/.next \
+             "${PNPM_HOME}" \
+ && chown -R node:node /workspace "${PNPM_HOME}"
 
 WORKDIR /workspace
+
+USER node
