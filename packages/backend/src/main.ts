@@ -2,9 +2,11 @@ import { AppModule } from '@/app.module.js';
 import { SessionSerializer } from '@/auth/serializer/session.serializer.js';
 import { getMongoStore } from '@/config/mongo-store.config.js';
 import { isDev } from '@/utils/is-dev.utils.js';
+import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import type { ValidationError } from 'class-validator';
 import session from 'express-session';
 import { Logger } from 'nestjs-pino';
 import passport from 'passport';
@@ -15,6 +17,31 @@ async function bootstrap() {
     });
 
     app.useLogger(app.get(Logger));
+
+    // Включаем валидацию DTO. Без whitelist: часть DTO не размечена
+    // class-validator, и whitelist стёр бы все их поля (проверено —
+    // ValidationPipe с whitelist возвращает {} для класса без декораторов).
+    // Лишние поля в GraphQL-запросах и так отклоняет сам GraphQL.
+    //
+    // exceptionFactory нужен из-за NestJS 12: initMessage() берёт message
+    // только если это строка, а ValidationPipe по умолчанию кладёт массив,
+    // из-за чего клиент видит generic "Bad Request Exception".
+    app.useGlobalPipes(
+        new ValidationPipe({
+            transform: true,
+            exceptionFactory: (errors) => {
+                // Собираем сообщения рекурсивно: у вложенных DTO ошибки
+                // лежат в children, а не в constraints родителя.
+                const collect = (list: ValidationError[]): string[] =>
+                    list.flatMap((error) => [
+                        ...Object.values(error.constraints ?? {}),
+                        ...collect(error.children ?? []),
+                    ]);
+
+                return new BadRequestException(collect(errors).join('; '));
+            },
+        })
+    );
 
     const configService = app.get(ConfigService);
 
