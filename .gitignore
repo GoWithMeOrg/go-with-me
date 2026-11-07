@@ -11,3 +11,7 @@ mongo-backup/
 .agents/
 skills-lock.json
 AGENTS.md
+
+# yarn не используется — проект на pnpm
+yarn.lock
+.yarn/
