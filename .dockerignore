@@ -17,6 +17,7 @@ coverage
 dist
 .next
 out
+*.tsbuildinfo
 mongo-backup
 infra
 docker-compose.yml

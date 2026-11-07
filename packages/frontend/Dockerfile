@@ -1,5 +1,5 @@
 # Stage 0: Base
-FROM node:24-alpine AS base
+FROM node:26-alpine AS base
 
 RUN npm install -g pnpm@12.16.1
 
@@ -15,7 +15,7 @@ RUN pnpm install --frozen-lockfile
 RUN pnpm --filter web-frontend run build
 
 # Stage 2: Runtime
-FROM node:24-alpine AS runner
+FROM node:26-alpine AS runner
 WORKDIR /app
 
 RUN addgroup --system --gid 1001 nextjs && adduser --system --uid 1001 nextjs

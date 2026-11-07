@@ -1,7 +1,7 @@
 # --------------------------
 # Stage 0: Base
 # --------------------------
-FROM node:24-alpine AS base
+FROM node:26-alpine AS base
 
 RUN npm install -g pnpm@12.16.1
 
@@ -21,7 +21,7 @@ RUN pnpm --filter backend run build
 # --------------------------
 # Stage 2: Runtime
 # --------------------------
-FROM node:24-alpine AS runner
+FROM node:26-alpine AS runner
 WORKDIR /app
 
 # Создаем пользователя
