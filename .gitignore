@@ -1,6 +1,9 @@
 node_modules/
 .pnpm-store/
 .env.local
+
+# macOS
+.DS_Store
 *.pem
 mongo-backup/
 *.tsbuildinfo
