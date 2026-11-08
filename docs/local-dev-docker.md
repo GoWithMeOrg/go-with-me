@@ -32,7 +32,7 @@ mkcert -install
 ### 3. Environment Variables
 
 - Update the default values in `docker-compose.yml` to match your local secrets (e.g. `SESSION_SECRET`, OAuth credentials, Mongo connection string).
-- For additional Next.js variables, add a `.env.local` file under `packages/web-frontend/`. The compose service mounts the repo, so standard env files are available to Next.js.
+- For additional Next.js variables, add a `.env.local` file under `packages/frontend/`. The compose service mounts the repo, so standard env files are available to Next.js.
 
 ## Running the Stack
 
@@ -46,7 +46,6 @@ Compose starts four containers:
 
 | Service        | Description                                          | Port   |
 | -------------- | ---------------------------------------------------- | ------ |
-| `gwm-mongo`    | MongoDB instance for local development               | 27017  |
 | `gwm-backend`  | NestJS API running on port `4000` inside the network | 4000   |
 | `gwm-frontend` | Next.js dev server (hot reload)                      | 3000   |
 | `gwm-mongo`    | MongoDB instance for local development               | 27017  |
@@ -62,8 +61,8 @@ Visit **https://tribeplans.dev** in your browser. The first visit will prompt yo
 
 ## Notes
 
-- The backend now reads `CORS_ORIGIN`, `SESSION_COOKIE_*`, and `PORT` from the environment (see `packages/backend/src/main.ts`).
-- `SESSION_COOKIE_SECURE` defaults to `true` in docker so cookies work over HTTPS.
+- The backend reads `ALLOWED_ORIGIN`, `MONGODB_URI`, `SESSION_SECRET`, `PORT`, `TRUST_PROXY` and the `S3_*` / OAuth variables from the environment (see `packages/backend/src/main.ts`).
+- Session cookie flags (`secure`, `httpOnly`, `sameSite`) are set in code, not through environment variables.
 - Both Node containers run `pnpm install` on startup to ensure workspace dependencies are present. `node_modules` is persisted via a named volume for faster restarts; the pnpm store lives inside it (`node_modules/.pnpm-store`).
 
 ---

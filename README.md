@@ -1,309 +1,201 @@
 # Go With Me
 
-A monorepo application with Next.js frontend and NestJS backend.
+Monorepo with a Next.js frontend and a NestJS backend. Events, companions and
+invitations, with Google OAuth login and a GraphQL API.
+
+## Stack
+
+| Part       | Technologies                                                                  |
+| ---------- | ----------------------------------------------------------------------------- |
+| `frontend` | Next.js 16 (App Router), React 19, Apollo Client 4, simpledotcss, SVGR        |
+| `backend`  | NestJS 12 (ESM), GraphQL code-first, Apollo Server 5, Mongoose 9, MongoDB 7   |
+| Shared     | TypeScript 6.0.3, pnpm 12, Turborepo, ESLint 10, Prettier 3                   |
+| Auth       | Passport + Google OAuth, sessions in MongoDB (`connect-mongo`), `connect.sid` |
 
 ## Project Structure
 
-- `packages/web-frontend` - Next.js (TypeScript) application
-- `packages/backend` - NestJS (TypeScript) application
-- `infra/nginx` - Nginx reverse proxy configuration
+```
+packages/
+  frontend/   Next.js application (@go-with-me/web-frontend)
+  backend/    NestJS API, GraphQL code-first (@go-with-me/backend)
+  shared/     GraphQL schema types shared across packages (@go-with-me/shared)
+infra/
+  nginx/      reverse proxy and TLS for local development
+  certs/      local certificates for tribeplans.dev
+```
 
-## Local Development
+## Requirements
 
-### Prerequisites
+- Node.js **26+** (see `.nvmrc`, `engines` in every `package.json` and CI)
+- pnpm **12.16.1** (`packageManager` in the root `package.json`)
+- Docker and Docker Compose — optional, for local MongoDB and nginx
 
-- Node.js 24+
-- pnpm
-- Docker and Docker Compose (optional, for local MongoDB)
-
-### Running Locally
-
-1. Install dependencies:
+With `nvm`:
 
 ```bash
+nvm use
+corepack enable
 pnpm install
 ```
 
-2. Start development servers:
+`pnpm install` runs `prepare`, which triggers `pnpm codegen` — the GraphQL types
+are generated automatically and must never be edited by hand.
+
+## Local Development
+
+### Without Docker
+
+All you need is MongoDB (locally, or in a container: `docker compose up -d mongo`).
+
+Create `.env.local` in the repository root — it is read by the backend
+(`ConfigModule`) and by docker-compose. The full variable list is in
+[Environment Variables](#environment-variables).
 
 ```bash
-# Frontend (Next.js)
-pnpm --filter web-frontend dev
+# Frontend (Next.js, port 3000)
+pnpm frontend:dev
 
-# Backend (NestJS)
-pnpm --filter @go-with-me/backend start:dev
+# Backend (NestJS, port 4000)
+pnpm backend:dev
 ```
 
-### Running with Docker Compose (Local)
+### With Docker Compose
 
-For local development with Docker, use the provided `docker-compose.yml`:
+Starts all four services; the site is available at **https://tribeplans.dev**.
 
 ```bash
-docker-compose up
+docker compose up --build
 ```
 
-This will start:
+| Service        | Description                        | Port   |
+| -------------- | ---------------------------------- | ------ |
+| `gwm-frontend` | Next.js dev server with hot reload | 3000   |
+| `gwm-backend`  | NestJS API                         | 4000   |
+| `gwm-mongo`    | MongoDB 7                          | 27017  |
+| `gwm-nginx`    | reverse proxy, terminates HTTPS    | 80/443 |
 
-- Frontend on `http://localhost:3000`
-- Backend on `http://localhost:4000`
-- MongoDB on `localhost:27017`
-- Nginx reverse proxy on `http://localhost:80`
+`https://tribeplans.dev` needs a hosts-file entry and local certificates — see
+[`docs/local-dev-docker.md`](docs/local-dev-docker.md) for the step-by-step guide.
 
-## Production Deployment
+## Scripts
 
-This project is configured for deployment to a DigitalOcean Droplet using Docker Compose.
+All commands run from the repository root.
 
-### Architecture
+| Command                | Description                                                      |
+| ---------------------- | ---------------------------------------------------------------- |
+| `pnpm build`           | builds every package through Turborepo (results are cached)      |
+| `pnpm frontend:dev`    | `next dev --turbo` on port 3000                                  |
+| `pnpm backend:dev`     | `nest start --watch` on port 4000                                |
+| `pnpm lint`            | ESLint over frontend and backend, no autofix                     |
+| `pnpm frontend:lint`   | ESLint over frontend with `--fix`                                |
+| `pnpm backend:lint`    | ESLint over backend with `--fix`                                 |
+| `pnpm typecheck`       | `tsc --noEmit` for backend, then frontend (after `next typegen`) |
+| `pnpm typegen`         | generates `next-env.d.ts` and route types (not tracked by git)   |
+| `pnpm codegen`         | generates types from the GraphQL schema                          |
+| `pnpm check:codegen`   | fails when generated files are stale relative to the schema      |
+| `pnpm frontend:format` | Prettier over frontend                                           |
+| `pnpm backend:format`  | Prettier over backend                                            |
 
-- **Single DigitalOcean Droplet** (e.g., `s-2vcpu-4gb`)
-- **Docker Compose** orchestrates services
-- **DigitalOcean Container Registry (DOCR)** stores Docker images
-- **GitHub Actions** builds and deploys automatically
-- **Nginx** reverse proxy handles HTTPS and routing
-- **Let's Encrypt** provides SSL certificates
-
-### Deployment Flow
-
-1. **Developer pushes to `main` branch**
-2. **GitHub Actions** (`build-and-push-images.yml`):
-    - Runs tests
-    - Builds Docker images for frontend and backend
-    - Pushes images to DigitalOcean Container Registry
-3. **GitHub Actions** (`deploy-to-droplet.yml`):
-    - Connects to Droplet via SSH
-    - Pulls latest images from DOCR
-    - Updates services with `docker-compose up -d`
-
-### Initial Setup
-
-#### 1. DigitalOcean Container Registry
-
-1. Create a Container Registry in DigitalOcean
-2. Note the registry name (e.g., `my-registry`)
-3. Get your DigitalOcean access token
-
-#### 2. Configure GitHub Secrets
-
-Add the following secrets to your GitHub repository:
-
-- `DIGITALOCEAN_ACCESS_TOKEN` - Your DigitalOcean API token
-- `SSH_HOST` - Your Droplet IP address or hostname
-- `SSH_USER` - SSH username (typically `root`)
-- `SSH_KEY` - Private SSH key for accessing the Droplet
-
-#### 3. Update Configuration Files
-
-Replace placeholders in the following files:
-
-**`docker-compose.prod.yml`**:
-
-- `MY_REGISTRY` → Your DOCR registry name
-- `MY_DOMAIN.COM` → Your domain (e.g., `tribeplans.ru`)
-
-**`.github/workflows/build-and-push-images.yml`**:
-
-- `MY_REGISTRY` → Your DOCR registry name
-
-**`infra/nginx/conf.d/default.conf`**:
-
-- `MY_DOMAIN.COM` → Your domain (e.g., `tribeplans.ru`)
-
-#### 4. Droplet Setup
-
-SSH into your Droplet and run:
+Single package:
 
 ```bash
-# Create deployment directory
-sudo mkdir -p /opt/myapp
-cd /opt/myapp
-
-# Clone the repository (or copy files)
-git clone <your-repo-url> .
-
-# Or copy docker-compose.prod.yml and infra/ directory manually
+pnpm --filter backend test    # Jest (ESM), 3 tests
+pnpm --filter backend build   # nest build
+pnpm --filter backend start:prod
 ```
 
-#### 5. Configure Environment Variables
-
-Create a `.env` file on the Droplet at `/opt/myapp/.env`:
+Frontend end-to-end tests (Playwright):
 
 ```bash
-# MongoDB connection string from DigitalOcean Managed Database
-MONGODB_URI=mongodb+srv://user:password@host/database?retryWrites=true&w=majority
-
-# Add other environment variables as needed
+pnpm exec playwright install
+pnpm exec playwright test --config packages/frontend/tests/playwright.config.ts
 ```
 
-#### 6. Set Up SSL Certificates
+The Playwright config reuses an already running server on port 3000, so start
+either `pnpm frontend:dev` or the Docker stack first.
 
-**Option A: Initial Let's Encrypt Certificate (Manual)**
+## GraphQL and Codegen
+
+The schema is **code-first**, assembled from NestJS decorators. On startup in
+development mode the backend writes it to
+`packages/backend/src/schema/schema.gql` (in production it only lives in memory).
+From there `codegen.ts` generates two files:
+
+- `packages/shared/graphql.ts` — schema types, imported as `@go-with-me/shared/graphql`;
+- `packages/frontend/src/app/graphql/operations.ts` — operation types and `TypedDocumentNode`s.
+
+Both files are generated: they are excluded from ESLint and Prettier and must not
+be edited by hand.
+
+After changing resolvers, GraphQL decorators or DTOs:
 
 ```bash
-# On the Droplet, run certbot to get initial certificate
-docker run -it --rm \
-  -v certbot-data:/etc/letsencrypt \
-  -v ./infra/nginx/certs:/etc/nginx/certs \
-  certbot/certbot certonly \
-  --standalone \
-  -d MY_DOMAIN.COM \
-  -d www.MY_DOMAIN.COM \
-  --email your-email@example.com \
-  --agree-tos
+pnpm codegen
 ```
 
-**Option B: Self-Signed Certificate (Testing)**
+CI runs `pnpm check:codegen` and fails when the generated files do not match the
+schema.
 
-For initial testing, you can use self-signed certificates:
+Queries, mutations and subscriptions live in
+`packages/frontend/src/app/graphql/{queries,mutations,subscriptions}/` — that is
+where codegen picks the operations from.
 
-```bash
-mkdir -p infra/nginx/certs
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-  -keyout infra/nginx/certs/privkey.pem \
-  -out infra/nginx/certs/fullchain.pem \
-  -subj "/CN=MY_DOMAIN.COM"
-```
+## Environment Variables
 
-#### 7. Log in to DOCR on Droplet
+Stored in `.env.local` in the repository root. The backend reads them through
+`ConfigService`; the frontend only receives `NEXT_PUBLIC_*` at build time.
 
-```bash
-# Log in to DigitalOcean Container Registry
-docker login registry.digitalocean.com -u YOUR_DO_TOKEN -p YOUR_DO_TOKEN
-```
+### Backend
 
-Or add credentials to Docker config:
+| Variable               | Required | Purpose                                                             |
+| ---------------------- | -------- | ------------------------------------------------------------------- |
+| `NODE_ENV`             | yes      | `development` enables dev mode (playground, CSRF off, `schema.gql`) |
+| `PORT`                 | yes      | HTTP server port                                                    |
+| `ALLOWED_ORIGIN`       | yes      | frontend origin for CORS and OAuth redirects                        |
+| `MONGODB_URI`          | yes      | MongoDB connection string                                           |
+| `SESSION_SECRET`       | yes      | session cookie signature                                            |
+| `TRUST_PROXY`          | no       | `true` — trust `X-Forwarded-*` (required behind nginx)              |
+| `GOOGLE_CLIENT_ID`     | yes      | Google OAuth                                                        |
+| `GOOGLE_CLIENT_SECRET` | yes      | Google OAuth                                                        |
+| `GOOGLE_CALLBACK_URL`  | yes      | Google OAuth callback URL                                           |
+| `S3_ACCESS_KEY`        | yes      | S3-compatible storage for uploads                                   |
+| `S3_SECRET_KEY`        | yes      |                                                                     |
+| `S3_ENDPOINT`          | yes      |                                                                     |
+| `S3_BUCKET_NAME`       | yes      |                                                                     |
+| `S3_REGION`            | no       | defaults to `us-east-1`                                             |
 
-```bash
-mkdir -p ~/.docker
-cat > ~/.docker/config.json << EOF
-{
-  "auths": {
-    "registry.digitalocean.com": {
-      "auth": "$(echo -n 'YOUR_DO_TOKEN:YOUR_DO_TOKEN' | base64)"
-    }
-  }
-}
-EOF
-```
+### Frontend
 
-#### 8. Start Services
+`NEXT_PUBLIC_GRAPHQL_ENDPOINT`, `NEXT_PUBLIC_GRAPHQL_WS_ENDPOINT`,
+`NEXT_PUBLIC_BASE_URL`, `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`,
+`NEXT_PUBLIC_AUTH_GOOGLE_URL`, `NEXT_PUBLIC_AUTH_FACEBOOK_URL`,
+`NEXT_PUBLIC_AUTH_GITHUB_URL`, `NEXT_PUBLIC_AUTH_LOGOUT_URL`.
 
-```bash
-cd /opt/myapp
-docker-compose -f docker-compose.prod.yml up -d
-```
+`.env.local` is not tracked by git — do not commit it.
 
-### Updating Configuration
+## CI and Deployment
 
-#### Adding Environment Variables
+Two workflows in `.github/workflows/`:
 
-1. Add variables to `docker-compose.prod.yml` under the appropriate service's `environment` section
-2. Update `.env` file on the Droplet
-3. Restart services: `docker-compose -f docker-compose.prod.yml up -d`
+- **`ci.yaml`** — on pull requests and as a reusable workflow: `pnpm install --frozen-lockfile`, `typecheck`, `lint`, `build`, `check:codegen`;
+- **`deploy-to-dokploy.yaml`** — calls `ci.yaml` and only then triggers the Dokploy webhook.
 
-#### Updating Domains
+Deployment depends on the trigger and on which paths changed (`dorny/paths-filter`):
 
-1. Update `MY_DOMAIN.COM` in:
-    - `docker-compose.prod.yml`
-    - `infra/nginx/conf.d/default.conf`
-2. Update DNS records to point to your Droplet IP
-3. Restart nginx: `docker-compose -f docker-compose.prod.yml restart reverse-proxy`
+| Trigger        | What gets deployed                      |
+| -------------- | --------------------------------------- |
+| push to `main` | dev, only the applications that changed |
+| tag `v*`       | prod, backend and frontend              |
+| tag `b*`       | prod, backend only                      |
+| tag `f*`       | prod, frontend only                     |
 
-#### Renewing SSL Certificates
+Repository secrets: `DOKPLOY_URL_DEPLOY`, `DOKPLOY_TOKEN` and four application
+IDs — `DOKPLOY_DEV_BACKEND_APP_ID`, `DOKPLOY_DEV_FRONTEND_APP_ID`,
+`DOKPLOY_PROD_BACKEND_APP_ID`, `DOKPLOY_PROD_FRONTEND_APP_ID`.
 
-Certificates are automatically renewed by the `certbot` service in docker-compose. To manually renew:
+Production images are built from `packages/*/Dockerfile` (multi-stage,
+`node:26-alpine`, Next.js `output: 'standalone'`).
 
-```bash
-docker-compose -f docker-compose.prod.yml exec certbot certbot renew
-docker-compose -f docker-compose.prod.yml restart reverse-proxy
-```
+## Docs
 
-### Scaling Services
-
-To scale backend instances (behind the reverse proxy):
-
-```bash
-docker-compose -f docker-compose.prod.yml up -d --scale backend=2
-```
-
-The Nginx configuration will automatically load balance across multiple backend instances.
-
-### Monitoring and Logs
-
-View logs:
-
-```bash
-# All services
-docker-compose -f docker-compose.prod.yml logs -f
-
-# Specific service
-docker-compose -f docker-compose.prod.yml logs -f frontend
-docker-compose -f docker-compose.prod.yml logs -f backend
-docker-compose -f docker-compose.prod.yml logs -f reverse-proxy
-```
-
-Check service status:
-
-```bash
-docker-compose -f docker-compose.prod.yml ps
-```
-
-### Troubleshooting
-
-#### Services won't start
-
-1. Check logs: `docker-compose -f docker-compose.prod.yml logs`
-2. Verify environment variables are set correctly
-3. Ensure MongoDB connection string is valid
-4. Check that images exist in DOCR: `docker pull registry.digitalocean.com/MY_REGISTRY/frontend:latest`
-
-#### SSL certificate issues
-
-1. Verify domain DNS points to Droplet IP
-2. Check certificate files exist: `ls -la infra/nginx/certs/`
-3. Review certbot logs: `docker-compose -f docker-compose.prod.yml logs certbot`
-
-#### Images not pulling
-
-1. Verify DOCR login: `docker login registry.digitalocean.com`
-2. Check image tags in `docker-compose.prod.yml` match DOCR
-3. Ensure GitHub Actions workflow completed successfully
-
-### Manual Deployment
-
-If you need to deploy manually:
-
-```bash
-# On the Droplet
-cd /opt/myapp
-
-# Pull latest images
-docker-compose -f docker-compose.prod.yml pull
-
-# Update services
-docker-compose -f docker-compose.prod.yml up -d
-
-# Clean up old images
-docker image prune -f
-```
-
-## Development Scripts
-
-```bash
-# Frontend
-pnpm --filter web-frontend dev          # Start dev server
-pnpm --filter web-frontend build        # Build for production
-pnpm --filter web-frontend start        # Start production server
-
-# Backend
-pnpm --filter @go-with-me/backend start:dev    # Start dev server
-pnpm --filter @go-with-me/backend build        # Build for production
-pnpm --filter @go-with-me/backend start:prod   # Start production server
-```
-
-## License
-
-[Your License Here]
-
-# генерация типов из схемы
-
-npx graphql-codegen --config
+- [`docs/local-dev-docker.md`](docs/local-dev-docker.md) — running the stack locally with Docker and Podman
