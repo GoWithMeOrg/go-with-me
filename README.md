@@ -81,20 +81,23 @@ docker compose up --build
 
 All commands run from the repository root.
 
-| Command                | Description                                                      |
-| ---------------------- | ---------------------------------------------------------------- |
-| `pnpm build`           | builds every package through Turborepo (results are cached)      |
-| `pnpm frontend:dev`    | `next dev --turbo` on port 3000                                  |
-| `pnpm backend:dev`     | `nest start --watch` on port 4000                                |
-| `pnpm lint`            | ESLint over frontend and backend, no autofix                     |
-| `pnpm frontend:lint`   | ESLint over frontend with `--fix`                                |
-| `pnpm backend:lint`    | ESLint over backend with `--fix`                                 |
-| `pnpm typecheck`       | `tsc --noEmit` for backend, then frontend (after `next typegen`) |
-| `pnpm typegen`         | generates `next-env.d.ts` and route types (not tracked by git)   |
-| `pnpm codegen`         | generates types from the GraphQL schema                          |
-| `pnpm check:codegen`   | fails when generated files are stale relative to the schema      |
-| `pnpm frontend:format` | Prettier over frontend                                           |
-| `pnpm backend:format`  | Prettier over backend                                            |
+| Command                | Description                                                    |
+| ---------------------- | -------------------------------------------------------------- |
+| `pnpm build`           | builds every package through Turborepo (results are cached)    |
+| `pnpm frontend:dev`    | `next dev --turbo` on port 3000                                |
+| `pnpm backend:dev`     | `nest start --watch` on port 4000                              |
+| `pnpm lint`            | `turbo run lint` — ESLint over every package, no autofix       |
+| `pnpm frontend:lint`   | ESLint over frontend with `--fix`                              |
+| `pnpm backend:lint`    | ESLint over backend with `--fix`                               |
+| `pnpm typecheck`       | `turbo run typecheck` (`next typegen` + `tsc --noEmit`)        |
+| `pnpm typegen`         | generates `next-env.d.ts` and route types (not tracked by git) |
+| `pnpm test`            | `turbo run test` — unit tests (Jest on the backend)            |
+| `pnpm test:e2e`        | builds the frontend and runs Playwright against `next start`   |
+| `pnpm codegen`         | generates types from the GraphQL schema                        |
+| `pnpm check:codegen`   | fails when generated files are stale relative to the schema    |
+| `pnpm format:check`    | Prettier check over the whole repo                             |
+| `pnpm frontend:format` | Prettier over frontend                                         |
+| `pnpm backend:format`  | Prettier over backend                                          |
 
 Single package:
 
@@ -104,15 +107,11 @@ pnpm --filter backend build   # nest build
 pnpm --filter backend start:prod
 ```
 
-Frontend end-to-end tests (Playwright):
-
-```bash
-pnpm exec playwright install
-pnpm exec playwright test --config packages/frontend/tests/playwright.config.ts
-```
-
-The Playwright config reuses an already running server on port 3000, so start
-either `pnpm frontend:dev` or the Docker stack first.
+Frontend end-to-end tests (Playwright): `pnpm test:e2e`. Turbo builds the
+frontend first, then Playwright starts `next start` on port 3000 and stops it
+afterwards — no need to run a server yourself. Locally the config reuses an
+already running server on port 3000 if there is one, while in CI the port must
+be free.
 
 ## GraphQL and Codegen
 
@@ -177,7 +176,10 @@ Stored in `.env.local` in the repository root. The backend reads them through
 
 Two workflows in `.github/workflows/`:
 
-- **`ci.yaml`** — on pull requests and as a reusable workflow: `pnpm install --frozen-lockfile`, `typecheck`, `lint`, `build`, `check:codegen`;
+- **`ci.yaml`** — on pull requests and as a reusable workflow. Seven parallel
+  jobs: `lint`, `typecheck`, `format`, `build`, `test`, `codegen` and `e2e`.
+  Each one installs dependencies with `--ignore-scripts` (so `prepare` does not
+  run codegen) and restores the Turborepo cache from `.turbo`;
 - **`deploy-to-dokploy.yaml`** — calls `ci.yaml` and only then triggers the Dokploy webhook.
 
 Deployment depends on the trigger and on which paths changed (`dorny/paths-filter`):
