@@ -317,21 +317,35 @@ window.location.href = '/';
 
 Проверено: `pnpm frontend:lint` и `pnpm backend:lint` — 0 проблем, `tsc --noEmit` (frontend) — чисто, `pnpm build` проходит.
 
-### 8. Бэкенд собирается без `strict`
+### 8. Бэкенд собирается без `strict` ⚠️ частично
 
 ```json
-// packages/backend/tsconfig.json
+// packages/backend/tsconfig.json — было
 "strictNullChecks": true,
 "noImplicitAny": false,
 "strictBindCallApply": false,
 "strictPropertyInitialization": false
 ```
 
-Фронтенд — `"strict": true`. Бэкенд включает только `strictNullChecks`.
+Фронтенд — `"strict": true`. Бэкенд включал только `strictNullChecks`.
 
-`noImplicitAny: false` позволяет неявным `any` просачиваться в код, а от инференса типов полей в `@nestjs/graphql` напрямую зависит GraphQL-схема.
+**Сделано:** `noImplicitAny: true`.
 
-**Фикс:** включать поэтапно — `noImplicitAny: true`, затем посмотреть на количество ошибок. После миграции на `@nestjs/graphql` 14 их должно быть немного.
+Замер до правок: `tsc -p tsconfig.build.json --noEmit --noImplicitAny true` давал **7 ошибок** в 3 файлах.
+
+| Файл | Ошибка | Что сделано |
+|---|---|---|
+| `common/guards/permission.guard.ts` | `role`, `p` — неявный `any` в `flatMap`/`map` | контекст типизирован `getContext<GqlContext>()`; добавлены `PopulatedRole`/`PopulatedPermission` |
+| `config/graphql.config.ts` | нет типов для `cookie-signature`; `req`/`extra` в `context` — неявный `any` | добавлен `@types/cookie-signature`; контекст размечен `ReqWithPassport` + `SubscriptionContext['extra']` |
+| `modules/comment/comment.service.ts` | `parent` — TS7022 (ссылается на себя через `.lean()`) | явная аннотация `Pick<Comment, 'parent'> \| null` и типизированный `.lean<>()` |
+
+Про `permission.guard.ts`: в сущности `Permission.resource` объявлен как `Types.ObjectId`, но в рантайме после `populate({ path: 'permissions', populate: { path: 'resource' } })` там лежит документ с полем `slug`. Поэтому вместо приведения к типу сущности введены `PopulatedRole` / `PopulatedPermission`, отражающие реальную форму данных. Это не косметика: раньше обращение к `.resource.slug` не проверялось вообще.
+
+**`strictBindCallApply`** — проверено, включение даёт 0 ошибок.
+
+**`strictPropertyInitialization`** — не включал: даёт **147 ошибок** вида «Property `_id` has no initializer». Это системная особенность Mongoose-сущностей и DTO, где все поля заполняются декораторами/драйвером, а не конструктором. Лечится либо `!` у каждого поля, либо `declare`, либо `@Prop({ required })`-паттерном — отдельная задача, не в рамках `noImplicitAny`.
+
+**Проверено:** `tsc -p tsconfig.build.json --noEmit` (0 ошибок), `tsc -p tsconfig.spec.json --noEmit` (0), `pnpm --filter backend build`, `pnpm --filter backend test`, `pnpm backend:lint`, `prettier --check`, `pnpm codegen` — схема и типы фронтенда не изменились, Docker-образ пересобран, бэкенд стартует, `POST /graphql` → 200.
 
 ---
 
@@ -649,7 +663,7 @@ jobs:
 | ~~6~~ | ~~`world_cities.json` 15 МБ → 1000 городов~~ ✅ `2a367cf` | −11 МБ JS | принят компромисс |
 | ~~7~~ | ~~`eslint-config-next` → 16.4.5~~ ✅ `a470e12` | Актуальные правила | — |
 | ~~8~~ | ~~Убрать мёртвые пути и конфиги~~ ✅ `9ab5b43` | Чистота | — |
-| 9 | `noImplicitAny: true` | Типобезопасность | средний |
+| ~~9~~ | ~~`noImplicitAny: true`~~ ✅ | Типобезопасность | — |
 | 10 | `catalog:` в pnpm-workspace.yaml | Единые версии | низкий |
 | 11 | CI с проверками | Не ломать main | нет |
 | ~~12~~ | ~~Убрать неиспользуемые зависимости~~ ✅ −34 пакета | −размер, ясность | — |

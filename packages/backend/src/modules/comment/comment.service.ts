@@ -97,11 +97,11 @@ export class CommentService {
                 $inc: { repliesCount: -1 },
             });
 
-            const parent = await this.commentModel
+            const parent: Pick<Comment, 'parent'> | null = await this.commentModel
                 .findById(currentParentId)
                 .select('parent')
-                .lean();
-            currentParentId = (parent?.parent as Types.ObjectId | null) ?? null;
+                .lean<Pick<Comment, 'parent'>>();
+            currentParentId = parent?.parent ?? null;
             steps++;
         }
     }
@@ -168,8 +168,11 @@ export class CommentService {
         let currentId: Types.ObjectId | null = commentId;
 
         while (currentId && depth < MAX_ANCESTOR_CHAIN) {
-            const parent = await this.commentModel.findById(currentId).select('parent').lean();
-            currentId = (parent?.parent as Types.ObjectId | null) ?? null;
+            const parent: Pick<Comment, 'parent'> | null = await this.commentModel
+                .findById(currentId)
+                .select('parent')
+                .lean<Pick<Comment, 'parent'>>();
+            currentId = parent?.parent ?? null;
             if (currentId) depth++;
         }
 

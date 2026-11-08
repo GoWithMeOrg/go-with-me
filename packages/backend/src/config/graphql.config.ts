@@ -1,5 +1,6 @@
 import { join } from 'path';
 import { SubscriptionContext } from '@/common/interfaces/subscription-context.interface.js';
+import { ReqWithPassport } from '@/common/types/graphql-context.js';
 import { getMongoStore } from '@/config/mongo-store.config.js';
 import { UserDocument } from '@/modules/user/entities/user.entity.js';
 import { isDev } from '@/utils/is-dev.utils.js';
@@ -79,7 +80,13 @@ export async function getGraphQLConfig(
             },
         },
 
-        context: ({ req, extra }) => {
+        context: ({
+            req,
+            extra,
+        }: {
+            req?: ReqWithPassport;
+            extra?: SubscriptionContext['extra'];
+        }) => {
             if (req) {
                 // console.log('[HTTP REQUEST] req.headers.cookie:', req.headers?.cookie);
                 // console.log('[HTTP REQUEST] req.user:', req.user);
