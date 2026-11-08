@@ -1,0 +1,7 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "types": ["node", "express", "express-session", "jest"]
+    },
+    "include": ["src/**/*.ts"]
+}
