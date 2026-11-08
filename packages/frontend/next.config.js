@@ -7,33 +7,7 @@ const nextConfig = {
     // поэтому Next должен компилировать его сам.
     transpilePackages: ['@go-with-me/shared'],
     images: {
-        // remotePatterns: [
-        //     {
-        //         protocol: "https",
-        //         hostname: "fra1.digitaloceanspaces.com",
-        //         port: "",
-        //         pathname: "/gowithme/**",
-        //     },
-        //     {
-        //         protocol: "https",
-        //         hostname: "lh3.googleusercontent.com",
-        //         port: "",
-        //         pathname: "/**",
-        //     },
-        //     {
-        //         protocol: "https",
-        //         hostname: "platform-lookaside.fbsbx.com",
-        //         port: "",
-        //         pathname: "/**",
-        //     },
-        //     {
-        //         protocol: "https",
-        //         hostname: "abs.twimg.com",
-        //         port: "",
-        //         pathname: "/**",
-        //     },
-        // ],
-        // зарешаем загрузку изображений со всех доменов.
+        formats: ['image/avif', 'image/webp'],
         remotePatterns: [
             {
                 protocol: 'https',
@@ -42,15 +16,8 @@ const nextConfig = {
         ],
     },
 
-    webpack(config) {
-        config.module.rules.push({
-            test: /\.svg$/i,
-            use: ['@svgr/webpack'],
-        });
-
-        return config;
-    },
-
+    // SVG обрабатывает Turbopack (см. turbopack.rules ниже): в Next 16 сборка
+    // идёт через Turbopack по умолчанию, и кастомный webpack-конфиг игнорируется.
     turbopack: {
         rules: {
             '*.svg': {
