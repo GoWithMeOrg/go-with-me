@@ -8,21 +8,27 @@ on:
         branches:
             - main
         tags:
-            - "v*"
-            - "b*"
-            - "f*"
+            - 'v*'
+            - 'b*'
+            - 'f*'
 
 jobs:
+    # Сначала прогоняем те же проверки, что и на PR: деплой не должен
+    # стартовать, если код не собирается.
+    check:
+        uses: ./.github/workflows/ci.yaml
+
     # --- JOB ДЛЯ БЭКЕНДА ---
     deploy-backend:
+        needs: check
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v7
               with:
                   fetch-depth: 0
 
             - name: Check for backend changes
-              uses: dorny/paths-filter@v3
+              uses: dorny/paths-filter@v4
               id: filter
               with:
                   filters: |
@@ -56,14 +62,15 @@ jobs:
 
     # --- JOB ДЛЯ ФРОНТЕНДА ---
     deploy-frontend:
+        needs: check
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v7
               with:
                   fetch-depth: 0
 
             - name: Check for frontend changes
-              uses: dorny/paths-filter@v3
+              uses: dorny/paths-filter@v4
               id: filter
               with:
                   filters: |

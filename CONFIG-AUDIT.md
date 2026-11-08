@@ -3,7 +3,7 @@
 Дата: 2026-11-07
 Ветка: `chore/update-dependencies`
 
-Проверены все конфигурационные файлы проекта: `package.json` (корень и оба пакета), `pnpm-workspace.yaml`, `tsconfig.json` обоих пакетов, `eslint.config.cjs`, `.prettierrc.json`, `.prettierignore`, `.gitignore` (все три), `.dockerignore` (все три), `Dockerfile.dev`, `packages/*/Dockerfile`, `infra/nginx/Dockerfile`, `docker-compose.yml`, `codegen.ts`, `.graphqlrc.json`, `next.config.js`, `vercel.json`, `nest-cli.json`, `.storybook/main.ts`, `.github/workflows/deploy-to-dokploy.yaml`, `.husky/`, `.vscode/settings.json`.
+Проверены все конфигурационные файлы проекта: `package.json` (корень и оба пакета), `pnpm-workspace.yaml`, `tsconfig.json` обоих пакетов, `eslint.config.cjs`, `.prettierrc.json`, `.prettierignore`, `.gitignore` (все три), `.dockerignore` (все три), `Dockerfile.dev`, `packages/*/Dockerfile`, `infra/nginx/Dockerfile`, `docker-compose.yml`, `codegen.ts`, `.graphqlrc.json`, `next.config.js`, `nest-cli.json`, `.storybook/main.ts`, `.github/workflows/` (`ci.yaml`, `deploy-to-dokploy.yaml`), `.vscode/settings.json`.
 
 Каждая находка ниже проверена запуском команд, а не только чтением файлов.
 
@@ -617,40 +617,53 @@ packages/frontend build → всегда полная сборка
 
 С `turbo.json` и хешированием по входным файлам повторная сборка без изменений — мгновенная. Особенно окупается в CI.
 
-### D. CI-проверки перед деплоем
+### D. CI-проверки перед деплоем ✅
 
-`.github/workflows/deploy-to-dokploy.yaml` сейчас **только деплоит**:
+`.github/workflows/deploy-to-dokploy.yaml` раньше **только деплоил**: `checkout` → `paths-filter` → `curl`. В `main` мог уехать код, который не собирается.
+
+**Сделано.** Добавлен `.github/workflows/ci.yaml` с одним джобом `check`:
 
 ```yaml
-steps:
-  - uses: actions/checkout@v4
-  - uses: dorny/paths-filter@v3
-  - run: curl ... DOKPLOY_URL_DEPLOY
+on:
+  pull_request:
+  workflow_call:        # переиспользуется деплоем
 ```
 
-В `main` может уехать код, который не собирается. Минимальный набор:
+Шаги: `pnpm install --frozen-lockfile` → `pnpm typecheck` → `pnpm lint` → `pnpm build` → `pnpm check:codegen`.
+
+Связка с деплоем — через reusable workflow, потому что `needs` не работает между разными файлами workflow. В `deploy-to-dokploy.yaml` появился первый джоб:
 
 ```yaml
 jobs:
-  ci:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 26
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm typecheck
-      - run: pnpm backend:lint
-      - run: pnpm frontend:lint
-      - run: pnpm build
+  check:
+    uses: ./.github/workflows/ci.yaml
 
   deploy-backend:
-    needs: [ci]
+    needs: check
     ...
+  deploy-frontend:
+    needs: check
 ```
+
+Итого: на PR гоняется только CI, на push в `main` и на теги — сначала CI, и деплой стартует только при успехе. Отдельного триггера `push: main` у `ci.yaml` нет — иначе на `main` проверки шли бы дважды (самостоятельно и внутри деплоя).
+
+Новые скрипты в корневом `package.json`:
+
+| Скрипт | Что делает |
+|---|---|
+| `lint` | `eslint packages/frontend packages/backend` — без `--fix`, чтобы в CI падало, а не молча правило за собой |
+| `typegen` | `next typegen` — генерирует `next-env.d.ts` и `.next/types` |
+| `typecheck` | `typecheck:backend` + `typecheck:frontend` |
+| `typecheck:backend` | `tsc -p tsconfig.build.json --noEmit` |
+| `typecheck:frontend` | `typegen` + `tsc --noEmit` |
+| `check:codegen` | `pnpm codegen` + `git diff --exit-code` по сгенерированным путям |
+
+Два неочевидных момента, без которых CI не работает:
+
+1. **`typegen` обязателен перед `tsc` на фронтенде.** В чистом клоне `next-env.d.ts` отсутствует (он в `.gitignore`), а именно он подтягивает `next/image-types/global.d.ts` с объявлениями для `*.svg`. Без него `tsc` падает с `TS2307: Cannot find module '@/assets/icons/spinner.svg'` — проверено на клоне без файла.
+2. **`check:codegen` сравнивает только сгенерированные пути**, а не весь репозиторий: `packages/backend/src/schema` и `packages/frontend/src/app/graphql`. Детектор проверен искусственным дрейфом — дописанный в `schema.gql` тип даёт `rc=1`.
+
+Обновлены также версии actions в деплое: `actions/checkout@v4 → v7`, `dorny/paths-filter@v3 → v4`.
 
 ### E. Автоматизировать codegen
 
@@ -677,8 +690,8 @@ jobs:
 | ~~7~~ | ~~`eslint-config-next` → 16.4.5~~ ✅ `a470e12` | Актуальные правила | — |
 | ~~8~~ | ~~Убрать мёртвые пути и конфиги~~ ✅ `9ab5b43` | Чистота | — |
 | ~~9~~ | ~~`noImplicitAny: true`~~ ✅ | Типобезопасность | — |
-| ~~10~~ | ~~`catalog:` в pnpm-workspace.yaml~~ ✅ | Единые версии | — |
-| 11 | CI с проверками | Не ломать main | нет |
+| ~~10~~ | ~~`catalog:` в pnpm-workspace.yaml~~ ✅ `471bf5f` | Единые версии | — |
+| ~~11~~ | ~~CI с проверками~~ ✅ | Не ломать main | — |
 | ~~12~~ | ~~Убрать неиспользуемые зависимости~~ ✅ −34 пакета | −размер, ясность | — |
 | ~~13~~ | ~~Решить судьбу Jest (починить или удалить)~~ ✅ починено | Ясность | — |
 
@@ -704,3 +717,8 @@ jobs:
 | `a470e12` | `eslint-config-next` 16.1.0 → `^16.4.5` (появилось правило `no-location-assign-relative-destination`) |
 | `ddb4b2d` | точечное подавление нового правила в фолбеке `logout()` |
 | `9ab5b43` | мёртвые пути и конфиги убраны: `codegen.ts`, `tsconfig.json` фронтенда, `vercel.json`, `.husky`, `onlyBuiltDependencies`, placeholder-`.graphql` |
+| `e3206f7` | конфиг Jest в ESM-режиме, первый тест на `formatDate` (3 кейса) |
+| `4605f32` | 34 неиспользуемые зависимости убраны (−336 строк lockfile) |
+| `3911097` | неработающий `signOut` из `next-auth` заменён на `logout()` |
+| `5534ab5` | `noImplicitAny: true` на backend, 147 мест явно типизированы |
+| `471bf5f` | общие версии вынесены в `catalog:` (`typescript`, `graphql`, `graphql-ws`, `@types/node`) |
