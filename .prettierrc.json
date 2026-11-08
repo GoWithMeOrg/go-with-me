@@ -1,19 +1,27 @@
 {
-  "endOfLine": "auto",
-  "semi": true,
-  "singleQuote": true,
-  "tabWidth": 4,
-  "trailingComma": "es5",
-  "printWidth": 100,
-  "plugins": ["@ianvs/prettier-plugin-sort-imports"],
-  "importOrderParserPlugins": ["typescript", "jsx", "decorators-legacy"],
-  "importOrder": [
-    "^react",
-    "<THIRD_PARTY_MODULES>",
-    "",
-    "^(modules|lib|mocks|utils|config|assets|temp|styles|ui-kit|src)\\/.*(?<!\\.css)(?<!\\/styles)$",
-    "^(\\.|\\.{2}|\\.\\/.*|\\.{2}\\/.*)(?<!\\.css)(?<!\\/styles)$",
-    "",
-    "(.*\\.css|\\.\\/styles)$"
-  ]
+    "endOfLine": "lf",
+    "semi": true,
+    "singleQuote": true,
+    "tabWidth": 4,
+    "trailingComma": "es5",
+    "printWidth": 100,
+    "plugins": ["@ianvs/prettier-plugin-sort-imports"],
+    "importOrderParserPlugins": ["typescript", "jsx", "decorators-legacy"],
+    "importOrder": [
+        "^react",
+        "<THIRD_PARTY_MODULES>",
+        "",
+        "^(modules|lib|mocks|utils|config|assets|temp|styles|ui-kit|src)\\/.*(?<!\\.css)(?<!\\/styles)$",
+        "^(\\.|\\.{2}|\\.\\/.*|\\.{2}\\/.*)(?<!\\.css)(?<!\\/styles)$",
+        "",
+        "(.*\\.css|\\.\\/styles)$"
+    ],
+    "overrides": [
+        {
+            "files": ["*.{yml,yaml}"],
+            "options": {
+                "tabWidth": 2
+            }
+        }
+    ]
 }

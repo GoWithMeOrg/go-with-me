@@ -98,7 +98,11 @@ export const EventForm: FC<EventFormProps> = ({ eventData }) => {
                                 control={control}
                                 defaultValue={eventData?.startDate ?? undefined}
                                 render={({ field }) => (
-                                    <Date title={'Начало'} date={eventData?.startDate as string | undefined} {...field} />
+                                    <Date
+                                        title={'Начало'}
+                                        date={eventData?.startDate as string | undefined}
+                                        {...field}
+                                    />
                                 )}
                             />
                             <Controller

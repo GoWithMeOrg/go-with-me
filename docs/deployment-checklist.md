@@ -22,12 +22,12 @@ Use this checklist when setting up production deployment for the first time.
 ## Configuration Updates
 
 - [ ] Update `docker-compose.prod.yml`:
-  - [ ] Replace `MY_REGISTRY` with your DOCR registry name
-  - [ ] Replace `MY_DOMAIN.COM` with your domain
+    - [ ] Replace `MY_REGISTRY` with your DOCR registry name
+    - [ ] Replace `MY_DOMAIN.COM` with your domain
 - [ ] Update `.github/workflows/build-and-push-images.yml`:
-  - [ ] Replace `MY_REGISTRY` with your DOCR registry name
+    - [ ] Replace `MY_REGISTRY` with your DOCR registry name
 - [ ] Update `infra/nginx/conf.d/default.conf`:
-  - [ ] Replace `MY_DOMAIN.COM` with your domain (2 occurrences)
+    - [ ] Replace `MY_DOMAIN.COM` with your domain (2 occurrences)
 
 ## Droplet Setup
 
@@ -46,14 +46,14 @@ Use this checklist when setting up production deployment for the first time.
 - [ ] Verify images are built and pushed to DOCR
 - [ ] Verify deployment workflow runs successfully
 - [ ] SSH into Droplet and verify services are running:
-  ```bash
-  cd /opt/myapp
-  docker-compose -f docker-compose.prod.yml ps
-  ```
+    ```bash
+    cd /opt/myapp
+    docker-compose -f docker-compose.prod.yml ps
+    ```
 - [ ] Check logs for errors:
-  ```bash
-  docker-compose -f docker-compose.prod.yml logs
-  ```
+    ```bash
+    docker-compose -f docker-compose.prod.yml logs
+    ```
 - [ ] Verify HTTPS is working: `https://your-domain.com`
 - [ ] Test frontend: `https://your-domain.com`
 - [ ] Test backend API: `https://your-domain.com/api/health` (or your health endpoint)
@@ -70,6 +70,7 @@ Use this checklist when setting up production deployment for the first time.
 ## Troubleshooting
 
 If services won't start:
+
 1. Check logs: `docker-compose -f docker-compose.prod.yml logs`
 2. Verify environment variables in `.env`
 3. Verify MongoDB connection string
@@ -77,6 +78,7 @@ If services won't start:
 5. Verify DNS points to Droplet IP
 
 If SSL issues:
+
 1. Verify DNS is configured correctly
 2. Check certificate files: `ls -la infra/nginx/certs/`
 3. Review certbot logs: `docker-compose -f docker-compose.prod.yml logs certbot`

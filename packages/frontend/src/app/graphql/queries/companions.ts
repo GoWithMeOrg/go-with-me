@@ -2,7 +2,6 @@ import { CompanionsResponse } from '@go-with-me/shared/graphql';
 import { TypedDocumentNode } from '@graphql-typed-document-node/core';
 import gql from 'graphql-tag';
 
-
 export const GET_COMPANIONS_BY_OWNER_ID: TypedDocumentNode<{
     companionsByOwnerId: CompanionsResponse;
 }> = gql`

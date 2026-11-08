@@ -46,7 +46,10 @@ const CommentInner = ({ comment, depth = 0, onDelete }: CommentProps) => {
         setReplyToState((prev) =>
             prev?.id === comment._id
                 ? null
-                : { id: comment._id, authorName: `${comment.author.firstName} ${comment.author.lastName}` }
+                : {
+                      id: comment._id,
+                      authorName: `${comment.author.firstName} ${comment.author.lastName}`,
+                  }
         );
     }, [comment._id, comment.author.firstName, comment.author.lastName]);
 

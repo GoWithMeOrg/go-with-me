@@ -27,9 +27,19 @@ const MOCK_COMPANIONS = {
     data: {
         companionsByOwnerId: {
             companions: [
-                { _id: '507f1f77bcf86cd799439012', firstName: 'Alice', lastName: 'Smith', image: '' },
+                {
+                    _id: '507f1f77bcf86cd799439012',
+                    firstName: 'Alice',
+                    lastName: 'Smith',
+                    image: '',
+                },
                 { _id: '507f1f77bcf86cd799439013', firstName: 'Bob', lastName: 'Jones', image: '' },
-                { _id: '507f1f77bcf86cd799439014', firstName: 'Charlie', lastName: 'Brown', image: '' },
+                {
+                    _id: '507f1f77bcf86cd799439014',
+                    firstName: 'Charlie',
+                    lastName: 'Brown',
+                    image: '',
+                },
             ],
             totalCompanions: 3,
         },
@@ -66,7 +76,9 @@ test.describe('Confidentiality settings', () => {
         await page.click('[data-profile="profile-confidentiality"]');
         await page.waitForTimeout(500);
 
-        await expect(page.getByText('Who can see the list of events I am going to attend?')).toBeVisible();
+        await expect(
+            page.getByText('Who can see the list of events I am going to attend?')
+        ).toBeVisible();
         await expect(page.getByText('Who can invite me to events?')).toBeVisible();
 
         const seeRadio = page.locator('#whoCanSeeEvents-EVERYONE');
@@ -119,13 +131,17 @@ test.describe('Confidentiality settings', () => {
         await page.waitForTimeout(500);
 
         let mutationCalled = false;
-        await page.route('**/graphql', async (route, request) => {
-            const body = JSON.parse(request.postData() || '{}');
-            if (body.query?.includes('UpdatePrivacySetting')) {
-                mutationCalled = true;
-            }
-            return route.fallback();
-        }, { times: 1 });
+        await page.route(
+            '**/graphql',
+            async (route, request) => {
+                const body = JSON.parse(request.postData() || '{}');
+                if (body.query?.includes('UpdatePrivacySetting')) {
+                    mutationCalled = true;
+                }
+                return route.fallback();
+            },
+            { times: 1 }
+        );
 
         await page.locator('#whoCanSeeEvents-MARKED_COMPANIONS').click();
         await page.waitForTimeout(300);

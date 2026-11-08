@@ -11,15 +11,11 @@ export const useInvitation = ({ invitation_id, receiver_id }: IUseInvitation) =>
     const { refetchDataInvations } = useNotifications();
 
     const [AcceptInvation] = useMutation(ACCEPT_INVITATION_MUTATION, {
-        refetchQueries: [
-            { query: GET_DECLINED_EVENTS, variables: { userId: receiver_id } },
-        ],
+        refetchQueries: [{ query: GET_DECLINED_EVENTS, variables: { userId: receiver_id } }],
     });
 
     const [DeclineInvitation] = useMutation(DECLINE_INVITATION_MUTATION, {
-        refetchQueries: [
-            { query: GET_DECLINED_EVENTS, variables: { userId: receiver_id } },
-        ],
+        refetchQueries: [{ query: GET_DECLINED_EVENTS, variables: { userId: receiver_id } }],
     });
 
     const acceptInvation = async () => {

@@ -32,15 +32,14 @@ export const usePublicProfile = () => {
         skip: !isAuth || isOwner,
     });
 
-    const userCompanion = (isCompanionData as { isUserCompanion: boolean })?.isUserCompanion ?? false;
+    const userCompanion =
+        (isCompanionData as { isUserCompanion: boolean })?.isUserCompanion ?? false;
 
     const canInvite = (() => {
         if (isOwner || !isAuth) return false;
 
         const settings: PrivacySetting | undefined = (
-            viewedUserPrivacy as
-                | { privacySettingByUserId: PrivacySetting }
-                | undefined
+            viewedUserPrivacy as { privacySettingByUserId: PrivacySetting } | undefined
         )?.privacySettingByUserId;
 
         if (!settings) return true; // пока не загрузилось — показываем, чтобы не моргало
@@ -48,9 +47,7 @@ export const usePublicProfile = () => {
         if (settings.whoCanInviteToEvents === 'EVERYONE') return true;
         if (settings.whoCanInviteToEvents === 'COMPANIONS') return userCompanion;
         if (settings.whoCanInviteToEvents === 'MARKED_COMPANIONS') {
-            return (
-                settings.markedForWhoCanInviteToEvents?.includes(user_id ?? '') ?? false
-            );
+            return settings.markedForWhoCanInviteToEvents?.includes(user_id ?? '') ?? false;
         }
         return false;
     })();

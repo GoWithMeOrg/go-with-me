@@ -87,13 +87,19 @@ const PublicProfile: NextPage = () => {
                                             ? `${
                                                   (
                                                       userData as {
-                                                          user: { firstName: string; lastName: string };
+                                                          user: {
+                                                              firstName: string;
+                                                              lastName: string;
+                                                          };
                                                       }
                                                   ).user.firstName
                                               } ${
                                                   (
                                                       userData as {
-                                                          user: { firstName: string; lastName: string };
+                                                          user: {
+                                                              firstName: string;
+                                                              lastName: string;
+                                                          };
                                                       }
                                                   ).user.lastName ?? ''
                                               }`.replace(' ', '\n')
@@ -135,7 +141,7 @@ const PublicProfile: NextPage = () => {
                                 </div>
                             </div>
 
-                                    {isOwner ? (
+                            {isOwner ? (
                                 <ButtonLink
                                     href={`/profile/${user_id}/private`}
                                     text={'To my account'}
@@ -144,8 +150,7 @@ const PublicProfile: NextPage = () => {
                             ) : (
                                 <div className={classes.links}>
                                     {status === 'unauthenticated' ? (
-                                        <>
-                                        </>
+                                        <></>
                                     ) : (
                                         <>
                                             {/* <Button>Chat</Button> */}
@@ -159,13 +164,19 @@ const PublicProfile: NextPage = () => {
                                                             `${
                                                                 (
                                                                     userData as {
-                                                                        user: { firstName: string; lastName: string };
+                                                                        user: {
+                                                                            firstName: string;
+                                                                            lastName: string;
+                                                                        };
                                                                     }
                                                                 )?.user?.firstName ?? ''
                                                             } ${
                                                                 (
                                                                     userData as {
-                                                                        user: { firstName: string; lastName: string };
+                                                                        user: {
+                                                                            firstName: string;
+                                                                            lastName: string;
+                                                                        };
                                                                     }
                                                                 )?.user?.lastName ?? ''
                                                             }`.trim() || 'User'
@@ -185,13 +196,19 @@ const PublicProfile: NextPage = () => {
                                                             `${
                                                                 (
                                                                     userData as {
-                                                                        user: { firstName: string; lastName: string };
+                                                                        user: {
+                                                                            firstName: string;
+                                                                            lastName: string;
+                                                                        };
                                                                     }
                                                                 )?.user?.firstName ?? ''
                                                             } ${
                                                                 (
                                                                     userData as {
-                                                                        user: { firstName: string; lastName: string };
+                                                                        user: {
+                                                                            firstName: string;
+                                                                            lastName: string;
+                                                                        };
                                                                     }
                                                                 )?.user?.lastName ?? ''
                                                             }`.trim() || 'User'
@@ -260,13 +277,11 @@ const PublicProfile: NextPage = () => {
                             <div className={classes.counters}>
                                 <div className={classes.attended}>
                                     <div>
-                                        {
-                                            (
-                                                eventsData as {
-                                                    allOrganizerEvents: { length: number } | null;
-                                                }
-                                            )?.allOrganizerEvents?.length ?? 0
-                                        }
+                                        {(
+                                            eventsData as {
+                                                allOrganizerEvents: { length: number } | null;
+                                            }
+                                        )?.allOrganizerEvents?.length ?? 0}
                                     </div>
                                     <span className={classes.attendedText}>organized events</span>
                                 </div>
@@ -291,8 +306,8 @@ const PublicProfile: NextPage = () => {
                         </div>
                     </div>
 
-                    {((eventsData as { allOrganizerEvents: { length: number } | null })?.allOrganizerEvents
-                        ?.length ?? 0) > 0 && (
+                    {((eventsData as { allOrganizerEvents: { length: number } | null })
+                        ?.allOrganizerEvents?.length ?? 0) > 0 && (
                         <Carousel title="Organized events" hideButton marginBottom="3.88rem">
                             {(
                                 eventsData as { allOrganizerEvents: Event[] }
@@ -317,8 +332,8 @@ const PublicProfile: NextPage = () => {
                         </Carousel>
                     )}
 
-                    {((eventsData as { allOrganizerEvents: { length: number } | null })?.allOrganizerEvents
-                        ?.length ?? 0) > 0 && (
+                    {((eventsData as { allOrganizerEvents: { length: number } | null })
+                        ?.allOrganizerEvents?.length ?? 0) > 0 && (
                         <Carousel title="Upcoming events" hideButton marginBottom="3.88rem">
                             {(
                                 eventsData as { allOrganizerEvents: Event[] }

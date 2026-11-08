@@ -6,15 +6,15 @@ import { useButtonBack } from './hooks';
 import classes from './ButtonBack.module.css';
 
 export const ButtonBack = () => {
-  const { handleBack } = useButtonBack();
+    const { handleBack } = useButtonBack();
 
-  return (
-    <Button
-      resetDefaultStyles={true}
-      className={`${classes.button} ${classes.next}`}
-      onClick={handleBack}
-    >
-      <Arrow />
-    </Button>
-  );
+    return (
+        <Button
+            resetDefaultStyles={true}
+            className={`${classes.button} ${classes.next}`}
+            onClick={handleBack}
+        >
+            <Arrow />
+        </Button>
+    );
 };

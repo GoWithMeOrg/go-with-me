@@ -14,9 +14,7 @@ export const buildOptimisticComment = (
         deleted: false,
         ownerId,
         ownerType: OwnerType.Event,
-        parent: parentId
-            ? { __typename: 'Comment', _id: parentId }
-            : null,
+        parent: parentId ? { __typename: 'Comment', _id: parentId } : null,
         repliesCount: 0,
         updatedAt: new Date().toISOString(),
     }) as unknown as CommentType;

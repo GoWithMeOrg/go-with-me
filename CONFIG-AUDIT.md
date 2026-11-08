@@ -22,6 +22,7 @@ No projects matched the filters in "/home/pavel/Coding/Go_With_Me"
 Пакет называется `@go-with-me/web-frontend`, а фильтр ищет `frontend`. При этом `pnpm --filter web-frontend` работает, `pnpm --filter backend` — тоже (пакет называется `@go-with-me/backend`, короткое имя совпадает).
 
 Ломается:
+
 - `package.json` (корень), скрипт `frontend:dev`
 - `AGENTS.md` строка 13
 
@@ -49,15 +50,15 @@ $ pnpm --filter frontend     → No projects matched
 
 Поэтому после переименования **все текущие `--filter web-frontend` сломаются** — включая те, что сейчас работают. Затронуто 11 мест в 6 файлах:
 
-| Файл | Строка | Сейчас | После переименования |
-|---|---|---|---|
-| `packages/frontend/package.json` | 2 | `"name": "@go-with-me/web-frontend"` | `"name": "@go-with-me/frontend"` |
-| `packages/frontend/Dockerfile` | 15 | `--filter web-frontend run build` | `--filter frontend run build` |
-| `docker-compose.yml` | 36 | `--filter web-frontend dev ...` | `--filter frontend dev ...` |
-| `AGENTS.md` | 3, 22 | описание пакета и команда запуска | обновить |
-| `README.md` | 31, 293–295 | `pnpm --filter web-frontend ...` | `pnpm --filter frontend ...` |
-| `README.md` | 7 | `packages/web-frontend` | `packages/frontend` (устарело и сейчас) |
-| `docs/local-dev-docker.md` | 35 | `packages/web-frontend/` | `packages/frontend/` (устарело и сейчас) |
+| Файл                             | Строка      | Сейчас                               | После переименования                     |
+| -------------------------------- | ----------- | ------------------------------------ | ---------------------------------------- |
+| `packages/frontend/package.json` | 2           | `"name": "@go-with-me/web-frontend"` | `"name": "@go-with-me/frontend"`         |
+| `packages/frontend/Dockerfile`   | 15          | `--filter web-frontend run build`    | `--filter frontend run build`            |
+| `docker-compose.yml`             | 36          | `--filter web-frontend dev ...`      | `--filter frontend dev ...`              |
+| `AGENTS.md`                      | 3, 22       | описание пакета и команда запуска    | обновить                                 |
+| `README.md`                      | 31, 293–295 | `pnpm --filter web-frontend ...`     | `pnpm --filter frontend ...`             |
+| `README.md`                      | 7           | `packages/web-frontend`              | `packages/frontend` (устарело и сейчас)  |
+| `docs/local-dev-docker.md`       | 35          | `packages/web-frontend/`             | `packages/frontend/` (устарело и сейчас) |
 
 `pnpm-lock.yaml` править не нужно — имена пакетов там не хранятся, только пути (`packages/frontend:`). Нужен `pnpm install` для обновления `node_modules`.
 
@@ -86,6 +87,7 @@ $ grep -rn "@UsePipes|Pipes" packages/backend/src --include='*.ts'
 ```
 
 Следствия:
+
 - входные данные в `createComment`, `createRole`, `uploadFile` **не проверялись вообще**;
 - `class-validator` и `class-transformer` были мёртвым весом в `dependencies`;
 - например, `@Matches(/\.(jpg|jpeg|png|webp|gif)$/i)` в `UploadFileInput.fileName` не применялся, проходила любая строка.
@@ -186,6 +188,7 @@ owner=0:0 mode=755                             ← root-owned, не пишетс
 Итог: кеш пакетов живёт внутри `node_modules` (тоже volume) и теряется при `docker compose down -v`. Тома `pnpm_store` только занимают место.
 
 **Варианты фикса:**
+
 1. Убрать оба тома `backend_pnpm_store` / `frontend_pnpm_store` — store и так в `node_modules`, который уже смонтирован.
 2. Оставить тома, но добавить в `Dockerfile.dev` после `USER node` явное создание каталога с правами, либо задать `store-dir` через `ENV npm_config_store_dir=/home/node/.local/share/pnpm/store`.
 
@@ -238,12 +241,12 @@ import cities from '../world_cities.json';
 
 **Варианты:**
 
-| Подход | Эффект |
-|---|---|
-| API-маршрут в Next.js, отдаёт один случайный город | чанк исчезает, +1 serverless-вызов на генерацию |
-| GraphQL-запрос к бэкенду, случайная выборка из Mongo | данные уходят в БД, нужна миграция |
-| Динамический `import()` в отдельный чанк | грузится только на `/generator`, но всё равно 11 МБ |
-| Держать в памяти бэкенда, отдавать по HTTP | 15 МБ RAM, мгновенный ответ |
+| Подход                                               | Эффект                                              |
+| ---------------------------------------------------- | --------------------------------------------------- |
+| API-маршрут в Next.js, отдаёт один случайный город   | чанк исчезает, +1 serverless-вызов на генерацию     |
+| GraphQL-запрос к бэкенду, случайная выборка из Mongo | данные уходят в БД, нужна миграция                  |
+| Динамический `import()` в отдельный чанк             | грузится только на `/generator`, но всё равно 11 МБ |
+| Держать в памяти бэкенда, отдавать по HTTP           | 15 МБ RAM, мгновенный ответ                         |
 
 Рекомендую первый вариант как минимальный по изменениям: `app/api/cities/random/route.ts` читает JSON на сервере (файл остаётся в репозитории, но не попадает в клиентский бандл).
 
@@ -258,10 +261,10 @@ import cities from '../world_cities.json';
 
 Эффект на бандл:
 
-| | До | После |
-|---|---|---|
-| Крупнейший клиентский чанк | 11,2 МБ (`14d40j3cw1oxc.js`) | 515 КБ |
-| Чанк с данными городов | — | 504 КБ (`36rrapvqun1mh.js`) |
+|                            | До                           | После                       |
+| -------------------------- | ---------------------------- | --------------------------- |
+| Крупнейший клиентский чанк | 11,2 МБ (`14d40j3cw1oxc.js`) | 515 КБ                      |
+| Чанк с данными городов     | —                            | 504 КБ (`36rrapvqun1mh.js`) |
 
 Чанк на 11 МБ исчез; города теперь лежат в общем чанке 504 КБ. `useGeneratorLocation.ts` не менялся — `faker.helpers.arrayElement(cities)` работает с любым размером массива.
 
@@ -333,11 +336,11 @@ window.location.href = '/';
 
 **`noImplicitAny: true`** давал **7 ошибок** в 3 файлах.
 
-| Файл | Ошибка | Что сделано |
-|---|---|---|
-| `common/guards/permission.guard.ts` | `role`, `p` — неявный `any` в `flatMap`/`map` | контекст типизирован `getContext<GqlContext>()`; добавлены `PopulatedRole`/`PopulatedPermission` |
-| `config/graphql.config.ts` | нет типов для `cookie-signature`; `req`/`extra` в `context` — неявный `any` | добавлен `@types/cookie-signature`; контекст размечен `ReqWithPassport` + `SubscriptionContext['extra']` |
-| `modules/comment/comment.service.ts` | `parent` — TS7022 (ссылается на себя через `.lean()`) | явная аннотация `Pick<Comment, 'parent'> \| null` и типизированный `.lean<>()` |
+| Файл                                 | Ошибка                                                                      | Что сделано                                                                                              |
+| ------------------------------------ | --------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `common/guards/permission.guard.ts`  | `role`, `p` — неявный `any` в `flatMap`/`map`                               | контекст типизирован `getContext<GqlContext>()`; добавлены `PopulatedRole`/`PopulatedPermission`         |
+| `config/graphql.config.ts`           | нет типов для `cookie-signature`; `req`/`extra` в `context` — неявный `any` | добавлен `@types/cookie-signature`; контекст размечен `ReqWithPassport` + `SubscriptionContext['extra']` |
+| `modules/comment/comment.service.ts` | `parent` — TS7022 (ссылается на себя через `.lean()`)                       | явная аннотация `Pick<Comment, 'parent'> \| null` и типизированный `.lean<>()`                           |
 
 Про `permission.guard.ts`: в сущности `Permission.resource` объявлен как `Types.ObjectId`, но в рантайме после `populate({ path: 'permissions', populate: { path: 'resource' } })` там лежит документ с полем `slug`. Поэтому вместо приведения к типу сущности введены `PopulatedRole` / `PopulatedPermission`, отражающие реальную форму данных. Это не косметика: раньше обращение к `.resource.slug` не проверялось вообще.
 
@@ -361,16 +364,16 @@ window.location.href = '/';
 
 ### 9. Мёртвые пути и мёртвые конфиги
 
-| Что | Проблема | Статус |
-|---|---|---|
-| `codegen.ts`: `./packages/backend/src/backend/**/*.gql` | каталога `packages/backend/src/backend` **не существует** | ✅ убрано |
-| `packages/frontend/tsconfig.json`: `"../../Autocomplete_old.tsx"` | файла **нет**, ссылка ведёт за пределы репозитория | ✅ убрано |
-| `packages/frontend/tsconfig.json`: `"svgr.d.ts"` | файла **нет** | ✅ убрано |
-| `packages/frontend/vercel.json` | зовёт `npm run build-storybook`, но такого скрипта **нет**; `outputDirectory: ./storybook-static` не создаётся | ✅ удалён |
-| `.husky/_/` | хуков нет, `husky` не установлен — каталог мёртвый | ✅ удалён |
-| `packages/backend/src/modules/*/**.graphql` | placeholder-схема (`exampleField`), не подключена ни к одному модулю | ✅ удалено |
-| `pnpm-workspace.yaml`: `onlyBuiltDependencies` | удалён в pnpm 11, заменён на `allowBuilds`; дублировал его | ✅ убрано |
-| `packages/backend/test/` | каталога нет, скрипт `test:e2e` битый | ⏳ см. #13 |
+| Что                                                               | Проблема                                                                                                       | Статус     |
+| ----------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | ---------- |
+| `codegen.ts`: `./packages/backend/src/backend/**/*.gql`           | каталога `packages/backend/src/backend` **не существует**                                                      | ✅ убрано  |
+| `packages/frontend/tsconfig.json`: `"../../Autocomplete_old.tsx"` | файла **нет**, ссылка ведёт за пределы репозитория                                                             | ✅ убрано  |
+| `packages/frontend/tsconfig.json`: `"svgr.d.ts"`                  | файла **нет**                                                                                                  | ✅ убрано  |
+| `packages/frontend/vercel.json`                                   | зовёт `npm run build-storybook`, но такого скрипта **нет**; `outputDirectory: ./storybook-static` не создаётся | ✅ удалён  |
+| `.husky/_/`                                                       | хуков нет, `husky` не установлен — каталог мёртвый                                                             | ✅ удалён  |
+| `packages/backend/src/modules/*/**.graphql`                       | placeholder-схема (`exampleField`), не подключена ни к одному модулю                                           | ✅ удалено |
+| `pnpm-workspace.yaml`: `onlyBuiltDependencies`                    | удалён в pnpm 11, заменён на `allowBuilds`; дублировал его                                                     | ✅ убрано  |
+| `packages/backend/test/`                                          | каталога нет, скрипт `test:e2e` битый                                                                          | ⏳ см. #13 |
 
 **Реализовано** в коммите `chore: убрать мёртвые пути и конфиги`.
 
@@ -420,26 +423,29 @@ jest, ts-jest, ts-node, tsconfig-paths, supertest, @types/jest, @types/supertest
 
 Новые файлы:
 
-| Файл | Назначение |
-|---|---|
-| `jest.config.js` | ESM-конфиг: `createDefaultEsmPreset`, `testRegex: .*\.spec\.ts$`, маппинг `@/*` из `tsconfig.json` |
-| `tsconfig.spec.json` | `types: [..., "jest"]`, чтобы spec-файлы видели `describe`/`it`/`expect` |
-| `tsconfig.build.json` | исключает `**/*.spec.ts` из `nest build` (`nest` подхватывает его автоматически) |
-| `src/utils/is-dev.utils.spec.ts` | первый тест, 3 кейса, 100 % покрытие утилиты |
+| Файл                             | Назначение                                                                                         |
+| -------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `jest.config.js`                 | ESM-конфиг: `createDefaultEsmPreset`, `testRegex: .*\.spec\.ts$`, маппинг `@/*` из `tsconfig.json` |
+| `tsconfig.spec.json`             | `types: [..., "jest"]`, чтобы spec-файлы видели `describe`/`it`/`expect`                           |
+| `tsconfig.build.json`            | исключает `**/*.spec.ts` из `nest build` (`nest` подхватывает его автоматически)                   |
+| `src/utils/is-dev.utils.spec.ts` | первый тест, 3 кейса, 100 % покрытие утилиты                                                       |
 
 **Три нетривиальных момента, выясненных эмпирически:**
 
 1. **ESM требует флаг `--experimental-vm-modules`.** Бэкенд — `"type": "module"`, поэтому `jest` без флага падает с `Must use import to load ES Module`. Скрипты переписаны на `node --experimental-vm-modules node_modules/jest/bin/jest.js` (запускать шим `node_modules/.bin/jest` напрямую нельзя — это shell-обёртка). Добавлен `--disable-warning=ExperimentalWarning`, иначе каждый прогон печатает предупреждение.
 
 2. **Цикл `require(esm)` в `graphql@17`.** `graphql` объявляет условие `module-sync`, из-за чего `require('graphql')` резолвится в `index.mjs`. CJS-пакеты `graphql-tag` (тянется `@nestjs/graphql`) и `graphql-ws` требуют его через `require()`, а Jest запрещает `require(esm)` в цикле:
-   ```
-   Cannot require() ES Module graphql/index.mjs in a cycle
-     (from graphql-tag/lib/graphql-tag.umd.js)
-   ```
-   Лечится маппингом на CJS-сборку того же пакета — путь вычисляется через `createRequire(...).resolve('graphql')`, без хардкода `.pnpm`:
-   ```js
-   '^graphql$': require.resolve('graphql').replace(/([\\/])index\.mjs$/, '$1index.js')
-   ```
+
+    ```
+    Cannot require() ES Module graphql/index.mjs in a cycle
+      (from graphql-tag/lib/graphql-tag.umd.js)
+    ```
+
+    Лечится маппингом на CJS-сборку того же пакета — путь вычисляется через `createRequire(...).resolve('graphql')`, без хардкода `.pnpm`:
+
+    ```js
+    '^graphql$': require.resolve('graphql').replace(/([\\/])index\.mjs$/, '$1index.js')
+    ```
 
 3. **В ESM-режиме нет глобального `jest`.** `jest.fn()` в тестах нужно импортировать явно: `import { jest } from '@jest/globals'`.
 
@@ -455,44 +461,44 @@ jest, ts-jest, ts-node, tsconfig-paths, supertest, @types/jest, @types/supertest
 
 **Backend — удалено:**
 
-| Пакет | Почему |
-|---|---|
-| `@nestjs/mapped-types` | `PartialType` берётся из `@nestjs/graphql`; пакет и так остаётся транзитивной зависимостью `@nestjs/graphql` |
-| `graphql-upload-ts` | загрузка через presigned URL в S3, скаляра `Upload` в схеме нет |
-| `source-map-support` | нет ни одного импорта |
-| `ts-loader` | `nest-cli.json` без `builder`, сборка через `tsc` |
-| `ts-node` | был нужен только битому `test:debug`; для ESM бесполезен (Jest использует `ts-jest`) |
-| `tsconfig-paths` | то же; `@nestjs/cli` тянет свою копию как зависимость |
-| `supertest`, `@types/supertest` | e2e-тестов нет; при появлении — вернуть |
+| Пакет                           | Почему                                                                                                       |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `@nestjs/mapped-types`          | `PartialType` берётся из `@nestjs/graphql`; пакет и так остаётся транзитивной зависимостью `@nestjs/graphql` |
+| `graphql-upload-ts`             | загрузка через presigned URL в S3, скаляра `Upload` в схеме нет                                              |
+| `source-map-support`            | нет ни одного импорта                                                                                        |
+| `ts-loader`                     | `nest-cli.json` без `builder`, сборка через `tsc`                                                            |
+| `ts-node`                       | был нужен только битому `test:debug`; для ESM бесполезен (Jest использует `ts-jest`)                         |
+| `tsconfig-paths`                | то же; `@nestjs/cli` тянет свою копию как зависимость                                                        |
+| `supertest`, `@types/supertest` | e2e-тестов нет; при появлении — вернуть                                                                      |
 
 **Backend — оставлено осознанно:**
 
-| Пакет | Почему |
-|---|---|
-| `rxjs` | peer `@nestjs/core` и `@nestjs/common` (не optional) |
-| `reflect-metadata` | peer Nest, нужен в рантайме для декораторов |
-| `pino`, `pino-http` | обязательные peer `nestjs-pino` (`peerDependenciesMeta` пустой) |
-| `pino-pretty` | используется строкой `target: 'pino-pretty'` в `logger.config.ts` — grep по импортам его не находит |
-| `@as-integrations/express5` | обязательный peer `@nestjs/apollo` |
-| `@nestjs/schematics` | используется `@nestjs/cli` при генерации; в `scripts` напрямую не виден |
+| Пакет                       | Почему                                                                                              |
+| --------------------------- | --------------------------------------------------------------------------------------------------- |
+| `rxjs`                      | peer `@nestjs/core` и `@nestjs/common` (не optional)                                                |
+| `reflect-metadata`          | peer Nest, нужен в рантайме для декораторов                                                         |
+| `pino`, `pino-http`         | обязательные peer `nestjs-pino` (`peerDependenciesMeta` пустой)                                     |
+| `pino-pretty`               | используется строкой `target: 'pino-pretty'` в `logger.config.ts` — grep по импортам его не находит |
+| `@as-integrations/express5` | обязательный peer `@nestjs/apollo`                                                                  |
+| `@nestjs/schematics`        | используется `@nestjs/cli` при генерации; в `scripts` напрямую не виден                             |
 
 **Frontend — удалено:**
 
-| Пакет | Почему |
-|---|---|
+| Пакет                       | Почему                                                                                                                   |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
 | `@googlemaps/js-api-loader` | `@vis.gl/react-google-maps` объявляет его своей зависимостью; в store была одна копия, прямая зависимость дублировала её |
-| `next-auth` | **не был настроен вообще** (см. ниже) |
+| `next-auth`                 | **не был настроен вообще** (см. ниже)                                                                                    |
 
 **Frontend — оставлено осознанно:**
 
-| Пакет | Почему |
-|---|---|
+| Пакет | Почему                                      |
+| ----- | ------------------------------------------- |
 | `zod` | по решению пользователя оставлен на будущее |
 
 **Корень — удалено:**
 
-| Пакет | Почему |
-|---|---|
+| Пакет                                  | Почему                                                              |
+| -------------------------------------- | ------------------------------------------------------------------- |
 | `class-validator`, `class-transformer` | нужны только бэкенду, там и объявлены; в корне никто не импортирует |
 
 #### Отдельная находка: `next-auth` не работал
@@ -549,10 +555,10 @@ class-transformer: root 0.5.1   |  backend ^0.5.1       ✅ убран из ко
 
 ### 13. Нет базовых скриптов и файлов
 
-| Отсутствует | Зачем нужно |
-|---|---|
-| ~~`.nvmrc` / `.node-version`~~ ✅ | при требовании `node >= 26` |
-| ~~`.editorconfig`~~ ✅ | `tabWidth: 4` задан только в prettier |
+| Отсутствует                       | Зачем нужно                           |
+| --------------------------------- | ------------------------------------- |
+| ~~`.nvmrc` / `.node-version`~~ ✅ | при требовании `node >= 26`           |
+| ~~`.editorconfig`~~ ✅            | `tabWidth: 4` задан только в prettier |
 
 Закрыто позже: `typecheck` и `lint` в корне (раздел D), `turbo` (раздел C), `.nvmrc` и `.editorconfig` (раздел 15).
 
@@ -582,14 +588,78 @@ packages/frontend/src/app/graphql/operations.ts
 
 Два отличия от «просто 4 везде»:
 
-| Секция | Значение | Почему |
-|---|---|---|
-| `[*.{yml,yaml}]` | `indent_size = 2` | `docker-compose.yml` и `pnpm-workspace.yaml` написаны с 2 пробелами; при 4 редактор переформатировал бы их на каждом сохранении |
-| `[*.md]` | `trim_trailing_whitespace = false` | в markdown два пробела в конце строки — значимый перенос строки |
+| Секция           | Значение                           | Почему                                                                                                                          |
+| ---------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `[*.{yml,yaml}]` | `indent_size = 2`                  | `docker-compose.yml` и `pnpm-workspace.yaml` написаны с 2 пробелами; при 4 редактор переформатировал бы их на каждом сохранении |
+| `[*.md]`         | `trim_trailing_whitespace = false` | в markdown два пробела в конце строки — значимый перенос строки                                                                 |
 
 Известное расхождение: `.prettierrc.json` задаёт `tabWidth: 4` для всех файлов, включая YAML, поэтому `pnpm-workspace.yaml` и `docker-compose.yml` не проходят `prettier --check`. Это было и до `.editorconfig` — правило для YAML его не создаёт, но и не решает: prettier не читает `.editorconfig`.
 
 Второе расхождение, тоже предсуществующее: 63 из 78 CSS-файлов написаны с отступом в 2 пробела, то есть не проходят `prettier --check` при `tabWidth: 4`. Специальное правило для CSS не добавлял — это увеличило бы область задачи, а не уменьшило расхождение.
+
+**Оба расхождения закрыты** отдельным коммитом, см. раздел 16.
+
+---
+
+### 16. YAML и CSS не проходили `prettier --check` ✅
+
+`prettier --check .` падал на **127 файлах**. По типам:
+
+| Тип              | Файлов | Что менялось                                   |
+| ---------------- | ------ | ---------------------------------------------- |
+| `css`            | 63     | отступ 2 → 4                                   |
+| `tsx`            | 37     | отступ 2 → 4, перенос строк, порядок импортов  |
+| `ts`             | 20     | то же                                          |
+| `yaml` / `yml`   | 3      | отступ и кавычки                               |
+| `md`             | 3      | отступ в списках, пустые строки перед списками |
+| `json`           | 2      | отступ 2 → 4                                   |
+| `pnpm-lock.yaml` | 1      | генерируемый — **исключён**                    |
+
+**Три отдельные причины, а не одна.**
+
+1. **`pnpm-lock.yaml` нельзя форматировать.** Prettier переписывает в нём 38 606 строк, а следующий `pnpm install` возвращает файл обратно — флапающий дифф, как в разделе 14. Добавлен в `.prettierignore`.
+
+2. **`next-env.d.ts` генерируется `next typegen`.** Тоже добавлен в `.prettierignore` (в git его нет, `.gitignore` фронтенда его исключает, но `prettier --check .` его видел).
+
+3. **YAML: конфликт `tabWidth`.** Prettier не читает `.editorconfig`, поэтому правило `[*.{yml,yaml}] indent_size = 2` из раздела 15 не влияло на проверку. Замер двух вариантов:
+
+| Вариант                          | Изменённых строк |
+| -------------------------------- | ---------------- |
+| `overrides` → YAML `tabWidth: 2` | 244              |
+| YAML при общем `tabWidth: 4`     | 212              |
+
+Объём почти одинаковый, но второй вариант переиндентировал бы YAML в 4 пробела и разошёлся бы с `.editorconfig`. Выбран **YAML = 2** через `overrides`:
+
+```json
+"overrides": [
+    {
+        "files": ["*.{yml,yaml}"],
+        "options": { "tabWidth": 2 }
+    }
+]
+```
+
+**Заодно `endOfLine: auto` → `lf`.** В репозитории было 6 файлов с CRLF (`NavTabs`, `CardEventMap`, `constants/map.ts`), а `.editorconfig` уже требовал LF. `auto` сохранял CRLF в этих файлах, то есть editorconfig нарушался. После перехода на `lf` все 6 нормализованы, `editorconfig-checker` даёт 0 нарушений по всему репозиторию (было 1274).
+
+**Проверено, что это только форматирование:**
+
+| Проверка                                           | Результат                                                                                                      |
+| -------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| CSS: сравнение без пробельных символов             | 63/63 файла идентичны — менялись только отступы                                                                |
+| TS/TSX: сравнение как множества непробельных строк | 38/57 идентичны; 19 — перенос строк внутри выражений (`Like`, `EventForm`, `Notifications`) и порядок импортов |
+| Саид-эффект-импорты (`import '...'`)               | ни один не переставлен                                                                                         |
+| `pnpm typecheck`                                   | `rc=0`                                                                                                         |
+| `pnpm lint`                                        | `rc=0`                                                                                                         |
+| `pnpm check:codegen`                               | `rc=0`, генераты не изменились                                                                                 |
+| `pnpm build`                                       | `rc=0` (2 задачи)                                                                                              |
+| `pnpm --filter backend test`                       | 3/3                                                                                                            |
+| `pnpm install --frozen-lockfile`                   | `rc=0`, `pnpm-lock.yaml` не изменился                                                                          |
+| `prettier --check .`                               | **зелёный**                                                                                                    |
+| YAML распарсен (`yaml.safe_load`)                  | 4/4 ок, `docker compose config` валиден                                                                        |
+
+Отдельно про GraphQL-запросы: prettier переносил аргументы в `getChildrenCommentsByParentId(...)` на отдельные строки. Это могло повлиять на codegen, поэтому `pnpm check:codegen` прогнан после форматирования — `operations.ts` и `graphql.ts` побайтно не изменились.
+
+**`README.md` не тронут:** prettier его не переформатировал (файл уже соответствовал), в дифф попала только правка `packages/web-frontend` → `packages/frontend`.
 
 ---
 
@@ -601,26 +671,26 @@ packages/frontend/src/app/graphql/operations.ts
 
 ```yaml
 catalog:
-  typescript: 6.0.3
-  graphql: ^17.1.0
-  class-validator: ^0.15.1
-  class-transformer: ^0.5.1
-  '@types/node': ^26.6.6
+    typescript: 6.0.3
+    graphql: ^17.1.0
+    class-validator: ^0.15.1
+    class-transformer: ^0.5.1
+    '@types/node': ^26.6.6
 
 packages:
-  - packages/*
+    - packages/*
 ```
 
 В пакетах: `"typescript": "catalog:"`. Одно место правки вместо трёх.
 
 **Сделано.** После #12 (`class-validator`/`class-transformer` уже убраны из корня) дублей осталось ровно 4:
 
-| Зависимость | Было | Стало |
-|---|---|---|
-| `typescript` | root `6.0.3`, backend `^6.0.3`, frontend `^6.0.3` | `catalog: 6.0.3` (точный пин по решению — TypeScript обновляется вручную) |
-| `graphql` | backend `^17.1.0`, frontend `^17.1.0` | `catalog: ^17.1.0` |
-| `graphql-ws` | backend `^6.4.1`, frontend `^6.4.1` | `catalog: ^6.4.1` |
-| `@types/node` | backend `^26.6.6`, frontend `^26.6.6` | `catalog: ^26.6.6` |
+| Зависимость   | Было                                              | Стало                                                                     |
+| ------------- | ------------------------------------------------- | ------------------------------------------------------------------------- |
+| `typescript`  | root `6.0.3`, backend `^6.0.3`, frontend `^6.0.3` | `catalog: 6.0.3` (точный пин по решению — TypeScript обновляется вручную) |
+| `graphql`     | backend `^17.1.0`, frontend `^17.1.0`             | `catalog: ^17.1.0`                                                        |
+| `graphql-ws`  | backend `^6.4.1`, frontend `^6.4.1`               | `catalog: ^6.4.1`                                                         |
+| `@types/node` | backend `^26.6.6`, frontend `^26.6.6`             | `catalog: ^26.6.6`                                                        |
 
 Важно: `typescript` в корне был запинен точно (`6.0.3`), а в пакетах — диапазоном `^6.0.3`. Каталог требует одно значение, выбран точный пин, чтобы не ослабить существующее ограничение.
 
@@ -636,9 +706,9 @@ packages:
 
 ```json
 {
-  "name": "@go-with-me/shared",
-  "private": true,
-  "exports": { "./graphql": "./graphql.ts" }
+    "name": "@go-with-me/shared",
+    "private": true,
+    "exports": { "./graphql": "./graphql.ts" }
 }
 ```
 
@@ -646,15 +716,15 @@ packages:
 
 Что подкручено:
 
-| Файл | Изменение |
-|---|---|
-| `codegen.ts` | выход `typescript`-плагина → `packages/shared/graphql.ts` |
-| `packages/frontend/next.config.js` | `transpilePackages: ['@go-with-me/shared']` |
-| `packages/frontend/package.json` | `"@go-with-me/shared": "workspace:*"` |
-| 38 импортов | `@/app/graphql/types` → `@go-with-me/shared/graphql` |
-| `eslint.config.cjs` | ignore переехал на новый путь |
-| `.prettierignore` | добавлены оба сгенерированных файла |
-| `package.json` | `check:codegen` сравнивает конкретные файлы, а не каталоги |
+| Файл                               | Изменение                                                  |
+| ---------------------------------- | ---------------------------------------------------------- |
+| `codegen.ts`                       | выход `typescript`-плагина → `packages/shared/graphql.ts`  |
+| `packages/frontend/next.config.js` | `transpilePackages: ['@go-with-me/shared']`                |
+| `packages/frontend/package.json`   | `"@go-with-me/shared": "workspace:*"`                      |
+| 38 импортов                        | `@/app/graphql/types` → `@go-with-me/shared/graphql`       |
+| `eslint.config.cjs`                | ignore переехал на новый путь                              |
+| `.prettierignore`                  | добавлены оба сгенерированных файла                        |
+| `package.json`                     | `check:codegen` сравнивает конкретные файлы, а не каталоги |
 
 Границы решения:
 
@@ -680,23 +750,23 @@ packages/frontend build → всегда полная сборка
 
 ```json
 {
-  "tasks": {
-    "build": {
-      "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".next/**", "!.next/cache/**", "!.next/dev/**"]
-    },
-    "dev": { "cache": false, "persistent": true }
-  }
+    "tasks": {
+        "build": {
+            "dependsOn": ["^build"],
+            "outputs": ["dist/**", ".next/**", "!.next/cache/**", "!.next/dev/**"]
+        },
+        "dev": { "cache": false, "persistent": true }
+    }
 }
 ```
 
 Корневой `build` заменён на `turbo run build`.
 
-| Сценарий | Было | Стало |
-|---|---|---|
-| холодная сборка | ~8.8 с | ~3.9 с |
-| повторная без изменений | ~3.9 с | **~0.13 с** (FULL TURBO) |
-| `.next`+`dist` удалены, кеш есть | ~8.8 с | **~0.27 с** |
+| Сценарий                         | Было   | Стало                    |
+| -------------------------------- | ------ | ------------------------ |
+| холодная сборка                  | ~8.8 с | ~3.9 с                   |
+| повторная без изменений          | ~3.9 с | **~0.13 с** (FULL TURBO) |
+| `.next`+`dist` удалены, кеш есть | ~8.8 с | **~0.27 с**              |
 
 Кеш восстанавливает артефакты целиком — проверено удалением `.next` и `dist`: после `turbo run build` на месте и `.next/standalone/.../server.js`, и `dist/main.js`.
 
@@ -719,8 +789,8 @@ Docker не тронут: `packages/*/Dockerfile` собирают напрям�
 
 ```yaml
 on:
-  pull_request:
-  workflow_call:        # переиспользуется деплоем
+    pull_request:
+    workflow_call: # переиспользуется деплоем
 ```
 
 Шаги: `pnpm install --frozen-lockfile` → `pnpm typecheck` → `pnpm lint` → `pnpm build` → `pnpm check:codegen`.
@@ -743,14 +813,14 @@ jobs:
 
 Новые скрипты в корневом `package.json`:
 
-| Скрипт | Что делает |
-|---|---|
-| `lint` | `eslint packages/frontend packages/backend` — без `--fix`, чтобы в CI падало, а не молча правило за собой |
-| `typegen` | `next typegen` — генерирует `next-env.d.ts` и `.next/types` |
-| `typecheck` | `typecheck:backend` + `typecheck:frontend` |
-| `typecheck:backend` | `tsc -p tsconfig.build.json --noEmit` |
-| `typecheck:frontend` | `typegen` + `tsc --noEmit` |
-| `check:codegen` | `pnpm codegen` + `git diff --exit-code` по сгенерированным путям |
+| Скрипт               | Что делает                                                                                                |
+| -------------------- | --------------------------------------------------------------------------------------------------------- |
+| `lint`               | `eslint packages/frontend packages/backend` — без `--fix`, чтобы в CI падало, а не молча правило за собой |
+| `typegen`            | `next typegen` — генерирует `next-env.d.ts` и `.next/types`                                               |
+| `typecheck`          | `typecheck:backend` + `typecheck:frontend`                                                                |
+| `typecheck:backend`  | `tsc -p tsconfig.build.json --noEmit`                                                                     |
+| `typecheck:frontend` | `typegen` + `tsc --noEmit`                                                                                |
+| `check:codegen`      | `pnpm codegen` + `git diff --exit-code` по сгенерированным путям                                          |
 
 Два неочевидных момента, без которых CI не работает:
 
@@ -788,52 +858,55 @@ jobs:
 
 ## Приоритетный план
 
-| # | Задача | Эффект | Риск |
-|---|---|---|---|
-| ~~1~~ | ~~Починить `frontend:dev`~~ ✅ `c81cff0` | Разработка | — |
-| ~~2~~ | ~~`ValidationPipe` в `main.ts`~~ ✅ `881ec1b` | Безопасность | — |
-| ~~3~~ | ~~`next-env.d.ts` из git + опечатка в `.gitignore`~~ ✅ `0560e39` | Чистота диффа | — |
-| ~~4~~ | ~~Убрать `yarn.lock`, `.yarn/`~~ ✅ `331ac2d` | −2 МБ, чистота | — |
-| ~~5~~ | ~~Тома `pnpm_store`~~ ✅ `215917f` | Чистота compose | — |
-| ~~6~~ | ~~`world_cities.json` 15 МБ → 1000 городов~~ ✅ `2a367cf` | −11 МБ JS | принят компромисс |
-| ~~7~~ | ~~`eslint-config-next` → 16.4.5~~ ✅ `a470e12` | Актуальные правила | — |
-| ~~8~~ | ~~Убрать мёртвые пути и конфиги~~ ✅ `9ab5b43` | Чистота | — |
-| ~~9~~ | ~~`noImplicitAny: true`~~ ✅ `5534ab5` | Типобезопасность | — |
-| ~~10~~ | ~~`catalog:` в pnpm-workspace.yaml~~ ✅ `471bf5f` | Единые версии | — |
-| ~~11~~ | ~~CI с проверками~~ ✅ | Не ломать main | — |
-| ~~12~~ | ~~Убрать неиспользуемые зависимости~~ ✅ −34 пакета | −размер, ясность | — |
-| ~~13~~ | ~~Решить судьбу Jest (починить или удалить)~~ ✅ починено | Ясность | — |
-| ~~14~~ | ~~`strictBindCallApply` + `strictPropertyInitialization`~~ ✅ `408a62a` | Типобезопасность | — |
-| ~~15~~ | ~~`.nvmrc` + `.editorconfig`~~ ✅ | Гигиена | — |
+| #      | Задача                                                                  | Эффект             | Риск              |
+| ------ | ----------------------------------------------------------------------- | ------------------ | ----------------- |
+| ~~1~~  | ~~Починить `frontend:dev`~~ ✅ `c81cff0`                                | Разработка         | —                 |
+| ~~2~~  | ~~`ValidationPipe` в `main.ts`~~ ✅ `881ec1b`                           | Безопасность       | —                 |
+| ~~3~~  | ~~`next-env.d.ts` из git + опечатка в `.gitignore`~~ ✅ `0560e39`       | Чистота диффа      | —                 |
+| ~~4~~  | ~~Убрать `yarn.lock`, `.yarn/`~~ ✅ `331ac2d`                           | −2 МБ, чистота     | —                 |
+| ~~5~~  | ~~Тома `pnpm_store`~~ ✅ `215917f`                                      | Чистота compose    | —                 |
+| ~~6~~  | ~~`world_cities.json` 15 МБ → 1000 городов~~ ✅ `2a367cf`               | −11 МБ JS          | принят компромисс |
+| ~~7~~  | ~~`eslint-config-next` → 16.4.5~~ ✅ `a470e12`                          | Актуальные правила | —                 |
+| ~~8~~  | ~~Убрать мёртвые пути и конфиги~~ ✅ `9ab5b43`                          | Чистота            | —                 |
+| ~~9~~  | ~~`noImplicitAny: true`~~ ✅ `5534ab5`                                  | Типобезопасность   | —                 |
+| ~~10~~ | ~~`catalog:` в pnpm-workspace.yaml~~ ✅ `471bf5f`                       | Единые версии      | —                 |
+| ~~11~~ | ~~CI с проверками~~ ✅                                                  | Не ломать main     | —                 |
+| ~~12~~ | ~~Убрать неиспользуемые зависимости~~ ✅ −34 пакета                     | −размер, ясность   | —                 |
+| ~~13~~ | ~~Решить судьбу Jest (починить или удалить)~~ ✅ починено               | Ясность            | —                 |
+| ~~14~~ | ~~`strictBindCallApply` + `strictPropertyInitialization`~~ ✅ `408a62a` | Типобезопасность   | —                 |
+| ~~15~~ | ~~`.nvmrc` + `.editorconfig`~~ ✅                                       | Гигиена            | —                 |
+| ~~16~~ | ~~YAML, CSS и конфиги приведены к prettier~~ ✅                         | Чистота диффа      | —                 |
 
 ---
 
 ## Что уже исправлено в этой сессии
 
-| Коммит | Что |
-|---|---|
-| `41ef453` | dev-контейнеры работают от пользователя `node` (uid 1000) |
-| `5fdb0f1` | относительные импорты → алиас `@/` (301 спецификатор, 92 файла) |
-| `80cd1d5` | prettier: `importOrderParserPlugins` с `decorators-legacy`; `schema.gql` в `.prettierignore` |
-| `54d22f4` | backend приведён к `tabWidth: 4` (137 файлов) |
-| `725e199` | `.DS_Store` удалён из индекса (9 файлов), добавлен в `.gitignore` |
-| `881ec1b` | `ValidationPipe` включён (`transform` + `exceptionFactory`), DTO валидируются |
-| `0560e39` | `next-env.d.ts` убран из индекса, правило в `.gitignore` исправлено |
-| `f5e70b5` | `removeTag` возвращает `Boolean` вместо `Tag` (схема + типы фронтенда) |
-| `c81cff0` | `frontend:dev` запускается через `-C packages/frontend` вместо `--filter` |
-| `331ac2d` | `yarn.lock` и `.yarn/` убраны из репозитория, добавлены в `.gitignore` |
-| `20e7f5f` | правила yarn убраны из `.gitignore`, файлы удалены с диска |
-| `215917f` | тома `pnpm_store` убраны из compose, `docs/local-dev-docker.md` обновлён |
-| `2a367cf` | `world_cities.json` сокращён с 15 МБ / 151 539 записей до 121 КБ / 1 000 |
-| `a470e12` | `eslint-config-next` 16.1.0 → `^16.4.5` (появилось правило `no-location-assign-relative-destination`) |
-| `ddb4b2d` | точечное подавление нового правила в фолбеке `logout()` |
+| Коммит    | Что                                                                                                                                              |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `41ef453` | dev-контейнеры работают от пользователя `node` (uid 1000)                                                                                        |
+| `5fdb0f1` | относительные импорты → алиас `@/` (301 спецификатор, 92 файла)                                                                                  |
+| `80cd1d5` | prettier: `importOrderParserPlugins` с `decorators-legacy`; `schema.gql` в `.prettierignore`                                                     |
+| `54d22f4` | backend приведён к `tabWidth: 4` (137 файлов)                                                                                                    |
+| `725e199` | `.DS_Store` удалён из индекса (9 файлов), добавлен в `.gitignore`                                                                                |
+| `881ec1b` | `ValidationPipe` включён (`transform` + `exceptionFactory`), DTO валидируются                                                                    |
+| `0560e39` | `next-env.d.ts` убран из индекса, правило в `.gitignore` исправлено                                                                              |
+| `f5e70b5` | `removeTag` возвращает `Boolean` вместо `Tag` (схема + типы фронтенда)                                                                           |
+| `c81cff0` | `frontend:dev` запускается через `-C packages/frontend` вместо `--filter`                                                                        |
+| `331ac2d` | `yarn.lock` и `.yarn/` убраны из репозитория, добавлены в `.gitignore`                                                                           |
+| `20e7f5f` | правила yarn убраны из `.gitignore`, файлы удалены с диска                                                                                       |
+| `215917f` | тома `pnpm_store` убраны из compose, `docs/local-dev-docker.md` обновлён                                                                         |
+| `2a367cf` | `world_cities.json` сокращён с 15 МБ / 151 539 записей до 121 КБ / 1 000                                                                         |
+| `a470e12` | `eslint-config-next` 16.1.0 → `^16.4.5` (появилось правило `no-location-assign-relative-destination`)                                            |
+| `ddb4b2d` | точечное подавление нового правила в фолбеке `logout()`                                                                                          |
 | `9ab5b43` | мёртвые пути и конфиги убраны: `codegen.ts`, `tsconfig.json` фронтенда, `vercel.json`, `.husky`, `onlyBuiltDependencies`, placeholder-`.graphql` |
-| `e3206f7` | конфиг Jest в ESM-режиме, первый тест на `formatDate` (3 кейса) |
-| `4605f32` | 34 неиспользуемые зависимости убраны (−336 строк lockfile) |
-| `3911097` | неработающий `signOut` из `next-auth` заменён на `logout()` |
-| `5534ab5` | `noImplicitAny: true` на backend, 147 мест явно типизированы |
-| `471bf5f` | общие версии вынесены в `catalog:` (`typescript`, `graphql`, `graphql-ws`, `@types/node`) |
-| `598cf42` | CI на PR и перед деплоем (reusable workflow), `check:codegen` |
-| `e0151c5` | типы GraphQL-схемы вынесены в `packages/shared` |
-| `1f6bd10` | сборка кешируется через Turborepo (`.turbo/` в ignore) |
-| `408a62a` | `strictPropertyInitialization` и `strictBindCallApply` включены (147 `!`) |
+| `e3206f7` | конфиг Jest в ESM-режиме, первый тест на `formatDate` (3 кейса)                                                                                  |
+| `4605f32` | 34 неиспользуемые зависимости убраны (−336 строк lockfile)                                                                                       |
+| `3911097` | неработающий `signOut` из `next-auth` заменён на `logout()`                                                                                      |
+| `5534ab5` | `noImplicitAny: true` на backend, 147 мест явно типизированы                                                                                     |
+| `471bf5f` | общие версии вынесены в `catalog:` (`typescript`, `graphql`, `graphql-ws`, `@types/node`)                                                        |
+| `598cf42` | CI на PR и перед деплоем (reusable workflow), `check:codegen`                                                                                    |
+| `e0151c5` | типы GraphQL-схемы вынесены в `packages/shared`                                                                                                  |
+| `1f6bd10` | сборка кешируется через Turborepo (`.turbo/` в ignore)                                                                                           |
+| `408a62a` | `strictPropertyInitialization` и `strictBindCallApply` включены (147 `!`)                                                                        |
+| `09ce2f5` | `.nvmrc` и `.editorconfig` добавлены                                                                                                             |
+| `PENDING` | YAML и CSS приведены к prettier, `endOfLine: lf`, lock и `next-env.d.ts` в `.prettierignore`                                                     |
