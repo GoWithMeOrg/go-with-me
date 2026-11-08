@@ -22,7 +22,7 @@
         "check:codegen": "pnpm codegen && git diff --exit-code -- packages/backend/src/schema/schema.gql packages/shared/graphql.ts packages/frontend/src/app/graphql/operations.ts",
         "frontend:format": "prettier packages/frontend -w",
         "backend:format": "prettier packages/backend -w",
-        "import:mongo": "./scripts/import-mongo-data.sh",
+        "import:mongo": "./import-mongo-data.sh",
         "codegen": "graphql-codegen --config codegen.ts",
         "prepare": "pnpm codegen"
     },
