@@ -45,7 +45,11 @@ async function bootstrap() {
 
     const configService = app.get(ConfigService);
 
-    if (!isDev || configService.getOrThrow('TRUST_PROXY') === true) {
+    // TRUST_PROXY приходит из env строкой, поэтому сравнивать с true напрямую
+    // нельзя. В проде доверяем прокси всегда, в dev — только по явному флагу.
+    const trustProxy = String(configService.get('TRUST_PROXY') ?? '').toLowerCase() === 'true';
+
+    if (!isDev(configService) || trustProxy) {
         app.getHttpAdapter().getInstance().set('trust proxy', 1);
     }
 
