@@ -909,4 +909,4 @@ jobs:
 | `1f6bd10` | сборка кешируется через Turborepo (`.turbo/` в ignore)                                                                                           |
 | `408a62a` | `strictPropertyInitialization` и `strictBindCallApply` включены (147 `!`)                                                                        |
 | `09ce2f5` | `.nvmrc` и `.editorconfig` добавлены                                                                                                             |
-| `PENDING` | YAML и CSS приведены к prettier, `endOfLine: lf`, lock и `next-env.d.ts` в `.prettierignore`                                                     |
+| `9e8da61` | YAML и CSS приведены к prettier, `endOfLine: lf`, lock и `next-env.d.ts` в `.prettierignore`                                                     |
