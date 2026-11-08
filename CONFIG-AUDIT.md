@@ -543,11 +543,10 @@ class-transformer: root 0.5.1   |  backend ^0.5.1       ✅ убран из ко
 
 | Отсутствует | Зачем нужно |
 |---|---|
-| `typecheck` (`tsc --noEmit`) | нет ни в одном пакете |
 | `.nvmrc` / `.node-version` | при требовании `node >= 26` |
 | `.editorconfig` | `tabWidth: 4` задан только в prettier |
-| `lint` в `packages/frontend/package.json` | только корневой `frontend:lint` |
-| `turbo` / `nx` | нет кеша задач, `pnpm build` пересобирает всё всегда |
+
+Закрыто позже: `typecheck` и `lint` в корне (раздел D), `turbo` (раздел C).
 
 ### 14. `.prettierignore` не покрывает генерируемые файлы ✅
 
@@ -639,9 +638,9 @@ packages:
 
 **Проверено:** `pnpm install --frozen-lockfile`, `pnpm typecheck`, `pnpm lint`, `pnpm build`, `pnpm check:codegen`, тесты бэкенда (3/3), `next dev` (200 на `/` и `/events`), Docker-образ и запуск контейнера (200), standalone-сервер из `.next/standalone` (200). Детектор дрейфа codegen проверен искусственной правкой схемы → `rc=1`.
 
-### C. Turbo для кеширования сборки
+### C. Turbo для кеширования сборки ✅
 
-Сейчас:
+Было:
 
 ```
 $ pnpm build
@@ -649,7 +648,40 @@ packages/backend  build → всегда полная сборка
 packages/frontend build → всегда полная сборка
 ```
 
-С `turbo.json` и хешированием по входным файлам повторная сборка без изменений — мгновенная. Особенно окупается в CI.
+**Сделано.** Добавлен `turbo` (2.11.10) и `turbo.json`:
+
+```json
+{
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**", "!.next/dev/**"]
+    },
+    "dev": { "cache": false, "persistent": true }
+  }
+}
+```
+
+Корневой `build` заменён на `turbo run build`.
+
+| Сценарий | Было | Стало |
+|---|---|---|
+| холодная сборка | ~8.8 с | ~3.9 с |
+| повторная без изменений | ~3.9 с | **~0.13 с** (FULL TURBO) |
+| `.next`+`dist` удалены, кеш есть | ~8.8 с | **~0.27 с** |
+
+Кеш восстанавливает артефакты целиком — проверено удалением `.next` и `dist`: после `turbo run build` на месте и `.next/standalone/.../server.js`, и `dist/main.js`.
+
+Настройка `outputs` важна: без неё Turbo не кеширует файлы вообще, только логи. Next-специфичные исключения `!.next/cache/**` и `!.next/dev/**` не дают кешу раздуваться внутренним кешем самого Next.
+
+Тонкость, которую пришлось выяснить: `.turbo/` создаётся **внутри каждого пакета**, и пока он не был в `.gitignore`, Turbo хешировал свои же кеш-файлы, из-за чего хеш менялся на каждом прогоне и кеш не срабатывал никогда (`0 cached`). Достаточно добавить `.turbo/` в `.gitignore` (и в `.dockerignore`, чтобы не тащить кеш в контекст сборки).
+
+Проверено, что инвалидация корректна:
+
+- правка `packages/shared/graphql.ts` (файл **вне** каталога фронтенда) → кеш фронтенда сбрасывается, бэкенд остаётся `HIT`;
+- правка файла фронтенда → сбрасывается только фронтенд.
+
+Docker не тронут: `packages/*/Dockerfile` собирают напрямую через `pnpm --filter … run build`, Turbo в образы не попадает — там кеша между слоями всё равно нет.
 
 ### D. CI-проверки перед деплоем ✅
 
@@ -699,7 +731,7 @@ jobs:
 
 Обновлены также версии actions в деплое: `actions/checkout@v4 → v7`, `dorny/paths-filter@v3 → v4`.
 
-### E. Автоматизировать codegen
+### E. Автоматизировать codegen ✅
 
 Добавить `prepare` или git-hook:
 
@@ -708,6 +740,21 @@ jobs:
 ```
 
 Либо pre-commit через husky: если `packages/backend/src/schema/schema.gql` изменился — запустить codegen.
+
+**Сделано** первым вариантом: `"prepare": "pnpm codegen"` (husky из репозитория удалён в #8, возвращать его ради этого не стали).
+
+Уточнение по поведению pnpm, которое важно понимать: `prepare` запускается при **свежей** установке (новый клон, CI, `docker build`), но пропускается при повторной, если манифесты не менялись — это `optimisticRepeatInstall` (в pnpm включён по умолчанию). Для задачи это ровно то, что нужно: типы обновляются там, где `node_modules` ставится с нуля.
+
+Проверено на реальных продакшн-образах (`packages/*/Dockerfile`, `--no-cache`):
+
+```
+#11 [builder 2/3] RUN pnpm install --frozen-lockfile
+#11 . prepare$ pnpm codegen
+#11 . prepare: ❯ Generate to packages/shared/graphql.ts
+#11 . prepare: ❯ Generate to packages/frontend/src/app/graphql/operations.ts
+```
+
+То есть к моменту `next build` / `nest build` типы уже соответствуют схеме, и `check:codegen` в CI перестаёт быть единственной защитой.
 
 ---
 
@@ -757,3 +804,4 @@ jobs:
 | `5534ab5` | `noImplicitAny: true` на backend, 147 мест явно типизированы |
 | `471bf5f` | общие версии вынесены в `catalog:` (`typescript`, `graphql`, `graphql-ws`, `@types/node`) |
 | `598cf42` | CI на PR и перед деплоем (reusable workflow), `check:codegen` |
+| `e0151c5` | типы GraphQL-схемы вынесены в `packages/shared` |
