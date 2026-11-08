@@ -5,6 +5,9 @@
     "scripts": {
         "dev": "next dev --turbo",
         "build": "next build",
+        "lint": "eslint .",
+        "typecheck": "next typegen && tsc --noEmit",
+        "test:e2e": "playwright test --config tests/playwright.config.ts",
         "start": "next start"
     },
     "engines": {

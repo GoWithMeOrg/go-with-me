@@ -1,9 +1,25 @@
 {
     "$schema": "https://turborepo.dev/schema.json",
+    "globalEnv": ["NODE_ENV"],
     "tasks": {
         "build": {
             "dependsOn": ["^build"],
+            "env": ["NEXT_PUBLIC_*"],
             "outputs": ["dist/**", ".next/**", "!.next/cache/**", "!.next/dev/**"]
+        },
+        "typecheck": {
+            "dependsOn": ["^build"],
+            "outputs": []
+        },
+        "lint": {
+            "outputs": []
+        },
+        "test": {
+            "outputs": []
+        },
+        "test:e2e": {
+            "dependsOn": ["build"],
+            "cache": false
         },
         "dev": {
             "cache": false,
