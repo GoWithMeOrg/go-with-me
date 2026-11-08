@@ -1,17 +1,22 @@
 import { useEventFilters } from '@/components/widgets/EventFilters/hooks/useEventFilters';
-import { faker } from '@faker-js/faker';
 
-import cities from '../world_cities.json';
+type City = { country: string; name: string; lat: string; lng: string };
 
 export const useGeneratorLocation = () => {
     const { selectedLocation, setSelectedLocation } = useEventFilters();
 
-    const generateLocation = () => {
+    // Города подгружаем по требованию: статический импорт тянул ~120 КБ JSON
+    // в основной бандл страницы /generator.
+    const generateLocation = async () => {
         let randomCityData: { lng: number; lat: number; address: string };
 
         if (!selectedLocation) {
+            const { default: cities } = (await import('../world_cities.json')) as {
+                default: City[];
+            };
+
             if (Array.isArray(cities) && cities.length > 0) {
-                const random = faker.helpers.arrayElement(cities);
+                const random = cities[Math.floor(Math.random() * cities.length)];
                 randomCityData = {
                     lng: parseFloat(random.lng),
                     lat: parseFloat(random.lat),
