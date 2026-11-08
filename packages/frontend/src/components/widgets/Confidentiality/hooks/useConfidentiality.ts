@@ -4,8 +4,8 @@ import { useCallback, useMemo, useState } from 'react';
 import { UPDATE_PRIVACY_SETTING } from '@/app/graphql/mutations/privacySetting';
 import { GET_COMPANIONS_BY_OWNER_ID } from '@/app/graphql/queries/companions';
 import { GET_MY_PRIVACY_SETTING } from '@/app/graphql/queries/privacySetting';
-import { PrivacyVisibility } from '@/app/graphql/types';
 import { useMutation, useQuery } from '@apollo/client/react';
+import { PrivacyVisibility } from '@go-with-me/shared/graphql';
 
 export const useConfidentiality = () => {
     const { data, loading: privacyLoading } = useQuery(GET_MY_PRIVACY_SETTING);

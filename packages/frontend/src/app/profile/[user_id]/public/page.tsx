@@ -1,6 +1,5 @@
 'use client';
 
-import { Event } from '@/app/graphql/types';
 import Envelope from '@/assets/icons/envelope.svg';
 import Marker from '@/assets/icons/marker.svg';
 import { Avatar } from '@/components/shared/Avatar';
@@ -20,6 +19,7 @@ import { DialogModal } from '@/components/widgets/DialogModal';
 import { DialogMode } from '@/components/widgets/DialogModal/DialogModal';
 import { InvationEvent } from '@/components/widgets/DialogModal/InvationEvent';
 import SuccessModal from '@/components/widgets/SuccessModal/SuccessModal';
+import { Event } from '@go-with-me/shared/graphql';
 import { NextPage } from 'next';
 
 import { usePublicProfile } from './hooks';

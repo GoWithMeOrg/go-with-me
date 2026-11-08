@@ -3,7 +3,6 @@
 import { FC } from 'react';
 import { GET_FIND_COMPANION } from '@/app/graphql/queries/companions';
 import { FIND_BY_EMAIL_OR_NAME } from '@/app/graphql/queries/users';
-import { User } from '@/app/graphql/types';
 import { Button } from '@/components/shared/Button';
 import { FilteredList } from '@/components/shared/FilteredList';
 import { Popup } from '@/components/shared/Popup';
@@ -14,6 +13,7 @@ import { CardCompanion } from '@/components/widgets/CardCompanion';
 import { DialogModal, DialogMode } from '@/components/widgets/DialogModal/DialogModal';
 import { InvationEvent } from '@/components/widgets/DialogModal/InvationEvent/InvationEvent';
 import { SuccessModal } from '@/components/widgets/SuccessModal/SuccessModal';
+import { User } from '@go-with-me/shared/graphql';
 
 import { SearchInput } from '../SearchInput';
 import { useSearchInput } from '../SearchInput/hooks/useSearchInput';

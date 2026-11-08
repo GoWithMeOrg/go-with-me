@@ -1,3 +1,3 @@
-import type { Event } from '@/app/graphql/types';
+import type { Event } from '@go-with-me/shared/graphql';
 
 export type IEvent = Event;

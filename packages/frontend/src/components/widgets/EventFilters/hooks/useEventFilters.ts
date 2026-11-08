@@ -1,9 +1,9 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { Event } from '@/app/graphql/types';
 import { PlaceType } from '@/components/widgets/MapComponents/types/types';
 import { useQuery } from '@apollo/client/react';
+import { Event } from '@go-with-me/shared/graphql';
 import dayjs from 'dayjs';
 import gql from 'graphql-tag';
 

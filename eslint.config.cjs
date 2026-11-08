@@ -58,7 +58,7 @@ module.exports = [
             '**/.turbo/**',
             '**/.agents/**',
             '**/next-env.d.ts',
-            'packages/frontend/src/app/graphql/types.ts',
+            'packages/shared/graphql.ts',
             'packages/frontend/src/app/graphql/operations.ts',
             'packages/backend/src/schema/schema.gql',
         ],

@@ -1,5 +1,5 @@
-import { Event } from '@/app/graphql/types';
 import { SizeCard } from '@/components/widgets/CardEvent/CardEvent';
+import { Event } from '@go-with-me/shared/graphql';
 
 export interface EventListProps {
     sizeCard: SizeCard;

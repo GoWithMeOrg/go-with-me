@@ -3,6 +3,9 @@
 const nextConfig = {
     allowedDevOrigins: ['tribeplans.dev', 'dev.tribeplans.ru'],
     output: 'standalone',
+    // packages/shared поставляется TS-исходниками без шага сборки,
+    // поэтому Next должен компилировать его сам.
+    transpilePackages: ['@go-with-me/shared'],
     images: {
         // remotePatterns: [
         //     {

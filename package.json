@@ -19,7 +19,7 @@
         "typecheck": "pnpm typecheck:backend && pnpm typecheck:frontend",
         "typecheck:backend": "pnpm -C packages/backend exec tsc -p tsconfig.build.json --noEmit",
         "typecheck:frontend": "pnpm typegen && pnpm -C packages/frontend exec tsc --noEmit",
-        "check:codegen": "pnpm codegen && git diff --exit-code -- packages/backend/src/schema packages/frontend/src/app/graphql",
+        "check:codegen": "pnpm codegen && git diff --exit-code -- packages/backend/src/schema/schema.gql packages/shared/graphql.ts packages/frontend/src/app/graphql/operations.ts",
         "frontend:format": "prettier packages/frontend -w",
         "backend:format": "prettier packages/backend -w",
         "import:mongo": "./scripts/import-mongo-data.sh",

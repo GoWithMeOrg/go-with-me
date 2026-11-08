@@ -10,9 +10,9 @@ import {
     SendRequestCompanionMutation,
     SendRequestCompanionMutationVariables,
 } from '@/app/graphql/operations';
-import { User } from '@/app/graphql/types';
 import { useUserID } from '@/hooks/useUserID';
 import { useMutation, useQuery } from '@apollo/client/react';
+import { User } from '@go-with-me/shared/graphql';
 
 import { useSearchInput } from '../../SearchInput/hooks/useSearchInput';
 

@@ -1,9 +1,9 @@
 'use client';
 
 import { FC } from 'react';
-import type { Event } from '@/app/graphql/types';
 import { Backdrop } from '@/components/widgets/Backdrop';
 import { CardEvent } from '@/components/widgets/CardEvent';
+import type { Event } from '@go-with-me/shared/graphql';
 
 import { useEventList } from './hooks';
 import { EventListProps } from './types/EventList';

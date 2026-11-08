@@ -1,6 +1,6 @@
 import Spinner from '@/assets/icons/spinner.svg';
 import { MessageContainer } from '@/components/shared/MessageContainer/MessageContainer';
-import { Comment as CommentType } from '@/app/graphql/types';
+import { Comment as CommentType } from '@go-with-me/shared/graphql';
 import { Comment } from './Comment';
 
 import classes from './Comment.module.css';

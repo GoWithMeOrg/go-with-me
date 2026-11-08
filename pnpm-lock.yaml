@@ -412,6 +412,9 @@ importers:
       '@faker-js/faker':
         specifier: ^10.6.0
         version: 10.6.0
+      '@go-with-me/shared':
+        specifier: workspace:*
+        version: link:../shared
       '@graphql-typed-document-node/core':
         specifier: ^3.2.0
         version: 3.2.0(graphql@17.1.0)
@@ -479,6 +482,8 @@ importers:
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
+
+  packages/shared: {}
 
 packages:
 

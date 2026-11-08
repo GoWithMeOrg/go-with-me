@@ -1,4 +1,4 @@
-import { PrivacyVisibility } from '@/app/graphql/types';
+import { PrivacyVisibility } from '@go-with-me/shared/graphql';
 
 export const VISIBILITY_OPTIONS = [
     { key: 'Everyone', label: 'All users' },

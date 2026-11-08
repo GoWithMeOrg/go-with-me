@@ -1,4 +1,4 @@
-import { Comment as CommentType, OwnerType } from '@/app/graphql/types';
+import { Comment as CommentType, OwnerType } from '@go-with-me/shared/graphql';
 
 export const buildOptimisticComment = (
     content: string,

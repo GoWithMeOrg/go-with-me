@@ -1,6 +1,6 @@
 import { RefObject } from 'react';
-import type { Event, Privacy } from '@/app/graphql/types';
 import { LocationType } from '@/components/widgets/MapComponents/types/types';
+import type { Event, Privacy } from '@go-with-me/shared/graphql';
 
 export type EventFormData = {
     name: string;

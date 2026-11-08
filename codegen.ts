@@ -8,13 +8,12 @@ const config: CodegenConfig = {
         'packages/frontend/src/app/graphql/queries/*.{ts,tsx}',
         'packages/frontend/src/app/graphql/mutations/*.{ts,tsx}',
         'packages/frontend/src/app/graphql/subscriptions/*.{ts,tsx}',
-
     ],
 
     ignoreNoDocuments: true,
 
     generates: {
-        'packages/frontend/src/app/graphql/types.ts': {
+        'packages/shared/graphql.ts': {
             plugins: ['typescript'],
             config: {
                 avoidOptionals: false,

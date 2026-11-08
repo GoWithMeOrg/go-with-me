@@ -1,8 +1,8 @@
 import { TOGGLE_JOIN_MUTATION } from '@/app/graphql/mutations/join';
 import { GET_JOINED_USERS_BY_OWNER_ID, IS_JOINED_BY_USER } from '@/app/graphql/queries/join';
-import { Join } from '@/app/graphql/types';
 import { JoinProps } from '@/components/widgets/Join/interfaces/JoinProps';
 import { useMutation, useQuery } from '@apollo/client/react';
+import { Join } from '@go-with-me/shared/graphql';
 
 const useJoin = ({ owner_id, ownerType }: JoinProps) => {
     const [toggleJoin] = useMutation(TOGGLE_JOIN_MUTATION);

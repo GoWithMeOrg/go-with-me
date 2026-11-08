@@ -549,16 +549,18 @@ class-transformer: root 0.5.1   |  backend ^0.5.1       ✅ убран из ко
 | `lint` в `packages/frontend/package.json` | только корневой `frontend:lint` |
 | `turbo` / `nx` | нет кеша задач, `pnpm build` пересобирает всё всегда |
 
-### 14. `.prettierignore` не покрывает генерируемые файлы
+### 14. `.prettierignore` не покрывает генерируемые файлы ✅
 
 `codegen.ts` пишет в:
 
 ```
-packages/frontend/src/app/graphql/types.ts
+packages/shared/graphql.ts
 packages/frontend/src/app/graphql/operations.ts
 ```
 
-Эти пути есть в `eslint.config.cjs` (ignores), но **нет** в `.prettierignore`. Форматирование их перепишет, следующий `pnpm codegen` вернёт обратно — флапающий дифф.
+Эти пути есть в `eslint.config.cjs` (ignores), но **не было** в `.prettierignore`. Форматирование их переписывало, следующий `pnpm codegen` возвращал обратно — флапающий дифф.
+
+**Сделано:** оба пути добавлены в `.prettierignore` (вместе с переносом `types.ts` → `packages/shared/graphql.ts`, см. раздел B).
 
 **Фикс:** добавить оба пути в `.prettierignore`.
 
@@ -599,11 +601,43 @@ packages:
 
 **Проверено:** `pnpm install --frozen-lockfile`, `pnpm build`, `pnpm --filter backend test`, оба линтера, `pnpm codegen` — схема и типы фронтенда не изменились.
 
-### B. Вынести общие типы в `packages/shared`
+### B. Вынести общие типы в `packages/shared` ✅
 
-Сейчас `packages/frontend/src/app/graphql/types.ts` (32 КБ) генерируется из бэкенд-схемы и лежит внутри фронтенд-приложения. При появлении третьего потребителя (мобильный клиент, e2e-тесты) придётся копировать.
+Сгенерированные типы схемы лежали внутри фронтенд-приложения (`packages/frontend/src/app/graphql/types.ts`). При появлении третьего потребителя (мобильный клиент, e2e-тесты) их пришлось бы копировать.
 
-Пакет `packages/shared` с типами и общими enum'ами (`OwnerType`, `Privacy`, `Action`, `CompanionRequestStatus`) уберёт дублирование.
+**Сделано.** Создан `packages/shared` с единственным полем `exports`:
+
+```json
+{
+  "name": "@go-with-me/shared",
+  "private": true,
+  "exports": { "./graphql": "./graphql.ts" }
+}
+```
+
+Файл `graphql.ts` — это бывший `types.ts`, перенесён через `git mv` (история сохранена), генерируется туда же codegen'ом. Пакет поставляется **TS-исходниками без шага сборки**: своего `build` у него нет, а `pnpm --filter "*" build` пакеты без этого скрипта просто пропускает, поэтому в существующем порядке сборки ничего не меняется и добавлять зависимости в Docker/CI не пришлось.
+
+Что подкручено:
+
+| Файл | Изменение |
+|---|---|
+| `codegen.ts` | выход `typescript`-плагина → `packages/shared/graphql.ts` |
+| `packages/frontend/next.config.js` | `transpilePackages: ['@go-with-me/shared']` |
+| `packages/frontend/package.json` | `"@go-with-me/shared": "workspace:*"` |
+| 38 импортов | `@/app/graphql/types` → `@go-with-me/shared/graphql` |
+| `eslint.config.cjs` | ignore переехал на новый путь |
+| `.prettierignore` | добавлены оба сгенерированных файла |
+| `package.json` | `check:codegen` сравнивает конкретные файлы, а не каталоги |
+
+Границы решения:
+
+- Типы **схемы** переехали, `operations.ts` (140 КБ типов запросов фронтенда) остался на месте — он к схеме не относится и другим потребителям не нужен.
+- Бэкенд не тронут: enum'ы объявлены там руками и регистрируются через `registerEnumType`, переносить их в общий пакет пришлось бы вместе с шагом сборки в `dist` (для `nodenext` TS-исходники из `node_modules` не компилируются), а это усложнило бы Docker и порядок сборки. Пока у общего enum'а нет второго потребителя, выгоды нет.
+- `check:codegen` пришлось сузить с каталогов до трёх файлов: `packages/frontend/src/app/graphql` содержит ещё и `queries/`/`mutations/`, то есть руки, а не только генерацию. С каталогом проверка падала на любой правке запроса.
+
+**Побочный эффект:** `.prettierignore` теперь покрывает оба сгенерированных файла — раньше `prettier -w` переформатировал их в 4 пробела, а следующий `pnpm codegen` возвращал 2, давая флапающий дифф.
+
+**Проверено:** `pnpm install --frozen-lockfile`, `pnpm typecheck`, `pnpm lint`, `pnpm build`, `pnpm check:codegen`, тесты бэкенда (3/3), `next dev` (200 на `/` и `/events`), Docker-образ и запуск контейнера (200), standalone-сервер из `.next/standalone` (200). Детектор дрейфа codegen проверен искусственной правкой схемы → `rc=1`.
 
 ### C. Turbo для кеширования сборки
 
@@ -722,3 +756,4 @@ jobs:
 | `3911097` | неработающий `signOut` из `next-auth` заменён на `logout()` |
 | `5534ab5` | `noImplicitAny: true` на backend, 147 мест явно типизированы |
 | `471bf5f` | общие версии вынесены в `catalog:` (`typescript`, `graphql`, `graphql-ws`, `@types/node`) |
+| `598cf42` | CI на PR и перед деплоем (reusable workflow), `check:codegen` |

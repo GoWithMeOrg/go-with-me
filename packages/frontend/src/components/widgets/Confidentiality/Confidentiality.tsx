@@ -1,11 +1,11 @@
 'use client';
 
 import { FC } from 'react';
-import { PrivacyVisibility } from '@/app/graphql/types';
 import { Button } from '@/components/shared/Button';
 import { Dropdown } from '@/components/shared/Dropdown';
 import { Span } from '@/components/shared/Span';
 import { PrivacySelector } from '@/components/widgets/PrivacySelector';
+import { PrivacyVisibility } from '@go-with-me/shared/graphql';
 
 import { VISIBILITY_MAP, VISIBILITY_OPTIONS } from './constants';
 import { useConfidentiality } from './hooks/useConfidentiality';

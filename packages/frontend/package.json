@@ -13,6 +13,7 @@
     "dependencies": {
         "@apollo/client": "^4.3.7",
         "@faker-js/faker": "^10.6.0",
+        "@go-with-me/shared": "workspace:*",
         "@graphql-typed-document-node/core": "^3.2.0",
         "@vis.gl/react-google-maps": "^1.10.2",
         "dayjs": "^1.11.23",

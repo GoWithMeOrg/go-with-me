@@ -1,9 +1,9 @@
 'use client';
 
 import { memo, useCallback, useState } from 'react';
-import { Comment as CommentType } from '@/app/graphql/types';
 import { Avatar } from '@/components/shared/Avatar';
 import { useUserID } from '@/hooks/useUserID';
+import { Comment as CommentType } from '@go-with-me/shared/graphql';
 
 import { useLikesContext } from '../LikesContext';
 import { CommentContent } from './CommentContent';

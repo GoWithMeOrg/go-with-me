@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { CREATE_COMMENT_MUTATION, REMOVE_COMMENT_MUTATION } from '@/app/graphql/mutations/comment';
 import { GET_PARENT_COMMENTS_BY_OWNER_ID } from '@/app/graphql/queries/comment';
-import { Comment as CommentType, OwnerType } from '@/app/graphql/types';
 import { useLazyQuery, useMutation } from '@apollo/client/react';
+import { Comment as CommentType, OwnerType } from '@go-with-me/shared/graphql';
 
 import { buildOptimisticComment } from './commentUtils';
 
