@@ -317,7 +317,7 @@ window.location.href = '/';
 
 Проверено: `pnpm frontend:lint` и `pnpm backend:lint` — 0 проблем, `tsc --noEmit` (frontend) — чисто, `pnpm build` проходит.
 
-### 8. Бэкенд собирается без `strict` ⚠️ частично
+### 8. Бэкенд собирается без `strict` ✅
 
 ```json
 // packages/backend/tsconfig.json — было
@@ -329,9 +329,9 @@ window.location.href = '/';
 
 Фронтенд — `"strict": true`. Бэкенд включал только `strictNullChecks`.
 
-**Сделано:** `noImplicitAny: true`.
+**Сделано:** все четыре флага включены. Порядок был важен: `noImplicitAny` вскрыл ошибки, которые меняли форму данных, а `strictPropertyInitialization` — 147 чисто механических.
 
-Замер до правок: `tsc -p tsconfig.build.json --noEmit --noImplicitAny true` давал **7 ошибок** в 3 файлах.
+**`noImplicitAny: true`** давал **7 ошибок** в 3 файлах.
 
 | Файл | Ошибка | Что сделано |
 |---|---|---|
@@ -341,11 +341,19 @@ window.location.href = '/';
 
 Про `permission.guard.ts`: в сущности `Permission.resource` объявлен как `Types.ObjectId`, но в рантайме после `populate({ path: 'permissions', populate: { path: 'resource' } })` там лежит документ с полем `slug`. Поэтому вместо приведения к типу сущности введены `PopulatedRole` / `PopulatedPermission`, отражающие реальную форму данных. Это не косметика: раньше обращение к `.resource.slug` не проверялось вообще.
 
-**`strictBindCallApply`** — проверено, включение даёт 0 ошибок.
+**`strictBindCallApply: true`** — 0 ошибок, включён без правок кода.
 
-**`strictPropertyInitialization`** — не включал: даёт **147 ошибок** вида «Property `_id` has no initializer». Это системная особенность Mongoose-сущностей и DTO, где все поля заполняются декораторами/драйвером, а не конструктором. Лечится либо `!` у каждого поля, либо `declare`, либо `@Prop({ required })`-паттерном — отдельная задача, не в рамках `noImplicitAny`.
+**`strictPropertyInitialization: true`** — 147 ошибок TS2564 (90 в `entities/`, 55 в `dto/`, 2 в прочих), закрыты не-null assertion `!` у объявления поля, 47 файлов.
 
-**Проверено:** `tsc -p tsconfig.build.json --noEmit` (0 ошибок), `tsc -p tsconfig.spec.json --noEmit` (0), `pnpm --filter backend build`, `pnpm --filter backend test`, `pnpm backend:lint`, `prettier --check`, `pnpm codegen` — схема и типы фронтенда не изменились, Docker-образ пересобран, бэкенд стартует, `POST /graphql` → 200.
+Почему `!`, а не `declare` и не инициализатор:
+
+- `target: ES2023` уже включает `useDefineForClassFields`, поэтому tsc и так эмитит поля как `_id;`. `_id!` даёт **байт-в-байт тот же JS** — проверено компиляцией: `x!: string` и `x: string` дают одинаковый `x;`. То есть рантайм-поведение не меняется вовсе.
+- `declare` убрал бы эмиссию полей совсем — это изменило бы вывод tsc и потребовало бы отдельной проверки, что декораторы и Mongoose не полагаются на собственные свойства.
+- Инициализаторы (`= undefined`) сломали бы `useDefineForClassFields`: поле с `undefined` перезаписало бы значение, присвоенное декоратором.
+
+Отдельно проверено, что `!` не влияет на GraphQL-схему: поля, объявленные с `!`, остались `NON_NULL` (`_id`, `categories`), nullable — nullable (`ownerId`, `ownerType`). `schema.gql` после пересборки не изменился.
+
+**Проверено:** `tsc -p tsconfig.build.json --noEmit` (0 ошибок), `tsc -p tsconfig.spec.json --noEmit` (0), `pnpm --filter backend build`, `pnpm --filter backend test`, `pnpm backend:lint`, `prettier --check`, `pnpm codegen` — схема и типы фронтенда не изменились, Docker-образ пересобран, бэкенд стартует, `POST /graphql` → 200, DTO-валидация отвечает `content should not be empty; ownerId must be a mongodb id`.
 
 ---
 
@@ -543,10 +551,10 @@ class-transformer: root 0.5.1   |  backend ^0.5.1       ✅ убран из ко
 
 | Отсутствует | Зачем нужно |
 |---|---|
-| `.nvmrc` / `.node-version` | при требовании `node >= 26` |
-| `.editorconfig` | `tabWidth: 4` задан только в prettier |
+| ~~`.nvmrc` / `.node-version`~~ ✅ | при требовании `node >= 26` |
+| ~~`.editorconfig`~~ ✅ | `tabWidth: 4` задан только в prettier |
 
-Закрыто позже: `typecheck` и `lint` в корне (раздел D), `turbo` (раздел C).
+Закрыто позже: `typecheck` и `lint` в корне (раздел D), `turbo` (раздел C), `.nvmrc` и `.editorconfig` (раздел 15).
 
 ### 14. `.prettierignore` не покрывает генерируемые файлы ✅
 
@@ -561,7 +569,27 @@ packages/frontend/src/app/graphql/operations.ts
 
 **Сделано:** оба пути добавлены в `.prettierignore` (вместе с переносом `types.ts` → `packages/shared/graphql.ts`, см. раздел B).
 
-**Фикс:** добавить оба пути в `.prettierignore`.
+---
+
+### 15. Нет `.nvmrc` и `.editorconfig` ✅
+
+Требование `engines.node: ">=26"` нигде не зафиксировано версией, а `tabWidth: 4` задан только в prettier — редакторы о нём не знают.
+
+**Сделано:**
+
+- `.nvmrc` → `26` (совпадает с `engines` во всех трёх `package.json`, с `node-version: 26` в CI и с `FROM node:26-alpine` в Dockerfile'ах);
+- `.editorconfig` → `indent_size = 4`, `end_of_line = lf`, `charset = utf-8`, финальный перевод строки, обрезка пробелов.
+
+Два отличия от «просто 4 везде»:
+
+| Секция | Значение | Почему |
+|---|---|---|
+| `[*.{yml,yaml}]` | `indent_size = 2` | `docker-compose.yml` и `pnpm-workspace.yaml` написаны с 2 пробелами; при 4 редактор переформатировал бы их на каждом сохранении |
+| `[*.md]` | `trim_trailing_whitespace = false` | в markdown два пробела в конце строки — значимый перенос строки |
+
+Известное расхождение: `.prettierrc.json` задаёт `tabWidth: 4` для всех файлов, включая YAML, поэтому `pnpm-workspace.yaml` и `docker-compose.yml` не проходят `prettier --check`. Это было и до `.editorconfig` — правило для YAML его не создаёт, но и не решает: prettier не читает `.editorconfig`.
+
+Второе расхождение, тоже предсуществующее: 63 из 78 CSS-файлов написаны с отступом в 2 пробела, то есть не проходят `prettier --check` при `tabWidth: 4`. Специальное правило для CSS не добавлял — это увеличило бы область задачи, а не уменьшило расхождение.
 
 ---
 
@@ -770,11 +798,13 @@ jobs:
 | ~~6~~ | ~~`world_cities.json` 15 МБ → 1000 городов~~ ✅ `2a367cf` | −11 МБ JS | принят компромисс |
 | ~~7~~ | ~~`eslint-config-next` → 16.4.5~~ ✅ `a470e12` | Актуальные правила | — |
 | ~~8~~ | ~~Убрать мёртвые пути и конфиги~~ ✅ `9ab5b43` | Чистота | — |
-| ~~9~~ | ~~`noImplicitAny: true`~~ ✅ | Типобезопасность | — |
+| ~~9~~ | ~~`noImplicitAny: true`~~ ✅ `5534ab5` | Типобезопасность | — |
 | ~~10~~ | ~~`catalog:` в pnpm-workspace.yaml~~ ✅ `471bf5f` | Единые версии | — |
 | ~~11~~ | ~~CI с проверками~~ ✅ | Не ломать main | — |
 | ~~12~~ | ~~Убрать неиспользуемые зависимости~~ ✅ −34 пакета | −размер, ясность | — |
 | ~~13~~ | ~~Решить судьбу Jest (починить или удалить)~~ ✅ починено | Ясность | — |
+| ~~14~~ | ~~`strictBindCallApply` + `strictPropertyInitialization`~~ ✅ `408a62a` | Типобезопасность | — |
+| ~~15~~ | ~~`.nvmrc` + `.editorconfig`~~ ✅ | Гигиена | — |
 
 ---
 
@@ -805,3 +835,5 @@ jobs:
 | `471bf5f` | общие версии вынесены в `catalog:` (`typescript`, `graphql`, `graphql-ws`, `@types/node`) |
 | `598cf42` | CI на PR и перед деплоем (reusable workflow), `check:codegen` |
 | `e0151c5` | типы GraphQL-схемы вынесены в `packages/shared` |
+| `1f6bd10` | сборка кешируется через Turborepo (`.turbo/` в ignore) |
+| `408a62a` | `strictPropertyInitialization` и `strictBindCallApply` включены (147 `!`) |
