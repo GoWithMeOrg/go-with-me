@@ -9,7 +9,7 @@
         "packages/*"
     ],
     "scripts": {
-        "build": "pnpm --filter \"*\" build",
+        "build": "turbo run build",
         "backend:dev": "pnpm --filter backend nest start --watch",
         "frontend:dev": "pnpm -C packages/frontend dev",
         "lint": "eslint packages/frontend packages/backend",
@@ -23,7 +23,8 @@
         "frontend:format": "prettier packages/frontend -w",
         "backend:format": "prettier packages/backend -w",
         "import:mongo": "./scripts/import-mongo-data.sh",
-        "codegen": "graphql-codegen --config codegen.ts"
+        "codegen": "graphql-codegen --config codegen.ts",
+        "prepare": "pnpm codegen"
     },
     "devDependencies": {
         "@eslint/compat": "^2.1.1",
@@ -40,6 +41,7 @@
         "eslint-plugin-storybook": "^10.6.5",
         "globals": "^17.14.0",
         "prettier": "^3.9.10",
+        "turbo": "^2.11.10",
         "typescript": "catalog:",
         "typescript-eslint": "^8.72.1"
     }
