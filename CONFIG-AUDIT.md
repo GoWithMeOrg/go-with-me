@@ -427,30 +427,79 @@ jest, ts-jest, ts-node, tsconfig-paths, supertest, @types/jest, @types/supertest
 
 `supertest`, `@types/supertest`, `ts-node`, `tsconfig-paths` пока не используются — это кандидаты в #12.
 
-### 11. Неиспользуемые зависимости
+### 11. Неиспользуемые зависимости ✅
 
-Проверено grep по `src`.
+Проверено grep по `src` и по всему проекту, плюс `pnpm why` и чтение `peerDependencies`.
 
-**Backend:**
+**Backend — удалено:**
 
-| Пакет | Импортов | Решение |
-|---|---|---|
-| `@nestjs/mapped-types` | 0 | удалить (`PartialType` берётся из `@nestjs/graphql`) |
-| `graphql-upload-ts` | 0 | удалить (загрузка через presigned URL в S3) |
-| `source-map-support` | 0 | удалить |
-| `ts-loader` | 0 | удалить (`nest build` использует `tsc`, webpack-builder не настроен) |
-| `ts-node` | 0 | используется только в `test:debug`, который всё равно битый (Jest не настроен) |
-| `tsconfig-paths` | 0 | то же — только в `test:debug` |
-| `rxjs` | 0 | **оставить** — peer-зависимость Nest |
-| `reflect-metadata` | 0 | **оставить** — нужен в рантайме Nest |
+| Пакет | Почему |
+|---|---|
+| `@nestjs/mapped-types` | `PartialType` берётся из `@nestjs/graphql`; пакет и так остаётся транзитивной зависимостью `@nestjs/graphql` |
+| `graphql-upload-ts` | загрузка через presigned URL в S3, скаляра `Upload` в схеме нет |
+| `source-map-support` | нет ни одного импорта |
+| `ts-loader` | `nest-cli.json` без `builder`, сборка через `tsc` |
+| `ts-node` | был нужен только битому `test:debug`; для ESM бесполезен (Jest использует `ts-jest`) |
+| `tsconfig-paths` | то же; `@nestjs/cli` тянет свою копию как зависимость |
+| `supertest`, `@types/supertest` | e2e-тестов нет; при появлении — вернуть |
 
-**Frontend:**
+**Backend — оставлено осознанно:**
 
-| Пакет | Импортов | Решение |
-|---|---|---|
-| `zod` | 0 | удалить |
-| `@googlemaps/js-api-loader` | 0 | удалить (`@vis.gl/react-google-maps` тянет свой) |
-| `next-auth` | 1 | только `signOut` в `Footer.tsx`; своя сессия через cookie — рассмотреть замену |
+| Пакет | Почему |
+|---|---|
+| `rxjs` | peer `@nestjs/core` и `@nestjs/common` (не optional) |
+| `reflect-metadata` | peer Nest, нужен в рантайме для декораторов |
+| `pino`, `pino-http` | обязательные peer `nestjs-pino` (`peerDependenciesMeta` пустой) |
+| `pino-pretty` | используется строкой `target: 'pino-pretty'` в `logger.config.ts` — grep по импортам его не находит |
+| `@as-integrations/express5` | обязательный peer `@nestjs/apollo` |
+| `@nestjs/schematics` | используется `@nestjs/cli` при генерации; в `scripts` напрямую не виден |
+
+**Frontend — удалено:**
+
+| Пакет | Почему |
+|---|---|
+| `@googlemaps/js-api-loader` | `@vis.gl/react-google-maps` объявляет его своей зависимостью; в store была одна копия, прямая зависимость дублировала её |
+| `next-auth` | **не был настроен вообще** (см. ниже) |
+
+**Frontend — оставлено осознанно:**
+
+| Пакет | Почему |
+|---|---|
+| `zod` | по решению пользователя оставлен на будущее |
+
+**Корень — удалено:**
+
+| Пакет | Почему |
+|---|---|
+| `class-validator`, `class-transformer` | нужны только бэкенду, там и объявлены; в корне никто не импортирует |
+
+#### Отдельная находка: `next-auth` не работал
+
+Пакет присутствовал ради одного вызова в `Footer.tsx`:
+
+```tsx
+import { signOut } from 'next-auth/react';
+...
+<Button onClick={() => signOut()}>Выйти</Button>
+```
+
+Но NextAuth в проекте **не настроен**:
+
+- нет ни одного API route — каталога `packages/frontend/src/app/api/` не существует вовсе;
+- нет `NEXTAUTH_*` в `.env.local`;
+- нет `SessionProvider`/`authOptions`/`getServerSession` — только собственный `SessionProviderGQL`.
+
+`signOut()` из `next-auth@4` делает POST на `${baseUrl}/api/auth/signout` (см. `signOut` → `getCsrfToken` → `fetch`). Эндпоинта нет → 404 и необработанное исключение, сессия не очищается. То есть кнопка «Выйти» в футере была нерабочей.
+
+При этом рядом уже был рабочий механизм — `logout()` в `authActions.ts`, дергающий бэкенд через `NEXT_PUBLIC_AUTH_LOGOUT_URL` (переменная задана в `.env.local`). Им же пользуется `AuthPanel.tsx`.
+
+**Сделано:** `next-auth` удалён, кнопка переведена на `logout()`. Это не только чистка зависимости, но и фикс сломанного логаута.
+
+**Итог:** `pnpm install` убрал 34 пакета (−59 записей в `pnpm-lock.yaml`, включая транзитивные `openid-client`, `jose`, `preact`, `superagent`).
+
+**Проверено:** `pnpm install --frozen-lockfile`, `pnpm codegen` (схема и типы не изменились), `pnpm build`, `pnpm --filter backend test`, `tsc --noEmit`, оба линтера, `prettier --check`, пересборка Docker-образов `--no-cache` и запуск стенда (`GraphQL` → 200, фронтенд → 200).
+
+**Побочно исправлено:** в `packages/{backend,frontend}/node_modules` оставались 70 файлов, принадлежащих `root` (наследие dev-контейнера до коммита `41ef453`). Из-за них `pnpm install` падал с `ERR_PNPM_PACKAGE_MANAGER_PRUNE_DIRECT_DEPS_REMOVE_LINK: Permission denied`. Владелец исправлен через `docker run --rm -v "$PWD:/w" alpine chown -R 1000:1000 ...`.
 
 ### 12. Дублирование настроек и версий
 
@@ -471,8 +520,8 @@ onlyBuiltDependencies:     # legacy-формат, дублировал allowBuil
 
 ```
 typescript:       root 6.0.3    |  backend ^6.0.3       |  frontend ^6.0.3
-class-validator:  root 0.15.1   |  backend ^0.15.1      ← в корне не нужен
-class-transformer: root 0.5.1   |  backend ^0.5.1       ← в корне не нужен
+class-validator:  root 0.15.1   |  backend ^0.15.1      ✅ убран из корня (#12)
+class-transformer: root 0.5.1   |  backend ^0.5.1       ✅ убран из корня (#12)
 @types/node:      backend ^26.6.6 | frontend ^26.6.6
 ```
 
@@ -603,7 +652,7 @@ jobs:
 | 9 | `noImplicitAny: true` | Типобезопасность | средний |
 | 10 | `catalog:` в pnpm-workspace.yaml | Единые версии | низкий |
 | 11 | CI с проверками | Не ломать main | нет |
-| 12 | Убрать неиспользуемые зависимости | −размер, ясность | низкий |
+| ~~12~~ | ~~Убрать неиспользуемые зависимости~~ ✅ −34 пакета | −размер, ясность | — |
 | ~~13~~ | ~~Решить судьбу Jest (починить или удалить)~~ ✅ починено | Ясность | — |
 
 ---
