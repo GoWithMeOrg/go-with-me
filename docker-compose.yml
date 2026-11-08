@@ -5,8 +5,11 @@ services:
       dockerfile: Dockerfile.dev
     container_name: gwm-backend
     working_dir: /workspace
+    # Зависимости уже стоят в образе (и подхватываются из него в volume).
+    # install оставлен страховкой на случай пустого volume: при готовых
+    # node_modules он занимает <100 мс, т.к. стор кешируется в образе.
     command: >
-      sh -c "pnpm install && pnpm --filter @go-with-me/backend start:dev"
+      sh -c "pnpm install --frozen-lockfile --prefer-offline && pnpm --filter @go-with-me/backend start:dev"
     env_file:
       - .env.local
     environment:
@@ -31,8 +34,9 @@ services:
       dockerfile: Dockerfile.dev
     container_name: gwm-frontend
     working_dir: /workspace
+    # См. комментарий у backend: install почти бесплатен, когда volume уже заполнен.
     command: >
-      sh -c "pnpm install && pnpm --filter web-frontend dev --hostname 0.0.0.0 --port 3000"
+      sh -c "pnpm install --frozen-lockfile --prefer-offline && pnpm --filter frontend dev --hostname 0.0.0.0 --port 3000"
     env_file:
       - .env.local
     environment:
