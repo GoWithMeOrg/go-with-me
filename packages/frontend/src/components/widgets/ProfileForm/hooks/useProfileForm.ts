@@ -21,7 +21,7 @@ export const useProfileForm = ({ submitFileRef, deleteFileRef }: UseProfileFormP
         variables: { userId: user_id },
     });
 
-    const user = userProfile?.userProfile.user;
+    const user = userProfile?.userProfile?.user;
     const location = userProfile?.userProfile?.location;
     const interest = userProfile?.userProfile?.interest?.interests;
     const category = userProfile?.userProfile?.category?.categories;
@@ -45,10 +45,10 @@ export const useProfileForm = ({ submitFileRef, deleteFileRef }: UseProfileFormP
         };
     }
 
-    const isNewCategory = !userProfile?.userProfile.category?._id;
-    const isNewInterest = !userProfile?.userProfile.interest?._id;
-    const isNewLocation = !userProfile?.userProfile.location?._id;
-    const isNewTag = !userProfile?.userProfile.tag?._id;
+    const isNewCategory = !userProfile?.userProfile?.category?._id;
+    const isNewInterest = !userProfile?.userProfile?.interest?._id;
+    const isNewLocation = !userProfile?.userProfile?.location?._id;
+    const isNewTag = !userProfile?.userProfile?.tag?._id;
 
     const handleEditProfile = async (userProfileEdited: UserProfile) => {
         const transformedLocation = mapGooglePlaceToLocationInput(getPlace());
