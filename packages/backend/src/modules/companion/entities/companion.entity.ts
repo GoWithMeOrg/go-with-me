@@ -6,19 +6,19 @@ import { Document, Types } from 'mongoose';
 @Schema({ timestamps: true })
 export class Companion {
     @Field(() => ID)
-    _id: Types.ObjectId;
+    _id!: Types.ObjectId;
 
     @Field(() => [ID])
     @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }] })
-    companions: Types.ObjectId[];
+    companions!: Types.ObjectId[];
 
     @Field(() => ID)
     @Prop({ type: Types.ObjectId, required: true })
-    ownerId: Types.ObjectId;
+    ownerId!: Types.ObjectId;
 
     @Field(() => String)
     @Prop({ type: String, enum: ['User'], required: true })
-    ownerType: 'User';
+    ownerType!: 'User';
 }
 
 export type CompanionDocument = Companion & Document;

@@ -5,5 +5,5 @@ import { Types } from 'mongoose';
 @InputType()
 export class UpdatePermissionInput extends PartialType(CreatePermissionInput) {
     @Field(() => String)
-    _id: Types.ObjectId;
+    _id!: Types.ObjectId;
 }

@@ -8,15 +8,15 @@ import { Document, Schema as MongoSchema, Types } from 'mongoose';
 @Schema({ timestamps: true })
 export class CompanionRequest {
     @Field(() => ID)
-    _id: Types.ObjectId;
+    _id!: Types.ObjectId;
 
     @Field(() => User)
     @Prop({ type: MongoSchema.Types.ObjectId, required: true, ref: 'User' })
-    sender: Types.ObjectId;
+    sender!: Types.ObjectId;
 
     @Field(() => User)
     @Prop({ type: MongoSchema.Types.ObjectId, required: true, ref: 'User' })
-    receiver: Types.ObjectId;
+    receiver!: Types.ObjectId;
 
     @Field(() => String)
     @Prop({
@@ -24,7 +24,7 @@ export class CompanionRequest {
         enum: CompanionRequestStatus,
         default: CompanionRequestStatus.PENDING,
     })
-    status: CompanionRequestStatus;
+    status!: CompanionRequestStatus;
 }
 
 export type CompanionRequestDocument = CompanionRequest & Document;

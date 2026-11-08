@@ -7,31 +7,31 @@ import { Document, Types } from 'mongoose';
 @Schema({ timestamps: true })
 export class User {
     @Field(() => ID)
-    _id: Types.ObjectId;
+    _id!: Types.ObjectId;
 
     @Field(() => String)
     @Prop({ type: String })
-    firstName: string;
+    firstName!: string;
 
     @Field(() => String)
     @Prop({ type: String })
-    lastName: string;
+    lastName!: string;
 
     @Field(() => String)
     @Prop({ type: String, unique: true })
-    email: string;
+    email!: string;
 
     @Field(() => String, { nullable: true })
     @Prop({ type: String })
-    image: string;
+    image!: string;
 
     @Field(() => String, { nullable: true })
     @Prop({ type: String })
-    description: string;
+    description!: string;
 
     @Field(() => [Role], { nullable: true })
     @Prop({ type: [{ type: 'ObjectId', ref: 'Role' }] })
-    roles: Role[];
+    roles!: Role[];
 }
 
 export type UserDocument = User & Document;

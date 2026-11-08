@@ -11,14 +11,14 @@ import { Document, Types } from 'mongoose';
 @Schema({ timestamps: true })
 export class Event {
     @Field(() => ID)
-    _id: Types.ObjectId;
+    _id!: Types.ObjectId;
 
     @Prop({ type: Types.ObjectId, ref: 'User', required: true })
-    organizer: Types.ObjectId;
+    organizer!: Types.ObjectId;
 
     @Field(() => String)
     @Prop({ type: String, required: true })
-    name: string;
+    name!: string;
 
     @Field(() => String, { nullable: true })
     @Prop({ type: String })
@@ -26,11 +26,11 @@ export class Event {
 
     @Field(() => Date)
     @Prop({ type: Date, required: true })
-    startDate: Date;
+    startDate!: Date;
 
     @Field(() => Date, { nullable: true })
     @Prop({ type: Date })
-    endDate: Date;
+    endDate!: Date;
 
     @Field(() => String, { nullable: true })
     @Prop({ type: String })
@@ -38,7 +38,7 @@ export class Event {
 
     @Field(() => Privacy)
     @Prop({ type: String, enum: Privacy, required: true })
-    privacy: Privacy;
+    privacy!: Privacy;
 
     @Field(() => String, { nullable: true })
     @Prop({ type: String })

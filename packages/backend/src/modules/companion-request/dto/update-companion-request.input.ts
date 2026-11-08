@@ -4,5 +4,5 @@ import { Field, InputType, Int, PartialType } from '@nestjs/graphql';
 @InputType()
 export class UpdateCompanionRequestInput extends PartialType(CreateCompanionRequestInput) {
     @Field(() => Int)
-    id: number;
+    id!: number;
 }

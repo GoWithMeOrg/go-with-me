@@ -6,7 +6,7 @@ export class CreateRoleInput {
     @Field(() => String)
     @IsString()
     @IsNotEmpty()
-    name: string;
+    name!: string;
 
     @Field(() => [String], { nullable: 'itemsAndList' }) // Разрешаем и null, и пустой список
     @IsOptional()

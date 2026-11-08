@@ -7,27 +7,27 @@ import { Document, Types } from 'mongoose';
 @Schema({ timestamps: true })
 export class PrivacySetting {
     @Field(() => ID)
-    _id: Types.ObjectId;
+    _id!: Types.ObjectId;
 
     @Field(() => ID)
     @Prop({ type: Types.ObjectId, required: true, unique: true, ref: 'User' })
-    ownerId: Types.ObjectId;
+    ownerId!: Types.ObjectId;
 
     @Field(() => PrivacyVisibility)
     @Prop({ type: String, enum: PrivacyVisibility, default: PrivacyVisibility.EVERYONE })
-    whoCanSeeEvents: PrivacyVisibility;
+    whoCanSeeEvents!: PrivacyVisibility;
 
     @Field(() => PrivacyVisibility)
     @Prop({ type: String, enum: PrivacyVisibility, default: PrivacyVisibility.EVERYONE })
-    whoCanInviteToEvents: PrivacyVisibility;
+    whoCanInviteToEvents!: PrivacyVisibility;
 
     @Field(() => [ID])
     @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }], default: [] })
-    markedForWhoCanSeeEvents: Types.ObjectId[];
+    markedForWhoCanSeeEvents!: Types.ObjectId[];
 
     @Field(() => [ID])
     @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }], default: [] })
-    markedForWhoCanInviteToEvents: Types.ObjectId[];
+    markedForWhoCanInviteToEvents!: Types.ObjectId[];
 }
 
 export type PrivacySettingDocument = PrivacySetting & Document;

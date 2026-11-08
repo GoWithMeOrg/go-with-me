@@ -8,15 +8,15 @@ import { Document, Types } from 'mongoose';
 })
 export class Resource {
     @Field(() => ID)
-    _id: Types.ObjectId;
+    _id!: Types.ObjectId;
 
     @Field(() => String)
     @Prop({ required: true, unique: true, uppercase: true })
-    slug: string;
+    slug!: string;
 
     @Field(() => String)
     @Prop({ required: true })
-    name: string;
+    name!: string;
 }
 
 export type ResourceDocument = Resource & Document;

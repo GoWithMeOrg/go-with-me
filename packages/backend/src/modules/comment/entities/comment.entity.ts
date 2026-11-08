@@ -7,22 +7,22 @@ import { Document, Schema as MongoSchema, Types } from 'mongoose';
 @Schema({ timestamps: true })
 export class Comment {
     @Field(() => ID)
-    _id: Types.ObjectId;
+    _id!: Types.ObjectId;
 
     @Prop({ type: Types.ObjectId, required: true })
-    author: Types.ObjectId;
+    author!: Types.ObjectId;
 
     @Field(() => String)
     @Prop({ type: String, required: true })
-    content: string;
+    content!: string;
 
     @Field(() => ID)
     @Prop({ type: MongoSchema.Types.ObjectId, required: true })
-    ownerId: Types.ObjectId;
+    ownerId!: Types.ObjectId;
 
     @Field(() => String)
     @Prop({ type: String, enum: OwnerType, required: true })
-    ownerType: OwnerType;
+    ownerType!: OwnerType;
 
     @Field(() => Comment, { nullable: true })
     @Prop({ type: Types.ObjectId, ref: 'Comment', default: null })
@@ -30,17 +30,17 @@ export class Comment {
 
     @Field(() => Number)
     @Prop({ type: Number, default: 0 })
-    repliesCount: number;
+    repliesCount!: number;
 
     @Field(() => Boolean)
     @Prop({ default: false })
-    deleted: boolean;
+    deleted!: boolean;
 
     @Field()
-    createdAt: Date;
+    createdAt!: Date;
 
     @Field()
-    updatedAt: Date;
+    updatedAt!: Date;
 }
 
 export type CommentDocument = Comment & Document;

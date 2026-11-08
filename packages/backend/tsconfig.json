@@ -22,8 +22,8 @@
         "strictNullChecks": true,
         "forceConsistentCasingInFileNames": true,
         "noImplicitAny": true,
-        "strictPropertyInitialization": false,
-        "strictBindCallApply": false,
+        "strictPropertyInitialization": true,
+        "strictBindCallApply": true,
         "noFallthroughCasesInSwitch": false,
         "typeRoots": ["./node_modules/@types", "./src/types"],
         "types": ["node", "express", "express-session"]

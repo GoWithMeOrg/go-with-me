@@ -5,14 +5,14 @@ import { Field, InputType } from '@nestjs/graphql';
 @InputType()
 export class CreatePermissionInput {
     @Field(() => String)
-    name: string;
+    name!: string;
 
     @Field(() => Action)
-    action: Action;
+    action!: Action;
 
     @Field(() => String)
-    resource: string;
+    resource!: string;
 
     @Field(() => String, { nullable: true })
-    description: string;
+    description!: string;
 }

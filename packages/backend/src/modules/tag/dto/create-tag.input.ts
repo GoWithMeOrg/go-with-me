@@ -4,11 +4,11 @@ import { Types } from 'mongoose';
 @InputType()
 export class CreateTagInput {
     @Field(() => [String], { nullable: true })
-    tags: string[];
+    tags!: string[];
 
     @Field(() => ID, { nullable: true })
-    ownerId: Types.ObjectId;
+    ownerId!: Types.ObjectId;
 
     @Field(() => String, { nullable: true })
-    ownerType: 'User' | 'Event';
+    ownerType!: 'User' | 'Event';
 }

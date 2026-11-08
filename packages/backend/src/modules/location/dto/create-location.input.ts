@@ -4,7 +4,7 @@ import { Types } from 'mongoose';
 @InputType()
 export class LocationGeometryInput {
     @Field(() => [Float])
-    coordinates: [number, number];
+    coordinates!: [number, number];
 }
 
 @InputType()
@@ -13,17 +13,17 @@ export class LocationPropertiesInput {
     address?: string;
 
     @Field(() => ID, { nullable: true })
-    ownerId: Types.ObjectId;
+    ownerId!: Types.ObjectId;
 
     @Field(() => String, { nullable: true })
-    ownerType: 'User' | 'Event';
+    ownerType!: 'User' | 'Event';
 }
 
 @InputType()
 export class CreateLocationInput {
     @Field(() => LocationGeometryInput)
-    geometry: LocationGeometryInput;
+    geometry!: LocationGeometryInput;
 
     @Field(() => LocationPropertiesInput)
-    properties: LocationPropertiesInput;
+    properties!: LocationPropertiesInput;
 }

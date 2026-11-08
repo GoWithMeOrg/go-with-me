@@ -5,5 +5,5 @@ import { Types } from 'mongoose';
 @InputType()
 export class UpdateJoinInput extends PartialType(ToggleJoinInput) {
     @Field(() => ID)
-    _id: Types.ObjectId;
+    _id!: Types.ObjectId;
 }

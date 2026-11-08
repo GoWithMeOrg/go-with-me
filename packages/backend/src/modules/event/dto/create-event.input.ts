@@ -5,25 +5,25 @@ import { Types } from 'mongoose';
 @InputType()
 export class CreateEventInput {
     @Field(() => ID, { nullable: true })
-    organizer: Types.ObjectId;
+    organizer!: Types.ObjectId;
 
     @Field(() => String)
-    name: string;
+    name!: string;
 
     @Field(() => String, { nullable: true })
     description?: string;
 
     @Field(() => Date)
-    startDate: Date;
+    startDate!: Date;
 
     @Field(() => Date)
-    endDate: Date;
+    endDate!: Date;
 
     @Field(() => String, { nullable: true })
     time?: string;
 
     @Field(() => Privacy)
-    privacy: Privacy;
+    privacy!: Privacy;
 
     @Field(() => String, { nullable: true })
     image?: string;

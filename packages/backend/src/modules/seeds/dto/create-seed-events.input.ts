@@ -6,11 +6,11 @@ import { Types } from 'mongoose';
 @InputType()
 export class SeedEventsInput {
     @Field(() => CreateEventInput)
-    event: CreateEventInput;
+    event!: CreateEventInput;
 
     @Field(() => EventRelationsInput, { nullable: true })
     relations?: EventRelationsInput;
 
     @Field(() => ID)
-    organizer: Types.ObjectId;
+    organizer!: Types.ObjectId;
 }

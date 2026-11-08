@@ -6,19 +6,19 @@ import { Document, Schema as MongoSchema, Types } from 'mongoose';
 @Schema({ timestamps: true })
 export class Category {
     @Field(() => ID)
-    _id: Types.ObjectId;
+    _id!: Types.ObjectId;
 
     @Field(() => [String])
     @Prop({ type: [String] })
-    categories: string[];
+    categories!: string[];
 
     @Field(() => ID, { nullable: true })
     @Prop({ type: MongoSchema.Types.ObjectId, required: false })
-    ownerId: Types.ObjectId;
+    ownerId!: Types.ObjectId;
 
     @Field(() => String, { nullable: true })
     @Prop({ type: String, enum: ['User', 'Event'], required: false })
-    ownerType: 'User' | 'Event';
+    ownerType!: 'User' | 'Event';
 }
 
 export type CategoryDocument = Category & Document;

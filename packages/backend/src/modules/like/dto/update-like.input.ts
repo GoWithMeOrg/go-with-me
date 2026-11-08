@@ -5,5 +5,5 @@ import { Types } from 'mongoose';
 @InputType()
 export class UpdateLikeInput extends PartialType(ToggleLikeInput) {
     @Field(() => ID)
-    _id: Types.ObjectId;
+    _id!: Types.ObjectId;
 }

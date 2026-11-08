@@ -4,11 +4,11 @@ import { Types } from 'mongoose';
 @ObjectType()
 export class LikeStatus {
     @Field(() => ID)
-    ownerId: Types.ObjectId;
+    ownerId!: Types.ObjectId;
 
     @Field(() => Int)
-    count: number;
+    count!: number;
 
     @Field(() => Boolean)
-    isLiked: boolean;
+    isLiked!: boolean;
 }

@@ -4,7 +4,7 @@ import { Types } from 'mongoose';
 @InputType()
 export class CreateCategoryInput {
     @Field(() => [String])
-    categories: string[];
+    categories!: string[];
 
     @Field(() => ID, { nullable: true })
     ownerId?: Types.ObjectId;

@@ -3,11 +3,11 @@ import { Field, ID, InputType } from '@nestjs/graphql';
 @InputType()
 export class SendInvitationInput {
     @Field(() => ID)
-    eventId: string;
+    eventId!: string;
 
     @Field(() => ID)
-    senderId: string;
+    senderId!: string;
 
     @Field(() => [ID])
-    receiverIds: string[];
+    receiverIds!: string[];
 }

@@ -4,5 +4,5 @@ import { Field, ObjectType } from '@nestjs/graphql';
 @ObjectType()
 export class SeedEventResult {
     @Field(() => [Event])
-    events: Event[];
+    events!: Event[];
 }

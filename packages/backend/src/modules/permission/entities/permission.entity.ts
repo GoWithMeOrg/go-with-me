@@ -8,27 +8,27 @@ import { Document, Schema as MongoSchema, Types } from 'mongoose';
 @Schema({ timestamps: true })
 export class Permission {
     @Field(() => ID)
-    _id: Types.ObjectId;
+    _id!: Types.ObjectId;
 
     @Field(() => String)
     @Prop({ required: true, unique: true })
-    name: string;
+    name!: string;
 
     @Field(() => Action)
     @Prop({ type: String, enum: Action, required: true })
-    action: Action;
+    action!: Action;
 
     @Field(() => Resource)
     @Prop({ type: MongoSchema.Types.ObjectId, ref: 'Resource', required: true })
-    resource: Types.ObjectId;
+    resource!: Types.ObjectId;
 
     @Field(() => String, { nullable: true })
     @Prop({ default: '' })
-    description: string;
+    description!: string;
 
     @Field(() => Boolean)
     @Prop({ type: Boolean, default: true })
-    isActive: boolean;
+    isActive!: boolean;
 }
 
 export type PermissionDocument = Permission & Document;

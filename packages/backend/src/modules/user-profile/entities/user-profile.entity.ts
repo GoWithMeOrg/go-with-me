@@ -8,7 +8,7 @@ import { Field, ObjectType } from '@nestjs/graphql';
 @ObjectType()
 export class UserProfile {
     @Field(() => User)
-    user: User;
+    user!: User;
 
     @Field(() => Location, { nullable: true })
     location?: Location;

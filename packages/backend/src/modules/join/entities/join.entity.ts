@@ -6,19 +6,19 @@ import { Document, Schema as MongoSchema, Types } from 'mongoose';
 @Schema({ timestamps: true })
 export class Join {
     @Field(() => ID)
-    _id: Types.ObjectId;
+    _id!: Types.ObjectId;
 
     @Field(() => ID)
     @Prop({ type: MongoSchema.Types.ObjectId, required: true })
-    user: Types.ObjectId;
+    user!: Types.ObjectId;
 
     @Field(() => ID)
     @Prop({ type: MongoSchema.Types.ObjectId, required: true })
-    ownerId: Types.ObjectId;
+    ownerId!: Types.ObjectId;
 
     @Field(() => String)
     @Prop({ type: String, enum: ['Event', 'Trip'], required: true })
-    ownerType: 'Event' | 'Trip';
+    ownerType!: 'Event' | 'Trip';
 }
 
 export type JoinDocument = Join & Document;

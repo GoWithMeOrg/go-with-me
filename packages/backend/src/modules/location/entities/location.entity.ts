@@ -14,19 +14,19 @@ import { Document, Types } from 'mongoose';
 @Schema()
 export class Location {
     @Field(() => String)
-    _id: Types.ObjectId;
+    _id!: Types.ObjectId;
 
     @Field(() => String)
     @Prop({ required: true, enum: ['Feature'], default: 'Feature' })
-    type: string;
+    type!: string;
 
     @Field(() => LocationGeometry)
     @Prop({ type: LocationGeometrySchema, _id: false, required: true })
-    geometry: LocationGeometry;
+    geometry!: LocationGeometry;
 
     @Field(() => LocationProperties)
     @Prop({ type: LocationPropertiesSchema, _id: false, required: true })
-    properties: LocationProperties;
+    properties!: LocationProperties;
 }
 
 export type LocationDocument = Location & Document;

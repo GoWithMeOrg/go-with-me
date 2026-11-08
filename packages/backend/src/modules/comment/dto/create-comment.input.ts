@@ -8,15 +8,15 @@ export class CreateCommentInput {
     @Field(() => String)
     @IsString()
     @IsNotEmpty()
-    content: string;
+    content!: string;
 
     @Field(() => ID)
     @IsMongoId()
-    ownerId: Types.ObjectId;
+    ownerId!: Types.ObjectId;
 
     @Field(() => OwnerType)
     @IsEnum(OwnerType)
-    ownerType: OwnerType;
+    ownerType!: OwnerType;
 
     @Field(() => ID, { nullable: true })
     @IsMongoId()
