@@ -187,6 +187,21 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+catalogs:
+  default:
+    '@types/node':
+      specifier: ^26.6.6
+      version: 26.6.6
+    graphql:
+      specifier: ^17.1.0
+      version: 17.1.0
+    graphql-ws:
+      specifier: ^6.4.1
+      version: 6.4.1
+    typescript:
+      specifier: 6.0.3
+      version: 6.0.3
+
 overrides:
   multer: ^2.5.0
   webpack-dev-middleware: ^7.4.5
@@ -241,7 +256,7 @@ importers:
         specifier: ^3.9.10
         version: 3.9.10
       typescript:
-        specifier: 6.0.3
+        specifier: 'catalog:'
         version: 6.0.3
       typescript-eslint:
         specifier: ^8.72.1
@@ -307,13 +322,13 @@ importers:
         specifier: ^1.19.0
         version: 1.19.0(supports-color@8.1.1)
       graphql:
-        specifier: ^17.1.0
+        specifier: 'catalog:'
         version: 17.1.0
       graphql-subscriptions:
         specifier: ^3.0.0
         version: 3.0.0(graphql@17.1.0)
       graphql-ws:
-        specifier: ^6.4.1
+        specifier: 'catalog:'
         version: 6.4.1(graphql@17.1.0)(ws@8.22.1)
       mongoose:
         specifier: ^9.12.0
@@ -371,7 +386,7 @@ importers:
         specifier: ^30.0.0
         version: 30.0.0
       '@types/node':
-        specifier: ^26.6.6
+        specifier: 'catalog:'
         version: 26.6.6
       '@types/passport':
         specifier: ^1.0.17
@@ -386,7 +401,7 @@ importers:
         specifier: ^29.4.15
         version: 29.4.15(@babel/core@7.29.7(supports-color@8.1.1))(@jest/transform@30.5.2(supports-color@8.1.1))(@jest/types@30.5.1)(babel-jest@30.5.2(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(esbuild@0.28.2)(jest-util@30.5.1)(jest@30.5.2(@types/node@26.6.6)(supports-color@8.1.1)(ts-node@10.9.2(@types/node@26.6.6)(typescript@6.0.3)))(typescript@6.0.3)
       typescript:
-        specifier: ^6.0.3
+        specifier: 'catalog:'
         version: 6.0.3
 
   packages/frontend:
@@ -407,13 +422,13 @@ importers:
         specifier: ^1.11.23
         version: 1.11.23
       graphql:
-        specifier: ^17.1.0
+        specifier: 'catalog:'
         version: 17.1.0
       graphql-tag:
         specifier: ^2.12.7
         version: 2.12.7(graphql@17.1.0)
       graphql-ws:
-        specifier: ^6.4.1
+        specifier: 'catalog:'
         version: 6.4.1(graphql@17.1.0)(ws@8.22.1)
       next:
         specifier: ^16.4.5
@@ -450,7 +465,7 @@ importers:
         specifier: ^3.66.10
         version: 3.66.10
       '@types/node':
-        specifier: ^26.6.6
+        specifier: 'catalog:'
         version: 26.6.6
       '@types/react':
         specifier: ^19.3.0
@@ -462,7 +477,7 @@ importers:
         specifier: ^10.6.6
         version: 10.6.6(@types/react@19.3.0)(prettier@3.9.10)(react@19.3.1)
       typescript:
-        specifier: ^6.0.3
+        specifier: 'catalog:'
         version: 6.0.3
 
 packages:

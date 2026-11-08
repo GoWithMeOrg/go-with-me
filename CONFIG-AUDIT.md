@@ -566,7 +566,7 @@ packages/frontend/src/app/graphql/operations.ts
 
 ## 💡 Предложения по архитектуре монорепы
 
-### A. `catalog:` в `pnpm-workspace.yaml`
+### A. `catalog:` в `pnpm-workspace.yaml` ✅
 
 Избавиться от рассинхрона версий:
 
@@ -584,7 +584,20 @@ packages:
 
 В пакетах: `"typescript": "catalog:"`. Одно место правки вместо трёх.
 
-Заодно убрать `class-validator` и `class-transformer` из корневых `devDependencies` — они нужны только бэкенду.
+**Сделано.** После #12 (`class-validator`/`class-transformer` уже убраны из корня) дублей осталось ровно 4:
+
+| Зависимость | Было | Стало |
+|---|---|---|
+| `typescript` | root `6.0.3`, backend `^6.0.3`, frontend `^6.0.3` | `catalog: 6.0.3` (точный пин по решению — TypeScript обновляется вручную) |
+| `graphql` | backend `^17.1.0`, frontend `^17.1.0` | `catalog: ^17.1.0` |
+| `graphql-ws` | backend `^6.4.1`, frontend `^6.4.1` | `catalog: ^6.4.1` |
+| `@types/node` | backend `^26.6.6`, frontend `^26.6.6` | `catalog: ^26.6.6` |
+
+Важно: `typescript` в корне был запинен точно (`6.0.3`), а в пакетах — диапазоном `^6.0.3`. Каталог требует одно значение, выбран точный пин, чтобы не ослабить существующее ограничение.
+
+`pnpm install` записал в `pnpm-lock.yaml` секцию `catalogs.default` и заменил `specifier` у затронутых записей на `'catalog:'`, при этом `version` остались прежними — фактически установленные версии не поменялись (`typescript 6.0.3`, `graphql 17.1.0`, `graphql-ws 6.4.1`, `@types/node 26.6.6`).
+
+**Проверено:** `pnpm install --frozen-lockfile`, `pnpm build`, `pnpm --filter backend test`, оба линтера, `pnpm codegen` — схема и типы фронтенда не изменились.
 
 ### B. Вынести общие типы в `packages/shared`
 
@@ -664,7 +677,7 @@ jobs:
 | ~~7~~ | ~~`eslint-config-next` → 16.4.5~~ ✅ `a470e12` | Актуальные правила | — |
 | ~~8~~ | ~~Убрать мёртвые пути и конфиги~~ ✅ `9ab5b43` | Чистота | — |
 | ~~9~~ | ~~`noImplicitAny: true`~~ ✅ | Типобезопасность | — |
-| 10 | `catalog:` в pnpm-workspace.yaml | Единые версии | низкий |
+| ~~10~~ | ~~`catalog:` в pnpm-workspace.yaml~~ ✅ | Единые версии | — |
 | 11 | CI с проверками | Не ломать main | нет |
 | ~~12~~ | ~~Убрать неиспользуемые зависимости~~ ✅ −34 пакета | −размер, ясность | — |
 | ~~13~~ | ~~Решить судьбу Jest (починить или удалить)~~ ✅ починено | Ясность | — |

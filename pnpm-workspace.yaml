@@ -1,6 +1,14 @@
 packages:
   - packages/*
 
+# Единые версии для зависимостей, которые объявлены больше чем в одном пакете.
+# В package.json подставляется как "catalog:".
+catalog:
+  '@types/node': ^26.6.6
+  graphql: ^17.1.0
+  graphql-ws: ^6.4.1
+  typescript: 6.0.3
+
 overrides:
   # GHSA-q7qp-rjg7-q26m — DoS via pending async fileFilter
   multer: ^2.5.0

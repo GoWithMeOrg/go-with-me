@@ -16,9 +16,9 @@
         "@graphql-typed-document-node/core": "^3.2.0",
         "@vis.gl/react-google-maps": "^1.10.2",
         "dayjs": "^1.11.23",
-        "graphql": "^17.1.0",
+        "graphql": "catalog:",
         "graphql-tag": "^2.12.7",
-        "graphql-ws": "^6.4.1",
+        "graphql-ws": "catalog:",
         "next": "^16.4.5",
         "react": "^19.3.1",
         "react-dom": "^19.3.1",
@@ -32,10 +32,10 @@
         "@storybook/nextjs": "^10.6.6",
         "@svgr/webpack": "^8.1.0",
         "@types/google.maps": "^3.66.10",
-        "@types/node": "^26.6.6",
+        "@types/node": "catalog:",
         "@types/react": "^19.3.0",
         "@types/react-dom": "^19.3.0",
         "storybook": "^10.6.6",
-        "typescript": "^6.0.3"
+        "typescript": "catalog:"
     }
 }
