@@ -1,5 +1,5 @@
 {
-    "name": "@go-with-me/web-frontend",
+    "name": "@go-with-me/frontend",
     "version": "0.0.0",
     "private": true,
     "scripts": {

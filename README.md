@@ -16,7 +16,7 @@ invitations, with Google OAuth login and a GraphQL API.
 
 ```
 packages/
-  frontend/   Next.js application (@go-with-me/web-frontend)
+  frontend/   Next.js application (@go-with-me/frontend)
   backend/    NestJS API, GraphQL code-first (@go-with-me/backend)
   shared/     GraphQL schema types shared across packages (@go-with-me/shared)
 infra/
