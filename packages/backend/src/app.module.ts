@@ -1,5 +1,6 @@
 import { AuthModule } from '@/auth/auth.module.js';
 import { RolesGuard } from '@/common/guards/roles.guard.js';
+import { validateEnv } from '@/config/env.validation.js';
 import { getGraphQLConfig } from '@/config/graphql.config.js';
 import { getLoggerConfig } from '@/config/logger.config.js';
 import { getMongooseConfig } from '@/config/mongoose.config.js';
@@ -37,6 +38,11 @@ import { S3Module } from 'nestjs-s3';
         ConfigModule.forRoot({
             isGlobal: true,
             cache: true,
+            // При `pnpm backend:dev` cwd — packages/backend, а общий .env.local
+            // лежит в корне монорепы. В Docker (.env через env_file) файлов нет,
+            // поэтому первый найденный просто дополнит process.env.
+            envFilePath: ['.env.local', '.env', '../../.env.local'],
+            validate: validateEnv,
         }),
 
         LoggerModule.forRootAsync({
