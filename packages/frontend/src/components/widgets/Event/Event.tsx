@@ -20,6 +20,7 @@ import { Span } from '@/components/shared/Span';
 import { Title } from '@/components/shared/Title';
 import { AuthModal } from '@/components/widgets/AuthModal';
 import { Geocoding } from '@/components/widgets/GoogleMap/Geocoding';
+import { GoogleMapsBoundary } from '@/components/widgets/GoogleMap/GoogleMapsBoundary';
 import { Join } from '@/components/widgets/Join';
 import useJoin from '@/components/widgets/Join/hooks/useJoin';
 import { Like } from '@/components/widgets/Like';
@@ -173,7 +174,7 @@ const Event: FC<EventProps> = ({ event }) => {
                     popupMode={status === 'authenticated' ? 'map' : 'auth'}
                 >
                     {status === 'authenticated' ? (
-                        <>
+                        <GoogleMapsBoundary>
                             <Map
                                 style={{ height: '600px' }}
                                 defaultZoom={14}
@@ -203,7 +204,7 @@ const Event: FC<EventProps> = ({ event }) => {
                                     Закрыть карту
                                 </Button>
                             </div>
-                        </>
+                        </GoogleMapsBoundary>
                     ) : (
                         <AuthModal onClose={handleHidePopup} />
                     )}

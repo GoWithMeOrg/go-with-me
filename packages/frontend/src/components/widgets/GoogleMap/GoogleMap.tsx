@@ -12,6 +12,7 @@ import { MAP_CONSTANTS } from '@/constants/map';
 import { CardEventMap } from '../CardEventMap/CardEventMap';
 import { PlaceType } from '../MapComponents/types/types';
 import { CustomMapControl } from './CustomMapControl';
+import { GoogleMapsBoundary } from './GoogleMapsBoundary';
 import { MapController } from './MapController';
 import { MapHandlerBounds } from './MapHandlerBounds';
 import { IEvent } from './types/Type';
@@ -21,7 +22,7 @@ interface Props {
     selectedLocation?: PlaceType;
 }
 
-export const GoogleMap: React.FC<Props> = ({ events = [], selectedLocation }) => {
+const GoogleMapInner: React.FC<Props> = ({ events = [], selectedLocation }) => {
     const apiIsLoaded = useApiIsLoaded();
     const ctx = useContext(APIProviderContext);
     const map = useMap();
@@ -72,3 +73,11 @@ export const GoogleMap: React.FC<Props> = ({ events = [], selectedLocation }) =>
         </div>
     );
 };
+
+// GoogleMap — точка, где карта реально появляется на странице, поэтому
+// провайдер поднимается здесь, а не в корневом layout.
+export const GoogleMap: React.FC<Props> = (props) => (
+    <GoogleMapsBoundary>
+        <GoogleMapInner {...props} />
+    </GoogleMapsBoundary>
+);

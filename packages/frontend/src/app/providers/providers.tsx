@@ -6,7 +6,6 @@ import { CombinedGraphQLErrors } from '@apollo/client/errors';
 import { ErrorLink } from '@apollo/client/link/error';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { ApolloProvider } from '@apollo/client/react';
-import { APIProvider } from '@vis.gl/react-google-maps';
 import { OperationTypeNode } from 'graphql';
 import { createClient } from 'graphql-ws';
 
@@ -63,9 +62,4 @@ const getClient = () => {
 export const ApolloWrapper = ({ children }: Props) => {
     const apolloClient = getClient();
     return <ApolloProvider client={apolloClient}>{children}</ApolloProvider>;
-};
-
-export const APIProviderGoogleMaps = ({ children }: Props) => {
-    const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string;
-    return <APIProvider apiKey={API_KEY}>{children}</APIProvider>;
 };

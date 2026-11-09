@@ -8,7 +8,7 @@ import { SessionProviderGQL } from '@/app/providers/session/SessionProviderGQL';
 import { Container } from '@/components/shared/Container';
 import { Footer } from '@/components/widgets/Footer';
 import { Header } from '@/components/widgets/Header';
-import { APIProviderGoogleMaps, ApolloWrapper } from './providers/providers';
+import { ApolloWrapper } from './providers/providers';
 
 const inter = Inter({
     style: ['normal'],
@@ -27,13 +27,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <body className={inter.className}>
                 <ApolloWrapper>
                     <SessionProviderGQL>
-                        <APIProviderGoogleMaps>
-                            <Suspense>
-                                <Header />
-                                <Container>{children}</Container>
-                                <Footer />
-                            </Suspense>
-                        </APIProviderGoogleMaps>
+                        <Suspense>
+                            <Header />
+                            <Container>{children}</Container>
+                            <Footer />
+                        </Suspense>
                     </SessionProviderGQL>
                 </ApolloWrapper>
             </body>

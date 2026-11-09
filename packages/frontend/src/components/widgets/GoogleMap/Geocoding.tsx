@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useApiIsLoaded, useMapsLibrary } from '@vis.gl/react-google-maps';
 
+import { GoogleMapsBoundary } from './GoogleMapsBoundary';
+
 interface Props {
     coordinates?: [number, number];
 }
 
 //определиться, что будет являть местом и что изходя из этого будем выводить.
-export const Geocoding = ({ coordinates }: Props) => {
+const GeocodingInner = ({ coordinates }: Props) => {
     const apiIsLoaded = useApiIsLoaded();
     const [lng, lat] = coordinates ?? [0, 0];
     const [city, setCity] = useState<string>('');
@@ -39,5 +41,14 @@ export const Geocoding = ({ coordinates }: Props) => {
         </span>
     );
 };
+
+// Geocoding вызывается из карточек и списков, где карты нет: обёртка ставит
+// APIProvider только там, где он ещё не поднят, чтобы города подставлялись,
+// но страницы без карт не тянули Google Maps JS.
+export const Geocoding = (props: Props) => (
+    <GoogleMapsBoundary>
+        <GeocodingInner {...props} />
+    </GoogleMapsBoundary>
+);
 
 export default Geocoding;
