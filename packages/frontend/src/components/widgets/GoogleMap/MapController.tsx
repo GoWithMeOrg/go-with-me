@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react';
-import { COLORS, MAP_CONSTANTS } from '@/constants/map';
 import { AdvancedMarker, Pin, useMap } from '@vis.gl/react-google-maps';
 
+import { COLORS, MAP_CONSTANTS } from '@/constants/map';
 import { IEvent } from './types/Type';
 
 interface MapControllerProp {

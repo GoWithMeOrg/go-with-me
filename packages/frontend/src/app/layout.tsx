@@ -1,13 +1,13 @@
 import '@/styles/global.css';
 
 import { Suspense } from 'react';
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+
 import { SessionProviderGQL } from '@/app/providers/session/SessionProviderGQL';
 import { Container } from '@/components/shared/Container';
 import { Footer } from '@/components/widgets/Footer';
 import { Header } from '@/components/widgets/Header';
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-
 import { APIProviderGoogleMaps, ApolloWrapper } from './providers/providers';
 
 const inter = Inter({

@@ -43,7 +43,9 @@ describe('validateEnv', () => {
     });
 
     it('проверяет, что PORT — целое число в допустимом диапазоне', () => {
-        expect(() => validateEnv({ ...validEnv(), PORT: 'abc' })).toThrow(/PORT must be an integer/);
+        expect(() => validateEnv({ ...validEnv(), PORT: 'abc' })).toThrow(
+            /PORT must be an integer/
+        );
         expect(() => validateEnv({ ...validEnv(), PORT: '70000' })).toThrow(
             /PORT must be an integer/
         );

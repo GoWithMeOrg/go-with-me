@@ -1,11 +1,11 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useMutation, useQuery } from '@apollo/client/react';
+import { UserProfile } from '@go-with-me/shared/graphql';
+
 import { UPDATE_USER_PROFILE } from '@/app/graphql/mutations/updateUserProfile';
 import { GET_USER_PROFILE_BY_ID } from '@/app/graphql/queries/userProfile';
 import { useSessionGQL } from '@/app/providers/session/hooks/useSesssionGQL';
 import type { PlaceType } from '@/components/widgets/MapComponents/types/types';
-import { useMutation, useQuery } from '@apollo/client/react';
-import { UserProfile } from '@go-with-me/shared/graphql';
-
 import { UseProfileFormProps } from '../interfaces/UseProfileFormProps';
 
 export const useProfileForm = ({ submitFileRef, deleteFileRef }: UseProfileFormProps) => {

@@ -1,3 +1,7 @@
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { DeleteResult, Model, QueryFilter, Types } from 'mongoose';
+
 import {
     CompanionRequest,
     CompanionRequestDocument,
@@ -8,9 +12,6 @@ import { Role, RoleDocument } from '@/modules/role/entities/role.entity.js';
 import { CreateUserInput } from '@/modules/user/dto/create-user.input.js';
 import { UpdateUserInput } from '@/modules/user/dto/update-user.input.js';
 import { User, UserDocument } from '@/modules/user/entities/user.entity.js';
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { DeleteResult, Model, QueryFilter, Types } from 'mongoose';
 
 @Injectable()
 export class UserService {

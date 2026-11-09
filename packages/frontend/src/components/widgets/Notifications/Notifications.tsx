@@ -1,8 +1,8 @@
 import { FC } from 'react';
+
 import { GetInvitationQuery } from '@/app/graphql/operations';
 import { CompanionRequest } from '@/components/shared/CompanionRequest';
 import { Invitation } from '@/components/widgets/Invitation';
-
 import { useNotifications } from './hooks';
 
 import classes from './Notifications.module.css';

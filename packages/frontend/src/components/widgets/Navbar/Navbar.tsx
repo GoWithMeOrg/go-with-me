@@ -1,5 +1,4 @@
 import { NavbarTabs } from '@/components/widgets/Navbar/models';
-
 import { useNotifications } from '../Notifications/hooks';
 
 import classes from './Navbar.module.css';

@@ -1,8 +1,9 @@
 import React, { FC } from 'react';
+import dayjs from 'dayjs';
+
 import Checkbox from '@/assets/icons/checkbox.svg';
 import Plus from '@/assets/icons/plus.svg';
 import type { InvitationEvent } from '@/components/widgets/DialogModal/types/DialogModal';
-import dayjs from 'dayjs';
 
 import classes from './InvationEvent.module.css';
 

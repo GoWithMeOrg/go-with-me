@@ -1,4 +1,5 @@
 import { FC } from 'react';
+
 import { Label } from '@/components/shared/Label';
 import { Autocomplete } from '@/components/widgets/MapComponents/Autocomplete/Autocomplete';
 import type { PlaceType } from '@/components/widgets/MapComponents/types/types';

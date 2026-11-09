@@ -1,6 +1,7 @@
-import { PrivacyVisibility } from '@/modules/privacy-setting/enums/privacy-visibility.enum.js';
 import { Field, ID, InputType } from '@nestjs/graphql';
 import { Types } from 'mongoose';
+
+import { PrivacyVisibility } from '@/modules/privacy-setting/enums/privacy-visibility.enum.js';
 
 @InputType()
 export class UpdatePrivacySettingInput {

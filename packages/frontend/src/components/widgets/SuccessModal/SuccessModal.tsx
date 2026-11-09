@@ -1,8 +1,9 @@
 import { FC } from 'react';
+import dayjs from 'dayjs';
+
 import Close from '@/assets/icons/close.svg';
 import { Button } from '@/components/shared/Button';
 import { Title } from '@/components/shared/Title';
-import dayjs from 'dayjs';
 
 import classes from './SuccessModal.module.css';
 

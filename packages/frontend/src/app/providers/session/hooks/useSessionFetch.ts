@@ -1,9 +1,10 @@
 'use client';
 
 import { useState } from 'react';
+import { useQuery } from '@apollo/client/react';
+
 import { GET_SESSION } from '@/app/graphql/queries/session';
 import type { AuthStatus, Session } from '@/app/providers/session/types/session.types';
-import { useQuery } from '@apollo/client/react';
 
 export function useSessionFetch() {
     const { data, loading, error } = useQuery(GET_SESSION);

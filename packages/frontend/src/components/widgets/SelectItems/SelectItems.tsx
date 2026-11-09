@@ -1,9 +1,9 @@
 import { FC } from 'react';
+
 import Minus from '@/assets/icons/minus.svg';
 import { Badges } from '@/components/shared/Badges';
 import { Dropdown } from '@/components/shared/Dropdown';
 import { Label } from '@/components/shared/Label';
-
 import { useSelectItems } from './hooks/useSelectItems';
 
 import classes from './SelectItems.module.css';

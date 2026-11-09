@@ -1,4 +1,6 @@
 import { useEffect } from 'react';
+import { useQuery } from '@apollo/client/react';
+
 import {
     GetCompanionRequestsQuery,
     GetCompanionRequestsQueryVariables,
@@ -10,7 +12,6 @@ import { GET_COMPANION_REQUESTS } from '@/app/graphql/queries/companionRequest';
 import { GET_INVATIONS } from '@/app/graphql/queries/invations';
 import { COMPANION_REQUEST_SUBSCRIPTION } from '@/app/graphql/subscriptions/companionRequest';
 import { useSessionGQL } from '@/app/providers/session/hooks/useSesssionGQL';
-import { useQuery } from '@apollo/client/react';
 
 export const useNotifications = () => {
     const { data: session } = useSessionGQL();

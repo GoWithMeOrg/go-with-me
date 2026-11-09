@@ -1,6 +1,5 @@
 import Arrow from '@/assets/icons/arrow.svg';
 import { Button } from '@/components/shared/Button';
-
 import { useButtonBack } from './hooks';
 
 import classes from './ButtonBack.module.css';

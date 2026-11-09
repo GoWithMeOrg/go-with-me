@@ -1,14 +1,14 @@
 'use client';
 
 import { FC } from 'react';
+import { AdvancedMarker, ControlPosition, Map, Pin } from '@vis.gl/react-google-maps';
+
 import Marker from '@/assets/icons/marker.svg';
 import { Button } from '@/components/shared/Button';
 import { Popup } from '@/components/shared/Popup';
 import { Autocomplete } from '@/components/widgets/MapComponents/Autocomplete/Autocomplete';
 import AutocompleteControl from '@/components/widgets/MapComponents/AutocompleteControl/AutocompleteControl';
 import AutocompleteResult from '@/components/widgets/MapComponents/AutocompleteResult/AutocompleteResult';
-import { AdvancedMarker, ControlPosition, Map, Pin } from '@vis.gl/react-google-maps';
-
 import { useLocationPicker } from './hooks/useLocationPicker';
 import { LocationPickerProps } from './interfaces/LocationPickerProps';
 

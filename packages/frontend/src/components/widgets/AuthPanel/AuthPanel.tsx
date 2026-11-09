@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+
 import { logout, signIn } from '@/app/providers/session/actions/authActions';
 import { useSessionGQL } from '@/app/providers/session/hooks/useSesssionGQL';
 import Human from '@/assets/icons/human.svg';
@@ -7,7 +9,6 @@ import { Button } from '@/components/shared/Button';
 import { Popup } from '@/components/shared/Popup';
 import { usePopup } from '@/components/shared/Popup/hooks';
 import { AuthModal } from '@/components/widgets/AuthModal';
-import Link from 'next/link';
 
 import classes from './AuthPanel.module.css';
 

@@ -1,9 +1,10 @@
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Types } from 'mongoose';
+
 import { Event } from '@/modules/event/entities/event.entity.js';
 import { SendInvitationInput } from '@/modules/invitation/dto/send-invitation.input.js';
 import { Invitation } from '@/modules/invitation/entities/invitation.entity.js';
 import { InvitationService } from '@/modules/invitation/invitation.service.js';
-import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { Types } from 'mongoose';
 
 @Resolver()
 export class InvitationResolver {

@@ -1,3 +1,5 @@
+import { useQuery } from '@apollo/client/react';
+
 import type {
     CompanionInvitationEventQuery,
     CompanionInvitationEventQueryVariables,
@@ -9,7 +11,6 @@ import {
     GET_ORGANIZER_EVENTS_FOR_INVITE,
 } from '@/app/graphql/queries/invations';
 import { useUserID } from '@/hooks/useUserID';
-import { useQuery } from '@apollo/client/react';
 
 export const useInvitationEvents = (companionId: string | null) => {
     const { user_id } = useUserID();

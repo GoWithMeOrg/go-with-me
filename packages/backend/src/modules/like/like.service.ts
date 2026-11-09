@@ -1,7 +1,8 @@
-import { Like, LikeDocument } from '@/modules/like/entities/like.entity.js';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
+
+import { Like, LikeDocument } from '@/modules/like/entities/like.entity.js';
 
 @Injectable()
 export class LikeService {

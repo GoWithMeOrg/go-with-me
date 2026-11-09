@@ -1,10 +1,10 @@
 'use client';
 
 import { memo, useCallback, useState } from 'react';
-import { Avatar } from '@/components/shared/Avatar';
-import { useUserID } from '@/hooks/useUserID';
 import { Comment as CommentType } from '@go-with-me/shared/graphql';
 
+import { Avatar } from '@/components/shared/Avatar';
+import { useUserID } from '@/hooks/useUserID';
 import { useLikesContext } from '../LikesContext';
 import { CommentContent } from './CommentContent';
 import { CommentHeader } from './CommentHeader';

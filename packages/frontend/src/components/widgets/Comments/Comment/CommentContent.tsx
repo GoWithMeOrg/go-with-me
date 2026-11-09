@@ -1,6 +1,6 @@
-import { CommentForm } from '@/components/widgets/Comments/CommentForm';
 import { Comment as CommentType } from '@go-with-me/shared/graphql';
 
+import { CommentForm } from '@/components/widgets/Comments/CommentForm';
 import { CommentActions } from './CommentActions';
 
 import classes from './Comment.module.css';

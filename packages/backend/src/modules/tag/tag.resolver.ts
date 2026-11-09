@@ -1,9 +1,10 @@
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Types } from 'mongoose';
+
 import { CreateTagInput } from '@/modules/tag/dto/create-tag.input.js';
 import { UpdateTagInput } from '@/modules/tag/dto/update-tag.input.js';
 import { Tag } from '@/modules/tag/entities/tag.entity.js';
 import { TagService } from '@/modules/tag/tag.service.js';
-import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { Types } from 'mongoose';
 
 @Resolver(() => Tag)
 export class TagResolver {

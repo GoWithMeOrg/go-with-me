@@ -2,6 +2,8 @@
 
 import { FC, useRef } from 'react';
 import { Controller } from 'react-hook-form';
+import { Privacy } from '@go-with-me/shared/graphql';
+
 import { Button } from '@/components/shared/Button';
 import { categoriesList, interestsList } from '@/components/shared/Dropdown/dropdownLists';
 import { Input } from '@/components/shared/Input';
@@ -18,7 +20,6 @@ import { SelectItems } from '@/components/widgets/SelectItems';
 import { Time } from '@/components/widgets/Time';
 import { UploadFile } from '@/components/widgets/UploadFile';
 import { UploadFileSizes } from '@/components/widgets/UploadFile/types/storage-folder';
-import { Privacy } from '@go-with-me/shared/graphql';
 
 import classes from './EventForm.module.css';
 

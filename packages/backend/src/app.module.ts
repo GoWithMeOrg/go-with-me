@@ -1,3 +1,12 @@
+import { ApolloDriver } from '@nestjs/apollo';
+import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
+import { GraphQLModule } from '@nestjs/graphql';
+import { getModelToken, MongooseModule } from '@nestjs/mongoose';
+import { LoggerModule } from 'nestjs-pino';
+import { S3Module } from 'nestjs-s3';
+
 import { AuthModule } from '@/auth/auth.module.js';
 import { RolesGuard } from '@/common/guards/roles.guard.js';
 import { validateEnv } from '@/config/env.validation.js';
@@ -24,14 +33,6 @@ import { StorageModule } from '@/modules/storage/storage.module.js';
 import { TagModule } from '@/modules/tag/tag.module.js';
 import { UserProfileModule } from '@/modules/user-profile/user-profile.module.js';
 import { UserModule } from '@/modules/user/user.module.js';
-import { ApolloDriver } from '@nestjs/apollo';
-import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { APP_GUARD } from '@nestjs/core';
-import { GraphQLModule } from '@nestjs/graphql';
-import { getModelToken, MongooseModule } from '@nestjs/mongoose';
-import { LoggerModule } from 'nestjs-pino';
-import { S3Module } from 'nestjs-s3';
 
 @Module({
     imports: [

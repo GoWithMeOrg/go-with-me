@@ -1,9 +1,10 @@
-import { ROLES_KEY } from '@/common/decorators/roles.decorator.js';
-import { Role } from '@/modules/role/entities/role.entity.js';
-import { User } from '@/modules/user/entities/user.entity.js';
 import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { GqlExecutionContext } from '@nestjs/graphql';
+
+import { ROLES_KEY } from '@/common/decorators/roles.decorator.js';
+import { Role } from '@/modules/role/entities/role.entity.js';
+import { User } from '@/modules/user/entities/user.entity.js';
 
 @Injectable()
 export class RolesGuard implements CanActivate {

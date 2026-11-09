@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import { useMutation, useQuery } from '@apollo/client/react';
+import { User } from '@go-with-me/shared/graphql';
+
 import { SEND_REQUEST_COMPANION_MUTATION } from '@/app/graphql/mutations/companionRequest';
 import { REMOVE_COMPANION_MUTATION } from '@/app/graphql/mutations/companions';
 import {
@@ -11,9 +14,6 @@ import {
 } from '@/app/graphql/operations';
 import { GET_COMPANIONS_BY_OWNER_ID, GET_FIND_COMPANION } from '@/app/graphql/queries/companions';
 import { useUserID } from '@/hooks/useUserID';
-import { useMutation, useQuery } from '@apollo/client/react';
-import { User } from '@go-with-me/shared/graphql';
-
 import { useSearchInput } from '../../SearchInput/hooks/useSearchInput';
 
 export const useCompanionSearch = () => {

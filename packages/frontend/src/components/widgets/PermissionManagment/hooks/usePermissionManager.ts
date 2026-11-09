@@ -1,10 +1,11 @@
 import { useState } from 'react';
+import { useMutation } from '@apollo/client/react';
+import { Action } from '@go-with-me/shared/graphql';
+
 import {
     CREATE_RESOURCE_PERMISSION,
     TOGGLE_PERMISSION_STATUS,
 } from '@/app/graphql/mutations/permission';
-import { useMutation } from '@apollo/client/react';
-import { Action } from '@go-with-me/shared/graphql';
 
 const usePermissionManager = () => {
     const [expandedResources, setExpandedResources] = useState<string[]>([]);

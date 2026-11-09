@@ -1,9 +1,10 @@
 'use client';
 
+import type { NextPage } from 'next';
+
 import { ButtonBack } from '@/components/shared/ButtonBack';
 import { Title } from '@/components/shared/Title';
 import { EventForm } from '@/components/widgets/EventForm';
-import type { NextPage } from 'next';
 
 import classes from './page.module.css';
 

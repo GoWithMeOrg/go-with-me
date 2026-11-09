@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
-import { GET_PRIVACY_SETTINGS_FOR_USERS } from '@/app/graphql/queries/privacySetting';
-import { useDialogModal } from '@/components/widgets/DialogModal/hooks/useDialogModal';
-import { DialogModal } from '@/components/widgets/DialogModal/types/DialogModal';
 import { useQuery } from '@apollo/client/react';
 import { PrivacySetting, PrivacyVisibility } from '@go-with-me/shared/graphql';
 
+import { GET_PRIVACY_SETTINGS_FOR_USERS } from '@/app/graphql/queries/privacySetting';
+import { useDialogModal } from '@/components/widgets/DialogModal/hooks/useDialogModal';
+import { DialogModal } from '@/components/widgets/DialogModal/types/DialogModal';
 import { useCompanionSearch } from './useCompanionSearch';
 import { useCompanionSelection } from './useCompanionSelection';
 

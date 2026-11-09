@@ -1,4 +1,6 @@
 import { useReducer } from 'react';
+import { useMutation } from '@apollo/client/react';
+
 import { SEND_INVITATION_MUTATION } from '@/app/graphql/mutations/invations';
 import { usePopup } from '@/components/shared/Popup/hooks';
 import {
@@ -11,8 +13,6 @@ import {
     InvitationEvent,
 } from '@/components/widgets/DialogModal/types/DialogModal';
 import { useUserID } from '@/hooks/useUserID';
-import { useMutation } from '@apollo/client/react';
-
 import { useInvitationEvents } from './useInvitationEvents';
 
 export const useDialogModal = ({ receiver_ids, resetCards }: CompanionsDialogModalProps) => {

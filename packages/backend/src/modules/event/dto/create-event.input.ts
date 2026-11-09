@@ -1,6 +1,7 @@
-import { Privacy } from '@/modules/event/enum/privacy.enum.js';
 import { Field, ID, InputType } from '@nestjs/graphql';
 import { Types } from 'mongoose';
+
+import { Privacy } from '@/modules/event/enum/privacy.enum.js';
 
 @InputType()
 export class CreateEventInput {

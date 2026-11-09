@@ -1,4 +1,8 @@
 import { FC } from 'react';
+import dayjs from 'dayjs';
+import Image from 'next/image';
+import Link from 'next/link';
+
 import { InvitationResponseStatus } from '@/app/types/Invitation';
 import InvationAccepted from '@/assets/icons/invationAccepted.svg';
 import InvationDeclined from '@/assets/icons/invationDeclined.svg';
@@ -6,10 +10,6 @@ import { Button } from '@/components/shared/Button';
 import { Title } from '@/components/shared/Title';
 import { Geocoding } from '@/components/widgets/GoogleMap';
 import { InvitationProps } from '@/components/widgets/Invitation/types/Invitation';
-import dayjs from 'dayjs';
-import Image from 'next/image';
-import Link from 'next/link';
-
 import { useInvitation } from './hooks';
 
 import classes from './Invitation.module.css';

@@ -1,9 +1,10 @@
+import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
+
 import { RoleSchema } from '@/modules/role/entities/role.entity.js';
 import { RoleResolver } from '@/modules/role/role.resolver.js';
 import { RoleService } from '@/modules/role/role.service.js';
 import { UserSchema } from '@/modules/user/entities/user.entity.js';
-import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
     imports: [

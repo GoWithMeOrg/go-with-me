@@ -1,3 +1,7 @@
+import { useMutation, useQuery } from '@apollo/client/react';
+import { PrivacySetting } from '@go-with-me/shared/graphql';
+import { useParams } from 'next/navigation';
+
 import { SEND_REQUEST_COMPANION_MUTATION } from '@/app/graphql/mutations/companionRequest';
 import { GET_IS_USER_COMPANION } from '@/app/graphql/queries/companions';
 import { GET_EVENTS_BY_ORGANIZER } from '@/app/graphql/queries/events';
@@ -5,9 +9,6 @@ import { GET_PRIVACY_SETTING_BY_USER_ID } from '@/app/graphql/queries/privacySet
 import { GET_USER_BY_ID } from '@/app/graphql/queries/user';
 import { useDialogModal } from '@/components/widgets/DialogModal/hooks/useDialogModal';
 import { useUserID } from '@/hooks/useUserID';
-import { useMutation, useQuery } from '@apollo/client/react';
-import { PrivacySetting } from '@go-with-me/shared/graphql';
-import { useParams } from 'next/navigation';
 
 export const usePublicProfile = () => {
     const { user_id, status } = useUserID();

@@ -1,3 +1,6 @@
+import { Args, ID, Int, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Types } from 'mongoose';
+
 import { CurrentUser } from '@/common/decorators/current-user.decorator.js';
 import { CommentService } from '@/modules/comment/comment.service.js';
 import { CreateCommentInput } from '@/modules/comment/dto/create-comment.input.js';
@@ -5,8 +8,6 @@ import { UpdateCommentInput } from '@/modules/comment/dto/update-comment.input.j
 import { Comment } from '@/modules/comment/entities/comment.entity.js';
 import { User } from '@/modules/user/entities/user.entity.js';
 import { UserService } from '@/modules/user/user.service.js';
-import { Args, ID, Int, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
-import { Types } from 'mongoose';
 
 @Resolver(() => Comment)
 export class CommentResolver {

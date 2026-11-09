@@ -1,11 +1,12 @@
 import React from 'react';
+import Link from 'next/link';
+
 import CreateEvent from '@/assets/icons/createEvent.svg';
 import CreatePrivateEvent from '@/assets/icons/createPrivateEvent.svg';
 import ExploreEvents from '@/assets/icons/exploreEvents.svg';
 import PlanAdventure from '@/assets/icons/planAdventure.svg';
 import { Title } from '@/components/shared/Title';
 import { CardWork } from '@/components/widgets/CardWork';
-import Link from 'next/link';
 
 import classes from './HowITWorks.module.css';
 

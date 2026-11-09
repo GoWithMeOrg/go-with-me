@@ -1,3 +1,6 @@
+import { Injectable } from '@nestjs/common';
+import { Types } from 'mongoose';
+
 import { CategoryService } from '@/modules/category/category.service.js';
 import { CreateCategoryInput } from '@/modules/category/dto/create-category.input.js';
 import { UpdateCategoryInput } from '@/modules/category/dto/update-category.input.js';
@@ -12,8 +15,6 @@ import { UpdateTagInput } from '@/modules/tag/dto/update-tag.input.js';
 import { TagService } from '@/modules/tag/tag.service.js';
 import { UpdateUserInput } from '@/modules/user/dto/update-user.input.js';
 import { UserService } from '@/modules/user/user.service.js';
-import { Injectable } from '@nestjs/common';
-import { Types } from 'mongoose';
 
 @Injectable()
 export class UserProfileService {

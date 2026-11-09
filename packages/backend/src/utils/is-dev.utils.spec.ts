@@ -1,5 +1,6 @@
-import { isDev } from '@/utils/is-dev.utils.js';
 import { ConfigService } from '@nestjs/config';
+
+import { isDev } from '@/utils/is-dev.utils.js';
 
 describe('isDev', () => {
     const createConfigService = (nodeEnv: string | undefined) =>

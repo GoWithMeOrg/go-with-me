@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { SEED_EVENTS } from '@/app/graphql/mutations/seedEvents';
-import { GET_USERS } from '@/app/graphql/queries/users';
-import { categoriesList, interestsList } from '@/components/shared/Dropdown/dropdownLists';
 import { useMutation, useQuery } from '@apollo/client/react';
 import { User } from '@go-with-me/shared/graphql';
 
+import { SEED_EVENTS } from '@/app/graphql/mutations/seedEvents';
+import { GET_USERS } from '@/app/graphql/queries/users';
+import { categoriesList, interestsList } from '@/components/shared/Dropdown/dropdownLists';
 import { tagsList } from '../tagList';
 import { useGeneratorLocation } from './useGeneratorLocation';
 

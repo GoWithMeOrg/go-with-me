@@ -1,11 +1,11 @@
 import React from 'react';
+
 import ArrowCircle from '@/assets/icons/arrowCircle.svg';
 import PromoIcon from '@/assets/icons/promoIcon.svg';
 import { Button } from '@/components/shared/Button';
 import { usePopup } from '@/components/shared/Popup/hooks';
 import { Title } from '@/components/shared/Title';
 import { AuthModal } from '@/components/widgets/AuthModal';
-
 import { Popup } from '../Popup';
 
 import classes from './Promo.module.css';

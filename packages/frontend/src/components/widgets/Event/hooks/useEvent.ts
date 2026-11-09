@@ -1,13 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { REMOVE_EVENT_MUTATION } from '@/app/graphql/mutations/event';
-import { useUploadFile } from '@/components/widgets/UploadFile/hooks';
-import { useUserID } from '@/hooks/useUserID';
 import { useMutation } from '@apollo/client/react';
 import { Event as EventType } from '@go-with-me/shared/graphql';
 import dayjs from 'dayjs';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+
+import { REMOVE_EVENT_MUTATION } from '@/app/graphql/mutations/event';
+import { useUploadFile } from '@/components/widgets/UploadFile/hooks';
+import { useUserID } from '@/hooks/useUserID';
 
 export interface EventProps {
     event: EventType;

@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
+
 import { Button } from '@/components/shared/Button';
 import { ButtonNext } from '@/components/shared/ButtonNext';
 import { Title } from '@/components/shared/Title';
-
 import { ICarousel, useCarousel } from './hooks/useCarousel';
 
 import classes from './Carousel.module.css';

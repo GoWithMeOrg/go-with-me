@@ -1,10 +1,11 @@
 'use client';
 
 import { useEffect } from 'react';
-import { GET_ROLES_BY_USER_ID } from '@/app/graphql/queries/role';
-import { useSessionGQL } from '@/app/providers/session/hooks/useSesssionGQL';
 import { useQuery } from '@apollo/client/react';
 import { useRouter } from 'next/navigation';
+
+import { GET_ROLES_BY_USER_ID } from '@/app/graphql/queries/role';
+import { useSessionGQL } from '@/app/providers/session/hooks/useSesssionGQL';
 
 export function useAdminGuard() {
     const { data, status } = useSessionGQL();

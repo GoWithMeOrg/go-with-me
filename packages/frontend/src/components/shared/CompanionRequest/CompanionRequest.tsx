@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
-import { Button } from '@/components/shared/Button';
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { Button } from '@/components/shared/Button';
 import { useCompanionRequest } from './hooks';
 import { CompanionRequestProps } from './interfaces/CompanionRequestProps';
 

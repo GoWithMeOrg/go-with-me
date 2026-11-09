@@ -1,8 +1,9 @@
-import { CompanionRequestStatus } from '@/modules/companion-request/enums/companion-request.enum.js';
-import { User } from '@/modules/user/entities/user.entity.js';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongoSchema, Types } from 'mongoose';
+
+import { CompanionRequestStatus } from '@/modules/companion-request/enums/companion-request.enum.js';
+import { User } from '@/modules/user/entities/user.entity.js';
 
 @ObjectType()
 @Schema({ timestamps: true })

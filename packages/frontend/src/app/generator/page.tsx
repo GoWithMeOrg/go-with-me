@@ -1,12 +1,12 @@
 'use client';
 
 import React from 'react';
+import { NextPage } from 'next';
+
 import { Button } from '@/components/shared/Button';
 import { Input } from '@/components/shared/Input';
 import { Label } from '@/components/shared/Label';
 import { FilteredEventsLocation } from '@/components/widgets/FilteredEventsLocation';
-import { NextPage } from 'next';
-
 import { useGenerator } from './hooks';
 
 import classes from './page.module.css';

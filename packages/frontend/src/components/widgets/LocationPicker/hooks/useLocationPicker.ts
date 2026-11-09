@@ -1,7 +1,8 @@
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { APIProviderContext, useApiIsLoaded, useMapsLibrary } from '@vis.gl/react-google-maps';
+
 import { usePopup } from '@/components/shared/Popup/hooks';
 import { UseLocationPickerProps } from '@/components/widgets/LocationPicker/interfaces/UseLocationPickerProps';
-import { APIProviderContext, useApiIsLoaded, useMapsLibrary } from '@vis.gl/react-google-maps';
 
 const PLACE_FIELDS: string[] = ['location', 'formattedAddress', 'addressComponents', 'displayName'];
 

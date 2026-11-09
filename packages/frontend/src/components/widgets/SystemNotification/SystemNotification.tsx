@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import dayjs from 'dayjs';
+
 import Logogwm from '@/assets/icons/logogwm.svg';
 import { Button } from '@/components/shared/Button';
-import dayjs from 'dayjs';
 
 import classes from './SystemNotification.module.css';
 

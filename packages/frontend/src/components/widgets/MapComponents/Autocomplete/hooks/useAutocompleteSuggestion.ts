@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { UseAutocompleteSuggestionsReturn } from '@/components/widgets/MapComponents/Autocomplete/types/UseAutocompleteSuggestionsReturn.type';
 import { useMapsLibrary } from '@vis.gl/react-google-maps';
+
+import { UseAutocompleteSuggestionsReturn } from '@/components/widgets/MapComponents/Autocomplete/types/UseAutocompleteSuggestionsReturn.type';
 
 type SuggestionsResult = {
     input: string;

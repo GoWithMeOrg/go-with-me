@@ -11,7 +11,7 @@
         "^react",
         "<THIRD_PARTY_MODULES>",
         "",
-        "^(modules|lib|mocks|utils|config|assets|temp|styles|ui-kit|src)\\/.*(?<!\\.css)(?<!\\/styles)$",
+        "^(@|modules|lib|mocks|utils|config|assets|temp|styles|ui-kit|src)\\/.*(?<!\\.css)(?<!\\/styles)$",
         "^(\\.|\\.{2}|\\.\\/.*|\\.{2}\\/.*)(?<!\\.css)(?<!\\/styles)$",
         "",
         "(.*\\.css|\\.\\/styles)$"

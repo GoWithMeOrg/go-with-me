@@ -1,3 +1,6 @@
+import { Args, ID, Int, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Types } from 'mongoose';
+
 import { CurrentUser } from '@/common/decorators/current-user.decorator.js';
 import { CreateCategoryInput } from '@/modules/category/dto/create-category.input.js';
 import { CreateEventInput } from '@/modules/event/dto/create-event.input.js';
@@ -10,8 +13,6 @@ import { CreateLocationInput } from '@/modules/location/dto/create-location.inpu
 import { CreateTagInput } from '@/modules/tag/dto/create-tag.input.js';
 import { User } from '@/modules/user/entities/user.entity.js';
 import { UserService } from '@/modules/user/user.service.js';
-import { Args, ID, Int, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
-import { Types } from 'mongoose';
 
 @Resolver(() => Event)
 export class EventResolver {

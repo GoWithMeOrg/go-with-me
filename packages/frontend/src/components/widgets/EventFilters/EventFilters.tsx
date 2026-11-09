@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Event } from '@go-with-me/shared/graphql';
+
 import { categoriesList, interestsList } from '@/components/shared/Dropdown/dropdownLists';
 import { FilteredList } from '@/components/shared/FilteredList';
 import { Title } from '@/components/shared/Title';
@@ -10,8 +12,6 @@ import { NavbarEvents } from '@/components/widgets/EventFilters/NavbarEvents';
 import { useEventList } from '@/components/widgets/EventList/hooks';
 import { FilteredEventsLocation } from '@/components/widgets/FilteredEventsLocation';
 import { SelectItems } from '@/components/widgets/SelectItems';
-import { Event } from '@go-with-me/shared/graphql';
-
 import { GoogleMap } from '../GoogleMap';
 import { NavbarEventTabs } from '../Navbar/models';
 import { useEventFilters } from './hooks/useEventFilters';

@@ -1,12 +1,13 @@
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model, Types } from 'mongoose';
+
 import {
     CompanionRequest,
     CompanionRequestDocument,
 } from '@/modules/companion-request/entities/companion-request.entity.js';
 import { CompanionRequestStatus } from '@/modules/companion-request/enums/companion-request.enum.js';
 import { Companion, CompanionDocument } from '@/modules/companion/entities/companion.entity.js';
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
 
 @Injectable()
 export class CompanionRequestService {

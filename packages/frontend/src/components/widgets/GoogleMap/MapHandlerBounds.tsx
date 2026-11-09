@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo, useRef } from 'react';
-import { PlaceType } from '@/components/widgets/MapComponents/types/types';
 import { useQuery } from '@apollo/client/react';
 import { useMap } from '@vis.gl/react-google-maps';
 import gql from 'graphql-tag';
+
+import { PlaceType } from '@/components/widgets/MapComponents/types/types';
 
 interface Props {
     place: PlaceType;

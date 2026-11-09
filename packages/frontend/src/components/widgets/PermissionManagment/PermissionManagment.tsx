@@ -6,7 +6,6 @@ import { Button } from '@/components/shared/Button';
 import { Checkbox } from '@/components/shared/Checkbox';
 import { FilteredList } from '@/components/shared/FilteredList';
 import { Title } from '@/components/shared/Title';
-
 import { SearchInput } from '../SearchInput';
 import { useSearchInput } from '../SearchInput/hooks/useSearchInput';
 import usePermissionManager from './hooks/usePermissionManager';

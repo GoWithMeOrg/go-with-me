@@ -1,10 +1,10 @@
 import { FC } from 'react';
+import Image from 'next/image';
+
 import ArrowMenu from '@/assets/icons/arrowMenu.svg';
 import Minus from '@/assets/icons/minus.svg';
 import Plus from '@/assets/icons/plus.svg';
 import { Button } from '@/components/shared/Button';
-import Image from 'next/image';
-
 import { useDropdown } from './hooks';
 
 import classes from './Dropdown.module.css';

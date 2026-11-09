@@ -3,7 +3,6 @@
 import ClearInput from '@/assets/icons/clearInput.svg';
 import Search from '@/assets/icons/search.svg';
 import { Label } from '@/components/shared/Label';
-
 import { SearchInputProps } from './interfaces/interfaces';
 
 import classes from './SearchInput.module.css';

@@ -1,14 +1,15 @@
 'use client';
 
+import { useQuery } from '@apollo/client/react';
+import type { Event } from '@go-with-me/shared/graphql';
+import { NextPage } from 'next';
+import { useParams } from 'next/navigation';
+
 import { GET_EVENTS_BY_ID } from '@/app/graphql/queries/events';
 import { ButtonBack } from '@/components/shared/ButtonBack';
 import { Loader } from '@/components/shared/Loader';
 import { Title } from '@/components/shared/Title';
 import { EventForm } from '@/components/widgets/EventForm/EventForm';
-import { useQuery } from '@apollo/client/react';
-import type { Event } from '@go-with-me/shared/graphql';
-import { NextPage } from 'next';
-import { useParams } from 'next/navigation';
 
 import classes from '../../new/page.module.css';
 

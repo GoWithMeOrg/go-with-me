@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
-import Checkbox from '@/assets/icons/checkbox.svg';
-import Marker from '@/assets/icons/marker.svg';
-import { Title } from '@/components/shared/Title';
-import { Geocoding } from '@/components/widgets/GoogleMap/Geocoding';
 import dayjs from 'dayjs';
 import Image from 'next/image';
 import Link from 'next/link';
 
+import Checkbox from '@/assets/icons/checkbox.svg';
+import Marker from '@/assets/icons/marker.svg';
+import { Title } from '@/components/shared/Title';
+import { Geocoding } from '@/components/widgets/GoogleMap/Geocoding';
 import { Avatar } from '../Avatar';
 
 import classes from './Slide.module.css';

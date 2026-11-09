@@ -1,5 +1,4 @@
 import { Input } from '@/components/shared/Input';
-
 import { useAutocomplete } from './hooks/useAutocomplete';
 import { AutocompleteProps } from './interfaces/Autocomplete.interface';
 

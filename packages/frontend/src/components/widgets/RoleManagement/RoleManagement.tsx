@@ -1,13 +1,13 @@
 'use client';
 
+import { Role } from '@go-with-me/shared/graphql';
+
 import ArrowMenu from '@/assets/icons/arrowMenu.svg';
 import { Button } from '@/components/shared/Button';
 import { Checkbox } from '@/components/shared/Checkbox';
 import { FilteredList } from '@/components/shared/FilteredList';
 import { Input } from '@/components/shared/Input';
 import { Title } from '@/components/shared/Title';
-import { Role } from '@go-with-me/shared/graphql';
-
 import useRoleManagement from './hooks/useRoleManagement';
 
 import classes from './RoleManagement.module.css';

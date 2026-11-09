@@ -1,9 +1,10 @@
-import { CreateCategoryInput } from '@/modules/category/dto/create-category.input.js';
-import { UpdateCategoryInput } from '@/modules/category/dto/update-category.input.js';
-import { Category, CategoryDocument } from '@/modules/category/entities/category.entity.js';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { DeleteResult, Model, Types } from 'mongoose';
+
+import { CreateCategoryInput } from '@/modules/category/dto/create-category.input.js';
+import { UpdateCategoryInput } from '@/modules/category/dto/update-category.input.js';
+import { Category, CategoryDocument } from '@/modules/category/entities/category.entity.js';
 
 @Injectable()
 export class CategoryService {

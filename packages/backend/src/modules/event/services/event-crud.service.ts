@@ -1,8 +1,9 @@
-import { CreateEventInput } from '@/modules/event/dto/create-event.input.js';
-import { Event } from '@/modules/event/entities/event.entity.js';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
+
+import { CreateEventInput } from '@/modules/event/dto/create-event.input.js';
+import { Event } from '@/modules/event/entities/event.entity.js';
 
 @Injectable()
 export class EventCrudService {

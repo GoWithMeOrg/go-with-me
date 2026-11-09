@@ -1,3 +1,6 @@
+import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
+
 import { CategoryModule } from '@/modules/category/category.module.js';
 import { EventSchema } from '@/modules/event/entities/event.entity.js';
 import { EventResolver } from '@/modules/event/event.resolver.js';
@@ -10,8 +13,6 @@ import { InterestModule } from '@/modules/interest/interest.module.js';
 import { LocationModule } from '@/modules/location/location.module.js';
 import { TagModule } from '@/modules/tag/tag.module.js';
 import { UserModule } from '@/modules/user/user.module.js';
-import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
     imports: [

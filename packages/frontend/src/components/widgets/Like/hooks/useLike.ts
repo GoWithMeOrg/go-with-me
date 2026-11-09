@@ -1,8 +1,9 @@
 import { useCallback, useState } from 'react';
+import { useMutation, useQuery } from '@apollo/client/react';
+
 import { TOGGLE_LIKE_MUTATION } from '@/app/graphql/mutations/like';
 import { GET_LIKES_COUNT, IS_LIKED_BY_USER } from '@/app/graphql/queries/like';
 import { LikeProps } from '@/components/widgets/Like/interfaces/LikeProps';
-import { useMutation, useQuery } from '@apollo/client/react';
 
 type LikeOverride = {
     isLiked: boolean;

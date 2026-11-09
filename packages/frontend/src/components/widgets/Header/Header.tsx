@@ -1,6 +1,7 @@
+import Link from 'next/link';
+
 import Logo from '@/assets/icons/logo.svg';
 import { AuthPanel } from '@/components/widgets/AuthPanel';
-import Link from 'next/link';
 
 import classes from './Header.module.css';
 

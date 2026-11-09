@@ -1,7 +1,8 @@
-import { OwnerType } from '@/common/enums/owner-type.enum.js';
 import { Field, ID, InputType } from '@nestjs/graphql';
 import { IsEnum, IsMongoId, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { Types } from 'mongoose';
+
+import { OwnerType } from '@/common/enums/owner-type.enum.js';
 
 @InputType()
 export class CreateCommentInput {

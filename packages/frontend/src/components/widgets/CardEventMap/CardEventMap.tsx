@@ -1,6 +1,6 @@
-import ArrowCircle from '@/assets/icons/arrowCircle.svg';
 import Link from 'next/link';
 
+import ArrowCircle from '@/assets/icons/arrowCircle.svg';
 import CardEvent, { SizeCard } from '../CardEvent/CardEvent';
 import type { IEvent } from '../GoogleMap/types/Type';
 

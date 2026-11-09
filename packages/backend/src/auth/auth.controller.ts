@@ -1,12 +1,3 @@
-import { GoogleOAuthGuard } from '@/auth/GoogleAuth/guard/google-oauth.guard.js';
-import { Roles } from '@/common/decorators/roles.decorator.js';
-import { RolesGuard } from '@/common/guards/roles.guard.js';
-import { SessionAuthGuard } from '@/common/guards/session-auth.guard.js';
-import type { ReqWithPassport } from '@/common/types/graphql-context.js';
-import { Role } from '@/modules/role/entities/role.entity.js';
-import { SessionService } from '@/modules/session/session.service.js';
-import { User } from '@/modules/user/entities/user.entity.js';
-import { UserService } from '@/modules/user/user.service.js';
 import {
     Controller,
     Delete,
@@ -20,6 +11,16 @@ import {
 import { ConfigService } from '@nestjs/config';
 import type { Response } from 'express';
 import { Types } from 'mongoose';
+
+import { GoogleOAuthGuard } from '@/auth/GoogleAuth/guard/google-oauth.guard.js';
+import { Roles } from '@/common/decorators/roles.decorator.js';
+import { RolesGuard } from '@/common/guards/roles.guard.js';
+import { SessionAuthGuard } from '@/common/guards/session-auth.guard.js';
+import type { ReqWithPassport } from '@/common/types/graphql-context.js';
+import { Role } from '@/modules/role/entities/role.entity.js';
+import { SessionService } from '@/modules/session/session.service.js';
+import { User } from '@/modules/user/entities/user.entity.js';
+import { UserService } from '@/modules/user/user.service.js';
 
 @Controller('auth')
 export class AuthController {

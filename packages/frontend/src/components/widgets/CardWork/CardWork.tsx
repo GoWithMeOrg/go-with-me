@@ -1,4 +1,5 @@
 import { FC } from 'react';
+
 import { Title } from '@/components/shared/Title';
 
 import classes from './CardWork.module.css';

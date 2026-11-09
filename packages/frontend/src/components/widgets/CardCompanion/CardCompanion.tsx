@@ -1,4 +1,5 @@
 import { FC } from 'react';
+
 import Email from '@/assets/icons/email.svg';
 import Minus from '@/assets/icons/minus.svg';
 import { Avatar } from '@/components/shared/Avatar';

@@ -1,8 +1,9 @@
+import { useMutation } from '@apollo/client/react';
+
 import {
     ACCEPT_COMPANION_REQUEST_MUTATION,
     REJECT_COMPANION_REQUEST_MUTATION,
 } from '@/app/graphql/mutations/companionRequest';
-import { useMutation } from '@apollo/client/react';
 
 interface useCompanionRequestProps {
     request_id: string;

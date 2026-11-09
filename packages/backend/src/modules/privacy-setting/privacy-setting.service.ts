@@ -1,12 +1,13 @@
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model, Types } from 'mongoose';
+
 import { UpdatePrivacySettingInput } from '@/modules/privacy-setting/dto/update-privacy-setting.input.js';
 import {
     PrivacySetting,
     PrivacySettingDocument,
 } from '@/modules/privacy-setting/entities/privacy-setting.entity.js';
 import { PrivacyVisibility } from '@/modules/privacy-setting/enums/privacy-visibility.enum.js';
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
 
 const isMarkedCompanions = (v: string | undefined | null) =>
     v === PrivacyVisibility.MARKED_COMPANIONS;

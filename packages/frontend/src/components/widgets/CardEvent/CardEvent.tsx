@@ -1,10 +1,11 @@
 import { useMemo } from 'react';
-import Clock from '@/assets/icons/clock.svg';
-import Marker from '@/assets/icons/marker.svg';
-import { Geocoding } from '@/components/widgets/GoogleMap/Geocoding';
 import dayjs from 'dayjs';
 import Image from 'next/image';
 import Link from 'next/link';
+
+import Clock from '@/assets/icons/clock.svg';
+import Marker from '@/assets/icons/marker.svg';
+import { Geocoding } from '@/components/widgets/GoogleMap/Geocoding';
 
 import classes from './CardEvent.module.css';
 

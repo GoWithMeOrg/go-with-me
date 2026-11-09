@@ -1,6 +1,7 @@
 'use client';
 
 import { useContext } from 'react';
+
 import { SessionContext } from '@/app/providers/session/context/session.context';
 
 export function useSessionGQL() {

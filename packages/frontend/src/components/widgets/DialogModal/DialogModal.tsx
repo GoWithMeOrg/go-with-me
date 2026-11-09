@@ -1,4 +1,5 @@
 import { FC } from 'react';
+
 import Close from '@/assets/icons/close.svg';
 import { Button } from '@/components/shared/Button';
 import { Title } from '@/components/shared/Title';

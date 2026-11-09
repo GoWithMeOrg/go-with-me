@@ -1,4 +1,5 @@
 import { FC } from 'react';
+
 import Plus from '@/assets/icons/plus.svg';
 import { Avatar } from '@/components/shared/Avatar';
 import { Span } from '@/components/shared/Span';

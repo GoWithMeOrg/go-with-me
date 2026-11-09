@@ -1,6 +1,7 @@
 import React, { FC, useMemo } from 'react';
-import ArrowCircle from '@/assets/icons/arrowCircle.svg';
 import Link from 'next/link';
+
+import ArrowCircle from '@/assets/icons/arrowCircle.svg';
 
 import classes from './MoreLink.module.css';
 

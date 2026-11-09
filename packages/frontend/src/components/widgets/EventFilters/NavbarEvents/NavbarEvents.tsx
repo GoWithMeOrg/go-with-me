@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { NavbarEventTabs } from '@/components/widgets/Navbar/models';
 
 import classes from './NavbarEvents.module.css';

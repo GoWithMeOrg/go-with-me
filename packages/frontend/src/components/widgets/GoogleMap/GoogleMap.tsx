@@ -1,6 +1,4 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { Autocomplete } from '@/components/widgets/MapComponents/Autocomplete/Autocomplete';
-import { MAP_CONSTANTS } from '@/constants/map';
 import {
     APIProviderContext,
     ControlPosition,
@@ -9,6 +7,8 @@ import {
     useMap,
 } from '@vis.gl/react-google-maps';
 
+import { Autocomplete } from '@/components/widgets/MapComponents/Autocomplete/Autocomplete';
+import { MAP_CONSTANTS } from '@/constants/map';
 import { CardEventMap } from '../CardEventMap/CardEventMap';
 import { PlaceType } from '../MapComponents/types/types';
 import { CustomMapControl } from './CustomMapControl';

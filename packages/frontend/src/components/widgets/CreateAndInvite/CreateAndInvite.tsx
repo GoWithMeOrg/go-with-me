@@ -1,13 +1,14 @@
 'use client';
 
 import { FC, useMemo } from 'react';
+import Link from 'next/link';
+
 import Join from '@/assets/icons/join.svg';
 import { Button } from '@/components/shared/Button';
 import { Popup } from '@/components/shared/Popup';
 import { usePopup } from '@/components/shared/Popup/hooks';
 import { Title } from '@/components/shared/Title';
 import { AuthModal } from '@/components/widgets/AuthModal';
-import Link from 'next/link';
 
 import classes from './CreateAndInvite.module.css';
 

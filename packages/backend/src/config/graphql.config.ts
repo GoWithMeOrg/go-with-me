@@ -1,9 +1,4 @@
 import { join } from 'path';
-import { SubscriptionContext } from '@/common/interfaces/subscription-context.interface.js';
-import { ReqWithPassport } from '@/common/types/graphql-context.js';
-import { getMongoStore } from '@/config/mongo-store.config.js';
-import { UserDocument } from '@/modules/user/entities/user.entity.js';
-import { isDev } from '@/utils/is-dev.utils.js';
 import { ApolloServerPluginLandingPageDisabled } from '@apollo/server/plugin/disabled';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
@@ -12,6 +7,12 @@ import * as cookie from 'cookie';
 import * as signature from 'cookie-signature';
 import { Context } from 'graphql-ws';
 import { Model } from 'mongoose';
+
+import { SubscriptionContext } from '@/common/interfaces/subscription-context.interface.js';
+import { ReqWithPassport } from '@/common/types/graphql-context.js';
+import { getMongoStore } from '@/config/mongo-store.config.js';
+import { UserDocument } from '@/modules/user/entities/user.entity.js';
+import { isDev } from '@/utils/is-dev.utils.js';
 
 type AuthSession = import('express-session').SessionData & {
     passport?: { user?: unknown };

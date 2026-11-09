@@ -1,4 +1,9 @@
 import { FC } from 'react';
+import { AdvancedMarker, Map, Pin } from '@vis.gl/react-google-maps';
+import dayjs from 'dayjs';
+import Image from 'next/image';
+import Link from 'next/link';
+
 import ArrowMaps from '@/assets/icons/arrowMaps.svg';
 import Checkbox from '@/assets/icons/checkbox.svg';
 import Heart from '@/assets/icons/heart.svg';
@@ -20,11 +25,6 @@ import useJoin from '@/components/widgets/Join/hooks/useJoin';
 import { Like } from '@/components/widgets/Like';
 import { useUserID } from '@/hooks/useUserID';
 import { formatDate } from '@/utils/formatDate';
-import { AdvancedMarker, Map, Pin } from '@vis.gl/react-google-maps';
-import dayjs from 'dayjs';
-import Image from 'next/image';
-import Link from 'next/link';
-
 import useEvent, { EventProps } from './hooks/useEvent';
 
 import classes from './Event.module.css';

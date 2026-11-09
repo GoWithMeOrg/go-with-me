@@ -1,4 +1,5 @@
 import { FC } from 'react';
+
 import Heart from '@/assets/icons/heart.svg';
 import { Button } from '@/components/shared/Button';
 import useLike from '@/components/widgets/Like/hooks/useLike';

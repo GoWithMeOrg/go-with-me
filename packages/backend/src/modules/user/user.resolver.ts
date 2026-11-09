@@ -1,3 +1,7 @@
+import { UseGuards } from '@nestjs/common';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Types } from 'mongoose';
+
 import { CurrentUser } from '@/common/decorators/current-user.decorator.js';
 import { Roles } from '@/common/decorators/roles.decorator.js';
 import { RolesGuard } from '@/common/guards/roles.guard.js';
@@ -6,9 +10,6 @@ import { CreateUserInput } from '@/modules/user/dto/create-user.input.js';
 import { UpdateUserInput } from '@/modules/user/dto/update-user.input.js';
 import { User } from '@/modules/user/entities/user.entity.js';
 import { UserService } from '@/modules/user/user.service.js';
-import { UseGuards } from '@nestjs/common';
-import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { Types } from 'mongoose';
 
 @Resolver(() => User)
 export class UserResolver {

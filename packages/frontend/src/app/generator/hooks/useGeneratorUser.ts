@@ -1,10 +1,10 @@
 import { useState } from 'react';
+import { useMutation, useQuery } from '@apollo/client/react';
+
 import { SEED_USERS } from '@/app/graphql/mutations/seedUsers';
 import { RoleByNameQuery, RoleByNameQueryVariables } from '@/app/graphql/operations';
 import { GET_ROLES_BY_NAME } from '@/app/graphql/queries/role';
 import { categoriesList, interestsList } from '@/components/shared/Dropdown/dropdownLists';
-import { useMutation, useQuery } from '@apollo/client/react';
-
 import { tagsList } from '../tagList';
 import { useGeneratorLocation } from './useGeneratorLocation';
 

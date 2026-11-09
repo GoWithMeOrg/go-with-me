@@ -2,6 +2,7 @@
 
 import { FC, useRef } from 'react';
 import { Controller } from 'react-hook-form';
+
 import { Button } from '@/components/shared/Button';
 import { ButtonLink } from '@/components/shared/ButtonLink';
 import { categoriesList, interestsList } from '@/components/shared/Dropdown/dropdownLists';
