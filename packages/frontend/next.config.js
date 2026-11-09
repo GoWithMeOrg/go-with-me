@@ -1,8 +1,14 @@
 /** @type {import('next').NextConfig} */
 
+const path = require('path');
+
 const nextConfig = {
     allowedDevOrigins: ['tribeplans.dev', 'dev.tribeplans.ru'],
     output: 'standalone',
+    // Корень трассировки задаём явно: без него Next угадывает его по
+    // маркерам вверх по дереву, и раскладка standalone может измениться
+    // при появлении новых файлов рядом (лок-файл, workspace-конфиг).
+    outputFileTracingRoot: path.join(__dirname, '../../'),
     // packages/shared поставляется TS-исходниками без шага сборки,
     // поэтому Next должен компилировать его сам.
     transpilePackages: ['@go-with-me/shared'],
