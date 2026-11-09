@@ -6,7 +6,9 @@ RUN apk add --no-cache certbot certbot-nginx
 
 # Copy custom nginx configuration
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY conf.d/default.conf /etc/nginx/conf.d/default.conf
+COPY proxy_params.conf /etc/nginx/proxy_params.conf
+# Каталог монтируется в compose; при сборке образа конфиг должен быть внутри.
+COPY conf.d/ /etc/nginx/conf.d/
 
 # Create directories for certificates
 RUN mkdir -p /etc/nginx/certs /etc/letsencrypt
