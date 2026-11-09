@@ -5,9 +5,6 @@
     "engines": {
         "node": ">=26"
     },
-    "workspaces": [
-        "packages/*"
-    ],
     "scripts": {
         "build": "pnpm -r --parallel run build",
         "backend:dev": "pnpm --filter backend nest start --watch",
