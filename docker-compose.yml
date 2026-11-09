@@ -15,16 +15,15 @@ services:
     environment:
       NODE_ENV: development
       PORT: 4000
-      CORS_ORIGIN: https://tribeplans.dev
-      SESSION_COOKIE_SECURE: 'true'
-      SESSION_COOKIE_SAMESITE: none
-      SESSION_COOKIE_DOMAIN: tribeplans.dev
+      # Переопределяет MONGODB_URI из .env.local: с хоста база недоступна по
+      # localhost, внутри сети compose — по имени сервиса.
       MONGODB_URI: mongodb://mongo:27017/go-with-me
     volumes:
       - ./:/workspace
       - backend_node_modules:/workspace/node_modules
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
     ports:
       - '4000:4000'
 
@@ -42,7 +41,6 @@ services:
     environment:
       NODE_ENV: development
       NEXT_PUBLIC_GRAPHQL_ENDPOINT: https://tribeplans.dev/api/graphql
-      NEXTAUTH_URL: https://tribeplans.dev
     volumes:
       - ./:/workspace
       - frontend_node_modules:/workspace/node_modules
@@ -60,6 +58,14 @@ services:
       - mongo_data:/data/db
     ports:
       - '27017:27017'
+    # Без healthcheck depends_on завершается сразу после старта контейнера,
+    # и backend успевает упасть на подключении к ещё не готовой базе.
+    healthcheck:
+      test: ['CMD', 'mongosh', '--quiet', '--eval', "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
 
   nginx:
     image: nginx:1.27-alpine
