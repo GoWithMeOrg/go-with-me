@@ -31,8 +31,13 @@ mkcert -install
 
 ### 3. Environment Variables
 
-- Update the default values in `docker-compose.yml` to match your local secrets (e.g. `SESSION_SECRET`, OAuth credentials, Mongo connection string).
-- For additional Next.js variables, add a `.env.local` file under `packages/frontend/`. The compose service mounts the repo, so standard env files are available to Next.js.
+- Put all secrets in `.env.local` in the repository root: both `gwm-backend` and
+  `gwm-frontend` receive it through `env_file`, and the backend validates it on
+  startup. `docker-compose.yml` overrides only what must differ inside the
+  network (`MONGODB_URI` points at the `mongo` service, not `localhost`) plus
+  `NEXT_PUBLIC_GRAPHQL_ENDPOINT`.
+- The full variable list is in the README section
+  [Environment Variables](../README.md#environment-variables).
 
 ## Running the Stack
 
@@ -41,6 +46,10 @@ From the repository root:
 ```bash
 docker compose up --build
 ```
+
+`--build` is only needed the first time or after dependency changes
+(`package.json`, `pnpm-lock.yaml`, `Dockerfile.dev`); plain `docker compose up`
+reuses the cached image.
 
 Compose starts four containers:
 
@@ -61,9 +70,10 @@ Visit **https://tribeplans.dev** in your browser. The first visit will prompt yo
 
 ## Notes
 
-- The backend reads `ALLOWED_ORIGIN`, `MONGODB_URI`, `SESSION_SECRET`, `PORT`, `TRUST_PROXY` and the `S3_*` / OAuth variables from the environment (see `packages/backend/src/main.ts`).
-- Session cookie flags (`secure`, `httpOnly`, `sameSite`) are set in code, not through environment variables.
+- The backend reads `ALLOWED_ORIGIN`, `MONGODB_URI`, `SESSION_SECRET`, `PORT`, `TRUST_PROXY` and the `S3_*` / OAuth variables from the environment (see `packages/backend/src/main.ts`). Missing required variables stop the container on startup with a list of everything that is absent.
+- Session cookie flags (`secure`, `httpOnly`, `sameSite`) are set in code, not through environment variables: `CORS_ORIGIN`, `SESSION_COOKIE_*` and `NEXTAUTH_URL` do not exist in this project.
 - Both Node containers run `pnpm install` on startup to ensure workspace dependencies are present. `node_modules` is persisted via a named volume for faster restarts; the pnpm store lives inside it (`node_modules/.pnpm-store`).
+- `gwm-nginx` runs the stock `nginx:1.27-alpine`. `nginx.conf`, `conf.d/` and `proxy_params.conf` are bind-mounted from `infra/nginx`, so a missing mount shows up as `open() "/etc/nginx/proxy_params.conf" failed` and the container exits. After changing any of them run `docker compose restart nginx`.
 
 ---
 

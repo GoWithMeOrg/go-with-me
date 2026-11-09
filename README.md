@@ -77,6 +77,22 @@ docker compose up --build
 `https://tribeplans.dev` needs a hosts-file entry and local certificates — see
 [`docs/local-dev-docker.md`](docs/local-dev-docker.md) for the step-by-step guide.
 
+Compose sets only `NODE_ENV`, `PORT`, `MONGODB_URI` (rewritten to the `mongo`
+service name) and `NEXT_PUBLIC_GRAPHQL_ENDPOINT`; everything else comes from the
+root `.env.local`, which both Node services read through `env_file`. The backend
+validates that file on startup and refuses to boot with the full list of missing
+variables, so a red container at launch almost always means an incomplete
+`.env.local`.
+
+The `nginx` service uses the stock `nginx:1.27-alpine` image: `nginx.conf`,
+`conf.d/` and `proxy_params.conf` are bind-mounted from `infra/nginx`, and the
+certificates from `infra/certs`. `infra/nginx/Dockerfile` therefore does not take
+part in the local run — after editing those files restart the proxy:
+
+```bash
+docker compose restart nginx
+```
+
 ## Scripts
 
 All commands run from the repository root.
