@@ -15,6 +15,11 @@ services:
     environment:
       NODE_ENV: development
       PORT: 4000
+      # Журнал проверки lockfile против supply-chain политик pnpm лежит в
+      # cacheDir (~/.cache/pnpm). Домашний каталог у контейнера свой и живёт
+      # ровно до пересоздания, поэтому кэш уводим в node_modules — он уже
+      # смонтирован томом и принадлежит пользователю node.
+      XDG_CACHE_HOME: /workspace/node_modules/.cache
       # Переопределяет MONGODB_URI из .env.local: с хоста база недоступна по
       # localhost, внутри сети compose — по имени сервиса.
       MONGODB_URI: mongodb://mongo:27017/go-with-me
@@ -41,6 +46,9 @@ services:
     environment:
       NODE_ENV: development
       NEXT_PUBLIC_GRAPHQL_ENDPOINT: https://tribeplans.dev/api/graphql
+      # См. комментарий у backend. Путь общий: node_modules у сервисов — разные
+      # тома, так что кэши тоже не смешиваются.
+      XDG_CACHE_HOME: /workspace/node_modules/.cache
     volumes:
       - ./:/workspace
       - frontend_node_modules:/workspace/node_modules
