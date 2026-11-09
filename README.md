@@ -9,7 +9,7 @@ invitations, with Google OAuth login and a GraphQL API.
 | ---------- | ----------------------------------------------------------------------------- |
 | `frontend` | Next.js 16 (App Router), React 19, Apollo Client 4, simpledotcss, SVGR        |
 | `backend`  | NestJS 12 (ESM), GraphQL code-first, Apollo Server 5, Mongoose 9, MongoDB 7   |
-| Shared     | TypeScript 6.0.3, pnpm 12, Turborepo, ESLint 10, Prettier 3                   |
+| Shared     | TypeScript 6.0.3, pnpm 12, ESLint 10, Prettier 3                              |
 | Auth       | Passport + Google OAuth, sessions in MongoDB (`connect-mongo`), `connect.sid` |
 
 ## Project Structure
@@ -83,15 +83,15 @@ All commands run from the repository root.
 
 | Command                | Description                                                    |
 | ---------------------- | -------------------------------------------------------------- |
-| `pnpm build`           | builds every package through Turborepo (results are cached)    |
+| `pnpm build`           | builds every package in parallel                               |
 | `pnpm frontend:dev`    | `next dev --turbo` on port 3000                                |
 | `pnpm backend:dev`     | `nest start --watch` on port 4000                              |
-| `pnpm lint`            | `turbo run lint` — ESLint over every package, no autofix       |
+| `pnpm lint`            | ESLint over every package in parallel, no autofix              |
 | `pnpm frontend:lint`   | ESLint over frontend with `--fix`                              |
 | `pnpm backend:lint`    | ESLint over backend with `--fix`                               |
-| `pnpm typecheck`       | `turbo run typecheck` (`next typegen` + `tsc --noEmit`)        |
+| `pnpm typecheck`       | `tsc --noEmit` per package in parallel (after `next typegen`)  |
 | `pnpm typegen`         | generates `next-env.d.ts` and route types (not tracked by git) |
-| `pnpm test`            | `turbo run test` — unit tests (Jest on the backend)            |
+| `pnpm test`            | unit tests (Jest on the backend)                               |
 | `pnpm test:e2e`        | builds the frontend and runs Playwright against `next start`   |
 | `pnpm codegen`         | generates types from the GraphQL schema                        |
 | `pnpm check:codegen`   | fails when generated files are stale relative to the schema    |
@@ -107,11 +107,10 @@ pnpm --filter backend build   # nest build
 pnpm --filter backend start:prod
 ```
 
-Frontend end-to-end tests (Playwright): `pnpm test:e2e`. Turbo builds the
-frontend first, then Playwright starts `next start` on port 3000 and stops it
-afterwards — no need to run a server yourself. Locally the config reuses an
-already running server on port 3000 if there is one, while in CI the port must
-be free.
+Frontend end-to-end tests (Playwright): `pnpm test:e2e`. It builds the frontend
+first, then Playwright starts `next start` on port 3000 and stops it afterwards —
+no need to run a server yourself. Locally the config reuses an already running
+server on port 3000 if there is one, while in CI the port must be free.
 
 ## GraphQL and Codegen
 
@@ -179,7 +178,7 @@ Two workflows in `.github/workflows/`:
 - **`ci.yaml`** — on pull requests and as a reusable workflow. Seven parallel
   jobs: `lint`, `typecheck`, `format`, `build`, `test`, `codegen` and `e2e`.
   Each one installs dependencies with `--ignore-scripts` (so `prepare` does not
-  run codegen) and restores the Turborepo cache from `.turbo`;
+  run codegen);
 - **`deploy-to-dokploy.yaml`** — calls `ci.yaml` and only then triggers the Dokploy webhook.
 
 Deployment depends on the trigger and on which paths changed (`dorny/paths-filter`):

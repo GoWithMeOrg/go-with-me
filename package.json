@@ -9,18 +9,18 @@
         "packages/*"
     ],
     "scripts": {
-        "build": "turbo run build",
+        "build": "pnpm -r --parallel run build",
         "backend:dev": "pnpm --filter backend nest start --watch",
         "frontend:dev": "pnpm -C packages/frontend dev",
-        "lint": "turbo run lint",
+        "lint": "pnpm -r --parallel run lint",
         "frontend:lint": "pnpm --filter frontend lint --fix",
         "backend:lint": "pnpm --filter backend lint --fix",
         "typegen": "pnpm -C packages/frontend exec next typegen",
-        "typecheck": "turbo run typecheck",
+        "typecheck": "pnpm -r --parallel run typecheck",
         "typecheck:backend": "pnpm --filter backend typecheck",
         "typecheck:frontend": "pnpm --filter frontend typecheck",
-        "test": "turbo run test",
-        "test:e2e": "turbo run test:e2e",
+        "test": "pnpm -r run test",
+        "test:e2e": "pnpm --filter frontend build && pnpm --filter frontend test:e2e",
         "check:codegen": "pnpm codegen && git diff --exit-code -- packages/backend/src/schema/schema.gql packages/shared/graphql.ts packages/frontend/src/app/graphql/operations.ts",
         "frontend:format": "prettier packages/frontend -w",
         "backend:format": "prettier packages/backend -w",
@@ -44,7 +44,6 @@
         "eslint-plugin-storybook": "^10.6.5",
         "globals": "^17.14.0",
         "prettier": "^3.9.10",
-        "turbo": "^2.11.10",
         "typescript": "catalog:",
         "typescript-eslint": "^8.72.1"
     }

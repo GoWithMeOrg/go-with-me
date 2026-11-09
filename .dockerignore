@@ -17,7 +17,6 @@ coverage
 dist
 .next
 out
-.turbo
 *.tsbuildinfo
 mongo-backup
 infra

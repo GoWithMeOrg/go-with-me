@@ -55,7 +55,6 @@ module.exports = [
             '**/out/**',
             '**/.next/**',
             '**/coverage/**',
-            '**/.turbo/**',
             '**/.agents/**',
             '**/next-env.d.ts',
             'packages/shared/graphql.ts',
