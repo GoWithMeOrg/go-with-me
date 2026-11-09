@@ -23,7 +23,10 @@ const config: CodegenConfig = {
             },
         },
         'packages/frontend/src/app/graphql/operations.ts': {
-            plugins: ['typescript-operations', 'typed-document-node'],
+            // typed-document-node не подключён: запросы в проекте пишутся
+            // руками через gql и типизируются TypedDocumentNode, а
+            // сгенерированные DocumentNode-константы никто не импортирует.
+            plugins: ['typescript-operations'],
             config: {
                 avoidOptionals: false,
                 nonOptionalTypename: true,
