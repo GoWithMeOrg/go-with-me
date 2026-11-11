@@ -1,5 +1,7 @@
 'use client';
 
+import { NextPage } from 'next';
+
 import { ButtonBack } from '@/components/shared/ButtonBack';
 import { ButtonLink } from '@/components/shared/ButtonLink';
 import { Title } from '@/components/shared/Title';
@@ -10,7 +12,6 @@ import { NavbarTabs } from '@/components/widgets/Navbar/models';
 import { Notifications } from '@/components/widgets/Notifications';
 import { ProfileForm } from '@/components/widgets/ProfileForm';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { NextPage } from 'next';
 
 import classes from './page.module.css';
 

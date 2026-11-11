@@ -16,7 +16,6 @@ interface PopupProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const Popup: FC<PopupProps> = ({
     showPopup,
-    setShowPopup,
     popupMode,
     container: externalContainer,
     refPopup: externalRef,

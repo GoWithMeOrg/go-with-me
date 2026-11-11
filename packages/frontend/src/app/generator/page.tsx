@@ -1,13 +1,12 @@
 'use client';
 
 import React from 'react';
+import { NextPage } from 'next';
+
 import { Button } from '@/components/shared/Button';
 import { Input } from '@/components/shared/Input';
 import { Label } from '@/components/shared/Label';
 import { FilteredEventsLocation } from '@/components/widgets/FilteredEventsLocation';
-import { optionsFullAdress } from '@/components/widgets/GoogleMap/OptionsAutocomplete';
-import { NextPage } from 'next';
-
 import { useGenerator } from './hooks';
 
 import classes from './page.module.css';
@@ -53,10 +52,7 @@ const Generator: NextPage = () => {
                     <Input type="number" onChange={changeNumberItems} min="1" max="10" />
                 </Label>
 
-                <FilteredEventsLocation
-                    onChange={setSelectedLocation}
-                    options={optionsFullAdress}
-                />
+                <FilteredEventsLocation onChange={setSelectedLocation} />
 
                 <Button className={classes.generateButton} onClick={handleGenerateUsers}>
                     Сгенерировать пользователей

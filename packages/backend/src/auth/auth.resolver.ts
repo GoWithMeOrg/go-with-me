@@ -1,14 +1,11 @@
-import { Resolver, Query, Context } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
+import { Context, Query, Resolver } from '@nestjs/graphql';
 
-import { SessionAuthGuard } from '@/common/guards/session-auth.guard';
-import { RolesGuard } from '@/common/guards/roles.guard';
-
-import { User } from '@/modules/user/entities/user.entity';
-
-import { Roles } from '@/common/decorators/roles.decorator';
-
-import type { GqlContext } from '@/common/types/graphql-context';
+import { Roles } from '@/common/decorators/roles.decorator.js';
+import { RolesGuard } from '@/common/guards/roles.guard.js';
+import { SessionAuthGuard } from '@/common/guards/session-auth.guard.js';
+import type { GqlContext } from '@/common/types/graphql-context.js';
+import { User } from '@/modules/user/entities/user.entity.js';
 
 @Resolver(() => User)
 export class AuthResolver {
@@ -26,7 +23,7 @@ export class AuthResolver {
     @Query(() => String)
     @UseGuards(SessionAuthGuard, RolesGuard)
     @Roles('admin')
-    async adminRoute(@Context() context: GqlContext): Promise<string> {
+    async adminRoute(): Promise<string> {
         return 'Доступ только для администраторов';
     }
 
@@ -34,7 +31,7 @@ export class AuthResolver {
     @Query(() => String)
     @UseGuards(SessionAuthGuard, RolesGuard)
     @Roles('admin', 'moderator')
-    async moderatorRoute(@Context() context: GqlContext): Promise<string> {
+    async moderatorRoute(): Promise<string> {
         return 'Доступ для администраторов и модераторов';
     }
 }

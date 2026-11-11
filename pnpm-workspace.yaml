@@ -1,20 +1,45 @@
 packages:
   - packages/*
 
+# Единые версии для зависимостей, которые объявлены больше чем в одном пакете.
+# В package.json подставляется как "catalog:".
+catalog:
+  '@types/node': ^26.6.6
+  graphql: ^17.1.0
+  graphql-ws: ^6.4.1
+  typescript: 6.0.3
+
+overrides:
+  # GHSA-q7qp-rjg7-q26m — DoS via pending async fileFilter
+  multer: ^2.5.0
+  # GHSA-g84c-rxfj-3j2c — path traversal via non-slash-terminated publicPath
+  webpack-dev-middleware: ^7.4.5
+  # GHSA-7mx3-vvmw-hjmv, GHSA-c4qx-w738-7hr3 — prototype pollution.
+  # Применяем точечно: @graphql-codegen 8 требует @graphql-tools/utils ^13,
+  # поэтому глобальный override на 12.x ломает кодогенерацию.
+  '@nestjs/graphql>@graphql-tools/utils': ^12.1.0
+  '@graphql-tools/schema>@graphql-tools/utils': ^12.1.0
+  '@graphql-tools/merge>@graphql-tools/utils': ^12.1.0
+
 allowBuilds:
   '@apollo/protobufjs': true
   '@nestjs/core': true
+  '@parcel/watcher': true
   core-js-pure: true
   esbuild: true
   protobufjs: true
   sharp: true
   unrs-resolver: true
 
-onlyBuiltDependencies:
-  - '@apollo/protobufjs'
-  - '@nestjs/core'
-  - core-js-pure
-  - esbuild
-  - protobufjs
-  - sharp
-  - unrs-resolver
+minimumReleaseAgeExclude:
+  - '@graphql-codegen/add@8.0.0'
+  - '@graphql-codegen/cli@8.0.0'
+  - '@graphql-codegen/client-preset@7.0.0'
+  - '@graphql-codegen/core@7.0.0'
+  - '@graphql-codegen/gql-tag-operations@7.0.0'
+  - '@graphql-codegen/plugin-helpers@8.0.0'
+  - '@graphql-codegen/schema-ast@7.0.0'
+  - '@graphql-codegen/typescript-operations@7.0.0'
+  - '@graphql-codegen/typescript@7.0.0'
+  - '@graphql-codegen/visitor-plugin-common@8.0.0'
+  - '@types/google.maps@3.66.10'

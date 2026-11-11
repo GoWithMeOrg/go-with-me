@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { CategoryService } from '@/modules/category/category.service';
-import { Category } from '@/modules/category/entities/category.entity';
-import { Interest } from '@/modules/interest/entities/interest.entity';
-import { InterestService } from '@/modules/interest/interest.service';
-import { Location } from '@/modules/location/entities/location.entity';
-import { LocationService } from '@/modules/location/location.service';
-import { Tag } from '@/modules/tag/entities/tag.entity';
-import { TagService } from '@/modules/tag/tag.service';
-import { Event } from '../entities/event.entity';
+
+import { CategoryService } from '@/modules/category/category.service.js';
+import { Category } from '@/modules/category/entities/category.entity.js';
+import { Event } from '@/modules/event/entities/event.entity.js';
+import { Interest } from '@/modules/interest/entities/interest.entity.js';
+import { InterestService } from '@/modules/interest/interest.service.js';
+import { Location } from '@/modules/location/entities/location.entity.js';
+import { LocationService } from '@/modules/location/location.service.js';
+import { Tag } from '@/modules/tag/entities/tag.entity.js';
+import { TagService } from '@/modules/tag/tag.service.js';
 
 export type EventWithRelations = Omit<Event, 'location' | 'category' | 'interest' | 'tag'> & {
     location?: Location | null;

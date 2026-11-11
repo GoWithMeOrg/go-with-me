@@ -1,9 +1,10 @@
-import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
-import { InterestService } from './interest.service';
-import { Interest } from './entities/interest.entity';
-import { CreateInterestInput } from './dto/create-interest.input';
-import { UpdateInterestInput } from './dto/update-interest.input';
-import { Schema as MongoSchema, Types } from 'mongoose';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Types } from 'mongoose';
+
+import { CreateInterestInput } from '@/modules/interest/dto/create-interest.input.js';
+import { UpdateInterestInput } from '@/modules/interest/dto/update-interest.input.js';
+import { Interest } from '@/modules/interest/entities/interest.entity.js';
+import { InterestService } from '@/modules/interest/interest.service.js';
 
 @Resolver(() => Interest)
 export class InterestResolver {

@@ -10,7 +10,19 @@ interface IUsePopup {
 
 export const usePopup = ({ popupMode }: IUsePopup) => {
     const refPopup = useRef<HTMLDivElement>(null);
-    const [container, setContainer] = useState<HTMLElement | null>(null);
+    const [container, setContainer] = useState<HTMLElement | null>(() => {
+        if (typeof document === 'undefined') return null;
+
+        let popupContainer = document.getElementById('popupContainer');
+
+        if (!popupContainer) {
+            popupContainer = document.createElement('div');
+            popupContainer.id = 'popupContainer';
+            document.body.appendChild(popupContainer);
+        }
+
+        return popupContainer;
+    });
     const [showPopup, setShowPopup] = useState<boolean>(false);
 
     const handleShowPopup = useCallback(() => {
@@ -33,24 +45,6 @@ export const usePopup = ({ popupMode }: IUsePopup) => {
         if (refPopup.current && !refPopup.current.contains(event.target as Node)) {
             setShowPopup(false);
         }
-    }, []);
-
-    useEffect(() => {
-        let popupContainer = document.getElementById('popupContainer');
-
-        if (!popupContainer) {
-            popupContainer = document.createElement('div');
-            popupContainer.id = 'popupContainer';
-            document.body.appendChild(popupContainer);
-        }
-
-        setContainer(popupContainer);
-
-        return () => {
-            if (!popupContainer?.hasChildNodes()) {
-                popupContainer.remove();
-            }
-        };
     }, []);
 
     useEffect(() => {

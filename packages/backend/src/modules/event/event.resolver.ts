@@ -1,20 +1,18 @@
-import { Resolver, Query, Mutation, Args, ID, ResolveField, Parent, Int } from '@nestjs/graphql';
+import { Args, ID, Int, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { Types } from 'mongoose';
 
-import { User } from '../user/entities/user.entity';
-import { Event } from './entities/event.entity';
-
-import { UserService } from '../user/user.service';
-import { EventService } from './event.service';
-
-import { CreateEventInput } from './dto/create-event.input';
-import { UpdateEventInput } from './dto/update-event.input';
-import { CreateLocationInput } from '../location/dto/create-location.input';
-import { CreateCategoryInput } from '../category/dto/create-category.input';
-import { CreateInterestInput } from '../interest/dto/create-interest.input';
-import { CreateTagInput } from '../tag/dto/create-tag.input';
-import { CurrentUser } from '@/common/decorators/current-user.decorator';
-import { EventRelationsInput } from './interfaces/create-event-relations.input';
+import { CurrentUser } from '@/common/decorators/current-user.decorator.js';
+import { CreateCategoryInput } from '@/modules/category/dto/create-category.input.js';
+import { CreateEventInput } from '@/modules/event/dto/create-event.input.js';
+import { UpdateEventInput } from '@/modules/event/dto/update-event.input.js';
+import { Event } from '@/modules/event/entities/event.entity.js';
+import { EventService } from '@/modules/event/event.service.js';
+import { EventRelationsInput } from '@/modules/event/interfaces/create-event-relations.input.js';
+import { CreateInterestInput } from '@/modules/interest/dto/create-interest.input.js';
+import { CreateLocationInput } from '@/modules/location/dto/create-location.input.js';
+import { CreateTagInput } from '@/modules/tag/dto/create-tag.input.js';
+import { User } from '@/modules/user/entities/user.entity.js';
+import { UserService } from '@/modules/user/user.service.js';
 
 @Resolver(() => Event)
 export class EventResolver {
@@ -35,9 +33,7 @@ export class EventResolver {
         name: 'getEventsByOrganizer',
         description: 'Получить все события организатора',
     })
-    getEventsByOrganizer(
-        @Args('organizer_id', { type: () => ID }) organizer_id: string
-    ) {
+    getEventsByOrganizer(@Args('organizer_id', { type: () => ID }) organizer_id: string) {
         return this.eventService.getEventsByOrganizer(new Types.ObjectId(organizer_id));
     }
 

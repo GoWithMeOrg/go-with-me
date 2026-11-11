@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import { CommentSchema } from './entities/comment.entity';
-import { CommentService } from './comment.service';
-import { CommentResolver } from './comment.resolver';
-import { UserModule } from '@/modules/user/user.module';
+import { CommentResolver } from '@/modules/comment/comment.resolver.js';
+import { CommentService } from '@/modules/comment/comment.service.js';
+import { CommentSchema } from '@/modules/comment/entities/comment.entity.js';
+import { UserModule } from '@/modules/user/user.module.js';
 
 @Module({
     imports: [MongooseModule.forFeature([{ name: 'Comment', schema: CommentSchema }]), UserModule],

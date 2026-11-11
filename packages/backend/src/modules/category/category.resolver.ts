@@ -1,10 +1,10 @@
-import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
-import { CategoryService } from './category.service';
-
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Types } from 'mongoose';
-import { Category } from './entities/category.entity';
-import { CreateCategoryInput } from './dto/create-category.input';
-import { UpdateCategoryInput } from './dto/update-category.input';
+
+import { CategoryService } from '@/modules/category/category.service.js';
+import { CreateCategoryInput } from '@/modules/category/dto/create-category.input.js';
+import { UpdateCategoryInput } from '@/modules/category/dto/update-category.input.js';
+import { Category } from '@/modules/category/entities/category.entity.js';
 
 @Resolver(() => Category)
 export class CategoryResolver {

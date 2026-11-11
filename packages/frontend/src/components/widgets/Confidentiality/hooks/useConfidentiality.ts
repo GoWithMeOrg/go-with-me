@@ -1,18 +1,22 @@
 'use client';
 
-import { useState, useMemo, useCallback } from 'react';
+import { useCallback, useMemo, useState } from 'react';
+import { useMutation, useQuery } from '@apollo/client/react';
+import { PrivacyVisibility } from '@go-with-me/shared/graphql';
+
 import { UPDATE_PRIVACY_SETTING } from '@/app/graphql/mutations/privacySetting';
 import { GET_COMPANIONS_BY_OWNER_ID } from '@/app/graphql/queries/companions';
 import { GET_MY_PRIVACY_SETTING } from '@/app/graphql/queries/privacySetting';
-import { PrivacyVisibility } from '@/app/graphql/types';
-import { useMutation, useQuery } from '@apollo/client/react';
 
 export const useConfidentiality = () => {
     const { data, loading: privacyLoading } = useQuery(GET_MY_PRIVACY_SETTING);
 
-    const { data: companionsData, loading: companionsLoading } = useQuery(GET_COMPANIONS_BY_OWNER_ID, {
-        variables: { limit: 200, offset: 0 },
-    });
+    const { data: companionsData, loading: companionsLoading } = useQuery(
+        GET_COMPANIONS_BY_OWNER_ID,
+        {
+            variables: { limit: 200, offset: 0 },
+        }
+    );
 
     const loading = privacyLoading || companionsLoading;
 
@@ -32,11 +36,14 @@ export const useConfidentiality = () => {
     const currentInvite =
         whoCanInviteToEvents ?? data?.myPrivacySetting?.whoCanInviteToEvents ?? 'EVERYONE';
 
-    const companions = companionsData?.companionsByOwnerId?.companions ?? [];
+    const companions = useMemo(
+        () => companionsData?.companionsByOwnerId?.companions ?? [],
+        [companionsData]
+    );
 
     const companionList = useMemo(
         () => companions.map((c) => `${c.firstName} ${c.lastName}`),
-        [companions],
+        [companions]
     );
     const companionImages: Record<string, string> = {};
     for (const c of companions) {
@@ -59,11 +66,11 @@ export const useConfidentiality = () => {
 
     const initialSeeNames = useMemo(
         () => companionList.filter((_, i) => markedSet.see.has(companions[i]._id)),
-        [companionList, markedSet.see, companions],
+        [companionList, markedSet.see, companions]
     );
     const initialInviteNames = useMemo(
         () => companionList.filter((_, i) => markedSet.invite.has(companions[i]._id)),
-        [companionList, markedSet.invite, companions],
+        [companionList, markedSet.invite, companions]
     );
 
     // Use server data when no local changes, otherwise use dirty state
@@ -78,14 +85,18 @@ export const useConfidentiality = () => {
         setDirtyInviteNames(names);
     }, []);
 
-    const isSeeDirty = whoCanSeeEvents !== null && whoCanSeeEvents !== data?.myPrivacySetting?.whoCanSeeEvents;
-    const isInviteDirty = whoCanInviteToEvents !== null && whoCanInviteToEvents !== data?.myPrivacySetting?.whoCanInviteToEvents;
+    const isSeeDirty =
+        whoCanSeeEvents !== null && whoCanSeeEvents !== data?.myPrivacySetting?.whoCanSeeEvents;
+    const isInviteDirty =
+        whoCanInviteToEvents !== null &&
+        whoCanInviteToEvents !== data?.myPrivacySetting?.whoCanInviteToEvents;
 
     const areListsEqual = (a: string[], b: string[]) =>
         a.length === b.length && a.every((v) => b.includes(v));
 
     const isSeeListDirty = dirtySeeNames !== null && !areListsEqual(initialSeeNames, dirtySeeNames);
-    const isInviteListDirty = dirtyInviteNames !== null && !areListsEqual(initialInviteNames, dirtyInviteNames);
+    const isInviteListDirty =
+        dirtyInviteNames !== null && !areListsEqual(initialInviteNames, dirtyInviteNames);
 
     const isDirty =
         isSeeDirty ||

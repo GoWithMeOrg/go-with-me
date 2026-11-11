@@ -1,8 +1,8 @@
 import { FC } from 'react';
+
 import { GetInvitationQuery } from '@/app/graphql/operations';
 import { CompanionRequest } from '@/components/shared/CompanionRequest';
 import { Invitation } from '@/components/widgets/Invitation';
-
 import { useNotifications } from './hooks';
 
 import classes from './Notifications.module.css';
@@ -25,8 +25,7 @@ export const Notifications: FC = () => {
                     eventName={invitation.event.name}
                     coordinates={
                         (invitation.event.location?.geometry.coordinates as
-                            | [number, number]
-                            | undefined) ?? [0, 0]
+                            [number, number] | undefined) ?? [0, 0]
                     }
                     startDate={invitation.event.startDate}
                     time={invitation.event.time as string}

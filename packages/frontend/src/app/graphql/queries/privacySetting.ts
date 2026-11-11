@@ -1,5 +1,5 @@
 import { gql, TypedDocumentNode } from '@apollo/client';
-import { PrivacySetting } from '../types';
+import { PrivacySetting } from '@go-with-me/shared/graphql';
 
 export const GET_MY_PRIVACY_SETTING: TypedDocumentNode<{ myPrivacySetting: PrivacySetting }> = gql`
     query MyPrivacySetting {

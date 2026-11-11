@@ -1,10 +1,19 @@
-import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@nestjs/common';
+import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { GqlExecutionContext } from '@nestjs/graphql';
+
 import {
     PERMISSION_CHECK_KEY,
     RequiredPermission,
-} from '../decorators/check-permissions.decorator';
+} from '@/common/decorators/check-permissions.decorator.js';
+import { GqlContext } from '@/common/types/graphql-context.js';
+import { Permission } from '@/modules/permission/entities/permission.entity.js';
+import { Role } from '@/modules/role/entities/role.entity.js';
+
+// Роли приходят в контекст из populate('roles') → populate('permissions') → populate('resource'),
+// поэтому resource — это объект документа, а не ObjectId, как объявлено в сущности.
+type PopulatedPermission = Omit<Permission, 'resource'> & { resource: { slug: string } };
+type PopulatedRole = Omit<Role, 'permissions'> & { permissions: PopulatedPermission[] };
 
 @Injectable()
 export class PermissionGuard implements CanActivate {
@@ -22,7 +31,7 @@ export class PermissionGuard implements CanActivate {
         }
 
         const ctx = GqlExecutionContext.create(context);
-        const { user } = ctx.getContext().req;
+        const { user } = ctx.getContext<GqlContext>().req;
 
         if (!user || !user.roles) {
             throw new ForbiddenException(
@@ -30,8 +39,10 @@ export class PermissionGuard implements CanActivate {
             );
         }
 
+        const roles = user.roles as unknown as PopulatedRole[];
+
         // Собираем все права пользователя в "плоский" список строк для быстрого сравнения
-        const userPermissionKeys = user.roles.flatMap((role) =>
+        const userPermissionKeys = roles.flatMap((role) =>
             role.permissions.map((p) => `${p.action}:${p.resource.slug.toUpperCase()}`)
         );
 

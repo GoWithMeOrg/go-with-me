@@ -1,15 +1,15 @@
 import { NotFoundException, UseGuards } from '@nestjs/common';
-import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
-import { Schema as MongoSchema, Types } from 'mongoose';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Types } from 'mongoose';
 
-import { Role } from './entities/role.entity';
-import { RoleService } from './role.service';
-import { CreateRoleInput } from './dto/create-role.input';
-import { UpdateRoleInput } from './dto/update-role.input';
-import { SessionAuthGuard } from '@/common/guards/session-auth.guard';
-import { RolesGuard } from '@/common/guards/roles.guard';
-import { Roles } from '@/common/decorators/roles.decorator';
-import { User } from '../user/entities/user.entity';
+import { Roles } from '@/common/decorators/roles.decorator.js';
+import { RolesGuard } from '@/common/guards/roles.guard.js';
+import { SessionAuthGuard } from '@/common/guards/session-auth.guard.js';
+import { CreateRoleInput } from '@/modules/role/dto/create-role.input.js';
+import { UpdateRoleInput } from '@/modules/role/dto/update-role.input.js';
+import { Role } from '@/modules/role/entities/role.entity.js';
+import { RoleService } from '@/modules/role/role.service.js';
+import { User } from '@/modules/user/entities/user.entity.js';
 
 @Resolver(() => Role)
 @UseGuards(SessionAuthGuard, RolesGuard)
@@ -42,9 +42,7 @@ export class RoleResolver {
         description: 'Поиск роли по id',
         nullable: true,
     })
-    async getRoleById(
-        @Args('id', { type: () => ID }) id: Types.ObjectId
-    ): Promise<Role | null> {
+    async getRoleById(@Args('id', { type: () => ID }) id: Types.ObjectId): Promise<Role | null> {
         return this.roleService.getRoleById(id);
     }
 
@@ -92,9 +90,7 @@ export class RoleResolver {
         name: 'removeRole',
         description: 'Удаление роли',
     })
-    async removeRole(
-        @Args('id', { type: () => ID }) id: Types.ObjectId
-    ): Promise<boolean> {
+    async removeRole(@Args('id', { type: () => ID }) id: Types.ObjectId): Promise<boolean> {
         const result = await this.roleService.removeRole(id);
         return result.deletedCount > 0;
     }

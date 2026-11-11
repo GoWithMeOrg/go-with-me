@@ -8,10 +8,15 @@ import * as signature from 'cookie-signature';
 import { Context } from 'graphql-ws';
 import { Model } from 'mongoose';
 
-import { SubscriptionContext } from '@/common/interfaces/subscription-context.interface';
-import { UserDocument } from '@/modules/user/entities/user.entity';
-import { isDev } from '@/utils/is-dev.utils';
-import { getMongoStore } from './mongo-store.config';
+import { SubscriptionContext } from '@/common/interfaces/subscription-context.interface.js';
+import { ReqWithPassport } from '@/common/types/graphql-context.js';
+import { getMongoStore } from '@/config/mongo-store.config.js';
+import { UserDocument } from '@/modules/user/entities/user.entity.js';
+import { isDev } from '@/utils/is-dev.utils.js';
+
+type AuthSession = import('express-session').SessionData & {
+    passport?: { user?: unknown };
+};
 
 export async function getGraphQLConfig(
     configService: ConfigService,
@@ -36,7 +41,7 @@ export async function getGraphQLConfig(
                     try {
                         const req = extra.request;
                         const cookieHeader = req?.headers?.cookie || '';
-                        const cookies = cookie.parse(cookieHeader);
+                        const cookies = cookie.parseCookie(cookieHeader);
                         const rawSid = cookies['connect.sid'];
 
                         if (!rawSid) return;
@@ -50,8 +55,10 @@ export async function getGraphQLConfig(
 
                         const store = getMongoStore(configService);
 
-                        const session = await new Promise<any>((resolve, reject) => {
-                            store.get(sid, (err, sess) => (err ? reject(err) : resolve(sess)));
+                        const session = await new Promise<AuthSession | null>((resolve, reject) => {
+                            store.get(sid, (err, sess) =>
+                                err ? reject(err) : resolve(sess ?? null)
+                            );
                         });
 
                         if (!session?.passport?.user) return;
@@ -67,14 +74,20 @@ export async function getGraphQLConfig(
                     }
                 },
 
-                onDisconnect: (context: SubscriptionContext) => {
-                    const { extra } = context;
+                onDisconnect: (context: Context) => {
+                    const { extra } = context as SubscriptionContext;
                     console.log('[WS DISCONNECT]', extra?.user?.email);
                 },
             },
         },
 
-        context: ({ req, extra }) => {
+        context: ({
+            req,
+            extra,
+        }: {
+            req?: ReqWithPassport;
+            extra?: SubscriptionContext['extra'];
+        }) => {
             if (req) {
                 // console.log('[HTTP REQUEST] req.headers.cookie:', req.headers?.cookie);
                 // console.log('[HTTP REQUEST] req.user:', req.user);

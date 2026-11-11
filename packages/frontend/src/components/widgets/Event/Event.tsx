@@ -1,4 +1,9 @@
 import { FC } from 'react';
+import { AdvancedMarker, Map, Pin } from '@vis.gl/react-google-maps';
+import dayjs from 'dayjs';
+import Image from 'next/image';
+import Link from 'next/link';
+
 import ArrowMaps from '@/assets/icons/arrowMaps.svg';
 import Checkbox from '@/assets/icons/checkbox.svg';
 import Heart from '@/assets/icons/heart.svg';
@@ -15,16 +20,12 @@ import { Span } from '@/components/shared/Span';
 import { Title } from '@/components/shared/Title';
 import { AuthModal } from '@/components/widgets/AuthModal';
 import { Geocoding } from '@/components/widgets/GoogleMap/Geocoding';
+import { GoogleMapsBoundary } from '@/components/widgets/GoogleMap/GoogleMapsBoundary';
 import { Join } from '@/components/widgets/Join';
 import useJoin from '@/components/widgets/Join/hooks/useJoin';
 import { Like } from '@/components/widgets/Like';
 import { useUserID } from '@/hooks/useUserID';
 import { formatDate } from '@/utils/formatDate';
-import { AdvancedMarker, Map, Pin } from '@vis.gl/react-google-maps';
-import dayjs from 'dayjs';
-import Image from 'next/image';
-import Link from 'next/link';
-
 import useEvent, { EventProps } from './hooks/useEvent';
 
 import classes from './Event.module.css';
@@ -173,7 +174,7 @@ const Event: FC<EventProps> = ({ event }) => {
                     popupMode={status === 'authenticated' ? 'map' : 'auth'}
                 >
                     {status === 'authenticated' ? (
-                        <>
+                        <GoogleMapsBoundary>
                             <Map
                                 style={{ height: '600px' }}
                                 defaultZoom={14}
@@ -203,7 +204,7 @@ const Event: FC<EventProps> = ({ event }) => {
                                     Закрыть карту
                                 </Button>
                             </div>
-                        </>
+                        </GoogleMapsBoundary>
                     ) : (
                         <AuthModal onClose={handleHidePopup} />
                     )}
@@ -226,10 +227,9 @@ const Event: FC<EventProps> = ({ event }) => {
                         </div>
 
                         <div className={classes.organizerName}>
-                            {/* @ts-ignore */}
-                            <span
-                                className={classes.name}
-                            >{`${event?.organizer?.firstName} ${event?.organizer?.lastName}`}</span>
+                            <span className={classes.name}>
+                                {`${event?.organizer?.firstName} ${event?.organizer?.lastName}`}
+                            </span>
                             <span className={classes.organizer}>Организатор</span>
                             {/* <div className={classes.linkChat}>
                                 <Link href={`/profile`} className={classes.link}>

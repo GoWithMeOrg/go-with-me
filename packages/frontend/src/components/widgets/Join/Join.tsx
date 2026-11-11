@@ -1,4 +1,5 @@
 import { FC } from 'react';
+
 import useJoin from '@/components/widgets/Join/hooks/useJoin';
 import { JoinProps } from '@/components/widgets/Join/interfaces/JoinProps';
 

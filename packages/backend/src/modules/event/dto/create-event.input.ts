@@ -1,29 +1,30 @@
-import { Field, InputType, ID } from '@nestjs/graphql';
-import { Schema as MongoSchema, Types } from 'mongoose';
-import { Privacy } from '../enum/privacy.enum';
+import { Field, ID, InputType } from '@nestjs/graphql';
+import { Types } from 'mongoose';
+
+import { Privacy } from '@/modules/event/enum/privacy.enum.js';
 
 @InputType()
 export class CreateEventInput {
     @Field(() => ID, { nullable: true })
-    organizer: Types.ObjectId;
+    organizer!: Types.ObjectId;
 
     @Field(() => String)
-    name: string;
+    name!: string;
 
     @Field(() => String, { nullable: true })
     description?: string;
 
     @Field(() => Date)
-    startDate: Date;
+    startDate!: Date;
 
     @Field(() => Date)
-    endDate: Date;
+    endDate!: Date;
 
     @Field(() => String, { nullable: true })
     time?: string;
 
     @Field(() => Privacy)
-    privacy: Privacy;
+    privacy!: Privacy;
 
     @Field(() => String, { nullable: true })
     image?: string;

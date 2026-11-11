@@ -2,6 +2,7 @@
 
 import { FC, useRef } from 'react';
 import { Controller } from 'react-hook-form';
+
 import { Button } from '@/components/shared/Button';
 import { ButtonLink } from '@/components/shared/ButtonLink';
 import { categoriesList, interestsList } from '@/components/shared/Dropdown/dropdownLists';
@@ -9,7 +10,6 @@ import { Input } from '@/components/shared/Input';
 import { Label } from '@/components/shared/Label';
 import { Textarea } from '@/components/shared/Textarea';
 import { CreateTag } from '@/components/widgets/CreateTag';
-import { optionsFullAdress } from '@/components/widgets/GoogleMap/OptionsAutocomplete';
 import { Autocomplete } from '@/components/widgets/MapComponents/Autocomplete/Autocomplete';
 import { useProfileForm } from '@/components/widgets/ProfileForm/hooks/useProfileForm';
 import { SelectItems } from '@/components/widgets/SelectItems';

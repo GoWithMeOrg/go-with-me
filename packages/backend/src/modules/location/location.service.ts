@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CreateLocationInput } from './dto/create-location.input';
-import { UpdateLocationInput } from './dto/update-location.input';
-import { DeleteResult, Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { Location, LocationDocument } from './entities/location.entity';
+import { DeleteResult, Model, Types } from 'mongoose';
+
+import { CreateLocationInput } from '@/modules/location/dto/create-location.input.js';
+import { UpdateLocationInput } from '@/modules/location/dto/update-location.input.js';
+import { Location, LocationDocument } from '@/modules/location/entities/location.entity.js';
 
 export interface OwnerFilter {
     ownerId: string; // всегда string, безопасно для GraphQL
@@ -44,11 +45,8 @@ export class LocationService {
         return location.save();
     }
 
-    async updateLocation(
-        id: Types.ObjectId,
-        input: UpdateLocationInput
-    ): Promise<Location | null> {
-        const update: any = {};
+    async updateLocation(id: Types.ObjectId, input: UpdateLocationInput): Promise<Location | null> {
+        const update: Record<string, unknown> = {};
 
         // geometry update
         if (input.geometry?.coordinates) {

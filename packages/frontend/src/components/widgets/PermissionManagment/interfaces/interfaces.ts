@@ -1,4 +1,4 @@
-import { Permission } from '@/app/graphql/types';
+import { Permission } from '@go-with-me/shared/graphql';
 
 export interface Resource {
     _id: string;

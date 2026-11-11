@@ -1,50 +1,37 @@
-import ArrowCircle from '@/assets/icons/arrowCircle.svg';
 import Link from 'next/link';
 
+import ArrowCircle from '@/assets/icons/arrowCircle.svg';
 import CardEvent, { SizeCard } from '../CardEvent/CardEvent';
+import type { IEvent } from '../GoogleMap/types/Type';
 
 import classes from './CardEventMap.module.css';
 
-interface IEvent {
-  _id: string;
-  name: string;
-  description: string;
-  startDate?: Date | string;
-  time?: string;
-  createdAt: Date | string;
-  location: {
-    type: 'Point';
-    coordinates: [number, number];
-    properties: {
-      address: string;
-    };
-  };
-  image?: string;
-}
-
 interface CardEventMapProp {
-  selectedEvent: IEvent;
+    selectedEvent: IEvent;
 }
 
 export function CardEventMap({ selectedEvent }: CardEventMapProp) {
-  const { _id, description, image, location, name, startDate, time } = selectedEvent;
+    const { _id, description, image, location, name, startDate, time } = selectedEvent;
 
-  return (
-    <div className={classes.wrapperCard}>
-      <CardEvent
-        id={_id}
-        coord={[location.coordinates[0], location.coordinates[1]]}
-        name={name}
-        description={description}
-        image={image}
-        time={time}
-        startDate={startDate}
-        size={SizeCard.ML}
-      />
-      <Link href={`/events/${_id}`} className={classes.linkEvent}>
-        <span className={classes.linkText}>To event</span>
-        <ArrowCircle />
-      </Link>
-    </div>
-  );
+    return (
+        <div className={classes.wrapperCard}>
+            <CardEvent
+                id={_id}
+                coord={[
+                    location?.geometry.coordinates[0] ?? 0,
+                    location?.geometry.coordinates[1] ?? 0,
+                ]}
+                name={name}
+                description={description ?? ''}
+                image={image ?? undefined}
+                time={time ?? undefined}
+                startDate={startDate}
+                size={SizeCard.ML}
+            />
+            <Link href={`/events/${_id}`} className={classes.linkEvent}>
+                <span className={classes.linkText}>To event</span>
+                <ArrowCircle />
+            </Link>
+        </div>
+    );
 }

@@ -1,6 +1,4 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { Autocomplete } from '@/components/widgets/MapComponents/Autocomplete/Autocomplete';
-import { MAP_CONSTANTS } from '@/constants/map';
 import {
     APIProviderContext,
     ControlPosition,
@@ -9,33 +7,35 @@ import {
     useMap,
 } from '@vis.gl/react-google-maps';
 
+import { Autocomplete } from '@/components/widgets/MapComponents/Autocomplete/Autocomplete';
+import { MAP_CONSTANTS } from '@/constants/map';
 import { CardEventMap } from '../CardEventMap/CardEventMap';
 import { PlaceType } from '../MapComponents/types/types';
 import { CustomMapControl } from './CustomMapControl';
+import { GoogleMapsBoundary } from './GoogleMapsBoundary';
 import { MapController } from './MapController';
 import { MapHandlerBounds } from './MapHandlerBounds';
 import { IEvent } from './types/Type';
 
 interface Props {
     events?: IEvent[];
-    selectedLocation?: google.maps.places.PlaceResult | null;
+    selectedLocation?: PlaceType;
 }
 
-export const GoogleMap: React.FC<Props> = ({ events = [], selectedLocation }) => {
+const GoogleMapInner: React.FC<Props> = ({ events = [], selectedLocation }) => {
     const apiIsLoaded = useApiIsLoaded();
     const ctx = useContext(APIProviderContext);
     const map = useMap();
     const [selectedPlace, setSelectedPlace] = useState<PlaceType>(null);
     const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
 
-    const handleMarkerClick = useCallback((event: IEvent, offsetLat: number, offsetLng: number) => {
+    const handleMarkerClick = useCallback((event: IEvent) => {
         setSelectedEventId(event._id);
     }, []);
 
     useEffect(() => {
-        if (map && selectedLocation?.geometry?.viewport) {
-            const bounds = selectedLocation.geometry.viewport;
-            map.fitBounds(bounds);
+        if (map && selectedLocation?.viewport) {
+            map.fitBounds(selectedLocation.viewport);
         }
     }, [map, selectedLocation]);
 
@@ -73,3 +73,11 @@ export const GoogleMap: React.FC<Props> = ({ events = [], selectedLocation }) =>
         </div>
     );
 };
+
+// GoogleMap — точка, где карта реально появляется на странице, поэтому
+// провайдер поднимается здесь, а не в корневом layout.
+export const GoogleMap: React.FC<Props> = (props) => (
+    <GoogleMapsBoundary>
+        <GoogleMapInner {...props} />
+    </GoogleMapsBoundary>
+);

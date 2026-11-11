@@ -1,4 +1,4 @@
-import { Comment as CommentType, OwnerType } from '@/app/graphql/types';
+import { Comment as CommentType, OwnerType } from '@go-with-me/shared/graphql';
 
 export const buildOptimisticComment = (
     content: string,
@@ -14,9 +14,7 @@ export const buildOptimisticComment = (
         deleted: false,
         ownerId,
         ownerType: OwnerType.Event,
-        parent: parentId
-            ? { __typename: 'Comment', _id: parentId }
-            : null,
+        parent: parentId ? { __typename: 'Comment', _id: parentId } : null,
         repliesCount: 0,
         updatedAt: new Date().toISOString(),
     }) as unknown as CommentType;

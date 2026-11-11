@@ -1,6 +1,10 @@
 'use client';
 
-import type { Event } from '@/app/graphql/types';
+import { useQuery } from '@apollo/client/react';
+import type { Event } from '@go-with-me/shared/graphql';
+import gql from 'graphql-tag';
+import type { NextPage } from 'next';
+
 import Spinner from '@/assets/icons/spinner.svg';
 import { Carousel } from '@/components/shared/Carousel';
 import { Slide } from '@/components/shared/Slide';
@@ -11,9 +15,6 @@ import { CreateAndInvite } from '@/components/widgets/CreateAndInvite';
 import { Mode } from '@/components/widgets/CreateAndInvite/CreateAndInvite';
 import { EventFilters } from '@/components/widgets/EventFilters';
 import { useEventList } from '@/components/widgets/EventList/hooks';
-import { useQuery } from '@apollo/client/react';
-import gql from 'graphql-tag';
-import type { NextPage } from 'next';
 
 import classes from './page.module.css';
 
@@ -34,29 +35,20 @@ const EventListPage: NextPage = () => {
     // const { status } = useSession();
     // const { filterEventsImage, loading } = useEventList({});
     const { data, loading, error } = useQuery(GET_SESSION);
+    const { filterEventsImage, loading: eventLoading } = useEventList({});
 
-    // Лог для проверки результата запроса
-    // console.log('Session Data:', data);
-
-    // Если есть ошибка или сессия не найдена, обработайте это правильно
     if (error) {
         console.error('GraphQL Error:', error);
         return <div>Ошибка загрузки сессии.</div>;
     }
 
-    // const { status } = useSession();
-    const { filterEventsImage, loading: eventLoading } = useEventList({});
-
     if (eventLoading || loading) return <Spinner className={classes.spinner} />;
 
-    //@ts-ignore
-    const session = data?.session;
+    const session = (data as { session?: { _id: string } } | undefined)?.session;
     if (!session) {
         console.warn('Сессия не найдена');
         return <div>Нет доступной сессии.</div>;
     }
-
-    if (loading) return <Spinner className={classes.spinner} />;
 
     return (
         <div className={classes.eventListPage}>

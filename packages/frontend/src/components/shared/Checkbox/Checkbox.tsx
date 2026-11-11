@@ -18,7 +18,7 @@ export const Checkbox: FC<CheckboxProps> = ({
     checked: controlledChecked,
 }) => {
     const labelCss = [classes.checkbox, className].filter(Boolean).join(' ');
-    const { checked, setChecked, handleInputChange } = useCheckbox({ onChange, controlledChecked });
+    const { checked, handleInputChange } = useCheckbox({ onChange, controlledChecked });
 
     return (
         <label className={labelCss} id={id}>

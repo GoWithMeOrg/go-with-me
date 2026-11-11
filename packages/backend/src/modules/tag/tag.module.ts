@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
-import { TagService } from './tag.service';
-import { TagResolver } from './tag.resolver';
 import { MongooseModule } from '@nestjs/mongoose';
-import { TagSchema } from './entities/tag.entity';
+
+import { TagSchema } from '@/modules/tag/entities/tag.entity.js';
+import { TagResolver } from '@/modules/tag/tag.resolver.js';
+import { TagService } from '@/modules/tag/tag.service.js';
 
 @Module({
     imports: [MongooseModule.forFeature([{ name: 'Tag', schema: TagSchema }])],

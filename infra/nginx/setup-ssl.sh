@@ -1,49 +1,55 @@
-#!/bin/bash
-# Setup script for Let's Encrypt SSL certificates
-# Run this on the Droplet to obtain initial SSL certificates
+#!/usr/bin/env bash
+# Получение первого сертификата Let's Encrypt для домена.
+# Запускать на сервере из каталога infra/nginx: порт 80 должен быть свободен,
+# поэтому nginx на время выпуска останавливается.
+#
+# Использование: ./setup-ssl.sh tribeplans.dev admin@example.com
+# Файлы кладутся в infra/certs под именами, которые ждёт conf.d/tribeplans.conf.
 
-set -e
+set -euo pipefail
 
-DOMAIN="${1:-MY_DOMAIN.COM}"
-EMAIL="${2:-your-email@example.com}"
+DOMAIN="${1:-}"
+EMAIL="${2:-}"
 
-if [ "$DOMAIN" = "MY_DOMAIN.COM" ]; then
-  echo "Usage: $0 <domain> [email]"
-  echo "Example: $0 tribeplans.ru admin@tribeplans.ru"
-  exit 1
+if [ -z "$DOMAIN" ] || [ -z "$EMAIL" ]; then
+    echo "Usage: $0 <domain> <email>"
+    echo "Example: $0 tribeplans.dev admin@tribeplans.dev"
+    exit 1
 fi
+
+# Скрипт может лежать где угодно, но пути считаем от infra/nginx.
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+CERTS_DIR="$REPO_ROOT/infra/certs"
+
+mkdir -p "$CERTS_DIR"
 
 echo "Setting up SSL certificates for $DOMAIN"
 echo "Email: $EMAIL"
 
-# Create necessary directories
-mkdir -p certs
-mkdir -p /var/www/certbot
+# Порт 80 занят nginx — на время выпуска его нужно освободить.
+docker compose -f "$REPO_ROOT/docker-compose.yml" stop nginx 2>/dev/null || true
 
-# Stop nginx temporarily if running
-docker-compose -f ../../docker-compose.prod.yml stop reverse-proxy 2>/dev/null || true
+docker run --rm \
+    -v "$CERTS_DIR:/etc/letsencrypt" \
+    -p 80:80 \
+    certbot/certbot certonly \
+    --standalone \
+    --preferred-challenges http \
+    -d "$DOMAIN" \
+    -d "www.$DOMAIN" \
+    --email "$EMAIL" \
+    --agree-tos \
+    --non-interactive
 
-# Obtain certificate using standalone mode
-docker run -it --rm \
-  -v "$(pwd)/certs:/etc/letsencrypt" \
-  -v "/var/www/certbot:/var/www/certbot" \
-  -p 80:80 \
-  certbot/certbot certonly \
-  --standalone \
-  --preferred-challenges http \
-  -d "$DOMAIN" \
-  -d "www.$DOMAIN" \
-  --email "$EMAIL" \
-  --agree-tos \
-  --non-interactive
-
-# Copy certificates to the expected location
-if [ -f "certs/live/$DOMAIN/fullchain.pem" ]; then
-  cp "certs/live/$DOMAIN/fullchain.pem" "certs/fullchain.pem"
-  cp "certs/live/$DOMAIN/privkey.pem" "certs/privkey.pem"
-  echo "Certificates copied successfully!"
-  echo "You can now start the services with: docker-compose -f ../../docker-compose.prod.yml up -d"
+# tribeplans.conf ждёт плоские имена <domain>.pem / <domain>-key.pem,
+# а certbot складывает их в live/<domain>/ с симлинками на archive/.
+if [ -f "$CERTS_DIR/live/$DOMAIN/fullchain.pem" ]; then
+    cp "$CERTS_DIR/live/$DOMAIN/fullchain.pem" "$CERTS_DIR/$DOMAIN.pem"
+    cp "$CERTS_DIR/live/$DOMAIN/privkey.pem" "$CERTS_DIR/$DOMAIN-key.pem"
+    echo "Certificates copied to $CERTS_DIR"
+    echo "Start the stack with: docker compose -f $REPO_ROOT/docker-compose.yml up -d"
 else
-  echo "Error: Certificates not found. Please check the output above."
-  exit 1
+    echo "Error: certificates not found in $CERTS_DIR/live/$DOMAIN"
+    exit 1
 fi

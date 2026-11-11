@@ -1,7 +1,8 @@
 import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { useMapsLibrary } from '@vis.gl/react-google-maps';
+
 import { useAutocompleteSuggestions } from '@/components/widgets/MapComponents/Autocomplete/hooks/useAutocompleteSuggestion';
 import { PlaceType } from '@/components/widgets/MapComponents/types/types';
-import { useMapsLibrary } from '@vis.gl/react-google-maps';
 
 interface useAutocompleteProps {
     value?: string;
@@ -32,7 +33,7 @@ export const useAutocomplete = ({ value, onPlaceSelect }: useAutocompleteProps) 
 
         setInputValue(value ?? '');
         resetSession();
-    }, [value]);
+    }, [value, resetSession]);
 
     const handleInput = useCallback((event: FormEvent<HTMLInputElement>) => {
         setIsUserTyping(true);

@@ -1,9 +1,10 @@
-import { Resolver, Mutation, Args, Query, ID } from '@nestjs/graphql';
-import { JoinService } from './join.service';
-import { Join } from './entities/join.entity';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Types } from 'mongoose';
-import { CurrentUser } from '@/common/decorators/current-user.decorator';
-import { User } from '../user/entities/user.entity';
+
+import { CurrentUser } from '@/common/decorators/current-user.decorator.js';
+import { Join } from '@/modules/join/entities/join.entity.js';
+import { JoinService } from '@/modules/join/join.service.js';
+import { User } from '@/modules/user/entities/user.entity.js';
 
 @Resolver(() => Join)
 export class JoinResolver {
@@ -19,9 +20,7 @@ export class JoinResolver {
     }
 
     @Query(() => [Join])
-    async getJoinedUsersByOwnerId(
-        @Args('ownerId', { type: () => ID }) ownerId: Types.ObjectId
-    ) {
+    async getJoinedUsersByOwnerId(@Args('ownerId', { type: () => ID }) ownerId: Types.ObjectId) {
         return this.joinService.getJoinedUsersByOwnerId(ownerId);
     }
 

@@ -5,26 +5,32 @@ services:
       dockerfile: Dockerfile.dev
     container_name: gwm-backend
     working_dir: /workspace
+    # Зависимости уже стоят в образе (и подхватываются из него в volume).
+    # install оставлен страховкой на случай пустого volume: при готовых
+    # node_modules он занимает <100 мс, т.к. стор кешируется в образе.
     command: >
-      sh -c "pnpm install && pnpm --filter @go-with-me/backend start:dev"
+      sh -c "pnpm install --frozen-lockfile --prefer-offline && pnpm --filter @go-with-me/backend start:dev"
     env_file:
       - .env.local
     environment:
       NODE_ENV: development
       PORT: 4000
-      CORS_ORIGIN: https://tribeplans.dev
-      SESSION_COOKIE_SECURE: "true"
-      SESSION_COOKIE_SAMESITE: none
-      SESSION_COOKIE_DOMAIN: tribeplans.dev
+      # Журнал проверки lockfile против supply-chain политик pnpm лежит в
+      # cacheDir (~/.cache/pnpm). Домашний каталог у контейнера свой и живёт
+      # ровно до пересоздания, поэтому кэш уводим в node_modules — он уже
+      # смонтирован томом и принадлежит пользователю node.
+      XDG_CACHE_HOME: /workspace/node_modules/.cache
+      # Переопределяет MONGODB_URI из .env.local: с хоста база недоступна по
+      # localhost, внутри сети compose — по имени сервиса.
       MONGODB_URI: mongodb://mongo:27017/go-with-me
     volumes:
       - ./:/workspace
       - backend_node_modules:/workspace/node_modules
-      - backend_pnpm_store:/root/.local/share/pnpm
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
     ports:
-      - "4000:4000"
+      - '4000:4000'
 
   frontend:
     build:
@@ -32,23 +38,24 @@ services:
       dockerfile: Dockerfile.dev
     container_name: gwm-frontend
     working_dir: /workspace
+    # См. комментарий у backend: install почти бесплатен, когда volume уже заполнен.
     command: >
-      sh -c "pnpm install && pnpm --filter web-frontend dev --hostname 0.0.0.0 --port 3000"
+      sh -c "pnpm install --frozen-lockfile --prefer-offline && pnpm --filter frontend dev --hostname 0.0.0.0 --port 3000"
     env_file:
       - .env.local
     environment:
       NODE_ENV: development
       NEXT_PUBLIC_GRAPHQL_ENDPOINT: https://tribeplans.dev/api/graphql
-      NEXTAUTH_URL: https://tribeplans.dev
+      # См. комментарий у backend. Путь общий: node_modules у сервисов — разные
+      # тома, так что кэши тоже не смешиваются.
+      XDG_CACHE_HOME: /workspace/node_modules/.cache
     volumes:
       - ./:/workspace
       - frontend_node_modules:/workspace/node_modules
-      - frontend_pnpm_store:/root/.local/share/pnpm
-      - frontend_next_cache:/workspace/packages/frontend/.next
     depends_on:
       - backend
     ports:
-      - "3000:3000"
+      - '3000:3000'
 
   mongo:
     image: mongo:7
@@ -58,7 +65,15 @@ services:
     volumes:
       - mongo_data:/data/db
     ports:
-      - "27017:27017"
+      - '27017:27017'
+    # Без healthcheck depends_on завершается сразу после старта контейнера,
+    # и backend успевает упасть на подключении к ещё не готовой базе.
+    healthcheck:
+      test: ['CMD', 'mongosh', '--quiet', '--eval', "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
 
   nginx:
     image: nginx:1.27-alpine
@@ -67,17 +82,15 @@ services:
       - frontend
       - backend
     ports:
-      - "80:80"
-      - "443:443"
+      - '80:80'
+      - '443:443'
     volumes:
       - ./infra/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./infra/nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./infra/nginx/proxy_params.conf:/etc/nginx/proxy_params.conf:ro
       - ./infra/certs:/etc/nginx/certs:ro
 
 volumes:
   backend_node_modules:
-  backend_pnpm_store:
   frontend_node_modules:
-  frontend_pnpm_store:
-  frontend_next_cache:
   mongo_data:

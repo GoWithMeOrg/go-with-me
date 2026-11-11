@@ -1,14 +1,13 @@
 import { useState } from 'react';
+import { useMutation } from '@apollo/client/react';
+import { Action } from '@go-with-me/shared/graphql';
+
 import {
     CREATE_RESOURCE_PERMISSION,
     TOGGLE_PERMISSION_STATUS,
 } from '@/app/graphql/mutations/permission';
-import { Action, Permission } from '@/app/graphql/types';
-import { useMutation } from '@apollo/client/react';
 
 const usePermissionManager = () => {
-    const [editingPermission, setEditingPermission] = useState<Permission | null>(null);
-    const [isFormVisible, setIsFormVisible] = useState(false);
     const [expandedResources, setExpandedResources] = useState<string[]>([]);
 
     const totalActionsCount = Object.keys(Action).length;
@@ -45,9 +44,6 @@ const usePermissionManager = () => {
     };
 
     return {
-        isFormVisible,
-        editingPermission,
-
         expandedResources,
         setExpandedResources,
         toggleResource,

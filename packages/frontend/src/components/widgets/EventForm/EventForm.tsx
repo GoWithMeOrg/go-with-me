@@ -2,7 +2,8 @@
 
 import { FC, useRef } from 'react';
 import { Controller } from 'react-hook-form';
-import { Privacy } from '@/app/graphql/types';
+import { Privacy } from '@go-with-me/shared/graphql';
+
 import { Button } from '@/components/shared/Button';
 import { categoriesList, interestsList } from '@/components/shared/Dropdown/dropdownLists';
 import { Input } from '@/components/shared/Input';
@@ -98,7 +99,11 @@ export const EventForm: FC<EventFormProps> = ({ eventData }) => {
                                 control={control}
                                 defaultValue={eventData?.startDate ?? undefined}
                                 render={({ field }) => (
-                                    <Date title={'Начало'} date={eventData?.startDate as string | undefined} {...field} />
+                                    <Date
+                                        title={'Начало'}
+                                        date={eventData?.startDate as string | undefined}
+                                        {...field}
+                                    />
                                 )}
                             />
                             <Controller

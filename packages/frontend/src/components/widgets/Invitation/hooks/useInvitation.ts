@@ -1,3 +1,5 @@
+import { useMutation } from '@apollo/client/react';
+
 import {
     ACCEPT_INVITATION_MUTATION,
     DECLINE_INVITATION_MUTATION,
@@ -5,21 +7,16 @@ import {
 import { GET_DECLINED_EVENTS } from '@/app/graphql/queries/invations';
 import { IUseInvitation } from '@/components/widgets/Invitation/types/Invitation';
 import { useNotifications } from '@/components/widgets/Notifications/hooks';
-import { useMutation } from '@apollo/client/react';
 
 export const useInvitation = ({ invitation_id, receiver_id }: IUseInvitation) => {
     const { refetchDataInvations } = useNotifications();
 
     const [AcceptInvation] = useMutation(ACCEPT_INVITATION_MUTATION, {
-        refetchQueries: [
-            { query: GET_DECLINED_EVENTS, variables: { userId: receiver_id } },
-        ],
+        refetchQueries: [{ query: GET_DECLINED_EVENTS, variables: { userId: receiver_id } }],
     });
 
     const [DeclineInvitation] = useMutation(DECLINE_INVITATION_MUTATION, {
-        refetchQueries: [
-            { query: GET_DECLINED_EVENTS, variables: { userId: receiver_id } },
-        ],
+        refetchQueries: [{ query: GET_DECLINED_EVENTS, variables: { userId: receiver_id } }],
     });
 
     const acceptInvation = async () => {

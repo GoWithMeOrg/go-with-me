@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { DeleteResult, Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { Tag, TagDocument } from './entities/tag.entity';
-import { CreateTagInput } from './dto/create-tag.input';
-import { UpdateTagInput } from './dto/update-tag.input';
+import { DeleteResult, Model, Types } from 'mongoose';
+
+import { CreateTagInput } from '@/modules/tag/dto/create-tag.input.js';
+import { UpdateTagInput } from '@/modules/tag/dto/update-tag.input.js';
+import { Tag, TagDocument } from '@/modules/tag/entities/tag.entity.js';
 
 @Injectable()
 export class TagService {

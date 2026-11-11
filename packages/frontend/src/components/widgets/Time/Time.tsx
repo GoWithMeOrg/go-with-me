@@ -1,4 +1,4 @@
-import { FC, forwardRef } from 'react';
+import { FC } from 'react';
 import dayjs from 'dayjs';
 
 import classes from './Time.module.css';

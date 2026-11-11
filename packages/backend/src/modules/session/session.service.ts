@@ -1,8 +1,8 @@
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 
-import { SessionDocument } from './entities/session.entity';
+import { SessionDocument } from '@/modules/session/entities/session.entity.js';
 
 @Injectable()
 export class SessionService {
@@ -39,7 +39,10 @@ export class SessionService {
             if (session.user) return String(session.user);
             try {
                 // сесионная информация может содержать passport.user в виде строки/числа
-                return String((session as any).session?.passport?.user ?? null);
+                const passportUser = (
+                    session.session as { passport?: { user?: unknown } } | undefined
+                )?.passport?.user;
+                return String(passportUser ?? null);
             } catch {
                 return null;
             }

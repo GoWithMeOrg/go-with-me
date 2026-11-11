@@ -1,17 +1,20 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client/react';
+
 import { TOGGLE_LIKE_MUTATION } from '@/app/graphql/mutations/like';
 import { GET_LIKES_COUNT, IS_LIKED_BY_USER } from '@/app/graphql/queries/like';
 import { LikeProps } from '@/components/widgets/Like/interfaces/LikeProps';
 
+type LikeOverride = {
+    isLiked: boolean;
+    likesCount: number;
+};
+
 const useLike = ({ owner_id, ownerType, initialIsLiked, initialLikesCount }: LikeProps) => {
     const hasInitialData = initialIsLiked !== undefined && initialLikesCount !== undefined;
 
-    const [isLiked, setIsLiked] = useState(false);
-    const [likesCount, setLikesCount] = useState(0);
-    const isReadyRef = useRef(false);
-    const isLikedRef = useRef(false);
-    const hasToggledRef = useRef(false);
+    // Локальное значение после клика пользователя перекрывает данные с сервера
+    const [override, setOverride] = useState<LikeOverride | null>(null);
 
     const { data: isLikedData } = useQuery<{ isLikedByUser: boolean }>(IS_LIKED_BY_USER, {
         variables: { ownerId: owner_id },
@@ -23,21 +26,13 @@ const useLike = ({ owner_id, ownerType, initialIsLiked, initialLikesCount }: Lik
         skip: hasInitialData,
     });
 
-    useEffect(() => {
-        if (hasToggledRef.current) return;
+    const isReady = hasInitialData || (isLikedData !== undefined && likesCountData !== undefined);
 
-        if (hasInitialData) {
-            setIsLiked(initialIsLiked);
-            setLikesCount(initialLikesCount);
-            isReadyRef.current = true;
-        } else if (isLikedData && likesCountData !== undefined) {
-            setIsLiked(!!isLikedData.isLikedByUser);
-            setLikesCount(likesCountData.getLikesCount);
-            isReadyRef.current = true;
-        }
-    }, [hasInitialData, initialIsLiked, initialLikesCount, isLikedData, likesCountData]);
-
-    isLikedRef.current = isLiked;
+    const isLiked =
+        override?.isLiked ?? (hasInitialData ? !!initialIsLiked : !!isLikedData?.isLikedByUser);
+    const likesCount =
+        override?.likesCount ??
+        (hasInitialData ? (initialLikesCount ?? 0) : (likesCountData?.getLikesCount ?? 0));
 
     const [toggleLike] = useMutation(TOGGLE_LIKE_MUTATION, {
         refetchQueries: hasInitialData
@@ -46,13 +41,15 @@ const useLike = ({ owner_id, ownerType, initialIsLiked, initialLikesCount }: Lik
     });
 
     const handleLike = useCallback(async () => {
-        if (!isReadyRef.current) return;
+        if (!isReady) return;
 
-        const prevIsLiked = isLikedRef.current;
+        const prevIsLiked = isLiked;
+        const prevLikesCount = likesCount;
 
-        setIsLiked(!prevIsLiked);
-        setLikesCount((c) => c + (prevIsLiked ? -1 : 1));
-        hasToggledRef.current = true;
+        setOverride({
+            isLiked: !prevIsLiked,
+            likesCount: prevLikesCount + (prevIsLiked ? -1 : 1),
+        });
 
         try {
             await toggleLike({
@@ -60,10 +57,9 @@ const useLike = ({ owner_id, ownerType, initialIsLiked, initialLikesCount }: Lik
                 awaitRefetchQueries: !hasInitialData,
             });
         } catch {
-            setIsLiked(prevIsLiked);
-            setLikesCount((c) => (prevIsLiked ? c + 1 : c - 1));
+            setOverride({ isLiked: prevIsLiked, likesCount: prevLikesCount });
         }
-    }, [toggleLike, owner_id, ownerType, hasInitialData]);
+    }, [isReady, isLiked, likesCount, toggleLike, owner_id, ownerType, hasInitialData]);
 
     return { handleLike, isLiked, likesCount };
 };

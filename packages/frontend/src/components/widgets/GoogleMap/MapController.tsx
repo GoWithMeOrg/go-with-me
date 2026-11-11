@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react';
-import { COLORS, MAP_CONSTANTS } from '@/constants/map';
 import { AdvancedMarker, Pin, useMap } from '@vis.gl/react-google-maps';
 
+import { COLORS, MAP_CONSTANTS } from '@/constants/map';
 import { IEvent } from './types/Type';
 
 interface MapControllerProp {
@@ -40,7 +40,7 @@ export const MapController = ({ onMarkerClick, selectedEventId, events }: MapCon
     return (
         <>
             {events.map((event, i) => {
-                const [lng, lat] = event.location.coordinates;
+                const [lng, lat] = event.location?.geometry.coordinates ?? [0, 0];
                 const offsetLat = lat + i * 0.0001;
                 const offsetLng = lng + i * 0.0001;
                 const position = { lat: offsetLat, lng: offsetLng };

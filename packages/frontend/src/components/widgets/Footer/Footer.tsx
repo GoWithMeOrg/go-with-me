@@ -1,19 +1,20 @@
 'use client';
 
+import Link from 'next/link';
+
+import { logout } from '@/app/providers/session/actions/authActions';
 import { useSessionGQL } from '@/app/providers/session/hooks/useSesssionGQL';
 import LogoFooter from '@/assets/icons/logoFooter.svg';
 import { Button } from '@/components/shared/Button';
 import { Popup } from '@/components/shared/Popup';
 import { usePopup } from '@/components/shared/Popup/hooks';
 import { AuthModal } from '@/components/widgets/AuthModal';
-import { signOut } from 'next-auth/react';
-import Link from 'next/link';
 
 import classes from './Footer.module.css';
 
 export const Footer = () => {
-    const { data: session, status } = useSessionGQL();
-    const popupMode: 'auth' = 'auth';
+    const { status } = useSessionGQL();
+    const popupMode = 'auth' as const;
 
     const { showPopup, setShowPopup, handleShowPopup, handleHidePopup } = usePopup({ popupMode });
 
@@ -92,7 +93,7 @@ export const Footer = () => {
                 <div className={classes.footerContainer}>
                     <div className={classes.footerLogIn}>
                         <Button
-                            onClick={() => signOut()}
+                            onClick={() => logout()}
                             className={classes.footerLink}
                             resetDefaultStyles={true}
                         >

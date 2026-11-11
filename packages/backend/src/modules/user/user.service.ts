@@ -1,14 +1,17 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { DeleteResult, Model, Types } from 'mongoose';
+import { DeleteResult, Model, QueryFilter, Types } from 'mongoose';
 
-import { CreateUserInput } from './dto/create-user.input';
-import { UpdateUserInput } from './dto/update-user.input';
-
-import { User, UserDocument } from './entities/user.entity';
-import { Role, RoleDocument } from '../role/entities/role.entity';
-import { Companion, CompanionDocument } from '../companion/entities/companion.entity';
-import { CompanionRequest, CompanionRequestDocument } from '../companion-request/entities/companion-request.entity';
+import {
+    CompanionRequest,
+    CompanionRequestDocument,
+} from '@/modules/companion-request/entities/companion-request.entity.js';
+import { CompanionRequestStatus } from '@/modules/companion-request/enums/companion-request.enum.js';
+import { Companion, CompanionDocument } from '@/modules/companion/entities/companion.entity.js';
+import { Role, RoleDocument } from '@/modules/role/entities/role.entity.js';
+import { CreateUserInput } from '@/modules/user/dto/create-user.input.js';
+import { UpdateUserInput } from '@/modules/user/dto/update-user.input.js';
+import { User, UserDocument } from '@/modules/user/entities/user.entity.js';
 
 @Injectable()
 export class UserService {
@@ -41,12 +44,9 @@ export class UserService {
         return this.userModel.findById(id).select('firstName lastName image description');
     }
 
-    async findByEmailOrName(
-        query?: string,
-        user_id?: Types.ObjectId
-    ): Promise<User[]> {
+    async findByEmailOrName(query?: string, user_id?: Types.ObjectId): Promise<User[]> {
         // Фильтруем результат по имени или email
-        const filters: any = {};
+        const filters: QueryFilter<User> = {};
 
         if (query) {
             filters.$or = [
@@ -65,7 +65,7 @@ export class UserService {
             ];
         }
 
-        let users = await this.userModel.find(filters);
+        const users = await this.userModel.find(filters);
 
         // Если передан user_id, исключаем компаньонов и заявки
         if (user_id) {
@@ -77,10 +77,10 @@ export class UserService {
             const activeRequests = await this.companionRequestModel
                 .find({
                     $or: [
-                        { sender: user_id, status: 'PENDING' },
-                        { receiver: user_id, status: 'PENDING' },
+                        { sender: user_id, status: CompanionRequestStatus.PENDING },
+                        { receiver: user_id, status: CompanionRequestStatus.PENDING },
                     ],
-                } as any)
+                })
                 .exec();
 
             const requestedIds = activeRequests.map((r) =>

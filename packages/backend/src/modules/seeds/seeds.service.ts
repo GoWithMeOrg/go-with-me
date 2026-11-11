@@ -1,23 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import { Types } from 'mongoose';
 
-import { UserService } from '../user/user.service';
-import { LocationService } from '../location/location.service';
-import { CategoryService } from '../category/category.service';
-import { InterestService } from '../interest/interest.service';
-import { TagService } from '../tag/tag.service';
-
-import { CreateLocationInput } from '../location/dto/create-location.input';
-import { CreateCategoryInput } from '../category/dto/create-category.input';
-import { CreateInterestInput } from '../interest/dto/create-interest.input';
-import { CreateTagInput } from '../tag/dto/create-tag.input';
-import { CreateUserInput } from '../user/dto/create-user.input';
-import { SeedUserResult } from './entities/seed-user.entity';
-import { Event } from '../event/entities/event.entity';
-import { EventService } from '../event/event.service';
-import { CreateEventInput } from '../event/dto/create-event.input';
-import { EventRelationsInput } from '../event/interfaces/create-event-relations.input';
-import { EventRelationsService } from '../event/services/event-relations.service';
+import { CategoryService } from '@/modules/category/category.service.js';
+import { CreateCategoryInput } from '@/modules/category/dto/create-category.input.js';
+import { CreateEventInput } from '@/modules/event/dto/create-event.input.js';
+import { Event } from '@/modules/event/entities/event.entity.js';
+import { EventService } from '@/modules/event/event.service.js';
+import { EventRelationsInput } from '@/modules/event/interfaces/create-event-relations.input.js';
+import { EventRelationsService } from '@/modules/event/services/event-relations.service.js';
+import { CreateInterestInput } from '@/modules/interest/dto/create-interest.input.js';
+import { InterestService } from '@/modules/interest/interest.service.js';
+import { CreateLocationInput } from '@/modules/location/dto/create-location.input.js';
+import { LocationService } from '@/modules/location/location.service.js';
+import { SeedUserResult } from '@/modules/seeds/entities/seed-user.entity.js';
+import { CreateTagInput } from '@/modules/tag/dto/create-tag.input.js';
+import { TagService } from '@/modules/tag/tag.service.js';
+import { CreateUserInput } from '@/modules/user/dto/create-user.input.js';
+import { UserService } from '@/modules/user/user.service.js';
 
 @Injectable()
 export class SeedsService {
@@ -51,7 +50,7 @@ export class SeedsService {
         const userId = createdUser._id;
 
         // Объект для хранения промисов, чтобы запустить их параллельно
-        const tasks: Record<string, Promise<any>> = {};
+        const tasks: Record<string, Promise<unknown>> = {};
 
         if (location && userId) {
             location.properties.ownerId = userId;
@@ -82,7 +81,7 @@ export class SeedsService {
         const keys = Object.keys(tasks);
 
         keys.forEach((key, index) => {
-            (finalResult as any)[key] = results[index];
+            (finalResult as Record<string, unknown>)[key] = results[index];
         });
 
         return finalResult as SeedUserResult;

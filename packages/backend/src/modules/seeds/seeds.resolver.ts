@@ -1,12 +1,12 @@
-import { Resolver, Mutation, Args } from '@nestjs/graphql';
 import { ForbiddenException } from '@nestjs/common';
+import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { Types } from 'mongoose';
 
-import { SeedsService } from './seeds.service';
-import { SeedUserResult } from './entities/seed-user.entity';
-import { SeedUserInput } from './dto/create-seed-user.input';
-import { SeedEventsInput } from './dto/create-seed-events.input';
-import { Event } from '../event/entities/event.entity';
+import { Event } from '@/modules/event/entities/event.entity.js';
+import { SeedEventsInput } from '@/modules/seeds/dto/create-seed-events.input.js';
+import { SeedUserInput } from '@/modules/seeds/dto/create-seed-user.input.js';
+import { SeedUserResult } from '@/modules/seeds/entities/seed-user.entity.js';
+import { SeedsService } from '@/modules/seeds/seeds.service.js';
 
 @Resolver()
 export class SeedsResolver {

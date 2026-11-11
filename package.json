@@ -1,30 +1,46 @@
 {
     "name": "go-with-me",
     "private": true,
-    "workspaces": [
-        "packages/*"
-    ],
+    "packageManager": "pnpm@12.16.1",
+    "engines": {
+        "node": ">=26"
+    },
     "scripts": {
-        "build": "pnpm --filter \"*\" build",
+        "build": "pnpm -r --parallel run build",
         "backend:dev": "pnpm --filter backend nest start --watch",
-        "frontend:dev": "pnpm --filter frontend dev",
-        "frontend:lint": "pnpm -r exec eslint packages/frontend --fix",
-        "backend:lint": "pnpm -r exec eslint packages/backend --fix",
+        "frontend:dev": "pnpm -C packages/frontend dev",
+        "lint": "pnpm -r --parallel run lint",
+        "frontend:lint": "pnpm --filter frontend lint --fix",
+        "backend:lint": "pnpm --filter backend lint --fix",
+        "typegen": "pnpm -C packages/frontend exec next typegen",
+        "typecheck": "pnpm -r --parallel run typecheck",
+        "typecheck:backend": "pnpm --filter backend typecheck",
+        "typecheck:frontend": "pnpm --filter frontend typecheck",
+        "test": "pnpm -r run test",
+        "test:e2e": "pnpm --filter frontend build && pnpm --filter frontend test:e2e",
+        "check:codegen": "pnpm codegen && git diff --exit-code -- packages/backend/src/schema/schema.gql packages/shared/graphql.ts packages/frontend/src/app/graphql/operations.ts",
         "frontend:format": "prettier packages/frontend -w",
         "backend:format": "prettier packages/backend -w",
-        "import:mongo": "./scripts/import-mongo-data.sh",
-        "codegen": "graphql-codegen --config codegen.ts"
+        "format:check": "prettier --check .",
+        "import:mongo": "./import-mongo-data.sh",
+        "codegen": "graphql-codegen --config codegen.ts",
+        "prepare": "pnpm codegen"
     },
     "devDependencies": {
-        "@graphql-codegen/cli": "^7.1.2",
-        "@graphql-codegen/import-types-preset": "^4.0.1",
-        "@graphql-codegen/typed-document-node": "^7.0.3",
-        "@graphql-codegen/typescript": "^6.0.2",
-        "@graphql-codegen/typescript-operations": "^6.0.3",
+        "@eslint/compat": "^2.1.1",
+        "@eslint/js": "^10.0.1",
+        "@graphql-codegen/cli": "^8.0.0",
+        "@graphql-codegen/typescript": "^7.0.0",
+        "@graphql-codegen/typescript-operations": "^7.0.0",
         "@ianvs/prettier-plugin-sort-imports": "^4.7.1",
-        "@playwright/test": "^1.61.0",
-        "class-transformer": "0.5.1",
-        "class-validator": "0.15.1",
-        "typescript": "5.9.3"
+        "@playwright/test": "^1.64.1",
+        "eslint": "^10.14.0",
+        "eslint-config-next": "^16.4.5",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint-plugin-storybook": "^10.6.5",
+        "globals": "^17.14.0",
+        "prettier": "^3.9.10",
+        "typescript": "catalog:",
+        "typescript-eslint": "^8.72.1"
     }
 }

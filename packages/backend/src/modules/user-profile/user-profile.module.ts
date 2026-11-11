@@ -1,14 +1,12 @@
 import { forwardRef, Module } from '@nestjs/common';
 
-import { UserModule } from '@/modules/user/user.module';
-import { LocationModule } from '@/modules/location/location.module';
-import { CategoryModule } from '@/modules/category/category.module';
-import { InterestModule } from '@/modules/interest/interest.module';
-import { TagModule } from '@/modules/tag/tag.module';
-
-import { UserProfileResolver } from './user-profile.resolver';
-
-import { UserProfileService } from './user-profile.service';
+import { CategoryModule } from '@/modules/category/category.module.js';
+import { InterestModule } from '@/modules/interest/interest.module.js';
+import { LocationModule } from '@/modules/location/location.module.js';
+import { TagModule } from '@/modules/tag/tag.module.js';
+import { UserProfileResolver } from '@/modules/user-profile/user-profile.resolver.js';
+import { UserProfileService } from '@/modules/user-profile/user-profile.service.js';
+import { UserModule } from '@/modules/user/user.module.js';
 
 @Module({
     imports: [

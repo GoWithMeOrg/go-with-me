@@ -1,10 +1,10 @@
 'use client';
 
 import { memo, useCallback, useState } from 'react';
-import { Comment as CommentType } from '@/app/graphql/types';
+import { Comment as CommentType } from '@go-with-me/shared/graphql';
+
 import { Avatar } from '@/components/shared/Avatar';
 import { useUserID } from '@/hooks/useUserID';
-
 import { useLikesContext } from '../LikesContext';
 import { CommentContent } from './CommentContent';
 import { CommentHeader } from './CommentHeader';
@@ -46,7 +46,10 @@ const CommentInner = ({ comment, depth = 0, onDelete }: CommentProps) => {
         setReplyToState((prev) =>
             prev?.id === comment._id
                 ? null
-                : { id: comment._id, authorName: `${comment.author.firstName} ${comment.author.lastName}` }
+                : {
+                      id: comment._id,
+                      authorName: `${comment.author.firstName} ${comment.author.lastName}`,
+                  }
         );
     }, [comment._id, comment.author.firstName, comment.author.lastName]);
 

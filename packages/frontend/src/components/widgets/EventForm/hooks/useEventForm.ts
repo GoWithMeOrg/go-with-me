@@ -1,4 +1,7 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useMutation } from '@apollo/client/react';
+import { useRouter } from 'next/navigation';
+
 import { CREATE_EVENT_MUTATION, UPDATE_EVENT_MUTATION } from '@/app/graphql/mutations/event';
 import {
     CreateEventMutation,
@@ -6,9 +9,6 @@ import {
     UpdateEventMutation,
     UpdateEventMutationVariables,
 } from '@/app/graphql/operations';
-import { useMutation } from '@apollo/client/react';
-import { useRouter } from 'next/navigation';
-
 import { EventFormData, UseEventFormProps } from '../interfaces/eventForm';
 
 // Формирует общие данные для мутаций создания и обновления события

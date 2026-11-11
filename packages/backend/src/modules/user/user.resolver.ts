@@ -1,19 +1,15 @@
-import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
-import { Schema as MongoSchema, Types } from 'mongoose';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Types } from 'mongoose';
 
-import { UserService } from './user.service';
-
-import { CreateUserInput } from './dto/create-user.input';
-import { UpdateUserInput } from './dto/update-user.input';
-
-import { User } from './entities/user.entity';
-
-import { SessionAuthGuard } from '@/common/guards/session-auth.guard';
-import { RolesGuard } from '@/common/guards/roles.guard';
-import { CurrentUser } from '@/common/decorators/current-user.decorator';
-
-import { Roles } from '@/common/decorators/roles.decorator';
+import { CurrentUser } from '@/common/decorators/current-user.decorator.js';
+import { Roles } from '@/common/decorators/roles.decorator.js';
+import { RolesGuard } from '@/common/guards/roles.guard.js';
+import { SessionAuthGuard } from '@/common/guards/session-auth.guard.js';
+import { CreateUserInput } from '@/modules/user/dto/create-user.input.js';
+import { UpdateUserInput } from '@/modules/user/dto/update-user.input.js';
+import { User } from '@/modules/user/entities/user.entity.js';
+import { UserService } from '@/modules/user/user.service.js';
 
 @Resolver(() => User)
 export class UserResolver {
@@ -70,9 +66,7 @@ export class UserResolver {
         name: 'removeUser',
         description: 'Удалить пользователя',
     })
-    async removeUser(
-        @Args('id', { type: () => ID }) id: Types.ObjectId
-    ): Promise<boolean> {
+    async removeUser(@Args('id', { type: () => ID }) id: Types.ObjectId): Promise<boolean> {
         const result = await this.userService.removeUser(id);
         return result.deletedCount > 0;
     }

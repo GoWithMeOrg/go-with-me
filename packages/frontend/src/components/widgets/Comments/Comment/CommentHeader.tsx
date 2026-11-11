@@ -1,6 +1,7 @@
-import { Comment as CommentType } from '@/app/graphql/types';
-import { Span } from '@/components/shared/Span/Span';
+import { Comment as CommentType } from '@go-with-me/shared/graphql';
 import dayjs from 'dayjs';
+
+import { Span } from '@/components/shared/Span/Span';
 
 import classes from './Comment.module.css';
 

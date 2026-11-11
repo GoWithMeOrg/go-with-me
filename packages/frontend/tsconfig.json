@@ -13,6 +13,7 @@
         "isolatedModules": true,
         "jsx": "react-jsx",
         "incremental": true,
+        "types": ["node", "google.maps"],
         "plugins": [
             {
                 "name": "next"
@@ -26,10 +27,8 @@
         "next-env.d.ts",
         "**/*.ts",
         "**/*.tsx",
-        "svgr.d.ts",
         ".next/types/**/*.ts",
-        ".next/dev/types/**/*.ts",
-        "../../Autocomplete_old.tsx"
+        ".next/dev/types/**/*.ts"
     ],
     "exclude": ["node_modules"]
 }

@@ -1,9 +1,10 @@
-import { Module, forwardRef } from '@nestjs/common';
-import { ResourceService } from './resource.service';
-import { ResourceResolver } from './resource.resolver';
+import { forwardRef, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ResourceSchema } from './entities/resource.entity';
-import { PermissionModule } from '../permission/permission.module';
+
+import { PermissionModule } from '@/modules/permission/permission.module.js';
+import { ResourceSchema } from '@/modules/resource/entities/resource.entity.js';
+import { ResourceResolver } from '@/modules/resource/resource.resolver.js';
+import { ResourceService } from '@/modules/resource/resource.service.js';
 
 @Module({
     imports: [

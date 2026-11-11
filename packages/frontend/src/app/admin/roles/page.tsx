@@ -2,7 +2,6 @@
 
 import Spinner from '@/assets/icons/spinner.svg';
 import { RoleManagement } from '@/components/widgets/RoleManagement';
-
 import { useAdminGuard } from '../hooks/useAdminGuard';
 
 const RoleManagementPage = () => {

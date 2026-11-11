@@ -1,4 +1,4 @@
-import { ObjectType, Field, Float } from '@nestjs/graphql';
+import { Field, Float, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 @ObjectType()
@@ -6,7 +6,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 export class LocationGeometry {
     @Field(() => String)
     @Prop({ type: String, enum: ['Point'], default: 'Point' })
-    type: 'Point';
+    type!: 'Point';
 
     @Field(() => [Float])
     @Prop({
@@ -17,7 +17,7 @@ export class LocationGeometry {
             message: 'Coordinates must be [lng, lat]',
         },
     })
-    coordinates: [number, number];
+    coordinates!: [number, number];
 }
 
 export const LocationGeometrySchema = SchemaFactory.createForClass(LocationGeometry);

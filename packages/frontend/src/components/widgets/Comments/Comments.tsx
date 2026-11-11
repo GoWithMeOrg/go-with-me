@@ -1,15 +1,15 @@
 'use client';
 
 import { useMemo } from 'react';
-import Spinner from '@/assets/icons/spinner.svg';
 import { useQuery } from '@apollo/client/react';
+
 import { GET_LIKES_BATCH } from '@/app/graphql/queries/like';
+import Spinner from '@/assets/icons/spinner.svg';
 import { Button } from '@/components/shared/Button';
 import { MessageContainer } from '@/components/shared/MessageContainer/MessageContainer';
 import { Title } from '@/components/shared/Title';
 import { Comment } from '@/components/widgets/Comments/Comment';
 import { CommentForm } from '@/components/widgets/Comments/CommentForm';
-
 import { useCommentList } from './Comment/hooks/useCommentList';
 import { LikesProvider } from './LikesContext';
 import { LikeState } from './types';

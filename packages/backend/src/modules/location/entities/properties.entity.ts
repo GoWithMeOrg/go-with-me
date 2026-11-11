@@ -11,11 +11,11 @@ export class LocationProperties {
 
     @Field(() => String)
     @Prop({ type: MongoSchema.Types.ObjectId, required: true })
-    ownerId: Types.ObjectId;
+    ownerId!: Types.ObjectId;
 
     @Field(() => String)
     @Prop({ type: String, enum: ['User', 'Event'], required: true })
-    ownerType: 'User' | 'Event';
+    ownerType!: 'User' | 'Event';
 }
 
 export const LocationPropertiesSchema = SchemaFactory.createForClass(LocationProperties);

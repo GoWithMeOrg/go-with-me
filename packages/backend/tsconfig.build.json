@@ -1,0 +1,11 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        // В рантайме .d.ts и .js.map из dist не нужны: прод-образ несёт
+        // только собранный JS. Типы проверяются отдельно (typecheck).
+        "declaration": false,
+        "sourceMap": false
+    },
+    "include": ["src/**/*.ts"],
+    "exclude": ["node_modules", "dist", "**/*.spec.ts"]
+}

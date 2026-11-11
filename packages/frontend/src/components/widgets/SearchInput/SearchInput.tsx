@@ -3,12 +3,11 @@
 import ClearInput from '@/assets/icons/clearInput.svg';
 import Search from '@/assets/icons/search.svg';
 import { Label } from '@/components/shared/Label';
-
-import { SearchInputProps, SearchVariables } from './interfaces/interfaces';
+import { SearchInputProps } from './interfaces/interfaces';
 
 import classes from './SearchInput.module.css';
 
-export const SearchInput = <TData, TVariables extends SearchVariables>({
+export const SearchInput = ({
     error,
     placeholder,
     onChange,
@@ -16,7 +15,7 @@ export const SearchInput = <TData, TVariables extends SearchVariables>({
     value = '',
     onClear,
     label,
-}: SearchInputProps<TData, TVariables>) => {
+}: SearchInputProps) => {
     const showClearIcon = value.length > 0 && !loading;
 
     return (

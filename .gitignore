@@ -1,6 +1,13 @@
 node_modules/
 .pnpm-store/
 .env.local
+
+# Playwright
+test-results/
+playwright-report/
+
+# macOS
+.DS_Store
 *.pem
 mongo-backup/
 *.tsbuildinfo
@@ -8,3 +15,6 @@ mongo-backup/
 .agents/
 skills-lock.json
 AGENTS.md
+
+# Локальный отчёт аудита конфигов
+CONFIG_AUDIT.md

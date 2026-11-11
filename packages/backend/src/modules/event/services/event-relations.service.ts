@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { Types } from 'mongoose';
 
-import { Event } from '../entities/event.entity';
-import { LocationService } from '@/modules/location/location.service';
-import { CategoryService } from '@/modules/category/category.service';
-import { InterestService } from '@/modules/interest/interest.service';
-import { TagService } from '@/modules/tag/tag.service';
-import { EventRelationsInput } from '../interfaces/create-event-relations.input';
+import { CategoryService } from '@/modules/category/category.service.js';
+import { Event } from '@/modules/event/entities/event.entity.js';
+import { EventRelationsInput } from '@/modules/event/interfaces/create-event-relations.input.js';
+import { InterestService } from '@/modules/interest/interest.service.js';
+import { LocationService } from '@/modules/location/location.service.js';
+import { TagService } from '@/modules/tag/tag.service.js';
 
 @Injectable()
 export class EventRelationsService {
@@ -62,7 +62,7 @@ export class EventRelationsService {
         // одно сохранение вместо четырёх
         if (Object.keys(updates).length > 0) {
             Object.assign(event, updates);
-            await (event as any).save();
+            await (event as unknown as { save: () => Promise<unknown> }).save();
         }
     }
 
@@ -117,7 +117,7 @@ export class EventRelationsService {
         // одно сохранение вместо четырёх
         if (Object.keys(updates).length > 0) {
             Object.assign(event, updates);
-            await (event as any).save();
+            await (event as unknown as { save: () => Promise<unknown> }).save();
         }
     }
 

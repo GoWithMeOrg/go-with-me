@@ -1,4 +1,4 @@
-import { User } from '@/app/graphql/types';
+import { User } from '@go-with-me/shared/graphql';
 
 export interface INewComment {
     author_id: string;

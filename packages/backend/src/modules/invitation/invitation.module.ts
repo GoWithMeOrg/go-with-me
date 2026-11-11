@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { InvitationService } from './invitation.service';
-import { InvitationResolver } from './invitation.resolver';
-import { Invitation, InvitationSchema } from './entities/invitation.entity';
-import { EventSchema } from '@/modules/event/entities/event.entity';
-import { Companion, CompanionSchema } from '@/modules/companion/entities/companion.entity';
-import { PrivacySettingModule } from '@/modules/privacy-setting/privacy-setting.module';
-import { PrivacySettingService } from '@/modules/privacy-setting/privacy-setting.service';
+
+import { Companion, CompanionSchema } from '@/modules/companion/entities/companion.entity.js';
+import { EventSchema } from '@/modules/event/entities/event.entity.js';
+import { Invitation, InvitationSchema } from '@/modules/invitation/entities/invitation.entity.js';
+import { InvitationResolver } from '@/modules/invitation/invitation.resolver.js';
+import { InvitationService } from '@/modules/invitation/invitation.service.js';
+import { PrivacySettingModule } from '@/modules/privacy-setting/privacy-setting.module.js';
 
 @Module({
     imports: [

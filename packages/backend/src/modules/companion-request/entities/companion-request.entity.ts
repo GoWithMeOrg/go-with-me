@@ -1,22 +1,23 @@
-import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { Document, Schema as MongoSchema, Types } from 'mongoose';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { CompanionRequestStatus } from '../enums/companion-request.enum';
-import { User } from '@/modules/user/entities/user.entity';
+import { Document, Schema as MongoSchema, Types } from 'mongoose';
+
+import { CompanionRequestStatus } from '@/modules/companion-request/enums/companion-request.enum.js';
+import { User } from '@/modules/user/entities/user.entity.js';
 
 @ObjectType()
 @Schema({ timestamps: true })
 export class CompanionRequest {
     @Field(() => ID)
-    _id: Types.ObjectId;
+    _id!: Types.ObjectId;
 
     @Field(() => User)
     @Prop({ type: MongoSchema.Types.ObjectId, required: true, ref: 'User' })
-    sender: Types.ObjectId;
+    sender!: Types.ObjectId;
 
     @Field(() => User)
     @Prop({ type: MongoSchema.Types.ObjectId, required: true, ref: 'User' })
-    receiver: Types.ObjectId;
+    receiver!: Types.ObjectId;
 
     @Field(() => String)
     @Prop({
@@ -24,7 +25,7 @@ export class CompanionRequest {
         enum: CompanionRequestStatus,
         default: CompanionRequestStatus.PENDING,
     })
-    status: CompanionRequestStatus;
+    status!: CompanionRequestStatus;
 }
 
 export type CompanionRequestDocument = CompanionRequest & Document;

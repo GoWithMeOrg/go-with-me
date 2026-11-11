@@ -1,17 +1,14 @@
-import { ConfigService } from '@nestjs/config';
-import { Strategy as GoogleStrategy, VerifyCallback } from 'passport-google-oauth20';
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Types } from 'mongoose';
+import { Strategy as GoogleStrategy, VerifyCallback } from 'passport-google-oauth20';
 
-import { AuthService } from '@/auth/auth.service';
-import { RoleService } from '@/modules/role/role.service';
-
-import { UserService } from '@/modules/user/user.service';
-
-import { AuthUserPayload } from '@/auth/dto/auth-user.payload';
-
-import { GoogleProfile } from '../interfaces/profile.interface';
+import { AuthService } from '@/auth/auth.service.js';
+import { AuthUserPayload } from '@/auth/dto/auth-user.payload.js';
+import { GoogleProfile } from '@/auth/GoogleAuth/interfaces/profile.interface.js';
+import { RoleService } from '@/modules/role/role.service.js';
+import { UserService } from '@/modules/user/user.service.js';
 
 @Injectable()
 export class GoogleAuthStrategy extends PassportStrategy(GoogleStrategy, 'google') {
@@ -36,7 +33,7 @@ export class GoogleAuthStrategy extends PassportStrategy(GoogleStrategy, 'google
         done: VerifyCallback
     ): Promise<void> {
         const { name, emails, photos } = profile;
-        
+
         // Валидируем данные из Google - проверяем, что обязательные поля присутствуют
         if (!name || !name.givenName || !name.familyName) {
             console.error('Invalid Google profile: missing name fields');
@@ -68,7 +65,7 @@ export class GoogleAuthStrategy extends PassportStrategy(GoogleStrategy, 'google
                 return done(null, undefined);
             }
 
-            let userRoles: Types.ObjectId[] = [];
+            const userRoles: Types.ObjectId[] = [];
 
             if (!user.roles || user.roles.length === 0) {
                 const userRole = await this.roleService.getRoleByName('user');

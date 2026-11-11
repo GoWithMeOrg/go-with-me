@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useApiIsLoaded, useMapsLibrary } from '@vis.gl/react-google-maps';
 
+import { GoogleMapsBoundary } from './GoogleMapsBoundary';
+
 interface Props {
     coordinates?: [number, number];
 }
 
 //определиться, что будет являть местом и что изходя из этого будем выводить.
-export const Geocoding = ({ coordinates }: Props) => {
+const GeocodingInner = ({ coordinates }: Props) => {
     const apiIsLoaded = useApiIsLoaded();
     const [lng, lat] = coordinates ?? [0, 0];
-    const [addressComponents, setAddressComponents] = useState<any[]>([]);
     const [city, setCity] = useState<string>('');
-    const [street, setStreet] = useState<string>('');
-    const [houseNumber, setHouseNumber] = useState<string>('');
     const geocoding = useMapsLibrary('geocoding');
 
     useEffect(() => {
@@ -21,8 +20,6 @@ export const Geocoding = ({ coordinates }: Props) => {
         if (typeof lat !== 'number' || typeof lng !== 'number' || isNaN(lat) || isNaN(lng)) return;
 
         const geocoder = new google.maps.Geocoder();
-
-        const location: google.maps.LatLngLiteral = { lat, lng };
 
         geocoder.geocode(
             { location: { lng: coordinates[0], lat: coordinates[1] } },
@@ -44,5 +41,14 @@ export const Geocoding = ({ coordinates }: Props) => {
         </span>
     );
 };
+
+// Geocoding вызывается из карточек и списков, где карты нет: обёртка ставит
+// APIProvider только там, где он ещё не поднят, чтобы города подставлялись,
+// но страницы без карт не тянули Google Maps JS.
+export const Geocoding = (props: Props) => (
+    <GoogleMapsBoundary>
+        <GeocodingInner {...props} />
+    </GoogleMapsBoundary>
+);
 
 export default Geocoding;

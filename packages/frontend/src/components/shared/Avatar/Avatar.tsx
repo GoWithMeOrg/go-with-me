@@ -6,11 +6,11 @@ import { getContent } from './helpers';
 
 import classes from './Avatar.module.css';
 
-//@ts-ignore
-interface AvatarProps extends HTMLAttributes<HTMLDivElement>, Pick<IUser, 'name'> {
+interface AvatarProps extends HTMLAttributes<HTMLDivElement> {
     scale?: number;
     image?: string;
     className?: string;
+    name?: string;
     id: string;
 }
 

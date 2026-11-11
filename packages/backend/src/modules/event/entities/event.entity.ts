@@ -1,27 +1,25 @@
-import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { Document, Schema as MongoSchema, Types } from 'mongoose';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Location } from '@/modules/location/entities/location.entity';
-import { Category } from '@/modules/category/entities/category.entity';
-import { Interest } from '@/modules/interest/entities/interest.entity';
-import { Tag } from '@/modules/tag/entities/tag.entity';
-import { Privacy } from '../enum/privacy.enum';
-import { Like } from '@/modules/like/entities/like.entity';
-import { Comment } from '@/modules/comment/entities/comment.entity';
+import { Document, Types } from 'mongoose';
+
+import { Category } from '@/modules/category/entities/category.entity.js';
+import { Privacy } from '@/modules/event/enum/privacy.enum.js';
+import { Interest } from '@/modules/interest/entities/interest.entity.js';
+import { Location } from '@/modules/location/entities/location.entity.js';
+import { Tag } from '@/modules/tag/entities/tag.entity.js';
 
 @ObjectType()
 @Schema({ timestamps: true })
 export class Event {
     @Field(() => ID)
-    _id: Types.ObjectId;
+    _id!: Types.ObjectId;
 
-    @Field(() => ID)
     @Prop({ type: Types.ObjectId, ref: 'User', required: true })
-    organizer: Types.ObjectId;
+    organizer!: Types.ObjectId;
 
     @Field(() => String)
     @Prop({ type: String, required: true })
-    name: string;
+    name!: string;
 
     @Field(() => String, { nullable: true })
     @Prop({ type: String })
@@ -29,11 +27,11 @@ export class Event {
 
     @Field(() => Date)
     @Prop({ type: Date, required: true })
-    startDate: Date;
+    startDate!: Date;
 
     @Field(() => Date, { nullable: true })
     @Prop({ type: Date })
-    endDate: Date;
+    endDate!: Date;
 
     @Field(() => String, { nullable: true })
     @Prop({ type: String })
@@ -41,7 +39,7 @@ export class Event {
 
     @Field(() => Privacy)
     @Prop({ type: String, enum: Privacy, required: true })
-    privacy: Privacy;
+    privacy!: Privacy;
 
     @Field(() => String, { nullable: true })
     @Prop({ type: String })

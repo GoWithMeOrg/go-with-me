@@ -1,11 +1,12 @@
 'use client';
 
 import { FC } from 'react';
+import Image from 'next/image';
+
 import { Label } from '@/components/shared/Label';
 import { useUploadFile } from '@/components/widgets/UploadFile/hooks/useUploadFile';
 import { UploadFileFormData } from '@/components/widgets/UploadFile/interfaces/UploadFileFormData';
 import { UploadFileSizes } from '@/components/widgets/UploadFile/types/storage-folder';
-import Image from 'next/image';
 
 import classes from './UploadFile.module.css';
 

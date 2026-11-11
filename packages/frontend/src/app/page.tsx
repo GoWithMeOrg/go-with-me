@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+
 import { useSessionGQL } from '@/app/providers/session/hooks/useSesssionGQL';
 import { HowITWorks } from '@/components/shared/HowITWorks';
 import { MoreLink } from '@/components/shared/MoreLink';
@@ -10,12 +12,11 @@ import { SizeCard } from '@/components/widgets/CardEvent/CardEvent';
 import { CreateAndInvite } from '@/components/widgets/CreateAndInvite';
 import { Mode } from '@/components/widgets/CreateAndInvite/CreateAndInvite';
 import { EventList } from '@/components/widgets/EventList';
-import { useRouter } from 'next/navigation';
 
 import classes from './page.module.css';
 
 export default function HomePage() {
-    const { data: session, status } = useSessionGQL();
+    const { status } = useSessionGQL();
 
     const router = useRouter();
 

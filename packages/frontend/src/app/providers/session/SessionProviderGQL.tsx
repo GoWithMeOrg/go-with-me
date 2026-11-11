@@ -1,6 +1,7 @@
 'use client';
 
 import { FC, ReactNode, useCallback } from 'react';
+
 import { SessionContext } from '@/app/providers/session/context/session.context';
 import { useSessionFetch } from '@/app/providers/session/hooks/useSessionFetch';
 import type { SessionState, UpdateSession } from '@/app/providers/session/types/session.types';

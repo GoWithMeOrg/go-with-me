@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { DeleteResult, Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { Category, CategoryDocument } from './entities/category.entity';
-import { CreateCategoryInput } from './dto/create-category.input';
-import { UpdateCategoryInput } from './dto/update-category.input';
+import { DeleteResult, Model, Types } from 'mongoose';
+
+import { CreateCategoryInput } from '@/modules/category/dto/create-category.input.js';
+import { UpdateCategoryInput } from '@/modules/category/dto/update-category.input.js';
+import { Category, CategoryDocument } from '@/modules/category/entities/category.entity.js';
 
 @Injectable()
 export class CategoryService {

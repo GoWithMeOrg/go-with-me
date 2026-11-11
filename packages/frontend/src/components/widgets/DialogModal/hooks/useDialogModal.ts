@@ -1,4 +1,6 @@
 import { useReducer } from 'react';
+import { useMutation } from '@apollo/client/react';
+
 import { SEND_INVITATION_MUTATION } from '@/app/graphql/mutations/invations';
 import { usePopup } from '@/components/shared/Popup/hooks';
 import {
@@ -8,10 +10,9 @@ import {
 import {
     CompanionsDialogModalProps,
     DialogModal,
+    InvitationEvent,
 } from '@/components/widgets/DialogModal/types/DialogModal';
 import { useUserID } from '@/hooks/useUserID';
-import { useMutation } from '@apollo/client/react';
-
 import { useInvitationEvents } from './useInvitationEvents';
 
 export const useDialogModal = ({ receiver_ids, resetCards }: CompanionsDialogModalProps) => {
@@ -85,7 +86,7 @@ export const useDialogModal = ({ receiver_ids, resetCards }: CompanionsDialogMod
     };
 
     // Выбрать событие
-    const handleSelectEvent = (event: any) => {
+    const handleSelectEvent = (event: InvitationEvent) => {
         dispatch({
             type: DialogModal.SELECTED_EVENT,
             payload: event,

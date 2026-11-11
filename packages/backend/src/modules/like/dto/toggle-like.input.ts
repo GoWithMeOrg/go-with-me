@@ -1,14 +1,14 @@
-import { InputType, Field, ID } from '@nestjs/graphql';
-import {  Types } from 'mongoose';
+import { Field, ID, InputType } from '@nestjs/graphql';
+import { Types } from 'mongoose';
 
 @InputType()
 export class ToggleLikeInput {
     @Field(() => ID)
-    user: Types.ObjectId;
+    user!: Types.ObjectId;
 
     @Field(() => ID)
-    ownerId: Types.ObjectId;
+    ownerId!: Types.ObjectId;
 
     @Field(() => String)
-    ownerType: 'Event' | 'Comment' | 'Trip';
+    ownerType!: 'Event' | 'Comment' | 'Trip';
 }

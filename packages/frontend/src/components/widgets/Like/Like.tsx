@@ -1,4 +1,5 @@
 import { FC } from 'react';
+
 import Heart from '@/assets/icons/heart.svg';
 import { Button } from '@/components/shared/Button';
 import useLike from '@/components/widgets/Like/hooks/useLike';
@@ -6,8 +7,19 @@ import { LikeProps } from '@/components/widgets/Like/interfaces/LikeProps';
 
 import classes from './Like.module.css';
 
-export const Like: FC<LikeProps> = ({ owner_id, ownerType, count, initialIsLiked, initialLikesCount }) => {
-    const { handleLike, isLiked, likesCount } = useLike({ owner_id, ownerType, initialIsLiked, initialLikesCount });
+export const Like: FC<LikeProps> = ({
+    owner_id,
+    ownerType,
+    count,
+    initialIsLiked,
+    initialLikesCount,
+}) => {
+    const { handleLike, isLiked, likesCount } = useLike({
+        owner_id,
+        ownerType,
+        initialIsLiked,
+        initialLikesCount,
+    });
 
     const likeCss = [classes.like, ownerType === 'Event' && classes.likeEvent]
         .filter(Boolean)

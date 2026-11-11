@@ -1,7 +1,6 @@
 'use client';
 
 import { PermissionManagement } from '@/components/widgets/PermissionManagment/PermissionManagment';
-
 import { useAdminGuard } from '../hooks/useAdminGuard';
 
 const PermissionPage = () => {

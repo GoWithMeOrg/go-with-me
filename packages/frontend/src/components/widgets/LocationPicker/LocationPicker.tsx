@@ -1,20 +1,21 @@
 'use client';
 
 import { FC } from 'react';
+import { AdvancedMarker, ControlPosition, Map, Pin } from '@vis.gl/react-google-maps';
+
 import Marker from '@/assets/icons/marker.svg';
 import { Button } from '@/components/shared/Button';
 import { Popup } from '@/components/shared/Popup';
+import { GoogleMapsBoundary } from '@/components/widgets/GoogleMap/GoogleMapsBoundary';
 import { Autocomplete } from '@/components/widgets/MapComponents/Autocomplete/Autocomplete';
 import AutocompleteControl from '@/components/widgets/MapComponents/AutocompleteControl/AutocompleteControl';
 import AutocompleteResult from '@/components/widgets/MapComponents/AutocompleteResult/AutocompleteResult';
-import { AdvancedMarker, ControlPosition, Map } from '@vis.gl/react-google-maps';
-
 import { useLocationPicker } from './hooks/useLocationPicker';
 import { LocationPickerProps } from './interfaces/LocationPickerProps';
 
 import classes from './LocationPicker.module.css';
 
-export const LocationPicker: FC<LocationPickerProps> = ({ locationData, onChange }) => {
+const LocationPickerInner: FC<LocationPickerProps> = ({ locationData, onChange }) => {
     const {
         showPopup,
         container,
@@ -74,7 +75,7 @@ export const LocationPicker: FC<LocationPickerProps> = ({ locationData, onChange
 
                     {markerPosition && (
                         <AdvancedMarker position={markerPosition}>
-                            <gmp-pin
+                            <Pin
                                 background={'#FBBC04'}
                                 borderColor={'#1e89a1'}
                                 glyphColor={'#0f677a'}
@@ -92,5 +93,13 @@ export const LocationPicker: FC<LocationPickerProps> = ({ locationData, onChange
         </div>
     );
 };
+
+// LocationPicker рисует карту, поэтому сам поднимает APIProvider — форма
+// создания события больше не требует глобального провайдера в layout.
+export const LocationPicker: FC<LocationPickerProps> = (props) => (
+    <GoogleMapsBoundary>
+        <LocationPickerInner {...props} />
+    </GoogleMapsBoundary>
+);
 
 export default LocationPicker;

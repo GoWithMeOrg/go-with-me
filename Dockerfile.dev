@@ -1,11 +1,30 @@
-FROM node:24-alpine
+# syntax=docker/dockerfile:1.7
+FROM node:26-alpine
 
-# Устанавливаем pnpm глобально в образ
-# RUN npm config set registry https://registry.npmmirror.com
-RUN npm install -g pnpm@11.5.0
+# Устанавливаем pnpm глобально в образ (corepack в node:26-alpine отсутствует)
+RUN npm install -g pnpm@12.16.1
 
-# Настраиваем переменные для корректной работы путей pnpm
-ENV PNPM_HOME="/root/.local/share/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
+# Работаем от пользователя node (uid/gid 1000) — он уже есть в образе и совпадает
+# с пользователем хоста. Иначе контейнер работает от root и создаёт артефакты
+# сборки (dist, .next) в bind-mount с владельцем root, после чего их нельзя
+# удалить с хоста.
+ENV PNPM_HOME="/home/node/.local/share/pnpm"
+ENV PATH="${PNPM_HOME}:/home/node/.local/bin:${PATH}"
+ENV HOME="/home/node"
+
+RUN mkdir -p /workspace/node_modules \
+             "${PNPM_HOME}" \
+ && chown -R node:node /workspace "${PNPM_HOME}"
 
 WORKDIR /workspace
+
+# Зависимости ставим на этапе сборки образа, а не в command у compose:
+# иначе каждый `docker compose up` и каждый restart контейнера заново
+# резолвит ~1000 пакетов. Стор кешируем через BuildKit, поэтому повторная
+# сборка после изменения кода переиспользует скачанные пакеты.
+COPY --chown=node:node . .
+
+USER node
+
+RUN --mount=type=cache,id=pnpm-store,target=/home/node/.local/share/pnpm/store,uid=1000,gid=1000 \
+    pnpm install --frozen-lockfile --prefer-offline

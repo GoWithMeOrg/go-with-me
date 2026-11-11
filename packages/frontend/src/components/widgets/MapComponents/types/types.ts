@@ -1,4 +1,4 @@
-import { LocationGeometryInput, LocationPropertiesInput } from '@/app/graphql/types';
+import { LocationGeometryInput, LocationPropertiesInput } from '@go-with-me/shared/graphql';
 
 export type LocationType = {
     geometry: LocationGeometryInput;

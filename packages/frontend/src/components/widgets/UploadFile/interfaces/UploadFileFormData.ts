@@ -1,4 +1,5 @@
-import { Maybe } from '@/app/graphql/types';
+import { Maybe } from '@go-with-me/shared/graphql';
+
 import {
     StorageFolder,
     UploadFileSizes,

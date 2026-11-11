@@ -31,8 +31,13 @@ mkcert -install
 
 ### 3. Environment Variables
 
-- Update the default values in `docker-compose.yml` to match your local secrets (e.g. `SESSION_SECRET`, OAuth credentials, Mongo connection string).
-- For additional Next.js variables, add a `.env.local` file under `packages/web-frontend/`. The compose service mounts the repo, so standard env files are available to Next.js.
+- Put all secrets in `.env.local` in the repository root: both `gwm-backend` and
+  `gwm-frontend` receive it through `env_file`, and the backend validates it on
+  startup. `docker-compose.yml` overrides only what must differ inside the
+  network (`MONGODB_URI` points at the `mongo` service, not `localhost`) plus
+  `NEXT_PUBLIC_GRAPHQL_ENDPOINT`.
+- The full variable list is in the README section
+  [Environment Variables](../README.md#environment-variables).
 
 ## Running the Stack
 
@@ -42,11 +47,14 @@ From the repository root:
 docker compose up --build
 ```
 
+`--build` is only needed the first time or after dependency changes
+(`package.json`, `pnpm-lock.yaml`, `Dockerfile.dev`); plain `docker compose up`
+reuses the cached image.
+
 Compose starts four containers:
 
 | Service        | Description                                          | Port   |
 | -------------- | ---------------------------------------------------- | ------ |
-| `gwm-mongo`    | MongoDB instance for local development               | 27017  |
 | `gwm-backend`  | NestJS API running on port `4000` inside the network | 4000   |
 | `gwm-frontend` | Next.js dev server (hot reload)                      | 3000   |
 | `gwm-mongo`    | MongoDB instance for local development               | 27017  |
@@ -62,9 +70,10 @@ Visit **https://tribeplans.dev** in your browser. The first visit will prompt yo
 
 ## Notes
 
-- The backend now reads `CORS_ORIGIN`, `SESSION_COOKIE_*`, and `PORT` from the environment (see `packages/backend/src/main.ts`).
-- `SESSION_COOKIE_SECURE` defaults to `true` in docker so cookies work over HTTPS.
-- Both Node containers run `pnpm install` on startup to ensure workspace dependencies are present. The `node_modules` and pnpm store directories are persisted via named volumes for faster restarts.
+- The backend reads `ALLOWED_ORIGIN`, `MONGODB_URI`, `SESSION_SECRET`, `PORT`, `TRUST_PROXY` and the `S3_*` / OAuth variables from the environment (see `packages/backend/src/main.ts`). Missing required variables stop the container on startup with a list of everything that is absent.
+- Session cookie flags (`secure`, `httpOnly`, `sameSite`) are set in code, not through environment variables: `CORS_ORIGIN`, `SESSION_COOKIE_*` and `NEXTAUTH_URL` do not exist in this project.
+- Both Node containers run `pnpm install` on startup to ensure workspace dependencies are present. `node_modules` is persisted via a named volume for faster restarts; the pnpm store lives inside it (`node_modules/.pnpm-store`).
+- `gwm-nginx` runs the stock `nginx:1.27-alpine`. `nginx.conf`, `conf.d/` and `proxy_params.conf` are bind-mounted from `infra/nginx`, so a missing mount shows up as `open() "/etc/nginx/proxy_params.conf" failed` and the container exits. After changing any of them run `docker compose restart nginx`.
 
 ---
 
@@ -110,5 +119,5 @@ Podman’s `compose` subcommand understands the existing `docker-compose.yml`. T
 ## Notes
 
 - Podman automatically builds images rootless; no extra configuration is required for the provided Dockerfile targets.
-- Volume mounts defined in `docker-compose.yml` map into the Podman machine. If you need to clean the pnpm store, run `podman volume rm gwm_frontend_node_modules gwm_backend_node_modules gwm_pnpm_store`.
+- Volume mounts defined in `docker-compose.yml` map into the Podman machine. If you need to clean the pnpm store, run `podman volume rm gwm_frontend_node_modules gwm_backend_node_modules`.
 - Certificates, hosts file configuration, and environment variable management are identical to the Docker workflow above.

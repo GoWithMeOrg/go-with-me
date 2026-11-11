@@ -1,14 +1,14 @@
-import { Field, InputType, ID } from '@nestjs/graphql';
+import { Field, ID, InputType } from '@nestjs/graphql';
 import { Types } from 'mongoose';
 
 @InputType()
 export class CreateInterestInput {
     @Field(() => [String])
-    interests: string[];
+    interests!: string[];
 
     @Field(() => ID, { nullable: true })
-    ownerId: Types.ObjectId;
+    ownerId!: Types.ObjectId;
 
     @Field(() => String, { nullable: true })
-    ownerType: 'User' | 'Event';
+    ownerType!: 'User' | 'Event';
 }

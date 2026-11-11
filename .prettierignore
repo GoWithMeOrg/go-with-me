@@ -3,3 +3,16 @@ dist
 build
 .next
 coverage
+
+# Генерируется NestJS при старте (autoSchemaFile) с отступом в 2 пробела
+packages/backend/src/schema/schema.gql
+
+# Генерируются graphql-codegen с отступом в 2 пробела
+packages/shared/graphql.ts
+packages/frontend/src/app/graphql/operations.ts
+
+# Генерируется pnpm, prettier переписывает 38 000 строк и pnpm install возвращает обратно
+pnpm-lock.yaml
+
+# Генерируется next typegen
+packages/frontend/next-env.d.ts

@@ -1,12 +1,11 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
-import { DeleteResult, Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
+import { DeleteResult, Model, Types } from 'mongoose';
 
-import { CreateRoleInput } from './dto/create-role.input';
-import { UpdateRoleInput } from './dto/update-role.input';
-
-import { Role, RoleDocument } from './entities/role.entity';
-import { User, UserDocument } from '../user/entities/user.entity';
+import { CreateRoleInput } from '@/modules/role/dto/create-role.input.js';
+import { UpdateRoleInput } from '@/modules/role/dto/update-role.input.js';
+import { Role, RoleDocument } from '@/modules/role/entities/role.entity.js';
+import { User, UserDocument } from '@/modules/user/entities/user.entity.js';
 
 @Injectable()
 export class RoleService {
@@ -39,7 +38,10 @@ export class RoleService {
 
     async getRoleByDisplayName(displayName: string): Promise<Role | null> {
         // Search for role where name contains the display name as a substring
-        return this.roleModel.findOne({ name: { $regex: new RegExp(`^${displayName}$`, 'i') } }).populate(this.deepPopulate).exec();
+        return this.roleModel
+            .findOne({ name: { $regex: new RegExp(`^${displayName}$`, 'i') } })
+            .populate(this.deepPopulate)
+            .exec();
     }
 
     async getRoleByUserId(userId: Types.ObjectId): Promise<User | null> {
@@ -68,10 +70,7 @@ export class RoleService {
         return await savedRole.populate(this.deepPopulate);
     }
 
-    async addPermission(
-        roleId: Types.ObjectId,
-        permissionId: Types.ObjectId[]
-    ): Promise<Role> {
+    async addPermission(roleId: Types.ObjectId, permissionId: Types.ObjectId[]): Promise<Role> {
         const role = await this.roleModel
             .findByIdAndUpdate(roleId, { $addToSet: { permissions: permissionId } }, { new: true })
             .populate({
@@ -83,10 +82,7 @@ export class RoleService {
         return role;
     }
 
-    async removePermission(
-        roleId: Types.ObjectId,
-        permissionId: Types.ObjectId
-    ): Promise<Role> {
+    async removePermission(roleId: Types.ObjectId, permissionId: Types.ObjectId): Promise<Role> {
         const role = await this.roleModel
             .findByIdAndUpdate(roleId, { $pull: { permissions: permissionId } }, { new: true })
             .populate({ path: 'permissions', populate: { path: 'resource' } });
@@ -98,10 +94,7 @@ export class RoleService {
         return role;
     }
 
-    async updateRole(
-        id: Types.ObjectId,
-        updateRoleInput: UpdateRoleInput
-    ): Promise<Role | null> {
+    async updateRole(id: Types.ObjectId, updateRoleInput: UpdateRoleInput): Promise<Role | null> {
         const existingRole = await this.roleModel.findById(id).exec();
         if (!existingRole) throw new NotFoundException('Role not found');
 

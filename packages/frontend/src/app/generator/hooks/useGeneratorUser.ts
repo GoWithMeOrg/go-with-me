@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import { SEED_USERS } from '@/app/graphql/mutations/seedUsers';
-import { GET_ROLES_BY_NAME } from '@/app/graphql/queries/role';
-import { RoleByNameQuery, RoleByNameQueryVariables } from '@/app/graphql/operations';
-import { categoriesList, interestsList } from '@/components/shared/Dropdown/dropdownLists';
 import { useMutation, useQuery } from '@apollo/client/react';
-import { faker } from '@faker-js/faker';
 
+import { SEED_USERS } from '@/app/graphql/mutations/seedUsers';
+import { RoleByNameQuery, RoleByNameQueryVariables } from '@/app/graphql/operations';
+import { GET_ROLES_BY_NAME } from '@/app/graphql/queries/role';
+import { categoriesList, interestsList } from '@/components/shared/Dropdown/dropdownLists';
 import { tagsList } from '../tagList';
 import { useGeneratorLocation } from './useGeneratorLocation';
 
@@ -32,17 +31,20 @@ export const useGeneratorUser = () => {
         if (!numberItems || numberItems <= 0) return;
 
         try {
+            // faker нужен только в момент генерации — грузим чанк по требованию.
+            const { faker } = await import('@faker-js/faker');
+
             for (let i = 0; i < numberItems; i++) {
                 const firstName = faker.person.firstName();
                 const lastName = faker.person.lastName();
                 const email = faker.internet.email({ firstName, lastName }).toLowerCase();
                 const roles = data?.roleByName?._id;
-                const location = generateLocation();
+                const location = await generateLocation();
                 const categories = faker.helpers.arrayElements(categoriesList, { min: 1, max: 5 });
                 const interests = faker.helpers.arrayElements(interestsList, { min: 1, max: 5 });
                 const tags = faker.helpers.arrayElements(tagsList, { min: 1, max: 5 });
 
-                const result = await seedUsers({
+                await seedUsers({
                     variables: {
                         inputs: {
                             user: {
@@ -79,7 +81,7 @@ export const useGeneratorUser = () => {
 
             setGeneratedUsers('Пользователи успешно сгенерированы');
             // console.log('Пользователи успешно сгенерированы');
-        } catch (error) {
+        } catch {
             setGeneratedUsers('Ошибка при генерации пользователей');
             // console.error('Ошибка при генерации пользователей:', error);
         }

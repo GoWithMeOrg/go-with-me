@@ -1,13 +1,14 @@
+import { useMutation, useQuery } from '@apollo/client/react';
+import { PrivacySetting } from '@go-with-me/shared/graphql';
+import { useParams } from 'next/navigation';
+
 import { SEND_REQUEST_COMPANION_MUTATION } from '@/app/graphql/mutations/companionRequest';
 import { GET_IS_USER_COMPANION } from '@/app/graphql/queries/companions';
 import { GET_EVENTS_BY_ORGANIZER } from '@/app/graphql/queries/events';
 import { GET_PRIVACY_SETTING_BY_USER_ID } from '@/app/graphql/queries/privacySetting';
 import { GET_USER_BY_ID } from '@/app/graphql/queries/user';
-import { PrivacySetting } from '@/app/graphql/types';
 import { useDialogModal } from '@/components/widgets/DialogModal/hooks/useDialogModal';
 import { useUserID } from '@/hooks/useUserID';
-import { useMutation, useQuery } from '@apollo/client/react';
-import { useParams } from 'next/navigation';
 
 export const usePublicProfile = () => {
     const { user_id, status } = useUserID();
@@ -32,15 +33,14 @@ export const usePublicProfile = () => {
         skip: !isAuth || isOwner,
     });
 
-    const userCompanion = (isCompanionData as { isUserCompanion: boolean })?.isUserCompanion ?? false;
+    const userCompanion =
+        (isCompanionData as { isUserCompanion: boolean })?.isUserCompanion ?? false;
 
     const canInvite = (() => {
         if (isOwner || !isAuth) return false;
 
         const settings: PrivacySetting | undefined = (
-            viewedUserPrivacy as
-                | { privacySettingByUserId: PrivacySetting }
-                | undefined
+            viewedUserPrivacy as { privacySettingByUserId: PrivacySetting } | undefined
         )?.privacySettingByUserId;
 
         if (!settings) return true; // пока не загрузилось — показываем, чтобы не моргало
@@ -48,9 +48,7 @@ export const usePublicProfile = () => {
         if (settings.whoCanInviteToEvents === 'EVERYONE') return true;
         if (settings.whoCanInviteToEvents === 'COMPANIONS') return userCompanion;
         if (settings.whoCanInviteToEvents === 'MARKED_COMPANIONS') {
-            return (
-                settings.markedForWhoCanInviteToEvents?.includes(user_id ?? '') ?? false
-            );
+            return settings.markedForWhoCanInviteToEvents?.includes(user_id ?? '') ?? false;
         }
         return false;
     })();

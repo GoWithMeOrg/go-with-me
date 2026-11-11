@@ -1,6 +1,6 @@
-import { Comment as CommentType } from '@/app/graphql/types';
-import { CommentForm } from '@/components/widgets/Comments/CommentForm';
+import { Comment as CommentType } from '@go-with-me/shared/graphql';
 
+import { CommentForm } from '@/components/widgets/Comments/CommentForm';
 import { CommentActions } from './CommentActions';
 
 import classes from './Comment.module.css';
@@ -13,7 +13,7 @@ interface CommentContentProps {
     showReplyForm: boolean;
     onReply: () => void;
     onDelete: () => void;
-    onSaveReply: (content: string) => Promise<any>;
+    onSaveReply: (content: string) => Promise<unknown>;
     onCloseReplyForm: () => void;
 }
 

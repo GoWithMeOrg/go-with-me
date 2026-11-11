@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+
 import { logout, signIn } from '@/app/providers/session/actions/authActions';
 import { useSessionGQL } from '@/app/providers/session/hooks/useSesssionGQL';
 import Human from '@/assets/icons/human.svg';
@@ -7,16 +9,15 @@ import { Button } from '@/components/shared/Button';
 import { Popup } from '@/components/shared/Popup';
 import { usePopup } from '@/components/shared/Popup/hooks';
 import { AuthModal } from '@/components/widgets/AuthModal';
-import Link from 'next/link';
 
 import classes from './AuthPanel.module.css';
 
 export const AuthPanel = () => {
     const { data: session, status } = useSessionGQL();
 
-    const popupMode: 'auth' = 'auth';
+    const popupMode = 'auth' as const;
 
-    const { showPopup, setShowPopup, handleShowPopup, handleHidePopup } = usePopup({ popupMode });
+    const { showPopup, setShowPopup, handleHidePopup } = usePopup({ popupMode });
 
     return (
         <div className={classes.component}>
@@ -44,7 +45,7 @@ export const AuthPanel = () => {
                             <Button
                                 size="big"
                                 onClick={() => {
-                                    confirm('Вы уверены, что хотите выйти?') && logout();
+                                    if (confirm('Вы уверены, что хотите выйти?')) logout();
                                 }}
                             >
                                 Выйти

@@ -1,22 +1,23 @@
-import { InputType, Field, ID } from '@nestjs/graphql';
-import { Schema as MongoSchema, Types } from 'mongoose';
-import { IsString, IsNotEmpty, IsMongoId, IsEnum, IsOptional } from 'class-validator';
-import { OwnerType } from '@/common/enums/owner-type.enum';
+import { Field, ID, InputType } from '@nestjs/graphql';
+import { IsEnum, IsMongoId, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { Types } from 'mongoose';
+
+import { OwnerType } from '@/common/enums/owner-type.enum.js';
 
 @InputType()
 export class CreateCommentInput {
     @Field(() => String)
     @IsString()
     @IsNotEmpty()
-    content: string;
+    content!: string;
 
     @Field(() => ID)
     @IsMongoId()
-    ownerId: Types.ObjectId;
+    ownerId!: Types.ObjectId;
 
     @Field(() => OwnerType)
     @IsEnum(OwnerType)
-    ownerType: OwnerType;
+    ownerType!: OwnerType;
 
     @Field(() => ID, { nullable: true })
     @IsMongoId()

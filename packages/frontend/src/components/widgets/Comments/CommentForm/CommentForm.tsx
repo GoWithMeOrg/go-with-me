@@ -2,13 +2,14 @@
 
 import { FC } from 'react';
 import { SubmitHandler, useController, useForm } from 'react-hook-form';
+
 import { Button } from '@/components/shared/Button';
 import { Textarea } from '@/components/shared/Textarea';
 
 import classes from './CommentForm.module.css';
 
 interface CommentFormProps {
-    onSaveComment: (content: string) => Promise<any>;
+    onSaveComment: (content: string) => Promise<unknown>;
     onClose?: () => void;
 }
 

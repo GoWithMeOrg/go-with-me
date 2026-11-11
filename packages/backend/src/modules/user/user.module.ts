@@ -1,12 +1,13 @@
 import { forwardRef, Module } from '@nestjs/common';
-import { MongooseModule, getModelToken } from '@nestjs/mongoose';
-import { UserService } from './user.service';
-import { UserResolver } from './user.resolver';
-import { UserSchema, UserDocument } from './entities/user.entity';
-import { LocationModule } from '@/modules/location/location.module';
-import { RoleSchema } from '../role/entities/role.entity';
-import { CompanionModule } from '../companion/companion.module';
-import { CompanionRequestModule } from '../companion-request/companion-request.module';
+import { MongooseModule } from '@nestjs/mongoose';
+
+import { CompanionRequestModule } from '@/modules/companion-request/companion-request.module.js';
+import { CompanionModule } from '@/modules/companion/companion.module.js';
+import { LocationModule } from '@/modules/location/location.module.js';
+import { RoleSchema } from '@/modules/role/entities/role.entity.js';
+import { UserSchema } from '@/modules/user/entities/user.entity.js';
+import { UserResolver } from '@/modules/user/user.resolver.js';
+import { UserService } from '@/modules/user/user.service.js';
 
 @Module({
     imports: [

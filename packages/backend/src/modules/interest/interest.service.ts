@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CreateInterestInput } from './dto/create-interest.input';
-import { UpdateInterestInput } from './dto/update-interest.input';
-import { DeleteResult, Model, Types } from 'mongoose';
-import { Interest, InterestDocument } from './entities/interest.entity';
 import { InjectModel } from '@nestjs/mongoose';
+import { DeleteResult, Model, Types } from 'mongoose';
+
+import { CreateInterestInput } from '@/modules/interest/dto/create-interest.input.js';
+import { UpdateInterestInput } from '@/modules/interest/dto/update-interest.input.js';
+import { Interest, InterestDocument } from '@/modules/interest/entities/interest.entity.js';
 
 @Injectable()
 export class InterestService {
@@ -27,10 +28,7 @@ export class InterestService {
         return await createInterest.save();
     }
 
-    async updateInterest(
-        interest_id: Types.ObjectId,
-        updateInterestInput: UpdateInterestInput
-    ) {
+    async updateInterest(interest_id: Types.ObjectId, updateInterestInput: UpdateInterestInput) {
         return await this.interestModel.findByIdAndUpdate(interest_id, updateInterestInput, {
             new: true,
         });

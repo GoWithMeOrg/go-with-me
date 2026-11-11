@@ -2,11 +2,7 @@
     "projects": {
         "default": {
             "schema": "./packages/backend/src/schema/schema.gql",
-            "documents": [
-                "./packages/frontend/src/**/*.ts",
-                "./packages/frontend/src/**/*.tsx",
-                "./packages/backend/src/**/*.graphql"
-            ]
+            "documents": ["./packages/frontend/src/**/*.ts", "./packages/frontend/src/**/*.tsx"]
         }
     }
 }

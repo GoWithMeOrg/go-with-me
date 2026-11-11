@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { CategorySchema } from './entities/category.entity';
-import { CategoryResolver } from './category.resolver';
-import { CategoryService } from './category.service';
+
+import { CategoryResolver } from '@/modules/category/category.resolver.js';
+import { CategoryService } from '@/modules/category/category.service.js';
+import { CategorySchema } from '@/modules/category/entities/category.entity.js';
 
 @Module({
     imports: [MongooseModule.forFeature([{ name: 'Category', schema: CategorySchema }])],

@@ -26,7 +26,7 @@ interface useDropdownReturn extends PropsWithChildren {
     setIsHovered: Dispatch<SetStateAction<boolean[]>>;
     showIcon: (index: number, value: boolean) => void;
     handleDropdown: () => void;
-    handleAddCategory: (e: any) => void;
+    handleAddCategory: (e: React.MouseEvent<HTMLButtonElement>) => void;
     dropdownRef: RefObject<HTMLDivElement>;
     dropdownCss: string;
     dropdownItemCss: string;
@@ -68,12 +68,14 @@ export const useDropdown = ({
         setIsOpen(!isOpen);
     };
 
-    const handleAddCategory = (e: any) => {
+    const handleAddCategory = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         //получаем родительский элемент
-        const parentElement = e.target.closest('[data-category]');
+        const parentElement = e.currentTarget.closest('[data-category]');
         //получаем значение родительского элемента
-        const clickedCategory = parentElement.dataset.category;
+        const clickedCategory = parentElement?.getAttribute('data-category');
+        if (!clickedCategory) return;
+
         // добавлем если нет елемента в массиве
         setSelectedCategories((prevSelectedCategories) => {
             if (!prevSelectedCategories.includes(clickedCategory)) {

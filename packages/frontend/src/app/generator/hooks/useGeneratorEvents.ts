@@ -1,11 +1,10 @@
 import { useState } from 'react';
+import { useMutation, useQuery } from '@apollo/client/react';
+import { User } from '@go-with-me/shared/graphql';
+
 import { SEED_EVENTS } from '@/app/graphql/mutations/seedEvents';
 import { GET_USERS } from '@/app/graphql/queries/users';
-import { User } from '@/app/graphql/types';
 import { categoriesList, interestsList } from '@/components/shared/Dropdown/dropdownLists';
-import { useMutation, useQuery } from '@apollo/client/react';
-import { faker } from '@faker-js/faker';
-
 import { tagsList } from '../tagList';
 import { useGeneratorLocation } from './useGeneratorLocation';
 
@@ -29,8 +28,12 @@ export const useGeneratorEvents = () => {
         if (!count || count <= 0 || !usersData?.users?.length) return;
 
         try {
+            // faker нужен только в момент генерации — грузим чанк по требованию,
+            // чтобы не тянуть ~500 КБ в основной бандл страницы.
+            const { faker } = await import('@faker-js/faker');
+
             for (let i = 0; i < count; i++) {
-                const location = generateLocation();
+                const location = await generateLocation();
                 const categories = faker.helpers.arrayElements(categoriesList, { min: 1, max: 5 });
                 const interests = faker.helpers.arrayElements(interestsList, { min: 1, max: 5 });
                 const tags = faker.helpers.arrayElements(tagsList, { min: 1, max: 5 });
