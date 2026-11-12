@@ -58,7 +58,7 @@ services:
       - '3000:3000'
 
   mongo:
-    image: mongo:7
+    image: mongo:9
     container_name: gwm-mongo
     environment:
       MONGO_INITDB_DATABASE: go-with-me
