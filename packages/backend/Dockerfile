@@ -14,6 +14,9 @@ WORKDIR /workspace
 # --------------------------
 FROM base AS builder
 
+# NODE_ENV на этапе сборки не фиксируем: для компиляции нужны
+# devDependencies (nest cli, typescript). Окружение задаётся в runtime-стадии.
+
 # Сначала только манифесты: слой установки не инвалидируется при изменении кода.
 COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
 COPY packages/backend/package.json ./packages/backend/package.json
@@ -49,7 +52,10 @@ COPY --from=builder --chown=nestjs:nestjs /workspace/packages/backend/dist ./dis
 
 USER nestjs
 
-ENV NODE_ENV=production
+# Значение по умолчанию — prod; для dev-образа можно передать
+# --build-arg NODE_ENV=development. Переопределяется и в рантайме (-e NODE_ENV=...).
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
 ENV PORT=4000
 ENV HOSTNAME="0.0.0.0"
 

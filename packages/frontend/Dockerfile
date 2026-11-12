@@ -10,6 +10,9 @@ WORKDIR /workspace
 # Stage 1: Build
 FROM base AS builder
 
+# NODE_ENV на этапе сборки не фиксируем: для `next build` нужны
+# devDependencies. Окружение задаётся в runtime-стадии ниже.
+
 # NEXT_PUBLIC_* инлайнятся в бандл на этапе сборки, поэтому их нужно передать
 # в build-args — из runtime-окружения они уже не подхватятся.
 ARG NEXT_PUBLIC_BASE_URL
@@ -43,6 +46,10 @@ RUN pnpm --filter frontend run build
 FROM node:26-alpine AS runner
 WORKDIR /app
 
+# Значение по умолчанию — prod; для dev-образа можно передать
+# --build-arg NODE_ENV=development. Переопределяется и в рантайме (-e NODE_ENV=...).
+ARG NODE_ENV=production
+
 RUN addgroup --system --gid 1001 nextjs && adduser --system --uid 1001 nextjs
 
 # Копируем standalone файлы.
@@ -54,7 +61,7 @@ COPY --from=builder --chown=nextjs:nextjs /workspace/packages/frontend/public ./
 WORKDIR /app/packages/frontend
 USER nextjs
 
-ENV NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 

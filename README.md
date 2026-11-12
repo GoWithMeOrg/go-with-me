@@ -8,7 +8,7 @@ invitations, with Google OAuth login and a GraphQL API.
 | Part       | Technologies                                                                  |
 | ---------- | ----------------------------------------------------------------------------- |
 | `frontend` | Next.js 16 (App Router), React 19, Apollo Client 4, simpledotcss, SVGR        |
-| `backend`  | NestJS 12 (ESM), GraphQL code-first, Apollo Server 5, Mongoose 9, MongoDB 7   |
+| `backend`  | NestJS 12 (ESM), GraphQL code-first, Apollo Server 5, Mongoose 9, MongoDB 9   |
 | Shared     | TypeScript 6.0.3, pnpm 12, ESLint 10, Prettier 3                              |
 | Auth       | Passport + Google OAuth, sessions in MongoDB (`connect-mongo`), `connect.sid` |
 
@@ -71,8 +71,16 @@ docker compose up --build
 | -------------- | ---------------------------------- | ------ |
 | `gwm-frontend` | Next.js dev server with hot reload | 3000   |
 | `gwm-backend`  | NestJS API                         | 4000   |
-| `gwm-mongo`    | MongoDB 7                          | 27017  |
+| `gwm-mongo`    | MongoDB 9                          | 27017  |
 | `gwm-nginx`    | reverse proxy, terminates HTTPS    | 80/443 |
+
+> **Upgrading from MongoDB 7:** the `mongo_data` volume cannot be reused as is.
+> MongoDB 9 refuses to start on data written by 7 — the server reports an invalid
+> `featureCompatibilityVersion` of `7.0` and expects `8.0` or newer. The supported
+> path is 7.0 → 8.0 → 9.0 (note that `mongo:8` is already 8.3 and also fails; use
+> `mongo:8.0`). Either step through 8.0, re-import the data with
+> `pnpm import:mongo`, or drop the volume if the data is throwaway:
+> `docker compose down -v`.
 
 `https://tribeplans.dev` needs a hosts-file entry and local certificates — see
 [`docs/local-dev-docker.md`](docs/local-dev-docker.md) for the step-by-step guide.
@@ -211,7 +219,10 @@ IDs — `DOKPLOY_DEV_BACKEND_APP_ID`, `DOKPLOY_DEV_FRONTEND_APP_ID`,
 `DOKPLOY_PROD_BACKEND_APP_ID`, `DOKPLOY_PROD_FRONTEND_APP_ID`.
 
 Production images are built from `packages/*/Dockerfile` (multi-stage,
-`node:26-alpine`, Next.js `output: 'standalone'`).
+`node:26-alpine`, Next.js `output: 'standalone'`). The environment is not baked
+into them: `NODE_ENV` is a `--build-arg` with the default `production`, and the
+runtime value can be overridden per container (`docker run -e NODE_ENV=...`).
+`Dockerfile.dev` uses the same mechanism with the default `development`.
 
 ## Docs
 
