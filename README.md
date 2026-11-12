@@ -211,7 +211,10 @@ IDs — `DOKPLOY_DEV_BACKEND_APP_ID`, `DOKPLOY_DEV_FRONTEND_APP_ID`,
 `DOKPLOY_PROD_BACKEND_APP_ID`, `DOKPLOY_PROD_FRONTEND_APP_ID`.
 
 Production images are built from `packages/*/Dockerfile` (multi-stage,
-`node:26-alpine`, Next.js `output: 'standalone'`).
+`node:26-alpine`, Next.js `output: 'standalone'`). The environment is not baked
+into them: `NODE_ENV` is a `--build-arg` with the default `production`, and the
+runtime value can be overridden per container (`docker run -e NODE_ENV=...`).
+`Dockerfile.dev` uses the same mechanism with the default `development`.
 
 ## Docs
 

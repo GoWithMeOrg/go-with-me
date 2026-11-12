@@ -18,6 +18,11 @@ RUN mkdir -p /workspace/node_modules \
 
 WORKDIR /workspace
 
+# Окружение не зашиваем в образ: compose и `docker run -e` могут его
+# переопределить. По умолчанию — development, это dev-образ.
+ARG NODE_ENV=development
+ENV NODE_ENV=${NODE_ENV}
+
 # Зависимости ставим на этапе сборки образа, а не в command у compose:
 # иначе каждый `docker compose up` и каждый restart контейнера заново
 # резолвит ~1000 пакетов. Стор кешируем через BuildKit, поэтому повторная
