@@ -13,12 +13,35 @@ type Props = {
     children?: React.ReactNode;
 };
 
+// NEXT_PUBLIC_* инлайнятся в бандл на этапе сборки. Если переменная не передана
+// build-arg'ом, Turbopack подставляет пустую строку, а Apollo считает пустой uri
+// отсутствующим и уходит на свой дефолт `/graphql` — запрос попадает в Next вместо
+// бэкенда. Поэтому пустое значение трактуем как «тот же origin»: за nginx путь
+// /api/ проксируется на бэкенд, и адрес не зависит от домена.
+const HTTP_ENDPOINT_PATH = '/api/graphql';
+
+const getHttpEndpoint = () =>
+    process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT?.trim() || HTTP_ENDPOINT_PATH;
+
+// graphql-ws не принимает относительные адреса, поэтому при пустой переменной
+// собираем абсолютный из текущего origin. url — ленивая функция: на сервере при
+// рендере window ещё нет, а к моменту подключения клиент уже в браузере.
+const getWsEndpoint = () => {
+    const configured = process.env.NEXT_PUBLIC_GRAPHQL_WS_ENDPOINT?.trim();
+    if (configured) return configured;
+
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    return `${protocol}//${window.location.host}${HTTP_ENDPOINT_PATH}`;
+};
+
 const errorLink = new ErrorLink(({ error }) => {
     if (CombinedGraphQLErrors.is(error)) {
         error.errors.forEach(({ extensions }) => {
             if (extensions?.code === 'UNAUTHORIZED') {
+                const targetUrl = process.env.NEXT_PUBLIC_BASE_URL?.trim();
+                if (!targetUrl) return;
+
                 const currentUrl = window.location.href.replace(/\/$/, '');
-                const targetUrl = process.env.NEXT_PUBLIC_BASE_URL as string;
                 if (currentUrl !== targetUrl) window.location.href = targetUrl;
             }
         });
@@ -27,13 +50,13 @@ const errorLink = new ErrorLink(({ error }) => {
 
 const createApolloClient = () => {
     const httpLink = new HttpLink({
-        uri: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT,
+        uri: getHttpEndpoint(),
         credentials: 'include',
     });
 
     const wsLink = new GraphQLWsLink(
         createClient({
-            url: process.env.NEXT_PUBLIC_GRAPHQL_WS_ENDPOINT as string,
+            url: getWsEndpoint,
             connectionParams: {},
         })
     );

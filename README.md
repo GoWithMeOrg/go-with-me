@@ -193,6 +193,12 @@ Stored in `.env.local` in the repository root. The backend reads them through
 `NEXT_PUBLIC_AUTH_GOOGLE_URL`, `NEXT_PUBLIC_AUTH_FACEBOOK_URL`,
 `NEXT_PUBLIC_AUTH_GITHUB_URL`, `NEXT_PUBLIC_AUTH_LOGOUT_URL`.
 
+All of these are inlined into the bundle by `next build`, so they must be present
+when the frontend image is built (see the `ARG`/`ENV` block in
+`packages/frontend/Dockerfile`). `NEXT_PUBLIC_GRAPHQL_ENDPOINT` and
+`NEXT_PUBLIC_GRAPHQL_WS_ENDPOINT` may be omitted: the client then talks to
+`/api/graphql` on its own origin, which nginx routes to the backend.
+
 `.env.local` is not tracked by git — do not commit it.
 
 ## CI and Deployment
